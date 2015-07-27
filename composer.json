@@ -1,5 +1,5 @@
 {
-    "name": "Dick/CRUD",
+    "name": "dick/crud",
     "description": "Quickly build an admin interface for your Eloquent models, using Laravel 5. Build a CMS in a matter of minutes.",
     "keywords": [
         "CRUD",
