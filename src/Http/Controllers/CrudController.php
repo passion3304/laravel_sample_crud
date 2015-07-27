@@ -49,7 +49,16 @@ class CrudController extends Controller {
 		$this->_prepare_columns(); // checks that the columns are defined and makes sure the response is proper
 
 		$this->data['crud'] = $this->crud;
-		return view('crud::list', $this->data);
+
+		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
+		if (view()->exists('vendor.dick.crud.list'))
+		{
+			return view('vendor.dick.crud.list', $this->data);
+		}
+		else
+		{
+			return view('crud::list', $this->data);
+		}
 	}
 
 	/**
@@ -72,7 +81,16 @@ class CrudController extends Controller {
 		$this->_prepare_fields(); // TODO: prepare the fields you need to show
 
 		$this->data['crud'] = $this->crud;
-		return view('crud::create', $this->data);
+
+		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
+		if (view()->exists('vendor.dick.crud.create'))
+		{
+			return view('vendor.dick.crud.create', $this->data);
+		}
+		else
+		{
+			return view('crud::create', $this->data);
+		}
 	}
 
 
@@ -138,7 +156,16 @@ class CrudController extends Controller {
 		$this->_prepare_fields($this->data['entry']); // prepare the fields you need to show and prepopulate the values
 
 		$this->data['crud'] = $this->crud;
-		return view('crud::edit', $this->data);
+
+		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
+		if (view()->exists('vendor.dick.crud.edit'))
+		{
+			return view('vendor.dick.crud.edit', $this->data);
+		}
+		else
+		{
+			return view('crud::edit', $this->data);
+		}
 	}
 
 
@@ -185,9 +212,17 @@ class CrudController extends Controller {
 		// get the info for that entry
 		$model = $this->crud['model'];
 		$this->data['entry'] = $model::find($id);
-
 		$this->data['crud'] = $this->crud;
-		return view('crud::show', $this->data);
+
+		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
+		if (view()->exists('vendor.dick.crud.show'))
+		{
+			return view('vendor.dick.crud.show', $this->data);
+		}
+		else
+		{
+			return view('crud::show', $this->data);
+		}
 	}
 
 
@@ -230,7 +265,15 @@ class CrudController extends Controller {
 		$this->data['entries'] = $model::all();
 		$this->data['crud'] = $this->crud;
 
-		return view('crud::reorder', $this->data);
+		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
+		if (view()->exists('vendor.dick.crud.reorder'))
+		{
+			return view('vendor.dick.crud.reorder', $this->data);
+		}
+		else
+		{
+			return view('crud::reorder', $this->data);
+		}
 	}
 
 	/**

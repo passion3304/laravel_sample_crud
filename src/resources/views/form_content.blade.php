@@ -13,7 +13,12 @@
 
   {{-- Show the inputs --}}
   @foreach ($crud['fields'] as $field)
-    @include('crud.fields.'.$field['type'], array('field' => $field))
+    <!-- load the view from the application if it exists, otherwise load the one in the package -->
+	@if(view()->exists('vendor.dick.crud.form_content'))
+		@include('vendor.dick.crud.fields.'.$field['type'], array('field' => $field))
+	@else
+		@include('crud::fields.'.$field['type'], array('field' => $field))
+	@endif
   @endforeach
 </form>
 
@@ -28,8 +33,11 @@
 	<!-- FORM CONTENT CSS ASSETS -->
 	@foreach ($crud['fields'] as $field)
 		@if(!isset($loaded_form_types_css[$field['type']]) || $loaded_form_types_css[$field['type']]==false)
-			@if (View::exists('crud.fields.assets.css.'.$field['type'], array('field' => $field)))
-				@include('crud.fields.assets.css.'.$field['type'], array('field' => $field))
+			@if (View::exists('vendor.dick.crud.fields.assets.css.'.$field['type'], array('field' => $field)))
+				@include('vendor.dick.crud.fields.assets.css.'.$field['type'], array('field' => $field))
+				<?php $loaded_form_types_css[$field['type']] = true; ?>
+			@elseif (View::exists('crud::fields.assets.css.'.$field['type'], array('field' => $field)))
+				@include('crud::fields.assets.css.'.$field['type'], array('field' => $field))
 				<?php $loaded_form_types_css[$field['type']] = true; ?>
 			@endif
 		@endif
@@ -40,8 +48,11 @@
 	<!-- FORM CONTENT JAVSCRIPT ASSETS -->
 	@foreach ($crud['fields'] as $field)
 		@if(!isset($loaded_form_types_js[$field['type']]) || $loaded_form_types_js[$field['type']]==false)
-			@if (View::exists('crud.fields.assets.js.'.$field['type'], array('field' => $field)))
-				@include('crud.fields.assets.js.'.$field['type'], array('field' => $field))
+			@if (View::exists('vendor.dick.crud.fields.assets.js.'.$field['type'], array('field' => $field)))
+				@include('vendor.dick.crud.fields.assets.js.'.$field['type'], array('field' => $field))
+				<?php $loaded_form_types_js[$field['type']] = true; ?>
+			@elseif (View::exists('crud::fields.assets.js.'.$field['type'], array('field' => $field)))
+				@include('crud::fields.assets.js.'.$field['type'], array('field' => $field))
 				<?php $loaded_form_types_js[$field['type']] = true; ?>
 			@endif
 		@endif

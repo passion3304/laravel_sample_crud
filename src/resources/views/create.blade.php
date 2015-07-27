@@ -28,7 +28,12 @@
 		      <h3 class="box-title">{{ trans('crud.add_a_new') }} {{ $crud['entity_name'] }}</h3>
 		    </div>
 		    <div class="box-body">
-		      @include('crud/form_content')
+		      <!-- load the view from the application if it exists, otherwise load the one in the package -->
+		      @if(view()->exists('vendor.dick.crud.form_content'))
+		      	@include('vendor.dick.crud.form_content')
+		      @else
+		      	@include('crud::form_content')
+		      @endif
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">
 		    	<div class="form-group">
