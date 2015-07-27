@@ -26,7 +26,7 @@ In short:
 
 1. Create a controller that extends CrudController.
 
-2. Make your model extend BaseModel.
+2. Make your model use the CrudTrait.
 
 3. Create a new resource route.
 
