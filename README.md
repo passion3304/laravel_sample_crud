@@ -5,7 +5,7 @@
 [![Build Status](https://img.shields.io/travis/tabacitu/crud/master.svg?style=flat-square)](https://travis-ci.org/tabacitu/crud)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/tabacitu/crud.svg?style=flat-square)](https://scrutinizer-ci.com/g/tabacitu/crud/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/tabacitu/crud.svg?style=flat-square)](https://scrutinizer-ci.com/g/tabacitu/crud)
-[![Total Downloads](https://img.shields.io/packagist/dt/tabacitu/crud.svg?style=flat-square)](https://packagist.org/packages/tabacitu/crud)
+[![Total Downloads](https://img.shields.io/packagist/dt/dick/crud.svg?style=flat-square)](https://packagist.org/packages/dick/crud)
 
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Build a complete CMS at 10 minutes/model, max.
 
