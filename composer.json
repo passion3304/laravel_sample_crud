@@ -24,7 +24,7 @@
     "require": {
         "illuminate/support": "~5.1",
         "php" : ">=5.3.0",
-        "prologue/alerts": "dev-master",
+        "prologue/alerts": "0.*",
         "zizaco/entrust": "dev-laravel-5"
     },
     "require-dev": {
