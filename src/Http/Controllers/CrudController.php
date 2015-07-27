@@ -49,7 +49,7 @@ class CrudController extends Controller {
 		$this->_prepare_columns(); // checks that the columns are defined and makes sure the response is proper
 
 		$this->data['crud'] = $this->crud;
-		return view('crud/list', $this->data);
+		return view('crud::list', $this->data);
 	}
 
 	/**
@@ -72,7 +72,7 @@ class CrudController extends Controller {
 		$this->_prepare_fields(); // TODO: prepare the fields you need to show
 
 		$this->data['crud'] = $this->crud;
-		return view('crud/create', $this->data);
+		return view('crud::create', $this->data);
 	}
 
 
@@ -138,7 +138,7 @@ class CrudController extends Controller {
 		$this->_prepare_fields($this->data['entry']); // prepare the fields you need to show and prepopulate the values
 
 		$this->data['crud'] = $this->crud;
-		return view('crud/edit', $this->data);
+		return view('crud::edit', $this->data);
 	}
 
 
@@ -187,7 +187,7 @@ class CrudController extends Controller {
 		$this->data['entry'] = $model::find($id);
 
 		$this->data['crud'] = $this->crud;
-		return view('crud/show', $this->data);
+		return view('crud::show', $this->data);
 	}
 
 
@@ -230,7 +230,7 @@ class CrudController extends Controller {
 		$this->data['entries'] = $model::all();
 		$this->data['crud'] = $this->crud;
 
-		return view('crud/reorder', $this->data);
+		return view('crud::reorder', $this->data);
 	}
 
 	/**
