@@ -23,10 +23,15 @@ Check out the documentation at http://usedick.com/docs
 // TODO: improve documentation
 
 In short:
+
 1. Create a controller that extends CrudController.
+
 2. Make your model extend BaseModel.
+
 3. Create a new resource route.
+
 4. **(optional)** Define your validation rules in a Request files.
+
 
 ## Change log
 
