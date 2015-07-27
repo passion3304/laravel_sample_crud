@@ -1,0 +1,52 @@
+{
+    "name": "Dick/CRUD",
+    "description": "Quickly build an admin interface for your Eloquent models, using Laravel 5. Build a CMS in a matter of minutes.",
+    "keywords": [
+        "CRUD",
+        "create",
+        "update",
+        "delete",
+        "read",
+        "admin panel",
+        "admin interface",
+        "CMS"
+    ],
+    "homepage": "https://github.com/tabacitu/CRUD",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cristian tabacitu",
+            "email": "hello@tabacitu.ro",
+            "homepage": "www.tabacitu.ro",
+            "role": "Dick Master"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~5.1",
+        "php" : ">=5.3.0",
+        "prologue/alerts": "dev-master",
+        "zizaco/entrust": "dev-laravel-5"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*",
+        "scrutinizer/ocular": "~1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dick\\CRUD\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dick\\CRUD\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
