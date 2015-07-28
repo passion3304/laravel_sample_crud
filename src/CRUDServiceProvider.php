@@ -4,7 +4,7 @@ namespace Dick\CRUD;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
 
-class CRUDServiceProvider extends ServiceProvider
+class CrudServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
