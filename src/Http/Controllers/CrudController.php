@@ -37,6 +37,7 @@ class CrudController extends Controller {
 	 */
 	public function index()
 	{
+		// SECURITY:
 		// if view_table_permission is false, abort
 		if (isset($this->crud['view_table_permission']) && !$this->crud['view_table_permission']) {
 			abort(403, 'Not allowed.');
@@ -46,20 +47,18 @@ class CrudController extends Controller {
 		$model = $this->crud['model'];
 		$this->data['entries'] = $model::all();
 
-		$this->_prepare_columns(); // checks that the columns are defined and makes sure the response is proper
+			// add the fake fields for each entry
+			foreach ($this->data['entries'] as $key => $entry) {
+				$entry->addFakes($this->get_fake_columns_as_array());
+			}
 
+		$this->prepare_columns();
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		if (view()->exists('vendor.dick.crud.list'))
-		{
-			return view('vendor.dick.crud.list', $this->data);
-		}
-		else
-		{
-			return view('crud::list', $this->data);
-		}
+		return $this->first_view_that_exists('vendor.dick.crud.list', 'crud::list', $this->data);
 	}
+
 
 	/**
 	 * Show the form for creating inserting a new row.
@@ -68,6 +67,7 @@ class CrudController extends Controller {
 	 */
 	public function create()
 	{
+		// SECURITY:
 		// if add_permission is false, abort
 		if (isset($this->crud['add_permission']) && !$this->crud['add_permission']) {
 			abort(403, 'Not allowed.');
@@ -78,19 +78,13 @@ class CrudController extends Controller {
 		{
 			$this->crud['fields'] = $this->data['crud']['create_fields'];
 		}
-		$this->_prepare_fields(); // TODO: prepare the fields you need to show
 
+		// prepare the fields you need to show
+		$this->prepare_fields();
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		if (view()->exists('vendor.dick.crud.create'))
-		{
-			return view('vendor.dick.crud.create', $this->data);
-		}
-		else
-		{
-			return view('crud::create', $this->data);
-		}
+		return $this->first_view_that_exists('vendor.dick.crud.create', 'crud::create', $this->data);
 	}
 
 
@@ -101,16 +95,19 @@ class CrudController extends Controller {
 	 */
 	public function store_crud(StoreRequest $request = null)
 	{
+		// SECURITY:
 		// if add_permission is false, abort
 		if (isset($this->crud['add_permission']) && !$this->crud['add_permission']) {
 			abort(403, 'Not allowed.');
 		}
 
+		// compress the fake fields into one field
 		$model = $this->crud['model'];
-		$item = $model::create(\Request::all());
+		$values_to_store = $this->compact_fake_fields(\Request::all());
+		$item = $model::create($values_to_store);
 
 		// if it's a relationship with a pivot table, also sync that
-		$this->_prepare_fields();
+		$this->prepare_fields();
 		foreach ($this->crud['fields'] as $k => $field) {
 			if (isset($field['pivot']) && $field['pivot']==true)
 			{
@@ -118,6 +115,7 @@ class CrudController extends Controller {
 			}
 		}
 
+		// show a success message
 		\Alert::success(trans('crud.insert_success'))->flash();
 
 		// redirect the user where he chose to be redirected
@@ -141,6 +139,7 @@ class CrudController extends Controller {
 	 */
 	public function edit($id)
 	{
+		// SECURITY:
 		// if edit_permission is false, abort
 		if (isset($this->crud['edit_permission']) && !$this->crud['edit_permission']) {
 			abort(403, 'Not allowed.');
@@ -149,28 +148,24 @@ class CrudController extends Controller {
 		// get the info for that entry
 		$model = $this->crud['model'];
 		$this->data['entry'] = $model::find($id);
+		$this->data['entry']->addFakes($this->get_fake_columns_as_array());
+
 		if (isset($this->data['crud']['update_fields']))
 		{
 			$this->crud['fields'] = $this->data['crud']['update_fields'];
 		}
-		$this->_prepare_fields($this->data['entry']); // prepare the fields you need to show and prepopulate the values
 
+		// prepare the fields you need to show and prepopulate the values
+		$this->prepare_fields($this->data['entry']);
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		if (view()->exists('vendor.dick.crud.edit'))
-		{
-			return view('vendor.dick.crud.edit', $this->data);
-		}
-		else
-		{
-			return view('crud::edit', $this->data);
-		}
+		return $this->first_view_that_exists('vendor.dick.crud.edit', 'crud::edit', $this->data);
 	}
 
 
 	/**
-	 * Update the specified resource in storage.
+	 * Update the specified resource in the database.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -183,10 +178,10 @@ class CrudController extends Controller {
 		}
 
 		$model = $this->crud['model'];
-		$this->_prepare_fields($model::find(\Request::input('id')));
+		$this->prepare_fields($model::find(\Request::input('id')));
 
 		$item = $model::find(\Request::input('id'))
-						->update(\Request::all());
+						->update($this->compact_fake_fields(\Request::all()));
 
 		// if it's a relationship with a pivot table, also sync that
 		foreach ($this->crud['fields'] as $k => $field) {
@@ -196,7 +191,9 @@ class CrudController extends Controller {
 			}
 		}
 
+		// show a success message
 		\Alert::success(trans('crud.update_success'))->flash();
+
 		return \Redirect::to($this->crud['route']);
 	}
 
@@ -212,17 +209,11 @@ class CrudController extends Controller {
 		// get the info for that entry
 		$model = $this->crud['model'];
 		$this->data['entry'] = $model::find($id);
+		$this->data['entry']->addFakes($this->get_fake_columns_as_array());
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		if (view()->exists('vendor.dick.crud.show'))
-		{
-			return view('vendor.dick.crud.show', $this->data);
-		}
-		else
-		{
-			return view('crud::show', $this->data);
-		}
+		return $this->first_view_that_exists('vendor.dick.crud.show', 'crud::show', $this->data);
 	}
 
 
@@ -234,6 +225,7 @@ class CrudController extends Controller {
 	 */
 	public function destroy($id)
 	{
+		// SECURITY:
 		// if delete_permission is false, abort
 		if (isset($this->crud['delete_permission']) && !$this->crud['delete_permission']) {
 			abort(403, trans('crud.unauthorized_access'));
@@ -245,6 +237,7 @@ class CrudController extends Controller {
 
 		return 'true';
 	}
+
 
 	/**
 	 *  Reorder the items in the database using the Nested Set pattern.
@@ -266,15 +259,9 @@ class CrudController extends Controller {
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		if (view()->exists('vendor.dick.crud.reorder'))
-		{
-			return view('vendor.dick.crud.reorder', $this->data);
-		}
-		else
-		{
-			return view('crud::reorder', $this->data);
-		}
+		return $this->first_view_that_exists('vendor.dick.crud.reorder', 'crud::reorder', $this->data);
 	}
+
 
 	/**
 	 * Save the new order, using the Nested Set pattern.
@@ -317,8 +304,116 @@ class CrudController extends Controller {
 	 * COMMODITY FUNCTIONS
 	 */
 
+
+	/**
+	 * Allow Dick users to easily replace the default views by placing a view with the same name in
+	 * /resources/views/vendor/dick/crud/. If no such view exists, load the one from the package.
+	 *
+	 * @param  view  	$first_view - the first view to try, ex: vendor.dick.crud.edit
+	 * @param  view  	$second_view - the second view to try, ex: crud::edit
+	 * @param  array 	$information - the information to send to the view, usually $this->data
+	 * @return HTTP Response
+	 */
+	private function first_view_that_exists($first_view, $second_view, $information)
+	{
+		// load the first view if it exists, otherwise load the second one
+		if (view()->exists($first_view))
+		{
+			return view($first_view, $information);
+		}
+		else
+		{
+			return view($second_view, $information);
+		}
+	}
+
+	/**
+	 * Refactor the request array to something that can be passed to the model's create or update function.
+	 * The resulting array will only include the fields that are stored in the database and their values,
+	 * plus the '_token' and 'redirect_after_save' variables.
+	 *
+	 * @param 	Request 	$request - everything that was sent from the form, usually \Request::all()
+	 * @return 	array
+	 */
+	private function compact_fake_fields($request) {
+
+		$fake_field_columns_to_encode = [];
+
+		// go through each defined field
+		foreach ($this->crud['fields'] as $k => $field) {
+			// if it's a fake field
+			if (isset($this->crud['fields'][$k]['fake']) && $this->crud['fields'][$k]['fake']==true) {
+				// add it to the request in its appropriate variable - the one defined, if defined
+				if (isset($this->crud['fields'][$k]['store_in'])) {
+					$request[$this->crud['fields'][$k]['store_in']][$this->crud['fields'][$k]['name']] = $request[$this->crud['fields'][$k]['name']];
+
+					$remove_fake_field = array_pull($request, $this->crud['fields'][$k]['name']);
+					if(!in_array($this->crud['fields'][$k]['store_in'], $fake_field_columns_to_encode, true)){
+				        array_push($fake_field_columns_to_encode, $this->crud['fields'][$k]['store_in']);
+				    }
+				}
+				else //otherwise in the one defined in the $crud variable
+				{
+					$request['extras'][$this->crud['fields'][$k]['name']] = $request[$this->crud['fields'][$k]['name']];
+
+					$remove_fake_field = array_pull($request, $this->crud['fields'][$k]['name']);
+					if(!in_array('extras', $fake_field_columns_to_encode, true)){
+				        array_push($fake_field_columns_to_encode, 'extras');
+				    }
+				}
+			}
+		}
+
+		// json_encode all fake_value columns in the database, so they can be properly stored and interpreted
+		if (count($fake_field_columns_to_encode)) {
+			foreach ($fake_field_columns_to_encode as $key => $value) {
+				$request[$value] = json_encode($request[$value]);
+			}
+		}
+
+		// if there are no fake fields defined, this will just return the original Request in full
+		// since no modifications or additions have been made to $request
+		return $request;
+	}
+
+
+	/**
+	 * Returns an array of database columns names, that are used to store fake values.
+	 * Returns ['extras'] if no columns have been found.
+	 *
+	 */
+	private function get_fake_columns_as_array() {
+
+		$fake_field_columns_to_encode = [];
+
+		foreach ($this->crud['fields'] as $k => $field) {
+			// if it's a fake field
+			if (isset($this->crud['fields'][$k]['fake']) && $this->crud['fields'][$k]['fake']==true) {
+				// add it to the request in its appropriate variable - the one defined, if defined
+				if (isset($this->crud['fields'][$k]['store_in'])) {
+					if(!in_array($this->crud['fields'][$k]['store_in'], $fake_field_columns_to_encode, true)){
+				        array_push($fake_field_columns_to_encode, $this->crud['fields'][$k]['store_in']);
+				    }
+				}
+				else //otherwise in the one defined in the $crud variable
+				{
+					if(!in_array('extras', $fake_field_columns_to_encode, true)){
+				        array_push($fake_field_columns_to_encode, 'extras');
+				    }
+				}
+			}
+		}
+
+		if (!count($fake_field_columns_to_encode)) {
+			return ['extras'];
+		}
+
+		return $fake_field_columns_to_encode;
+	}
+
+
 	// If it's not an array of array and it's a simple array, create a proper array of arrays for it
-	public function _prepare_columns()
+	private function prepare_columns()
 	{
 		// if the columns aren't set, we can't show this page
 		// TODO: instead of dying, show the columns defined as visible on the model
@@ -344,8 +439,17 @@ class CrudController extends Controller {
 		}
 	}
 
-	public function _prepare_fields($entry = false)
+	/**
+	 * Prepare the fields to be shown, stored, updated or created.
+	 *
+	 * Makes sure $this->crud['fields'] is in the proper format (array of arrays);
+	 * Makes sure $this->crud['fields'] also contains the id of the current item;
+	 * Makes sure $this->crud['fields'] also contains the values for each field;
+	 *
+	 */
+	private function prepare_fields($entry = false)
 	{
+		// PREREQUISITES CHECK:
 		// if the fields aren't set, trigger error
 		if (!isset($this->crud['fields']))
 		{
@@ -369,12 +473,22 @@ class CrudController extends Controller {
 			$this->crud['fields'] = $proper_fields_array;
 		}
 
+		// if no field type is defined, assume the "text" field type
+		foreach ($this->crud['fields'] as $k => $field) {
+				if (!isset($this->crud['fields'][$k]['type']))
+					$this->crud['fields'][$k]['type'] = 'text';
+			}
+
 		// if an entry was passed, we're preparing for the update form, not create
 		if ($entry) {
-			// put the values in the save 'fields' variable
+			// put the values in the same 'fields' variable
 			$fields = $this->crud['fields'];
+
 			foreach ($fields as $k => $field) {
+				// set the value
 				$this->crud['fields'][$k]['value'] = $entry->$field['name'];
+				// first for the regular fields
+				// TODO: then for the fake fields
 			}
 
 			// always have a hidden input for the entry id

@@ -25,4 +25,34 @@ trait CrudTrait {
         return ($answer->IS_NULLABLE == 'YES'?true:false);
     }
 
+    /**
+     * Extras Accessor
+     *
+     * Instead of viewing it as a JSON array, always turn it to a PHP array.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getExtrasAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    /**
+     * Add fake fields as regular attributes, even though they are stored as JSON.
+     *
+     * @param  array  $columns - the database columns that contain the JSONs
+     * @return -
+     */
+    public function addFakes($columns = ['extras']) {
+        foreach ($columns as $key => $column) {
+            if (count($this->{$column}))
+            {
+                foreach ($this->{$column} as $fake_field_name => $fake_field_value) {
+                    $this->setAttribute($fake_field_name, $fake_field_value);
+                }
+            }
+        }
+    }
+
 }
