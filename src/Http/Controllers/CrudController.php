@@ -486,9 +486,10 @@ class CrudController extends Controller {
 
 			foreach ($fields as $k => $field) {
 				// set the value
-				$this->crud['fields'][$k]['value'] = $entry->$field['name'];
-				// first for the regular fields
-				// TODO: then for the fake fields
+				if (!isset($this->crud['fields'][$k]['value']))
+				{
+					$this->crud['fields'][$k]['value'] = $entry->$field['name'];
+				}
 			}
 
 			// always have a hidden input for the entry id
