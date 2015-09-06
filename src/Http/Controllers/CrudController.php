@@ -49,14 +49,14 @@ class CrudController extends Controller {
 
 			// add the fake fields for each entry
 			foreach ($this->data['entries'] as $key => $entry) {
-				$entry->addFakes($this->get_fake_columns_as_array());
+				$entry->addFakes($this->getFakeColumnsAsArray());
 			}
 
-		$this->prepare_columns();
+		$this->prepareColumns();
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		return $this->first_view_that_exists('vendor.dick.crud.list', 'crud::list', $this->data);
+		return $this->firstViewThatExists('vendor.dick.crud.list', 'crud::list', $this->data);
 	}
 
 
@@ -80,11 +80,11 @@ class CrudController extends Controller {
 		}
 
 		// prepare the fields you need to show
-		$this->prepare_fields();
+		$this->prepareFields();
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		return $this->first_view_that_exists('vendor.dick.crud.create', 'crud::create', $this->data);
+		return $this->firstViewThatExists('vendor.dick.crud.create', 'crud::create', $this->data);
 	}
 
 
@@ -93,7 +93,7 @@ class CrudController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store_crud(StoreRequest $request = null)
+	public function storeCrud(StoreRequest $request = null)
 	{
 		// SECURITY:
 		// if add_permission is false, abort
@@ -103,11 +103,11 @@ class CrudController extends Controller {
 
 		// compress the fake fields into one field
 		$model = $this->crud['model'];
-		$values_to_store = $this->compact_fake_fields(\Request::all());
+		$values_to_store = $this->compactFakeFields(\Request::all());
 		$item = $model::create($values_to_store);
 
 		// if it's a relationship with a pivot table, also sync that
-		$this->prepare_fields();
+		$this->prepareFields();
 		foreach ($this->crud['fields'] as $k => $field) {
 			if (isset($field['pivot']) && $field['pivot']==true)
 			{
@@ -148,7 +148,7 @@ class CrudController extends Controller {
 		// get the info for that entry
 		$model = $this->crud['model'];
 		$this->data['entry'] = $model::find($id);
-		$this->data['entry']->addFakes($this->get_fake_columns_as_array());
+		$this->data['entry']->addFakes($this->getFakeColumnsAsArray());
 
 		if (isset($this->data['crud']['update_fields']))
 		{
@@ -156,11 +156,11 @@ class CrudController extends Controller {
 		}
 
 		// prepare the fields you need to show and prepopulate the values
-		$this->prepare_fields($this->data['entry']);
+		$this->prepareFields($this->data['entry']);
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		return $this->first_view_that_exists('vendor.dick.crud.edit', 'crud::edit', $this->data);
+		return $this->firstViewThatExists('vendor.dick.crud.edit', 'crud::edit', $this->data);
 	}
 
 
@@ -170,7 +170,7 @@ class CrudController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update_crud(UpdateRequest $request = null)
+	public function updateCrud(UpdateRequest $request = null)
 	{
 		// if edit_permission is false, abort
 		if (isset($this->crud['edit_permission']) && !$this->crud['edit_permission']) {
@@ -178,10 +178,10 @@ class CrudController extends Controller {
 		}
 
 		$model = $this->crud['model'];
-		$this->prepare_fields($model::find(\Request::input('id')));
+		$this->prepareFields($model::find(\Request::input('id')));
 
 		$item = $model::find(\Request::input('id'))
-						->update($this->compact_fake_fields(\Request::all()));
+						->update($this->compactFakeFields(\Request::all()));
 
 		// if it's a relationship with a pivot table, also sync that
 		foreach ($this->crud['fields'] as $k => $field) {
@@ -209,11 +209,11 @@ class CrudController extends Controller {
 		// get the info for that entry
 		$model = $this->crud['model'];
 		$this->data['entry'] = $model::find($id);
-		$this->data['entry']->addFakes($this->get_fake_columns_as_array());
+		$this->data['entry']->addFakes($this->getFakeColumnsAsArray());
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		return $this->first_view_that_exists('vendor.dick.crud.show', 'crud::show', $this->data);
+		return $this->firstViewThatExists('vendor.dick.crud.show', 'crud::show', $this->data);
 	}
 
 
@@ -259,7 +259,7 @@ class CrudController extends Controller {
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
-		return $this->first_view_that_exists('vendor.dick.crud.reorder', 'crud::reorder', $this->data);
+		return $this->firstViewThatExists('vendor.dick.crud.reorder', 'crud::reorder', $this->data);
 	}
 
 
@@ -314,7 +314,7 @@ class CrudController extends Controller {
 	 * @param  array 	$information - the information to send to the view, usually $this->data
 	 * @return HTTP Response
 	 */
-	private function first_view_that_exists($first_view, $second_view, $information)
+	private function firstViewThatExists($first_view, $second_view, $information)
 	{
 		// load the first view if it exists, otherwise load the second one
 		if (view()->exists($first_view))
@@ -335,7 +335,7 @@ class CrudController extends Controller {
 	 * @param 	Request 	$request - everything that was sent from the form, usually \Request::all()
 	 * @return 	array
 	 */
-	private function compact_fake_fields($request) {
+	private function compactFakeFields($request) {
 
 		$fake_field_columns_to_encode = [];
 
@@ -382,7 +382,7 @@ class CrudController extends Controller {
 	 * Returns ['extras'] if no columns have been found.
 	 *
 	 */
-	private function get_fake_columns_as_array() {
+	private function getFakeColumnsAsArray() {
 
 		$fake_field_columns_to_encode = [];
 
@@ -413,7 +413,7 @@ class CrudController extends Controller {
 
 
 	// If it's not an array of array and it's a simple array, create a proper array of arrays for it
-	private function prepare_columns()
+	protected function prepareColumns()
 	{
 		// if the columns aren't set, we can't show this page
 		// TODO: instead of dying, show the columns defined as visible on the model
@@ -447,7 +447,7 @@ class CrudController extends Controller {
 	 * Makes sure $this->crud['fields'] also contains the values for each field;
 	 *
 	 */
-	private function prepare_fields($entry = false)
+	protected function prepareFields($entry = false)
 	{
 		// PREREQUISITES CHECK:
 		// if the fields aren't set, trigger error
