@@ -250,7 +250,7 @@ class CrudController extends Controller {
 	public function reorder()
 	{
 		// if reorder_table_permission is false, abort
-		if (isset($this->crud['reorder_table_permission']) && !$this->crud['reorder_table_permission']) {
+		if (isset($this->crud['reorder_permission']) && !$this->crud['reorder_permission']) {
 			abort(403, 'Not allowed.');
 		}
 
@@ -273,6 +273,11 @@ class CrudController extends Controller {
 	 */
 	public function saveReorder()
 	{
+		// if reorder_table_permission is false, abort
+		if (isset($this->crud['reorder_permission']) && !$this->crud['reorder_permission']) {
+			abort(403, 'Not allowed.');
+		}
+
 		$model = $this->crud['model'];
 		$count = 0;
 		$all_entries = \Request::input('tree');

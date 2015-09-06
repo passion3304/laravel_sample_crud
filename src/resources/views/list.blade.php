@@ -26,8 +26,8 @@
       @if (!(isset($crud['add_permission']) && !$crud['add_permission']))
       		<a href="{{ url($crud['route'].'/create') }}" class="btn btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('crud.add') }} {{ $crud['entity_name'] }}</span></a>
       @endif
-      @if (!(isset($crud['reorder_permission']) && !$crud['reorder_permission']))
-          @if (!(isset($crud['reorder']) && !$crud['reorder']))
+      @if ((isset($crud['reorder']) && $crud['reorder']))
+        @if (!(isset($crud['reorder_permission']) && !$crud['reorder_permission']))
           <a href="{{ url($crud['route'].'/reorder') }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-arrows"></i> {{ trans('crud.reorder') }} {{ $crud['entity_name_plural'] }}</span></a>
           @endif
       @endif
