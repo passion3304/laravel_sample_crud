@@ -18,6 +18,7 @@ class CrudController extends Controller {
 						"add_permission" => true,
 						"edit_permission" => true,
 						"delete_permission" => true,
+						"reorder_permission" => true,
 						);
 
 	public function __construct()

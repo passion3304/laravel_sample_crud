@@ -54,27 +54,38 @@
   }
 
  ?>
-<!-- Default box -->
-  <div class="box">
-    <div class="box-body">
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    @if (!(isset($crud['view_table_permission']) && !$crud['view_table_permission']))
+      <a href="{{ url($crud['route']) }}"><i class="fa fa-angle-double-left"></i> {{ trans('crud.back_to_all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span></a><br><br>
+    @endif
 
-      <p><br>{{ trans('crud.reorder_text') }}</p>
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ trans('crud.reorder').' '.$crud['entity_name_plural'] }}</h3>
+        </div>
+        <div class="box-body">
 
-      <ol class="sortable">
-        <?php
-          $all_entries = $entries->all();
-         ?>
-        @foreach ($all_entries as $key => $entry)
-          <?php
-            $all_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
-          ?>
-        @endforeach
-      </ol>
+          <p>{{ trans('crud.reorder_text') }}</p>
 
-      <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('crud.save') }}</span></button>
+          <ol class="sortable">
+            <?php
+              $all_entries = $entries->all();
+             ?>
+            @foreach ($all_entries as $key => $entry)
+              <?php
+                $all_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+              ?>
+            @endforeach
+          </ol>
 
-    </div><!-- /.box-body -->
-  </div><!-- /.box -->
+          <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('crud.save') }}</span></button>
+
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+  </div>
+</div>
 @endsection
 
 @section('scripts')
