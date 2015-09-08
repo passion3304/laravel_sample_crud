@@ -29,7 +29,7 @@
 
       // show the tree lement
       echo '<li id="list_'.$entry->id.'">';
-      echo '<div><span class="disclose"><span></span></span>'.$entry->{$crud['reorder_label']}.' ('.$entry->id.')</div>';
+      echo '<div><span class="disclose"><span></span></span>'.$entry->{$crud['reorder_label']}.'</div>';
 
       // see if this element has any children
       $children = [];
