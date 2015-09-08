@@ -109,7 +109,7 @@
             tabSize: 25,
             tolerance: 'pointer',
             toleranceElement: '> div',
-            maxLevels: 3,
+            maxLevels: {{ $crud['reorder_max_level'] or 3 }},
 
             isTree: true,
             expandOnHover: 700,
