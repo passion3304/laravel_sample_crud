@@ -19,6 +19,11 @@ All Notable changes to `Dick CRUD` will be documented in this file
 ### Security
 - Nothing
 
+## [0.7.7] - 2015-09-08
+
+### Added
+- New field type: page_or_link; It's used in the MenuManager package, but can be used in any other model;
+
 
 ## [0.7.4] - 2015-09-08
 
