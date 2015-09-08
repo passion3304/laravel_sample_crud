@@ -29,7 +29,7 @@
 
       // show the tree lement
       echo '<li id="list_'.$entry->id.'">';
-      echo '<div><span class="disclose"><span></span></span>'.$entry->{$crud['reorder_label']}.'</div>';
+      echo '<div><span class="disclose"><span></span></span>'.$entry->{$crud['reorder_label']}.' ('.$entry->id.')</div>';
 
       // see if this element has any children
       $children = [];
@@ -38,6 +38,8 @@
           $children[] = $subentry;
         }
       }
+
+      $children = collect($children)->sortBy('lft');
 
       // if it does have children, show them
       if (count($children)) {
@@ -71,7 +73,7 @@
 
           <ol class="sortable">
             <?php
-              $all_entries = $entries->all();
+              $all_entries = collect($entries->all())->sortBy('lft');
              ?>
             @foreach ($all_entries as $key => $entry)
               <?php
