@@ -32,6 +32,9 @@ In short:
 
 4. **(optional)** Define your validation rules in a Request files.
 
+## Screenshots
+
+See http://usedick.com
 
 ## Change log
 
