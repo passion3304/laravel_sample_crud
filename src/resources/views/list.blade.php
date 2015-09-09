@@ -170,8 +170,10 @@
           if ( row.child.isShown() ) {
               // This row is already open - close it
               $(this).children('i').removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
-              row.child.hide();
-              tr.removeClass('shown');
+              $('div.table_row_slider', row.child()).slideUp( function () {
+                  row.child.hide();
+                  tr.removeClass('shown');
+              } );
           }
           else {
               // Open this row
@@ -185,17 +187,19 @@
               })
               .done(function(data) {
                 // console.log("-- success getting table extra details row with AJAX");
-                row.child(data).show();
+                row.child("<div class='table_row_slider'>" + data + "</div>", 'no-padding').show();
+                tr.addClass('shown');
+                $('div.table_row_slider', row.child()).slideDown();
               })
               .fail(function(data) {
                 // console.log("-- error getting table extra details row with AJAX");
-                row.child('<p>There was an error loading the details. Please retry. </p>').show();
+                row.child("<div class='table_row_slider'>There was an error loading the details. Please retry. </div>").show();
+                tr.addClass('shown');
+                $('div.table_row_slider', row.child()).slideDown();
               })
               .always(function(data) {
                 // console.log("-- complete getting table extra details row with AJAX");
               });
-
-              tr.addClass('shown');
           }
       } );
       @endif
