@@ -48,7 +48,14 @@ class CrudController extends Controller {
 
 		// get all results for that entity
 		$model = $this->crud['model'];
-		$this->data['entries'] = $model::all();
+		if (property_exists($model, 'translatable'))
+		{
+			$this->data['entries'] = $model::where('translation_lang', \Lang::locale())->get();
+		}
+		else
+		{
+			$this->data['entries'] = $model::all();
+		}
 
 			// add the fake fields for each entry
 			foreach ($this->data['entries'] as $key => $entry) {
@@ -258,7 +265,14 @@ class CrudController extends Controller {
 
 		// get all results for that entity
 		$model = $this->crud['model'];
-		$this->data['entries'] = $model::all();
+		if (property_exists($model, 'translatable'))
+		{
+			$this->data['entries'] = $model::where('translation_lang', \Lang::locale())->get();
+		}
+		else
+		{
+			$this->data['entries'] = $model::all();
+		}
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
@@ -321,10 +335,50 @@ class CrudController extends Controller {
 		$model = $this->crud['model'];
 		$this->data['entry'] = $model::find($id);
 		$this->data['entry']->addFakes($this->getFakeColumnsAsArray());
+		$this->data['original_entry'] = $this->data['entry'];
 		$this->data['crud'] = $this->crud;
+		$this->data['translations'] = $this->data['entry']->translations();
+
+		// create a list of languages the item is not translated in
+		$this->data['languages'] = \Dick\TranslationManager\Models\Language::all();
+		$this->data['languages_already_translated_in'] = $this->data['entry']->translationLanguages();
+		$this->data['languages_to_translate_in'] = $this->data['languages']->diff($this->data['languages_already_translated_in']);
+		$this->data['languages_to_translate_in'] = $this->data['languages_to_translate_in']->reject(function ($item) {
+		    return $item->abbr == \Lang::locale();
+		});
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
 		return $this->firstViewThatExists('vendor.dick.crud.details_row', 'crud::details_row', $this->data);
+	}
+
+
+	/**
+	 * Duplicate an existing item into another language and open it for editing.
+	 */
+	public function translateItem($id, $lang)
+	{
+		$model = $this->crud['model'];
+		$this->data['entry'] = $model::find($id);
+		// check if there isn't a translation already
+		$existing_translation = $this->data['entry']->translation($lang);
+
+		if ($existing_translation)
+		{
+			$new_entry = $existing_translation;
+		}
+		else
+		{
+			// get the info for that entry
+			$new_entry_attributes = $this->data['entry']->getAttributes();
+			$new_entry_attributes['translation_lang'] = $lang;
+			$new_entry_attributes['translation_of'] = $id;
+			$new_entry_attributes = array_except($new_entry_attributes, 'id');
+
+			$new_entry = $model::create($new_entry_attributes);
+		}
+
+		// redirect to the edit form for that translation
+		return redirect(str_replace($id, $new_entry->id, str_replace('translate/'.$lang, 'edit', \Request::url())));
 	}
 
 

@@ -2,8 +2,15 @@
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Lang;
 
 trait CrudTrait {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods for ENUM and SELECT crud fields.
+    |--------------------------------------------------------------------------
+    */
 
 	public static function getPossibleEnumValues($field_name){
         $instance = new static; // create an instance of the model to be able to get the table name
@@ -24,6 +31,13 @@ trait CrudTrait {
 
         return ($answer->IS_NULLABLE == 'YES'?true:false);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods for Fake Fields functionality (used in PageManager).
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Extras Accessor
@@ -53,6 +67,77 @@ trait CrudTrait {
                 }
             }
         }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Translation Methods
+    |--------------------------------------------------------------------------
+    */
+
+    public function translations()
+    {
+        $model = '\\'.get_class($this);
+
+        if (isset($this->translatable))
+        {
+            return $model::where('translation_of', $this->id)->get();
+        }
+
+        return collect();
+    }
+
+    public function translation($translation_lang = false)
+    {
+        if ($translation_lang==false) {
+            $translation_lang = Lang::locale();
+        }
+
+        $model = '\\'.get_class($this);
+        if (isset($this->translatable))
+        {
+            return $model::where('translation_of', $this->id)->where('translation_lang', $translation_lang)->first();
+        }
+
+        return false;
+    }
+
+    public function translationLanguages()
+    {
+        $model = '\\'.get_class($this);
+        $translations = $this->translations();
+
+        $translated_in = [];
+
+        if ($translations->count())
+        {
+            foreach ($translations as $key => $translation) {
+                $translated_in[] = $translation->language;
+            }
+        }
+
+        return collect($translated_in);
+    }
+
+    public function language()
+    {
+        return $this->belongsTo('\Dick\TranslationManager\Models\Language', 'translation_lang', 'abbr');
+    }
+
+    /**
+     * Overwriting the Eloquent save() method, to set a default translation language, if necessary.
+     */
+    public function save(array $options = [])
+    {
+        if (isset($this->translatable))
+        {
+            if (!(isset($this->translation_lang)) || $this->translation_lang == '')
+            {
+                $this->translation_lang = \Lang::locale();
+            }
+        }
+
+        parent::save();
     }
 
 }

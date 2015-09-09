@@ -190,6 +190,7 @@
                 row.child("<div class='table_row_slider'>" + data + "</div>", 'no-padding').show();
                 tr.addClass('shown');
                 $('div.table_row_slider', row.child()).slideDown();
+                register_delete_button_action();
               })
               .fail(function(data) {
                 // console.log("-- error getting table extra details row with AJAX");
@@ -212,44 +213,51 @@
           }
     });
 
-      // CRUD Delete
-      // ask for confirmation before deleting an item
-      $("[data-button-type=delete]").click(function(e) {
-        e.preventDefault();
-        var delete_button = $(this);
-        var delete_url = $(this).attr('href');
+      register_delete_button_action();
 
-        if (confirm("{{ trans('crud.delete_confirm') }}") == true) {
-            $.ajax({
-                url: delete_url,
-                type: 'DELETE',
-                success: function(result) {
-                    // Show an alert with the result
-                    new PNotify({
-                        title: "{{ trans('crud.delete_confirmation_title') }}",
-                        text: "{{ trans('crud.delete_confirmation_message') }}",
-                        type: "success"
-                    });
-                    // delete the row from the table
-                    delete_button.parentsUntil('tr').parent().remove();
-                },
-                error: function(result) {
-                    // Show an alert with the result
-                    new PNotify({
-                        title: "{{ trans('crud.delete_confirmation_not_title') }}",
-                        text: "{{ trans('crud.delete_confirmation_not_message') }}",
-                        type: "warning"
-                    });
-                }
-            });
-        } else {
-            new PNotify({
-                title: "{{ trans('crud.delete_confirmation_not_deleted_title') }}",
-                text: "{{ trans('crud.delete_confirmation_not_deleted_message') }}",
-                type: "info"
-            });
-        }
-      });
+      function register_delete_button_action() {
+        $("[data-button-type=delete]").unbind('click');
+        // CRUD Delete
+        // ask for confirmation before deleting an item
+        $("[data-button-type=delete]").click(function(e) {
+          e.preventDefault();
+          var delete_button = $(this);
+          var delete_url = $(this).attr('href');
+
+          if (confirm("{{ trans('crud.delete_confirm') }}") == true) {
+              $.ajax({
+                  url: delete_url,
+                  type: 'DELETE',
+                  success: function(result) {
+                      // Show an alert with the result
+                      new PNotify({
+                          title: "{{ trans('crud.delete_confirmation_title') }}",
+                          text: "{{ trans('crud.delete_confirmation_message') }}",
+                          type: "success"
+                      });
+                      // delete the row from the table
+                      delete_button.parentsUntil('tr').parent().remove();
+                  },
+                  error: function(result) {
+                      // Show an alert with the result
+                      new PNotify({
+                          title: "{{ trans('crud.delete_confirmation_not_title') }}",
+                          text: "{{ trans('crud.delete_confirmation_not_message') }}",
+                          type: "warning"
+                      });
+                  }
+              });
+          } else {
+              new PNotify({
+                  title: "{{ trans('crud.delete_confirmation_not_deleted_title') }}",
+                  text: "{{ trans('crud.delete_confirmation_not_deleted_message') }}",
+                  type: "info"
+              });
+          }
+        });
+      }
+
+
 	  });
 	</script>
 @endsection
