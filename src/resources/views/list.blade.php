@@ -34,9 +34,13 @@
     </div>
     <div class="box-body">
 
-		<table id="crudTable" class="table table-bordered table-striped">
+		<table id="crudTable" class="table table-bordered table-striped display">
                     <thead>
                       <tr>
+                        @if (isset($crud['details_row']) && $crud['details_row']==true)
+                          <th></th> <!-- expand/minimize button column -->
+                        @endif
+
                         {{-- Table columns --}}
                         @foreach ($crud['columns'] as $column)
                           <th>{{ $column['label'] }}</th>
@@ -50,7 +54,15 @@
                     <tbody>
 
                       @foreach ($entries as $k => $entry)
-                      <tr>
+                      <tr data-entry-id="{{ $entry->id }}">
+
+                        @if (isset($crud['details_row']) && $crud['details_row']==true)
+                          <!-- expand/minimize button column -->
+                          <td class="details-control text-center cursor-pointer">
+                            <i class="fa fa-plus-square-o"></i>
+                          </td>
+                        @endif
+
                         @foreach ($crud['columns'] as $column)
                           @if (isset($column['type']) && $column['type']=='select_multiple')
                             {{-- relationships with pivot table (n-n) --}}
@@ -96,6 +108,10 @@
                     </tbody>
                     <tfoot>
                       <tr>
+                        @if (isset($crud['details_row']) && $crud['details_row']==true)
+                          <th></th> <!-- expand/minimize button column -->
+                        @endif
+
                         {{-- Table columns --}}
                         @foreach ($crud['columns'] as $column)
                           <th>{{ $column['label'] }}</th>
@@ -119,7 +135,7 @@
 
 	<script type="text/javascript">
 	  jQuery(document).ready(function($) {
-	  	$("#crudTable").dataTable({
+	  	var table = $("#crudTable").DataTable({
         "language": {
               "emptyTable":     "{{ trans('crud.emptyTable') }}",
               "info":           "{{ trans('crud.info') }}",
@@ -144,6 +160,45 @@
               }
           }
       });
+
+      @if (isset($crud['details_row']) && $crud['details_row']==true)
+      // Add event listener for opening and closing details
+      $('#crudTable tbody').on('click', 'td.details-control', function () {
+          var tr = $(this).closest('tr');
+          var row = table.row( tr );
+
+          if ( row.child.isShown() ) {
+              // This row is already open - close it
+              $(this).children('i').removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
+              row.child.hide();
+              tr.removeClass('shown');
+          }
+          else {
+              // Open this row
+              $(this).children('i').removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+              // Get the details with ajax
+              $.ajax({
+                url: '{{ Request::url() }}/'+tr.data('entry-id')+'/details',
+                type: 'GET',
+                // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+                // data: {param1: 'value1'},
+              })
+              .done(function(data) {
+                // console.log("-- success getting table extra details row with AJAX");
+                row.child(data).show();
+              })
+              .fail(function(data) {
+                // console.log("-- error getting table extra details row with AJAX");
+                row.child('<p>There was an error loading the details. Please retry. </p>').show();
+              })
+              .always(function(data) {
+                // console.log("-- complete getting table extra details row with AJAX");
+              });
+
+              tr.addClass('shown');
+          }
+      } );
+      @endif
 
       $.ajaxPrefilter(function(options, originalOptions, xhr) {
           var token = $('meta[name="csrf_token"]').attr('content');

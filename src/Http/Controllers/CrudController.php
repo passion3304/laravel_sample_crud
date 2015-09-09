@@ -20,6 +20,7 @@ class CrudController extends Controller {
 						"delete_permission" => true,
 						"reorder_permission" => true,
 						"reorder_max_level" => 3,
+						"details_row" => false,
 						);
 
 	public function __construct()
@@ -303,6 +304,27 @@ class CrudController extends Controller {
 		}
 
 		return 'success for '.$count." items";
+	}
+
+
+	/**
+	 * Used with AJAX in the list view (datatables) to show extra information about that row that didn't fit in the table.
+	 * It defaults to showing all connected translations and their CRUD buttons.
+	 *
+	 * It's enabled by:
+	 * - setting the $crud['details_row'] variable to true;
+	 * - adding the details route for the entity; ex: Route::get('page/{id}/details', 'PageCrudController@showDetailsRow');
+	 */
+	public function showDetailsRow($id)
+	{
+		// get the info for that entry
+		$model = $this->crud['model'];
+		$this->data['entry'] = $model::find($id);
+		$this->data['entry']->addFakes($this->getFakeColumnsAsArray());
+		$this->data['crud'] = $this->crud;
+
+		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
+		return $this->firstViewThatExists('vendor.dick.crud.details_row', 'crud::details_row', $this->data);
 	}
 
 
