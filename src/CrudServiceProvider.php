@@ -3,6 +3,7 @@ namespace Dick\CRUD;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
+use Route;
 
 class CrudServiceProvider extends ServiceProvider
 {
@@ -62,11 +63,23 @@ class CrudServiceProvider extends ServiceProvider
         //         'config/CRUD.php',
         // ]);
     }
+
     private function registerCRUD()
     {
         $this->app->bind('CRUD',function($app){
             return new CRUD($app);
         });
+    }
+
+    public static function resource($name, $controller, array $options = [])
+    {
+        // CRUD routes
+        Route::get($name.'/reorder', $controller.'@reorder');
+        Route::get($name.'/reorder/{lang}', $controller.'@reorder');
+        Route::post($name.'/reorder', $controller.'@saveReorder');
+        Route::get($name.'/{id}/details', $controller.'@showDetailsRow');
+        Route::get($name.'/{id}/translate/{lang}', $controller.'@translateItem');
+        Route::resource($name, $controller, $options);
     }
 
 }

@@ -20,6 +20,12 @@ All Notable changes to `Dick CRUD` will be documented in this file
 - Nothing
 
 
+## [0.8.1] - 2015-09-09
+
+### Added
+- CRUD Alias for handling the routes. Now instead of defining a Route::resource() and a bunch of other routes if you need reorder/translations etc, you only define CRUD:resource() instead (same syntax) and the CrudServiceProvider will define all the routes you need. That, of course, if you define 'CRUD' => 'Dick\CRUD\CrudServiceProvider' in your config/app.php file, under 'aliases'.
+
+
 ## [0.8.0] - 2015-09-09
 
 ### Added
