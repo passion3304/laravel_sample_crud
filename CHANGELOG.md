@@ -23,7 +23,7 @@ All Notable changes to `Dick CRUD` will be documented in this file
 ## [0.8.0] - 2015-09-09
 
 ### Added
-- CRUD Multi-language editing. If the EntityCrudController's "details_row" is set to true, by default the CRUD will output the translations for that entity's row. Tested and working add, edit, delete both for original rows and for translation rows.
+- CRUD Multi-language editing. If the EntityCrudController's "details_row" is set to true, by default the CRUD will output the translations for that entity's row. Tested and working add, edit, delete and reordering both for original rows and for translation rows.
 
 
 ## [0.7.9] - 2015-09-09

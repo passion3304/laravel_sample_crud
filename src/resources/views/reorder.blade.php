@@ -71,6 +71,20 @@
 
           <p>{{ trans('crud.reorder_text') }}</p>
 
+          @if (isset($languages))
+            <ul class="nav nav-tabs">
+              @foreach ($languages as $lang)
+                <li role="presentation"
+                  @if ($lang->abbr == $active_language)
+                    class="active"
+                  @endif
+                >
+                  <a href="{{ url($crud['route'].'/reorder/'.$lang->abbr) }}">{{ $lang->name }}</a>
+                </li>
+              @endforeach
+            </ul>
+          @endif
+
           <ol class="sortable">
             <?php
               $all_entries = collect($entries->all())->sortBy('lft');

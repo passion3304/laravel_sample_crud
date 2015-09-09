@@ -131,10 +131,13 @@ trait CrudTrait {
     {
         if (isset($this->translatable))
         {
+            // set a default language (the one the user is currently using)
             if (!(isset($this->translation_lang)) || $this->translation_lang == '')
             {
                 $this->translation_lang = \Lang::locale();
             }
+
+            // TODO: if some untranslatable attributes are empty, but its parent's are filled, copy them
         }
 
         parent::save();

@@ -256,18 +256,25 @@ class CrudController extends Controller {
 	 *
 	 *  @return Response
 	 */
-	public function reorder()
+	public function reorder($lang = false)
 	{
 		// if reorder_table_permission is false, abort
 		if (isset($this->crud['reorder_permission']) && !$this->crud['reorder_permission']) {
 			abort(403, 'Not allowed.');
 		}
 
+		if ($lang == false)
+		{
+			$lang = \Lang::locale();
+		}
+
 		// get all results for that entity
 		$model = $this->crud['model'];
 		if (property_exists($model, 'translatable'))
 		{
-			$this->data['entries'] = $model::where('translation_lang', \Lang::locale())->get();
+			$this->data['entries'] = $model::where('translation_lang', $lang)->get();
+			$this->data['languages'] = \Dick\TranslationManager\Models\Language::all();
+			$this->data['active_language'] = $lang;
 		}
 		else
 		{
@@ -337,15 +344,19 @@ class CrudController extends Controller {
 		$this->data['entry']->addFakes($this->getFakeColumnsAsArray());
 		$this->data['original_entry'] = $this->data['entry'];
 		$this->data['crud'] = $this->crud;
-		$this->data['translations'] = $this->data['entry']->translations();
 
-		// create a list of languages the item is not translated in
-		$this->data['languages'] = \Dick\TranslationManager\Models\Language::all();
-		$this->data['languages_already_translated_in'] = $this->data['entry']->translationLanguages();
-		$this->data['languages_to_translate_in'] = $this->data['languages']->diff($this->data['languages_already_translated_in']);
-		$this->data['languages_to_translate_in'] = $this->data['languages_to_translate_in']->reject(function ($item) {
-		    return $item->abbr == \Lang::locale();
-		});
+		if (property_exists($model, 'translatable'))
+		{
+			$this->data['translations'] = $this->data['entry']->translations();
+
+			// create a list of languages the item is not translated in
+			$this->data['languages'] = \Dick\TranslationManager\Models\Language::all();
+			$this->data['languages_already_translated_in'] = $this->data['entry']->translationLanguages();
+			$this->data['languages_to_translate_in'] = $this->data['languages']->diff($this->data['languages_already_translated_in']);
+			$this->data['languages_to_translate_in'] = $this->data['languages_to_translate_in']->reject(function ($item) {
+			    return $item->abbr == \Lang::locale();
+			});
+		}
 
 		// load the view from /resources/views/vendor/dick/crud/ if it exists, otherwise load the one in the package
 		return $this->firstViewThatExists('vendor.dick.crud.details_row', 'crud::details_row', $this->data);
