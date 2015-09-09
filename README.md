@@ -17,6 +17,12 @@ Via Composer
 $ composer require dick/crud
 ```
 
+Add this to your config/app.php, under "aliases":
+
+```php
+'CRUD' => 'Dick\CRUD\CrudServiceProvider',
+```
+
 ## Usage
 
 Check out the documentation at http://usedick.com/docs 
