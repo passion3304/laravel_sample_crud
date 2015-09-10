@@ -19,7 +19,7 @@ All Notable changes to `Dick CRUD` will be documented in this file
 ### Security
 - Nothing
 
-## [0.8.2] - 2015-09-10
+## [0.8.3] - 2015-09-10
 
 ### Added
 - withFakes() method on CrudTrait, to easily get entities with fakes fields;
