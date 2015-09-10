@@ -69,6 +69,25 @@ trait CrudTrait {
         }
     }
 
+    public function withFakes($columns = [])
+    {
+        $model = '\\'.get_class($this);
+
+        if (!count($columns)) {
+            if (property_exists($model, 'fakeColumns')) {
+                $columns = $this->fakeColumns;
+            }
+            else
+            {
+                $columns = ['extras'];
+            }
+        }
+
+        $this->addFakes($columns);
+
+        return $this;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Translation Methods
