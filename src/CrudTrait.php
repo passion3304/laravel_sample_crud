@@ -40,19 +40,6 @@ trait CrudTrait {
     */
 
     /**
-     * Extras Accessor
-     *
-     * Instead of viewing it as a JSON array, always turn it to a PHP array.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getExtrasAttribute($value)
-    {
-        return json_decode($value);
-    }
-
-    /**
      * Add fake fields as regular attributes, even though they are stored as JSON.
      *
      * @param  array  $columns - the database columns that contain the JSONs
@@ -60,15 +47,29 @@ trait CrudTrait {
      */
     public function addFakes($columns = ['extras']) {
         foreach ($columns as $key => $column) {
-            if (count($this->{$column}))
+
+            $column_contents = $this->{$column};
+
+            if (!is_object($this->{$column}))
             {
-                foreach ($this->{$column} as $fake_field_name => $fake_field_value) {
+                $column_contents = json_decode($this->{$column});
+            }
+
+            if (count($column_contents))
+            {
+                foreach ($column_contents as $fake_field_name => $fake_field_value) {
                     $this->setAttribute($fake_field_name, $fake_field_value);
                 }
             }
         }
     }
 
+    /**
+     * Return the entity with fake fields as attributes.
+     *
+     * @param  array  $columns - the database columns that contain the JSONs
+     * @return obj
+     */
     public function withFakes($columns = [])
     {
         $model = '\\'.get_class($this);
