@@ -19,6 +19,12 @@ All Notable changes to `Dick CRUD` will be documented in this file
 ### Security
 - Nothing
 
+## [0.8.4] - 2015-09-10
+
+### Added
+- allTranslations() method on CrudTrait, to easily get all connected entities;
+
+
 ## [0.8.3] - 2015-09-10
 
 ### Added

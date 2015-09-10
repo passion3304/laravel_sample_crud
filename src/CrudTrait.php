@@ -107,6 +107,26 @@ trait CrudTrait {
         return collect();
     }
 
+    // get translations plus current item, plus original
+    public function allTranslations()
+    {
+        $model = '\\'.get_class($this);
+
+        // the translations
+        $translations = $this->translations();
+
+        // the current item
+        $all_translations = $translations->push($this);
+
+        // the original
+        if ($this->translation_of) {
+            $original = $model::find($this->translation_of);
+            $all_translations = $all_translations->push($original);
+        }
+
+        return $all_translations;
+    }
+
     public function translation($translation_lang = false)
     {
         if ($translation_lang==false) {
