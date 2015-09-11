@@ -20,6 +20,11 @@ All Notable changes to `Dick CRUD` will be documented in this file
 - Nothing
 
 
+## [0.8.6] - 2015-09-11
+
+### Fixed
+- DateTime field type needed some magic to properly use the default value as stored in MySQL.
+
 ## [0.8.5] - 2015-09-11
 
 ### Fixed
