@@ -19,6 +19,13 @@ All Notable changes to `Dick CRUD` will be documented in this file
 ### Security
 - Nothing
 
+
+## [0.8.5] - 2015-09-11
+
+### Fixed
+- Fixed bug where reordering multi-language items didn't work through AJAX (route wasn't defined);
+
+
 ## [0.8.4] - 2015-09-10
 
 ### Added
