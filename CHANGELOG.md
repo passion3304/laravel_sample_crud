@@ -20,6 +20,11 @@ All Notable changes to `Dick CRUD` will be documented in this file
 - Nothing
 
 
+## [0.8.7] - 2015-09-17
+
+### Fixed
+- update_fields and create_fields were being ignored because of the fake fields; now they're taken into consideration again, to allow different fields on the add/edit forms;
+
 ## [0.8.6] - 2015-09-11
 
 ### Fixed

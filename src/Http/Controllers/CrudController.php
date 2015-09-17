@@ -431,6 +431,8 @@ class CrudController extends Controller {
 	 */
 	private function compactFakeFields($request) {
 
+		$this->prepareFields();
+
 		$fake_field_columns_to_encode = [];
 
 		// go through each defined field
@@ -477,6 +479,8 @@ class CrudController extends Controller {
 	 *
 	 */
 	private function getFakeColumnsAsArray() {
+
+		$this->prepareFields();
 
 		$fake_field_columns_to_encode = [];
 
@@ -543,6 +547,19 @@ class CrudController extends Controller {
 	 */
 	protected function prepareFields($entry = false)
 	{
+		// if the fields have been defined separately for create and update, use that
+		if (!isset($this->crud['fields']))
+		{
+			if (isset($this->crud['create_fields']))
+			{
+				$this->crud['fields'] = $this->crud['create_fields'];
+			}
+			elseif (isset($this->crud['update_fields']))
+			{
+				$this->crud['fields'] = $this->crud['update_fields'];
+			}
+		}
+
 		// PREREQUISITES CHECK:
 		// if the fields aren't set, trigger error
 		if (!isset($this->crud['fields']))
