@@ -20,6 +20,12 @@ All Notable changes to `Dick CRUD` will be documented in this file
 - Nothing
 
 
+## [0.8.8] - 2015-09-17
+
+### Fixed
+- bumped version;
+
+
 ## [0.8.7] - 2015-09-17
 
 ### Fixed
