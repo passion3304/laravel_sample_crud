@@ -5,17 +5,17 @@
 @endsection
 
 @section('content-header')
-	<section class="content-header">
-	  <h1>
-	    <span class="text-capitalize">{{ $crud['entity_name_plural'] }}</span>
-	    <small>{{ trans('crud.all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span> {{ trans('crud.in_the_database') }}.</small>
-	  </h1>
-	  <ol class="breadcrumb">
-	    <li><a href="{{ url('admin/dashboard') }}">Admin</a></li>
-	    <li><a href="{{ url($crud['route']) }}" class="text-capitalize">{{ $crud['entity_name_plural'] }}</a></li>
-	    <li class="active">{{ trans('crud.reorder') }}</li>
-	  </ol>
-	</section>
+  <section class="content-header">
+    <h1>
+      <span class="text-capitalize">{{ $crud['entity_name_plural'] }}</span>
+      <small>{{ trans('crud.all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span> {{ trans('crud.in_the_database') }}.</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="{{ url('admin/dashboard') }}">Admin</a></li>
+      <li><a href="{{ url($crud['route']) }}" class="text-capitalize">{{ $crud['entity_name_plural'] }}</a></li>
+      <li class="active">{{ trans('crud.reorder') }}</li>
+    </ol>
+  </section>
 @endsection
 
 @section('content')
@@ -27,7 +27,7 @@
       $all_entries[$key]->tree_element_shown = true;
       $entry->tree_element_shown = true;
 
-      // show the tree lement
+      // show the tree element
       echo '<li id="list_'.$entry->id.'">';
       echo '<div><span class="disclose"><span></span></span>'.$entry->{$crud['reorder_label']}.'</div>';
 
@@ -45,7 +45,7 @@
       if (count($children)) {
         echo '<ol>';
         foreach ($children as $key => $child) {
-          $children[$key] = tree_element($child, $key, $all_entries, $crud);
+          $children[$key] = tree_element($child, $child->id, $all_entries, $crud);
         }
         echo '</ol>';
       }
@@ -87,11 +87,14 @@
 
           <ol class="sortable">
             <?php
-              $all_entries = collect($entries->all())->sortBy('lft');
+              $all_entries = collect($entries->all())->sortBy('lft')->keyBy('id');
+              $root_entries = $all_entries->filter(function($item) {
+                return $item->parent_id == 0;
+              });
              ?>
-            @foreach ($all_entries as $key => $entry)
+            @foreach ($root_entries as $key => $entry)
               <?php
-                $all_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+                $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
               ?>
             @endforeach
           </ol>
@@ -108,8 +111,8 @@
   <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js" type="text/javascript"></script>
   <script src="{{ url('dick/js/vendor/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript"></script>
 
-	<script type="text/javascript">
-	  jQuery(document).ready(function($) {
+  <script type="text/javascript">
+    jQuery(document).ready(function($) {
 
       // initialize the nested sortable plugin
       $('.sortable').nestedSortable({
@@ -177,6 +180,6 @@
           }
       });
 
-	  });
-	</script>
+    });
+  </script>
 @endsection

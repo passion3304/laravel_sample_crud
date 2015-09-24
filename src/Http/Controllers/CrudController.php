@@ -408,7 +408,7 @@ class CrudController extends Controller {
 	 * @param  array 	$information - the information to send to the view, usually $this->data
 	 * @return HTTP Response
 	 */
-	private function firstViewThatExists($first_view, $second_view, $information)
+	protected function firstViewThatExists($first_view, $second_view, $information)
 	{
 		// load the first view if it exists, otherwise load the second one
 		if (view()->exists($first_view))
@@ -429,7 +429,7 @@ class CrudController extends Controller {
 	 * @param 	Request 	$request - everything that was sent from the form, usually \Request::all()
 	 * @return 	array
 	 */
-	private function compactFakeFields($request) {
+	protected function compactFakeFields($request) {
 
 		$this->prepareFields();
 
@@ -478,7 +478,7 @@ class CrudController extends Controller {
 	 * Returns ['extras'] if no columns have been found.
 	 *
 	 */
-	private function getFakeColumnsAsArray() {
+	protected function getFakeColumnsAsArray() {
 
 		$this->prepareFields();
 
