@@ -20,6 +20,12 @@ All Notable changes to `Dick CRUD` will be documented in this file
 - Nothing
 
 
+## [0.8.9] - 2015-09-22
+
+### Added
+- added new column type: "model_function", that runs a certain function on the CRUD model;
+
+
 ## [0.8.8] - 2015-09-17
 
 ### Fixed
