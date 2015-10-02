@@ -20,6 +20,12 @@ All Notable changes to `Dick CRUD` will be documented in this file
 - Nothing
 
 
+## [0.8.10] - 2015-10-02
+
+### Fixed
+- CrudController used classes from the 'App' namespace, which rendered errors when the application namespace had been renamed by the developer;
+
+
 ## [0.8.9] - 2015-09-22
 
 ### Added

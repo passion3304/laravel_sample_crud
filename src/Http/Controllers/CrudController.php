@@ -1,15 +1,20 @@
 <?php namespace Dick\CRUD\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Crypt;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use Dick\CRUD\Http\Requests\CrudRequest as StoreRequest;
 use Dick\CRUD\Http\Requests\CrudRequest as UpdateRequest;
 
-class CrudController extends Controller {
+class CrudController extends BaseController {
 
+	use DispatchesCommands, ValidatesRequests;
+
+	public $data = array();
 	public $crud = array(
 						"model" => "\App\Models\Entity",
 						"entity_name" => "entry",
