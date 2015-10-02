@@ -1,8 +1,8 @@
 <?php namespace Dick\CRUD\Http\Requests;
 
-use App\Http\Requests\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
-class CrudRequest extends Request {
+class CrudRequest extends FormRequest {
 
 	/**
 	 * Determine if the user is authorized to make this request.

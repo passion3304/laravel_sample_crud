@@ -20,6 +20,12 @@ All Notable changes to `Dick CRUD` will be documented in this file
 - Nothing
 
 
+## [0.8.12] - 2015-10-02
+
+### Fixed
+- CrudRequest used classes from the 'App' namespace, which rendered errors when the application namespace had been renamed by the developer;
+
+
 ## [0.8.11] - 2015-10-02
 
 ### Fixed
