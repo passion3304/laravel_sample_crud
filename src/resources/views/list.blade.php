@@ -218,7 +218,13 @@
           }
     });
 
+      // make the delete button work in the first result page
       register_delete_button_action();
+
+      // make the delete button work on subsequent result pages
+      $('#crudTable').on( 'draw.dt',   function () {
+         register_delete_button_action();
+      } ).dataTable();
 
       function register_delete_button_action() {
         $("[data-button-type=delete]").unbind('click');

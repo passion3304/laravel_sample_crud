@@ -20,6 +20,12 @@ All Notable changes to `Dick CRUD` will be documented in this file
 - Nothing
 
 
+## [0.8.13] - 2015-10-07
+
+### Fixed
+- CRUD list view bug fixed thanks to Bradis García Labaceno. The DELETE button didn't work for subsequent results pages, now it does.
+
+
 ## [0.8.12] - 2015-10-02
 
 ### Fixed
