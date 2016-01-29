@@ -7,7 +7,7 @@
 
         @foreach ($field as $attribute => $value)
             @if ($attribute=='value')
-                value="{{ $field['value']->toDateString() }}"
+                value="{{ $field['value'] }}"
             @else
                 {{ $attribute }}="{{ $value }}"
             @endif
