@@ -1,5 +1,6 @@
 <?php namespace Dick\CRUD;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Lang;
