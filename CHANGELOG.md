@@ -19,6 +19,11 @@ All Notable changes to `Dick CRUD` will be documented in this file
 ### Security
 - Nothing
 
+## [0.8.17] - 2016-02-23
+
+### Fixed
+- two or more select2 or select2_multiple fields in the same form loads the appropriate .js file two times, so error. this fixes it.
+
 
 ## [0.8.13] - 2015-10-07
 
