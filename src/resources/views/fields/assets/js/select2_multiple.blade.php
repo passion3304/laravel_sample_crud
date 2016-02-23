@@ -2,12 +2,11 @@
 <script src="{{ asset('dick/js/vendor/select2/select2.js') }}"></script>
 <script>
 	jQuery(document).ready(function($) {
-		// trigger select2 for each untriggered select box
+		// trigger select2 for each untriggered select2_multiple box
 		$('.select2').each(function (i, obj) {
-            if ($(obj).attr("data-select2") != 'true')
+            if (!$(obj).data("select2"))
             {
                 $(obj).select2();
-                $(obj).attr('select2', 'true');
             }
         });
 	});
