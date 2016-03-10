@@ -1,6 +1,6 @@
 # Changelog
 
-All Notable changes to `Dick CRUD` will be documented in this file
+All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## NEXT - YYYY-MM-DD
 
@@ -18,6 +18,16 @@ All Notable changes to `Dick CRUD` will be documented in this file
 
 ### Security
 - Nothing
+
+
+## [0.9.0] - 2016-03-10
+
+### Fixed
+- Changed name from Dick/CRUD to Backpack/CRUD.
+
+### Removed
+- Entrust permissions.
+
 
 ## [0.8.17] - 2016-02-23
 

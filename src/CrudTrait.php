@@ -1,4 +1,4 @@
-<?php namespace Dick\CRUD;
+<?php namespace Backpack\CRUD;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;

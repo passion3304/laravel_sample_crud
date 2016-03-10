@@ -1,10 +1,7 @@
-# Dick CRUD
+# Backpack\CRUD
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dick/crud.svg?style=flat-square)](https://packagist.org/packages/dick/crud)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/tabacitu/crud/master.svg?style=flat-square)](https://travis-ci.org/tabacitu/crud)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/tabacitu/crud.svg?style=flat-square)](https://scrutinizer-ci.com/g/tabacitu/crud/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/tabacitu/crud.svg?style=flat-square)](https://scrutinizer-ci.com/g/tabacitu/crud)
 [![Total Downloads](https://img.shields.io/packagist/dt/dick/crud.svg?style=flat-square)](https://packagist.org/packages/dick/crud)
 
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
@@ -14,19 +11,20 @@ Quickly build an admin interface for your Eloquent models, using Laravel 5. Erec
 Via Composer
 
 ``` bash
-$ composer require dick/crud
+$ composer require backpack/crud
 ```
 
 Add this to your config/app.php, under "aliases":
 
 ```php
-'CRUD' => 'Dick\CRUD\CrudServiceProvider',
+'CRUD' => 'Backpack\CRUD\CrudServiceProvider',
 ```
 
 ## Usage
 
-Check out the documentation at http://usedick.com/docs 
-// TODO: improve documentation
+Check out the documentation at http://LaravelBackPack.com/docs 
+
+// TODO: create a documentation file base on Dick documentation
 
 In short:
 
@@ -41,6 +39,8 @@ In short:
 ## Screenshots
 
 See http://usedick.com
+
+// TODO: create equivalent screenshots for all Dick screenshots
 
 ## Change log
 
@@ -65,15 +65,9 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [ico-version]: https://img.shields.io/packagist/v/dick/crud.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/tabacitu/crud/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/tabacitu/crud.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/tabacitu/crud.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/tabacitu/crud.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/tabacitu/crud
-[link-travis]: https://travis-ci.org/tabacitu/crud
-[link-scrutinizer]: https://scrutinizer-ci.com/g/tabacitu/crud/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/tabacitu/crud
+[link-packagist]: https://packagist.org/packages/backpack/crud
 [link-downloads]: https://packagist.org/packages/dick/crud
-[link-author]: https://github.com/tabacitu
+[link-author]: https://tabacitu.ro
 [link-contributors]: ../../contributors
