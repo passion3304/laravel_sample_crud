@@ -1,10 +1,12 @@
 <?php namespace Backpack\CRUD\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Crypt;
+use Illuminate\Support\Facades\Form as Form;
+use Alert;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use Backpack\CRUD\Http\Requests\CrudRequest as StoreRequest;
@@ -12,7 +14,7 @@ use Backpack\CRUD\Http\Requests\CrudRequest as UpdateRequest;
 
 class CrudController extends BaseController {
 
-	use DispatchesCommands, ValidatesRequests;
+	use DispatchesJobs, ValidatesRequests;
 
 	public $data = array();
 	public $crud = array(
@@ -33,9 +35,9 @@ class CrudController extends BaseController {
 		$this->data['crud'] = $this->crud;
 
 		// Check for the right roles to access these pages
-		if (!\Entrust::can('view-admin-panel')) {
-	        abort(403, trans('crud.unauthorized_access'));
-	    }
+		// if (!\Entrust::can('view-admin-panel')) {
+	 //        abort(403, trans('crud.unauthorized_access'));
+	 //    }
 	}
 
 	/**

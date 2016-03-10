@@ -1,19 +1,19 @@
-@extends('admin.layout')
+@extends('backpack::layout')
 
-@section('head')
+@section('after_styles')
     <link href="{{ asset('dick/js/vendor/nestedSortable/nestedSortable.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('content-header')
+@section('header')
   <section class="content-header">
     <h1>
       <span class="text-capitalize">{{ $crud['entity_name_plural'] }}</span>
-      <small>{{ trans('crud.all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span> {{ trans('crud.in_the_database') }}.</small>
+      <small>{{ trans('backpack::crud.all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{ url('admin/dashboard') }}">Admin</a></li>
       <li><a href="{{ url($crud['route']) }}" class="text-capitalize">{{ $crud['entity_name_plural'] }}</a></li>
-      <li class="active">{{ trans('crud.reorder') }}</li>
+      <li class="active">{{ trans('backpack::crud.reorder') }}</li>
     </ol>
   </section>
 @endsection
@@ -59,17 +59,17 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     @if (!(isset($crud['view_table_permission']) && !$crud['view_table_permission']))
-      <a href="{{ url($crud['route']) }}"><i class="fa fa-angle-double-left"></i> {{ trans('crud.back_to_all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span></a><br><br>
+      <a href="{{ url($crud['route']) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span></a><br><br>
     @endif
 
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">{{ trans('crud.reorder').' '.$crud['entity_name_plural'] }}</h3>
+          <h3 class="box-title">{{ trans('backpack::crud.reorder').' '.$crud['entity_name_plural'] }}</h3>
         </div>
         <div class="box-body">
 
-          <p>{{ trans('crud.reorder_text') }}</p>
+          <p>{{ trans('backpack::crud.reorder_text') }}</p>
 
           @if (isset($languages))
             <ul class="nav nav-tabs">
@@ -99,7 +99,7 @@
             @endforeach
           </ol>
 
-          <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('crud.save') }}</span></button>
+          <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
 
         </div><!-- /.box-body -->
       </div><!-- /.box -->
@@ -107,7 +107,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@section('after_scripts')
   <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js" type="text/javascript"></script>
   <script src="{{ url('dick/js/vendor/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript"></script>
 
@@ -153,16 +153,16 @@
           .done(function() {
             console.log("success");
             new PNotify({
-                        title: "{{ trans('crud.reorder_success_title') }}",
-                        text: "{{ trans('crud.reorder_success_message') }}",
+                        title: "{{ trans('backpack::crud.reorder_success_title') }}",
+                        text: "{{ trans('backpack::crud.reorder_success_message') }}",
                         type: "success"
                     });
           })
           .fail(function() {
             console.log("error");
             new PNotify({
-                        title: "{{ trans('crud.reorder_error_title') }}",
-                        text: "{{ trans('crud.reorder_error_message') }}",
+                        title: "{{ trans('backpack::crud.reorder_error_title') }}",
+                        text: "{{ trans('backpack::crud.reorder_error_message') }}",
                         type: "danger"
                     });
           })

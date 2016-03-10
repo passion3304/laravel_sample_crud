@@ -1,20 +1,20 @@
-@extends('admin.layout')
+@extends('backpack::layout')
 
-@section('head')
+@section('after_styles')
 	<!-- DATA TABLES -->
-    <link href="{{ asset('AdminLTE/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('content-header')
+@section('header')
 	<section class="content-header">
 	  <h1>
 	    <span class="text-capitalize">{{ $crud['entity_name_plural'] }}</span>
-	    <small>{{ trans('crud.all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span> {{ trans('crud.in_the_database') }}.</small>
+	    <small>{{ trans('backpack::crud.all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
 	  </h1>
 	  <ol class="breadcrumb">
 	    <li><a href="{{ url('admin/dashboard') }}">Admin</a></li>
 	    <li><a href="{{ url($crud['route']) }}" class="text-capitalize">{{ $crud['entity_name_plural'] }}</a></li>
-	    <li class="active">{{ trans('crud.list') }}</li>
+	    <li class="active">{{ trans('backpack::crud.list') }}</li>
 	  </ol>
 	</section>
 @endsection
@@ -24,11 +24,11 @@
   <div class="box">
     <div class="box-header with-border">
       @if (!(isset($crud['add_permission']) && !$crud['add_permission']))
-      		<a href="{{ url($crud['route'].'/create') }}" class="btn btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('crud.add') }} {{ $crud['entity_name'] }}</span></a>
+      		<a href="{{ url($crud['route'].'/create') }}" class="btn btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('backpack::crud.add') }} {{ $crud['entity_name'] }}</span></a>
       @endif
       @if ((isset($crud['reorder']) && $crud['reorder']))
         @if (!(isset($crud['reorder_permission']) && !$crud['reorder_permission']))
-          <a href="{{ url($crud['route'].'/reorder') }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-arrows"></i> {{ trans('crud.reorder') }} {{ $crud['entity_name_plural'] }}</span></a>
+          <a href="{{ url($crud['route'].'/reorder') }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-arrows"></i> {{ trans('backpack::crud.reorder') }} {{ $crud['entity_name_plural'] }}</span></a>
           @endif
       @endif
     </div>
@@ -47,7 +47,7 @@
                         @endforeach
 
                         @if ( !( isset($crud['edit_permission']) && $crud['edit_permission'] === false && isset($crud['delete_permission']) && $crud['delete_permission'] === false ) )
-                          <th>{{ trans('crud.actions') }}</th>
+                          <th>{{ trans('backpack::crud.actions') }}</th>
                         @endif
                       </tr>
                     </thead>
@@ -98,12 +98,12 @@
 
                         @if ( !( isset($crud['edit_permission']) && $crud['edit_permission'] === false && isset($crud['delete_permission']) && $crud['delete_permission'] === false ) )
                         <td>
-                          {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('crud.preview') }}</a> --}}
+                          {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
                           @if (!(isset($crud['edit_permission']) && !$crud['edit_permission']))
-                            <a href="{{ Request::url().'/'.$entry->id }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('crud.edit') }}</a>
+                            <a href="{{ Request::url().'/'.$entry->id }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
                           @endif
                            @if (!(isset($crud['delete_permission']) && !$crud['delete_permission']))
-                          <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('crud.delete') }}</a>
+                          <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
                           @endif
                         </td>
                         @endif
@@ -123,7 +123,7 @@
                         @endforeach
 
                         @if ( !( isset($crud['edit_permission']) && $crud['edit_permission'] === false && isset($crud['delete_permission']) && $crud['delete_permission'] === false ) )
-                          <th>{{ trans('crud.actions') }}</th>
+                          <th>{{ trans('backpack::crud.actions') }}</th>
                         @endif
                       </tr>
                     </tfoot>
@@ -133,35 +133,35 @@
   </div><!-- /.box -->
 @endsection
 
-@section('scripts')
+@section('after_scripts')
 	<!-- DATA TABES SCRIPT -->
-    <script src="{{ url('AdminLTE/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
-    <script src="{{ url('AdminLTE/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/adminlte/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
 
 	<script type="text/javascript">
 	  jQuery(document).ready(function($) {
 	  	var table = $("#crudTable").DataTable({
         "language": {
-              "emptyTable":     "{{ trans('crud.emptyTable') }}",
-              "info":           "{{ trans('crud.info') }}",
-              "infoEmpty":      "{{ trans('crud.infoEmpty') }}",
-              "infoFiltered":   "{{ trans('crud.infoFiltered') }}",
-              "infoPostFix":    "{{ trans('crud.infoPostFix') }}",
-              "thousands":      "{{ trans('crud.thousands') }}",
-              "lengthMenu":     "{{ trans('crud.lengthMenu') }}",
-              "loadingRecords": "{{ trans('crud.loadingRecords') }}",
-              "processing":     "{{ trans('crud.processing') }}",
-              "search":         "{{ trans('crud.search') }}",
-              "zeroRecords":    "{{ trans('crud.zeroRecords') }}",
+              "emptyTable":     "{{ trans('backpack::crud.emptyTable') }}",
+              "info":           "{{ trans('backpack::crud.info') }}",
+              "infoEmpty":      "{{ trans('backpack::crud.infoEmpty') }}",
+              "infoFiltered":   "{{ trans('backpack::crud.infoFiltered') }}",
+              "infoPostFix":    "{{ trans('backpack::crud.infoPostFix') }}",
+              "thousands":      "{{ trans('backpack::crud.thousands') }}",
+              "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
+              "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
+              "processing":     "{{ trans('backpack::crud.processing') }}",
+              "search":         "{{ trans('backpack::crud.search') }}",
+              "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
               "paginate": {
-                  "first":      "{{ trans('crud.paginate.first') }}",
-                  "last":       "{{ trans('crud.paginate.last') }}",
-                  "next":       "{{ trans('crud.paginate.next') }}",
-                  "previous":   "{{ trans('crud.paginate.previous') }}"
+                  "first":      "{{ trans('backpack::crud.paginate.first') }}",
+                  "last":       "{{ trans('backpack::crud.paginate.last') }}",
+                  "next":       "{{ trans('backpack::crud.paginate.next') }}",
+                  "previous":   "{{ trans('backpack::crud.paginate.previous') }}"
               },
               "aria": {
-                  "sortAscending":  "{{ trans('crud.aria.sortAscending') }}",
-                  "sortDescending": "{{ trans('crud.aria.sortDescending') }}"
+                  "sortAscending":  "{{ trans('backpack::crud.aria.sortAscending') }}",
+                  "sortDescending": "{{ trans('backpack::crud.aria.sortDescending') }}"
               }
           }
       });
@@ -235,15 +235,15 @@
           var delete_button = $(this);
           var delete_url = $(this).attr('href');
 
-          if (confirm("{{ trans('crud.delete_confirm') }}") == true) {
+          if (confirm("{{ trans('backpack::crud.delete_confirm') }}") == true) {
               $.ajax({
                   url: delete_url,
                   type: 'DELETE',
                   success: function(result) {
                       // Show an alert with the result
                       new PNotify({
-                          title: "{{ trans('crud.delete_confirmation_title') }}",
-                          text: "{{ trans('crud.delete_confirmation_message') }}",
+                          title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
+                          text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
                           type: "success"
                       });
                       // delete the row from the table
@@ -252,16 +252,16 @@
                   error: function(result) {
                       // Show an alert with the result
                       new PNotify({
-                          title: "{{ trans('crud.delete_confirmation_not_title') }}",
-                          text: "{{ trans('crud.delete_confirmation_not_message') }}",
+                          title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
+                          text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
                           type: "warning"
                       });
                   }
               });
           } else {
               new PNotify({
-                  title: "{{ trans('crud.delete_confirmation_not_deleted_title') }}",
-                  text: "{{ trans('crud.delete_confirmation_not_deleted_message') }}",
+                  title: "{{ trans('backpack::crud.delete_confirmation_not_deleted_title') }}",
+                  text: "{{ trans('backpack::crud.delete_confirmation_not_deleted_message') }}",
                   type: "info"
               });
           }

@@ -13,6 +13,8 @@ class CrudServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $defer = false;
+
+
     /**
      * Perform post-registration booting of services.
      *
@@ -20,35 +22,29 @@ class CrudServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // use this if your package has views
+        // LOAD THE VIEWS
+        // - first the published/overwritten views (in case they have any changes)
+        $this->loadViewsFrom(resource_path('views/vendor/backpack/crud'), 'crud');
+        // - then the stock views that come with the package, in case a published view might be missing
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'crud');
 
-        // use this if your package has routes
-        // $this->setupRoutes($this->app->router);
+        $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
 
-        // use this if your package needs a config file
-        // $this->publishes([
-        //         __DIR__.'/config/config.php' => config_path('CRUD.php'),
-        // ]);
+        // PUBLISH FILES
+        // publish lang files
+        $this->publishes([ __DIR__.'/resources/lang' => resource_path('lang/vendor/backpack'), ], 'lang');
+        // publish views
+        $this->publishes([ __DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud'), ], 'views');
+        // publish public Backpack CRUD assets
+        $this->publishes([ __DIR__.'/public' => public_path('vendor/backpack'), ], 'public');
 
         // use the vendor configuration file as fallback
         // $this->mergeConfigFrom(
         //     __DIR__.'/config/config.php', 'CRUD'
         // );
     }
-    /**
-     * Define the routes for the application.
-     *
-     * @param  \Illuminate\Routing\Router  $router
-     * @return void
-     */
-    public function setupRoutes(Router $router)
-    {
-        $router->group(['namespace' => 'Backpack\CRUD\Http\Controllers'], function($router)
-        {
-            require __DIR__.'/Http/routes.php';
-        });
-    }
+
+
     /**
      * Register any package services.
      *

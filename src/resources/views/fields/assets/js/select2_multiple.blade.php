@@ -1,5 +1,5 @@
 <!-- include select2 js-->
-<script src="{{ asset('dick/js/vendor/select2/select2.js') }}"></script>
+<script src="{{ asset('vendor/backpack/select2/select2.js') }}"></script>
 <script>
 	jQuery(document).ready(function($) {
 		// trigger select2 for each untriggered select2_multiple box

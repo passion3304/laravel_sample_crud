@@ -29,7 +29,7 @@
 	$loaded_form_types_js = array();
 ?>
 
-@section('head')
+@section('after_styles')
 	<!-- FORM CONTENT CSS ASSETS -->
 	@foreach ($crud['fields'] as $field)
 		@if(!isset($loaded_form_types_css[$field['type']]) || $loaded_form_types_css[$field['type']]==false)
@@ -44,7 +44,7 @@
 	@endforeach
 @endsection
 
-@section('scripts')
+@section('after_scripts')
 	<!-- FORM CONTENT JAVSCRIPT ASSETS -->
 	@foreach ($crud['fields'] as $field)
 		@if(!isset($loaded_form_types_js[$field['type']]) || $loaded_form_types_js[$field['type']]==false)

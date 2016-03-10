@@ -1,5 +1,5 @@
 <!-- include summernote js-->
-<script src="{{ asset('dick/js/vendor/tinymce/tinymce.min.js') }}"></script>
+<script src="{{ asset('vendor/backpack/tinymce/tinymce.min.js') }}"></script>
 {{-- <script src="{{ asset('admin/js/vendor/tinymce/jquery.tinymce.min.js') }}"></script> --}}
 
 <script type="text/javascript">

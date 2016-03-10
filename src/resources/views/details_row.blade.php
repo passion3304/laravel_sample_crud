@@ -18,7 +18,7 @@
 				            @endforeach
 
 				            @if ( !( isset($crud['edit_permission']) && $crud['edit_permission'] === false && isset($crud['delete_permission']) && $crud['delete_permission'] === false ) )
-				              <th>{{ trans('crud.actions') }}</th>
+				              <th>{{ trans('backpack::crud.actions') }}</th>
 				            @endif
 				          </tr>
 					    </thead>
@@ -59,12 +59,12 @@
 
 				                    @if ( !( isset($crud['edit_permission']) && $crud['edit_permission'] === false && isset($crud['delete_permission']) && $crud['delete_permission'] === false ) )
 				                    <td>
-				                      {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('crud.preview') }}</a> --}}
+				                      {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
 				                      @if (!(isset($crud['edit_permission']) && !$crud['edit_permission']))
-				                        <a href="{{ str_replace($original_entry->id, $entry->id, str_replace('details', 'edit', Request::url())) }}" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('crud.edit') }}</a>
+				                        <a href="{{ str_replace($original_entry->id, $entry->id, str_replace('details', 'edit', Request::url())) }}" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
 				                      @endif
 				                       @if (!(isset($crud['delete_permission']) && !$crud['delete_permission']))
-				                      <a href="{{ str_replace($original_entry->id, $entry->id, str_replace('details', '', Request::url())) }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('crud.delete') }}</a>
+				                      <a href="{{ str_replace($original_entry->id, $entry->id, str_replace('details', '', Request::url())) }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
 				                      @endif
 				                    </td>
 				                    @endif
