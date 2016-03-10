@@ -1,8 +1,8 @@
 # Backpack\CRUD
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/dick/crud.svg?style=flat-square)](https://packagist.org/packages/dick/crud)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/backpack/crud.svg?style=flat-square)](https://packagist.org/packages/backpack/crud)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Total Downloads](https://img.shields.io/packagist/dt/dick/crud.svg?style=flat-square)](https://packagist.org/packages/dick/crud)
+[![Total Downloads](https://img.shields.io/packagist/dt/backpack/crud.svg?style=flat-square)](https://packagist.org/packages/backpack/crud)
 
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
 
@@ -89,6 +89,6 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-downloads]: https://img.shields.io/packagist/dt/tabacitu/crud.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/backpack/crud
-[link-downloads]: https://packagist.org/packages/dick/crud
+[link-downloads]: https://packagist.org/packages/backpack/crud
 [link-author]: https://tabacitu.ro
 [link-contributors]: ../../contributors
