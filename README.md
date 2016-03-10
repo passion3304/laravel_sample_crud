@@ -14,10 +14,26 @@ Via Composer
 $ composer require backpack/crud
 ```
 
+Add this to your config/app.php, under "providers":
+```php
+        Backpack\CRUD\CrudServiceProvider::class,
+        'Collective\Html\HtmlServiceProvider',
+        'Barryvdh\Elfinder\ElfinderServiceProvider',
+```
+
 Add this to your config/app.php, under "aliases":
 
 ```php
-'CRUD' => 'Backpack\CRUD\CrudServiceProvider',
+        'CRUD' => 'Backpack\CRUD\CrudServiceProvider',
+        'Form' => 'Collective\Html\FormFacade',
+        'Html' => 'Collective\Html\HtmlFacade',
+```
+
+Run:
+```bash
+$ php artisan elfinder:publish #published elfinder assets
+$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="public" #publish CRUD assets
+$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
 ```
 
 ## Usage
