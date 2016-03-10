@@ -36,6 +36,11 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
 ```
 
+[Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
+```html
+<li><a href="{{ url('admin/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>
+```
+
 ## Usage
 
 Check out the documentation at http://LaravelBackPack.com/docs 

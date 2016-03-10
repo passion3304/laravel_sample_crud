@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.2] - 2016-03-10
+
+### Fixed
+- Fixed ckeditor field type.
+- Added menu item instructions in readme.
+
+
 ## [0.9.1] - 2016-03-10
 
 ### Fixed
