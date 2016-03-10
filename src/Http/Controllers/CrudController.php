@@ -36,7 +36,7 @@ class CrudController extends BaseController {
 
 		// Check for the right roles to access these pages
 		// if (!\Entrust::can('view-admin-panel')) {
-	 //        abort(403, trans('crud.unauthorized_access'));
+	 //        abort(403, trans('backpack::crud.unauthorized_access'));
 	 //    }
 	}
 
@@ -133,7 +133,7 @@ class CrudController extends BaseController {
 		}
 
 		// show a success message
-		\Alert::success(trans('crud.insert_success'))->flash();
+		\Alert::success(trans('backpack::crud.insert_success'))->flash();
 
 		// redirect the user where he chose to be redirected
 		switch (\Request::input('redirect_after_save')) {
@@ -209,7 +209,7 @@ class CrudController extends BaseController {
 		}
 
 		// show a success message
-		\Alert::success(trans('crud.update_success'))->flash();
+		\Alert::success(trans('backpack::crud.update_success'))->flash();
 
 		return \Redirect::to($this->crud['route']);
 	}
@@ -245,7 +245,7 @@ class CrudController extends BaseController {
 		// SECURITY:
 		// if delete_permission is false, abort
 		if (isset($this->crud['delete_permission']) && !$this->crud['delete_permission']) {
-			abort(403, trans('crud.unauthorized_access'));
+			abort(403, trans('backpack::crud.unauthorized_access'));
 		}
 
 		$model = $this->crud['model'];

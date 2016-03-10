@@ -37,6 +37,11 @@ class CrudServiceProvider extends ServiceProvider
         $this->publishes([ __DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud'), ], 'views');
         // publish public Backpack CRUD assets
         $this->publishes([ __DIR__.'/public' => public_path('vendor/backpack'), ], 'public');
+        // publish custom files for elFinder
+        $this->publishes([
+                            __DIR__.'/config/elfinder.php' => config_path('elfinder.php'),
+                            __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
+                            ], 'elfinder');
 
         // use the vendor configuration file as fallback
         // $this->mergeConfigFrom(
