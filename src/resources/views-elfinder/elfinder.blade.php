@@ -43,7 +43,7 @@
         File manager
       </h1>
       <ol class="breadcrumb">
-        <li><a href="{{ url('admin/dashboard') }}">Admin</a></li>
+        <li><a href="{{ url('admin') }}">Admin</a></li>
         <li class="active">File Manager</li>
       </ol>
     </section>

@@ -1,4 +1,4 @@
-<?php namespace Backpack\CRUD\Http\Controllers;
+<?php namespace Backpack\CRUD\app\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Form as Form;
 use Alert;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use Backpack\CRUD\Http\Requests\CrudRequest as StoreRequest;
-use Backpack\CRUD\Http\Requests\CrudRequest as UpdateRequest;
+use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
+use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
 
 class CrudController extends BaseController {
 

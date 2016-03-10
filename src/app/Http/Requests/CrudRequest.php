@@ -1,4 +1,4 @@
-<?php namespace Backpack\CRUD\Http\Requests;
+<?php namespace Backpack\CRUD\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

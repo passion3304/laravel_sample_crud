@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.1] - 2016-03-10
+
+### Fixed
+- Changed folder structure (Http is in app folder now).
+
+
 ## [0.9.0] - 2016-03-10
 
 ### Fixed
