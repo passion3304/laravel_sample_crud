@@ -42,6 +42,12 @@ class CrudServiceProvider extends ServiceProvider
                             __DIR__.'/config/elfinder.php' => config_path('elfinder.php'),
                             __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
                             ], 'elfinder');
+        // TODO: publish demo resources:
+            // - Auto Models: Article, Category, Tag
+            // - Auto Requests: Article, Category, Tag
+            // - Auto Controllers: Crud/ArticleController, Crud/CategoryController, Crud/TagController
+            // - MANUAL routes
+            // - MANUAL migration for those entities
 
         // use the vendor configuration file as fallback
         // $this->mergeConfigFrom(
@@ -82,6 +88,12 @@ class CrudServiceProvider extends ServiceProvider
         Route::get($name.'/{id}/details', $controller.'@showDetailsRow');
         Route::get($name.'/{id}/translate/{lang}', $controller.'@translateItem');
         Route::resource($name, $controller, $options);
+
+        // Implicit controller for that entity
+        // - makes any new function in that controller available without defining an extra route
+        // - ex: EntityCrudController@getPreview will be available at /entity/preview through GET
+        // - ex: EntityCrudController@postPreview will be available at /entity/preview through POST
+        Route::controller($name, $controller);
     }
 
 }

@@ -20,10 +20,20 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.4] - 2016-03-11
+
+### Added
+- CRUD::resource() now also acts as an implicit controller too.
+
+### Removed
+- firstViewThatExists() method in CrudController - its functionality is already solved by the view() helper, since we now load the views in the correct order in CrudServiceProvider
+
+
+
 ## [0.9.3] - 2016-03-11
 
 ### Fixed
-- elFinder erro "Undefined variable: file" is fixed with a composer update.
+- elFinder erro "Undefined variable: file" is fixed with a composer update. Just make sure you have studio-42/elfinder version 2.1.9 or higher.
 - Added authentication middleware to elFinder config.
 
 

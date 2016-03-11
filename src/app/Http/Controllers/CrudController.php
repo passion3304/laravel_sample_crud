@@ -73,7 +73,7 @@ class CrudController extends BaseController {
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-		return $this->firstViewThatExists('vendor.backpack.crud.list', 'crud::list', $this->data);
+		return view('crud::list', $this->data);
 	}
 
 
@@ -101,7 +101,7 @@ class CrudController extends BaseController {
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-		return $this->firstViewThatExists('vendor.backpack.crud.create', 'crud::create', $this->data);
+		return view('crud::create', $this->data);
 	}
 
 
@@ -177,7 +177,7 @@ class CrudController extends BaseController {
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-		return $this->firstViewThatExists('vendor.backpack.crud.edit', 'crud::edit', $this->data);
+		return view('crud::edit', $this->data);
 	}
 
 
@@ -230,7 +230,7 @@ class CrudController extends BaseController {
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-		return $this->firstViewThatExists('vendor.backpack.crud.show', 'crud::show', $this->data);
+		return view('crud::show', $this->data);
 	}
 
 
@@ -290,7 +290,7 @@ class CrudController extends BaseController {
 		$this->data['crud'] = $this->crud;
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-		return $this->firstViewThatExists('vendor.backpack.crud.reorder', 'crud::reorder', $this->data);
+		return view('crud::reorder', $this->data);
 	}
 
 
@@ -366,7 +366,7 @@ class CrudController extends BaseController {
 		}
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-		return $this->firstViewThatExists('vendor.backpack.crud.details_row', 'crud::details_row', $this->data);
+		return view('crud::details_row', $this->data);
 	}
 
 
@@ -405,28 +405,6 @@ class CrudController extends BaseController {
 	 * COMMODITY FUNCTIONS
 	 */
 
-
-	/**
-	 * Allow Dick users to easily replace the default views by placing a view with the same name in
-	 * /resources/views/vendor/backpack/crud/. If no such view exists, load the one from the package.
-	 *
-	 * @param  view  	$first_view - the first view to try, ex: vendor.backpack.crud.edit
-	 * @param  view  	$second_view - the second view to try, ex: crud::edit
-	 * @param  array 	$information - the information to send to the view, usually $this->data
-	 * @return HTTP Response
-	 */
-	protected function firstViewThatExists($first_view, $second_view, $information)
-	{
-		// load the first view if it exists, otherwise load the second one
-		if (view()->exists($first_view))
-		{
-			return view($first_view, $information);
-		}
-		else
-		{
-			return view($second_view, $information);
-		}
-	}
 
 	/**
 	 * Refactor the request array to something that can be passed to the model's create or update function.
