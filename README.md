@@ -6,22 +6,24 @@
 
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
 
+![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
+
 ## Install
 
-Via Composer
+1) In your terminal:
 
 ``` bash
 $ composer require backpack/crud
 ```
 
-Add this to your config/app.php, under "providers":
+2) Add this to your config/app.php, under "providers":
 ```php
         Backpack\CRUD\CrudServiceProvider::class,
         'Collective\Html\HtmlServiceProvider',
         'Barryvdh\Elfinder\ElfinderServiceProvider',
 ```
 
-Add this to your config/app.php, under "aliases":
+3) Add this to your config/app.php, under "aliases":
 
 ```php
         'CRUD' => 'Backpack\CRUD\CrudServiceProvider',
@@ -29,14 +31,14 @@ Add this to your config/app.php, under "aliases":
         'Html' => 'Collective\Html\HtmlFacade',
 ```
 
-Run:
+4) Run:
 ```bash
 $ php artisan elfinder:publish #published elfinder assets
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="public" #publish CRUD assets
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
 ```
 
-[Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
+5) [Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
 ```html
 <li><a href="{{ url('admin/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>
 ```
@@ -59,9 +61,11 @@ In short:
 
 ## Screenshots
 
-See http://usedick.com
-
-// TODO: create equivalent screenshots for all Dick screenshots
+- List view pictured above.
+- Create/update view:
+![Create or update view for Backpack/CRUD](https://infinit.io/_/32czWa8.png)
+- File manager (elFinder):
+![File manager interface for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_elfinder.png)
 
 ## Change log
 
@@ -77,8 +81,13 @@ If you discover any security related issues, please email hello@tabacitu.ro inst
 
 ## Credits
 
-- [Cristian Tabacitu][http://tabacitu.ro]
+- [Cristian Tabacitu](http://tabacitu.ro)
 - [All Contributors][link-contributors]
+
+Special thanks go to:
+- [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was the obvious inspiration for this package.
+- [Jaroen Noten](https://github.com/JeroenNoten/Laravel-AdminLTE) - creator of AdminLTE
+
 
 ## License
 
