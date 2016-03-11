@@ -81,8 +81,13 @@ If you discover any security related issues, please email hello@tabacitu.ro inst
 
 ## Credits
 
-- [Cristian Tabacitu][http://tabacitu.ro]
+- [Cristian Tabacitu](http://tabacitu.ro)
 - [All Contributors][link-contributors]
+
+Special thanks go to:
+- [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was the obvious inspiration for this package.
+- [Jaroen Noten](https://github.com/JeroenNoten/Laravel-AdminLTE) - creator of AdminLTE
+
 
 ## License
 
