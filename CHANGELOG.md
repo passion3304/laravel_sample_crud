@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.3] - 2016-03-11
+
+### Fixed
+- elFinder erro "Undefined variable: file" is fixed with a composer update.
+- Added authentication middleware to elFinder config.
+
+
 ## [0.9.2] - 2016-03-10
 
 ### Fixed
