@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.7] - 2016-03-12
+
+### Fixed
+- Using LangFileManager for translatable models instead of Dick's old package.
+
 
 ## [0.9.6] - 2016-03-12
 

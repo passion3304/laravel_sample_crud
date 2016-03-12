@@ -280,7 +280,7 @@ class CrudController extends BaseController {
 		if (property_exists($model, 'translatable'))
 		{
 			$this->data['entries'] = $model::where('translation_lang', $lang)->get();
-			$this->data['languages'] = \Dick\TranslationManager\Models\Language::all();
+			$this->data['languages'] = \Backpack\LangFileManager\app\Models\Language::all();
 			$this->data['active_language'] = $lang;
 		}
 		else
@@ -357,7 +357,7 @@ class CrudController extends BaseController {
 			$this->data['translations'] = $this->data['entry']->translations();
 
 			// create a list of languages the item is not translated in
-			$this->data['languages'] = \Dick\TranslationManager\Models\Language::all();
+			$this->data['languages'] = \Backpack\LangFileManager\app\Models\Language::all();
 			$this->data['languages_already_translated_in'] = $this->data['entry']->translationLanguages();
 			$this->data['languages_to_translate_in'] = $this->data['languages']->diff($this->data['languages_already_translated_in']);
 			$this->data['languages_to_translate_in'] = $this->data['languages_to_translate_in']->reject(function ($item) {
