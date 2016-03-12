@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.5] - 2016-03-12
+
+### Fixed
+- language files are published in the correct folder, no /vendor/ subfolder
+
+
 ## [0.9.4] - 2016-03-11
 
 ### Added
