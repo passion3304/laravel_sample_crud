@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+## [0.9.6] - 2016-03-12
+
+### Fixed
+- Lang files are pushed in the correct folder now. For realsies.
+
+
 ## [0.9.5] - 2016-03-12
 
 ### Fixed

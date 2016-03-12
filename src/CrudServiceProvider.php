@@ -32,7 +32,7 @@ class CrudServiceProvider extends ServiceProvider
 
         // PUBLISH FILES
         // publish lang files
-        $this->publishes([ __DIR__.'/resources/lang' => resource_path('lang'), ], 'lang');
+        $this->publishes([ __DIR__.'/resources/lang' => resource_path('lang/vendor/backpack'), ], 'lang');
         // publish views
         $this->publishes([ __DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud'), ], 'views');
         // publish public Backpack CRUD assets
