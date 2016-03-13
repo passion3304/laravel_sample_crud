@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.8] - 2016-03-14
+
+### Added
+- Added a custom theme for elfinder, called elfinder.backpack.theme, that gets published with the CRUD public files.
+
+
 ## [0.9.7] - 2016-03-12
 
 ### Fixed

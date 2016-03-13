@@ -1,9 +1,12 @@
-@extends('backpack::layout')
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>elFinder 2.0</title>
 
-@section('after_scripts')
     <!-- jQuery and jQuery UI (REQUIRED) -->
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
     <!-- elFinder CSS (REQUIRED) -->
@@ -15,16 +18,27 @@
     <script src="<?= asset($dir.'/js/elfinder.min.js') ?>"></script>
 
     <?php if($locale){ ?>
-    <!-- elFinder translation (OPTIONAL) -->
-    <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
+        <!-- elFinder translation (OPTIONAL) -->
+        <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
     <?php } ?>
 
     <!-- elFinder initialization (REQUIRED) -->
-    <script type="text/javascript" charset="utf-8">
-        // Documentation for client options:
-        // https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
+    <script type="text/javascript">
+        var FileBrowserDialogue = {
+            init: function() {
+                // Here goes your code for setting your custom things onLoad.
+            },
+            mySubmit: function (URL) {
+                // pass selected file path to TinyMCE
+                parent.tinymce.activeEditor.windowManager.getParams().setUrl(URL);
+
+                // close popup window
+                parent.tinymce.activeEditor.windowManager.close();
+            }
+        }
+
         $().ready(function() {
-            $('#elfinder').elfinder({
+            var elf = $('#elfinder').elfinder({
                 // set your elFinder options here
                 <?php if($locale){ ?>
                     lang: '<?= $locale ?>', // locale
@@ -32,27 +46,16 @@
                 customData: {
                     _token: '<?= csrf_token() ?>'
                 },
-                url : '<?= route("elfinder.connector") ?>'  // connector URL
-            });
+                url: '<?= route("elfinder.connector") ?>',  // connector URL
+                getFileCallback: function(file) { // editor callback
+                    FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
+                }
+            }).elfinder('instance');
         });
     </script>
-@endsection
-
-@section('header')
-    <section class="content-header">
-      <h1>
-        File manager
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="{{ url('admin') }}">Admin</a></li>
-        <li class="active">File Manager</li>
-      </ol>
-    </section>
-@endsection
-
-@section('content')
-
+</head>
+<body>
     <!-- Element where elFinder will be created (REQUIRED) -->
     <div id="elfinder"></div>
-
-@endsection
+</body>
+</html>
