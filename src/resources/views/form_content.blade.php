@@ -25,8 +25,8 @@
 {{-- For each form type, load its assets, if needed --}}
 {{-- But only once per field type (no need to include the same css/js files multiple times on the same page) --}}
 <?php
-	$loaded_form_types_css = array();
-	$loaded_form_types_js = array();
+    $loaded_form_types_css = array();
+    $loaded_form_types_js = array();
 ?>
 
 @section('after_styles')

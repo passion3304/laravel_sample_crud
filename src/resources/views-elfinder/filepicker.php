@@ -10,28 +10,28 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
     <!-- elFinder CSS (REQUIRED) -->
-    <link rel="stylesheet" type="text/css" href="<?= asset($dir . '/css/elfinder.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= asset($dir.'/css/elfinder.min.css') ?>">
     <!-- <link rel="stylesheet" type="text/css" href="<?= asset($dir.'/css/theme.css') ?>"> -->
     <link rel="stylesheet" type="text/css" href="<?= asset('vendor/backpack/elfinder/elfinder.backpack.theme.css') ?>">
 
     <!-- elFinder JS (REQUIRED) -->
-    <script src="<?= asset($dir . '/js/elfinder.min.js') ?>"></script>
+    <script src="<?= asset($dir.'/js/elfinder.min.js') ?>"></script>
 
     <?php if ($locale) { ?>
         <!-- elFinder translation (OPTIONAL) -->
-        <script src="<?= asset($dir . "/js/i18n/elfinder.$locale.js") ?>"></script>
+        <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
     <?php } ?>
     <!-- Include jQuery, jQuery UI, elFinder (REQUIRED) -->
 
     <?php
-    $mimeTypes = implode(',',array_map(function($t){return "'".$t."'";}, explode(',',$type)));
+    $mimeTypes = implode(',', array_map(function($t) {return "'".$t."'"; }, explode(',', $type)));
     ?>
 
     <script type="text/javascript">
         $().ready(function () {
             var elf = $('#elfinder').elfinder({
                 // set your elFinder options here
-                <?php if($locale){ ?>
+                <?php if ($locale) { ?>
                     lang: '<?= $locale ?>', // locale
                 <?php } ?>
                 customData: {

@@ -71,24 +71,24 @@
                             if ($results && $results->count()) {
                                 $results_array = $results->lists($column['attribute'], 'id');
                                 echo implode(', ', $results_array->toArray());
-                              }
-                              else
-                              {
+                                }
+                                else
+                                {
                                 echo '-';
-                              }
-                             ?></td>
+                                }
+                                ?></td>
                           @elseif (isset($column['type']) && $column['type']=='select')
                             {{-- single relationships (1-1, 1-n) --}}
                             <td><?php
                             if ($entry->{$column['entity']}()->getResults()) {
                                 echo $entry->{$column['entity']}()->getResults()->{$column['attribute']};
-                              }
-                             ?></td>
+                                }
+                                ?></td>
                           @elseif (isset($column['type']) && $column['type']=='model_function')
                             {{-- custom return value --}}
                             <td><?php
                                 echo $entry->{$column['function_name']}();
-                             ?></td>
+                                ?></td>
                           @else
                             {{-- regular object attribute --}}
                             <td>{{ str_limit(strip_tags($entry->$column['name']), 80, "[...]") }}</td>
