@@ -33,11 +33,6 @@ class CrudController extends BaseController {
 	public function __construct()
 	{
 		$this->data['crud'] = $this->crud;
-
-		// Check for the right roles to access these pages
-		// if (!\Entrust::can('view-admin-panel')) {
-	 //        abort(403, trans('backpack::crud.unauthorized_access'));
-	 //    }
 	}
 
 	/**
@@ -110,6 +105,7 @@ class CrudController extends BaseController {
 	/**
 	 * Store a newly created resource in the database.
 	 *
+	 * @param  StoreRequest  $request - type injection used for validation using Requests
 	 * @return Response
 	 */
 	public function storeCrud(StoreRequest $request = null)
@@ -141,11 +137,9 @@ class CrudController extends BaseController {
 		switch (\Request::input('redirect_after_save')) {
 			case 'current_item_edit':
 				return \Redirect::to($this->crud['route'].'/'.$item->id.'/edit');
-				break;
 
 			default:
 				return \Redirect::to(\Request::input('redirect_after_save'));
-				break;
 		}
 	}
 
@@ -187,7 +181,7 @@ class CrudController extends BaseController {
 	/**
 	 * Update the specified resource in the database.
 	 *
-	 * @param  int  $id
+	 * @param  UpdateRequest  $request - type injection used for validation using Requests
 	 * @return Response
 	 */
 	public function updateCrud(UpdateRequest $request = null)
@@ -200,8 +194,7 @@ class CrudController extends BaseController {
 		$model = $this->crud['model'];
 		$this->prepareFields($model::find(\Request::input('id')));
 
-		$item = $model::find(\Request::input('id'))
-						->update($this->compactFakeFields(\Request::all()));
+		$model::find(\Request::input('id'))->update($this->compactFakeFields(\Request::all()));
 
 		// if it's a relationship with a pivot table, also sync that
 		foreach ($this->crud['fields'] as $k => $field) {

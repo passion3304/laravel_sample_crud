@@ -43,7 +43,6 @@ trait CrudTrait {
      * Add fake fields as regular attributes, even though they are stored as JSON.
      *
      * @param  array  $columns - the database columns that contain the JSONs
-     * @return -
      */
     public function addFakes($columns = ['extras']) {
         foreach ($columns as $key => $column) {
@@ -180,7 +179,7 @@ trait CrudTrait {
             // TODO: if some untranslatable attributes are empty, but its parent's are filled, copy them
         }
 
-        parent::save();
+        parent::save($options);
     }
 
 }

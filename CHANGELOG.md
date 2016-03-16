@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.10] - 2016-03-17
+
+### Fixed
+- Fixed some scrutinizer bugs.
+
+
 ## [0.9.9] - 2016-03-16
 
 ### Added

@@ -48,11 +48,6 @@ class CrudServiceProvider extends ServiceProvider
             // - Auto Controllers: Crud/ArticleController, Crud/CategoryController, Crud/TagController
             // - MANUAL routes
             // - MANUAL migration for those entities
-
-        // use the vendor configuration file as fallback
-        // $this->mergeConfigFrom(
-        //     __DIR__.'/config/config.php', 'CRUD'
-        // );
     }
 
 
