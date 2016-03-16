@@ -12,7 +12,7 @@ trait CrudTrait {
     |--------------------------------------------------------------------------
     */
 
-	public static function getPossibleEnumValues($field_name){
+    public static function getPossibleEnumValues($field_name){
         $instance = new static; // create an instance of the model to be able to get the table name
         $type = DB::select( DB::raw('SHOW COLUMNS FROM '.$instance->getTable().' WHERE Field = "'.$field_name.'"') )[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
@@ -27,9 +27,9 @@ trait CrudTrait {
 
     public static function isColumnNullable($column_name) {
         $instance = new static; // create an instance of the model to be able to get the table name
-        $answer = DB::select( DB::raw("SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='".$instance->getTable()."' AND COLUMN_NAME='".$column_name."' AND table_schema='".env('DB_DATABASE')."'") )[0];
+        $answer = DB::select(DB::raw("SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='".$instance->getTable()."' AND COLUMN_NAME='".$column_name."' AND table_schema='".env('DB_DATABASE')."'"))[0];
 
-        return ($answer->IS_NULLABLE == 'YES'?true:false);
+        return ($answer->IS_NULLABLE == 'YES' ? true : false);
     }
 
 
@@ -67,7 +67,7 @@ trait CrudTrait {
      * Return the entity with fake fields as attributes.
      *
      * @param  array  $columns - the database columns that contain the JSONs
-     * @return obj
+     * @return CrudTrait
      */
     public function withFakes($columns = [])
     {
@@ -76,8 +76,7 @@ trait CrudTrait {
         if (!count($columns)) {
             if (property_exists($model, 'fakeColumns')) {
                 $columns = $this->fakeColumns;
-            }
-            else
+            } else
             {
                 $columns = ['extras'];
             }
@@ -128,7 +127,7 @@ trait CrudTrait {
 
     public function translation($translation_lang = false)
     {
-        if ($translation_lang==false) {
+        if ($translation_lang == false) {
             $translation_lang = Lang::locale();
         }
 

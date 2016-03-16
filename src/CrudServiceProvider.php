@@ -32,11 +32,11 @@ class CrudServiceProvider extends ServiceProvider
 
         // PUBLISH FILES
         // publish lang files
-        $this->publishes([ __DIR__.'/resources/lang' => resource_path('lang/vendor/backpack'), ], 'lang');
+        $this->publishes([__DIR__.'/resources/lang' => resource_path('lang/vendor/backpack'), ], 'lang');
         // publish views
-        $this->publishes([ __DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud'), ], 'views');
+        $this->publishes([__DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud'), ], 'views');
         // publish public Backpack CRUD assets
-        $this->publishes([ __DIR__.'/public' => public_path('vendor/backpack'), ], 'public');
+        $this->publishes([__DIR__.'/public' => public_path('vendor/backpack'), ], 'public');
         // publish custom files for elFinder
         $this->publishes([
                             __DIR__.'/config/elfinder.php' => config_path('elfinder.php'),
@@ -68,7 +68,7 @@ class CrudServiceProvider extends ServiceProvider
 
     private function registerCRUD()
     {
-        $this->app->bind('CRUD',function($app){
+        $this->app->bind('CRUD', function($app) {
             return new CRUD($app);
         });
     }

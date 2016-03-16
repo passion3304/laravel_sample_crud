@@ -53,8 +53,7 @@ class CrudController extends BaseController {
 		if (property_exists($model, 'translatable'))
 		{
 			$this->data['entries'] = $model::where('translation_lang', \Lang::locale())->get();
-		}
-		else
+		} else
 		{
 			$this->data['entries'] = $model::all();
 		}
@@ -106,7 +105,7 @@ class CrudController extends BaseController {
 	 * Store a newly created resource in the database.
 	 *
 	 * @param  StoreRequest  $request - type injection used for validation using Requests
-	 * @return Response
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function storeCrud(StoreRequest $request = null)
 	{
@@ -124,7 +123,7 @@ class CrudController extends BaseController {
 		// if it's a relationship with a pivot table, also sync that
 		$this->prepareFields();
 		foreach ($this->crud['fields'] as $k => $field) {
-			if (isset($field['pivot']) && $field['pivot']==true && \Request::has($field['name']))
+			if (isset($field['pivot']) && $field['pivot'] == true && \Request::has($field['name']))
 			{
 				$model::find($item->id)->$field['name']()->attach(\Request::input($field['name']));
 			}
@@ -182,7 +181,7 @@ class CrudController extends BaseController {
 	 * Update the specified resource in the database.
 	 *
 	 * @param  UpdateRequest  $request - type injection used for validation using Requests
-	 * @return Response
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function updateCrud(UpdateRequest $request = null)
 	{
@@ -198,7 +197,7 @@ class CrudController extends BaseController {
 
 		// if it's a relationship with a pivot table, also sync that
 		foreach ($this->crud['fields'] as $k => $field) {
-			if (isset($field['pivot']) && $field['pivot']==true && \Request::has($field['name']))
+			if (isset($field['pivot']) && $field['pivot'] == true && \Request::has($field['name']))
 			{
 				$model::find(\Request::input('id'))->$field['name']()->sync(\Request::input($field['name']));
 			}
@@ -235,7 +234,7 @@ class CrudController extends BaseController {
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return string
 	 */
 	public function destroy($id)
 	{
@@ -279,8 +278,7 @@ class CrudController extends BaseController {
 			$this->data['entries'] = $model::where('translation_lang', $lang)->get();
 			$this->data['languages'] = \Backpack\LangFileManager\app\Models\Language::all();
 			$this->data['active_language'] = $lang;
-		}
-		else
+		} else
 		{
 			$this->data['entries'] = $model::all();
 		}
@@ -323,8 +321,7 @@ class CrudController extends BaseController {
 					$count++;
 				}
 			}
-		}
-		else
+		} else
 		{
 			return false;
 		}
@@ -358,7 +355,7 @@ class CrudController extends BaseController {
 			$this->data['languages'] = \Backpack\LangFileManager\app\Models\Language::all();
 			$this->data['languages_already_translated_in'] = $this->data['entry']->translationLanguages();
 			$this->data['languages_to_translate_in'] = $this->data['languages']->diff($this->data['languages_already_translated_in']);
-			$this->data['languages_to_translate_in'] = $this->data['languages_to_translate_in']->reject(function ($item) {
+			$this->data['languages_to_translate_in'] = $this->data['languages_to_translate_in']->reject(function($item) {
 			    return $item->abbr == \Lang::locale();
 			});
 		}
@@ -381,8 +378,7 @@ class CrudController extends BaseController {
 		if ($existing_translation)
 		{
 			$new_entry = $existing_translation;
-		}
-		else
+		} else
 		{
 			// get the info for that entry
 			$new_entry_attributes = $this->data['entry']->getAttributes();
@@ -421,22 +417,21 @@ class CrudController extends BaseController {
 		// go through each defined field
 		foreach ($this->crud['fields'] as $k => $field) {
 			// if it's a fake field
-			if (isset($this->crud['fields'][$k]['fake']) && $this->crud['fields'][$k]['fake']==true) {
+			if (isset($this->crud['fields'][$k]['fake']) && $this->crud['fields'][$k]['fake'] == true) {
 				// add it to the request in its appropriate variable - the one defined, if defined
 				if (isset($this->crud['fields'][$k]['store_in'])) {
 					$request[$this->crud['fields'][$k]['store_in']][$this->crud['fields'][$k]['name']] = $request[$this->crud['fields'][$k]['name']];
 
 					$remove_fake_field = array_pull($request, $this->crud['fields'][$k]['name']);
-					if(!in_array($this->crud['fields'][$k]['store_in'], $fake_field_columns_to_encode, true)){
+					if (!in_array($this->crud['fields'][$k]['store_in'], $fake_field_columns_to_encode, true)) {
 				        array_push($fake_field_columns_to_encode, $this->crud['fields'][$k]['store_in']);
 				    }
-				}
-				else //otherwise in the one defined in the $crud variable
+				} else //otherwise in the one defined in the $crud variable
 				{
 					$request['extras'][$this->crud['fields'][$k]['name']] = $request[$this->crud['fields'][$k]['name']];
 
 					$remove_fake_field = array_pull($request, $this->crud['fields'][$k]['name']);
-					if(!in_array('extras', $fake_field_columns_to_encode, true)){
+					if (!in_array('extras', $fake_field_columns_to_encode, true)) {
 				        array_push($fake_field_columns_to_encode, 'extras');
 				    }
 				}
@@ -469,16 +464,15 @@ class CrudController extends BaseController {
 
 		foreach ($this->crud['fields'] as $k => $field) {
 			// if it's a fake field
-			if (isset($this->crud['fields'][$k]['fake']) && $this->crud['fields'][$k]['fake']==true) {
+			if (isset($this->crud['fields'][$k]['fake']) && $this->crud['fields'][$k]['fake'] == true) {
 				// add it to the request in its appropriate variable - the one defined, if defined
 				if (isset($this->crud['fields'][$k]['store_in'])) {
-					if(!in_array($this->crud['fields'][$k]['store_in'], $fake_field_columns_to_encode, true)){
+					if (!in_array($this->crud['fields'][$k]['store_in'], $fake_field_columns_to_encode, true)) {
 				        array_push($fake_field_columns_to_encode, $this->crud['fields'][$k]['store_in']);
 				    }
-				}
-				else //otherwise in the one defined in the $crud variable
+				} else //otherwise in the one defined in the $crud variable
 				{
-					if(!in_array('extras', $fake_field_columns_to_encode, true)){
+					if (!in_array('extras', $fake_field_columns_to_encode, true)) {
 				        array_push($fake_field_columns_to_encode, 'extras');
 				    }
 				}
@@ -536,8 +530,7 @@ class CrudController extends BaseController {
 			if (isset($this->crud['create_fields']))
 			{
 				$this->crud['fields'] = $this->crud['create_fields'];
-			}
-			elseif (isset($this->crud['update_fields']))
+			} elseif (isset($this->crud['update_fields']))
 			{
 				$this->crud['fields'] = $this->crud['update_fields'];
 			}
@@ -569,8 +562,9 @@ class CrudController extends BaseController {
 
 		// if no field type is defined, assume the "text" field type
 		foreach ($this->crud['fields'] as $k => $field) {
-				if (!isset($this->crud['fields'][$k]['type']))
-					$this->crud['fields'][$k]['type'] = 'text';
+				if (!isset($this->crud['fields'][$k]['type'])) {
+									$this->crud['fields'][$k]['type'] = 'text';
+				}
 			}
 
 		// if an entry was passed, we're preparing for the update form, not create
