@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [0.9.9] - 2016-03-16
+
+### Added
+- Added page title.
+
+
 ## [0.9.8] - 2016-03-14
 
 ### Added

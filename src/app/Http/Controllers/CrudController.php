@@ -71,6 +71,7 @@ class CrudController extends BaseController {
 
 		$this->prepareColumns();
 		$this->data['crud'] = $this->crud;
+		$this->data['title'] = ucfirst($this->crud['entity_name_plural']);
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
 		return view('crud::list', $this->data);
@@ -99,6 +100,7 @@ class CrudController extends BaseController {
 		// prepare the fields you need to show
 		$this->prepareFields();
 		$this->data['crud'] = $this->crud;
+		$this->data['title'] = trans('backpack::crud.add').' '.$this->crud['entity_name'];
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
 		return view('crud::create', $this->data);
@@ -175,6 +177,7 @@ class CrudController extends BaseController {
 		// prepare the fields you need to show and prepopulate the values
 		$this->prepareFields($this->data['entry']);
 		$this->data['crud'] = $this->crud;
+		$this->data['title'] = trans('backpack::crud.edit').' '.$this->crud['entity_name'];
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
 		return view('crud::edit', $this->data);
@@ -228,6 +231,7 @@ class CrudController extends BaseController {
 		$this->data['entry'] = $model::find($id);
 		$this->data['entry']->addFakes($this->getFakeColumnsAsArray());
 		$this->data['crud'] = $this->crud;
+		$this->data['title'] = trans('backpack::crud.preview').' '.$this->crud['entity_name'];
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
 		return view('crud::show', $this->data);
@@ -288,6 +292,7 @@ class CrudController extends BaseController {
 			$this->data['entries'] = $model::all();
 		}
 		$this->data['crud'] = $this->crud;
+		$this->data['title'] = trans('backpack::crud.reorder').' '.$this->crud['entity_name'];
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
 		return view('crud::reorder', $this->data);
