@@ -48,7 +48,7 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 
 ## Usage
 
-Check out the documentation at http://LaravelBackPack.com/docs 
+Check out the documentation at https://laravel-backpack.readme.io/docs 
 
 // TODO: create a documentation file base on Dick documentation
 
