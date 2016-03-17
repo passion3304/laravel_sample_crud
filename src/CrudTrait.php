@@ -1,5 +1,6 @@
 <?php namespace Dick\CRUD;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Lang;
@@ -115,13 +116,20 @@ trait CrudTrait {
         // the translations
         $translations = $this->translations();
 
-        // the current item
-        $all_translations = $translations->push($this);
-
+        $all_translations = new Collection();
         // the original
         if ($this->translation_of) {
             $original = $model::find($this->translation_of);
             $all_translations = $all_translations->push($original);
+
+            // get all translations from the original
+            $translationsOfOriginal = $model::where('translation_of', $original->id)->get();
+            foreach($translationsOfOriginal as $translation) {
+                $all_translations->push($translation);
+            }
+        } else {
+            // prepend the translation to be first in the list of translations
+            $all_translations = $translations->prepend($this);
         }
 
         return $all_translations;
