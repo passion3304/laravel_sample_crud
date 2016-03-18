@@ -9,6 +9,8 @@
 
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
 
+**Breaking changes coming up. Final version will launch at the end of March. Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced when the API is stable (late March - early April 2016).** 
+
 ![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
 
 ## Install
