@@ -17,7 +17,7 @@
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
 		<!-- Default box -->
-		@if (!(isset($crud->view_table_permission) && !$crud->view_table_permission))
+		@if ($crud->hasPermission('list'))
 			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 

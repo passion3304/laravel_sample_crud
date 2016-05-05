@@ -23,11 +23,11 @@
 <!-- Default box -->
   <div class="box">
     <div class="box-header with-border">
-      @if (!(isset($crud->add_permission) && !$crud->add_permission))
+      @if ($crud->hasPermission('add'))
       		<a href="{{ url($crud->route.'/create') }}" class="btn btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('backpack::crud.add') }} {{ $crud->entity_name }}</span></a>
       @endif
-      @if ((isset($crud->reorder) && $crud->reorder))
-        @if (!(isset($crud->reorder_permission) && !$crud->reorder_permission))
+      @if ($crud->reorder)
+        @if ($crud->hasPermission('reorder'))
           <a href="{{ url($crud->route.'/reorder') }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-arrows"></i> {{ trans('backpack::crud.reorder') }} {{ $crud->entity_name_plural }}</span></a>
           @endif
       @endif
@@ -37,7 +37,7 @@
 		<table id="crudTable" class="table table-bordered table-striped display">
                     <thead>
                       <tr>
-                        @if (isset($crud->details_row) && $crud->details_row==true)
+                        @if ($crud->details_row)
                           <th></th> <!-- expand/minimize button column -->
                         @endif
 
@@ -56,7 +56,7 @@
                       @foreach ($entries as $k => $entry)
                       <tr data-entry-id="{{ $entry->id }}">
 
-                        @if (isset($crud->details_row) && $crud->details_row==true)
+                        @if ($crud->details_row)
                           <!-- expand/minimize button column -->
                           <td class="details-control text-center cursor-pointer">
                             <i class="fa fa-plus-square-o"></i>
@@ -99,10 +99,10 @@
                         @if ( !( isset($crud->edit_permission) && $crud->edit_permission === false && isset($crud->delete_permission) && $crud->delete_permission === false ) )
                         <td>
                           {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
-                          @if (!(isset($crud->edit_permission) && !$crud->edit_permission))
+                          @if ($crud->hasPermission('edit'))
                             <a href="{{ Request::url().'/'.$entry->id }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
                           @endif
-                           @if (!(isset($crud->delete_permission) && !$crud->delete_permission))
+                           @if ($crud->hasPermission('delete'))
                           <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
                           @endif
                         </td>
@@ -113,7 +113,7 @@
                     </tbody>
                     <tfoot>
                       <tr>
-                        @if (isset($crud->details_row) && $crud->details_row==true)
+                        @if ($crud->details_row)
                           <th></th> <!-- expand/minimize button column -->
                         @endif
 
@@ -166,7 +166,7 @@
           }
       });
 
-      @if (isset($crud->details_row) && $crud->details_row==true)
+      @if ($crud->details_row)
       // Add event listener for opening and closing details
       $('#crudTable tbody').on('click', 'td.details-control', function () {
           var tr = $(this).closest('tr');

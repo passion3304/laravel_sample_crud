@@ -17,7 +17,7 @@
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
 		<!-- Default box -->
-		@if (!(isset($crud->view_table_permission) && !$crud->view_table_permission))
+		@if ($crud->hasPermission('list'))
 			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 
@@ -29,8 +29,8 @@
 		    </div>
 		    <div class="box-body">
 		      <!-- load the view from the application if it exists, otherwise load the one in the package -->
-		      @if(view()->exists('vendor.dick.crud.form_content'))
-		      	@include('vendor.dick.crud.form_content')
+		      @if(view()->exists('vendor.backpack.crud.form_content'))
+		      	@include('vendor.backpack.crud.form_content')
 		      @else
 		      	@include('crud::form_content')
 		      @endif

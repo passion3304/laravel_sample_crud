@@ -123,7 +123,7 @@ class Crud
         return !empty($this->buttons) && !(count($this->buttons) == 1 && array_key_exists('add', $this->buttons));
     }
 
-    public function removePermissions($permissions)
+    public function removePermissions($permissions) // DONE
     {
         $this->removeButtons((array)$permissions);
 
@@ -259,7 +259,7 @@ class Crud
         return $model;
     }
 
-    public function delete($id)
+    public function delete($id) // DONE
     {
         return $this->model->destroy($id);
     }
@@ -280,7 +280,7 @@ class Crud
         return $this->query->groupBy($field);
     }
 
-    public function checkPermission($permission)
+    public function checkPermission($permission) // DONE
     {
         if (!in_array($permission, $this->permissions)) abort(403);
     }
@@ -368,7 +368,7 @@ class Crud
         return $this->buttons;
     }
 
-    private function getColumns()
+    private function getColumns() // DONE
     {
         $columns = \Schema::getColumnListing($this->model->getTable());
         $fillable = $this->model->getFillable();
@@ -392,7 +392,7 @@ class Crud
         return false;
     }
 
-    private function getColumnTypes()
+    private function getColumnTypes() // DONE
     {
         foreach (\DB::select(\DB::raw('SHOW COLUMNS FROM '.$this->model->getTable())) as $column)
         {
@@ -402,7 +402,7 @@ class Crud
         return $this->fieldTypes;
     }
 
-    private function getType($field)
+    private function getType($field) // DONE
     {
         if (!array_key_exists($field, $this->fieldTypes)) return 'text';
 
@@ -457,7 +457,7 @@ class Crud
         }
     }
 
-    private function initEntities()
+    private function initEntities() // DONE
     {
         $this->getColumnTypes();
 
@@ -569,7 +569,7 @@ class Crud
         }
     }
 
-    private function makeLabel($value)
+    private function makeLabel($value) // DONE
     {
         return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
     }
