@@ -38,15 +38,8 @@ class CrudController extends BaseController {
 			abort(403, 'Not allowed.');
 		}
 
-		// get all results for that entity
 		$model = $this->crud->model;
-		if (property_exists($model, 'translatable'))
-		{
-			$this->data['entries'] = $model::where('translation_lang', \Lang::locale())->get();
-		} else
-		{
-			$this->data['entries'] = $model::all();
-		}
+		$this->data['entries'] = $model::all();
 
 			// add the fake fields for each entry
 			foreach ($this->data['entries'] as $key => $entry) {
@@ -213,7 +206,7 @@ class CrudController extends BaseController {
 		$this->data['entry'] = $model::find($id);
 		$this->data['entry']->addFakes($this->getFakeColumnsAsArray());
 		$this->data['crud'] = $this->crud;
-		$this->data['title'] = trans('backpack::crud.preview').' '.$this->crud['entity_name'];
+		$this->data['title'] = trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
 		return view('crud::show', $this->data);
@@ -263,15 +256,7 @@ class CrudController extends BaseController {
 
 		// get all results for that entity
 		$model = $this->crud->model;
-		if (property_exists($model, 'translatable'))
-		{
-			$this->data['entries'] = $model::where('translation_lang', $lang)->get();
-			$this->data['languages'] = \Backpack\LangFileManager\app\Models\Language::all();
-			$this->data['active_language'] = $lang;
-		} else
-		{
-			$this->data['entries'] = $model::all();
-		}
+		$this->data['entries'] = $model::all();
 		$this->data['crud'] = $this->crud;
 		$this->data['title'] = trans('backpack::crud.reorder').' '.$this->crud->entity_name;
 
@@ -322,11 +307,12 @@ class CrudController extends BaseController {
 
 	/**
 	 * Used with AJAX in the list view (datatables) to show extra information about that row that didn't fit in the table.
-	 * It defaults to showing all connected translations and their CRUD buttons.
+	 * It defaults to showing some dummy text.
 	 *
 	 * It's enabled by:
-	 * - setting the $crud['details_row'] variable to true;
+	 * - setting: $crud->details_row = true;
 	 * - adding the details route for the entity; ex: Route::get('page/{id}/details', 'PageCrudController@showDetailsRow');
+	 * - adding a view with the following name to change what the row actually contains: app/resources/views/vendor/backpack/crud/details_row.blade.php
 	 */
 	public function showDetailsRow($id)
 	{
@@ -337,50 +323,8 @@ class CrudController extends BaseController {
 		$this->data['original_entry'] = $this->data['entry'];
 		$this->data['crud'] = $this->crud;
 
-		if (property_exists($model, 'translatable'))
-		{
-			$this->data['translations'] = $this->data['entry']->translations();
-
-			// create a list of languages the item is not translated in
-			$this->data['languages'] = \Backpack\LangFileManager\app\Models\Language::all();
-			$this->data['languages_already_translated_in'] = $this->data['entry']->translationLanguages();
-			$this->data['languages_to_translate_in'] = $this->data['languages']->diff($this->data['languages_already_translated_in']);
-			$this->data['languages_to_translate_in'] = $this->data['languages_to_translate_in']->reject(function($item) {
-			    return $item->abbr == \Lang::locale();
-			});
-		}
-
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
 		return view('crud::details_row', $this->data);
-	}
-
-
-	/**
-	 * Duplicate an existing item into another language and open it for editing.
-	 */
-	public function translateItem($id, $lang)
-	{
-		$model = $this->crud->model;
-		$this->data['entry'] = $model::find($id);
-		// check if there isn't a translation already
-		$existing_translation = $this->data['entry']->translation($lang);
-
-		if ($existing_translation)
-		{
-			$new_entry = $existing_translation;
-		} else
-		{
-			// get the info for that entry
-			$new_entry_attributes = $this->data['entry']->getAttributes();
-			$new_entry_attributes['translation_lang'] = $lang;
-			$new_entry_attributes['translation_of'] = $id;
-			$new_entry_attributes = array_except($new_entry_attributes, 'id');
-
-			$new_entry = $model::create($new_entry_attributes);
-		}
-
-		// redirect to the edit form for that translation
-		return redirect(str_replace($id, $new_entry->id, str_replace('translate/'.$lang, 'edit', \Request::url())));
 	}
 
 
