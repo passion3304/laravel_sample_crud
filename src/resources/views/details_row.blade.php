@@ -4,7 +4,7 @@
 
 				@if (count($translations))
 					<p>
-						Translations of this {{ $crud['entity_name'] }}:
+						Translations of this {{ $crud->entity_name }}:
 					</p>
 					<table class="table table-condensed table-bordered" style="m-t-10">
 						<thead>
@@ -13,11 +13,11 @@
 				          		Language
 				          	</th>
 				          	{{-- Table columns --}}
-				            @foreach ($crud['columns'] as $column)
+				            @foreach ($crud->columns as $column)
 				              <th>{{ $column['label'] }}</th>
 				            @endforeach
 
-				            @if ( !( isset($crud['edit_permission']) && $crud['edit_permission'] === false && isset($crud['delete_permission']) && $crud['delete_permission'] === false ) )
+				            @if ( !( isset($crud->edit_permission) && $crud->edit_permission === false && isset($crud->delete_permission) && $crud->delete_permission === false ) )
 				              <th>{{ trans('backpack::crud.actions') }}</th>
 				            @endif
 				          </tr>
@@ -29,7 +29,7 @@
 				    					{{ $entry->language->name }}
 				    				</td>
 
-				    				@foreach ($crud['columns'] as $column)
+				    				@foreach ($crud->columns as $column)
 				                      @if (isset($column['type']) && $column['type']=='select_multiple')
 				                        {{-- relationships with pivot table (n-n) --}}
 				                        <td><?php
@@ -57,13 +57,13 @@
 
 				                    @endforeach
 
-				                    @if ( !( isset($crud['edit_permission']) && $crud['edit_permission'] === false && isset($crud['delete_permission']) && $crud['delete_permission'] === false ) )
+				                    @if ( !( isset($crud->edit_permission) && $crud->edit_permission === false && isset($crud->delete_permission) && $crud->delete_permission === false ) )
 				                    <td>
 				                      {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
-				                      @if (!(isset($crud['edit_permission']) && !$crud['edit_permission']))
+				                      @if (!(isset($crud->edit_permission) && !$crud->edit_permission))
 				                        <a href="{{ str_replace($original_entry->id, $entry->id, str_replace('details', 'edit', Request::url())) }}" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
 				                      @endif
-				                       @if (!(isset($crud['delete_permission']) && !$crud['delete_permission']))
+				                       @if (!(isset($crud->delete_permission) && !$crud->delete_permission))
 				                      <a href="{{ str_replace($original_entry->id, $entry->id, str_replace('details', '', Request::url())) }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
 				                      @endif
 				                    </td>

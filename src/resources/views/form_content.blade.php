@@ -12,7 +12,7 @@
   @endif
 
   {{-- Show the inputs --}}
-  @foreach ($crud['fields'] as $field)
+  @foreach ($crud->fields as $field)
     <!-- load the view from the application if it exists, otherwise load the one in the package -->
 	@if(view()->exists('vendor.dick.crud.fields.'.$field['type']))
 		@include('vendor.dick.crud.fields.'.$field['type'], array('field' => $field))
@@ -31,7 +31,7 @@
 
 @section('after_styles')
 	<!-- FORM CONTENT CSS ASSETS -->
-	@foreach ($crud['fields'] as $field)
+	@foreach ($crud->fields as $field)
 		@if(!isset($loaded_form_types_css[$field['type']]) || $loaded_form_types_css[$field['type']]==false)
 			@if (View::exists('vendor.dick.crud.fields.assets.css.'.$field['type'], array('field' => $field)))
 				@include('vendor.dick.crud.fields.assets.css.'.$field['type'], array('field' => $field))
@@ -46,7 +46,7 @@
 
 @section('after_scripts')
 	<!-- FORM CONTENT JAVSCRIPT ASSETS -->
-	@foreach ($crud['fields'] as $field)
+	@foreach ($crud->fields as $field)
 		@if(!isset($loaded_form_types_js[$field['type']]) || $loaded_form_types_js[$field['type']]==false)
 			@if (View::exists('vendor.dick.crud.fields.assets.js.'.$field['type'], array('field' => $field)))
 				@include('vendor.dick.crud.fields.assets.js.'.$field['type'], array('field' => $field))

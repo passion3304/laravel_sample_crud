@@ -1,7 +1,7 @@
 <!-- enum -->
   <div class="form-group">
     <label>{{ $field['label'] }}</label>
-    <?php $entity_model = $crud['model']; ?>
+    <?php $entity_model = $crud->model; ?>
     <select
     	class="form-control"
 
