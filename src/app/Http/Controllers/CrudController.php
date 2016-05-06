@@ -203,7 +203,7 @@ class CrudController extends BaseController {
 		$all_entries = \Request::input('tree');
 
 		if (count($all_entries)) {
-			$count = $this->crud->reorder($all_entries);
+			$count = $this->crud->updateTreeOrder($all_entries);
 		} else
 		{
 			return false;
