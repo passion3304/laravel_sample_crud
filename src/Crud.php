@@ -260,7 +260,7 @@ class Crud
         foreach ($entries as $key => $entry) {
             $entry->addFakes($this->getFakeColumnsAsArray());
         }
-//
+
         return $entries;
     }
 
@@ -269,25 +269,50 @@ class Crud
         return $this->item = $this->model->findOrFail($id);
     }
 
-    public function save($data)
+
+    /**
+     * Insert a row in the database.
+     *
+     * @param  [Request] All input values to be inserted.
+     * @return [Eloquent Collection]
+     */
+    public function create($data)
     {
-        $model = $this->model->create($data);
+        $values_to_store = $this->compactFakeFields(\Request::all());
+        $item = $this->model->create($values_to_store);
 
-        $this->syncPivot($model, $data);
+        // if there are any relationships available, also sync those
+        $this->syncPivot($item, $data);
 
-        return $model;
+        return $item;
     }
 
+    /**
+     * Update a row in the database.
+     *
+     * @param  [Int] The entity's id
+     * @param  [Request] All inputs to be updated.
+     * @return [Eloquent Collection]
+     */
     public function update($id, $data)
     {
-        $model = $this->model->findOrFail($id);
-        $updated = $model->update($data);
-        if ($updated) $this->syncPivot($model, $data);
+        $item = $this->model->findOrFail($id);
+        $updated = $item->update($this->compactFakeFields($data));
 
-        return $model;
+        if ($updated) $this->syncPivot($item, $data);
+
+        return $item;
     }
 
-    public function delete($id) // DONE
+    /**
+     * Delete a row from the database.
+     *
+     * @param  [int] The id of the item to be deleted.
+     * @return [bool] Deletion confirmation.
+     *
+     * TODO: should this delete items with relations to it too?
+     */
+    public function delete($id)
     {
         return $this->model->destroy($id);
     }
@@ -585,9 +610,6 @@ class Crud
         $fields = $this->prepareFields(empty($this->update_fields)?$this->fields:$this->update_fields);
         $entry = $this->getEntry($id);
 
-        // put the values in the same 'fields' variable
-        $fields = $fields;
-
         foreach ($fields as $k => $field) {
             // set the value
             if (!isset($fields[$k]['value']))
@@ -604,6 +626,25 @@ class Crud
                     );
 
         return $fields;
+    }
+
+    public function reorder($request) {
+        $count = 0;
+
+        foreach ($request as $key => $entry) {
+            if ($entry['item_id'] != "" && $entry['item_id'] != null) {
+                $item = $this->model->find($entry['item_id']);
+                $item->parent_id = $entry['parent_id'];
+                $item->depth = $entry['depth'];
+                $item->lft = $entry['left'];
+                $item->rgt = $entry['right'];
+                $item->save();
+
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
 
@@ -624,6 +665,12 @@ class Crud
         return $this->permissions = array_diff($this->permissions, (array)$permissions);
     }
 
+    /**
+     * Check if a permission is enabled for a Crud Panel. Return false if not.
+     *
+     * @param  [string] Permission.
+     * @return boolean
+     */
     public function hasPermission($permission)
     {
         if (!in_array($permission, $this->permissions))
@@ -633,6 +680,12 @@ class Crud
         return true;
     }
 
+    /**
+     * Check if a permission is enabled for a Crud Panel. Fail if not.
+     *
+     * @param  [string] Permission.
+     * @return boolean
+     */
     public function hasPermissionOrFail($permission)
     {
         if (!in_array($permission, $this->permissions))
@@ -641,11 +694,16 @@ class Crud
         }
     }
 
+    /**
+     * Find and retrieve an entry in the database or fail.
+     *
+     * @param  [int] The id of the row in the db to fetch.
+     * @return [Eloquent Collection] The row in the db.
+     */
     public function getEntry($id)
     {
         $entry = $this->model->findOrFail($id);
-        // return $entry->addFakes($this->getFakeColumnsAsArray());
-        return $entry;
+        return $entry->withFakes();
     }
 
 
