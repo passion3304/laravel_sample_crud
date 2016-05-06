@@ -1,8 +1,4 @@
-<?php
-/**
- * The Crud Controller
- */
-namespace Backpack\Crud\app\Http\Controllers;
+<?php namespace Backpack\Crud\app\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;

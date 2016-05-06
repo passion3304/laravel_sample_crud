@@ -3,11 +3,13 @@
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Crypt;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Form as Form;
-use Alert;
+use Illuminate\Http\Request;
 use Backpack\CRUD\Crud;
+use Crypt;
+use Alert;
+
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
@@ -180,7 +182,7 @@ class CrudController extends BaseController {
 		}
 
 		// get all results for that entity
-		$this->data['entries'] = $this->crud->model->all();
+		$this->data['entries'] = $this->crud->getEntries();
 		$this->data['crud'] = $this->crud;
 		$this->data['title'] = trans('backpack::crud.reorder').' '.$this->crud->entity_name;
 
