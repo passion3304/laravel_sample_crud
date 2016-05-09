@@ -67,11 +67,11 @@ class ExampleCrudController extends CrudController {
         // TODO: $this->crud->setDetailsRow();
 
         // ------ ACCESS
-        // TODO: should all be working, needs testing
-	    // TODO: $this->crud->allowAccess('list');
-	    // TODO: $this->crud->allowAccess(['list', 'create', 'delete']);
-	    // TODO: $this->crud->denyAccess('list');
-	    // TODO: $this->crud->denyAccess(['list', 'create', 'delete']);
+	    // $this->crud->allowAccess('list');
+	    // $this->crud->allowAccess(['list', 'create', 'delete']);
+	    // $this->crud->denyAccess('list');
+	    // $this->crud->denyAccess(['list', 'create', 'delete']);
+
 	    // $this->crud->hasAccess('add'); // returns true/false
 	    // $this->crud->hasAccessOrFail('add'); // throws 403 error
 
