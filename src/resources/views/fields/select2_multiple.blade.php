@@ -5,11 +5,13 @@
     	class="form-control select2"
 
     	@foreach ($field as $attribute => $value)
-    		@if ($attribute=='name')
-    			{{ $attribute }}="{{ $value }}[]"
-    		@else
-    			{{ $attribute }}="{{ $value }}"
-    		@endif
+            @if (is_string($attribute) && is_string($value))
+        		@if ($attribute=='name')
+        			{{ $attribute }}="{{ $value }}[]"
+        		@else
+        			{{ $attribute }}="{{ $value }}"
+        		@endif
+            @endif
     	@endforeach
     	multiple>
     	<option value="">-</option>

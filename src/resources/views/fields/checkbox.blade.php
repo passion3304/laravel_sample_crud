@@ -3,6 +3,7 @@
 	<label>
 	  <input type="hidden" name="{{ $field['name'] }}" value="0">
 	  <input type="checkbox" @foreach ($field as $attribute => $value)
+        @if (is_string($attribute) && is_string($value))
     		@if( $attribute == 'value' )
     			@if((int) $value == 1)
     			checked = "checked"
@@ -11,6 +12,7 @@
     		@else
     			{{ $attribute }}="{{ $value }}"
     		@endif
-    	@endforeach> {{ $field['label'] }}
+        @endif
+	@endforeach> {{ $field['label'] }}
 	</label>
 </div>

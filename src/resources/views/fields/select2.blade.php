@@ -6,7 +6,9 @@
     	class="form-control select2"
 
     	@foreach ($field as $attribute => $value)
-    		{{ $attribute }}="{{ $value }}"
+            @if (is_string($attribute) && is_string($value))
+        		{{ $attribute }}="{{ $value }}"
+            @endif
     	@endforeach
     	>
 

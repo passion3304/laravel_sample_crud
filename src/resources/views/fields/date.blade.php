@@ -6,10 +6,12 @@
         class="form-control"
 
         @foreach ($field as $attribute => $value)
-            @if ($attribute=='value')
-                value="{{ $field['value'] }}"
-            @else
-                {{ $attribute }}="{{ $value }}"
+            @if (is_string($attribute) && is_string($value))
+                @if ($attribute=='value')
+                    value="{{ $field['value'] }}"
+                @else
+                    {{ $attribute }}="{{ $value }}"
+                @endif
             @endif
         @endforeach
         >

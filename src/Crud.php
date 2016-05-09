@@ -338,7 +338,7 @@ class Crud
         $this->model = new $model_namespace();
         $this->query = $this->model->select('*');
 
-        $this->initEntities(); // TODO: explain - what does this do?
+        // $this->setFromDb(); // i think that, by default, the auto-fields functionality should be disabled; otherwise, the workflow changes from "set the fields i need" to "update this crud with whatever is not what i need"; which i personally don't like, because it's more hacky; I propose we set wether the auto-fields functionality is run for panels with a config variable; the config file should be backpack/crud.php and the variable name should be "autoSetFromDb".
     }
 
     /**
@@ -446,6 +446,149 @@ class Crud
     // TODO: $this->crud->addButton();
     // TODO: $this->crud->removeButton();
     // TODO: $this->crud->replaceButton();
+
+
+
+    // ------------------------------------------------------
+    // AUTO-SET-FIELDS-AND-COLUMNS FUNCTIONALITY
+    // ------------------------------------------------------
+
+
+    /**
+     * For a simple CRUD Panel, there should be no need to add/define the fields.
+     * The public columns in the database will be converted to be fields.
+     *
+     */
+    public function setFromDb()
+    {
+        $this->getDbColumnTypes();
+
+        array_map(function($field) {
+            $this->labels[$field] = $this->makeLabel($field);
+
+            $this->fields[] =  [
+                                'name' => $field,
+                                'label' => ucfirst($field),
+                                'value' => '', 'default' => $this->field_types[$field]['default'],
+                                'type' => $this->getFieldTypeFromDbColumnType($field),
+                                'values' => [],
+                                'attributes' => []
+                                ];
+
+            if (!in_array($field, $this->model->getHidden()))
+            {
+                 $this->columns[] = [
+                                    'name' => $field,
+                                    'label' => ucfirst($field),
+                                    'type' => $this->getFieldTypeFromDbColumnType($field)
+                                    ];
+            }
+
+        }, $this->getDbColumnsNames());
+    }
+
+
+    /**
+     * Get all columns from the database for that table.
+     *
+     * @return [array]
+     */
+    public function getDbColumnTypes()
+    {
+        foreach (\DB::select(\DB::raw('SHOW COLUMNS FROM '.$this->model->getTable())) as $column)
+        {
+            $this->field_types[$column->Field] = ['type' => trim(preg_replace('/\(\d+\)(.*)/i', '', $column->Type)), 'default' => $column->Default];
+        }
+
+        return $this->field_types;
+    }
+
+
+    /**
+     * Intuit a field type, judging from the database column type.
+     *
+     * @param  [string] Field name.
+     * @return [string] Fielt type.
+     */
+    public function getFieldTypeFromDbColumnType($field)
+    {
+        if (!array_key_exists($field, $this->field_types)) return 'text';
+
+        if ($field == 'password') return 'password';
+
+        if ($field == 'email') return 'email';
+
+        switch ($this->field_types[$field]['type'])
+        {
+            case 'int':
+            case 'smallint':
+            case 'mediumint':
+            case 'longint':
+                return 'number';
+            break;
+
+            case 'string':
+            case 'varchar':
+            case 'set':
+                return 'text';
+            break;
+
+            // case 'enum':
+            //     return 'enum';
+            // break;
+
+            case 'tinyint':
+                return 'active';
+            break;
+
+            case 'text':
+            case 'mediumtext':
+            case 'longtext':
+                return 'textarea';
+            break;
+
+            case 'date':
+                return 'date';
+            break;
+
+            case 'datetime':
+            case 'timestamp':
+                return 'datetime';
+            break;
+            case 'time':
+                return 'time';
+            break;
+
+            default:
+                return 'text';
+            break;
+        }
+    }
+
+
+    // TODO Tone: Please describe.
+    public function makeLabel($value)
+    {
+        return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
+    }
+
+
+    /**
+     * Get the database column names, in order to figure out what fields/columns to show in the auto-fields-and-columns functionality.
+     *
+     * @return [array] Database column names as an array.
+     */
+    public function getDbColumnsNames()
+    {
+        // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
+        $columns = \Schema::getColumnListing($this->model->getTable());
+        $fillable = $this->model->getFillable();
+
+        if (!empty($fillable)) $columns = array_intersect($columns, $fillable);
+
+        // but not updated_at, deleted_at
+        return array_values(array_diff($columns, [$this->model->getKeyName(), 'updated_at', 'deleted_at']));
+    }
 
 
 
@@ -583,109 +726,6 @@ class Crud
 
 
 
-
-
-
-
-
-
-    // ---------------------------------------
-    // USED Tone Functions that need more work
-    // ---------------------------------------
-    // Don't know what they do or how they do it.
-    //
-    // TODO:
-    // - figure out if they are really needed
-    // - comments inside the function to explain how they work
-    // - write docblock for them
-    // - place in the correct section above (CREATE, READ, UPDATE, DELETE, ACCESS, MANIPULATION)
-
-    // TODO Tone: Why?? See the 4 tasks above.
-    public function initEntities()
-    {
-        $this->getColumnTypes();
-
-        array_map(function($field) {
-            $this->labels[$field] = $this->makeLabel($field);
-
-            $this->fields[] = ['name' => $field, 'value' => '', 'default' => $this->field_types[$field]['default'], 'type' => $this->getType($field), 'values' => [], 'attributes' => []];
-
-            if (!in_array($field, $this->model->getHidden())) $this->columns[] = ['name' => $field, 'type' => $this->getType($field)];
-        }, $this->getColumns());
-    }
-
-    // TODO Tone: Why?? See the 4 tasks above.
-    public function getColumnTypes()
-    {
-        foreach (\DB::select(\DB::raw('SHOW COLUMNS FROM '.$this->model->getTable())) as $column)
-        {
-            $this->field_types[$column->Field] = ['type' => trim(preg_replace('/\(\d+\)(.*)/i', '', $column->Type)), 'default' => $column->Default];
-        }
-
-        return $this->field_types;
-    }
-
-    // TODO Tone: Why?? See the 4 tasks above.
-    public function getType($field)
-    {
-        if (!array_key_exists($field, $this->field_types)) return 'text';
-
-        if ($field == 'password') return 'password';
-
-        if ($field == 'email') return 'email';
-
-        switch ($this->field_types[$field]['type'])
-        {
-            case 'int':
-            case 'smallint':
-            case 'mediumint':
-            case 'longint':
-                return 'number';
-            break;
-
-            case 'string':
-            case 'varchar':
-            case 'set':
-                return 'text';
-            break;
-
-            // case 'enum':
-            //     return 'enum';
-            // break;
-
-            case 'tinyint':
-                return 'active';
-            break;
-
-            case 'text':
-            case 'mediumtext':
-            case 'longtext':
-                return 'textarea';
-            break;
-
-            case 'date':
-                return 'date';
-            break;
-
-            case 'datetime':
-            case 'timestamp':
-                return 'datetime';
-            break;
-            case 'time':
-                return 'time';
-            break;
-
-            default:
-                return 'text';
-            break;
-        }
-    }
-
-    // TODO Tone: Why?? See the 4 tasks above.
-    public function makeLabel($value)
-    {
-        return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
-    }
 
 
 
@@ -865,7 +905,7 @@ class Crud
 
     public function syncField($field)
     {
-        if (array_key_exists('name', (array)$field)) return array_merge(['type' => $this->getType($field['name']), 'value' => '', 'default' => null, 'values' => [], 'attributes' => []], $field);
+        if (array_key_exists('name', (array)$field)) return array_merge(['type' => $this->getFieldTypeFromDbColumnType($field['name']), 'value' => '', 'default' => null, 'values' => [], 'attributes' => []], $field);
 
         return false;
     }
@@ -915,20 +955,9 @@ class Crud
 
 
 
-
-    public function getColumns() // DONE
-    {
-        $columns = \Schema::getColumnListing($this->model->getTable());
-        $fillable = $this->model->getFillable();
-
-        if (!empty($fillable)) $columns = array_intersect($columns, $fillable);
-
-        return array_values(array_diff($columns, [$this->model->getKeyName(), 'updated_at', 'deleted_at']));
-    }
-
     public function syncColumn($column)
     {
-        if (array_key_exists('name', (array)$column)) return array_merge(['type' => $this->getType($column['name'])], $column);
+        if (array_key_exists('name', (array)$column)) return array_merge(['type' => $this->getFieldTypeFromDbColumnType($column['name'])], $column);
 
         return false;
     }

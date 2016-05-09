@@ -27,7 +27,8 @@ class ExampleCrudController extends CrudController {
         $this->crud->setEntityNameStrings("example", "examples");
 
         // TODO: $this->crud->setColumns();
-        // TODO: $this->crud->setFields();  // for both create and update
+        // TODO: $this->crud->setFields();  // for both create and update forms
+        // TODO: $this->crud->setFromDb();  // automatically set fields and columns from your database columns
 
 
 
@@ -60,9 +61,10 @@ class ExampleCrudController extends CrudController {
 	    // TODO: $this->crud->setDeletePermission();
 	    // TODO: $this->crud->setReorderPermission();
 
-        // TODO: $this->crud->query() / clause /smth like that
-        // TODO: $this->crud->orderBy()
-        // TODO: $this->crud->groupBy()
+        // TODO: $this->crud->query(); / clause /smth like that
+        // TODO: $this->crud->orderBy();
+        // TODO: $this->crud->groupBy();
+        // TODO: $this->crud->limit();
 
 
 

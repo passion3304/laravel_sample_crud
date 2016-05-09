@@ -7,7 +7,9 @@
 		id="{{ $field['name'] }}-filemanager"
 
 		@foreach ($field as $attribute => $value)
+			@if (is_string($attribute) && is_string($value))
 			{{ $attribute }}="{{ $value }}"
+			@endif
 		@endforeach
 		readonly
 	>
