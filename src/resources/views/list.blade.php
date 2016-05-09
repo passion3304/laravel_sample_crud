@@ -23,11 +23,11 @@
 <!-- Default box -->
   <div class="box">
     <div class="box-header with-border">
-      @if ($crud->hasPermission('add'))
+      @if ($crud->hasAccess('add'))
       		<a href="{{ url($crud->route.'/create') }}" class="btn btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('backpack::crud.add') }} {{ $crud->entity_name }}</span></a>
       @endif
       @if ($crud->reorder)
-        @if ($crud->hasPermission('reorder'))
+        @if ($crud->hasAccess('reorder'))
           <a href="{{ url($crud->route.'/reorder') }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-arrows"></i> {{ trans('backpack::crud.reorder') }} {{ $crud->entity_name_plural }}</span></a>
           @endif
       @endif
@@ -99,10 +99,10 @@
                         @if ( !( isset($crud->edit_permission) && $crud->edit_permission === false && isset($crud->delete_permission) && $crud->delete_permission === false ) )
                         <td>
                           {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
-                          @if ($crud->hasPermission('edit'))
+                          @if ($crud->hasAccess('edit'))
                             <a href="{{ Request::url().'/'.$entry->id }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
                           @endif
-                           @if ($crud->hasPermission('delete'))
+                           @if ($crud->hasAccess('delete'))
                           <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
                           @endif
                         </td>

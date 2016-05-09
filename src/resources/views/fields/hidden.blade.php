@@ -5,7 +5,7 @@
     	class="form-control"
 
     	@foreach ($field as $attribute => $value)
-			@if (is_string($attribute) && is_string($value))
+			@if (is_string($attribute))
 	    		{{ $attribute }}="{{ $value }}"
     		@endif
     	@endforeach

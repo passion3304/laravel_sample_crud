@@ -34,7 +34,7 @@ class CrudController extends BaseController {
 	 */
 	public function index()
 	{
-		$this->crud->hasPermissionOrFail('list');
+		$this->crud->hasAccessOrFail('list');
 
 		$this->data['entries'] = $this->crud->getEntries();
 		$this->data['crud'] = $this->crud;
@@ -52,7 +52,7 @@ class CrudController extends BaseController {
 	 */
 	public function create()
 	{
-		$this->crud->hasPermissionOrFail('add');
+		$this->crud->hasAccessOrFail('create');
 
 		// prepare the fields you need to show
 		$this->data['crud'] = $this->crud;
@@ -72,7 +72,7 @@ class CrudController extends BaseController {
 	 */
 	public function storeCrud(StoreRequest $request = null)
 	{
-		$this->crud->hasPermissionOrFail('add');
+		$this->crud->hasAccessOrFail('create');
 
 		// insert item in the db
 		$item = $this->crud->create(\Request::all());
@@ -99,7 +99,7 @@ class CrudController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		$this->crud->hasPermissionOrFail('edit');
+		$this->crud->hasAccessOrFail('update');
 
 		// get the info for that entry
 		$this->data['entry'] = $this->crud->getEntry($id);
@@ -120,7 +120,7 @@ class CrudController extends BaseController {
 	 */
 	public function updateCrud(UpdateRequest $request = null)
 	{
-		$this->crud->hasPermissionOrFail('edit');
+		$this->crud->hasAccessOrFail('update');
 
 		// update the row in the db
 		$this->crud->update(\Request::get('id'), \Request::all());
@@ -140,7 +140,7 @@ class CrudController extends BaseController {
 	 */
 	public function show($id)
 	{
-		$this->crud->hasPermissionOrFail('show');
+		$this->crud->hasAccessOrFail('show');
 
 		// get the info for that entry
 		$this->data['entry'] = $this->crud->getEntry($id);
@@ -160,7 +160,7 @@ class CrudController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		$this->crud->hasPermissionOrFail('delete');
+		$this->crud->hasAccessOrFail('delete');
 		return $this->crud->delete($id);
 	}
 
@@ -174,7 +174,7 @@ class CrudController extends BaseController {
 	 */
 	public function reorder($lang = false)
 	{
-		$this->crud->hasPermissionOrFail('reorder');
+		$this->crud->hasAccessOrFail('reorder');
 
 		if ($lang == false)
 		{
@@ -200,7 +200,7 @@ class CrudController extends BaseController {
 	 */
 	public function saveReorder()
 	{
-		$this->crud->hasPermissionOrFail('reorder');
+		$this->crud->hasAccessOrFail('reorder');
 
 		$all_entries = \Request::input('tree');
 
@@ -226,7 +226,7 @@ class CrudController extends BaseController {
 	 */
 	public function showDetailsRow($id)
 	{
-		$this->crud->hasPermissionOrFail('details');
+		$this->crud->hasAccessOrFail('details');
 
 		$this->data['entry'] = $this->crud->getEntry($id);
 		$this->data['crud'] = $this->crud;

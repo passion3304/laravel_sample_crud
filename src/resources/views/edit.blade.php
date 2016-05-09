@@ -17,7 +17,7 @@
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
 		<!-- Default box -->
-		@if ($crud->hasPermission('list'))
+		@if ($crud->hasAccess('list'))
 			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 
@@ -31,7 +31,7 @@
 		      @if(view()->exists('vendor.dick.crud.form_content'))
 		      	@include('vendor.dick.crud.form_content')
 		      @else
-		      	@include('crud::form_content')
+		      	@include('crud::form_content', ['fields' => $crud->getFields('update', $entry->id)])
 		      @endif
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">

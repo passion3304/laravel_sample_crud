@@ -12,14 +12,14 @@ class Crud
     // All functions and methods are also public, so they can be used in your EntityCrudController to modify these variables.
 
     // TODO: translate $entity_name and $entity_name_plural by default, with english fallback
-    // TODO: code logic for using either Laravel Authorization or Entrust (whatever one chooses) for permissions
+    // TODO: code logic for using either Laravel Authorization or Entrust (whatever one chooses) for access
 
     public $model = "\App\Models\Entity"; // what's the namespace for your entity's model
     public $route; // what route have you defined for your entity? used for links.
     public $entity_name = "entry"; // what name will show up on the buttons, in singural (ex: Add entity)
     public $entity_name_plural = "entries"; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
 
-    public $permissions = ['list', 'add', 'edit', 'delete', 'reorder', 'show', 'details'];
+    public $access = ['list', 'create', 'update', 'delete', /* 'reorder', 'show', 'details' */];
 
     public $reorder = false;
     public $reorder_label = true;
@@ -114,12 +114,6 @@ class Crud
     |--------------------------------------------------------------------------
     */
 
-    // TODO: $this->crud->setListEntries(); // in the list view by default it fetches all entries; this allows you to replace it with whatever you want, say with $model->where('smth', 1)->get()
-    // TODO: $this->crud->setReorderEntries(); // same thing, for the reorder view
-
-    // TODO: $this->crud->setDetailsRow();
-
-
     /**
      * Find and retrieve an entry in the database or fail.
      *
@@ -151,14 +145,37 @@ class Crud
     }
 
 
+    /**
+     * Get the fields for the create or update forms.
+     *
+     * @param  [form] create / update / both - defaults to 'both'
+     * @param  [integer] the ID of the entity to be edited in the Update form
+     * @return [array] all the fields that need to be shown and their information
+     */
+    public function getFields($form, $id = false)
+    {
+        switch ($form) {
+            case 'create':
+                return $this->getCreateFields();
+                break;
+
+            case 'update':
+                return $this->getUpdateFields($id);
+                break;
+
+            default:
+                return $this->getCreateFields();
+                break;
+        }
+    }
+
+
 
    /*
     |--------------------------------------------------------------------------
     |                                   UPDATE
     |--------------------------------------------------------------------------
     */
-
-    // TODO: $this->crud->setReorderMaxLevel();
 
     /**
      * Update a row in the database.
@@ -264,22 +281,16 @@ class Crud
     |--------------------------------------------------------------------------
     */
 
-    // TODO: $this->crud->setListPermission(); // instead of view_table_permission
-    // TODO: $this->crud->setAddPermission();
-    // TODO: $this->crud->setDeletePermission();
-    // TODO: $this->crud->setReorderPermission();
-
-
-    public function addPermissions($permissions)
+    public function allowAccess($access)
     {
-        // $this->addButtons((array)$permissions);
-        return $this->permissions = array_merge(array_diff((array)$permissions, $this->permissions), $this->permissions);
+        // $this->addButtons((array)$access);
+        return $this->access = array_merge(array_diff((array)$access, $this->access), $this->access);
     }
 
-    public function removePermissions($permissions)
+    public function denyAccess($access)
     {
-        // $this->removeButtons((array)$permissions);
-        return $this->permissions = array_diff($this->permissions, (array)$permissions);
+        // $this->removeButtons((array)$access);
+        return $this->access = array_diff($this->access, (array)$access);
     }
 
     /**
@@ -288,9 +299,9 @@ class Crud
      * @param  [string] Permission.
      * @return boolean
      */
-    public function hasPermission($permission)
+    public function hasAccess($permission)
     {
-        if (!in_array($permission, $this->permissions))
+        if (!in_array($permission, $this->access))
         {
             return false;
         }
@@ -303,9 +314,9 @@ class Crud
      * @param  [string] Permission.
      * @return boolean
      */
-    public function hasPermissionOrFail($permission)
+    public function hasAccessOrFail($permission)
     {
-        if (!in_array($permission, $this->permissions))
+        if (!in_array($permission, $this->access))
         {
             abort(403, trans('backpack::crud.unauthorized_access'));
         }
@@ -338,7 +349,7 @@ class Crud
         $this->model = new $model_namespace();
         $this->query = $this->model->select('*');
 
-        // $this->setFromDb(); // i think that, by default, the auto-fields functionality should be disabled; otherwise, the workflow changes from "set the fields i need" to "update this crud with whatever is not what i need"; which i personally don't like, because it's more hacky; I propose we set wether the auto-fields functionality is run for panels with a config variable; the config file should be backpack/crud.php and the variable name should be "autoSetFromDb".
+        // $this->setFromDb(); // i think that, by default, the auto-fields functionality should be disabled; otherwise, the workflow changes from "set the fields i need" to "update this crud with whatever i need"; which i personally don't like, because it's more hacky and it assumes you should see what the default offers you, then adapt; I propose we set wether the auto-fields functionality is run for panels with a config variable; the config file should be backpack/crud.php and the variable name should be "autoSetFromDb".
     }
 
     /**
@@ -415,10 +426,148 @@ class Crud
     // COLUMNS
     // ------------
 
-    // TODO: $this->crud->setColumns();
-    // TODO: $this->crud->addColumn(); // add a single column, at the end of the stack
-    // TODO: $this->crud->removeColumn(); // remove a column from the stack
-    // TODO: $this->crud->replaceColumn(); // replace a column from the stack with another one
+    /**
+     * Add a bunch of column names and their details to the CRUD object.
+     *
+     * @param [array or multi-dimensional array]
+     */
+    public function setColumns($columns)
+    {
+        // clear any columns already set
+        $this->columns = [];
+
+        // if array, add a column for each of the items
+        if (is_array($columns) && count($columns)) {
+            foreach ($columns as $key => $column) {
+                // if label and other details have been defined in the array
+                if (is_array($columns[0])) {
+                    $this->addColumn($column);
+                }
+                else
+                {
+                    $this->addColumn([
+                                    'name' => $column,
+                                    'label' => ucfirst($column),
+                                    'type' => 'text'
+                                ]);
+                }
+            }
+        }
+
+        if (is_string($columns)) {
+            $this->addColumn([
+                                'name' => $columns,
+                                'label' => ucfirst($columns),
+                                'type' => 'text'
+                                ]);
+        }
+
+        // This was the old setColumns() function, and it did not work:
+        // $this->columns = array_filter(array_map([$this, 'addDefaultTypeToColumn'], $columns));
+    }
+
+    /**
+     * Add a column at the end of to the CRUD object's "columns" array.
+     *
+     * @param [string or array]
+     */
+    public function addColumn($column)
+    {
+        // make sure the column has a type
+        $column_with_details = $this->addDefaultTypeToColumn($column);
+
+        // make sure the column has a label
+        $column_with_details = $this->addDefaultLabel($column);
+
+        return array_filter($this->columns[] = $column_with_details);
+    }
+
+    /**
+     * Add multiple columns at the end of the CRUD object's "columns" array.
+     *
+     * @param [array of columns]
+     */
+    public function addColumns($columns)
+    {
+        if (count($columns)) {
+            foreach ($columns as $key => $column) {
+                $this->addColumn($column);
+            }
+        }
+    }
+
+    /**
+     * Add the default column type to the given Column, inferring the type from the database column type.
+     *
+     * @param [column array]
+     */
+    public function addDefaultTypeToColumn($column)
+    {
+        if (array_key_exists('name', (array)$column))
+        {
+            $default_type = $this->getFieldTypeFromDbColumnType($column['name']);
+            return array_merge(['type' => $default_type], $column);
+        }
+
+        return false;
+    }
+
+    /**
+     * If a field or column array is missing the "label" attribute, an ugly error would be show.
+     * So we add the field Name as a label - it's better than nothing.
+     *
+     * @param [field or column]
+     */
+    public function addDefaultLabel($array) {
+        if (!array_key_exists('label', (array)$array) && array_key_exists('name', (array)$array)) {
+            $array = array_merge(['label' => ucfirst($this->makeLabel($array['name']))], $array);
+            return $array;
+        }
+
+        return $array;
+    }
+
+    /**
+     * Remove multiple columns from the CRUD object using their names.
+     *
+     * @param  [column array]
+     */
+    public function removeColumns($columns)
+    {
+        $this->columns = $this->remove('columns', $columns);
+    }
+
+    /**
+     * Remove a column from the CRUD object using its name.
+     *
+     * @param  [column array]
+     */
+    public function removeColumn($column)
+    {
+        return $this->removeColumns([$column]);
+    }
+
+    /**
+     * Change attributes for multiple columns.
+     *
+     * @param [columns arrays]
+     * @param [attributes and values array]
+     */
+    public function setColumnsDetails($columns, $attributes)
+    {
+        $this->sync('columns', $columns, $attributes);
+    }
+
+    /**
+     * Change attributes for a certain column.
+     *
+     * @param [string] Column name.
+     * @param [attributes and values array]
+     */
+    public function setColumnDetails($column, $attributes)
+    {
+        $this->setColumnsDetails([$column], $attributes);
+    }
 
 
 
@@ -794,28 +943,9 @@ class Crud
 
 
 
-    public function setColumns($columns)
-    {
-        $this->columns = array_filter(array_map([$this, 'syncColumn'], $columns));
-    }
 
-    // [name, label, type, callback => [$this, 'methodName']]
-    public function addColumn($column)
-    {
-        return array_filter($this->columns[] = $this->syncColumn($column));
-    }
 
-    public function updateColumns($columns, $attributes)
-    {
-        $this->sync('columns', $columns, $attributes);
-    }
-
-    public function removeColumns($columns)
-    {
-        $this->columns = $this->remove('columns', $columns);
-    }
-
-    public function columns()
+    public function getColumns()
     {
         return $this->sort('columns');
     }
@@ -824,8 +954,6 @@ class Crud
     {
         $this->setSort('columns', (array)$order);
     }
-
-
 
 
 
@@ -912,8 +1040,16 @@ class Crud
 
 
 
+    // whereActive() // static scope
+    // where('type', '=', 'car')
 
-
+    // $this->crud->clause('active')
+    // $this->crud->clause('type', 'car')
+    // $this->crud->clause('where', 'name', '==', 'car')
+    // $this->crud->clause('whereName', 'car')
+    // $this->crud->clause('whereHas', 'posts', function($query) {
+    //     $query->activePosts();
+    // })
 
     // public function clause(function|scope, $field|$value, $operand|$value, $value)
     public function clause($function)
@@ -941,12 +1077,34 @@ class Crud
         return $this->labels;
     }
 
-    public function setRequired($fields)
+    /**
+     * Adds a required => true attribute to each field, so that the required asterisc will show up in the create/update forms.
+     * TODO: make this work, by editing the $this->fields variable.
+     *
+     * @param [string or array of strings]
+     */
+    public function setRequiredFields($fields)
     {
         $this->required = array_merge($this->required, (array)$fields);
     }
 
-    public function required()
+    /**
+     * Adds a required => true attribute to this field, so that the required asteris will show up in the create/update forms.
+     *
+     * @param [string]
+     */
+    public function setRequiredField($field)
+    {
+        return $this->setRequiredFields($field);
+    }
+
+    /**
+     * Get the required fields.
+     * TODO: make this work after making setRequiredFields() work.
+     *
+     * @return [array]
+     */
+    public function getRequired()
     {
         return $this->required;
     }
@@ -955,18 +1113,12 @@ class Crud
 
 
 
-    public function syncColumn($column)
-    {
-        if (array_key_exists('name', (array)$column)) return array_merge(['type' => $this->getFieldTypeFromDbColumnType($column['name'])], $column);
-
-        return false;
-    }
 
 
 
 
 
-
+    // iti pune valorile pe field-uri la EDIT
     public function addFieldsValue()
     {
         if ($this->item)
@@ -1036,7 +1188,7 @@ class Crud
 
 
 
-
+    // cred ca ia valorile din tabela de legatura ca sa ti le afiseze in select
     public function getRelationValues($model, $field, $where = [], $order = [])
     {
         $order = (array)$order;
@@ -1049,6 +1201,7 @@ class Crud
         return $values->get()->lists($field, $model->getKeyName())->toArray();
     }
 
+    // face un fel de merge intre ce ii dai si ce e in CRUD
     public function syncRelations($entity)
     {
         foreach ($this->relations as $field => $relation) {

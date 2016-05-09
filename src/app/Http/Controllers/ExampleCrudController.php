@@ -24,44 +24,59 @@ class ExampleCrudController extends CrudController {
 		// USAGE LEVEL 1 - ALWAYS	================================================== LEVEL 1
         $this->crud->setModel("App\Models\Example");
         $this->crud->setRoute("admin/example");
+        // $this->crud->setRouteName("admin.example");
         $this->crud->setEntityNameStrings("example", "examples");
 
-        // TODO: $this->crud->setColumns();
-        // TODO: $this->crud->setFields();  // for both create and update forms
-        // TODO: $this->crud->setFromDb();  // automatically set fields and columns from your database columns
+        // $this->crud->setColumns(); // set the columns you want in the table view, either as array of column names, or multidimensional array with all columns detailed with their types
+        // TODO: $this->crud->setFields($array_of_arrays, 'update/create/both'); // set fields for both create&update forms
+        // $this->crud->setFromDb();  // automatically set fields and columns from your database columns  TODO: rephrase
 
 
 
 		// USAGE LEVEL 2 - OFTEN	================================================== LEVEL 2
 
-        // TODO: $this->crud->setCreateFields(); // overwrite the create fields with this
-	    // TODO: $this->crud->setUpdateFields(); // overwrite the update fields with this
+        // ------ FIELDS (the last parameter is always the form - create/update/both)
+	    // TODO: $this->crud->addField('name', $options, 'update/create/both');
+	    // TODO: $this->crud->addFields($array_of_arrays, 'update/create/both');
+	    // TODO: $this->crud->removeField('name', 'update/create/both');
+	    // TODO: $this->crud->removeFields($array_of_names, 'update/create/both');
+	    // TODO: $this->crud->replaceField('name', 'update/create/both');
 
-	    // TODO: $this->crud->addColumn(); // add a single column, at the end of the stack
-	    // TODO: $this->crud->removeColumn(); // remove a column from the stack
-	    // TODO: $this->crud->replaceColumn(); // replace a column from the stack with another one
+	    // TODO: $this->crud->setRequiredFields(['field_1', 'field_2'], 'update/create/both');
+	    // TODO: $this->crud->setRequiredField('field_1', 'update/create/both');
 
-	    // TODO: $this->crud->addField();
-	    // TODO: $this->crud->addCreateField();
-	    // TODO: $this->crud->addUpdateField();
-	    // TODO: $this->crud->removeField();
-	    // TODO: $this->crud->removeCreateField();
-	    // TODO: $this->crud->removeUpdateField();
-	    // TODO: $this->crud->replaceField();
-	    // TODO: $this->crud->replaceCreateField();
-	    // TODO: $this->crud->replaceUpdateField();
+	    // TODO: $this->crud->seFieldsOrder(['field_1', 'field_2', 'field_3'], 'update/create/both');
 
-        // TODO: $this->crud->setReorderMaxLevel();
-	    // TODO: $this->crud->setDetailsRow();
-        // TODO: $this->crud->setListEntries(); // in the list view by default it fetches all entries; this allows you to replace it with whatever you want, say with $model->where('smth', 1)->get()
-        // TODO: $this->crud->setReorderEntries(); // same thing, for the reorder view
+        // ------ COLUMNS
+	    // $this->crud->addColumn(); // add a single column, at the end of the stack
+	    // $this->crud->addColumns(); // add multiple columns, at the end of the stack
+	    // $this->crud->removeColumn('column_name'); // remove a column from the stack
+	    // $this->crud->removeColumns(['column_name_1', 'column_name_2']); // remove an array of columns from the stack
+	    // $this->crud->setColumnDetails('column_name', ['attribute' => 'value']);
+	    // $this->crud->setColumnsDetails(['column_1', 'column_2'], ['attribute' => 'value']);
+	    // TODO: $this->crud->setColumnOrder(['column_1', 'column_2', 'column_3']);
 
-        // TODO: $this->crud->setListPermission(); // instead of view_table_permission
-	    // TODO: $this->crud->setAddPermission();
-	    // TODO: $this->crud->setDeletePermission();
-	    // TODO: $this->crud->setReorderPermission();
+	    // ------ FIELDS AND COLUMNS
+	    // TODO: $this->crud->setLabel('column_name/field_name', 'New Label'); // changes label for columns, create&update fields
 
-        // TODO: $this->crud->query(); / clause /smth like that
+        // ------ REORDER
+        // TODO: $this->crud->enableReorder(true, 'label_name', MAX_TREE_LEVEL);
+        // TODO: $this->crud->disableReorder(); // => enableReorder(false);
+
+        // ------ DETAILS ROW
+        // TODO: $this->crud->setDetailsRow();
+
+        // ------ ACCESS
+        // TODO: should all be working, needs testing
+	    // TODO: $this->crud->allowAccess('list');
+	    // TODO: $this->crud->allowAccess(['list', 'create', 'delete']);
+	    // TODO: $this->crud->denyAccess('list');
+	    // TODO: $this->crud->denyAccess(['list', 'create', 'delete']);
+	    // $this->crud->hasAccess('add'); // returns true/false
+	    // $this->crud->hasAccessOrFail('add'); // throws 403 error
+
+        // ------ ADVANCED QUERIES
+        // TODO: $this->crud->addClause(); / clause /smth like that
         // TODO: $this->crud->orderBy();
         // TODO: $this->crud->groupBy();
         // TODO: $this->crud->limit();
@@ -75,21 +90,18 @@ class ExampleCrudController extends CrudController {
 	    // TODO: $this->crud->removeButton();
 	    // TODO: $this->crud->replaceButton();
 
-		// $this->crud->getEntry($entry_id);
-		// $this->crud->getEntries();
-
-		// $this->crud->hasPermissionOrFail('add');
-		// $this->crud->create($entry_request);
-		// $this->crud->update($entry_id, $entry_request);
-		// $this->crud->delete($entry_id);
-
 
 
 		// USAGE LEVEL 4 - RARELY	==================================================  LEVEL 4
 
-        // $this->crud->getCreateFields();
-		// $this->crud->getUpdateFields();
+		// $this->crud->getEntry($entry_id);
+		// $this->crud->getEntries();
 
+		// $this->crud->getFields('create/update/both');
+
+		// $this->crud->create($entry_request);
+		// $this->crud->update($entry_id, $entry_request);
+		// $this->crud->delete($entry_id);
 
 
 		// USAGE LEVEL 5 - ALMOST NEVER	==============================================  LEVEL 5
