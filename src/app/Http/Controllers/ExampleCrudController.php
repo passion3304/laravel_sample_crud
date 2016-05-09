@@ -76,10 +76,16 @@ class ExampleCrudController extends CrudController {
 	    // $this->crud->hasAccessOrFail('add'); // throws 403 error
 
         // ------ ADVANCED QUERIES
-        // TODO: $this->crud->addClause(); / clause /smth like that
-        // TODO: $this->crud->orderBy();
-        // TODO: $this->crud->groupBy();
-        // TODO: $this->crud->limit();
+        // $this->crud->addClause('active');
+	    // $this->crud->addClause('type', 'car');
+	    // $this->crud->addClause('where', 'name', '==', 'car');
+	    // $this->crud->addClause('whereName', 'car');
+	    // $this->crud->addClause('whereHas', 'posts', function($query) {
+	    //     $query->activePosts();
+	    // });
+        // $this->crud->orderBy();
+        // $this->crud->groupBy();
+        // $this->crud->limit();
 
 
 
