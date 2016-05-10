@@ -176,6 +176,10 @@ class CrudController extends BaseController {
 	{
 		$this->crud->hasAccessOrFail('reorder');
 
+		if (!$this->crud->isReorderEnabled()) {
+			abort(403, 'Reorder is disabled.');
+		}
+
 		if ($lang == false)
 		{
 			$lang = \Lang::locale();

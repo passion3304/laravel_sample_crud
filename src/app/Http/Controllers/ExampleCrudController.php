@@ -35,6 +35,7 @@ class ExampleCrudController extends CrudController {
 
 		// USAGE LEVEL 2 - OFTEN	================================================== LEVEL 2
 
+
         // ------ FIELDS (the last parameter is always the form - create/update/both)
 	    // TODO: $this->crud->addField('name', $options, 'update/create/both');
 	    // TODO: $this->crud->addFields($array_of_arrays, 'update/create/both');
@@ -47,6 +48,7 @@ class ExampleCrudController extends CrudController {
 
 	    // TODO: $this->crud->seFieldsOrder(['field_1', 'field_2', 'field_3'], 'update/create/both');
 
+
         // ------ COLUMNS
 	    // $this->crud->addColumn(); // add a single column, at the end of the stack
 	    // $this->crud->addColumns(); // add multiple columns, at the end of the stack
@@ -56,15 +58,10 @@ class ExampleCrudController extends CrudController {
 	    // $this->crud->setColumnsDetails(['column_1', 'column_2'], ['attribute' => 'value']);
 	    // TODO: $this->crud->setColumnOrder(['column_1', 'column_2', 'column_3']);
 
+
 	    // ------ FIELDS AND COLUMNS
 	    // TODO: $this->crud->setLabel('column_name/field_name', 'New Label'); // changes label for columns, create&update fields
 
-        // ------ REORDER
-        // TODO: $this->crud->enableReorder(true, 'label_name', MAX_TREE_LEVEL);
-        // TODO: $this->crud->disableReorder(); // => enableReorder(false);
-
-        // ------ DETAILS ROW
-        // TODO: $this->crud->setDetailsRow();
 
         // ------ ACCESS
 	    // $this->crud->allowAccess('list');
@@ -74,6 +71,19 @@ class ExampleCrudController extends CrudController {
 
 	    // $this->crud->hasAccess('add'); // returns true/false
 	    // $this->crud->hasAccessOrFail('add'); // throws 403 error
+
+
+        // ------ REORDER
+        // $this->crud->enableReorder('label_name', MAX_TREE_LEVEL);
+        // NOTE: you also need to do allow access to the right users: $this->crud->allowAccess('reorder');
+
+        // $this->crud->disableReorder();
+        // $this->crud->isReorderEnabled(); // return true/false
+
+
+        // ------ DETAILS ROW
+        // TODO: $this->crud->setDetailsRow();
+
 
         // ------ ADVANCED QUERIES
         // $this->crud->addClause('active');
