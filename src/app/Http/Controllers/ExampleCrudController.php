@@ -82,7 +82,11 @@ class ExampleCrudController extends CrudController {
 
 
         // ------ DETAILS ROW
-        // TODO: $this->crud->setDetailsRow();
+  		// $this->crud->enableDetailsRow();
+        // NOTE: you also need to do allow access to the right users: $this->crud->allowAccess('details_row');
+        // NOTE: you also need to do overwrite the showDetailsRow($id) method in your EntityCrudController to show whatever you'd like in the details row OR overwrite the views/backpack/crud/details_row.blade.php
+
+        //  $this->crud->disableDetailsRow();
 
 
         // ------ ADVANCED QUERIES

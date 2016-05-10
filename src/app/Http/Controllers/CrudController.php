@@ -230,7 +230,7 @@ class CrudController extends BaseController {
 	 */
 	public function showDetailsRow($id)
 	{
-		$this->crud->hasAccessOrFail('details');
+		$this->crud->hasAccessOrFail('details_row');
 
 		$this->data['entry'] = $this->crud->getEntry($id);
 		$this->data['crud'] = $this->crud;

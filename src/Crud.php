@@ -19,7 +19,7 @@ class Crud
     public $entity_name = "entry"; // what name will show up on the buttons, in singural (ex: Add entity)
     public $entity_name_plural = "entries"; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
 
-    public $access = ['list', 'create', 'update', 'delete', /* 'reorder', 'show', 'details' */];
+    public $access = ['list', 'create', 'update', 'delete', /* 'reorder', 'show', 'details_row' */];
 
     public $reorder = false;
     public $reorder_label = true;
@@ -166,6 +166,26 @@ class Crud
                 return $this->getCreateFields();
                 break;
         }
+    }
+
+
+    /**
+     * Enable the DETAILS ROW functionality:
+     *
+     * In the table view, show a plus sign next to each entry.
+     * When clicking that plus sign, an AJAX call will bring whatever content you want from the EntityCrudController::showDetailsRow($id) and show it to the user.
+     */
+    public function enableDetailsRow()
+    {
+        $this->details_row = true;
+    }
+
+    /**
+     * Disable the DETAILS ROW functionality:
+     */
+    public function disableDetailsRow()
+    {
+        $this->details_row = false;
     }
 
 
