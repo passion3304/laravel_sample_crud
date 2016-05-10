@@ -45,8 +45,9 @@ class ExampleCrudController extends CrudController {
 
 	    // TODO: $this->crud->setRequiredFields(['field_1', 'field_2'], 'update/create/both');
 	    // TODO: $this->crud->setRequiredField('field_1', 'update/create/both');
+	    // TODO: $this->crud->getRequiredFields();
 
-	    // TODO: $this->crud->seFieldsOrder(['field_1', 'field_2', 'field_3'], 'update/create/both');
+	    // TODO: $this->crud->setFieldOrder(['field_1', 'field_2', 'field_3'], 'update/create/both');
 
 
         // ------ COLUMNS

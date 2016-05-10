@@ -22,7 +22,7 @@ class Crud
     public $access = ['list', 'create', 'update', 'delete', /* 'reorder', 'show', 'details_row' */];
 
     public $reorder = false;
-    public $reorder_label = true;
+    public $reorder_label = false;
     public $reorder_max_level = 3;
 
     public $details_row = false;
@@ -33,21 +33,17 @@ class Crud
     public $fields = []; // Define both create_fields and update_fields in one array; will be overwritten by create_fields and update_fields;
 
     public $query;
+    public $entry;
 
     // TONE FIELDS - TODO: find out what he did with them, replicate or delete
     public $field_types = [];
 
     public $custom_buttons = [];
     public $relations = [];
-    public $labels = [];
-    public $required = [];
     public $sort = [];
 
     public $buttons = [''];
-    public $list_actions = [];
 
-    public $item;
-    public $entry;
 
 
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
@@ -104,6 +100,40 @@ class Crud
                 }
             }
         }
+    }
+
+
+
+    /**
+     * Adds a required => true attribute to each field, so that the required asterisc will show up in the create/update forms.
+     * TODO: make this work, by editing the $this->fields variable.
+     *
+     * @param [string or array of strings]
+     */
+    public function setRequiredFields($fields, $form = 'both')
+    {
+        // TODO
+    }
+
+    /**
+     * Adds a required => true attribute to this field, so that the required asteris will show up in the create/update forms.
+     *
+     * @param [string]
+     */
+    public function setRequiredField($field, $form = 'both')
+    {
+        // TODO
+    }
+
+    /**
+     * Get all fields that have the required attribute.
+     * TODO: make this work after making setRequiredFields() work.
+     *
+     * @return [array]
+     */
+    public function getRequiredFields($form = 'both')
+    {
+        // TODO
     }
 
 
@@ -632,20 +662,39 @@ class Crud
     }
 
 
+    /**
+     * Order the columns in a certain way.
+     *
+     * @param [string] Column name.
+     * @param [attributes and values array]
+     */
+    public function setColumnOrder($columns)
+    {
+        // TODO
+    }
+
+    // ALIAS of setColumnOrder($columns)
+    public function setColumnsOrder($columns) { $this->setColumnOrder($columns); }
 
 
     // ------------
     // FIELDS
     // ------------
 
-    // TODO: $this->crud->setFields();  // for both create and update
-    // TODO: $this->crud->setCreateFields(); // overwrite the create fields with this
-    // TODO: $this->crud->setUpdateFields(); // overwrite the update fields with this
 
-    // TODO: $this->crud->addField();
-    // TODO: $this->crud->removeField();
-    // TODO: $this->crud->replaceField();
+    /**
+     * Order the fields in a certain way.
+     *
+     * @param [string] Column name.
+     * @param [attributes and values array]
+     */
+    public function setFieldOrder($fields)
+    {
+        // TODO
+    }
 
+    // ALIAS of setFieldOrder($fields)
+    public function setFieldsOrder($fields) { $this->setFieldOrder($fields); }
 
 
     // ----------------
@@ -734,7 +783,7 @@ class Crud
         $this->getDbColumnTypes();
 
         array_map(function($field) {
-            $this->labels[$field] = $this->makeLabel($field);
+            // $this->labels[$field] = $this->makeLabel($field);
 
             $this->fields[] =  [
                                 'name' => $field,
@@ -836,7 +885,12 @@ class Crud
     }
 
 
-    // TODO Tone: Please describe.
+    /**
+     * Turn a database column name or PHP variable into a pretty label to be shown to the user.
+     *
+     * @param  [string]
+     * @return [string]
+     */
     public function makeLabel($value)
     {
         return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
@@ -1003,7 +1057,7 @@ class Crud
 
 
     // ------------
-    // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, UNUSED IN CONTROLLERS/VIEWS
+    // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED IN THIS FILE
     // ------------
     //
     // TODO:
@@ -1026,12 +1080,12 @@ class Crud
 
     public function addCustomButton($button)
     {
-        array_unshift($this->customButtons, $button);
+        array_unshift($this->custom_buttons, $button);
     }
 
     public function customButtons()
     {
-        return $this->customButtons;
+        return $this->custom_buttons;
     }
 
     public function showButtons()
@@ -1125,14 +1179,14 @@ class Crud
 
     public function fields()
     {
-        if (!$this->item && !empty($this->create_fields))
+        if (!$this->entry && !empty($this->create_fields))
         {
             $this->syncRelations('create_fields');
 
             return $this->create_fields;
         }
 
-        if ($this->item && !empty($this->update_fields))
+        if ($this->entry && !empty($this->update_fields))
         {
             $this->syncRelations('update_fields');
             $this->addFieldsValue();
@@ -1163,69 +1217,17 @@ class Crud
 
 
 
-
-    public function label($item, $label)
-    {
-        $this->labels[$item] = $label;
-    }
-
-    public function labels()
-    {
-        return $this->labels;
-    }
-
-    /**
-     * Adds a required => true attribute to each field, so that the required asterisc will show up in the create/update forms.
-     * TODO: make this work, by editing the $this->fields variable.
-     *
-     * @param [string or array of strings]
-     */
-    public function setRequiredFields($fields)
-    {
-        $this->required = array_merge($this->required, (array)$fields);
-    }
-
-    /**
-     * Adds a required => true attribute to this field, so that the required asteris will show up in the create/update forms.
-     *
-     * @param [string]
-     */
-    public function setRequiredField($field)
-    {
-        return $this->setRequiredFields($field);
-    }
-
-    /**
-     * Get the required fields.
-     * TODO: make this work after making setRequiredFields() work.
-     *
-     * @return [array]
-     */
-    public function getRequired()
-    {
-        return $this->required;
-    }
-
-
-
-
-
-
-
-
-
-
     // iti pune valorile pe field-uri la EDIT
     public function addFieldsValue()
     {
-        if ($this->item)
+        if ($this->entry)
         {
             $fields = !empty($this->update_fields) ? 'update_fields' : 'fields';
 
             foreach ($this->{$fields} as $key => $field)
             {
-                if (array_key_exists($field['name'], $this->relations) && $this->relations[$field['name']]['pivot']) $this->{$fields}[$key]['value'] = $this->item->{$this->relations[$field['name']]['name']}()->lists($this->relations[$field['name']]['model']->getKeyName())->toArray();
-                    else $this->{$fields}[$key]['value'] = $this->item->{$field['name']};
+                if (array_key_exists($field['name'], $this->relations) && $this->relations[$field['name']]['pivot']) $this->{$fields}[$key]['value'] = $this->entry->{$this->relations[$field['name']]['name']}()->lists($this->relations[$field['name']]['model']->getKeyName())->toArray();
+                    else $this->{$fields}[$key]['value'] = $this->entry->{$field['name']};
             }
         }
     }
