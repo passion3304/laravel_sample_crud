@@ -1,18 +1,18 @@
 @extends('backpack::layout')
 
 @section('after_styles')
-    <link href="{{ asset('dick/js/vendor/nestedSortable/nestedSortable.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('vendor/backpack/nestedSortable/nestedSortable.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('header')
   <section class="content-header">
     <h1>
-      <span class="text-capitalize">{{ $crud['entity_name_plural'] }}</span>
-      <small>{{ trans('backpack::crud.all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
+      <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
+      <small>{{ trans('backpack::crud.all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{ url('admin/dashboard') }}">Admin</a></li>
-      <li><a href="{{ url($crud['route']) }}" class="text-capitalize">{{ $crud['entity_name_plural'] }}</a></li>
+      <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
       <li class="active">{{ trans('backpack::crud.reorder') }}</li>
     </ol>
   </section>
@@ -29,7 +29,7 @@
 
       // show the tree element
       echo '<li id="list_'.$entry->id.'">';
-      echo '<div><span class="disclose"><span></span></span>'.$entry->{$crud['reorder_label']}.'</div>';
+      echo '<div><span class="disclose"><span></span></span>'.$entry->{$crud->reorder_label}.'</div>';
 
       // see if this element has any children
       $children = [];
@@ -58,14 +58,14 @@
  ?>
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    @if (!(isset($crud['view_table_permission']) && !$crud['view_table_permission']))
-      <a href="{{ url($crud['route']) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud['entity_name_plural'] }}</span></a><br><br>
+    @if ($crud->hasAccess('list'))
+      <a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
     @endif
 
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">{{ trans('backpack::crud.reorder').' '.$crud['entity_name_plural'] }}</h3>
+          <h3 class="box-title">{{ trans('backpack::crud.reorder').' '.$crud->entity_name_plural }}</h3>
         </div>
         <div class="box-body">
 
@@ -79,7 +79,7 @@
                     class="active"
                   @endif
                 >
-                  <a href="{{ url($crud['route'].'/reorder/'.$lang->abbr) }}">{{ $lang->name }}</a>
+                  <a href="{{ url($crud->route.'/reorder/'.$lang->abbr) }}">{{ $lang->name }}</a>
                 </li>
               @endforeach
             </ul>
@@ -109,7 +109,7 @@
 
 @section('after_scripts')
   <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js" type="text/javascript"></script>
-  <script src="{{ url('dick/js/vendor/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript"></script>
+  <script src="{{ url('vendor/backpack/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript"></script>
 
   <script type="text/javascript">
     jQuery(document).ready(function($) {
@@ -126,7 +126,7 @@
             tabSize: 25,
             tolerance: 'pointer',
             toleranceElement: '> div',
-            maxLevels: {{ $crud['reorder_max_level'] or 3 }},
+            maxLevels: {{ $crud->reorder_max_level or 3 }},
 
             isTree: true,
             expandOnHover: 700,

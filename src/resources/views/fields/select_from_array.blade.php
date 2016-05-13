@@ -5,7 +5,7 @@
     	class="form-control"
 
     	@foreach ($field as $attribute => $value)
-            @if (!is_array($value))
+            @if (is_string($attribute))
     		{{ $attribute }}="{{ $value }}"
             @endif
     	@endforeach
@@ -18,7 +18,7 @@
 	    	@if (count($field['options']))
 	    		@foreach ($field['options'] as $key => $value)
 	    			<option value="{{ $key }}"
-						@if (isset($field['value']) && $key==$field['value'])
+						@if ((isset($field['value']) && $key==$field['value']) || (old($field['name']) == $key) )
 							 selected
 						@endif
 	    			>{{ $value }}</option>
