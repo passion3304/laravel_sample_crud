@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.0] - 2016-05-18
+
+### Added
+- Call-based API.
+
+
 ## [0.9.10] - 2016-03-17
 
 ### Fixed
