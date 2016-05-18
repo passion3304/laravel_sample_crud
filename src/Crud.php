@@ -63,7 +63,7 @@ class Crud
      */
     public function create($data)
     {
-        $values_to_store = $this->compactFakeFields(\Request::all());
+        $values_to_store = $this->compactFakeFields($data);
         $item = $this->model->create($values_to_store);
 
         // if there are any relationships available, also sync those
@@ -83,20 +83,58 @@ class Crud
         return $this->prepareFields(empty($this->create_fields)?$this->fields:$this->create_fields);
     }
 
-
-
-
-    public function syncPivot($model, $data)
+    /**
+     * Get all fields with relation set (model key set on field)
+     *
+     * @param [string: create/update]  
+     * @return [array] The fields with model key set.
+     */
+    public function getRelationFields($form = 'create')
     {
-        foreach ($this->relations as $key => $relation)
-        {
-            if ($relation['pivot']){
-                $model->{$relation['name']}()->sync($data[$key]);
+        if( $form == 'create' ){
+            $fields = empty($this->create_fields)?$this->fields:$this->create_fields;
+        }else{
+            $fields = empty($this->update_fields)?$this->fields:$this->update_fields;
+        }
 
-                foreach($relation['pivotFields'] as $pivotField){
-                   foreach($data[$pivotField] as $pivot_id =>  $field){
-                     $model->{$relation['name']}()->updateExistingPivot($pivot_id, [$pivotField => $field]);
-                   }
+        $relationFields = [];
+
+        foreach($fields as $field){
+            if(isset($field['model']) || isset($field['dependencies'])){
+                array_push($relationFields, $field);
+            }
+        }
+
+        return $relationFields;
+    }
+
+
+    public function syncPivot($model, $data, $form = 'create')
+    {
+
+        $relations = $this->getRelationFields($form);
+        
+        foreach ($relations as $key => $relation)
+        {
+            if ( (isset($relation['pivot']) && $relation['pivot'] ) || isset($relation['dependencies']) ){
+                if(is_array($relation['name'])){
+                    foreach($relation['name'] as $relation){
+                        if(isset($data[$relation])){
+                            $model->{$relation}()->sync($data[$relation]);
+                        }else{
+                             $model->{$relation}()->sync([]);
+                        }
+                    }
+                }else{
+                    $model->{$relation['name']}()->sync($data[$relation['name']]);
+                }
+
+                if( isset($relation['pivotFields']) ){
+                    foreach($relation['pivotFields'] as $pivotField){
+                       foreach($data[$pivotField] as $pivot_id =>  $field){
+                         $model->{$relation['name']}()->updateExistingPivot($pivot_id, [$pivotField => $field]);
+                       }
+                    }
                 }
             }
         }
@@ -198,7 +236,6 @@ class Crud
         }
     }
 
-
     /**
      * Enable the DETAILS ROW functionality:
      *
@@ -237,8 +274,8 @@ class Crud
     {
         $item = $this->model->findOrFail($id);
         $updated = $item->update($this->compactFakeFields($data));
-
-        if ($updated) $this->syncPivot($item, $data);
+       
+        /*if ($updated) */$this->syncPivot($item, $data, 'update');
 
         return $item;
     }
@@ -259,7 +296,16 @@ class Crud
             // set the value
             if (!isset($fields[$k]['value']))
             {
-                $fields[$k]['value'] = $entry->$field['name'];
+                if(is_array($field['name'])){
+                    
+                    $fields[$k]['value'] = [];
+                    foreach($field['name'] as  $key => $relation){
+                        $fields[$k]['value'][] = $entry->{$relation};
+                    }
+                
+                }else{
+                    $fields[$k]['value'] = $entry->{$field['name']};
+                }
             }
         }
 
