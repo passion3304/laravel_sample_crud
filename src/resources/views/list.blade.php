@@ -52,7 +52,7 @@
                       </tr>
                     </thead>
                     <tbody>
-
+                     
                       @foreach ($entries as $k => $entry)
                       <tr data-entry-id="{{ $entry->id }}">
 
@@ -91,7 +91,7 @@
                                 ?></td>
                           @else
                             {{-- regular object attribute --}}
-                            <td>{{ str_limit(strip_tags($entry->$column['name']), 80, "[...]") }}</td>
+                            <td>{{ str_limit(strip_tags($entry->{$column['name']}), 80, "[...]") }}</td>
                           @endif
 
                         @endforeach

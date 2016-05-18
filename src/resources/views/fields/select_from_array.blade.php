@@ -18,7 +18,7 @@
 	    	@if (count($field['options']))
 	    		@foreach ($field['options'] as $key => $value)
 	    			<option value="{{ $key }}"
-						@if (isset($field['value']) && $key==$field['value'])
+						@if ((isset($field['value']) && $key==$field['value']) || (old($field['name']) == $key) )
 							 selected
 						@endif
 	    			>{{ $value }}</option>

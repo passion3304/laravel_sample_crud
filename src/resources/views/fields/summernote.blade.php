@@ -10,5 +10,11 @@
     		@endif
     	@endforeach
 
-    	>{{ (isset($field['value']))?$field['value']:'' }}</textarea>
+    	>
+        @if(old($field['name']))
+            {{ old($field['name']) }}
+        @else
+            {{ ( isset($field['value']))?$field['value']:'' }}
+        @endif
+        </textarea>
   </div>

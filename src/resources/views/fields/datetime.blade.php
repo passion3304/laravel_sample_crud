@@ -8,7 +8,7 @@
         @foreach ($field as $attribute => $value)
             @if (is_string($attribute) && is_string($value))
                 @if ($attribute == 'value')
-                    value="{{ strftime('%Y-%m-%dT%H:%M:%S', strtotime($value)) }}"
+                    value="{{ strftime('%Y-%m-%dT%H:%M:%S', strtotime(old($field['name']) ? old($field['name']) : $value )) }}"
                 @else
                     {{ $attribute }}="{{ $value }}"
                 @endif

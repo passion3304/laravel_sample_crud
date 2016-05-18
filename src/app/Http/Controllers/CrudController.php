@@ -74,8 +74,10 @@ class CrudController extends BaseController {
 	{
 		$this->crud->hasAccessOrFail('create');
 
+		
 		// insert item in the db
-		$item = $this->crud->create(\Request::all());
+		$item = $this->crud->create(\Request::except(['redirect_after_save', 'password']));
+
 
 		// show a success message
 		\Alert::success(trans('backpack::crud.insert_success'))->flash();
@@ -107,6 +109,8 @@ class CrudController extends BaseController {
 		$this->data['fields'] = $this->crud->getUpdateFields($id);
 		$this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
 
+		$this->data['id'] = $id;
+
 		// load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
 		return view('crud::edit', $this->data);
 	}
@@ -123,7 +127,8 @@ class CrudController extends BaseController {
 		$this->crud->hasAccessOrFail('update');
 
 		// update the row in the db
-		$this->crud->update(\Request::get('id'), \Request::all());
+
+		$this->crud->update(\Request::get('id'), \Request::except('redirect_after_save'));
 
 		// show a success message
 		\Alert::success(trans('backpack::crud.update_success'))->flash();

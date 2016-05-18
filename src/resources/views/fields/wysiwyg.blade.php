@@ -10,5 +10,5 @@
     		@endif
     	@endforeach
 
-    	>{{ (isset($field['value']))?$field['value']:'' }}</textarea>
+    	>{{ old($field['name']) ? old($field['name']) :(( isset($field['value'])) ? $field['value'] : '') }}</textarea>
   </div>

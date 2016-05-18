@@ -2,13 +2,17 @@
   <div class="form-group">
     <label>{{ $field['label'] }}</label>
     <input
-    	type="text"
-    	class="form-control"
+        type="text"
+        class="form-control"
 
-    	@foreach ($field as $attribute => $value)
+        @foreach ($field as $attribute => $value)
             @if (is_string($attribute) && is_string($value))
-    		{{ $attribute }}="{{ $value }}"
+               @if($attribute == 'value')
+                    {{ $attribute }}="{{ old($field['name']) ? old($field['name']) : $value }}"
+                @else
+                    {{ $attribute }}="{{ $value }}"
+                @endif
             @endif
-    	@endforeach
-    	>
+        @endforeach
+        >
   </div>
