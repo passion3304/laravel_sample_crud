@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.1] - 2016-05-19
+
+### Fixed
+- Crud.php fixes found out during Backpack\PermissionManager development.
+- Added developers to readme file.
+
+
 ## [2.0.0] - 2016-05-18
 
 ### Added

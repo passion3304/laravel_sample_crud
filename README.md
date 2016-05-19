@@ -9,7 +9,7 @@
 
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
 
-**Breaking changes coming up. Final version will launch at the end of March. Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced when the API is stable (late March - early April 2016).** 
+**Breaking changes coming up. Final version will launch at the end of May. Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced when the API is stable.** 
 
 ![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
 
@@ -50,9 +50,9 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 
 ## Usage
 
-Check out the documentation at https://laravel-backpack.readme.io/docs 
+Check out the documentation at https://laravelbackpack.com 
 
-// TODO: create a documentation file base on Dick documentation
+// TODO: finish CRUD documentation (intro, fields, fake fields, reorder, file manager, etc)
 
 In short:
 
@@ -86,7 +86,9 @@ If you discover any security related issues, please email hello@tabacitu.ro inst
 
 ## Credits
 
-- [Cristian Tabacitu](http://tabacitu.ro)
+- [Cristian Tabacitu](http://tabacitu.ro) - chief honcho
+- [Cristian Tone](http://updivision.com) - refactoring & architecture
+- [Marius Constantin](http://updivision.com) - bug fixing & improvements
 - [All Contributors][link-contributors]
 
 Special thanks go to:
