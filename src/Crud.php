@@ -1251,106 +1251,10 @@ class Crud
         $this->setSort('columns', (array) $order);
     }
 
-    public function setFields($fields)
-    {
-        $this->addMultiple('fields', $fields);
-    }
-
-    // [name, label, value, default, type, required, hint, values[id => value], attributes[class, id, data-, for editor: data-config="basic|medium|full"], callback => [$this, 'methodName'], callback_create => [$this, 'methodName'], callback_edit => [$this, 'methodName'], callback_view => [$this, 'methodName']]
-    // public function addField($field)
-    // {
-    //     return $this->add('fields', $field);
-    // }
-
-    public function updateFields($fields, $attributes)
-    {
-        $this->sync('fields', $fields, $attributes);
-    }
-
-    // public function removeFields($fields)
-    // {
-    //     $this->fields = $this->remove('fields', $fields);
-    //     $this->removeColumns($fields);
-    // }
-
-    public function setCreateFields($fields)
-    {
-        $this->addMultiple('create_fields', $fields);
-    }
-
-    public function addCreateField($field)
-    {
-        return $this->add('create_fields', $field);
-    }
-
-    public function setUpdateFields($fields)
-    {
-        $this->addMultiple('update_fields', $fields);
-    }
-
-    public function addUpdateField($field)
-    {
-        return $this->add('update_fields', $field);
-    }
-
-    public function fields()
-    {
-        if (!$this->entry && !empty($this->create_fields)) {
-            $this->syncRelations('create_fields');
-
-            return $this->create_fields;
-        }
-
-        if ($this->entry && !empty($this->update_fields)) {
-            $this->syncRelations('update_fields');
-            $this->addFieldsValue();
-
-            return $this->update_fields;
-        }
-
-        $this->syncRelations('fields');
-        $this->addFieldsValue();
-
-        return $this->sort('fields');
-    }
 
     public function orderFields($order)
     {
         $this->setSort('fields', (array) $order);
-    }
-
-    // public function syncField($field)
-    // {
-    //     if (array_key_exists('name', (array)$field))
-    //         return array_merge(['type' => $this->getFieldTypeFromDbColumnType($field['name']), 'value' => '', 'default' => null, 'values' => [], 'attributes' => []], $field);
-
-    //     return false;
-    // }
-
-    // iti pune valorile pe field-uri la EDIT
-    public function addFieldsValue()
-    {
-        if ($this->entry) {
-            $fields = !empty($this->update_fields) ? 'update_fields' : 'fields';
-
-            foreach ($this->{$fields} as $key => $field) {
-                if (array_key_exists($field['name'], $this->relations) && $this->relations[$field['name']]['pivot']) {
-                    $this->{$fields}[$key]['value'] = $this->entry->{$this->relations[$field['name']]['name']}()->lists($this->relations[$field['name']]['model']->getKeyName())->toArray();
-                } else {
-                    $this->{$fields}[$key]['value'] = $this->entry->{$field['name']};
-                }
-            }
-        }
-    }
-
-    // public function add($entity, $field)
-    // {
-    //     return array_filter($this->{$entity}[] = $this->syncField($field));
-    // }
-
-    public function addMultiple($entity, $field)
-    {
-        $this->{$entity} = array_filter(array_map([$this, 'syncField'], $fields));
     }
 
     public function sync($type, $fields, $attributes)
@@ -1365,11 +1269,6 @@ class Crud
             }, $this->{$type});
         }
     }
-
-    // public function remove($entity, $fields)
-    // {
-    //     return array_values(array_filter($this->{$entity}, function($field) use ($fields) { return !in_array($field['name'], (array)$fields);}));
-    // }
 
     public function setSort($items, $order)
     {
@@ -1393,32 +1292,4 @@ class Crud
         return $this->{$items};
     }
 
-    // cred ca ia valorile din tabela de legatura ca sa ti le afiseze in select
-    public function getRelationValues($model, $field, $where = [], $order = [])
-    {
-        $order = (array) $order;
-        $values = $model->select('*');
-
-        if (!empty($where)) {
-            call_user_func_array([$values, $where[0]], array_slice($where, 1));
-        }
-
-        if (!empty($order)) {
-            call_user_func_array([$values, 'orderBy'], $order);
-        }
-
-        return $values->get()->lists($field, $model->getKeyName())->toArray();
-    }
-
-    // face un fel de merge intre ce ii dai si ce e in CRUD
-    public function syncRelations($entity)
-    {
-        foreach ($this->relations as $field => $relation) {
-            if ($relation['pivot']) {
-                $this->add($entity, ['name' => $field, 'type' => 'multiselect', 'value' => [], 'values' => $this->relations[$field]['values']]);
-            } else {
-                $this->sync($entity, $field, ['type' => 'select', 'values' => $this->relations[$field]['values']]);
-            }
-        }
-    }
 }
