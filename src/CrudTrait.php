@@ -52,7 +52,7 @@ trait CrudTrait
         foreach ($columns as $key => $column) {
             $column_contents = $this->{$column};
 
-            if (!is_object($this->{$column})) {
+            if (! is_object($this->{$column})) {
                 $column_contents = json_decode($this->{$column});
             }
 
@@ -75,7 +75,7 @@ trait CrudTrait
     {
         $model = '\\'.get_class($this);
 
-        if (!count($columns)) {
+        if (! count($columns)) {
             if (property_exists($model, 'fakeColumns')) {
                 $columns = $this->fakeColumns;
             } else {
