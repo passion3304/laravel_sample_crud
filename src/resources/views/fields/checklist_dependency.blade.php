@@ -5,8 +5,8 @@
       $entity_model = $crud->getModel();
 
       //short name for dependency fields
-      $primary_dependency = $field['dependencies']['primary'];
-      $secondary_dependency = $field['dependencies']['secondary'];
+      $primary_dependency = $field['subfields']['primary'];
+      $secondary_dependency = $field['subfields']['secondary'];
 
 
       //all items with relation

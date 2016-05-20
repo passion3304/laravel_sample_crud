@@ -102,8 +102,19 @@ class Crud
         $relationFields = [];
 
         foreach($fields as $field){
-            if(isset($field['model']) || isset($field['dependencies'])){
+            if (isset($field['model']))
+            {
                 array_push($relationFields, $field);
+            }
+
+            if (isset($field['subfields']) &&
+                is_array($field['subfields']) &&
+                count($field['subfields']))
+            {
+                foreach ($field['subfields'] as $subfield)
+                {
+                    array_push($relationFields, $subfield);
+                }
             }
         }
 
@@ -114,27 +125,19 @@ class Crud
     public function syncPivot($model, $data, $form = 'create')
     {
 
-        $relations = $this->getRelationFields($form);
+        $fields_with_relationships = $this->getRelationFields($form);
 
-        foreach ($relations as $key => $relation)
+        foreach ($fields_with_relationships as $key => $field)
         {
-            if ( (isset($relation['pivot']) && $relation['pivot'] ) || isset($relation['dependencies']) ){
-                if(is_array($relation['name'])){
-                    foreach($relation['name'] as $relation){
-                        if(isset($data[$relation])){
-                            $model->{$relation}()->sync($data[$relation]);
-                        }else{
-                             $model->{$relation}()->sync([]);
-                        }
-                    }
-                }else{
-                    $model->{$relation['name']}()->sync($data[$relation['name']]);
-                }
+            if (isset($field['pivot']) && $field['pivot'] )
+            {
+                $values = isset($data[$field['name']])?$data[$field['name']]:[];
+                $model->{$field['name']}()->sync($values);
 
-                if( isset($relation['pivotFields']) ){
-                    foreach($relation['pivotFields'] as $pivotField){
+                if( isset($field['pivotFields']) ){
+                    foreach($field['pivotFields'] as $pivotField){
                        foreach($data[$pivotField] as $pivot_id =>  $field){
-                         $model->{$relation['name']}()->updateExistingPivot($pivot_id, [$pivotField => $field]);
+                         $model->{$field['name']}()->updateExistingPivot($pivot_id, [$pivotField => $field]);
                        }
                     }
                 }
@@ -298,11 +301,11 @@ class Crud
             // set the value
             if (!isset($fields[$k]['value']))
             {
-                if(is_array($field['name'])){
-
+                if (isset($field['subfields']))
+                    {
                     $fields[$k]['value'] = [];
-                    foreach($field['name'] as  $key => $relation){
-                        $fields[$k]['value'][] = $entry->{$relation};
+                    foreach($field['subfields'] as $key => $subfield){
+                        $fields[$k]['value'][] = $entry->{$subfield['name']};
                     }
 
                 }else{
@@ -770,6 +773,15 @@ class Crud
                 $this->create_fields[$complete_field_array['name']] = $complete_field_array;
                 $this->update_fields[$complete_field_array['name']] = $complete_field_array;
                 break;
+        }
+    }
+
+    public function addFields($fields, $form='both')
+    {
+        if (count($fields)) {
+            foreach ($fields as $field) {
+                $this->addField($field, $form);
+            }
         }
     }
 

@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+## [2.0.4] - 2016-05-20
+
+### Fixed
+- Fields with subfields did not work any more (mainly checklist_dependency);
+
+
 ## [2.0.3] - 2016-05-20
 
 ### Fixed
