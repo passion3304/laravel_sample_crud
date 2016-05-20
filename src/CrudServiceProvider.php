@@ -1,8 +1,8 @@
 <?php
+
 namespace Backpack\CRUD;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\Router;
 use Route;
 
 class CrudServiceProvider extends ServiceProvider
@@ -13,7 +13,6 @@ class CrudServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $defer = false;
-
 
     /**
      * Perform post-registration booting of services.
@@ -32,14 +31,14 @@ class CrudServiceProvider extends ServiceProvider
 
         // PUBLISH FILES
         // publish lang files
-        $this->publishes([__DIR__.'/resources/lang' => resource_path('lang/vendor/backpack'), ], 'lang');
+        $this->publishes([__DIR__.'/resources/lang' => resource_path('lang/vendor/backpack')], 'lang');
         // publish views
-        $this->publishes([__DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud'), ], 'views');
+        $this->publishes([__DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud')], 'views');
         // publish public Backpack CRUD assets
-        $this->publishes([__DIR__.'/public' => public_path('vendor/backpack'), ], 'public');
+        $this->publishes([__DIR__.'/public' => public_path('vendor/backpack')], 'public');
         // publish custom files for elFinder
         $this->publishes([
-                            __DIR__.'/config/elfinder.php' => config_path('elfinder.php'),
+                            __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
                             __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
                             ], 'elfinder');
         // TODO: publish demo resources:
@@ -49,7 +48,6 @@ class CrudServiceProvider extends ServiceProvider
             // - MANUAL routes
             // - MANUAL migration for those entities
     }
-
 
     /**
      * Register any package services.
@@ -68,7 +66,7 @@ class CrudServiceProvider extends ServiceProvider
 
     private function registerCRUD()
     {
-        $this->app->bind('CRUD', function($app) {
+        $this->app->bind('CRUD', function ($app) {
             return new CRUD($app);
         });
     }
@@ -90,5 +88,4 @@ class CrudServiceProvider extends ServiceProvider
         // - ex: EntityCrudController@postPreview will be available at /entity/preview through POST
         Route::controller($name, $controller);
     }
-
 }

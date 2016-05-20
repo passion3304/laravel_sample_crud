@@ -17,10 +17,12 @@
     <!-- elFinder JS (REQUIRED) -->
     <script src="<?= asset($dir.'/js/elfinder.min.js') ?>"></script>
 
-    <?php if($locale){ ?>
+    <?php if ($locale) {
+    ?>
         <!-- elFinder translation (OPTIONAL) -->
         <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
-    <?php } ?>
+    <?php 
+} ?>
 
     <!-- elFinder initialization (REQUIRED) -->
     <script type="text/javascript" charset="utf-8">
@@ -37,13 +39,15 @@
 
             var elf = $('#elfinder').elfinder({
                 // set your elFinder options here
-                <?php if($locale){ ?>
+                <?php if ($locale) {
+    ?>
                     lang: '<?= $locale ?>', // locale
-                <?php } ?>
+                <?php 
+} ?>
                 customData: {
                     _token: '<?= csrf_token() ?>'
                 },
-                url: '<?= route("elfinder.connector") ?>',  // connector URL
+                url: '<?= route('elfinder.connector') ?>',  // connector URL
                 getFileCallback : function(file) {
                     window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
                     window.close();
