@@ -1095,7 +1095,9 @@ class Crud
                 if (isset($fields[$k]['store_in'])) {
                     $request[$fields[$k]['store_in']][$fields[$k]['name']] = $request[$fields[$k]['name']];
 
-                    $remove_fake_field = array_pull($request, $fields[$k]['name']);
+                    // remove the fake field
+                    array_pull($request, $fields[$k]['name']);
+
                     if (!in_array($fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
                         array_push($fake_field_columns_to_encode, $fields[$k]['store_in']);
                     }
@@ -1104,7 +1106,9 @@ class Crud
 
                     $request['extras'][$fields[$k]['name']] = $request[$fields[$k]['name']];
 
-                    $remove_fake_field = array_pull($request, $fields[$k]['name']);
+                    // remove the fake field
+                    array_pull($request, $fields[$k]['name']);
+
                     if (!in_array('extras', $fake_field_columns_to_encode, true)) {
                         array_push($fake_field_columns_to_encode, 'extras');
                     }

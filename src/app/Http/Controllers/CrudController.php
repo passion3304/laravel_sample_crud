@@ -178,10 +178,6 @@ class CrudController extends BaseController
             abort(403, 'Reorder is disabled.');
         }
 
-        if ($lang == false) {
-            $lang = \Lang::locale();
-        }
-
         // get all results for that entity
         $this->data['entries'] = $this->crud->getEntries();
         $this->data['crud'] = $this->crud;

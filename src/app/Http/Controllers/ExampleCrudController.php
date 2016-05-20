@@ -33,11 +33,10 @@ class ExampleCrudController extends CrudController
         // USAGE LEVEL 2 - OFTEN	================================================== LEVEL 2
 
         // ------ FIELDS (the last parameter is always the form - create/update/both)
-        // TODO: $this->crud->addField('name', $options, 'update/create/both');
-        // TODO: $this->crud->addFields($array_of_arrays, 'update/create/both');
-        // TODO: $this->crud->removeField('name', 'update/create/both');
+        // $this->crud->addField($options, 'update/create/both');
+        // $this->crud->addFields($array_of_arrays, 'update/create/both');
+        // $this->crud->removeField('name', 'update/create/both');
         // TODO: $this->crud->removeFields($array_of_names, 'update/create/both');
-        // TODO: $this->crud->replaceField('name', 'update/create/both');
 
         // TODO: $this->crud->setRequiredFields(['field_1', 'field_2'], 'update/create/both');
         // TODO: $this->crud->setRequiredField('field_1', 'update/create/both');
@@ -113,50 +112,6 @@ class ExampleCrudController extends CrudController
         // USAGE LEVEL 5 - ALMOST NEVER	==============================================  LEVEL 5
 
         // $this->crud->updateTreeOrder($all_entries);
-
-        // ------------------------
-        // MEANWHILE THIS WILL WORK
-        // ------------------------
-
-        $this->crud->reorder = true;
-        $this->crud->reorder_label = 'name';
-        $this->crud->reorder_max_level = 3;
-        $this->crud->details_row = true;
-        // $this->crud->permissions = ['add', 'list', 'edit', 'delete', 'show'];
-
-        $this->crud->columns = [
-                                    [
-                                        'name'  => 'name',
-                                        'label' => 'Example item text',
-                                    ],
-                                    [
-                                        'label'     => 'Parent',
-                                        'type'      => 'select',
-                                        'name'      => 'parent_id',
-                                        'entity'    => 'parent',
-                                        'attribute' => 'name',
-                                        'model'     => "App\Models\Example",
-                                    ],
-                                ];
-        $this->crud->fields = [
-                                [
-                                    'name'  => 'name',
-                                    'label' => 'Example item text',
-                                ],
-                                [
-                                    'label'     => 'Parent',
-                                    'type'      => 'select',
-                                    'name'      => 'parent_id',
-                                    'entity'    => 'parent',
-                                    'attribute' => 'name',
-                                    'model'     => "App\Models\Example",
-                                ],
-                                [
-                                    'name'  => 'type',
-                                    'label' => 'Type',
-                                    'type'  => 'page_or_link',
-                                ],
-                            ];
     }
 
     public function store(StoreRequest $request)

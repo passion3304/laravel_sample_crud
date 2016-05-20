@@ -69,7 +69,7 @@ trait CrudTrait
      *
      * @param array $columns - the database columns that contain the JSONs
      *
-     * @return CrudTrait
+     * @return Model
      */
     public function withFakes($columns = [])
     {
