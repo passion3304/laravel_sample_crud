@@ -17,27 +17,31 @@
     <!-- elFinder JS (REQUIRED) -->
     <script src="<?= asset($dir.'/js/elfinder.min.js') ?>"></script>
 
-    <?php if ($locale) { ?>
+    <?php if ($locale) {
+    ?>
         <!-- elFinder translation (OPTIONAL) -->
         <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
-    <?php } ?>
+    <?php 
+} ?>
     <!-- Include jQuery, jQuery UI, elFinder (REQUIRED) -->
 
     <?php
-    $mimeTypes = implode(',', array_map(function($t) {return "'".$t."'"; }, explode(',', $type)));
+    $mimeTypes = implode(',', array_map(function ($t) {return "'".$t."'"; }, explode(',', $type)));
     ?>
 
     <script type="text/javascript">
         $().ready(function () {
             var elf = $('#elfinder').elfinder({
                 // set your elFinder options here
-                <?php if ($locale) { ?>
+                <?php if ($locale) {
+    ?>
                     lang: '<?= $locale ?>', // locale
-                <?php } ?>
+                <?php 
+} ?>
                 customData: {
                     _token: '<?= csrf_token() ?>'
                 },
-                url: '<?= route("elfinder.connector") ?>',  // connector URL
+                url: '<?= route('elfinder.connector') ?>',  // connector URL
                 resizable: false,
                 ui: ['toolbar', 'path','stat'],
                 onlyMimes: [<?= $mimeTypes ?>],

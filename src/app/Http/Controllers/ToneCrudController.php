@@ -1,15 +1,14 @@
-<?php namespace Backpack\Crud\app\Http\Controllers;
+<?php
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+namespace Backpack\Crud\app\Http\Controllers;
+
 use Backpack\CRUD\Crud;
+use Illuminate\Routing\Controller as BaseController;
 
 /**
- * The controller that handles all the crud actions
+ * The controller that handles all the crud actions.
  */
-class CrudController extends BaseController
+class ToneCrudController extends BaseController
 {
     protected $crud;
     protected $data;
@@ -49,7 +48,8 @@ class CrudController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function crudStore(Request $request = null)
@@ -65,7 +65,8 @@ class CrudController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -79,7 +80,8 @@ class CrudController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -90,13 +92,14 @@ class CrudController extends BaseController
         // dd($this->crud->item->toArray());
 
         return view('crud::layouts.edit', $this->data + ['crud' => $this->crud]);
-
     }
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function crudUpdate($id, Request $request = null)
@@ -112,7 +115,8 @@ class CrudController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

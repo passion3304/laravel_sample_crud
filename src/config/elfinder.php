@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return array(
     */
 
     'route' => [
-        'prefix' => 'admin/elfinder',
+        'prefix'     => 'admin/elfinder',
         'middleware' => ['web', 'auth'], //Set to null to disable middleware filter
     ],
 
@@ -76,6 +76,6 @@ return array(
     |
     */
 
-    'options' => array(),
+    'options' => [],
 
-);
+];
