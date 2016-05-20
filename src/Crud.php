@@ -1255,7 +1255,6 @@ class Crud
         $this->setSort('columns', (array) $order);
     }
 
-
     public function orderFields($order)
     {
         $this->setSort('fields', (array) $order);
@@ -1295,5 +1294,4 @@ class Crud
 
         return $this->{$items};
     }
-
 }
