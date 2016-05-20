@@ -284,7 +284,7 @@ class Crud
 
         foreach ($fields as $k => $field) {
             // set the value
-            if (!isset($fields[$k]['value'])) {
+            if (! isset($fields[$k]['value'])) {
                 if (isset($field['subfields'])) {
                     $fields[$k]['value'] = [];
                     foreach ($field['subfields'] as $key => $subfield) {
@@ -418,7 +418,7 @@ class Crud
      */
     public function hasAccess($permission)
     {
-        if (!in_array($permission, $this->access)) {
+        if (! in_array($permission, $this->access)) {
             return false;
         }
 
@@ -434,7 +434,7 @@ class Crud
      */
     public function hasAccessOrFail($permission)
     {
-        if (!in_array($permission, $this->access)) {
+        if (! in_array($permission, $this->access)) {
             abort(403, trans('backpack::crud.unauthorized_access'));
         }
     }
@@ -457,7 +457,7 @@ class Crud
      */
     public function setModel($model_namespace)
     {
-        if (!class_exists($model_namespace)) {
+        if (! class_exists($model_namespace)) {
             throw new \Exception('This model does not exist.', 404);
         }
 
@@ -501,7 +501,7 @@ class Crud
     {
         $complete_route = $route.'.index';
 
-        if (!\Route::has($complete_route)) {
+        if (! \Route::has($complete_route)) {
             throw new \Exception('There are no routes for this route name.', 404);
         }
 
@@ -633,7 +633,7 @@ class Crud
      */
     public function addDefaultLabel($array)
     {
-        if (!array_key_exists('label', (array) $array) && array_key_exists('name', (array) $array)) {
+        if (! array_key_exists('label', (array) $array) && array_key_exists('name', (array) $array)) {
             $array = array_merge(['label' => ucfirst($this->makeLabel($array['name']))], $array);
 
             return $array;
@@ -723,12 +723,12 @@ class Crud
         }
 
         // if the label is missing, we should set it
-        if (!isset($complete_field_array['label'])) {
+        if (! isset($complete_field_array['label'])) {
             $complete_field_array['label'] = ucfirst($complete_field_array['name']);
         }
 
         // if the field type is missing, we should set it
-        if (!isset($complete_field_array['type'])) {
+        if (! isset($complete_field_array['type'])) {
             $complete_field_array['type'] = $this->getFieldTypeFromDbColumnType($complete_field_array['name']);
         }
 
@@ -790,7 +790,7 @@ class Crud
      */
     public function removeFields($array_of_names, $form = 'both')
     {
-        if (!empty($array_of_names)) {
+        if (! empty($array_of_names)) {
             foreach ($array_of_names as $name) {
                 $this->removeField($name, $form);
             }
@@ -935,7 +935,7 @@ class Crud
             $this->create_fields[] = $new_field;
             $this->update_fields[] = $new_field;
 
-            if (!in_array($field, $this->model->getHidden())) {
+            if (! in_array($field, $this->model->getHidden())) {
                 $this->columns[] = [
                                     'name'  => $field,
                                     'label' => ucfirst($field),
@@ -969,7 +969,7 @@ class Crud
      */
     public function getFieldTypeFromDbColumnType($field)
     {
-        if (!array_key_exists($field, $this->field_types)) {
+        if (! array_key_exists($field, $this->field_types)) {
             return 'text';
         }
 
@@ -1050,7 +1050,7 @@ class Crud
         $columns = \Schema::getColumnListing($this->model->getTable());
         $fillable = $this->model->getFillable();
 
-        if (!empty($fillable)) {
+        if (! empty($fillable)) {
             $columns = array_intersect($columns, $fillable);
         }
 
@@ -1098,7 +1098,7 @@ class Crud
                     // remove the fake field
                     array_pull($request, $fields[$k]['name']);
 
-                    if (!in_array($fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
+                    if (! in_array($fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
                         array_push($fake_field_columns_to_encode, $fields[$k]['store_in']);
                     }
                 } else {
@@ -1109,7 +1109,7 @@ class Crud
                     // remove the fake field
                     array_pull($request, $fields[$k]['name']);
 
-                    if (!in_array('extras', $fake_field_columns_to_encode, true)) {
+                    if (! in_array('extras', $fake_field_columns_to_encode, true)) {
                         array_push($fake_field_columns_to_encode, 'extras');
                     }
                 }
@@ -1152,20 +1152,20 @@ class Crud
             if (isset($fields[$k]['fake']) && $fields[$k]['fake'] == true) {
                 // add it to the request in its appropriate variable - the one defined, if defined
                 if (isset($fields[$k]['store_in'])) {
-                    if (!in_array($fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
+                    if (! in_array($fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
                         array_push($fake_field_columns_to_encode, $fields[$k]['store_in']);
                     }
                 } else {
                     //otherwise in the one defined in the $crud variable
 
-                    if (!in_array('extras', $fake_field_columns_to_encode, true)) {
+                    if (! in_array('extras', $fake_field_columns_to_encode, true)) {
                         array_push($fake_field_columns_to_encode, 'extras');
                     }
                 }
             }
         }
 
-        if (!count($fake_field_columns_to_encode)) {
+        if (! count($fake_field_columns_to_encode)) {
             return ['extras'];
         }
 
@@ -1223,7 +1223,7 @@ class Crud
 
     public function showButtons()
     {
-        return !empty($this->buttons) && !(count($this->buttons) == 1 && array_key_exists('add', $this->buttons));
+        return ! empty($this->buttons) && ! (count($this->buttons) == 1 && array_key_exists('add', $this->buttons));
     }
 
     public function initButtons()
@@ -1262,7 +1262,7 @@ class Crud
 
     public function sync($type, $fields, $attributes)
     {
-        if (!empty($this->{$type})) {
+        if (! empty($this->{$type})) {
             $this->{$type} = array_map(function ($field) use ($fields, $attributes) {
                 if (in_array($field['name'], (array) $fields)) {
                     $field = array_merge($field, $attributes);
@@ -1289,7 +1289,7 @@ class Crud
                 }
             }
 
-            return $this->{$items} = array_merge($elements, array_filter($this->{$items}, function ($item) use ($items) {return !in_array($item['name'], $this->sort[$items]); }));
+            return $this->{$items} = array_merge($elements, array_filter($this->{$items}, function ($item) use ($items) {return ! in_array($item['name'], $this->sort[$items]); }));
         }
 
         return $this->{$items};
