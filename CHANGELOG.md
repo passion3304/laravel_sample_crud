@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.5] - 2016-05-20
+
+### Fixed
+- Removing columns was fixed.
+
 
 ## [2.0.4] - 2016-05-20
 

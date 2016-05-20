@@ -662,6 +662,11 @@ class Crud
         return $this->removeColumns([$column]);
     }
 
+    public function remove($entity, $fields)
+    {
+        return array_values(array_filter($this->{$entity}, function($field) use ($fields) { return !in_array($field['name'], (array)$fields);}));
+    }
+
     /**
      * Change attributes for multiple columns.
      *
