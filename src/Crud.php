@@ -30,7 +30,6 @@ class Crud
     public $columns = []; // Define the columns for the table view as an array;
     public $create_fields = []; // Define the fields for the "Add new entry" view as an array;
     public $update_fields = []; // Define the fields for the "Edit entry" view as an array;
-    public $fields = []; // Define both create_fields and update_fields in one array; will be overwritten by create_fields and update_fields;
 
     public $query;
     public $entry;
@@ -63,7 +62,7 @@ class Crud
      */
     public function create($data)
     {
-        $values_to_store = $this->compactFakeFields($data);
+        $values_to_store = $this->compactFakeFields($data, 'create');
         $item = $this->model->create($values_to_store);
 
         // if there are any relationships available, also sync those
@@ -80,21 +79,24 @@ class Crud
      */
     public function getCreateFields()
     {
-        return $this->prepareFields(empty($this->create_fields)?$this->fields:$this->create_fields);
+        return $this->create_fields;
     }
 
     /**
      * Get all fields with relation set (model key set on field)
      *
-     * @param [string: create/update]  
+     * @param [string: create/update/both]
      * @return [array] The fields with model key set.
      */
     public function getRelationFields($form = 'create')
     {
-        if( $form == 'create' ){
-            $fields = empty($this->create_fields)?$this->fields:$this->create_fields;
-        }else{
-            $fields = empty($this->update_fields)?$this->fields:$this->update_fields;
+        if ($form == 'create')
+        {
+            $fields = $this->create_fields;
+        }
+        else
+        {
+            $fields = $this->update_fields;
         }
 
         $relationFields = [];
@@ -113,7 +115,7 @@ class Crud
     {
 
         $relations = $this->getRelationFields($form);
-        
+
         foreach ($relations as $key => $relation)
         {
             if ( (isset($relation['pivot']) && $relation['pivot'] ) || isset($relation['dependencies']) ){
@@ -144,7 +146,7 @@ class Crud
 
     /**
      * Adds a required => true attribute to each field, so that the required asterisc will show up in the create/update forms.
-     * TODO: make this work, by editing the $this->fields variable.
+     * TODO: make this work, by editing the $this->fields variable and all fields.
      *
      * @param [string or array of strings]
      */
@@ -221,7 +223,7 @@ class Crud
      */
     public function getFields($form, $id = false)
     {
-        switch ($form) {
+        switch (strtolower($form)) {
             case 'create':
                 return $this->getCreateFields();
                 break;
@@ -273,8 +275,8 @@ class Crud
     public function update($id, $data)
     {
         $item = $this->model->findOrFail($id);
-        $updated = $item->update($this->compactFakeFields($data));
-       
+        $updated = $item->update($this->compactFakeFields($data, 'update'));
+
         /*if ($updated) */$this->syncPivot($item, $data, 'update');
 
         return $item;
@@ -289,7 +291,7 @@ class Crud
      */
     public function getUpdateFields($id)
     {
-        $fields = $this->prepareFields(empty($this->update_fields)?$this->fields:$this->update_fields);
+        $fields = $this->update_fields;
         $entry = $this->getEntry($id);
 
         foreach ($fields as $k => $field) {
@@ -297,12 +299,12 @@ class Crud
             if (!isset($fields[$k]['value']))
             {
                 if(is_array($field['name'])){
-                    
+
                     $fields[$k]['value'] = [];
                     foreach($field['name'] as  $key => $relation){
                         $fields[$k]['value'][] = $entry->{$relation};
                     }
-                
+
                 }else{
                     $fields[$k]['value'] = $entry->{$field['name']};
                 }
@@ -727,6 +729,95 @@ class Crud
     // FIELDS
     // ------------
 
+    /**
+     * Add a field to the create/update form or both.
+     * @param [string] $name    Field name (the column name in the db in most cases)
+     * @param [array] $options Field-type-specific information.
+     * @param string $form    The form to add the field to (create/update/both)
+     */
+    public function addField($field, $form='both')
+    {
+        // if the field_defition_array array is a string, it means the programmer was lazy and has only passed the name
+        // set some default values, so the field will still work
+        if (is_string($field))
+        {
+            $complete_field_array['name'] = $field;
+        }
+        else
+        {
+            $complete_field_array = $field;
+        }
+
+        // if the label is missing, we should set it
+        if (!isset($complete_field_array['label']))
+            $complete_field_array['label'] = ucfirst($complete_field_array['name']);
+
+        // if the field type is missing, we should set it
+        if (!isset($complete_field_array['type']))
+            $complete_field_array['type'] = $this->getFieldTypeFromDbColumnType($complete_field_array['name']);
+
+        // store the field information into the correct variable on the CRUD object
+        switch (strtolower($form)) {
+            case 'create':
+                $this->create_fields[$complete_field_array['name']] = $complete_field_array;
+                break;
+
+            case 'update':
+                $this->update_fields[$complete_field_array['name']] = $complete_field_array;
+                break;
+
+            default:
+                $this->create_fields[$complete_field_array['name']] = $complete_field_array;
+                $this->update_fields[$complete_field_array['name']] = $complete_field_array;
+                break;
+        }
+    }
+
+    /**
+     * Remove a certain field from the create/update/both forms by its name.
+     * @param  string $name Field name (as defined with the addField() procedure)
+     * @param  string $form update/create/both
+     */
+    public function removeField($name, $form='both')
+    {
+        switch (strtolower($form)) {
+            case 'create':
+                array_forget($this->create_fields, $name);
+                break;
+
+            case 'update':
+                array_forget($this->update_fields, $name);
+                break;
+
+            default:
+                array_forget($this->create_fields, $name);
+                array_forget($this->update_fields, $name);
+                break;
+        }
+    }
+
+    /**
+     * Remove many fields from the create/update/both forms by their name.
+     * @param  array $array_of_names A simple array of the names of the fields to be removed.
+     * @param  string $form          update/create/both
+     */
+    public function removeFields($array_of_names, $form='both')
+    {
+        if (!empty($array_of_names)) {
+            foreach ($array_of_names as $name) {
+                $this->removeField($name, $form);
+            }
+        }
+    }
+
+    // TODO: $this->crud->replaceField('name', 'update/create/both');
+
+    // TODO: $this->crud->setRequiredFields(['field_1', 'field_2'], 'update/create/both');
+    // TODO: $this->crud->setRequiredField('field_1', 'update/create/both');
+    // TODO: $this->crud->getRequiredFields();
+
+    // TODO: $this->crud->setFieldOrder(['field_1', 'field_2', 'field_3'], 'update/create/both');
+
 
     /**
      * Order the fields in a certain way.
@@ -831,7 +922,7 @@ class Crud
         array_map(function($field) {
             // $this->labels[$field] = $this->makeLabel($field);
 
-            $this->fields[] =  [
+            $new_field =  [
                                 'name' => $field,
                                 'label' => ucfirst($field),
                                 'value' => '', 'default' => $this->field_types[$field]['default'],
@@ -839,6 +930,8 @@ class Crud
                                 'values' => [],
                                 'attributes' => []
                                 ];
+            $this->create_fields[] = $new_field;
+            $this->update_fields[] = $new_field;
 
             if (!in_array($field, $this->model->getHidden()))
             {
@@ -970,60 +1063,47 @@ class Crud
     // Commodity methods
     // -----------------
 
-
-    /**
-     * Prepare the fields to be shown, stored, updated or created.
-     *
-     * Makes sure $this->crud->fields is in the proper format (array of arrays);
-     * Makes sure $this->crud->fields also contains the id of the current item;
-     * Makes sure $this->crud->fields also contains the values for each field;
-     *
-     */
-    public function prepareFields($fields = false)
-    {
-        // if no field type is defined, assume the "text" field type
-        foreach ($fields as $k => $field) {
-                if (!isset($fields[$k]['type'])) {
-                    $fields[$k]['type'] = 'text';
-                }
-            }
-
-        return $fields;
-    }
-
-
-
     /**
      * Refactor the request array to something that can be passed to the model's create or update function.
      * The resulting array will only include the fields that are stored in the database and their values,
      * plus the '_token' and 'redirect_after_save' variables.
      *
      * @param   Request     $request - everything that was sent from the form, usually \Request::all()
+     * @param   String      $form - create/update - to determine what fields should be compacted
      * @return  array
      */
-    public function compactFakeFields($request) {
-
-        // $this->prepareFields();
-
+    public function compactFakeFields($request, $form = 'create')
+    {
         $fake_field_columns_to_encode = [];
 
-        // go through each defined field
-        foreach ($this->fields as $k => $field) {
-            // if it's a fake field
-            if (isset($this->fields[$k]['fake']) && $this->fields[$k]['fake'] == true) {
-                // add it to the request in its appropriate variable - the one defined, if defined
-                if (isset($this->fields[$k]['store_in'])) {
-                    $request[$this->fields[$k]['store_in']][$this->fields[$k]['name']] = $request[$this->fields[$k]['name']];
+        // get the right fields according to the form type (create/update)
+        switch (strtolower($form)) {
+            case 'update':
+                $fields = $this->update_fields;
+                break;
 
-                    $remove_fake_field = array_pull($request, $this->fields[$k]['name']);
-                    if (!in_array($this->fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
-                        array_push($fake_field_columns_to_encode, $this->fields[$k]['store_in']);
+            default:
+                $fields = $this->create_fields;
+                break;
+        }
+
+        // go through each defined field
+        foreach ($fields as $k => $field) {
+            // if it's a fake field
+            if (isset($fields[$k]['fake']) && $fields[$k]['fake'] == true) {
+                // add it to the request in its appropriate variable - the one defined, if defined
+                if (isset($fields[$k]['store_in'])) {
+                    $request[$fields[$k]['store_in']][$fields[$k]['name']] = $request[$fields[$k]['name']];
+
+                    $remove_fake_field = array_pull($request, $fields[$k]['name']);
+                    if (!in_array($fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
+                        array_push($fake_field_columns_to_encode, $fields[$k]['store_in']);
                     }
                 } else //otherwise in the one defined in the $crud variable
                 {
-                    $request['extras'][$this->fields[$k]['name']] = $request[$this->fields[$k]['name']];
+                    $request['extras'][$fields[$k]['name']] = $request[$fields[$k]['name']];
 
-                    $remove_fake_field = array_pull($request, $this->fields[$k]['name']);
+                    $remove_fake_field = array_pull($request, $fields[$k]['name']);
                     if (!in_array('extras', $fake_field_columns_to_encode, true)) {
                         array_push($fake_field_columns_to_encode, 'extras');
                     }
@@ -1049,19 +1129,29 @@ class Crud
      * Returns ['extras'] if no columns have been found.
      *
      */
-    public function getFakeColumnsAsArray() {
-
-        // $this->prepareFields();
-
+    public function getFakeColumnsAsArray($form = 'create')
+    {
         $fake_field_columns_to_encode = [];
 
-        foreach ($this->fields as $k => $field) {
+        // get the right fields according to the form type (create/update)
+        switch (strtolower($form)) {
+            case 'update':
+                $fields = $this->update_fields;
+                break;
+
+            default:
+                $fields = $this->create_fields;
+                break;
+        }
+
+
+        foreach ($fields as $k => $field) {
             // if it's a fake field
-            if (isset($this->fields[$k]['fake']) && $this->fields[$k]['fake'] == true) {
+            if (isset($fields[$k]['fake']) && $fields[$k]['fake'] == true) {
                 // add it to the request in its appropriate variable - the one defined, if defined
-                if (isset($this->fields[$k]['store_in'])) {
-                    if (!in_array($this->fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
-                        array_push($fake_field_columns_to_encode, $this->fields[$k]['store_in']);
+                if (isset($fields[$k]['store_in'])) {
+                    if (!in_array($fields[$k]['store_in'], $fake_field_columns_to_encode, true)) {
+                        array_push($fake_field_columns_to_encode, $fields[$k]['store_in']);
                     }
                 } else //otherwise in the one defined in the $crud variable
                 {
@@ -1187,21 +1277,21 @@ class Crud
     }
 
     // [name, label, value, default, type, required, hint, values[id => value], attributes[class, id, data-, for editor: data-config="basic|medium|full"], callback => [$this, 'methodName'], callback_create => [$this, 'methodName'], callback_edit => [$this, 'methodName'], callback_view => [$this, 'methodName']]
-    public function addField($field)
-    {
-        return $this->add('fields', $field);
-    }
+    // public function addField($field)
+    // {
+    //     return $this->add('fields', $field);
+    // }
 
     public function updateFields($fields, $attributes)
     {
         $this->sync('fields', $fields, $attributes);
     }
 
-    public function removeFields($fields)
-    {
-        $this->fields = $this->remove('fields', $fields);
-        $this->removeColumns($fields);
-    }
+    // public function removeFields($fields)
+    // {
+    //     $this->fields = $this->remove('fields', $fields);
+    //     $this->removeColumns($fields);
+    // }
 
     public function setCreateFields($fields)
     {
@@ -1252,12 +1342,13 @@ class Crud
     }
 
 
-    public function syncField($field)
-    {
-        if (array_key_exists('name', (array)$field)) return array_merge(['type' => $this->getFieldTypeFromDbColumnType($field['name']), 'value' => '', 'default' => null, 'values' => [], 'attributes' => []], $field);
+    // public function syncField($field)
+    // {
+    //     if (array_key_exists('name', (array)$field))
+    //         return array_merge(['type' => $this->getFieldTypeFromDbColumnType($field['name']), 'value' => '', 'default' => null, 'values' => [], 'attributes' => []], $field);
 
-        return false;
-    }
+    //     return false;
+    // }
 
 
 
@@ -1278,10 +1369,10 @@ class Crud
         }
     }
 
-    public function add($entity, $field)
-    {
-        return array_filter($this->{$entity}[] = $this->syncField($field));
-    }
+    // public function add($entity, $field)
+    // {
+    //     return array_filter($this->{$entity}[] = $this->syncField($field));
+    // }
 
     public function addMultiple($entity, $field)
     {
@@ -1302,10 +1393,10 @@ class Crud
 
 
 
-    public function remove($entity, $fields)
-    {
-        return array_values(array_filter($this->{$entity}, function($field) use ($fields) { return !in_array($field['name'], (array)$fields);}));
-    }
+    // public function remove($entity, $fields)
+    // {
+    //     return array_values(array_filter($this->{$entity}, function($field) use ($fields) { return !in_array($field['name'], (array)$fields);}));
+    // }
 
     public function setSort($items, $order)
     {

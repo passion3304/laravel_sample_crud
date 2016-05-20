@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.2] - 2016-05-20
+
+### Added
+- Working CRUD API functions for adding fields and removing fields.
+- Removed deprecated file: ToneCrud.php
+
+
 ## [2.0.1] - 2016-05-19
 
 ### Fixed

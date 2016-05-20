@@ -9,7 +9,18 @@
 
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
 
-**Breaking changes coming up. Final version will launch at the end of May. Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced when the API is stable.** 
+Features:
+- 33+ field types
+- 1-n relationships
+- n-n relationships
+- Table view with search, pagination, click column to sort by it
+- Reordering (nested sortable)
+- Back-end validation using Requests
+- Translatable models (multi-language) // TODO
+- Easily extend fields (customising a field type or adding a new one is as easy as creating a new view with a particular name)
+- Easily overwrite functionality (customising how the create/update/delete/reorder process works is as easy as creating a new function with the proper name in your EntityCrudCrontroller)
+
+**Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced of any major features or breaking changes (once every 1-3 months).** 
 
 ![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
 
