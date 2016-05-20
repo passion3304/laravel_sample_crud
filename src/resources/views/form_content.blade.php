@@ -22,39 +22,14 @@
   @endforeach
 </form>
 
-{{-- For each form type, load its assets, if needed --}}
-{{-- But only once per field type (no need to include the same css/js files multiple times on the same page) --}}
-<?php
-    $loaded_form_types_css = array();
-    $loaded_form_types_js = array();
-?>
+{{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
 
 @section('after_styles')
-	<!-- FORM CONTENT CSS ASSETS -->
-	@foreach ($fields as $field)
-		@if(!isset($loaded_form_types_css[$field['type']]) || $loaded_form_types_css[$field['type']]==false)
-			@if (View::exists('vendor.dick.crud.fields.assets.css.'.$field['type'], array('field' => $field)))
-				@include('vendor.dick.crud.fields.assets.css.'.$field['type'], array('field' => $field))
-				<?php $loaded_form_types_css[$field['type']] = true; ?>
-			@elseif (View::exists('crud::fields.assets.css.'.$field['type'], array('field' => $field)))
-				@include('crud::fields.assets.css.'.$field['type'], array('field' => $field))
-				<?php $loaded_form_types_css[$field['type']] = true; ?>
-			@endif
-		@endif
-	@endforeach
+	<!-- CRUD FORM CONTENT - crud_fields_styles stack -->
+	@stack('crud_fields_styles')
 @endsection
 
 @section('after_scripts')
-	<!-- FORM CONTENT JAVSCRIPT ASSETS -->
-	@foreach ($fields as $field)
-		@if(!isset($loaded_form_types_js[$field['type']]) || $loaded_form_types_js[$field['type']]==false)
-			@if (View::exists('vendor.dick.crud.fields.assets.js.'.$field['type'], array('field' => $field)))
-				@include('vendor.dick.crud.fields.assets.js.'.$field['type'], array('field' => $field))
-				<?php $loaded_form_types_js[$field['type']] = true; ?>
-			@elseif (View::exists('crud::fields.assets.js.'.$field['type'], array('field' => $field)))
-				@include('crud::fields.assets.js.'.$field['type'], array('field' => $field))
-				<?php $loaded_form_types_js[$field['type']] = true; ?>
-			@endif
-		@endif
-	@endforeach
+	<!-- CRUD FORM CONTENT - crud_fields_scripts stack -->
+	@stack('crud_fields_scripts')
 @endsection

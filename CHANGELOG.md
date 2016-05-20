@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.3] - 2016-05-20
+
+### Fixed
+- Easier CRUD Field definition - complex fields no longer need a separate .js and .css files; the extra css and js for a field will be defined in the same file, and then pushed to a stack in the form_content.blade.php view, which will put in the proper after_styles or after_scripts section. By default, the styles and scripts will be pushed to the page only once per field type (no need to have select2.js five times onpage if we have 5 select2 inputs)
+- Changed existing complex fields (with JS and CSS) to this new definition.
+
+
 ## [2.0.2] - 2016-05-20
 
 ### Added

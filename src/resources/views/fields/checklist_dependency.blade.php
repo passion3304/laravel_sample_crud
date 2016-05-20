@@ -1,7 +1,7 @@
 <!-- dependencyJson -->
   <div class="form-group checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}">
     <label>{{ $field['label'] }}</label>
-    <?php 
+    <?php
       $entity_model = $crud->getModel();
 
       //short name for dependency fields
@@ -24,7 +24,7 @@
 
       //for update form, get initial state of the entity
       if( isset($id) && $id ){
-        
+
         //get entity with relations for primary dependency
         $entity_dependencies = $entity_model->with($primary_dependency['entity'])
           ->with($primary_dependency['entity'].'.'.$primary_dependency['entity_secondary'])
@@ -32,12 +32,12 @@
           ->first();
 
         $secondaries_from_primary = [];
-        
-        //convert relation in array 
+
+        //convert relation in array
         $primary_array = $entity_dependencies->{$primary_dependency['entity']}->toArray();
-        
+
         $secondary_ids = [];
-        
+
         //create secondary dependency from primary relation, used to check what chekbox must be check from second checklist
         if( old($primary_dependency['name']) ) {
           foreach( old($primary_dependency['name']) as $primary_item ){
@@ -65,7 +65,7 @@
         <div class="col-xs-12">
            <label>{{ $primary_dependency['label'] }}</label>
         </div>
-        
+
         <div class="hidden_fields_primary" data-name = "{{ $primary_dependency['name'] }}">
           @if(isset($field['value']))
             @if(old($primary_dependency['name']))
@@ -79,7 +79,7 @@
             @endif
           @endif
         </div>
-    
+
         @foreach ($primary_dependency['model']::all() as $connected_entity_entry)
             <div class="col-sm-{{ isset($primary_dependency['number_columns']) ? intval(12/$primary_dependency['number_columns']) : '4'}}">
                 <div class="checkbox">
@@ -99,7 +99,7 @@
                          value="{{ $connected_entity_entry->id }}"
 
                          @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->lists('id', 'id')->toArray())) || ( old($primary_dependency["name"]) && in_array($connected_entity_entry->id, old( $primary_dependency["name"])) ) )
-                               checked = "checked" 
+                               checked = "checked"
                         @endif >
                         {{ $connected_entity_entry->{$primary_dependency['attribute']} }}
 
@@ -113,7 +113,7 @@
         <div class="col-xs-12">
           <label>{{ $secondary_dependency['label'] }}</label>
         </div>
-        
+
         <div class="hidden_fields_secondary" data-name="{{ $secondary_dependency['name'] }}">
           @if(isset($field['value']))
             @if(old($secondary_dependency['name']))
@@ -159,3 +159,106 @@
     </div>
 
   </div>
+
+
+
+
+
+{{-- ########################################## --}}
+{{-- Extra CSS and JS for this particular field --}}
+{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
+@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+
+    {{-- FIELD CSS - will be loaded in the after_styles section --}}
+    @push('crud_fields_styles')
+    @endpush
+
+    {{-- FIELD JS - will be loaded in the after_scripts section --}}
+    @push('crud_fields_scripts')
+    <!-- include checklist_dependency js-->
+    <script>
+      jQuery(document).ready(function($) {
+
+        $('.checklist_dependency').each(function(index, item){
+
+          var unique_name = $(this).data('entity');
+          var dependencyJson = window[unique_name];
+
+          var thisField = $(this);
+          thisField.find('.primary_list').change(function(){
+
+            var idCurrent = $(this).data('id');
+            if($(this).is(':checked')){
+
+              //add hidden field with this value
+              var nameInput = thisField.find('.hidden_fields_primary').data('name');
+              var inputToAdd = $('<input type="hidden" class="primary_hidden" name="'+nameInput+'[]" value="'+idCurrent+'">');
+
+              thisField.find('.hidden_fields_primary').append(inputToAdd);
+
+              $.each(dependencyJson[idCurrent], function(key, value){
+                //check and disable secondies checkbox
+                thisField.find('input.secondary_list[value="'+value+'"]').prop( "checked", true );
+                thisField.find('input.secondary_list[value="'+value+'"]').prop( "disabled", true );
+                //remove hidden fields with secondary dependency if was setted
+                var hidden = thisField.find('input.secondary_hidden[value="'+value+'"]');
+                if(hidden)
+                  hidden.remove();
+              });
+
+            }else{
+              //remove hidden field with this value
+              thisField.find('input.primary_hidden[value="'+idCurrent+'"]').remove();
+
+              // uncheck and active secondary checkboxs if are not in other selected primary.
+
+              var secondary = dependencyJson[idCurrent];
+
+              var selected = [];
+              thisField.find('input.primary_hidden').each(function (index, input){
+                selected.push( $(this).val() );
+              });
+
+              $.each(secondary, function(index, secondaryItem){
+                var ok = 1;
+
+                $.each(selected, function(index2, selectedItem){
+                  if( dependencyJson[selectedItem].indexOf(secondaryItem) != -1 ){
+                    ok =0;
+                  }
+                });
+
+                if(ok){
+                  thisField.find('input.secondary_list[value="'+secondaryItem+'"]').prop('checked', false);
+                  thisField.find('input.secondary_list[value="'+secondaryItem+'"]').prop('disabled', false);
+                }
+              });
+
+            }
+          });
+
+
+          thisField.find('.secondary_list').click(function(){
+
+            var idCurrent = $(this).data('id');
+            if($(this).is(':checked')){
+              //add hidden field with this value
+              var nameInput = thisField.find('.hidden_fields_secondary').data('name');
+              var inputToAdd = $('<input type="hidden" class="secondary_hidden" name="'+nameInput+'[]" value="'+idCurrent+'">');
+
+              thisField.find('.hidden_fields_secondary').append(inputToAdd);
+
+            }else{
+              //remove hidden field with this value
+              thisField.find('input.secondary_hidden[value="'+idCurrent+'"]').remove();
+            }
+          });
+
+        });
+      });
+    </script>
+    @endpush
+
+@endif
+{{-- End of Extra CSS and JS --}}
+{{-- ########################################## --}}

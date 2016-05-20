@@ -312,7 +312,7 @@ class Crud
         }
 
         // always have a hidden input for the entry id
-        $fields[] = array(
+        $fields['id'] = array(
                         'name' => 'id',
                         'value' => $entry->id,
                         'type' => 'hidden'
@@ -820,6 +820,22 @@ class Crud
 
 
     /**
+     * Check if field is the first of its type in the given fields array.
+     * It's used in each field_type.blade.php to determine wether to push the css and js content or not (we only need to push the js and css for a field the first time it's loaded in the form, not any subsequent times).
+     *
+     * @param  array $field        The current field being tested if it's the first of its type.
+     * @param  array $fields_array All the fields in that particular form.
+     * @return bool  true/false
+     */
+    public function checkIfFieldIsFirstOfItsType($field, $fields_array) {
+        if ($field['name'] == $this->getFirstOfItsTypeInArray($field['type'], $fields_array)['name'])
+            return true;
+
+        return false;
+    }
+
+
+    /**
      * Order the fields in a certain way.
      *
      * @param [string] Column name.
@@ -1181,6 +1197,18 @@ class Crud
     // ----------------------------------
 
 
+    /**
+     * Return the first element in an array that has the given 'type' attribute.
+     * @param  string $type
+     * @param  array $array
+     * @return array
+     */
+    public function getFirstOfItsTypeInArray($type, $array)
+    {
+        return array_first($array, function($key, $item) use ($type) {
+            return $item['type'] == $type;
+        });
+    }
 
 
 
