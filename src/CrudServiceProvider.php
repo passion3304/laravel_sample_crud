@@ -41,12 +41,6 @@ class CrudServiceProvider extends ServiceProvider
                             __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
                             __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
                             ], 'elfinder');
-        // TODO: publish demo resources:
-            // - Auto Models: Article, Category, Tag
-            // - Auto Requests: Article, Category, Tag
-            // - Auto Controllers: Crud/ArticleController, Crud/CategoryController, Crud/TagController
-            // - MANUAL routes
-            // - MANUAL migration for those entities
     }
 
     /**
