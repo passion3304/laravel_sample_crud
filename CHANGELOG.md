@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.7] - 2016-05-25
+
+### Added
+- Text columns can now be added with a string $this->crud->addColumn('title');
+- Added hint to the 'text' field type;
+- Added the 'custom_html' field type;
+
+
 ## [2.0.6] - 2016-05-25
 
 ### Fixed

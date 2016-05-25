@@ -586,6 +586,12 @@ class Crud
      */
     public function addColumn($column)
     {
+        // if a string was passed, not an array, change it to an array
+        if (!is_array($column))
+        {
+            $column = ['name' => $column];
+        }
+
         // make sure the column has a type
         $column_with_details = $this->addDefaultTypeToColumn($column);
 
