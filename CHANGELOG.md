@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.6] - 2016-05-25
+
+### Fixed
+- Elfinder triggered an error on file upload, though uploads were being done fine.
+
+
 ## [2.0.5] - 2016-05-20
 
 ### Fixed
