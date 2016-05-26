@@ -4,7 +4,8 @@
 <?php
     $field['options'] = ['page_link' => 'Page link', 'internal_link' => 'Internal link', 'external_link' => 'External link'];
     $field['allows_null'] = false;
-    $active_pages = \App\Models\Page::all();
+    $page_model = $field['page_model'];
+    $active_pages = $page_model::all();
 ?>
 
 <div class="form-group">

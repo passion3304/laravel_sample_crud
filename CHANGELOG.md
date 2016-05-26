@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.8] - 2016-05-26
+
+### Added
+- page_or_link field type now has a 'page_model' attribute in its definition;
+
+
 ## [2.0.7] - 2016-05-25
 
 ### Added
