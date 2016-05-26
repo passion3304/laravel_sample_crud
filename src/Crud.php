@@ -587,8 +587,7 @@ class Crud
     public function addColumn($column)
     {
         // if a string was passed, not an array, change it to an array
-        if (!is_array($column))
-        {
+        if (! is_array($column)) {
             $column = ['name' => $column];
         }
 
