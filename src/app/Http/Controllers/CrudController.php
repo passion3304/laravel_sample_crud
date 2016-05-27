@@ -170,7 +170,7 @@ class CrudController extends BaseController
      *
      *  @return Response
      */
-    public function reorder($lang = false)
+    public function reorder()
     {
         $this->crud->hasAccessOrFail('reorder');
 

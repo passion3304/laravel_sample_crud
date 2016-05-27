@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.9] - 2016-05-27
+
+### Deprecated
+- Route::controller() - it's been deprecated in Laravel 5.2, so we can't use it anymore;
+
+
 ## [2.0.8] - 2016-05-26
 
 ### Added

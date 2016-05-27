@@ -69,17 +69,9 @@ class CrudServiceProvider extends ServiceProvider
     {
         // CRUD routes
         Route::get($name.'/reorder', $controller.'@reorder');
-        Route::get($name.'/reorder/{lang}', $controller.'@reorder');
         Route::post($name.'/reorder', $controller.'@saveReorder');
-        Route::post($name.'/reorder/{lang}', $controller.'@saveReorder');
         Route::get($name.'/{id}/details', $controller.'@showDetailsRow');
         Route::get($name.'/{id}/translate/{lang}', $controller.'@translateItem');
         Route::resource($name, $controller, $options);
-
-        // Implicit controller for that entity
-        // - makes any new function in that controller available without defining an extra route
-        // - ex: EntityCrudController@getPreview will be available at /entity/preview through GET
-        // - ex: EntityCrudController@postPreview will be available at /entity/preview through POST
-        Route::controller($name, $controller);
     }
 }
