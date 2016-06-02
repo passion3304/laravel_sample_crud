@@ -939,7 +939,7 @@ class Crud
             $new_field = [
                                 'name'       => $field,
                                 'label'      => ucfirst($field),
-                                'value'      => '', 'default' => $this->field_types[$field]['default'],
+                                'value'      => null, 'default' => $this->field_types[$field]['default'],
                                 'type'       => $this->getFieldTypeFromDbColumnType($field),
                                 'values'     => [],
                                 'attributes' => [],
