@@ -21,6 +21,10 @@
 		<i class="fa fa-eraser"></i> Clear</button>
 	</div>
 
+	@if (isset($field['hint']))
+        <p class="help-block">{{ $field['hint'] }}</p>
+    @endif
+
   </div>
 
 {{-- ########################################## --}}
