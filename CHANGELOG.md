@@ -20,6 +20,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.10] - 2016-06-06
+
+### Fixed
+- browse field did not work if Laravel was installed in a subfolder;
+- browse field Clear button did not clear the input;
+- select_from_array field did not work;
+- Crud::setFromDb() now defaults to NULL instead of empty string;
+
+
 ## [2.0.9] - 2016-05-27
 
 ### Deprecated

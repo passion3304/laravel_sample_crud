@@ -669,7 +669,9 @@ class Crud
 
     public function remove($entity, $fields)
     {
-        return array_values(array_filter($this->{$entity}, function ($field) use ($fields) { return ! in_array($field['name'], (array) $fields); }));
+        return array_values(array_filter($this->{$entity}, function ($field) use ($fields) {
+            return ! in_array($field['name'], (array) $fields);
+        }));
     }
 
     /**
@@ -937,7 +939,7 @@ class Crud
             $new_field = [
                                 'name'       => $field,
                                 'label'      => ucfirst($field),
-                                'value'      => '', 'default' => $this->field_types[$field]['default'],
+                                'value'      => null, 'default' => $this->field_types[$field]['default'],
                                 'type'       => $this->getFieldTypeFromDbColumnType($field),
                                 'values'     => [],
                                 'attributes' => [],
@@ -952,7 +954,6 @@ class Crud
                                     'type'  => $this->getFieldTypeFromDbColumnType($field),
                                     ];
             }
-
         }, $this->getDbColumnsNames());
     }
 
@@ -1299,7 +1300,9 @@ class Crud
                 }
             }
 
-            return $this->{$items} = array_merge($elements, array_filter($this->{$items}, function ($item) use ($items) {return ! in_array($item['name'], $this->sort[$items]); }));
+            return $this->{$items} = array_merge($elements, array_filter($this->{$items}, function ($item) use ($items) {
+                return ! in_array($item['name'], $this->sort[$items]);
+            }));
         }
 
         return $this->{$items};
