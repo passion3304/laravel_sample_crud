@@ -34,11 +34,15 @@
 		<link href="{{ asset('vendor/backpack/colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
 	@endpush
 
-	{{-- FIELD JS - will be loaded in the after_scripts section --}}
 	@push('crud_fields_scripts')
 		<!-- include browse server js -->
 		<script src="{{ asset('vendor/backpack/colorbox/jquery.colorbox-min.js') }}"></script>
+	@endpush
 
+@endif
+
+	{{-- FIELD JS - will be loaded in the after_scripts section --}}
+	@push('crud_fields_scripts')
 		<script>
 			$(document).on('click','.popup_selector',function (event) {
 			    event.preventDefault();
@@ -67,6 +71,5 @@
 		</script>
 	@endpush
 
-@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
