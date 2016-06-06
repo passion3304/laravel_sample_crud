@@ -38,7 +38,7 @@
 	@push('crud_fields_scripts')
 		<!-- include browse server js -->
 		<script src="{{ asset('vendor/backpack/colorbox/jquery.colorbox-min.js') }}"></script>
-		<!-- <script src="{{ asset('vendor/backpack/elfinder/standalonepopup.js') }}"></script> -->
+
 		<script>
 			$(document).on('click','.popup_selector',function (event) {
 			    event.preventDefault();
@@ -59,6 +59,11 @@
 			    $('#' + requestingField).val(filePath);
 			}
 
+			$(document).on('click','.clear_elfinder_picker',function (event) {
+			    event.preventDefault();
+			    var updateID = $(this).attr('data-inputid'); // Btn id clicked
+			    $("#"+updateID).val("");
+			});
 		</script>
 	@endpush
 

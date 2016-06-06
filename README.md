@@ -55,7 +55,15 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
 ```
 
-5) [Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
+5) Define an 'uploads' disk. In your config/filesystems.php add this disk:
+```php
+'uploads' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+        ],
+```
+
+6) [Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
 ```html
 <li><a href="{{ url('admin/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>
 ```
@@ -64,13 +72,12 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 
 Check out the documentation at https://laravelbackpack.com 
 
-// TODO: finish CRUD documentation (intro, fields, fake fields, reorder, file manager, etc)
 
 In short:
 
-1. Create a controller that extends CrudController.
+1. Make your model use the CrudTrait.
 
-2. Make your model use the CrudTrait.
+2. Create a controller that extends CrudController.
 
 3. Create a new resource route.
 
