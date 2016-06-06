@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.12] - 2016-06-06
+
+### Fixed
+- multiple browse fields on one form did not work;
+
+
 ## [2.0.11] - 2016-06-06
 
 ### Fixed
