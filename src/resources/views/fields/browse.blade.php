@@ -11,7 +11,7 @@
 			{{ $attribute }}="{{ $value }}"
 			@endif
 		@endforeach
-		readonly
+		@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
 	>
 
 	<div class="btn-group" role="group" aria-label="..." style="margin-top: 3px;">
