@@ -12,7 +12,7 @@
 	    <small>{{ trans('backpack::crud.all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
 	  </h1>
 	  <ol class="breadcrumb">
-	    <li><a href="{{ url('admin/dashboard') }}">Admin</a></li>
+	    <li><a href="{{ url('admin/dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
 	    <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
 	    <li class="active">{{ trans('backpack::crud.list') }}</li>
 	  </ol>
@@ -199,7 +199,7 @@
               })
               .fail(function(data) {
                 // console.log("-- error getting table extra details row with AJAX");
-                row.child("<div class='table_row_slider'>There was an error loading the details. Please retry. </div>").show();
+                row.child("<div class='table_row_slider'>{{ trans('backpack::crud.details_row_loading_error') }}</div>").show();
                 tr.addClass('shown');
                 $('div.table_row_slider', row.child()).slideDown();
               })

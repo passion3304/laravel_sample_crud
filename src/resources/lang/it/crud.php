@@ -30,12 +30,15 @@ return [
     'save'                 => 'Salva',
 
     // CRUD table view
-    'all'                  => 'Tutti i ',
-    'in_the_database'      => 'nel database',
-    'list'                 => 'Lista',
-    'actions'              => 'Azioni',
-    'preview'              => 'Anteprima',
-    'delete'               => 'Elimina',
+    'all'                       => 'Tutti i ',
+    'in_the_database'           => 'nel database',
+    'list'                      => 'Lista',
+    'actions'                   => 'Azioni',
+    'preview'                   => 'Anteprima',
+    'delete'                    => 'Elimina',
+    'admin'                     => 'Amministrazione',
+    'details_row'               => 'Questa è la riga dei dettagli. Modificala a tuo piacimento.',
+    'details_row_loading_error' => "C'è stato un errore caricando i dettagli. Riprova.",
 
         // Confirmation messages and bubbles
         'delete_confirm'                              => 'Sei sicuro di eliminare questo elemento?',
@@ -83,7 +86,5 @@ return [
     'reorder_success_message'      => 'Il tuo ordinamento è stato salvato.',
     'reorder_error_title'          => 'Errore',
     'reorder_error_message'        => 'Il tuo ordinamento non è stato salvato.',
-
-    'rules_text'    => "<strong>Avviso: </strong> Non tradurre le parole che iniziano con due punti (es: ':number_of_items'). Queste verranno sostituite automaticamente con un valore adeguato. Se tradotte, smetteranno di funzionare.",
 
 ];
