@@ -30,12 +30,15 @@ return [
     'save'                 => 'Save',
 
     // CRUD table view
-    'all'                  => 'All ',
-    'in_the_database'      => 'in the database',
-    'list'                 => 'List',
-    'actions'              => 'Actions',
-    'preview'              => 'Preview',
-    'delete'               => 'Delete',
+    'all'                       => 'All ',
+    'in_the_database'           => 'in the database',
+    'list'                      => 'List',
+    'actions'                   => 'Actions',
+    'preview'                   => 'Preview',
+    'delete'                    => 'Delete',
+    'admin'                     => 'Admin',
+    'details_row'               => 'This is the details row. Modify as you please.',
+    'details_row_loading_error' => 'There was an error loading the details. Please retry.',
 
         // Confirmation messages and bubbles
         'delete_confirm'                              => 'Are you sure you want to delete this item?',
@@ -83,7 +86,5 @@ return [
     'reorder_success_message'      => 'Your order has been saved.',
     'reorder_error_title'          => 'Error',
     'reorder_error_message'        => 'Your order has not been saved.',
-
-    'rules_text'    => "<strong>Notice: </strong> Do not translate words prefixed with colon (ex: ':number_of_items'). Those will be replaced automatically with a proper value. If translated, that stops working.",
 
 ];
