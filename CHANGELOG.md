@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.13] - 2016-06-09
+
+### Added
+- Italian translation;
+- Browse field parameter to disable readonly state;
+
+
 ## [2.0.12] - 2016-06-06
 
 ### Fixed
