@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.14] - 2016-06-13
+
+### Fixed
+- Allow HTML in fields help block;
+
+
 ## [2.0.13] - 2016-06-09
 
 ### Added
