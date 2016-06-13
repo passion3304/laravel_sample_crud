@@ -17,7 +17,7 @@
 		@endif
 
 		@if (array_key_exists('hint', $field) && $field['hint'])
-		    <span class="hint">*{{ $field['hint'] }}</span>
+		    <span class="hint">*{!! $field['hint'] !!}</span>
 		@endif
 	</div>
 @endif
