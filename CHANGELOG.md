@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.15] - 2016-06-14
+
+### Fixed
+- select_multiple worked, select2_multiple did not; #26
+
+
 ## [2.0.14] - 2016-06-13
 
 ### Fixed
