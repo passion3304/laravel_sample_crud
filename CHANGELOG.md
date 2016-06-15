@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.16] - 2016-06-15
+
+### Fixed
+- CrudController - use passed request before fallback to global one;
+
+
 ## [2.0.15] - 2016-06-14
 
 ### Fixed
