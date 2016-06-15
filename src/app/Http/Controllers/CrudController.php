@@ -69,19 +69,24 @@ class CrudController extends BaseController
     {
         $this->crud->hasAccessOrFail('create');
 
+        // fallback to global request instance
+        if (is_null($request)) {
+            $request = \Request::instance();
+        }
+
         // insert item in the db
-        $item = $this->crud->create(\Request::except(['redirect_after_save', 'password']));
+        $item = $this->crud->create($request->except(['redirect_after_save', 'password']));
 
         // show a success message
         \Alert::success(trans('backpack::crud.insert_success'))->flash();
 
         // redirect the user where he chose to be redirected
-        switch (\Request::input('redirect_after_save')) {
+        switch ($request->input('redirect_after_save')) {
             case 'current_item_edit':
                 return \Redirect::to($this->crud->route.'/'.$item->id.'/edit');
 
             default:
-                return \Redirect::to(\Request::input('redirect_after_save'));
+                return \Redirect::to($request->input('redirect_after_save'));
         }
     }
 
@@ -119,9 +124,13 @@ class CrudController extends BaseController
     {
         $this->crud->hasAccessOrFail('update');
 
-        // update the row in the db
+        // fallback to global request instance
+        if (is_null($request)) {
+            $request = \Request::instance();
+        }
 
-        $this->crud->update(\Request::get('id'), \Request::except('redirect_after_save'));
+        // update the row in the db
+        $this->crud->update($request->get('id'), $request->except('redirect_after_save'));
 
         // show a success message
         \Alert::success(trans('backpack::crud.update_success'))->flash();
