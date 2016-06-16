@@ -11,8 +11,6 @@ trait Fields
     /**
      * Add a field to the create/update form or both.
      *
-     * @param [string] $name    Field name (the column name in the db in most cases)
-     * @param [array]  $options Field-type-specific information.
      * @param string   $form    The form to add the field to (create/update/both)
      */
     public function addField($field, $form = 'both')

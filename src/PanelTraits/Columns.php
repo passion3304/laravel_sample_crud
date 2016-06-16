@@ -134,6 +134,9 @@ trait Columns
         return $this->removeColumns([$column]);
     }
 
+    /**
+     * @param string $entity
+     */
     public function remove($entity, $fields)
     {
         return array_values(array_filter($this->{$entity}, function ($field) use ($fields) {

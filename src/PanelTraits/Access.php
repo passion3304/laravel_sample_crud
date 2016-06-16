@@ -78,8 +78,9 @@ trait Access
      * Check if a permission is enabled for a Crud Panel. Fail if not.
      *
      * @param  [string] Permission.
+     * @param string $permission
      *
-     * @return bool
+     * @return bool|null
      */
     public function hasAccessOrFail($permission)
     {

@@ -32,6 +32,7 @@ trait Update
      * Get all fields needed for the EDIT ENTRY form.
      *
      * @param  [integer] The id of the entry that is being edited.
+     * @param int $id
      *
      * @return [array] The fields with attributes, fake attributes and values.
      */
