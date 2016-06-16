@@ -453,7 +453,7 @@ class Crud
     public function hasAccessToAll($permission_array)
     {
         foreach ($permission_array as $key => $permission) {
-            if (!in_array($permission, $this->access)) {
+            if (! in_array($permission, $this->access)) {
                 return false;
             }
         }
