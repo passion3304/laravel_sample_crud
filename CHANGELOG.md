@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.18] - 2016-06-16
+
+### Removed
+- Tone's old field types (were only here for reference);
+- Tone's old layouts (were only here for reference);
+
+
 ## [2.0.17] - 2016-06-16
 
 ### Added

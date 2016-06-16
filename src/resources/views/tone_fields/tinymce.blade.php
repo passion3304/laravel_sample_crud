@@ -1,1 +1,0 @@
-{!! Form::textarea($field['name'], $field['value'] ?: $field['default'], ['class' => 'form-control tinymce', 'autocomplete' => 'off'/*, 'id' => "tinymce-{$field['name']}"*/] + $field['attributes']) !!}

@@ -1,1 +1,0 @@
-{!! Form::select("{$field['name']}[]", (array_key_exists('model', $field) ? $field['model']::all()->lists($field['attribute'], 'id') : $field['values']),$field['value'] ?: $field['default'], ['multiple' => 'multiple', 'class' => 'form-control select2'] + $field['attributes']) !!}

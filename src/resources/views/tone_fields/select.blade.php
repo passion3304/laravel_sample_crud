@@ -1,1 +1,0 @@
-{!! Form::select($field['name'], ['' => '-'] + (array_key_exists('values', $field) ? $field['values'] : []), $field['value'] ?: $field['default'], ['class' => 'form-control select2', 'autocomplete' => 'off'] + $field['attributes']) !!}
