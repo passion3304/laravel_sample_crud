@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.19] - 2016-06-16
+
+### Fixed
+- Split the Crud.php class into multiple traits, for legibility;
+- Renamed the Crud.php class to CrudPanel;
+
+
 ## [2.0.18] - 2016-06-16
 
 ### Removed

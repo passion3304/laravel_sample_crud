@@ -4,7 +4,7 @@ namespace Backpack\CRUD\app\Http\Controllers;
 
 use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
-use Backpack\CRUD\Crud;
+use Backpack\CRUD\CrudPanel;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -20,7 +20,7 @@ class CrudController extends BaseController
 
     public function __construct()
     {
-        $this->crud = new Crud();
+        $this->crud = new CrudPanel();
     }
 
     /**
