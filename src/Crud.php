@@ -426,6 +426,42 @@ class Crud
     }
 
     /**
+     * Check if any permission is enabled for a Crud Panel. Return false if not.
+     *
+     * @param  [array] Permissions.
+     *
+     * @return bool
+     */
+    public function hasAccessToAny($permission_array)
+    {
+        foreach ($permission_array as $key => $permission) {
+            if (in_array($permission, $this->access)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if all permissions are enabled for a Crud Panel. Return false if not.
+     *
+     * @param  [array] Permissions.
+     *
+     * @return bool
+     */
+    public function hasAccessToAll($permission_array)
+    {
+        foreach ($permission_array as $key => $permission) {
+            if (!in_array($permission, $this->access)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Check if a permission is enabled for a Crud Panel. Fail if not.
      *
      * @param  [string] Permission.

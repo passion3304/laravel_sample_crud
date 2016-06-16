@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.17] - 2016-06-16
+
+### Added
+- $crud->hasAccessToAny($array) method;
+- $crud->hasAccessToAll($array) method;
+
+
 ## [2.0.16] - 2016-06-15
 
 ### Fixed
