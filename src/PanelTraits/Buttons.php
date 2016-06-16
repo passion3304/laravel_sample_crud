@@ -15,7 +15,7 @@ trait Buttons
 
 
 
-	// ------------
+    // ------------
     // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED
     // ------------
     // TODO: check them
@@ -63,5 +63,4 @@ trait Buttons
 
         return $this->buttons;
     }
-
 }

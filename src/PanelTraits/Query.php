@@ -4,7 +4,6 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Query
 {
-
     // ----------------
     // ADVANCED QUERIES
     // ----------------
@@ -64,5 +63,4 @@ trait Query
     {
         return $this->query->limit($number);
     }
-
 }

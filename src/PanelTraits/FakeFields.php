@@ -4,7 +4,6 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait FakeFields
 {
-
     /**
      * Refactor the request array to something that can be passed to the model's create or update function.
      * The resulting array will only include the fields that are stored in the database and their values,
@@ -70,5 +69,4 @@ trait FakeFields
         // since no modifications or additions have been made to $request
         return $request;
     }
-
 }

@@ -4,7 +4,6 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Reorder
 {
-
     /*
     |--------------------------------------------------------------------------
     |                                   REORDER
@@ -69,5 +68,4 @@ trait Reorder
     {
         return $this->reorder;
     }
-
 }

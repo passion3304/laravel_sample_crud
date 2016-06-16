@@ -152,8 +152,6 @@ class CrudPanel
         $this->entity_name_plural = $plural;
     }
 
-
-
     // ----------------------------------
     // Miscellaneous functions or methods
     // ----------------------------------
@@ -172,9 +170,6 @@ class CrudPanel
             return $item['type'] == $type;
         });
     }
-
-
-
 
     // ------------
     // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED IN THIS FILE

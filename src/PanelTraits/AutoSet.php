@@ -151,5 +151,4 @@ trait AutoSet
         // but not updated_at, deleted_at
         return array_values(array_diff($columns, [$this->model->getKeyName(), 'updated_at', 'deleted_at']));
     }
-
 }

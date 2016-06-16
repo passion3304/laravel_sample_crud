@@ -4,7 +4,6 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Fields
 {
-
     // ------------
     // FIELDS
     // ------------
@@ -145,5 +144,4 @@ trait Fields
     {
         $this->setSort('fields', (array) $order);
     }
-
 }

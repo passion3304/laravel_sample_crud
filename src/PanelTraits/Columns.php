@@ -4,7 +4,6 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Columns
 {
-
     // ------------
     // COLUMNS
     // ------------
@@ -180,7 +179,6 @@ trait Columns
     {
         $this->setColumnOrder($columns);
     }
-
 
     // ------------
     // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED

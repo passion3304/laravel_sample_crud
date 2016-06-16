@@ -4,7 +4,7 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Access
 {
-   /*
+    /*
     |--------------------------------------------------------------------------
     |                                   CRUD ACCESS
     |--------------------------------------------------------------------------
@@ -87,6 +87,4 @@ trait Access
             abort(403, trans('backpack::crud.unauthorized_access'));
         }
     }
-
-
 }
