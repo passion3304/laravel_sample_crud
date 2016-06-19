@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.20] - 2016-06-19
+
+### Fixed
+- Translate browse and page_or_link fields
+
+
 ## [2.0.19] - 2016-06-16
 
 ### Fixed
