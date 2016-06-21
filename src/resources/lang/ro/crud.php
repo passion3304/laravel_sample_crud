@@ -71,8 +71,18 @@ return [
 
     // global crud - errors
     'unauthorized_access' => 'Acces neautorizat - Nu ai permisiunea necesară pentru a accesa pagina.',
+    'please_fix' => 'Va rugăm să reparați următoarele erori:',
 
     // global crud - success / error notification bubbles
     'insert_success' => 'Intrarea a fost adăugată cu succes.',
     'update_success' => 'Intrarea a fost modificată cu succes.',
+
+
+    // CRUD reorder view
+    'reorder'                      => 'Reordonare',
+    'reorder_text'                 => 'Folosește drag&drop pentru a reordona.',
+    'reorder_success_title'        => 'Terminat',
+    'reorder_success_message'      => 'Ordinea a fost salvată.',
+    'reorder_error_title'          => 'Eroare',
+    'reorder_error_message'        => 'Ordinea nu a fost salvată.',
 ];

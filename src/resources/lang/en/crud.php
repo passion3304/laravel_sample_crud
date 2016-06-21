@@ -74,6 +74,7 @@ return [
 
     // global crud - errors
     'unauthorized_access' => 'Unauthorized access - you do not have the necessary permissions to see this page.',
+    'please_fix' => 'Please fix the following errors:',
 
     // global crud - success / error notification bubbles
     'insert_success' => 'The item has been added successfully.',
