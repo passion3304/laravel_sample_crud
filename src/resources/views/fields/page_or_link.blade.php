@@ -2,7 +2,7 @@
 <!-- Used in Dick\MenuItemManager -->
 
 <?php
-    $field['options'] = ['page_link' => 'Page link', 'internal_link' => 'Internal link', 'external_link' => 'External link'];
+    $field['options'] = ['page_link' => trans('backpack::crud.page_link'), 'internal_link' => trans('backpack::crud.internal_link'), 'external_link' => trans('backpack::crud.external_link')];
     $field['allows_null'] = false;
     $page_model = $field['page_model'];
     $active_pages = $page_model::all();
@@ -47,7 +47,7 @@
                 type="url"
                 class="form-control"
                 name="link"
-                placeholder="http://example.com/your-desired-page"
+                placeholder="{{ trans('backpack::crud.page_link_placeholder') }}"
 
                 @if (!isset($entry) || $entry->type!='external_link')
                     disabled="disabled"
@@ -64,7 +64,7 @@
                 type="text"
                 class="form-control"
                 name="link"
-                placeholder="Internal slug. Ex: 'admin/page' (no quotes) for '{{ url('admin/page') }}'"
+                placeholder="{{ trans('backpack::crud.internal_link_placeholder', ['url', url('admin/page')]) }}"
 
                 @if (!isset($entry) || $entry->type!='internal_link')
                     disabled="disabled"

@@ -20,6 +20,51 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.20] - 2016-06-19
+
+### Fixed
+- Translate browse and page_or_link fields
+
+
+## [2.0.19] - 2016-06-16
+
+### Fixed
+- Split the Crud.php class into multiple traits, for legibility;
+- Renamed the Crud.php class to CrudPanel;
+
+
+## [2.0.18] - 2016-06-16
+
+### Removed
+- Tone's old field types (were only here for reference);
+- Tone's old layouts (were only here for reference);
+
+
+## [2.0.17] - 2016-06-16
+
+### Added
+- $crud->hasAccessToAny($array) method;
+- $crud->hasAccessToAll($array) method;
+
+
+## [2.0.16] - 2016-06-15
+
+### Fixed
+- CrudController - use passed request before fallback to global one;
+
+
+## [2.0.15] - 2016-06-14
+
+### Fixed
+- select_multiple worked, select2_multiple did not; #26
+
+
+## [2.0.14] - 2016-06-13
+
+### Fixed
+- Allow HTML in fields help block;
+
+
 ## [2.0.13] - 2016-06-09
 
 ### Added

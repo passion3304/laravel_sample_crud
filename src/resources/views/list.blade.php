@@ -22,7 +22,7 @@
 @section('content')
 <!-- Default box -->
   <div class="box">
-    <div class="box-header with-border">
+    <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
       @if ($crud->hasAccess('create'))
       		<a href="{{ url($crud->route.'/create') }}" class="btn btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('backpack::crud.add') }} {{ $crud->entity_name }}</span></a>
       @endif
@@ -46,13 +46,13 @@
                           <th>{{ $column['label'] }}</th>
                         @endforeach
 
-                        @if ( !( isset($crud->edit_permission) && $crud->edit_permission === false && isset($crud->delete_permission) && $crud->delete_permission === false ) )
+                        @if ( $crud->hasAccessToAny(['update', 'delete']) )
                           <th>{{ trans('backpack::crud.actions') }}</th>
                         @endif
                       </tr>
                     </thead>
                     <tbody>
-                     
+
                       @foreach ($entries as $k => $entry)
                       <tr data-entry-id="{{ $entry->id }}">
 
@@ -96,7 +96,7 @@
 
                         @endforeach
 
-                        @if ( !( isset($crud->edit_permission) && $crud->edit_permission === false && isset($crud->delete_permission) && $crud->delete_permission === false ) )
+                        @if ( $crud->hasAccessToAny(['update', 'delete']) )
                         <td>
                           {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
                           @if ($crud->hasAccess('update'))
@@ -122,7 +122,7 @@
                           <th>{{ $column['label'] }}</th>
                         @endforeach
 
-                        @if ( !( isset($crud->edit_permission) && $crud->edit_permission === false && isset($crud->delete_permission) && $crud->delete_permission === false ) )
+                        @if ( $crud->hasAccessToAny(['update', 'delete']) )
                           <th>{{ trans('backpack::crud.actions') }}</th>
                         @endif
                       </tr>

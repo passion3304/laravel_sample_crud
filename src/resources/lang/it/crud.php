@@ -88,4 +88,13 @@ return [
     'reorder_error_title'          => 'Errore',
     'reorder_error_message'        => 'Il tuo ordinamento non è stato salvato.',
 
+    // Fields
+    'browse_uploads' => 'Sfoglia file caricati',
+    'clear' => 'Pulisci',
+    'page_link' => 'Link Pagina',
+    'page_link_placeholder' => 'http://esempio.com/pagina-desiderata',
+    'internal_link' => 'Link Interno',
+    'internal_link_placeholder' => 'Slug interno. Es: \'admin/page\' (no quotes) for \':url\'',
+    'external_link' => 'Link Esterno',
+
 ];

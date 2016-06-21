@@ -88,4 +88,13 @@ return [
     'reorder_error_title'          => 'Error',
     'reorder_error_message'        => 'Your order has not been saved.',
 
+    // Fields
+    'browse_uploads' => 'Browse uploads',
+    'clear' => 'Clear',
+    'page_link' => 'Page link',
+    'page_link_placeholder' => 'http://example.com/your-desired-page',
+    'internal_link' => 'Internal link',
+    'internal_link_placeholder' => 'Internal slug. Ex: \'admin/page\' (no quotes) for \':url\'',
+    'external_link' => 'External link',
+
 ];
