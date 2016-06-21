@@ -50,16 +50,6 @@ class CrudServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerCRUD();
-
-        // use this if your package has a config file
-        // config([
-        //         'config/CRUD.php',
-        // ]);
-    }
-
-    private function registerCRUD()
-    {
         $this->app->bind('CRUD', function ($app) {
             return new CRUD($app);
         });

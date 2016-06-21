@@ -52,6 +52,7 @@ $ composer require backpack/crud
 ```bash
 $ php artisan elfinder:publish #published elfinder assets
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="public" #publish CRUD assets
+$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="lang" #publish the lang files
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
 ```
 

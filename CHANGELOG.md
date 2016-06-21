@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.21] - 2016-06-21
+
+### Fixed
+- Old input value on text fields in the create form;
+- "Please fix" lang text.
+
+
 ## [2.0.20] - 2016-06-19
 
 ### Fixed
