@@ -21,7 +21,7 @@
 			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 
-		  {!! Form::open(array('url' => $crud->route.'/'.$entry->id, 'method' => 'put')) !!}
+		  {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey(), 'method' => 'put')) !!}
 		  <div class="box">
 		    <div class="box-header with-border">
 		      <h3 class="box-title">{{ trans('backpack::crud.edit') }}</h3>
@@ -31,7 +31,7 @@
 		      @if(view()->exists('vendor.dick.crud.form_content'))
 		      	@include('vendor.dick.crud.form_content')
 		      @else
-		      	@include('crud::form_content', ['fields' => $crud->getFields('update', $entry->id)])
+		      	@include('crud::form_content', ['fields' => $crud->getFields('update', $entry->getKey())])
 		      @endif
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">

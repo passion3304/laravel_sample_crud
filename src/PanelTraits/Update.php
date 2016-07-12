@@ -57,8 +57,8 @@ trait Update
 
         // always have a hidden input for the entry id
         $fields['id'] = [
-                        'name'  => 'id',
-                        'value' => $entry->id,
+                        'name'  => $entry->getKeyName(),
+                        'value' => $entry->getKey(),
                         'type'  => 'hidden',
                     ];
 

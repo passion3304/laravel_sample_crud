@@ -17,8 +17,8 @@
     	<option value="">-</option>
 	    	@if (isset($field['model']))
 	    		@foreach ($field['model']::all() as $connected_entity_entry)
-	    			<option value="{{ $connected_entity_entry->id }}"
-						@if ( (isset($field['value']) && in_array($connected_entity_entry->id, $field['value']->lists('id', 'id')->toArray())) || ( old( $field["name"] ) && in_array($connected_entity_entry->id, old( $field["name"])) ) )
+	    			<option value="{{ $connected_entity_entry->getKey() }}"
+						@if ( (isset($field['value']) && in_array($connected_entity_entry->getKey(), $field['value']->lists('id', 'id')->toArray())) || ( old( $field["name"] ) && in_array($connected_entity_entry->getKey(), old( $field["name"])) ) )
 							 selected
 						@endif
 	    			>{{ $connected_entity_entry->{$field['attribute']} }}</option>

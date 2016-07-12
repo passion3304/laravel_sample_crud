@@ -54,7 +54,7 @@
                     <tbody>
 
                       @foreach ($entries as $k => $entry)
-                      <tr data-entry-id="{{ $entry->id }}">
+                      <tr data-entry-id="{{ $entry->getKey() }}">
 
                         @if ($crud->details_row)
                           <!-- expand/minimize button column -->
@@ -98,12 +98,12 @@
 
                         @if ( $crud->hasAccessToAny(['update', 'delete']) )
                         <td>
-                          {{-- <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
+                          {{-- <a href="{{ Request::url().'/'.$entry->getKey() }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
                           @if ($crud->hasAccess('update'))
-                            <a href="{{ Request::url().'/'.$entry->id }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
+                            <a href="{{ Request::url().'/'.$entry->getKey() }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
                           @endif
                            @if ($crud->hasAccess('delete'))
-                          <a href="{{ Request::url().'/'.$entry->id }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
+                          <a href="{{ Request::url().'/'.$entry->getKey() }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
                           @endif
                         </td>
                         @endif

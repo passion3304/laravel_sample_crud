@@ -28,13 +28,13 @@
       $entry->tree_element_shown = true;
 
       // show the tree element
-      echo '<li id="list_'.$entry->id.'">';
+      echo '<li id="list_'.$entry->getKey().'">';
       echo '<div><span class="disclose"><span></span></span>'.$entry->{$crud->reorder_label}.'</div>';
 
       // see if this element has any children
       $children = [];
       foreach ($all_entries as $key => $subentry) {
-        if ($subentry->parent_id == $entry->id) {
+        if ($subentry->parent_id == $entry->getKey()) {
           $children[] = $subentry;
         }
       }
@@ -45,7 +45,7 @@
       if (count($children)) {
         echo '<ol>';
         foreach ($children as $key => $child) {
-          $children[$key] = tree_element($child, $child->id, $all_entries, $crud);
+          $children[$key] = tree_element($child, $child->getKey(), $all_entries, $crud);
         }
         echo '</ol>';
       }
