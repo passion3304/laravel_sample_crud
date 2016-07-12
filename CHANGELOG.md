@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+## [2.0.22] - 2016-06-27
+
+### Fixed
+- Fix removeField method
+- Improve autoSetFromDB method
+
+
 ## [2.0.21] - 2016-06-21
 
 ### Fixed
