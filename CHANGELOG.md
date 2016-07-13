@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.0.23] - 2016-07-13
+
+### Added
+- Support for $primaryKey variable on the model (no longer dependant on ID as primary key).
+
 
 ## [2.0.22] - 2016-06-27
 
