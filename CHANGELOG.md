@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.1.1] - 2016-07-20 - BREAKING CHANGES
+
+### Added
+- extendable column types (same as field types, each in their own blade file);
+
+
 ## [2.1.0] - 2016-07-20 - BREAKING CHANGES
 
 ### Added
