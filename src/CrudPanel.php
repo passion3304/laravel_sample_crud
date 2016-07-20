@@ -48,15 +48,12 @@ class CrudPanel
 
     public $query;
     public $entry;
+    public $buttons;
 
     // TONE FIELDS - TODO: find out what he did with them, replicate or delete
     public $field_types = [];
-
-    public $custom_buttons = [];
     public $relations = [];
     public $sort = [];
-
-    public $buttons = [''];
 
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 

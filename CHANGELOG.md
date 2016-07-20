@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.1.2] - 2016-07-20 - BREAKING CHANGES
+
+### Added
+- button stacks;
+- custom buttons, as views or model_function;
+
+
 ## [2.1.1] - 2016-07-20 - BREAKING CHANGES
 
 ### Added

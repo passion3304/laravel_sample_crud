@@ -23,14 +23,13 @@
 <!-- Default box -->
   <div class="box">
     <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
-      @if ($crud->hasAccess('create'))
-      		<a href="{{ url($crud->route.'/create') }}" class="btn btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('backpack::crud.add') }} {{ $crud->entity_name }}</span></a>
+      {{-- Top Buttons Stack --}}
+      @if ($crud->buttons->where('stack', 'top')->count())
+        @foreach ($crud->buttons->where('stack', 'top') as $button)
+          @include('crud::inc.renderButton')
+        @endforeach
       @endif
-      @if ($crud->reorder)
-        @if ($crud->hasAccess('reorder'))
-          <a href="{{ url($crud->route.'/reorder') }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-arrows"></i> {{ trans('backpack::crud.reorder') }} {{ $crud->entity_name_plural }}</span></a>
-          @endif
-      @endif
+      {{-- End of Top Buttons Stack --}}
     </div>
     <div class="box-body">
 
@@ -81,17 +80,19 @@
 
             @endforeach
 
-            @if ( $crud->hasAccessToAny(['update', 'delete']) )
+            {{-- Line Buttons Stack --}}
+            @if ($crud->buttons->where('stack', 'line')->count())
             <td>
-              {{-- <a href="{{ Request::url().'/'.$entry->getKey() }}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> {{ trans('backpack::crud.preview') }}</a> --}}
-              @if ($crud->hasAccess('update'))
-                <a href="{{ Request::url().'/'.$entry->getKey() }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
-              @endif
-               @if ($crud->hasAccess('delete'))
-              <a href="{{ Request::url().'/'.$entry->getKey() }}" class="btn btn-xs btn-default" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
-              @endif
+              @foreach ($crud->buttons->where('stack', 'line') as $button)
+                @if ($button->type == 'model_function')
+                  {!! $entry->{$function_name}(); !!}
+                @else
+                  @include($button->content)
+                @endif
+              @endforeach
             </td>
             @endif
+            {{-- End of Line Buttons Stack --}}
           </tr>
           @endforeach
 
@@ -115,6 +116,17 @@
       </table>
 
     </div><!-- /.box-body -->
+
+    {{-- Bottom Buttons Stack --}}
+    @if ($crud->buttons->where('stack', 'bottom')->count())
+    <div class="box-footer with-border">
+      @foreach ($crud->buttons->where('stack', 'bottom') as $button)
+        @include('crud::inc.renderButton')
+      @endforeach
+    </div>
+    @endif
+    {{-- End of Bottom Buttons Stack --}}
+
   </div><!-- /.box -->
 @endsection
 
