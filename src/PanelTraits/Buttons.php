@@ -10,7 +10,6 @@ trait Buttons
 
     // TODO: $this->crud->reorderButtons('stack_name', ['one', 'two']);
 
-
     public function addButton($stack, $name, $type, $content)
     {
         $this->buttons->push(new CrudButton($stack, $name, $type, $content));
@@ -48,25 +47,27 @@ trait Buttons
     public function removeButton($name)
     {
         $this->buttons->reject(function ($button) {
-            return $button->name==$name;
+            return $button->name == $name;
         });
     }
 
     public function removeButtonFromStack($name, $stack)
     {
         $this->buttons->reject(function ($button) {
-            return ($button->name==$name && $button->stack==$stack);
+            return $button->name == $name && $button->stack == $stack;
         });
     }
 }
 
-class CrudButton {
+class CrudButton
+{
     public $stack;
     public $name;
     public $type = 'view';
     public $content;
 
-    public function __construct($stack, $name, $type, $content) {
+    public function __construct($stack, $name, $type, $content)
+    {
         $this->stack = $stack;
         $this->name = $name;
         $this->type = $type;
