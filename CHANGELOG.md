@@ -20,6 +20,17 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.1.0] - 2016-07-20 - BREAKING CHANGES
+
+### Added
+- wrapperAttributes to all field types, for resizing with col-md-6 and such;
+- 'default' value for most field types;
+- hint to most field types;
+
+### Fixed
+- custom html attributes are now given to the field in a separate array, 'attributes';
+
+
 ## [2.0.23] - 2016-07-13
 
 ### Added

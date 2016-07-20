@@ -1,18 +1,30 @@
 <!-- checkbox field -->
-<div class="checkbox">
-	<label>
-	  <input type="hidden" name="{{ $field['name'] }}" value="0">
-	  <input type="checkbox" value="1" @foreach ($field as $attribute => $value)      
-        @if (is_string($attribute) )
-    		@if( $attribute == 'value' )
-    			@if( ((int) $value == 1 || old($field['name']) == 1) && old($field['name']) !== '0' )
-    			 checked = "checked"
-    			@endif
-    			
-    		@else
+
+<div @include('crud::inc.fieldWrapperAttributes') >
+    <div class="checkbox">
+    	<label>
+    	  <input type="hidden" name="{{ $field['name'] }}" value="0">
+    	  <input type="checkbox" value="1"
+
+          name="{{ $field['name'] }}"
+
+          @if (isset($field['value']))
+            @if( ((int) $field['value'] == 1 || old($field['name']) == 1) && old($field['name']) !== '0' )
+             checked = "checked"
+            @endif
+          @endif
+
+          @if (isset($field['attributes']))
+              @foreach ($field['attributes'] as $attribute => $value)
     			{{ $attribute }}="{{ $value }}"
-    		@endif
+        	  @endforeach
+          @endif
+          > {{ $field['label'] }}
+    	</label>
+
+        {{-- HINT --}}
+        @if (isset($field['hint']))
+            <p class="help-block">{!! $field['hint'] !!}</p>
         @endif
-	@endforeach> {{ $field['label'] }}
-	</label>
+    </div>
 </div>

@@ -1,23 +1,16 @@
 <!-- summernote editor -->
-  <div class="form-group">
+<div @include('crud::inc.fieldWrapperAttributes') >
     <label>{{ $field['label'] }}</label>
     <textarea
-    	class="form-control summernote"
+        name="{{ $field['name'] }}"
+        @include('crud::inc.fieldAttributes', ['default_class' =>  'form-control summernote'])
+        >{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}</textarea>
 
-    	@foreach ($field as $attribute => $value)
-    		@if (is_string($attribute) && is_string($value))
-	    		{{ $attribute }}="{{ $value }}"
-    		@endif
-    	@endforeach
-
-    	>
-        @if(old($field['name']))
-            {{ old($field['name']) }}
-        @else
-            {{ ( isset($field['value']))?$field['value']:'' }}
-        @endif
-        </textarea>
-  </div>
+    {{-- HINT --}}
+    @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+    @endif
+</div>
 
 
 {{-- ########################################## --}}

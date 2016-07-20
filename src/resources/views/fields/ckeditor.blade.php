@@ -1,22 +1,17 @@
 <!-- CKeditor -->
-  <div class="form-group">
+<div @include('crud::inc.fieldWrapperAttributes') >
     <label>{{ $field['label'] }}</label>
     <textarea
-    	class="form-control ckeditor"
     	id="ckeditor-{{ $field['name'] }}"
+        name="{{ $field['name'] }}"
+        @include('crud::inc.fieldAttributes', ['default_class' =>  'form-control ckeditor'])
+    	>{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}</textarea>
 
-    	@foreach ($field as $attribute => $value)
-            @if (is_string($attribute) && is_string($value))
-    		  @if($attribute == 'value')
-                    {{ $attribute }}="{{ old($field['name']) ? old($field['name']) : $value }}"
-                @else
-                    {{ $attribute }}="{{ $value }}"
-                @endif
-            @endif
-    	@endforeach
-
-    	>{{ old($field['name']) ? old($field['name']) : ((isset($field['value']))?$field['value']:'')  }}</textarea>
-  </div>
+    {{-- HINT --}}
+    @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+    @endif
+</div>
 
 
 {{-- ########################################## --}}

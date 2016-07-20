@@ -1,15 +1,10 @@
 <!-- select2 -->
-  <div class="form-group">
+<div @include('crud::inc.fieldWrapperAttributes') >
     <label>{{ $field['label'] }}</label>
     <?php $entity_model = $crud->model; ?>
     <select
-    	class="form-control select2"
-
-    	@foreach ($field as $attribute => $value)
-            @if (is_string($attribute))
-        		{{ $attribute }}="{{ $value }}"
-            @endif
-    	@endforeach
+    	name="{{ $field['name'] }}"
+        @include('crud::inc.fieldAttributes', ['default_class' =>  'form-control select2'])
     	>
 
     	@if ($entity_model::isColumnNullable($field['name']))
@@ -26,7 +21,12 @@
 	    		@endforeach
 	    	@endif
 	</select>
-  </div>
+
+    {{-- HINT --}}
+    @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+    @endif
+</div>
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

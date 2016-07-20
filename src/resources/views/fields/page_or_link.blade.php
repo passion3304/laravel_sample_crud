@@ -1,5 +1,5 @@
 <!-- PAGE OR LINK field -->
-<!-- Used in Dick\MenuItemManager -->
+<!-- Used in Backpack\MenuCRUD -->
 
 <?php
     $field['options'] = ['page_link' => trans('backpack::crud.page_link'), 'internal_link' => trans('backpack::crud.internal_link'), 'external_link' => trans('backpack::crud.external_link')];
@@ -8,21 +8,15 @@
     $active_pages = $page_model::all();
 ?>
 
-<div class="form-group">
+<div @include('crud::inc.fieldWrapperAttributes') >
     <label>{{ $field['label'] }}</label>
     <div class="clearfix"></div>
 
     <div class="col-sm-3">
         <select
-            class="form-control"
-            name="type"
             id="page_or_link_select"
-
-            @foreach ($field as $attribute => $value)
-                @if (is_string($attribute) && is_string($value))
-                {{ $attribute }}="{{ $value }}"
-                @endif
-            @endforeach
+            name="{{ $field['name'] or 'type' }}"
+            @include('crud::inc.fieldAttributes')
             >
 
             @if (isset($field['allows_null']) && $field['allows_null']==true)
@@ -97,6 +91,11 @@
           </div>
     </div>
     <div class="clearfix"></div>
+
+    {{-- HINT --}}
+    @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+    @endif
 
 </div>
 

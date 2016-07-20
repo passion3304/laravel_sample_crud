@@ -1,16 +1,16 @@
 <!-- browse server input -->
-  <div class="form-group">
+
+<div @include('crud::inc.fieldWrapperAttributes') >
+
     <label>{{ $field['label'] }}</label>
 	<input
 		type="text"
-		class="form-control"
 		id="{{ $field['name'] }}-filemanager"
 
-		@foreach ($field as $attribute => $value)
-			@if (is_string($attribute) && is_string($value))
-			{{ $attribute }}="{{ $value }}"
-			@endif
-		@endforeach
+		name="{{ $field['name'] }}"
+        value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+        @include('crud::inc.fieldAttributes')
+
 		@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
 	>
 
@@ -25,7 +25,7 @@
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
 
-  </div>
+</div>
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

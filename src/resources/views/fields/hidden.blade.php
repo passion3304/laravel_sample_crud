@@ -1,17 +1,9 @@
 <!-- hidden input -->
-  <div class="form-group">
-    <input
-    	type="hidden"
-    	class="form-control"
-
-    	@foreach ($field as $attribute => $value)
-			@if (is_string($attribute))
-	    		@if($attribute == 'value')
-              {{ $attribute }}="{{ old($field['name']) ? old($field['name']) : $value }}"
-          @else
-              {{ $attribute }}="{{ $value }}"
-          @endif
-    		@endif
-    	@endforeach
-    	>
-  </div>
+<div @include('crud::inc.fieldWrapperAttributes') >
+  <input
+  	type="hidden"
+    name="{{ $field['name'] }}"
+    value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+    @include('crud::inc.fieldAttributes')
+  	>
+</div>

@@ -1,15 +1,13 @@
 <!-- select -->
-  <div class="form-group">
-    <label>{{ $field['label'] }}</label>
+
+<div @include('crud::inc.fieldWrapperAttributes') >
+
+    <label>{!! $field['label'] !!}</label>
+
     <?php $entity_model = $crud->model; ?>
     <select
-    	class="form-control"
-
-    	@foreach ($field as $attribute => $value)
-            @if (is_string($attribute))
-        		{{ $attribute }}="{{ $value }}"
-            @endif
-    	@endforeach
+        name="{{ $field['name'] }}"
+        @include('crud::inc.fieldAttributes')
     	>
 
     	@if ($entity_model::isColumnNullable($field['name']))
@@ -17,7 +15,6 @@
         @endif
 
 	    	@if (isset($field['model']))
-
 	    		@foreach ($field['model']::all() as $connected_entity_entry)
 	    			<option value="{{ $connected_entity_entry->getKey() }}"
 
@@ -29,4 +26,10 @@
 	    		@endforeach
 	    	@endif
 	</select>
-  </div>
+
+    {{-- HINT --}}
+    @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+    @endif
+
+</div>

@@ -1,18 +1,9 @@
 <!-- select2 multiple -->
-  <div class="form-group">
+<div @include('crud::inc.fieldWrapperAttributes') >
     <label>{{ $field['label'] }}</label>
     <select
-    	class="form-control select2"
-
-    	@foreach ($field as $attribute => $value)
-            @if (is_string($attribute))
-        		@if ($attribute=='name')
-        			{{ $attribute }}="{{ $value }}[]"
-        		@else
-        			{{ $attribute }}="{{ $value }}"
-        		@endif
-            @endif
-    	@endforeach
+        name="{{ $field['name'] }}"
+        @include('crud::inc.fieldAttributes', ['default_class' =>  'form-control select2'])
     	multiple>
     	<option value="">-</option>
 
@@ -26,7 +17,12 @@
 	    		@endforeach
 	    	@endif
 	</select>
-  </div>
+
+    {{-- HINT --}}
+    @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+    @endif
+</div>
 
 
 {{-- ########################################## --}}

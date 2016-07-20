@@ -1,14 +1,14 @@
 <!-- textarea -->
-  <div class="form-group">
+<div @include('crud::inc.fieldWrapperAttributes') >
     <label>{{ $field['label'] }}</label>
     <textarea
-    	class="form-control"
+    	name="{{ $field['name'] }}"
+        @include('crud::inc.fieldAttributes')
 
-    	@foreach ($field as $attribute => $value)
-    		@if (is_string($attribute) && is_string($value))
-	    		{{ $attribute }}="{{ $value }}"
-    		@endif
-    	@endforeach
+    	>{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}</textarea>
 
-    	>{{ old($field['name']) ? old($field['name']) : ( isset($field['value']) ? $field['value'] : '') }}</textarea>
-  </div>
+    {{-- HINT --}}
+    @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+    @endif
+</div>

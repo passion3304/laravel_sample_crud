@@ -1,2 +1,4 @@
 <!-- used for heading, separators, etc -->
-{!! $field['value'] !!}
+<div @include('crud::inc.fieldWrapperAttributes') >
+	{!! $field['value'] !!}
+</div>
