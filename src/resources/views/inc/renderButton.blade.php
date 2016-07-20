@@ -1,5 +1,5 @@
 @if ($button->type == 'model_function')
-	{!! $entry->{$function_name}(); !!}
+	{!! $entry->{$button->content}(); !!}
 @else
 	@include($button->content)
 @endif

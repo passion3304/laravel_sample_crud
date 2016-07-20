@@ -84,11 +84,7 @@
             @if ($crud->buttons->where('stack', 'line')->count())
             <td>
               @foreach ($crud->buttons->where('stack', 'line') as $button)
-                @if ($button->type == 'model_function')
-                  {!! $entry->{$function_name}(); !!}
-                @else
-                  @include($button->content)
-                @endif
+                @include('crud::inc.renderButton')
               @endforeach
             </td>
             @endif
