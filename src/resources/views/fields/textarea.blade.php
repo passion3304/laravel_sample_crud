@@ -1,9 +1,9 @@
 <!-- textarea -->
-<div @include('crud::inc.fieldWrapperAttributes') >
+<div @include('crud::inc.field_wrapper_attributes') >
     <label>{{ $field['label'] }}</label>
     <textarea
     	name="{{ $field['name'] }}"
-        @include('crud::inc.fieldAttributes')
+        @include('crud::inc.field_attributes')
 
     	>{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}</textarea>
 

@@ -1,9 +1,9 @@
 <!-- summernote editor -->
-<div @include('crud::inc.fieldWrapperAttributes') >
+<div @include('crud::inc.field_wrapper_attributes') >
     <label>{{ $field['label'] }}</label>
     <textarea
         name="{{ $field['name'] }}"
-        @include('crud::inc.fieldAttributes', ['default_class' =>  'form-control summernote'])
+        @include('crud::inc.field_attributes', ['default_class' =>  'form-control summernote'])
         >{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}</textarea>
 
     {{-- HINT --}}

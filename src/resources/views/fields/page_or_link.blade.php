@@ -8,7 +8,7 @@
     $active_pages = $page_model::all();
 ?>
 
-<div @include('crud::inc.fieldWrapperAttributes') >
+<div @include('crud::inc.field_wrapper_attributes') >
     <label>{{ $field['label'] }}</label>
     <div class="clearfix"></div>
 
@@ -16,7 +16,7 @@
         <select
             id="page_or_link_select"
             name="{{ $field['name'] or 'type' }}"
-            @include('crud::inc.fieldAttributes')
+            @include('crud::inc.field_attributes')
             >
 
             @if (isset($field['allows_null']) && $field['allows_null']==true)

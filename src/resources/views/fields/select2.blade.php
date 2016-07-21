@@ -1,10 +1,10 @@
 <!-- select2 -->
-<div @include('crud::inc.fieldWrapperAttributes') >
+<div @include('crud::inc.field_wrapper_attributes') >
     <label>{{ $field['label'] }}</label>
     <?php $entity_model = $crud->model; ?>
     <select
     	name="{{ $field['name'] }}"
-        @include('crud::inc.fieldAttributes', ['default_class' =>  'form-control select2'])
+        @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2'])
     	>
 
     	@if ($entity_model::isColumnNullable($field['name']))

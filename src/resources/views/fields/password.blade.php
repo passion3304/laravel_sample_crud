@@ -1,10 +1,10 @@
 <!-- password -->
-<div @include('crud::inc.fieldWrapperAttributes') >
+<div @include('crud::inc.field_wrapper_attributes') >
     <label>{{ $field['label'] }}</label>
     <input
     	type="password"
     	name="{{ $field['name'] }}"
-        @include('crud::inc.fieldAttributes')
+        @include('crud::inc.field_attributes')
     	>
 
     {{-- HINT --}}

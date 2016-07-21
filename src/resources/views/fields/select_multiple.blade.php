@@ -1,10 +1,10 @@
 <!-- select multiple -->
-<div @include('crud::inc.fieldWrapperAttributes') >
+<div @include('crud::inc.field_wrapper_attributes') >
     <label>{{ $field['label'] }}</label>
     <select
     	class="form-control"
-        name="{{ $field['name'] }}"
-        @include('crud::inc.fieldAttributes')
+        name="{{ $field['name'] }}[]"
+        @include('crud::inc.field_attributes')
     	multiple>
 
     	<option value="">-</option>

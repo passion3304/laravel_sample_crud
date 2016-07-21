@@ -1,10 +1,10 @@
 <!-- enum -->
-<div @include('crud::inc.fieldWrapperAttributes') >
+<div @include('crud::inc.field_wrapper_attributes') >
     <label>{{ $field['label'] }}</label>
     <?php $entity_model = $crud->model; ?>
     <select
         name="{{ $field['name'] }}"
-        @include('crud::inc.fieldAttributes')
+        @include('crud::inc.field_attributes')
     	>
 
         @if ($entity_model::isColumnNullable($field['name']))

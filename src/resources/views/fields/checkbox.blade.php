@@ -1,6 +1,6 @@
 <!-- checkbox field -->
 
-<div @include('crud::inc.fieldWrapperAttributes') >
+<div @include('crud::inc.field_wrapper_attributes') >
     <div class="checkbox">
     	<label>
     	  <input type="hidden" name="{{ $field['name'] }}" value="0">
