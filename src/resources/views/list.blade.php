@@ -23,13 +23,9 @@
 <!-- Default box -->
   <div class="box">
     <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
-      {{-- Top Buttons Stack --}}
-      @if ($crud->buttons->where('stack', 'top')->count())
-        @foreach ($crud->buttons->where('stack', 'top') as $button)
-          @include('crud::inc.renderButton')
-        @endforeach
-      @endif
-      {{-- End of Top Buttons Stack --}}
+
+      @include('crud::inc.button_stack', ['stack' => 'top'])
+
     </div>
     <div class="box-body">
 
@@ -45,7 +41,7 @@
               <th>{{ $column['label'] }}</th>
             @endforeach
 
-            @if ( $crud->hasAccessToAny(['update', 'delete']) )
+            @if ( $crud->buttons->where('stack', 'line') )
               <th>{{ trans('backpack::crud.actions') }}</th>
             @endif
           </tr>
@@ -80,15 +76,12 @@
 
             @endforeach
 
-            {{-- Line Buttons Stack --}}
             @if ($crud->buttons->where('stack', 'line')->count())
-            <td>
-              @foreach ($crud->buttons->where('stack', 'line') as $button)
-                @include('crud::inc.renderButton')
-              @endforeach
-            </td>
+              <td>
+                @include('crud::inc.button_stack', ['stack' => 'line'])
+              </td>
             @endif
-            {{-- End of Line Buttons Stack --}}
+
           </tr>
           @endforeach
 
@@ -104,7 +97,7 @@
               <th>{{ $column['label'] }}</th>
             @endforeach
 
-            @if ( $crud->hasAccessToAny(['update', 'delete']) )
+            @if ( $crud->buttons->where('stack', 'line') )
               <th>{{ trans('backpack::crud.actions') }}</th>
             @endif
           </tr>
@@ -113,15 +106,7 @@
 
     </div><!-- /.box-body -->
 
-    {{-- Bottom Buttons Stack --}}
-    @if ($crud->buttons->where('stack', 'bottom')->count())
-    <div class="box-footer with-border">
-      @foreach ($crud->buttons->where('stack', 'bottom') as $button)
-        @include('crud::inc.renderButton')
-      @endforeach
-    </div>
-    @endif
-    {{-- End of Bottom Buttons Stack --}}
+    @include('crud::inc.button_stack', ['stack' => 'bottom'])
 
   </div><!-- /.box -->
 @endsection
