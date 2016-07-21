@@ -19,6 +19,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Security
 - Nothing
 
+## [2.0.24] - 2016-07-13
+
+### Added
+- model_function_attribute column type (kudos to [rgreer4](https://github.com/rgreer4))
+
 
 ## [2.0.23] - 2016-07-13
 
