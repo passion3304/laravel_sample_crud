@@ -89,6 +89,11 @@
                             <td><?php
                                 echo $entry->{$column['function_name']}();
                                 ?></td>
+                          @elseif (isset($column['type']) && $column['type']=='model_function_attribute')
+                            {{-- custom return value via attribute --}}
+                            <td><?php
+                                echo $entry->{$column['function_name']}()->{$column['attribute']};
+                                ?></td>                                  
                           @else
                             {{-- regular object attribute --}}
                             <td>{{ str_limit(strip_tags($entry->{$column['name']}), 80, "[...]") }}</td>
