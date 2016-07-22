@@ -85,7 +85,6 @@ trait Read
         $this->details_row = false;
     }
 
-
     /**
      * Set the number of rows that should be show on the table page (list view).
      */
@@ -105,11 +104,10 @@ trait Read
         }
 
         // otherwise return the default value in the config file
-        if (config("backpack.crud.default_page_length")) {
-            return config("backpack.crud.default_page_length");
+        if (config('backpack.crud.default_page_length')) {
+            return config('backpack.crud.default_page_length');
         }
 
         return 25;
     }
-
 }
