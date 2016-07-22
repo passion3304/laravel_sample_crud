@@ -49,10 +49,9 @@ class CrudPanel
     public $query;
     public $entry;
     public $buttons;
+    public $db_column_types = [];
 
     // TONE FIELDS - TODO: find out what he did with them, replicate or delete
-    public $field_types = [];
-    public $relations = [];
     public $sort = [];
 
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.

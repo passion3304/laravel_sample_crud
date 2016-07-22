@@ -91,36 +91,4 @@ trait Create
             }
         }
     }
-
-    /**
-     * Adds a required => true attribute to each field, so that the required asterisc will show up in the create/update forms.
-     * TODO: make this work, by editing the $this->fields variable and all fields.
-     *
-     * @param [string or array of strings]
-     */
-    public function setRequiredFields($fields, $form = 'both')
-    {
-        // TODO
-    }
-
-    /**
-     * Adds a required => true attribute to this field, so that the required asteris will show up in the create/update forms.
-     *
-     * @param [string]
-     */
-    public function setRequiredField($field, $form = 'both')
-    {
-        // TODO
-    }
-
-    /**
-     * Get all fields that have the required attribute.
-     * TODO: make this work after making setRequiredFields() work.
-     *
-     * @return [array]
-     */
-    public function getRequiredFields($form = 'both')
-    {
-        // TODO
-    }
 }

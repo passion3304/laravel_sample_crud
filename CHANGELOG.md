@@ -20,6 +20,19 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.1.3] - 2016-07-22
+
+### Added
+- 'check' column type;
+
+### Removed
+- "required" functionality with just added asterisks to the fields;
+
+### Fixed
+- renamed the $field_types property to $db_column_types to more accurately describe what it is;
+- issue #58 where select_from_array automatically selected an item with value zero;
+
+
 ## [2.1.2] - 2016-07-20 - BREAKING CHANGES
 
 ### Added

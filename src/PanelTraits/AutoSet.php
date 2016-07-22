@@ -22,7 +22,7 @@ trait AutoSet
             $new_field = [
                 'name'       => $field,
                 'label'      => ucfirst($field),
-                'value'      => null, 'default' => $this->field_types[$field]['default'],
+                'value'      => null, 'default' => $this->db_column_types[$field]['default'],
                 'type'       => $this->getFieldTypeFromDbColumnType($field),
                 'values'     => [],
                 'attributes' => [],
@@ -48,10 +48,10 @@ trait AutoSet
     public function getDbColumnTypes()
     {
         foreach (\DB::select(\DB::raw('SHOW COLUMNS FROM '.$this->model->getTable())) as $column) {
-            $this->field_types[$column->Field] = ['type' => trim(preg_replace('/\(\d+\)(.*)/i', '', $column->Type)), 'default' => $column->Default];
+            $this->db_column_types[$column->Field] = ['type' => trim(preg_replace('/\(\d+\)(.*)/i', '', $column->Type)), 'default' => $column->Default];
         }
 
-        return $this->field_types;
+        return $this->db_column_types;
     }
 
     /**
@@ -63,7 +63,7 @@ trait AutoSet
      */
     public function getFieldTypeFromDbColumnType($field)
     {
-        if (! array_key_exists($field, $this->field_types)) {
+        if (! array_key_exists($field, $this->db_column_types)) {
             return 'text';
         }
 
@@ -75,7 +75,7 @@ trait AutoSet
             return 'email';
         }
 
-        switch ($this->field_types[$field]['type']) {
+        switch ($this->db_column_types[$field]['type']) {
             case 'int':
             case 'smallint':
             case 'mediumint':
