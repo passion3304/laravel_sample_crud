@@ -119,6 +119,7 @@
 	<script type="text/javascript">
 	  jQuery(document).ready(function($) {
 	  	var table = $("#crudTable").DataTable({
+        "pageLength": {{ $crud->getDefaultPageLength() }},
         "language": {
               "emptyTable":     "{{ trans('backpack::crud.emptyTable') }}",
               "info":           "{{ trans('backpack::crud.info') }}",

@@ -84,4 +84,32 @@ trait Read
     {
         $this->details_row = false;
     }
+
+
+    /**
+     * Set the number of rows that should be show on the table page (list view).
+     */
+    public function setDefaultPageLength($value)
+    {
+        $this->default_page_length = $value;
+    }
+
+    /**
+     * Get the number of rows that should be show on the table page (list view).
+     */
+    public function getDefaultPageLength()
+    {
+        // return the custom value for this crud panel, if set using setPageLength()
+        if ($this->default_page_length) {
+            return $this->default_page_length;
+        }
+
+        // otherwise return the default value in the config file
+        if (config("backpack.crud.default_page_length")) {
+            return config("backpack.crud.default_page_length");
+        }
+
+        return 25;
+    }
+
 }

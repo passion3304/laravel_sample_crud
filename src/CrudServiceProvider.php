@@ -22,6 +22,7 @@ class CrudServiceProvider extends ServiceProvider
     public function boot()
     {
         // LOAD THE VIEWS
+
         // - first the published/overwritten views (in case they have any changes)
         $this->loadViewsFrom(resource_path('views/vendor/backpack/crud'), 'crud');
         // - then the stock views that come with the package, in case a published view might be missing
@@ -29,18 +30,32 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
 
+
         // PUBLISH FILES
+
         // publish lang files
         $this->publishes([__DIR__.'/resources/lang' => resource_path('lang/vendor/backpack')], 'lang');
+
         // publish views
         $this->publishes([__DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud')], 'views');
+
+        // publish config file
+        $this->publishes([__DIR__.'/config/backpack/crud.php' => resource_path('config/backpack/crud.php')], 'config');
+
         // publish public Backpack CRUD assets
         $this->publishes([__DIR__.'/public' => public_path('vendor/backpack')], 'public');
+
         // publish custom files for elFinder
         $this->publishes([
                             __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
                             __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
                             ], 'elfinder');
+
+
+        // use the vendor configuration file as fallback
+        $this->mergeConfigFrom(
+            __DIR__.'/config/backpack/crud.php', 'backpack.crud'
+        );
     }
 
     /**
