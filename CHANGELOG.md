@@ -20,6 +20,18 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.1.4] - 2016-07-22
+
+### Added
+- configurable number of rows in the table view, by giving a custom value in the config file or in the CRUD panel's constructor;
+
+### Removed
+- "required" functionality with just added asterisks to the fields;
+
+### Fixed
+- renamed the $field_types property to $db_column_types to more accurately describe what it is;
+- issue #58 where select_from_array automatically selected an item with value zero;
+
 
 
 ## [2.1.3] - 2016-07-22
