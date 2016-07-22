@@ -20,28 +20,19 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [2.1.6] - 2016-07-22
+## [3.0.0] - 2016-07-22
 
 ### Added
-- registered service providers in order to simplify installation process;
-
-
-## [2.1.5] - 2016-07-22
-
-### Added
-- date and datetime column types;
-
-
-## [2.1.4] - 2016-07-22
-
-### Added
-- configurable number of rows in the table view, by giving a custom value in the config file or in the CRUD panel's constructor;
-
-
-## [2.1.3] - 2016-07-22
-
-### Added
+- wrapperAttributes to all field types, for resizing with col-md-6 and such;
+- 'default' value for most field types;
+- hint to most field types;
+- extendable column types (same as field types, each in their own blade file);
+- 'date' and 'datetime' column types;
 - 'check' column type;
+- button stacks;
+- custom buttons, as views or model_function;
+- registered service providers in order to simplify installation process;
+- configurable number of rows in the table view, by giving a custom value in the config file or in the CRUD panel's constructor;
 
 ### Removed
 - "required" functionality with just added asterisks to the fields;
@@ -49,29 +40,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - renamed the $field_types property to $db_column_types to more accurately describe what it is;
 - issue #58 where select_from_array automatically selected an item with value zero;
-
-
-## [2.1.2] - 2016-07-20 - BREAKING CHANGES
-
-### Added
-- button stacks;
-- custom buttons, as views or model_function;
-
-
-## [2.1.1] - 2016-07-20 - BREAKING CHANGES
-
-### Added
-- extendable column types (same as field types, each in their own blade file);
-
-
-## [2.1.0] - 2016-07-20 - BREAKING CHANGES
-
-### Added
-- wrapperAttributes to all field types, for resizing with col-md-6 and such;
-- 'default' value for most field types;
-- hint to most field types;
-
-### Fixed
 - custom html attributes are now given to the field in a separate array, 'attributes';
 
 
