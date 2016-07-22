@@ -36,19 +36,9 @@ $ composer require backpack/crud
 2) Add this to your config/app.php, under "providers":
 ```php
         Backpack\CRUD\CrudServiceProvider::class,
-        'Collective\Html\HtmlServiceProvider',
-        'Barryvdh\Elfinder\ElfinderServiceProvider',
 ```
 
-3) Add this to your config/app.php, under "aliases":
-
-```php
-        'CRUD' => 'Backpack\CRUD\CrudServiceProvider',
-        'Form' => 'Collective\Html\FormFacade',
-        'Html' => 'Collective\Html\HtmlFacade',
-```
-
-4) Run:
+3) Run:
 ```bash
 $ php artisan elfinder:publish #published elfinder assets
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="public" #publish CRUD assets
@@ -57,7 +47,7 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
 ```
 
-5) Define an 'uploads' disk. In your config/filesystems.php add this disk:
+4) Define an 'uploads' disk. In your config/filesystems.php add this disk:
 ```php
 'uploads' => [
             'driver' => 'local',
@@ -65,7 +55,7 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
         ],
 ```
 
-6) [Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
+5) [Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
 ```html
 <li><a href="{{ url('admin/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>
 ```

@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [2.1.6] - 2016-07-22
+
+### Added
+- registered service providers in order to simplify installation process;
+
+
 ## [2.1.5] - 2016-07-22
 
 ### Added
