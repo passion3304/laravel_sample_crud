@@ -20,6 +20,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+
 ## [2.1.3] - 2016-07-22
 
 ### Added
@@ -55,6 +57,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - custom html attributes are now given to the field in a separate array, 'attributes';
+
+
+## ----------------------------------------------------------------------------
+
+
+## [2.0.24] - 2016-07-13
+
+### Added
+- model_function_attribute column type (kudos to [rgreer4](https://github.com/rgreer4))
 
 
 ## [2.0.23] - 2016-07-13
@@ -213,6 +224,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - Call-based API.
+
+
+## ----------------------------------------------------------------------------
 
 
 ## [0.9.10] - 2016-03-17
