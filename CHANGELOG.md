@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.1] - 2016-07-23
+
+### Added
+- 'array' column type (stored as JSON in the db); also supports attribute casting;
+- support for attribute casting in Date and Datetime field types;
+
+
 ## [3.0.0] - 2016-07-22
 
 ### Added
