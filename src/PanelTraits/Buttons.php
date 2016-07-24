@@ -85,7 +85,6 @@ trait Buttons
             return $button->name == $name && $button->stack == $stack;
         });
     }
-
 }
 
 class CrudButton
