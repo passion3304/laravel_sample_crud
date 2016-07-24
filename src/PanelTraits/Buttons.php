@@ -10,19 +10,47 @@ trait Buttons
 
     // TODO: $this->crud->reorderButtons('stack_name', ['one', 'two']);
 
-    public function addButton($stack, $name, $type, $content)
+    /**
+     * Add a button to the CRUD table view.
+     * @param string $stack    Where should the button be visible? Options: top, line, bottom
+     * @param string $name     The name of the button. Unique.
+     * @param string $type     Type of button: view or model_function
+     * @param string $content  The HTML for the button
+     * @param string $position Where in the stack it should be placed: beginning or end
+     */
+    public function addButton($stack, $name, $type, $content, $position = false)
     {
-        $this->buttons->push(new CrudButton($stack, $name, $type, $content));
+        if ($position == false) {
+            switch ($stack) {
+                case 'line':
+                    $position = 'beginning';
+                    break;
+
+                default:
+                    $position = 'end';
+                    break;
+            }
+        }
+
+        switch ($position) {
+            case 'beginning':
+                $this->buttons->prepend(new CrudButton($stack, $name, $type, $content));
+                break;
+
+            default:
+                $this->buttons->push(new CrudButton($stack, $name, $type, $content));
+                break;
+        }
     }
 
-    public function addButtonFromModelFunction($stack, $name, $model_function_name)
+    public function addButtonFromModelFunction($stack, $name, $model_function_name, $position = false)
     {
-        $this->buttons->push(new CrudButton($stack, $name, 'model_function', $model_function_name));
+        $this->addButton($stack, $name, 'model_function', $model_function_name, $position);
     }
 
-    public function addButtonFromView($stack, $name, $view)
+    public function addButtonFromView($stack, $name, $view, $position = false)
     {
-        $this->buttons->push(new CrudButton($stack, $name, 'view', $view));
+        $this->addButton($stack, $name, 'view', $view, $position);
     }
 
     public function buttons()
@@ -35,13 +63,13 @@ trait Buttons
         $this->buttons = collect();
 
         // line stack
-        $this->buttons->push(new CrudButton('line', 'preview', 'view', 'crud::buttons.preview'));
-        $this->buttons->push(new CrudButton('line', 'update', 'view', 'crud::buttons.update'));
-        $this->buttons->push(new CrudButton('line', 'delete', 'view', 'crud::buttons.delete'));
+        $this->addButton('line', 'preview', 'view', 'crud::buttons.preview');
+        $this->addButton('line', 'update', 'view', 'crud::buttons.update');
+        $this->addButton('line', 'delete', 'view', 'crud::buttons.delete');
 
         // top stack
-        $this->buttons->push(new CrudButton('top', 'create', 'view', 'crud::buttons.create'));
-        $this->buttons->push(new CrudButton('top', 'reorder', 'view', 'crud::buttons.reorder'));
+        $this->addButton('top', 'create', 'view', 'crud::buttons.create');
+        $this->addButton('top', 'reorder', 'view', 'crud::buttons.reorder');
     }
 
     public function removeButton($name)
@@ -57,6 +85,7 @@ trait Buttons
             return $button->name == $name && $button->stack == $stack;
         });
     }
+
 }
 
 class CrudButton
