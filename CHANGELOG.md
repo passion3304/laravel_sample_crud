@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.3] - 2016-07-25
+
+### Added
+- Ctrl+S and Cmd+S submit the form;
+
+
 ## [3.0.2] - 2016-07-24
 
 ### Added
