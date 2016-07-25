@@ -34,4 +34,18 @@
 @section('after_scripts')
 	<!-- CRUD FORM CONTENT - crud_fields_scripts stack -->
 	@stack('crud_fields_scripts')
+
+	<script>
+		// Ctrl+S and Cmd+S trigger Save button click
+		$(document).keydown(function(e) {
+		    if ((e.which == '115' || e.which == '83' ) && (e.ctrlKey || e.metaKey))
+		    {
+		        e.preventDefault();
+		        // alert("Ctrl-s pressed");
+		        $("button[type=submit]").trigger('click');
+		        return false;
+		    }
+		    return true;
+		});
+	</script>
 @endsection
