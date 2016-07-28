@@ -1,7 +1,8 @@
-[![Stories in Ready](https://badge.waffle.io/Laravel-Backpack/crud.png?label=ready&title=Ready)](https://waffle.io/Laravel-Backpack/crud)
+
 # Backpack\CRUD
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/backpack/crud.svg?style=flat-square)](https://packagist.org/packages/backpack/crud)
+[![Stories in Ready](https://badge.waffle.io/Laravel-Backpack/crud.png?label=ready&title=Ready)](https://waffle.io/Laravel-Backpack/crud)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/laravel-backpack/crud/master.svg?style=flat-square)](https://travis-ci.org/laravel-backpack/crud)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/laravel-backpack/crud.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure)
