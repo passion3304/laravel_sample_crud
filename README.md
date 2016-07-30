@@ -101,9 +101,10 @@ If you discover any security related issues, please email hello@tabacitu.ro inst
 
 ## Credits
 
-- [Cristian Tabacitu](http://tabacitu.ro) - chief honcho
-- [Cristian Tone](http://updivision.com) - refactoring & architecture
+- [Cristian Tabacitu](http://tabacitu.ro) - architect, designer, manager, main coder, PR guy, customer service guy & chief honcho
+- [Cristian Tone](http://updivision.com) - architecture improvements
 - [Marius Constantin](http://updivision.com) - bug fixing & improvements
+- [Federico Liva](https://github.com/fede91it) - bug fixing
 - [All Contributors][link-contributors]
 
 Special thanks go to:
