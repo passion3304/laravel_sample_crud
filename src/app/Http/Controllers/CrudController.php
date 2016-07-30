@@ -37,7 +37,8 @@ class CrudController extends BaseController
         $this->data['title'] = ucfirst($this->crud->entity_name_plural);
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('crud::list', $this->data);
+        // $this->crud->getListView() returns 'list' by default, or 'list_ajax' if ajax was enabled
+        return view('crud::'.$this->crud->getListView(), $this->data);
     }
 
     /**
@@ -237,5 +238,111 @@ class CrudController extends BaseController
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view('crud::details_row', $this->data);
+    }
+
+    public function search() {
+        dd(\Request::all());
+        // Data received through GET parameters
+        // draw
+        // columns
+        // order
+        // start
+        // length
+        // search
+        // token
+        return [
+                  "draw" => 3,
+                  "recordsTotal" => 57,
+                  "recordsFiltered" => 57,
+                  "columns" => [
+                    "data" => "date",
+                    "data" => "status",
+                    "data" => "title",
+                    "data" => "featured",
+                    "data" => "category"
+                  ],
+                  "data" => [
+                    [
+                      "Airi",
+                      "Satou",
+                      "Accountant",
+                      "Tokyo",
+                      "28th Nov 08",
+                      "$162,700"
+                    ],
+                    [
+                      "Angelica",
+                      "Ramos",
+                      "Chief Executive Officer (CEO)",
+                      "London",
+                      "9th Oct 09",
+                      "$1,200,000"
+                    ],
+                    [
+                      "Ashton",
+                      "Cox",
+                      "Junior Technical Author",
+                      "San Francisco",
+                      "12th Jan 09",
+                      "$86,000"
+                    ],
+                    [
+                      "Bradley",
+                      "Greer",
+                      "Software Engineer",
+                      "London",
+                      "13th Oct 12",
+                      "$132,000"
+                    ],
+                    [
+                      "Brenden",
+                      "Wagner",
+                      "Software Engineer",
+                      "San Francisco",
+                      "7th Jun 11",
+                      "$206,850"
+                    ],
+                    [
+                      "Brielle",
+                      "Williamson",
+                      "Integration Specialist",
+                      "New York",
+                      "2nd Dec 12",
+                      "$372,000"
+                    ],
+                    [
+                      "Bruno",
+                      "Nash",
+                      "Software Engineer",
+                      "London",
+                      "3rd May 11",
+                      "$163,500"
+                    ],
+                    [
+                      "Caesar",
+                      "Vance",
+                      "Pre-Sales Support",
+                      "New York",
+                      "12th Dec 11",
+                      "$106,450"
+                    ],
+                    [
+                      "Cara",
+                      "Stevens",
+                      "Sales Assistant",
+                      "New York",
+                      "6th Dec 11",
+                      "$145,600"
+                    ],
+                    [
+                      "Cedric",
+                      "Kelly",
+                      "Senior Javascript Developer",
+                      "Edinburgh",
+                      "29th Mar 12",
+                      "$433,060"
+                    ]
+                  ]
+                ];
     }
 }

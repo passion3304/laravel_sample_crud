@@ -110,4 +110,21 @@ trait Read
 
         return 25;
     }
+
+    /**
+     * Set the table view to use AJAX for loading multiple rows, by loading a different view.
+     */
+    public function enableAjaxTable()
+    {
+        $this->list_view = 'list_ajax';
+    }
+
+    /**
+     * Get the view for the controller's index method.
+     * @return string The name of the table view
+     */
+    public function getListView()
+    {
+        return $this->list_view;
+    }
 }

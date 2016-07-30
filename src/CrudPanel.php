@@ -42,6 +42,8 @@ class CrudPanel
 
     public $details_row = false;
 
+    public $list_view = 'list';
+
     public $columns = []; // Define the columns for the table view as an array;
     public $create_fields = []; // Define the fields for the "Add new entry" view as an array;
     public $update_fields = []; // Define the fields for the "Edit entry" view as an array;
@@ -75,8 +77,6 @@ class CrudPanel
 
         $this->model = new $model_namespace();
         $this->query = $this->model->select('*');
-
-        // $this->setFromDb(); // i think that, by default, the auto-fields functionality should be disabled; otherwise, the workflow changes from "set the fields i need" to "update this crud with whatever i need"; which i personally don't like, because it's more hacky and it assumes you should see what the default offers you, then adapt; I propose we set wether the auto-fields functionality is run for panels with a config variable; the config file should be backpack/crud.php and the variable name should be "autoSetFromDb".
     }
 
     /**
