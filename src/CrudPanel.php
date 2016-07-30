@@ -41,8 +41,7 @@ class CrudPanel
     public $reorder_max_level = 3;
 
     public $details_row = false;
-
-    public $list_view = 'list';
+    public $ajax_table = false;
 
     public $columns = []; // Define the columns for the table view as an array;
     public $create_fields = []; // Define the fields for the "Add new entry" view as an array;

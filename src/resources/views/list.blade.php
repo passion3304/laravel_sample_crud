@@ -48,42 +48,41 @@
         </thead>
         <tbody>
 
-          @foreach ($entries as $k => $entry)
-          <tr data-entry-id="{{ $entry->getKey() }}">
+          @if (!$crud->ajaxTable())
+            @foreach ($entries as $k => $entry)
+            <tr data-entry-id="{{ $entry->getKey() }}">
 
-            @if ($crud->details_row)
-              <!-- expand/minimize button column -->
-              <td class="details-control text-center cursor-pointer">
-                <i class="fa fa-plus-square-o"></i>
-              </td>
-            @endif
-
-            @foreach ($crud->columns as $column)
-              <!-- load the view from the application if it exists, otherwise load the one in the package -->
-              @if (!isset($column['type']))
-                @include('crud::columns.text')
-              @else
-                @if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
-                  @include('vendor.backpack.crud.columns.'.$column['type'])
-                @else
-                  @if(view()->exists('crud::columns.'.$column['type']))
-                    @include('crud::columns.'.$column['type'])
-                  @else
-                    @include('crud::columns.text')
-                  @endif
-                @endif
+              @if ($crud->details_row)
+                @include('crud::columns.details_row_button')
               @endif
 
+              @foreach ($crud->columns as $column)
+                <!-- load the view from the application if it exists, otherwise load the one in the package -->
+                @if (!isset($column['type']))
+                  @include('crud::columns.text')
+                @else
+                  @if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
+                    @include('vendor.backpack.crud.columns.'.$column['type'])
+                  @else
+                    @if(view()->exists('crud::columns.'.$column['type']))
+                      @include('crud::columns.'.$column['type'])
+                    @else
+                      @include('crud::columns.text')
+                    @endif
+                  @endif
+                @endif
+
+              @endforeach
+
+              @if ($crud->buttons->where('stack', 'line')->count())
+                <td>
+                  @include('crud::inc.button_stack', ['stack' => 'line'])
+                </td>
+              @endif
+
+            </tr>
             @endforeach
-
-            @if ($crud->buttons->where('stack', 'line')->count())
-              <td>
-                @include('crud::inc.button_stack', ['stack' => 'line'])
-              </td>
-            @endif
-
-          </tr>
-          @endforeach
+          @endif
 
         </tbody>
         <tfoot>
@@ -142,52 +141,17 @@
                   "sortAscending":  "{{ trans('backpack::crud.aria.sortAscending') }}",
                   "sortDescending": "{{ trans('backpack::crud.aria.sortDescending') }}"
               }
-          }
+          },
+
+          @if ($crud->ajaxTable())
+          "processing": true,
+          "serverSide": true,
+          "ajax": {
+              "url": "{{ url($crud->route.'/search') }}",
+              "type": "POST"
+          },
+          @endif
       });
-
-      @if ($crud->details_row)
-      // Add event listener for opening and closing details
-      $('#crudTable tbody').on('click', 'td.details-control', function () {
-          var tr = $(this).closest('tr');
-          var row = table.row( tr );
-
-          if ( row.child.isShown() ) {
-              // This row is already open - close it
-              $(this).children('i').removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
-              $('div.table_row_slider', row.child()).slideUp( function () {
-                  row.child.hide();
-                  tr.removeClass('shown');
-              } );
-          }
-          else {
-              // Open this row
-              $(this).children('i').removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
-              // Get the details with ajax
-              $.ajax({
-                url: '{{ Request::url() }}/'+tr.data('entry-id')+'/details',
-                type: 'GET',
-                // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-                // data: {param1: 'value1'},
-              })
-              .done(function(data) {
-                // console.log("-- success getting table extra details row with AJAX");
-                row.child("<div class='table_row_slider'>" + data + "</div>", 'no-padding').show();
-                tr.addClass('shown');
-                $('div.table_row_slider', row.child()).slideDown();
-                register_delete_button_action();
-              })
-              .fail(function(data) {
-                // console.log("-- error getting table extra details row with AJAX");
-                row.child("<div class='table_row_slider'>{{ trans('backpack::crud.details_row_loading_error') }}</div>").show();
-                tr.addClass('shown');
-                $('div.table_row_slider', row.child()).slideDown();
-              })
-              .always(function(data) {
-                // console.log("-- complete getting table extra details row with AJAX");
-              });
-          }
-      } );
-      @endif
 
       $.ajaxPrefilter(function(options, originalOptions, xhr) {
           var token = $('meta[name="csrf_token"]').attr('content');
@@ -195,7 +159,7 @@
           if (token) {
                 return xhr.setRequestHeader('X-XSRF-TOKEN', token);
           }
-    });
+      });
 
       // make the delete button work in the first result page
       register_delete_button_action();
@@ -203,6 +167,10 @@
       // make the delete button work on subsequent result pages
       $('#crudTable').on( 'draw.dt',   function () {
          register_delete_button_action();
+
+         @if ($crud->details_row)
+          register_details_row_button_action();
+         @endif
       } ).dataTable();
 
       function register_delete_button_action() {
@@ -246,6 +214,56 @@
           }
         });
       }
+
+
+      @if ($crud->details_row)
+      function register_details_row_button_action() {
+        // Add event listener for opening and closing details
+        $('#crudTable tbody').on('click', 'td .details-row-button', function () {
+            var tr = $(this).closest('tr');
+            var btn = $(this);
+            var row = table.row( tr );
+
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                $(this).children('i').removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
+                $('div.table_row_slider', row.child()).slideUp( function () {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } );
+            }
+            else {
+                // Open this row
+                $(this).children('i').removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+                // Get the details with ajax
+                $.ajax({
+                  url: '{{ Request::url() }}/'+btn.data('entry-id')+'/details',
+                  type: 'GET',
+                  // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+                  // data: {param1: 'value1'},
+                })
+                .done(function(data) {
+                  // console.log("-- success getting table extra details row with AJAX");
+                  row.child("<div class='table_row_slider'>" + data + "</div>", 'no-padding').show();
+                  tr.addClass('shown');
+                  $('div.table_row_slider', row.child()).slideDown();
+                  register_delete_button_action();
+                })
+                .fail(function(data) {
+                  // console.log("-- error getting table extra details row with AJAX");
+                  row.child("<div class='table_row_slider'>{{ trans('backpack::crud.details_row_loading_error') }}</div>").show();
+                  tr.addClass('shown');
+                  $('div.table_row_slider', row.child()).slideDown();
+                })
+                .always(function(data) {
+                  // console.log("-- complete getting table extra details row with AJAX");
+                });
+            }
+        } );
+      }
+
+      register_details_row_button_action();
+      @endif
 
 
 	  });

@@ -39,7 +39,7 @@ class CrudController extends BaseController
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         // $this->crud->getListView() returns 'list' by default, or 'list_ajax' if ajax was enabled
-        return view('crud::'.$this->crud->getListView(), $this->data);
+        return view('crud::list', $this->data);
     }
 
     /**
@@ -241,19 +241,21 @@ class CrudController extends BaseController
         return view('crud::details_row', $this->data);
     }
 
+    /**
+     * Respond with the JSON of one or more rows, depending on the POST parameters.
+     * @return JSON Array of cells in HTML form.
+     */
     public function search() {
-        // dd($this->crud->columns);
-        // dd(\Request::all());
+        // add the primary key, even though you don't show it,
+        // otherwise the buttons won't work
+        $columns = collect($this->crud->columns)->lists('name')->merge($this->crud->model->getKeyName())->toArray();
 
-        // columns to search in should be all columns but the ones that have a model on them
-        // also, add the primary key, even though you don't show it, otherwise buttons won't work
-        $columns = collect($this->crud->columns)->reject(function($item) {
-            return isset($item['model']);
-        })->lists('name')->merge($this->crud->model->getKeyName())->toArray();
-
+        // structure the response in a DataTable-friendly way
         $dataTable = new DataTable($this->crud->query, $columns);
 
+        // make the datatable use the column types instead of just echoing the text
         $dataTable->setFormatRowFunction(function ($entry) {
+            // get the actual HTML for each row's cell
             $row_items = $this->crud->getRowViews($entry, $this->crud);
 
             // add the buttons as the last column
@@ -264,6 +266,15 @@ class CrudController extends BaseController
                                 ->with('entry', $entry)
                                 ->render();
             }
+
+            // add the details_row buttons as the first column
+            if ($this->crud->details_row) {
+                array_unshift($row_items, \View::make('crud::columns.details_row_button')
+                                ->with('crud', $this->crud)
+                                ->with('entry', $entry)
+                                ->render());
+            }
+
             return $row_items;
         });
 
