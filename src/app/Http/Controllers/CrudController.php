@@ -245,7 +245,8 @@ class CrudController extends BaseController
      * Respond with the JSON of one or more rows, depending on the POST parameters.
      * @return JSON Array of cells in HTML form.
      */
-    public function search() {
+    public function search()
+    {
         // add the primary key, even though you don't show it,
         // otherwise the buttons won't work
         $columns = collect($this->crud->columns)->lists('name')->merge($this->crud->model->getKeyName())->toArray();
@@ -259,8 +260,7 @@ class CrudController extends BaseController
             $row_items = $this->crud->getRowViews($entry, $this->crud);
 
             // add the buttons as the last column
-            if ($this->crud->buttons->where('stack', 'line')->count())
-            {
+            if ($this->crud->buttons->where('stack', 'line')->count()) {
                 $row_items[] = \View::make('crud::inc.button_stack', ['stack' => 'line'])
                                 ->with('crud', $this->crud)
                                 ->with('entry', $entry)

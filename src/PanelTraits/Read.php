@@ -111,7 +111,6 @@ trait Read
         return 25;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     |                                AJAX TABLE
@@ -128,7 +127,7 @@ trait Read
 
     /**
      * Check if ajax is enabled for the table view.
-     * @return boolean
+     * @return bool
      */
     public function ajaxTable()
     {
@@ -146,6 +145,7 @@ trait Read
         foreach ($this->columns as $key => $column) {
             $response[] = $this->getCellView($column, $entry);
         }
+
         return $response;
     }
 
@@ -157,25 +157,18 @@ trait Read
      */
     public function getCellView($column, $entry)
     {
-        if (!isset($column['type']))
-        {
+        if (! isset($column['type'])) {
             return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
-        }
-        else
-        {
-            if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
-            {
+        } else {
+            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
                 return \View::make('vendor.backpack.crud.columns.'.$column['type'])->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
-            }
-            else
-            {
-                if(view()->exists('crud::columns.'.$column['type'])) {
+            } else {
+                if (view()->exists('crud::columns.'.$column['type'])) {
                     return \View::make('crud::columns.'.$column['type'])->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
-                }
-                else {
+                } else {
                     return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
                 }
-              }
+            }
         }
     }
 }
