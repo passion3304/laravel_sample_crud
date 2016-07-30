@@ -19,10 +19,8 @@ trait CrudTrait
         $type = DB::select(DB::raw('SHOW COLUMNS FROM '.$instance->getTable().' WHERE Field = "'.$field_name.'"'))[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
         $enum = [];
-        $exploded = explode(',', $matches[1]);
-        foreach ($exploded as $value) {
-            $v = trim($value, "'");
-            $enum[] = $v;
+        foreach (explode(',', $matches[1]) as $value) {
+            $enum[] = trim($value, "'");
         }
 
         return $enum;
@@ -33,7 +31,7 @@ trait CrudTrait
         $instance = new static(); // create an instance of the model to be able to get the table name
         $answer = DB::select(DB::raw("SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='".$instance->getTable()."' AND COLUMN_NAME='".$column_name."' AND table_schema='".env('DB_DATABASE')."'"))[0];
 
-        return $answer->IS_NULLABLE == 'YES' ? true : false;
+        return $answer->IS_NULLABLE === 'YES';
     }
 
     /*
@@ -56,10 +54,8 @@ trait CrudTrait
                 $column_contents = json_decode($this->{$column});
             }
 
-            if (count($column_contents)) {
-                foreach ($column_contents as $fake_field_name => $fake_field_value) {
-                    $this->setAttribute($fake_field_name, $fake_field_value);
-                }
+            foreach ($column_contents as $fake_field_name => $fake_field_value) {
+                $this->setAttribute($fake_field_name, $fake_field_value);
             }
         }
     }
@@ -76,11 +72,7 @@ trait CrudTrait
         $model = '\\'.get_class($this);
 
         if (! count($columns)) {
-            if (property_exists($model, 'fakeColumns')) {
-                $columns = $this->fakeColumns;
-            } else {
-                $columns = ['extras'];
-            }
+            $columns = (property_exists($model, 'fakeColumns')) ? $this->fakeColumns : ['extras'];
         }
 
         $this->addFakes($columns);
