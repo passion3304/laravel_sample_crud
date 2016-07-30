@@ -55,6 +55,8 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
         ],
 ```
 
+5) If you haven't already, go through [steps 3-5 from the Backpack\Base installation](https://github.com/Laravel-Backpack/Base#install) (the dependency which provides the general views for the admin panel).
+
 5) [Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
 ```html
 <li><a href="{{ url('admin/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>

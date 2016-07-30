@@ -70,6 +70,7 @@ class CrudServiceProvider extends ServiceProvider
         });
 
         // register its dependencies
+        $this->app->register(\Backpack\Base\BaseServiceProvider::class);
         $this->app->register(\Collective\Html\HtmlServiceProvider::class);
         $this->app->register(\Barryvdh\Elfinder\ElfinderServiceProvider::class);
 
