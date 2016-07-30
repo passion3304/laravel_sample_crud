@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.5] - 2016-07-30
+
+### Added
+- Auto-registering the Backpack\Base class;
+- Improved documentation for those who want to just install Backpack\CRUD;
+
+
 ## [3.0.4] - 2016-07-30
 
 ### Added
