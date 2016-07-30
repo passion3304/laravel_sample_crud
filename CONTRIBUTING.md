@@ -7,13 +7,22 @@ We accept contributions via Pull Requests on [Github](https://github.com/laravel
 
 ## Bug Fixing & Enhancements
 
-We use the Github issue tracker for that. Here's the procedure we've settled upon so 2 people don't work on the same thing:
+We keep our issue in one of these stacks, [on our waffle](https://waffle.io/Laravel-Backpack/crud):
+- **new issues (you could help out by replying to questions)**
+- pending (hit a wall; issue is probably going to die alone and unloved; let it be)
+- **ready (most important things to be done - HERE IS WHERE YOU CAN HELP A LOT)**
+- working on it (someone already is, so that you don't need to)
+- done
+
+
+Use the Github issue tracker for assigning a label, communication and sticking to the plan. 
+Here's the procedure we've settled upon so 2 people don't work on the same thing:
 - you find something that needs doing (say: unit tests for a certain package);
 - you check if there is already an issue for it (if there isn't, add one);
 - in that issue:
    - say you're working on it and it will be done in x hours or y days; 
    - in that issue, assign the "working on it" label
-   - assign yourself to the issue;
+   - assign yourself to the issue (if you can);
 - then comment/reference the issue in your pull request;
 
 
