@@ -84,7 +84,10 @@
 	  	var table = $("#crudTable").DataTable({
         "processing": true,
         "serverSide": true,
-        "ajax": "{{ url($crud->route.'/search') }}",
+        "ajax": {
+            "url": "{{ url($crud->route.'/search') }}",
+            "type": "POST"
+        },
         "pageLength": {{ $crud->getDefaultPageLength() }},
         "language": {
               "emptyTable":     "{{ trans('backpack::crud.emptyTable') }}",

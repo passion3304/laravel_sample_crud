@@ -1,3 +1,3 @@
 @if ($crud->hasAccess('update'))
-	<a href="{{ Request::url().'/'.$entry->getKey() }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
+	<a href="{{ $crud->route.'/'.$entry->getKey() }}/edit" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
 @endif

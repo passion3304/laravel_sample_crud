@@ -10,6 +10,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Form as Form;
+use LiveControl\EloquentDataTable\DataTable;
 
 class CrudController extends BaseController
 {
@@ -241,108 +242,31 @@ class CrudController extends BaseController
     }
 
     public function search() {
-        dd(\Request::all());
-        // Data received through GET parameters
-        // draw
-        // columns
-        // order
-        // start
-        // length
-        // search
-        // token
-        return [
-                  "draw" => 3,
-                  "recordsTotal" => 57,
-                  "recordsFiltered" => 57,
-                  "columns" => [
-                    "data" => "date",
-                    "data" => "status",
-                    "data" => "title",
-                    "data" => "featured",
-                    "data" => "category"
-                  ],
-                  "data" => [
-                    [
-                      "Airi",
-                      "Satou",
-                      "Accountant",
-                      "Tokyo",
-                      "28th Nov 08",
-                      "$162,700"
-                    ],
-                    [
-                      "Angelica",
-                      "Ramos",
-                      "Chief Executive Officer (CEO)",
-                      "London",
-                      "9th Oct 09",
-                      "$1,200,000"
-                    ],
-                    [
-                      "Ashton",
-                      "Cox",
-                      "Junior Technical Author",
-                      "San Francisco",
-                      "12th Jan 09",
-                      "$86,000"
-                    ],
-                    [
-                      "Bradley",
-                      "Greer",
-                      "Software Engineer",
-                      "London",
-                      "13th Oct 12",
-                      "$132,000"
-                    ],
-                    [
-                      "Brenden",
-                      "Wagner",
-                      "Software Engineer",
-                      "San Francisco",
-                      "7th Jun 11",
-                      "$206,850"
-                    ],
-                    [
-                      "Brielle",
-                      "Williamson",
-                      "Integration Specialist",
-                      "New York",
-                      "2nd Dec 12",
-                      "$372,000"
-                    ],
-                    [
-                      "Bruno",
-                      "Nash",
-                      "Software Engineer",
-                      "London",
-                      "3rd May 11",
-                      "$163,500"
-                    ],
-                    [
-                      "Caesar",
-                      "Vance",
-                      "Pre-Sales Support",
-                      "New York",
-                      "12th Dec 11",
-                      "$106,450"
-                    ],
-                    [
-                      "Cara",
-                      "Stevens",
-                      "Sales Assistant",
-                      "New York",
-                      "6th Dec 11",
-                      "$145,600"
-                    ],
-                    [
-                      "Cedric",
-                      "Kelly",
-                      "Senior Javascript Developer",
-                      "Edinburgh",
-                      "29th Mar 12",
-                      "$433,060"
-                    ]
-                  ]
-                ];
+        // dd($this->crud->columns);
+        // dd(\Request::all());
+
+        // columns to search in should be all columns but the ones that have a model on them
+        // also, add the primary key, even though you don't show it, otherwise buttons won't work
+        $columns = collect($this->crud->columns)->reject(function($item) {
+            return isset($item['model']);
+        })->lists('name')->merge($this->crud->model->getKeyName())->toArray();
+
+        $dataTable = new DataTable($this->crud->query, $columns);
+
+        $dataTable->setFormatRowFunction(function ($entry) {
+            $row_items = $this->crud->getRowViews($entry, $this->crud);
+
+            // add the buttons as the last column
+            if ($this->crud->buttons->where('stack', 'line')->count())
+            {
+                $row_items[] = \View::make('crud::inc.button_stack', ['stack' => 'line'])
+                                ->with('crud', $this->crud)
+                                ->with('entry', $entry)
+                                ->render();
+            }
+            return $row_items;
+        });
+
+        return $dataTable->make();
     }
 }

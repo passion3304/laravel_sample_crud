@@ -84,7 +84,7 @@ class CrudServiceProvider extends ServiceProvider
     public static function resource($name, $controller, array $options = [])
     {
         // CRUD routes
-        Route::get($name.'/search', $controller.'@search'); // TODO: make this work
+        Route::post($name.'/search', $controller.'@search'); // TODO: make this work
         Route::get($name.'/reorder', $controller.'@reorder');
         Route::post($name.'/reorder', $controller.'@saveReorder');
         Route::get($name.'/{id}/details', $controller.'@showDetailsRow');

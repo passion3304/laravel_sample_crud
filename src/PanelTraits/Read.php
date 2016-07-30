@@ -127,4 +127,39 @@ trait Read
     {
         return $this->list_view;
     }
+
+    public function getRowViews($entry, $crud)
+    {
+        $response = [];
+        foreach ($this->columns as $key => $column) {
+            $response[] = $this->getRowView($column, $entry, $crud, $column);
+        }
+        return $response;
+    }
+
+    public function getRowView($column, $entry, $crud, $column)
+    {
+        // return $entry->{$column['name']};
+
+        if (!isset($column['type']))
+        {
+            return \View::make('crud::columns.text')->with('crud', $crud)->with('column', $column)->with('entry', $entry)->render();
+        }
+        else
+        {
+            if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
+            {
+                return \View::make('vendor.backpack.crud.columns.'.$column['type'])->with('crud', $crud)->with('column', $column)->with('entry', $entry)->render();
+            }
+            else
+            {
+                if(view()->exists('crud::columns.'.$column['type'])) {
+                    return \View::make('crud::columns.'.$column['type'])->with('crud', $crud)->with('column', $column)->with('entry', $entry)->render();
+                }
+                else {
+                    return \View::make('crud::columns.text')->with('crud', $crud)->with('column', $column)->with('entry', $entry)->render();
+                }
+              }
+        }
+    }
 }
