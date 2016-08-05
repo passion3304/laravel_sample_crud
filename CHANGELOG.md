@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.7] - 2016-08-05
+
+### Added
+- PDO Support;
+
+### Removed
+- default column values on the setFromDb() function;
+
 
 ## [3.0.6] - 2016-07-31
 

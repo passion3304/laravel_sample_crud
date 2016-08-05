@@ -22,7 +22,7 @@ trait AutoSet
             $new_field = [
                 'name'       => $field,
                 'label'      => ucfirst($field),
-                'value'      => null, 'default' => $this->db_column_types[$field]['default'],
+                'value'      => null,
                 'type'       => $this->getFieldTypeFromDbColumnType($field),
                 'values'     => [],
                 'attributes' => [],
@@ -47,8 +47,12 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        foreach (\DB::select(\DB::raw('SHOW COLUMNS FROM '.$this->model->getTable())) as $column) {
-            $this->db_column_types[$column->Field] = ['type' => trim(preg_replace('/\(\d+\)(.*)/i', '', $column->Type)), 'default' => $column->Default];
+        $table_columns = \Schema::getColumnListing($this->model->getTable());
+
+        foreach ($table_columns as $key => $column) {
+            $column_type = \Schema::getColumnType($this->model->getTable(), $column);
+            $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
+            $this->db_column_types[$column]['default'] = ''; // no way to do this using DBAL?!
         }
 
         return $this->db_column_types;
