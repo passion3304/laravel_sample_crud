@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.8] - 2016-08-05
+
+### Added
+- automatic route names for all CRUD::resource() routes;
+
 ## [3.0.7] - 2016-08-05
 
 ### Added
