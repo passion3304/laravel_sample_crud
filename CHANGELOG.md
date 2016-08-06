@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.9] - 2016-08-06
+
+### Added
+- base64_image field type, thanks to [deslittle](https://github.com/deslittle);
+
+
 ## [3.0.8] - 2016-08-05
 
 ### Added
