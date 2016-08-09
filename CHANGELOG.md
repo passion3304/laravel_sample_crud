@@ -20,10 +20,17 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.9] - 2016-08-09
+
+### Removed
+- PHP dependency, since it's already settled in Backpack\Base, which is a requirement;
+
+
 ## [3.0.8] - 2016-08-05
 
 ### Added
 - automatic route names for all CRUD::resource() routes;
+
 
 ## [3.0.7] - 2016-08-05
 
