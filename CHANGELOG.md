@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+## [3.0.11] - 2016-08-12
+
+### Added
+- Spanish translation, thanks to [Rafael Ernesto Ferro González](https://github.com/rafix);
+
+
 ## [3.0.10] - 2016-08-09
 
 ### Removed
