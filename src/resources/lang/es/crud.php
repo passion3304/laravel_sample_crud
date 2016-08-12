@@ -45,7 +45,7 @@ return [
         'delete_confirmation_title'                   => 'Elemento eliminado',
         'delete_confirmation_message'                 => 'El elemento ha sido eliminado satisfactoriamente.',
         'delete_confirmation_not_title'               => 'No se pudo eliminar',
-        'delete_confirmation_not_message'             => "Ha ocurrido un error. Puede que el elemento no haya sido eliminado.",
+        'delete_confirmation_not_message'             => 'Ha ocurrido un error. Puede que el elemento no haya sido eliminado.',
         'delete_confirmation_not_deleted_title'       => 'No se pudo eliminar',
         'delete_confirmation_not_deleted_message'     => 'No ha ocurrido nada. Su elemento está seguro.',
 
