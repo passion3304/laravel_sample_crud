@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.13] - 2016-08-17
+
+### Fixed
+- Custom pivot table in select2 and select2_multiple fields; Fixes #75;
+
+
 ## [3.0.12] - 2016-08-17
 
 ### Fixed

@@ -4,19 +4,19 @@
     <select
         name="{{ $field['name'] }}[]"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2'])
-    	multiple>
-    	<option value="">-</option>
+        multiple>
+        <option value="">-</option>
 
-    	@if (isset($field['model']))
-    		@foreach ($field['model']::all() as $connected_entity_entry)
-    			<option value="{{ $connected_entity_entry->getKey() }}"
-					@if ( (isset($field['value']) && in_array($connected_entity_entry->getKey(), $field['value']->lists('id', 'id')->toArray())) || ( old( $field["name"] ) && in_array($connected_entity_entry->getKey(), old( $field["name"])) ) )
-						 selected
-					@endif
-    			>{{ $connected_entity_entry->{$field['attribute']} }}</option>
-    		@endforeach
-    	@endif
-	</select>
+        @if (isset($field['model']))
+            @foreach ($field['model']::all() as $connected_entity_entry)
+                <option value="{{ $connected_entity_entry->getKey() }}"
+                    @if ( (isset($field['value']) && in_array($connected_entity_entry->getKey(), $field['value']->lists($connected_entity_entry->getKeyName(), $connected_entity_entry->getKeyName())->toArray())) || ( old( $field["name"] ) && in_array($connected_entity_entry->getKey(), old( $field["name"])) ) )
+                         selected
+                    @endif
+                >{{ $connected_entity_entry->{$field['attribute']} }}</option>
+            @endforeach
+        @endif
+    </select>
 
     {{-- HINT --}}
     @if (isset($field['hint']))
