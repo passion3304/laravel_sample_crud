@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.12] - 2016-08-17
+
+### Fixed
+- Reorder view works with custom primary keys; fixes #85;
+- URLs in views now use the backpack.base.route_prefix; fixes #88;
+
 
 ## [3.0.11] - 2016-08-12
 
