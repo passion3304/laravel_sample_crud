@@ -37,8 +37,7 @@ class CrudController extends BaseController
         $this->data['title'] = ucfirst($this->crud->entity_name_plural);
 
         // get all entries if not AJAX is not enabled
-        if (!$this->data['crud']->ajaxTable())
-        {
+        if (! $this->data['crud']->ajaxTable()) {
             $this->data['entries'] = $this->data['crud']->getEntries();
         }
 
