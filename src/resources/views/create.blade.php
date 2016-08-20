@@ -58,7 +58,6 @@
 		          </div>
 		        </div>
 
-			  <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 			  <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.add') }}</span></button>
 		      <a href="{{ url($crud->route) }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label">{{ trans('backpack::crud.cancel') }}</span></a>
 		    </div><!-- /.box-footer-->

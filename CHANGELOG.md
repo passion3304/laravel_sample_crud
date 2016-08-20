@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.15] - 2016-08-20
+
+### Fixed
+- Removed double-token input in Create view; Fixes #89;
+
+
 ## [3.0.14] - 2016-08-20
 
 ### Fixed
