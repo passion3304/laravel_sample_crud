@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.14] - 2016-08-20
+
+### Fixed
+- Fixed AJAX table view with big data sets - was still selecting all rows from the DB; Fixes #87;
+
+
 ## [3.0.13] - 2016-08-17
 
 ### Fixed
