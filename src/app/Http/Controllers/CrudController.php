@@ -251,6 +251,8 @@ class CrudController extends BaseController
      */
     public function search()
     {
+        $this->crud->hasAccessOrFail('list');
+
         // add the primary key, even though you don't show it,
         // otherwise the buttons won't work
         $columns = collect($this->crud->columns)->lists('name')->merge($this->crud->model->getKeyName())->toArray();

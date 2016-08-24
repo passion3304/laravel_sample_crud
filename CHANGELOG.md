@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.16] - 2016-08-24
+
+### Fixed
+- Removed recurring comment from list view; Fixes #92;
+- Added check for permission in the CrudController::search() method for allowing the AJAX table only if list is enabled;
+
+
 ## [3.0.15] - 2016-08-20
 
 ### Fixed

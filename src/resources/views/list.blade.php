@@ -56,8 +56,8 @@
                 @include('crud::columns.details_row_button')
               @endif
 
+              {{-- load the view from the application if it exists, otherwise load the one in the package --}}
               @foreach ($crud->columns as $column)
-                <!-- load the view from the application if it exists, otherwise load the one in the package -->
                 @if (!isset($column['type']))
                   @include('crud::columns.text')
                 @else
