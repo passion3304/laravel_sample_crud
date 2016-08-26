@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.17] - 2016-08-26
+
+### Fixed
+- adding buttons from views did not work; fixes #93;
+
+
 ## [3.0.16] - 2016-08-24
 
 ### Fixed
