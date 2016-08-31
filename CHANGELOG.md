@@ -20,10 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.0.18] - 2016-08-31
+## [3.1.0] - 2016-08-31
 
-### Fixed
-- replaced the deprecated collection lists() method with pluck();
+### Added
+- Laravel 5.3 support;
 
 
 ## [3.0.17] - 2016-08-26
