@@ -162,7 +162,7 @@ class CrudPanel
      */
     public function getFirstOfItsTypeInArray($type, $array)
     {
-        return array_first($array, function ($key, $item) use ($type) {
+        return array_first($array, function ($item) use ($type) {
             return $item['type'] == $type;
         });
     }
