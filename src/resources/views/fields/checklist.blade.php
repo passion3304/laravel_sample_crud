@@ -12,7 +12,7 @@
                       name="{{ $field['name'] }}[]"
                       value="{{ $connected_entity_entry->id }}"
 
-                      @if( ( old( $field["name"] ) && in_array($connected_entity_entry->id, old( $field["name"])) ) || (isset($field['value']) && in_array($connected_entity_entry->id, $field['value']->lists('id', 'id')->toArray())))
+                      @if( ( old( $field["name"] ) && in_array($connected_entity_entry->id, old( $field["name"])) ) || (isset($field['value']) && in_array($connected_entity_entry->id, $field['value']->pluck('id', 'id')->toArray())))
                              checked = "checked"
                       @endif > {{ $connected_entity_entry->{$field['attribute']} }}
                   </label>

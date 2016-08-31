@@ -73,7 +73,7 @@
                 <input type="hidden" class="primary_hidden" name="{{ $primary_dependency['name'] }}[]" value="{{ $item }}">
               @endforeach
             @else
-              @foreach( $field['value'][0]->lists('id', 'id')->toArray() as $item )
+              @foreach( $field['value'][0]->pluck('id', 'id')->toArray() as $item )
                 <input type="hidden" class="primary_hidden" name="{{ $primary_dependency['name'] }}[]" value="{{ $item }}">
               @endforeach
             @endif
@@ -98,7 +98,7 @@
                         @endforeach
                          value="{{ $connected_entity_entry->id }}"
 
-                         @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->lists('id', 'id')->toArray())) || ( old($primary_dependency["name"]) && in_array($connected_entity_entry->id, old( $primary_dependency["name"])) ) )
+                         @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || ( old($primary_dependency["name"]) && in_array($connected_entity_entry->id, old( $primary_dependency["name"])) ) )
                                checked = "checked"
                         @endif >
                         {{ $connected_entity_entry->{$primary_dependency['attribute']} }}
@@ -121,7 +121,7 @@
                 <input type="hidden" class="secondary_hidden" name="{{ $secondary_dependency['name'] }}[]" value="{{ $item }}">
               @endforeach
             @else
-              @foreach( $field['value'][1]->lists('id', 'id')->toArray() as $item )
+              @foreach( $field['value'][1]->pluck('id', 'id')->toArray() as $item )
                 <input type="hidden" class="secondary_hidden" name="{{ $secondary_dependency['name'] }}[]" value="{{ $item }}">
               @endforeach
             @endif
@@ -146,7 +146,7 @@
                         @endforeach
                          value="{{ $connected_entity_entry->id }}"
 
-                        @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->lists('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || ( old($secondary_dependency['name']) &&   in_array($connected_entity_entry->id, old($secondary_dependency['name'])) )))
+                        @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->pluck('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || ( old($secondary_dependency['name']) &&   in_array($connected_entity_entry->id, old($secondary_dependency['name'])) )))
                              checked = "checked"
                              @if(isset( $secondary_ids[$connected_entity_entry->id]))
                               disabled = disabled

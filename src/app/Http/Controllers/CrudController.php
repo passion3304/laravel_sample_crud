@@ -255,7 +255,7 @@ class CrudController extends BaseController
 
         // add the primary key, even though you don't show it,
         // otherwise the buttons won't work
-        $columns = collect($this->crud->columns)->lists('name')->merge($this->crud->model->getKeyName())->toArray();
+        $columns = collect($this->crud->columns)->pluck('name')->merge($this->crud->model->getKeyName())->toArray();
 
         // structure the response in a DataTable-friendly way
         $dataTable = new DataTable($this->crud->query, $columns);

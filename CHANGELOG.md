@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.0.18] - 2016-08-31
+
+### Fixed
+- replaced the deprecated collection lists() method with pluck();
+
+
 ## [3.0.17] - 2016-08-26
 
 ### Fixed
