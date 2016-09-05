@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.1] - 2016-09-05
+
+### Added
+- Allow HTML in all field labels (#98)
+
+
 ## [3.1.0] - 2016-08-31
 
 ### Added
