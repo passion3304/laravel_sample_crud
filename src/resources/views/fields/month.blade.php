@@ -1,6 +1,6 @@
 <!-- html5 month input -->
 <div @include('crud::inc.field_wrapper_attributes') >
-    <label>{{ $field['label'] }}</label>
+    <label>{!! $field['label'] !!}</label>
     <input
         type="month"
         name="{{ $field['name'] }}"

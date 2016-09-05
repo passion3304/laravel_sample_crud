@@ -1,6 +1,6 @@
   <div class="form-group image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ $field['aspect_ratio'] }}" data-crop="{{ $field['crop'] }}">
     <div>
-        <label>{{ $field['label'] }}</label>
+        <label>{!! $field['label'] !!}</label>
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">

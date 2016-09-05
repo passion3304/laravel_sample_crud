@@ -1,6 +1,6 @@
 <!-- html5 url input -->
 <div @include('crud::inc.field_wrapper_attributes') >
-    <label>{{ $field['label'] }}</label>
+    <label>{!! $field['label'] !!}</label>
     <input
     	type="url"
     	name="{{ $field['name'] }}"

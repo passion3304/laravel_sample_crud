@@ -1,6 +1,6 @@
 <!-- select multiple -->
 <div @include('crud::inc.field_wrapper_attributes') >
-    <label>{{ $field['label'] }}</label>
+    <label>{!! $field['label'] !!}</label>
     <select
     	class="form-control"
         name="{{ $field['name'] }}[]"
