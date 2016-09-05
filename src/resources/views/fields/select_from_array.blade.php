@@ -1,6 +1,6 @@
 <!-- select -->
 <div @include('crud::inc.field_wrapper_attributes') >
-    <label>{{ $field['label'] }}</label>
+    <label>{!! $field['label'] !!}</label>
     <select
         name="{{ $field['name'] }}"
         @include('crud::inc.field_attributes')

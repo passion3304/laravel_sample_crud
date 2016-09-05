@@ -1,6 +1,6 @@
 <!-- CKeditor -->
 <div @include('crud::inc.field_wrapper_attributes') >
-    <label>{{ $field['label'] }}</label>
+    <label>{!! $field['label'] !!}</label>
     <textarea
     	id="ckeditor-{{ $field['name'] }}"
         name="{{ $field['name'] }}"

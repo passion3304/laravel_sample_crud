@@ -1,6 +1,6 @@
 <!-- dependencyJson -->
   <div class="form-group col-md-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}">
-    <label>{{ $field['label'] }}</label>
+    <label>{!! $field['label'] !!}</label>
     <?php
       $entity_model = $crud->getModel();
 

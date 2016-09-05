@@ -19,7 +19,7 @@
     			{{ $attribute }}="{{ $value }}"
         	  @endforeach
           @endif
-          > {{ $field['label'] }}
+          > {!! $field['label'] !!}
     	</label>
 
         {{-- HINT --}}
