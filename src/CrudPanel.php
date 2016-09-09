@@ -34,7 +34,7 @@ class CrudPanel
     public $entity_name = 'entry'; // what name will show up on the buttons, in singural (ex: Add entity)
     public $entity_name_plural = 'entries'; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
 
-    public $access = ['list', 'create', 'update', 'delete'/* 'reorder', 'show', 'details_row' */];
+    public $access = ['list', 'create', 'update', 'delete'/* 'revisions', reorder', 'show', 'details_row' */];
 
     public $reorder = false;
     public $reorder_label = false;

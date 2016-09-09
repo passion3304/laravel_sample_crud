@@ -105,6 +105,11 @@ class CrudServiceProvider extends ServiceProvider
             'uses' => $controller.'@translateItem',
           ]);
 
+        Route::get($name.'/{id}/revisions', [
+            'as' => 'crud.'.$name.'.revisions',
+            'uses' => $controller.'@revisions',
+          ]);
+
         $options_with_default_route_names = array_merge([
             'names' => [
                 'index'     => 'crud.'.$name.'.index',

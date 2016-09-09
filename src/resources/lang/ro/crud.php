@@ -28,6 +28,7 @@ return [
     // Edit form
     'edit'                 => 'Editează',
     'save'                 => 'Salvează',
+    'revisions'            => 'Reviziile',
 
     // CRUD table view
     'all'                  => 'Toate ',

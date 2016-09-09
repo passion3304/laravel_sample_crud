@@ -28,6 +28,7 @@ return [
     // Edit form
     'edit'                 => 'Edit',
     'save'                 => 'Save',
+    'revisions'            => 'Revisions',
 
     // CRUD table view
     'all'                       => 'All ',

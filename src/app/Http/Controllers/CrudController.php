@@ -166,6 +166,30 @@ class CrudController extends BaseController
     }
 
     /**
+     * Display the revisions form for specified resource.
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function revisions($id)
+    {
+        $this->crud->hasAccessOrFail('revisions');
+
+        // get the info for that entry
+        $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = trans('backpack::crud.revisions').' '.$this->crud->entity_name;
+
+        // @TODO: Add revisions
+
+        $this->data['id'] = $id;
+
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view('crud::revisions', $this->data);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param int $id
