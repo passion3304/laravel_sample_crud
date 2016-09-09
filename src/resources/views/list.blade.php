@@ -113,11 +113,49 @@
 @section('after_scripts')
 	<!-- DATA TABES SCRIPT -->
     <script src="{{ asset('vendor/adminlte/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" type="text/javascript"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" type="text/javascript"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js" type="text/javascript"></script>
     <script src="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
 
 	<script type="text/javascript">
 	  jQuery(document).ready(function($) {
+        var dtButtons = function(buttons){
+            var extended = [];
+            for(var i = 0; i < buttons.length; i++){
+            var item = {
+                extend: buttons[i],
+                exportOptions: {
+                columns: [':visible']
+                }
+            };
+            switch(buttons[i]){
+                case 'pdfHtml5':
+                item.orientation = 'landscape';
+                break;
+            }
+            extended.push(item);
+            }
+            return extended;
+        }
+
 	  	var table = $("#crudTable").DataTable({
+        dom: 'Bfrtip',
+        buttons: dtButtons([
+          'copyHtml5',
+          'excelHtml5',
+          'csvHtml5',
+          'print',
+          'colvis'
+        ]),
+
+        "lengthChange": false,
         "pageLength": {{ $crud->getDefaultPageLength() }},
         "language": {
               "emptyTable":     "{{ trans('backpack::crud.emptyTable') }}",
