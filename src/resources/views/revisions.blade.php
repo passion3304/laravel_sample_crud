@@ -42,9 +42,9 @@
           <div class="timeline-item">
             <span class="time"><i class="fa fa-clock-o"></i> {{ date('h:ia', strtotime($history->created_at)) }}</span>
             @if($history->key == 'created_at' && !$history->old_value)
-              <h3 class="timeline-header">{{ $history->userResponsible()->name }} created this {{ $crud->entity_name }}</h3>
+              <h3 class="timeline-header">{{ $history->userResponsible()->name }} {{ trans('backpack::crud.created_this') }} {{ $crud->entity_name }}</h3>
             @else
-              <h3 class="timeline-header">{{ $history->userResponsible()->name }} changed the {{ $history->fieldName() }}</h3>
+              <h3 class="timeline-header">{{ $history->userResponsible()->name }} {{ trans('backpack::crud.changed_the') }} {{ $history->fieldName() }}</h3>
               <div class="timeline-body">
                 {{ trans('backpack::crud.from') }}: {{ $history->oldValue() }}
                 <br><br>
@@ -53,7 +53,7 @@
             @endif
             <div class="timeline-footer">
               {{-- @TODO: Implement form to submit revision restoration --}}
-              <button type="submit" class="btn btn-primary btn-xs"><i class="fa fa-undo"></i> Restore this value</button>
+              <button type="submit" class="btn btn-primary btn-xs"><i class="fa fa-history"></i> {{ trans('backpack::crud.restore_this_value') }}</button>
             </div>
           </div>
         </li>

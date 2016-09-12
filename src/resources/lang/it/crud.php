@@ -32,6 +32,9 @@ return [
     // Revisions
     'revisions'            => 'Revisioni',
     'no_revisions'         => 'Nessuna revisione Trovato',
+    'create_this'          => 'ha creato questo',
+    'changed_the'          => 'cambiato il',
+    'restore_this_value'   => 'ripristinare questo valore',
     'from'                 => 'de parte di',
     'to'                   => 'a',
 
