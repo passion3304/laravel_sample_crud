@@ -113,6 +113,8 @@
 @section('after_scripts')
 	<!-- DATA TABES SCRIPT -->
     <script src="{{ asset('vendor/adminlte/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+
+    @if ($crud->exportButtons())
     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
     <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
     <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js" type="text/javascript"></script>
@@ -122,41 +124,35 @@
     <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js" type="text/javascript"></script>
     <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js" type="text/javascript"></script>
     <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js" type="text/javascript"></script>
+    @endif
+
     <script src="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
 
 	<script type="text/javascript">
 	  jQuery(document).ready(function($) {
-        var dtButtons = function(buttons){
-            var extended = [];
-            for(var i = 0; i < buttons.length; i++){
-            var item = {
-                extend: buttons[i],
-                exportOptions: {
-                columns: [':visible']
-                }
-            };
-            switch(buttons[i]){
-                case 'pdfHtml5':
-                item.orientation = 'landscape';
-                break;
-            }
-            extended.push(item);
-            }
-            return extended;
-        }
+
+      @if ($crud->exportButtons())
+      var dtButtons = function(buttons){
+          var extended = [];
+          for(var i = 0; i < buttons.length; i++){
+          var item = {
+              extend: buttons[i],
+              exportOptions: {
+              columns: [':visible']
+              }
+          };
+          switch(buttons[i]){
+              case 'pdfHtml5':
+              item.orientation = 'landscape';
+              break;
+          }
+          extended.push(item);
+          }
+          return extended;
+      }
+      @endif
 
 	  	var table = $("#crudTable").DataTable({
-        dom: 'Bfrtip',
-        buttons: dtButtons([
-          'copyHtml5',
-          'excelHtml5',
-          'csvHtml5',
-          'pdfHtml5',
-          'print',
-          'colvis'
-        ]),
-
-        "lengthChange": false,
         "pageLength": {{ $crud->getDefaultPageLength() }},
         "language": {
               "emptyTable":     "{{ trans('backpack::crud.emptyTable') }}",
@@ -189,6 +185,20 @@
               "url": "{{ url($crud->route.'/search') }}",
               "type": "POST"
           },
+          @endif
+
+          @if ($crud->exportButtons())
+          dom: 'Bfrtip',
+          buttons: dtButtons([
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            'print',
+            'colvis'
+          ]),
+
+          "lengthChange": false,
           @endif
       });
 

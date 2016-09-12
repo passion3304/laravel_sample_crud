@@ -171,4 +171,28 @@ trait Read
             }
         }
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    |                                EXPORT BUTTONS
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Tell the list view to show the DataTables export buttons.
+     */
+    public function enableExportButtons()
+    {
+        $this->export_buttons = true;
+    }
+
+    /**
+     * Check if export buttons are enabled for the table view.
+     * @return bool
+     */
+    public function exportButtons()
+    {
+        return $this->export_buttons;
+    }
 }
