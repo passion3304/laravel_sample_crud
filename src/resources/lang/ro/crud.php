@@ -28,7 +28,12 @@ return [
     // Edit form
     'edit'                 => 'Editează',
     'save'                 => 'Salvează',
+
+    // Revisions
     'revisions'            => 'Reviziile',
+    'no_revisions'         => 'Reviziile Determinat',
+    'from'                 => 'din',
+    'to'                   => 'la',
 
     // CRUD table view
     'all'                  => 'Toate ',

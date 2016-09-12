@@ -28,7 +28,12 @@ return [
     // Edit form
     'edit'                 => 'Modifica',
     'save'                 => 'Salva',
+
+    // Revisions
     'revisions'            => 'Revisioni',
+    'no_revisions'         => 'Nessuna revisione Trovato',
+    'from'                 => 'de parte di',
+    'to'                   => 'a',
 
     // CRUD table view
     'all'                       => 'Tutti i ',

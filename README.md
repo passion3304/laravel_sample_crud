@@ -47,7 +47,7 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="lang" #publish the lang files
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="config" #publish the config file
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
-$php artisan migrate --path=vendor/venturecraft/revisionable/src/migrations #run revisionable migrations
+$ php artisan migrate --path=vendor/venturecraft/revisionable/src/migrations #run revisionable migrations
 ```
 
 4) Define an 'uploads' disk. In your config/filesystems.php add this disk:
