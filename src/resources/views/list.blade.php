@@ -26,6 +26,7 @@
 
       @include('crud::inc.button_stack', ['stack' => 'top'])
 
+      <div id="datatable_button_stack" class="pull-right text-right"></div>
     </div>
     <div class="box-body">
 
@@ -188,7 +189,8 @@
           @endif
 
           @if ($crud->exportButtons())
-          dom: 'Bfrtip',
+          // show the export datatable buttons
+          dom: '<"p-l-0 col-md-6"l>B<"p-r-0 col-md-6"f>rt<"col-md-6 p-l-0"i><"col-md-6 p-r-0"p>',
           buttons: dtButtons([
             'copyHtml5',
             'excelHtml5',
@@ -197,10 +199,19 @@
             'print',
             'colvis'
           ]),
-
-          "lengthChange": false,
           @endif
       });
+
+      @if ($crud->exportButtons())
+      // move the datatable buttons in the top-right corner and make them smaller
+      table.buttons().each(function(button) {
+        if (button.node.className.indexOf('buttons-columnVisibility') == -1)
+        {
+          button.node.className = button.node.className + " btn-sm";
+        }
+      })
+      $(".dt-buttons").appendTo($('#datatable_button_stack' ));
+      @endif
 
       $.ajaxPrefilter(function(options, originalOptions, xhr) {
           var token = $('meta[name="csrf_token"]').attr('content');
