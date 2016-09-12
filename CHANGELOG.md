@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.2] - 2016-09-12
+
+### Fixed
+- save, update and reorder now replace empty inputs with NULL to allow for MySQL strict mode on (a default in Laravel 5.3) (#94)
+
+
 ## [3.1.1] - 2016-09-05
 
 ### Added

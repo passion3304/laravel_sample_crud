@@ -80,6 +80,13 @@ class CrudController extends BaseController
             $request = \Request::instance();
         }
 
+        // replace empty values with NULL, so that it will work with MySQL strict mode on
+        foreach ($request->input() as $key => $value) {
+            if (empty($value)) {
+                $request->request->set($key, null);
+            }
+        }
+
         // insert item in the db
         $item = $this->crud->create($request->except(['redirect_after_save', 'password']));
 
@@ -133,6 +140,13 @@ class CrudController extends BaseController
         // fallback to global request instance
         if (is_null($request)) {
             $request = \Request::instance();
+        }
+
+        // replace empty values with NULL, so that it will work with MySQL strict mode on
+        foreach ($request->input() as $key => $value) {
+            if (empty($value)) {
+                $request->request->set($key, null);
+            }
         }
 
         // update the row in the db

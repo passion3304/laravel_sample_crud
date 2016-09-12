@@ -24,10 +24,10 @@ trait Reorder
         foreach ($request as $key => $entry) {
             if ($entry['item_id'] != '' && $entry['item_id'] != null) {
                 $item = $this->model->find($entry['item_id']);
-                $item->parent_id = $entry['parent_id'];
-                $item->depth = $entry['depth'];
-                $item->lft = $entry['left'];
-                $item->rgt = $entry['right'];
+                $item->parent_id = empty($entry['parent_id'])?null:$entry['parent_id'];
+                $item->depth = empty($entry['depth'])?null:$entry['depth'];
+                $item->lft = empty($entry['left'])?null:$entry['left'];
+                $item->rgt = empty($entry['right'])?null:$entry['right'];
                 $item->save();
 
                 $count++;
