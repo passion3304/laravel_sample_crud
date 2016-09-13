@@ -180,10 +180,13 @@ class CrudController extends BaseController
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
         $this->data['title'] = trans('backpack::crud.revisions').' '.$this->crud->entity_name;
-
-        // @TODO: Add revisions
-
         $this->data['id'] = $id;
+
+        $this->data['revisions'] = [];
+        // Group revisions by change date
+        foreach($this->data['entry']->revisionHistory as $history) {
+            $this->data['revisions'][(string)$history->created_at][] = $history;
+        }
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view('crud::revisions', $this->data);

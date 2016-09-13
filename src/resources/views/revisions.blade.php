@@ -21,7 +21,7 @@
       <a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
     @endif
 
-    @if(!count($entry->revisionHistory))
+    @if(!count($revisions))
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">{{ trans('backpack::crud.no_revisions') }}</h3>
@@ -29,14 +29,15 @@
       </div>
     @else
       <ul class="timeline">
-      {{-- @TODO: Group all revisions by revision date --}}
-      @foreach($entry->revisionHistory as $history)
+      @foreach($revisions as $revisionDate => $dateRevisions)
         <li class="time-label">
             <span class="bg-red">
               {{-- @TODO: Display date in user's time format (.e.g dd/mm/yyyy vs mm/dd/yyyy) --}}
-              {{ date('Y-m-d', strtotime($history->created_at)) }}
+              {{ date('Y-m-d', strtotime($revisionDate)) }}
             </span>
         </li>
+        
+        @foreach($dateRevisions as $history)
         <li>
           <i class="fa fa-calendar bg-blue"></i>
           <div class="timeline-item">
@@ -57,6 +58,7 @@
             </div>
           </div>
         </li>
+        @endforeach
       @endforeach
       </ul>
     @endif
