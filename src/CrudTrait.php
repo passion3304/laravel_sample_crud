@@ -96,7 +96,7 @@ trait CrudTrait
      *     - stores the full path in the DB;
      * - on UPDATE
      *     - if the value is null, deletes the file and sets null in the DB
-     *     - if the value is different, stores the different file and updates DB value
+     *     - if the value is different, stores the different file and updates DB value.
      *
      * Note: Since the generated name is the same if the file is uploaded twice,
      * the file is only deleted from disk if there is no other row using that file.
@@ -110,15 +110,13 @@ trait CrudTrait
         $request = \Request::instance();
 
         // if a new file is uploaded OR the file input is empty
-        if (($request->hasFile($attribute_name) && $this->{$attribute_name} && $this->{$attribute_name}!=null) || (is_null($value) && $this->{$attribute_name}!=null)
-            )
-        {
+        if (($request->hasFile($attribute_name) && $this->{$attribute_name} && $this->{$attribute_name} != null) || (is_null($value) && $this->{$attribute_name} != null)
+            ) {
             // delete the file from the disk, if this entry is the only one using it
-            if($this->where($attribute_name, $this->{$attribute_name})->count() <= 1)
-            {
+            if ($this->where($attribute_name, $this->{$attribute_name})->count() <= 1) {
                 \Storage::disk($disk)->delete($this->{$attribute_name});
             }
-            $this->attributes[$attribute_name] = NULL;
+            $this->attributes[$attribute_name] = null;
         }
 
         // if a new file is uploaded, store it on disk and its filename in the database
@@ -129,5 +127,4 @@ trait CrudTrait
             $this->attributes[$attribute_name] = $file_path;
         }
     }
-
 }

@@ -70,7 +70,7 @@ trait Read
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
      * @param  [form] create / update / both - defaults to 'both'
-     * @return boolean
+     * @return bool
      */
     public function hasUploadFields($form)
     {
@@ -78,7 +78,8 @@ trait Read
         $upload_fields = array_where($fields, function ($value, $key) {
             return isset($value['upload']) && $value['upload'] == true;
         });
-        return count($upload_fields)?true:false;
+
+        return count($upload_fields) ? true : false;
     }
 
     /**
