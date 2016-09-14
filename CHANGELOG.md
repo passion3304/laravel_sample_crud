@@ -20,6 +20,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.5] - 2016-09-14
+
+### Added
+- upload field type;
+
+### Fixed
+- setFromDb() no longer creates a field for created_at;
+
+
 ## [3.1.4] - 2016-09-12
 
 ### Added
