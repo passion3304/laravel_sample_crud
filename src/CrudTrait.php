@@ -81,4 +81,53 @@ trait CrudTrait
 
         return $this;
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods for storing uploaded files (used in CRUD).
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Handle file upload and DB storage for a file:
+     * - on CREATE
+     *     - stores the file at the destination path
+     *     - generates a name
+     *     - stores the full path in the DB;
+     * - on UPDATE
+     *     - if the value is null, deletes the file and sets null in the DB
+     *     - if the value is different, stores the different file and updates DB value
+     *
+     * Note: Since the generated name is the same if the file is uploaded twice,
+     * the file is only deleted from disk if there is no other row using that file.
+     * @param  [type] $value            Value for that column sent from the input.
+     * @param  [type] $attribute_name   Model attribute name (and column in the db).
+     * @param  [type] $disk             Filesystem disk used to store files.
+     * @param  [type] $destination_path Path in disk where to store the files.
+     */
+    public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path)
+    {
+        $request = \Request::instance();
+
+        // if a new file is uploaded OR the file input is empty
+        if (($request->hasFile($attribute_name) && $this->{$attribute_name} && $this->{$attribute_name}!=null) || (is_null($value) && $this->{$attribute_name}!=null)
+            )
+        {
+            // delete the file from the disk, if this entry is the only one using it
+            if($this->where($attribute_name, $this->{$attribute_name})->count() <= 1)
+            {
+                \Storage::disk($disk)->delete($this->{$attribute_name});
+            }
+            $this->attributes[$attribute_name] = NULL;
+        }
+
+        // if a new file is uploaded, store it on disk and its filename in the database
+        if ($request->hasFile($attribute_name) && $request->file($attribute_name)->isValid()) {
+            // 1. Move the new file to the correct path
+            $file_path = $request->file($attribute_name)->store($destination_path, $disk);
+            // 2. Save the complete path to the database
+            $this->attributes[$attribute_name] = $file_path;
+        }
+    }
+
 }

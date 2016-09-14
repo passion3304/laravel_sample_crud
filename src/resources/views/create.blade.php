@@ -21,7 +21,7 @@
 			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 
-		  {!! Form::open(array('url' => $crud->route, 'method' => 'post')) !!}
+		  {!! Form::open(array('url' => $crud->route, 'method' => 'post', 'files'=>$crud->hasUploadFields('create'))) !!}
 		  <div class="box">
 
 		    <div class="box-header with-border">

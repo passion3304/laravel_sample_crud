@@ -67,6 +67,21 @@ trait Read
     }
 
     /**
+     * Check if the create/update form has upload fields.
+     * Upload fields are the ones that have "upload" => true defined on them.
+     * @param  [form] create / update / both - defaults to 'both'
+     * @return boolean
+     */
+    public function hasUploadFields($form)
+    {
+        $fields = $this->getFields($form);
+        $upload_fields = array_where($fields, function ($value, $key) {
+            return isset($value['upload']) && $value['upload'] == true;
+        });
+        return count($upload_fields)?true:false;
+    }
+
+    /**
      * Enable the DETAILS ROW functionality:.
      *
      * In the table view, show a plus sign next to each entry.
