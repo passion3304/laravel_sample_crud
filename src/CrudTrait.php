@@ -136,7 +136,6 @@ trait CrudTrait
         }
     }
 
-
     /**
      * Handle multiple file upload and DB storage:
      * - if files are sent
@@ -145,7 +144,7 @@ trait CrudTrait
      *     - stores the full path in the DB, as JSON array;
      * - if a hidden input is sent to clear one or more files
      *     - deletes the file
-     *     - removes that file from the DB
+     *     - removes that file from the DB.
      *
      * @param  [type] $value            Value for that column sent from the input.
      * @param  [type] $attribute_name   Model attribute name (and column in the db).
@@ -155,17 +154,17 @@ trait CrudTrait
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {
         $request = \Request::instance();
-        $attribute_value = (array)$this->{$attribute_name};
+        $attribute_value = (array) $this->{$attribute_name};
         $files_to_clear = $request->get('clear_'.$attribute_name);
 
         // if a file has been marked for removal,
         // delete it from the disk and from the db
         if ($files_to_clear) {
-            $attribute_value = (array)$this->{$attribute_name};
+            $attribute_value = (array) $this->{$attribute_name};
             foreach ($files_to_clear as $key => $filename) {
                 \Storage::disk($disk)->delete($filename);
                 $attribute_value = array_where($attribute_value, function ($value, $key) use ($filename) {
-                    return $value!=$filename;
+                    return $value != $filename;
                 });
             }
         }
