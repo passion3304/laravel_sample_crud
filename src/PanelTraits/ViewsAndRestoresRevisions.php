@@ -51,4 +51,4 @@ trait ViewsAndRestoresRevisions
         // Reload the entry so we have the latest revisions
         $entry = $this->getEntry($id);
     }
-}
+

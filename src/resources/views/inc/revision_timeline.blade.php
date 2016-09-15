@@ -58,7 +58,7 @@
           $('.timeline').replaceWith(revisionTimeline);
 
           // Animate the new revision in (by sliding)
-          $('.timeline-item-wrap').first().addClass('slidein');
+          $('.timeline-item-wrap').first().addClass('fadein');
           new PNotify({
               title: '{{ trans('backpack::crud.revision_restored') }}'
           });
@@ -72,7 +72,7 @@
 @section('after_styles')
   {{-- Animations for new revisions after ajax calls --}}
   <style>
-     .timeline-item-wrap.slidein {
+     .timeline-item-wrap.fadein {
       -webkit-animation: restore-fade-in 3s;
               animation: restore-fade-in 3s;
     }
