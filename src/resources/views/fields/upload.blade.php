@@ -4,7 +4,7 @@
 
 	{{-- Show the file name and a "Clear" button on EDIT form. --}}
     <div class="well well-sm {{ isset($field['value']) && $field['value']!=null ?'':'hidden' }}">
-    	{{ (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}
+    	<a target="_blank" href="{{ asset($field['value']) }}">{{ $field['value'] }}</a>
     	<a id="{{ $field['name'] }}_file_clear_button" href="#" class="btn btn-default btn-xs pull-right" title="Clear file"><i class="fa fa-remove"></i></a>
     	<div class="clearfix"></div>
     </div>

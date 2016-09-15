@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+## [3.1.6] - 2016-09-15
+
+### Added
+- upload_multiple field type;
+
+
 ## [3.1.5] - 2016-09-14
 
 ### Added

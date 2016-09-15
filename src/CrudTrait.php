@@ -123,14 +123,69 @@ trait CrudTrait
 
         // if a new file is uploaded, store it on disk and its filename in the database
         if ($request->hasFile($attribute_name) && $request->file($attribute_name)->isValid()) {
+
             // 1. Generate a new file name
             $file = $request->file($attribute_name);
             $new_file_name = md5($file->getClientOriginalName().time()).'.'.$file->getClientOriginalExtension();
+
             // 2. Move the new file to the correct path
             $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
 
             // 3. Save the complete path to the database
             $this->attributes[$attribute_name] = $file_path;
         }
+    }
+
+
+    /**
+     * Handle multiple file upload and DB storage:
+     * - if files are sent
+     *     - stores the files at the destination path
+     *     - generates random names
+     *     - stores the full path in the DB, as JSON array;
+     * - if a hidden input is sent to clear one or more files
+     *     - deletes the file
+     *     - removes that file from the DB
+     *
+     * @param  [type] $value            Value for that column sent from the input.
+     * @param  [type] $attribute_name   Model attribute name (and column in the db).
+     * @param  [type] $disk             Filesystem disk used to store files.
+     * @param  [type] $destination_path Path in disk where to store the files.
+     */
+    public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
+    {
+        $request = \Request::instance();
+        $attribute_value = (array)$this->{$attribute_name};
+        $files_to_clear = $request->get('clear_'.$attribute_name);
+
+        // if a file has been marked for removal,
+        // delete it from the disk and from the db
+        if ($files_to_clear) {
+            $attribute_value = (array)$this->{$attribute_name};
+            foreach ($files_to_clear as $key => $filename) {
+                \Storage::disk($disk)->delete($filename);
+                $attribute_value = array_where($attribute_value, function ($value, $key) use ($filename) {
+                    return $value!=$filename;
+                });
+            }
+        }
+
+        // if a new file is uploaded, store it on disk and its filename in the database
+        if ($request->hasFile($attribute_name)) {
+            foreach ($request->file($attribute_name) as $file) {
+                if ($file->isValid()) {
+                    // 1. Generate a new file name
+                    $new_file_name = md5($file->getClientOriginalName().time()).'.'.$file->getClientOriginalExtension();
+
+                    // 2. Move the new file to the correct path
+                    $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
+
+                    // 3. Add the public path to the database
+                    $attribute_value[] = $file_path;
+                }
+            }
+        }
+
+        $this->attributes[$attribute_name] = json_encode($attribute_value);
     }
 }
