@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.8] - 2016-09-15
+
+### Fixed
+- upload and upload_multiple can be used for S3 file storage too, by specifying the disk on the field;
+
+
 ## [3.1.7] - 2016-09-15
 
 ### Added
