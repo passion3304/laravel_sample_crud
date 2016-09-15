@@ -1,11 +1,11 @@
-  <div class="form-group image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ $field['aspect_ratio'] }}" data-crop="{{ $field['crop'] }}">
+  <div class="form-group col-md-12 image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ $field['aspect_ratio'] }}" data-crop="{{ $field['crop'] }}">
     <div>
         <label>{!! $field['label'] !!}</label>
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
         <div class="col-sm-6" style="margin-bottom: 20px;">
-            <img id="mainImage" src="{{ isset($field['src']) ? $entry->where('id', $entry->id)->first()->{$field['src']}() : $field['value'] }}">
+            <img id="mainImage" src="{{ isset($field['src']) ? $entry->where('id', $entry->id)->first()->{$field['src']}() : (isset($field['value']))?$field['value']:'' }}">
         </div>
         @if($field['crop'])
         <div class="col-sm-3">
@@ -14,7 +14,7 @@
                     <img src="" style="display: block; min-width: 0px !important; min-height: 0px !important; max-width: none !important; max-height: none !important; margin-left: -32.875px; margin-top: -18.4922px; transform: none;">
                 </div>
             </div>
-        </div>   
+        </div>
         @endif
         <input type="hidden" id="hiddenFilename" name="{{ $field['filename'] }}" value="">
     </div>
@@ -28,7 +28,7 @@
         <button class="btn btn-default" id="rotateRight" type="button" style="display: none;">Rotate Right</button>
         <button class="btn btn-default" id="zoomIn" type="button" style="display: none;">Zoom In</button>
         <button class="btn btn-default" id="zoomOut" type="button" style="display: none;">Zoom Out</button>
-        <button class="btn btn-warning" id="reset" type="button" style="display: none;">Reset</button> 
+        <button class="btn btn-warning" id="reset" type="button" style="display: none;">Reset</button>
         @endif
         <button class="btn btn-danger" id="remove" type="button">Remove</button>
     </div>
@@ -131,7 +131,7 @@
 
                     // Only initialize cropper plugin if crop is set to true
                     if(crop){
-                        
+
                         $remove.click(function() {
                             $mainImage.cropper("destroy");
                             $mainImage.attr('src','');
@@ -145,17 +145,17 @@
                             $zoomOut.hide();
                             $reset.hide();
                             $remove.hide();
-                        });      
-                    } else { 
-                        
+                        });
+                    } else {
+
                         $(this).find("#remove").click(function() {
                             $mainImage.attr('src','');
                             $hiddenImage.val('');
-                            $hiddenFilename.val('removed'); 
+                            $hiddenFilename.val('removed');
                             $remove.hide();
                         });
                     }
-                    
+
                     //Set hiddenFilename field to 'removed' if image has been removed.
                     //Otherwise hiddenFilename will be null if no changes have been made.
 
@@ -168,7 +168,7 @@
                             return;
                         }
                         file = files[0];
-                        
+
                         if (/^image\/\w+$/.test(file.type)) {
                             $hiddenFilename.val(file.name);
                             fileReader.readAsDataURL(file);
@@ -203,18 +203,18 @@
                                     $zoomOut.show();
                                     $reset.show();
                                     $remove.show();
-                                    
-                                } else {        
+
+                                } else {
                                     $mainImage.attr('src',this.result);
                                     $hiddenImage.val(this.result);
                                     $remove.show();
-                                }                                   
+                                }
                             };
                         } else {
                             alert("Please choose an image file.");
                         }
                     });
-                    
+
                 });
             });
         </script>
