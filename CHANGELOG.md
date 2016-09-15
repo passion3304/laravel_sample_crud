@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.7] - 2016-09-15
+
+### Added
+- image field type - stores a base64 image from the front-end into a jpg/png file using Intervention/Image;
+
 
 ## [3.1.6] - 2016-09-15
 
