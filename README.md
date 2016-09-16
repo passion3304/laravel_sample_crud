@@ -47,7 +47,6 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="lang" #publish the lang files
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="config" #publish the config file
 $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
-$ php artisan migrate --path=vendor/venturecraft/revisionable/src/migrations #run revisionable migrations
 ```
 
 4) Define an 'uploads' disk. In your config/filesystems.php add this disk:
@@ -79,6 +78,27 @@ In short:
 3. Create a new resource route.
 
 4. **(optional)** Define your validation rules in a Request files.
+
+
+## **(Optional)** Enable Revisions
+
+CRUD supports tracking and restoring Model change Revisions with the help of [VentureCraft/revisionable](https://github.com/VentureCraft/revisionable).
+
+To enable revisions on your Model do the following:
+
+1. Run:
+```bash
+$ php artisan migrate --path=vendor/venturecraft/revisionable/src/migrations #run revisionable migrations
+```
+
+2. Add the `\Venturecraft\Revisionable\RevisionableTrait` Trait to your Model.
+
+3. Enable access to Revisions in your CrudController with:
+```php
+$this->crud->allowAccess('revisions');
+```
+
+Head on over to the [VentureCraft/revisionable](https://github.com/VentureCraft/revisionable) GitHub repo to see the full documentation and extra configuration options.
 
 ## Screenshots
 
