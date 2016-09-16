@@ -20,6 +20,57 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.9] - 2016-09-16
+
+### Added
+- "prefix" and "suffix" optional attributes on the number and text field types;
+
+
+## [3.1.8] - 2016-09-15
+
+### Fixed
+- upload and upload_multiple can be used for S3 file storage too, by specifying the disk on the field;
+
+
+## [3.1.7] - 2016-09-15
+
+### Added
+- image field type - stores a base64 image from the front-end into a jpg/png file using Intervention/Image;
+
+
+## [3.1.6] - 2016-09-15
+
+### Added
+- upload_multiple field type;
+
+
+## [3.1.5] - 2016-09-14
+
+### Added
+- upload field type;
+
+### Fixed
+- setFromDb() no longer creates a field for created_at;
+
+
+## [3.1.4] - 2016-09-12
+
+### Added
+- Export buttons for CRUDs - to PDF, XLS, CSV and Print, thanks to [Nathaniel Kristofer Schweinberg](https://github.com/nathanielks);
+
+
+## [3.1.3] - 2016-09-12
+
+### Added
+- a "view" field type, which loads a custom view from a specified location; thanks to [Nathaniel Kristofer Schweinberg](https://github.com/nathanielks);
+
+
+## [3.1.2] - 2016-09-12
+
+### Fixed
+- save, update and reorder now replace empty inputs with NULL to allow for MySQL strict mode on (a default in Laravel 5.3) (#94)
+
+
 ## [3.1.1] - 2016-09-05
 
 ### Added

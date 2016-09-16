@@ -28,6 +28,7 @@
         "livecontrol/eloquent-datatable": "^0.1.5",
         "doctrine/dbal": "^2.5",
         "venturecraft/revisionable": "1.*",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*",

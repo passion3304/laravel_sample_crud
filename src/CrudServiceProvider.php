@@ -73,12 +73,14 @@ class CrudServiceProvider extends ServiceProvider
         $this->app->register(\Backpack\Base\BaseServiceProvider::class);
         $this->app->register(\Collective\Html\HtmlServiceProvider::class);
         $this->app->register(\Barryvdh\Elfinder\ElfinderServiceProvider::class);
+        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
 
         // register their aliases
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('CRUD', \Backpack\CRUD\CrudServiceProvider::class);
         $loader->alias('Form', \Collective\Html\FormFacade::class);
         $loader->alias('Html', \Collective\Html\HtmlFacade::class);
+        $loader->alias('Image', \Intervention\Image\Facades\Image::class);
     }
 
     public static function resource($name, $controller, array $options = [])
