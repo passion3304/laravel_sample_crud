@@ -8,7 +8,7 @@ trait ViewsAndRestoresRevisions
 {
     /**
      * Build a list of Revisions, grouped by revision date.
-     * 
+     *
      * @return [Array] of revision groups, keyed by revision date
      */
     public function listRevisions($id)
@@ -37,7 +37,7 @@ trait ViewsAndRestoresRevisions
 
     /**
      * Restore a single revision.
-     * 
+     *
      * @param  [int] $id         The ID of the source CRUD Model instance to update
      * @param  [int] $revisionId The ID of the revision to use for the update
      */

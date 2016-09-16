@@ -213,7 +213,6 @@ class CrudController extends BaseController
      */
     public function restoreRevision($id)
     {
-
         $this->crud->hasAccessOrFail('revisions');
 
         // @TODO: Currently the route already contains the revision ID, so passing it as a POST param
