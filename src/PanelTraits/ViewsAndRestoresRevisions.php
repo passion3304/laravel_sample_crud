@@ -16,6 +16,10 @@ trait ViewsAndRestoresRevisions
         $revisions = [];
         // Group revisions by change date
         foreach($this->getEntry($id)->revisionHistory as $history) {
+            // Ignore Create revisions - restoring them just changes the created_at field..
+            if($history->fieldName() == 'created_at') {
+                continue;
+            }
             // Get just the date from the revision created timestamp
             $revisionDate = date('Y-m-d', strtotime((string)$history->created_at));
 
@@ -51,4 +55,4 @@ trait ViewsAndRestoresRevisions
         // Reload the entry so we have the latest revisions
         $entry = $this->getEntry($id);
     }
-
+}
