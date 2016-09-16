@@ -2,7 +2,7 @@
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
 
-    <div class="input-group">
+    @if(isset($field['prefix']) || isset($field['suffix'])) <div class="input-group"> @endif
         @if(isset($field['prefix'])) <div class="input-group-addon">{{ $field['prefix'] }}</div> @endif
         <input
         	type="number"
@@ -11,7 +11,8 @@
             @include('crud::inc.field_attributes')
         	>
         @if(isset($field['suffix'])) <div class="input-group-addon">{{ $field['suffix'] }}</div> @endif
-    </div>
+
+    @if(isset($field['prefix']) || isset($field['suffix'])) </div> @endif
 
     {{-- HINT --}}
     @if (isset($field['hint']))
