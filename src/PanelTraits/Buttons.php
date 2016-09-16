@@ -76,14 +76,14 @@ trait Buttons
 
     public function removeButton($name)
     {
-        $this->buttons->reject(function ($button) {
+        $this->buttons = $this->buttons->reject(function ($button) use ($name) {
             return $button->name == $name;
         });
     }
 
     public function removeButtonFromStack($name, $stack)
     {
-        $this->buttons->reject(function ($button) {
+        $this->buttons = $this->buttons->reject(function ($button) use ($name, $stack) {
             return $button->name == $name && $button->stack == $stack;
         });
     }
