@@ -21,14 +21,14 @@
           <br><br>
           {{ trans('backpack::crud.to') }}: {{ $history->newValue() }}
         </div>
+        <div class="timeline-footer">
+          {{-- @TODO: Implement form to submit revision restoration --}}
+          {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey().'/revisions/'.$history->id.'/restore', 'method' => 'post')) !!}
+          <button type="submit" class="btn btn-primary btn-xs restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
+            <i class="fa fa-history"></i> {{ trans('backpack::crud.restore_this_value') }}</button>
+          {!! Form::close() !!}
+        </div>
       @endif
-      <div class="timeline-footer">
-        {{-- @TODO: Implement form to submit revision restoration --}}
-        {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey().'/revisions/'.$history->id.'/restore', 'method' => 'post')) !!}
-        <button type="submit" class="btn btn-primary btn-xs restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
-          <i class="fa fa-history"></i> {{ trans('backpack::crud.restore_this_value') }}</button>
-        {!! Form::close() !!}
-      </div>
     </div>
   </li>
   @endforeach

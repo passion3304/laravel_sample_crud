@@ -32,7 +32,7 @@ return [
     // Revisions
     'revisions'            => 'Reviziile',
     'no_revisions'         => 'Reviziile Determinat',
-    'create_this'          => 'creatd acest lucru',
+    'created_this'          => 'creatd acest lucru',
     'changed_the'          => 'schimbat',
     'restore_this_value'   => 'a restabili această valoare',
     'from'                 => 'din',
