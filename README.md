@@ -91,7 +91,20 @@ To enable revisions on your Model do the following:
 $ php artisan migrate --path=vendor/venturecraft/revisionable/src/migrations #run revisionable migrations
 ```
 
-2. Add the `\Venturecraft\Revisionable\RevisionableTrait` Trait to your Model.
+2. Add the `\Venturecraft\Revisionable\RevisionableTrait` Trait to your Model. E.g:
+```php
+namespace MyApp\Models;
+
+class Article extends Eloquent {
+    use \Backpack\CRUD\CrudTrait, \Venturecraft\Revisionable\RevisionableTrait;
+
+    // If you are using another bootable trait the be sure to override the boot method in your model
+    public static function boot()
+    {
+        parent::boot();
+    }
+}
+```
 
 3. Enable access to Revisions in your CrudController with:
 ```php
