@@ -7,7 +7,7 @@ use Venturecraft\Revisionable\Revision;
 trait ViewsAndRestoresRevisions
 {
     /**
-     * Build a list of Revisions, grouped by revision date
+     * Build a list of Revisions, grouped by revision date.
      * 
      * @return [Array] of revision groups, keyed by revision date
      */
@@ -15,13 +15,13 @@ trait ViewsAndRestoresRevisions
     {
         $revisions = [];
         // Group revisions by change date
-        foreach($this->getEntry($id)->revisionHistory as $history) {
+        foreach ($this->getEntry($id)->revisionHistory as $history) {
 
             // Get just the date from the revision created timestamp
-            $revisionDate = date('Y-m-d', strtotime((string)$history->created_at));
+            $revisionDate = date('Y-m-d', strtotime((string) $history->created_at));
 
             // Be sure to instantiate the initial grouping array
-            if(!array_key_exists($revisionDate, $revisions)) {
+            if (! array_key_exists($revisionDate, $revisions)) {
                 $revisions[$revisionDate] = [];
             }
 
@@ -36,12 +36,13 @@ trait ViewsAndRestoresRevisions
     }
 
     /**
-     * Restore a single revision
+     * Restore a single revision.
      * 
      * @param  [int] $id         The ID of the source CRUD Model instance to update
      * @param  [int] $revisionId The ID of the revision to use for the update
      */
-    public function restoreRevision($id, $revisionId) {
+    public function restoreRevision($id, $revisionId)
+    {
         $entry = $this->getEntry($id);
         $revision = Revision::findOrFail($revisionId);
 

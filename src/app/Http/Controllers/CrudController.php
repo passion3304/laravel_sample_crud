@@ -220,7 +220,7 @@ class CrudController extends BaseController
         // is somewhat superfluous.. however if we are POSTing, it makes sense to actually have data to post.
         // Perhaps the route shoud be better named to reflect this (e.g. just /model/{id}/revisions) (??)
         $revisionId = \Request::input('revision_id', false);
-        if(!$revisionId) {
+        if (! $revisionId) {
             abort(500, 'Can\'t restore revision without revision_id');
         } else {
             $this->crud->restoreRevision($id, $revisionId); // do the update
