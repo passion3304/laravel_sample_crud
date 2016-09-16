@@ -26,6 +26,7 @@
 
       @include('crud::inc.button_stack', ['stack' => 'top'])
 
+      <div id="datatable_button_stack" class="pull-right text-right"></div>
     </div>
     <div class="box-body">
 
@@ -113,10 +114,45 @@
 @section('after_scripts')
 	<!-- DATA TABES SCRIPT -->
     <script src="{{ asset('vendor/adminlte/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+
+    @if ($crud->exportButtons())
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" type="text/javascript"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" type="text/javascript"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js" type="text/javascript"></script>
+    @endif
+
     <script src="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
 
 	<script type="text/javascript">
 	  jQuery(document).ready(function($) {
+
+      @if ($crud->exportButtons())
+      var dtButtons = function(buttons){
+          var extended = [];
+          for(var i = 0; i < buttons.length; i++){
+          var item = {
+              extend: buttons[i],
+              exportOptions: {
+              columns: [':visible']
+              }
+          };
+          switch(buttons[i]){
+              case 'pdfHtml5':
+              item.orientation = 'landscape';
+              break;
+          }
+          extended.push(item);
+          }
+          return extended;
+      }
+      @endif
+
 	  	var table = $("#crudTable").DataTable({
         "pageLength": {{ $crud->getDefaultPageLength() }},
         "language": {
@@ -151,7 +187,31 @@
               "type": "POST"
           },
           @endif
+
+          @if ($crud->exportButtons())
+          // show the export datatable buttons
+          dom: '<"p-l-0 col-md-6"l>B<"p-r-0 col-md-6"f>rt<"col-md-6 p-l-0"i><"col-md-6 p-r-0"p>',
+          buttons: dtButtons([
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            'print',
+            'colvis'
+          ]),
+          @endif
       });
+
+      @if ($crud->exportButtons())
+      // move the datatable buttons in the top-right corner and make them smaller
+      table.buttons().each(function(button) {
+        if (button.node.className.indexOf('buttons-columnVisibility') == -1)
+        {
+          button.node.className = button.node.className + " btn-sm";
+        }
+      })
+      $(".dt-buttons").appendTo($('#datatable_button_stack' ));
+      @endif
 
       $.ajaxPrefilter(function(options, originalOptions, xhr) {
           var token = $('meta[name="csrf_token"]').attr('content');

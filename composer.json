@@ -26,7 +26,8 @@
         "laravelcollective/html": "~5.0",
         "barryvdh/laravel-elfinder": "^0.3.5",
         "livecontrol/eloquent-datatable": "^0.1.5",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*",

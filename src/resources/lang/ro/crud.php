@@ -85,4 +85,14 @@ return [
     'reorder_success_message'      => 'Ordinea a fost salvată.',
     'reorder_error_title'          => 'Eroare',
     'reorder_error_message'        => 'Ordinea nu a fost salvată.',
+
+    // Fields
+    'browse_uploads' => 'Alege din fișierele urcate',
+    'clear' => 'Curăță',
+    'page_link' => 'Link către pagină',
+    'page_link_placeholder' => 'http://example.com/pagina-dorita-de-tine',
+    'internal_link' => 'Link intern',
+    'internal_link_placeholder' => 'Rută internă. De ex: \'admin/page\' (fără ghilimele) pentru \':url\'',
+    'external_link' => 'Link extern',
+    'choose_file' => 'Alege fișier',
 ];
