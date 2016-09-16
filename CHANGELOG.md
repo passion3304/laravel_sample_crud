@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.9] - 2016-09-16
+
+### Added
+- "prefix" and "suffix" optional attributes on the number field type;
+
+
 ## [3.1.8] - 2016-09-15
 
 ### Fixed
