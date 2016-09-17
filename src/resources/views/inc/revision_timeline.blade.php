@@ -2,11 +2,10 @@
 @foreach($revisions as $revisionDate => $dateRevisions)
   <li class="time-label" data-date="{{ date('Y-m-d', strtotime($revisionDate)) }}">
       <span class="bg-red">
-        {{-- @TODO: Display date in user's time format (.e.g dd/mm/yyyy vs mm/dd/yyyy) --}}
-        {{ date('Y-m-d', strtotime($revisionDate)) }}
+        {{ Date::parse($revisionDate)->format(config('backpack.base.default_date_format')) }}
       </span>
   </li>
-  
+
   @foreach($dateRevisions as $history)
   <li class="timeline-item-wrap">
     <i class="fa fa-calendar bg-blue"></i>
@@ -22,7 +21,7 @@
           {{ trans('backpack::crud.to') }}: {{ $history->newValue() }}
         </div>
         <div class="timeline-footer">
-          {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey().'/revisions/'.$history->id.'/restore', 'method' => 'post')) !!}
+          {!! Form::open(array('url' => \Request::url().'/'.$history->id.'/restore', 'method' => 'post')) !!}
           <button type="submit" class="btn btn-primary btn-xs restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
             <i class="fa fa-history"></i> {{ trans('backpack::crud.restore_this_value') }}</button>
           {!! Form::close() !!}
@@ -47,7 +46,7 @@
       e.preventDefault();
       var entryId = $(e.target).attr('data-entry-id');
       var revisionId = $(e.target).attr('data-revision-id');
-      $.ajax('/{{ $crud->route.'/' }}' + entryId + '/revisions/' +  revisionId + '/restore', {
+      $.ajax('{{ \Request::url().'/' }}' +  revisionId + '/restore', {
         method: 'POST',
         data: {
           revision_id: revisionId
@@ -59,7 +58,8 @@
           // Animate the new revision in (by sliding)
           $('.timeline-item-wrap').first().addClass('fadein');
           new PNotify({
-              title: '{{ trans('backpack::crud.revision_restored') }}'
+              title: '{{ trans('backpack::crud.revision_restored') }}',
+              type: 'success'
           });
         }
       });
