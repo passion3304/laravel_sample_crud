@@ -8,7 +8,7 @@
 
   @foreach($dateRevisions as $history)
   <li class="timeline-item-wrap">
-    <i class="fa fa-calendar bg-blue"></i>
+    <i class="fa fa-calendar bg-default"></i>
     <div class="timeline-item">
       <span class="time"><i class="fa fa-clock-o"></i> {{ date('h:ia', strtotime($history->created_at)) }}</span>
       @if($history->key == 'created_at' && !$history->old_value)
@@ -16,9 +16,9 @@
       @else
         <h3 class="timeline-header">{{ $history->userResponsible()->name }} {{ trans('backpack::crud.changed_the') }} {{ $history->fieldName() }}</h3>
         <div class="timeline-body">
-          <b>{{ trans('backpack::crud.from') }}: {{ $history->oldValue() }}</b>
-          <br><br>
-          {{ trans('backpack::crud.to') }}: {{ $history->newValue() }}
+          {{ ucfirst(trans('backpack::crud.from')) }}: <b>{{ $history->oldValue() }}</b>
+          <br>
+          {{ ucfirst(trans('backpack::crud.to')) }}: {{ $history->newValue() }}
         </div>
         <div class="timeline-footer">
           {!! Form::open(array('url' => \Request::url().'/'.$history->id.'/restore', 'method' => 'post')) !!}
