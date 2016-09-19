@@ -15,15 +15,20 @@
         <h3 class="timeline-header">{{ $history->userResponsible()->name }} {{ trans('backpack::crud.created_this') }} {{ $crud->entity_name }}</h3>
       @else
         <h3 class="timeline-header">{{ $history->userResponsible()->name }} {{ trans('backpack::crud.changed_the') }} {{ $history->fieldName() }}</h3>
-        <div class="timeline-body">
-          {{ ucfirst(trans('backpack::crud.from')) }}: <b>{{ $history->oldValue() }}</b>
-          <br>
-          {{ ucfirst(trans('backpack::crud.to')) }}: {{ $history->newValue() }}
+        <div class="timeline-body p-b-0">
+          <div class="row">
+            <div class="col-md-6">{{ ucfirst(trans('backpack::crud.from')) }}:</div>
+            <div class="col-md-6">{{ ucfirst(trans('backpack::crud.to')) }}:</div>
+          </div>
+          <div class="row">
+            <div class="col-md-6"><div class="well well-sm" style="overflow: hidden;">{{ $history->oldValue() }}</div></div>
+            <div class="col-md-6"><div class="well well-sm" style="overflow: hidden;">{{ $history->newValue() }}</div></div>
+          </div>
         </div>
-        <div class="timeline-footer">
+        <div class="timeline-footer p-t-0">
           {!! Form::open(array('url' => \Request::url().'/'.$history->id.'/restore', 'method' => 'post')) !!}
-          <button type="submit" class="btn btn-primary btn-xs restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
-            <i class="fa fa-history"></i> {{ trans('backpack::crud.restore_this_value') }}</button>
+          <button type="submit" class="btn btn-primary btn-sm restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
+            <i class="fa fa-undo"></i> {{ trans('backpack::crud.undo') }}</button>
           {!! Form::close() !!}
         </div>
       @endif
@@ -58,7 +63,7 @@
           // Animate the new revision in (by sliding)
           $('.timeline-item-wrap').first().addClass('fadein');
           new PNotify({
-              title: '{{ trans('backpack::crud.revision_restored') }}',
+              text: '{{ trans('backpack::crud.revision_restored') }}',
               type: 'success'
           });
         }
