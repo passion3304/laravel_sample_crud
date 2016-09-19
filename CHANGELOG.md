@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.11] - 2016-09-19
+
+### Added
+- iconpicker field type;
+
+
 ## [3.1.10] - 2016-09-16
 
 ### Fixed
