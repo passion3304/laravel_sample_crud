@@ -45,7 +45,7 @@ return [
         'delete_confirmation_title'                   => 'Élément supprimé',
         'delete_confirmation_message'                 => 'L’élément a été supprimé avec succès.',
         'delete_confirmation_not_title'               => 'NON supprimé',
-        'delete_confirmation_not_message'             => "Une erreur est survenue. Votre élément n’a peut-être pas été effacé.",
+        'delete_confirmation_not_message'             => 'Une erreur est survenue. Votre élément n’a peut-être pas été effacé.',
         'delete_confirmation_not_deleted_title'       => 'Non supprimé',
         'delete_confirmation_not_deleted_message'     => 'Aucune modification. Votre élément a été conservé.',
 
