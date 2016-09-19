@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.14] - 2016-09-19
+
+### Fixed
+- Checkbox storing issue in Laravel 5.3 - #115 thanks to [timdiels1](https://github.com/timdiels1);
+
+
 ## [3.1.13] - 2016-09-19
 
 ### Added
