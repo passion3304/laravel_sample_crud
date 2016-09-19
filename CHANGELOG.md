@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.13] - 2016-09-19
+
+### Added
+- Revisions functionality, thanks to [se1exin](https://github.com/se1exin);
+
+
 ## [3.1.12] - 2016-09-19
 
 ### Added
