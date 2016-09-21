@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.15] - 2016-09-21
+
+### Fixed
+- Missing $fillable item in model will now throw correct error, because _token is ignored;
+- Correct and complete language files;
+
+
 ## [3.1.14] - 2016-09-19
 
 ### Fixed
