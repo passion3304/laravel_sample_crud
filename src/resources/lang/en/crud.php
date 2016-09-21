@@ -37,6 +37,7 @@ return [
     'restore_this_value'   => 'Restore this value',
     'from'                 => 'from',
     'to'                   => 'to',
+    'undo'                 => 'Undo',
     'revision_restored'    => 'Revision successfully restored',
 
     // CRUD table view

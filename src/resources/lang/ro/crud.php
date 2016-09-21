@@ -37,6 +37,7 @@ return [
     'restore_this_value'   => 'a restabili această valoare',
     'from'                 => 'din',
     'to'                   => 'la',
+    'undo'                 => 'Anula',
     'revision_restored'    => 'Revizia restaurat cu succes',
 
     // CRUD table view
