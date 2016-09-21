@@ -23,7 +23,7 @@ Features:
 - Easily extend fields (customising a field type or adding a new one is as easy as creating a new view with a particular name)
 - Easily overwrite functionality (customising how the create/update/delete/reorder process works is as easy as creating a new function with the proper name in your EntityCrudCrontroller)
 
-**Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced of any major features or breaking changes (once every 1-3 months).** 
+**Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced of any major features or breaking changes (once every 1-3 months).**
 
 ![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
 
@@ -59,14 +59,14 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 
 5) If you haven't already, go through [steps 3-5 from the Backpack\Base installation](https://github.com/Laravel-Backpack/Base#install) (it provides the general views for the admin panel - layout, menu, notification bubbles, etc).
 
-6) [Optional] You can now the file manager to the menu, in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
+6) [Optional] You can now the file manager to the menu, in `resources/views/vendor/backpack/base/inc/sidebar.blade.php` or `menu.blade.php`:
 ```html
 <li><a href="{{ url('admin/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>
 ```
 
 ## Usage
 
-Check out the documentation at https://laravelbackpack.com 
+Check out the documentation at https://laravelbackpack.com
 
 
 In short:
