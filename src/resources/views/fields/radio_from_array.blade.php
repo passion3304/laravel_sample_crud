@@ -1,7 +1,7 @@
 <!-- radio -->
 @php
-$optionPointer = 0;
-$optionValue = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+    $optionPointer = 0;
+    $optionValue = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -18,14 +18,14 @@ $optionValue = old($field['name']) ? old($field['name']) : (isset($field['value'
             @if( isset($field['inline']) && $field['inline'] )
 
             <label class="radio-inline" for="{{$field['name']}}_{{$optionPointer}}">
-                <input type="radio" id="{{$field['name']}}_{{$optionPointer}}" name="{{$field['name']}}" value="{{$value}}"> {{$label}}
+                <input type="radio" id="{{$field['name']}}_{{$optionPointer}}" name="{{$field['name']}}" value="{{$value}}" {{$optionValue!='' && $optionValue == $value ? ' checked': ''}}> {!! $label !!}
             </label>
 
             @else
 
             <div class="radio">
                 <label for="{{$field['name']}}_{{$optionPointer}}">
-                    <input type="radio" id="{{$field['name']}}_{{$optionPointer}}" name="{{$field['name']}}" value="{{$value}}"{{$optionValue == $value ? ' checked': ''}}> {{$label}}
+                    <input type="radio" id="{{$field['name']}}_{{$optionPointer}}" name="{{$field['name']}}" value="{{$value}}" {{$optionValue!='' && $optionValue == $value ? ' checked': ''}}> {!! $label !!}
                 </label>
             </div>
 
