@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.16] - 2016-09-22
+
+### Added
+- Radio field and column - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+
+
 ## [3.1.15] - 2016-09-21
 
 ### Fixed
