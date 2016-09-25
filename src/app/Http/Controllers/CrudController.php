@@ -325,10 +325,10 @@ class CrudController extends BaseController
         // add the primary key, even though you don't show it,
         // otherwise the buttons won't work
         //we also need to remove relational fields from the columns
-        $columns = collect($this->crud->columns)->filter(function($column, $key){
-            return !isset($column['entity']) && !isset($column['model']); //we assume this is a relational field
+        $columns = collect($this->crud->columns)->filter(function ($column, $key) {
+            return ! isset($column['entity']) && ! isset($column['model']); //we assume this is a relational field
         })->pluck('name')->merge($this->crud->model->getKeyName())->toArray();
-        
+
         // structure the response in a DataTable-friendly way
         $dataTable = new DataTable($this->crud->query, $columns);
 
