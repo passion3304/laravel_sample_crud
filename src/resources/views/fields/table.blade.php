@@ -12,43 +12,45 @@
 
     <div class="array-container form-group">
 
-        <div class="array-controls btn-group">
-            <button class="btn btn-primary" type="button" ng-click="addItem()">Add {{$field['label']}}</button>
-        </div>
-
-        <table style="margin-top: 10px;" class="table" ng-init="field = '#{{ $field['name'] }}'; items = {{$items}}; max = {{isset($field['max']) ? $field['max'] : -1}}; min = {{isset($field['min']) ? $field['min'] : -1}};">
+        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{$items}}; max = {{isset($field['max']) ? $field['max'] : -1}}; min = {{isset($field['min']) ? $field['min'] : -1}};">
 
             <thead>
                 <tr>
-                    <th class="text-center"><i class="fa fa-sort"></i></th>
-                    @foreach( $field['properties'] as $prop )
+
+                    @foreach( $field['columns'] as $prop )
                     <th>
                         {{ $prop }}
                     </th>
                     @endforeach
-                    <th class="text-center"><i class="fa fa-trash"></i></th>
+                    <th class="text-center"> {{-- <i class="fa fa-sort"></i> --}} </th>
+                    <th class="text-center"> {{-- <i class="fa fa-trash"></i> --}} </th>
                 </tr>
             </thead>
 
             <tbody ui-sortable="sortableOptions" ng-model="items" class="table-striped">
 
                 <tr ng-repeat="item in items" class="array-row">
+
+                    @foreach( $field['columns'] as $prop => $label)
                     <td>
-                        <span class="btn btn-warning sort-handle"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
-                    </td>
-                    @foreach( $field['properties'] as $prop => $label)
-                    <td>
-                        <input class="form-control" type="text" ng-model="item.{{ $prop }}">
+                        <input class="form-control input-sm" type="text" ng-model="item.{{ $prop }}">
                     </td>
                     @endforeach
                     <td>
-                        <button ng-hide="min > -1 && $index < min" class="btn btn-danger" type="button" ng-click="removeItem(item);"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
+                        <span class="btn btn-sm btn-default sort-handle"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
+                    </td>
+                    <td>
+                        <button ng-hide="min > -1 && $index < min" class="btn btn-sm btn-default" type="button" ng-click="removeItem(item);"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
                     </td>
                 </tr>
 
             </tbody>
 
         </table>
+
+        <div class="array-controls btn-group">
+            <button class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{$field['label']}}</button>
+        </div>
 
     </div>
 
@@ -75,7 +77,9 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         {{-- YOUR JS HERE --}}
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/g/jquery.ui@1.11.4,angularjs@1.5.5,angular.ui-sortable@0.14.3"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
         <script>
             angular.module('arrayApp', ['ui.sortable'], function($interpolateProvider){
                 $interpolateProvider.startSymbol('<%');
