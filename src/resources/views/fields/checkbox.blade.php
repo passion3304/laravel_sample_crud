@@ -10,8 +10,10 @@
 
           @if (isset($field['value']))
             @if( ((int) $field['value'] == 1 || old($field['name']) == 1) && old($field['name']) !== '0' )
-             checked = "checked"
+             checked="checked"
             @endif
+          @elseif (isset($field['default']) && $field['default'])
+            checked="checked"
           @endif
 
           @if (isset($field['attributes']))
