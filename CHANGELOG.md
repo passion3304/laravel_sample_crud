@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.18] - 2016-09-25
+
+### Fixed
+- checkbox field has default value;
+
+
+
 ## [3.1.17] - 2016-09-25
 
 ### Fixed
