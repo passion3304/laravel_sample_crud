@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.17] - 2016-09-25
+
+### Fixed
+- Raw DB queries did not account for DB prefixes;
+
+
 ## [3.1.16] - 2016-09-22
 
 ### Added
