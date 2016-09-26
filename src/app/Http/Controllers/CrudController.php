@@ -322,12 +322,16 @@ class CrudController extends BaseController
     {
         $this->crud->hasAccessOrFail('list');
 
-        // add the primary key, even though you don't show it,
-        // otherwise the buttons won't work
-        $columns = collect($this->crud->columns)->filter(function ($column, $key) {
-            // we also need to remove relational fields from the columns
-            return ! isset($column['entity']) && ! isset($column['model']);
-        })->pluck('name')->merge($this->crud->model->getKeyName())->toArray();
+        // crate an array with the names of the searchable columns
+        $columns = collect($this->crud->columns)
+                    ->reject(function ($column, $key) {
+                    // the select_multiple columns are not searchable
+                        return isset($column['type']) && $column['type']=='select_multiple';
+                    })
+                    ->pluck('name')
+                    // add the primary key, otherwise the buttons won't work
+                    ->merge($this->crud->model->getKeyName())
+                    ->toArray();
 
         // structure the response in a DataTable-friendly way
         $dataTable = new DataTable($this->crud->query, $columns);
