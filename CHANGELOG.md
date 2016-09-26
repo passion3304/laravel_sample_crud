@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.21] - 2016-09-26
+
+### Added
+- "table" field type - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- "multidimensional_array" column type - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+
+
 ## [3.1.20] - 2016-09-26
 
 ### Added

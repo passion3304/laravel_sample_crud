@@ -1,26 +1,24 @@
 {{-- enumerate the values in an array  --}}
-@php
-    $json = @json_decode($entry['attributes'][$column['name']]);
-    $displayValue = '-';
-    if( $json ){
+<?php
+    $array = $entry->{$column['name']};
 
-        // Concatinate them all
-        if( isset($column['list']) && $column['list'] ){
-            $list = [];
-            foreach($json as $j){
-                if( isset( $j->{$column['display_field']} ) ){
-                    $list[] = $j->{$column['display_field']};
-                }
-            }
-            $displayValue = implode(', ', $list);
-        }
-
-        //Count them all
-        else {
-            $displayValue = count($json) . ' items';
-        }
+    // if the isn't using attribute casting, decode it
+    if (is_string($array)) {
+        $array = json_decode($array);
     }
-@endphp
+
+    if (is_array($array) && count($array)) {
+        $list = [];
+        foreach ($array as $item) {
+            if( isset( $item->{$column['visible_key']} ) ) {
+                $list[] = $item->{$column['visible_key']};
+            } elseif (is_array($item) && isset($item[$column['visible_key']])) {
+                $list[] = $item[$column['visible_key']];
+            }
+        }
+        $displayValue = implode(', ', $list);
+    }
+?>
 <td>
-    {{ $displayValue }}
+    {{ $displayValue or '-' }}
 </td>
