@@ -20,6 +20,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.20] - 2016-09-26
+
+### Added
+- Non-core CRUD features are now separated into traits;
+
+### Fixed
+- The 'password' field is no longer filtered before the create event;
+- CrudPanels can now be defined in the new EntityCrudController::setup() method;
+
 ## [3.1.19] - 2016-09-26
 
 ### Fixed
