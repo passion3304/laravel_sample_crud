@@ -29,6 +29,9 @@ return [
     'edit'                 => 'Edit',
     'save'                 => 'Save',
 
+        //Edit form - advanced options
+        'edit_the_same_item' => 'remain on this page',
+
     // Revisions
     'revisions'            => 'Revisions',
     'no_revisions'         => 'No revisions found',
