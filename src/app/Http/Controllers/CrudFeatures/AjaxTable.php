@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
 
-trait AjaxTable {
-
-	/**
+trait AjaxTable
+{
+    /**
      * Respond with the JSON of one or more rows, depending on the POST parameters.
      * @return JSON Array of cells in HTML form.
      */
@@ -52,5 +52,4 @@ trait AjaxTable {
 
         return $dataTable->make();
     }
-
 }

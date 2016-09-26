@@ -6,11 +6,9 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Form as Form;
-
 use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
 use Backpack\CRUD\CrudPanel;
-
 // CRUD Traits for non-core features
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\AjaxTable;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Reorder;
@@ -33,6 +31,7 @@ class CrudController extends BaseController
         // this way, developers can use things stored in session (auth variables, etc)
         $this->middleware(function ($request, $next) {
             $this->setup();
+
             return $next($request);
         });
     }
@@ -40,8 +39,9 @@ class CrudController extends BaseController
     /**
      * Allow developers to set their configuration options for a CrudPanel.
      */
-    public function setup() {}
-
+    public function setup()
+    {
+    }
 
     /**
      * Display all rows in the database for this entity.

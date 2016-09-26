@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
 
-trait ShowDetailsRow {
-
-	/**
+trait ShowDetailsRow
+{
+    /**
      * Used with AJAX in the list view (datatables) to show extra information about that row that didn't fit in the table.
      * It defaults to showing some dummy text.
      *
@@ -23,5 +23,4 @@ trait ShowDetailsRow {
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view('crud::details_row', $this->data);
     }
-
 }

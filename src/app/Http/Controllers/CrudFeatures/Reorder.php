@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
 
-trait Reorder {
-
-	/**
+trait Reorder
+{
+    /**
      *  Reorder the items in the database using the Nested Set pattern.
      *
      *	Database columns needed: id, parent_id, lft, rgt, depth, name/title
@@ -49,5 +49,4 @@ trait Reorder {
 
         return 'success for '.$count.' items';
     }
-
 }

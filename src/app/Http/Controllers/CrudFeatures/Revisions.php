@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
 
-trait Revisions {
-
+trait Revisions
+{
     /**
      * Display the revisions for specified resource.
      *
@@ -58,5 +58,4 @@ trait Revisions {
             return view('crud::inc.revision_timeline', $this->data);
         }
     }
-
 }
