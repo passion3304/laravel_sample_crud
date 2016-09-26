@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.19] - 2016-09-26
+
+### Fixed
+- AJAX datatables can now have select_multiple columns;
+
+
 ## [3.1.18] - 2016-09-25
 
 ### Fixed
