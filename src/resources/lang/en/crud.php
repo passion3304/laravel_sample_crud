@@ -111,6 +111,6 @@ return [
 
     //Table field
     'table_cant_add' => 'Cannot add new :entity',
-    'table_max_reached' => 'Maximum number of :max reached'
+    'table_max_reached' => 'Maximum number of :max reached',
 
 ];
