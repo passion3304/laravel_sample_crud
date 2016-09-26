@@ -7,7 +7,7 @@
     $items = old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' ));
     if( empty($items) ){
         $items = '[]';
-    } elseif( is_string($items) && !is_array(json_encode($items)) ){
+    } elseif( is_string($items) && !is_array(json_decode($items)) ){
         $items = '[]';
     }
 @endphp
