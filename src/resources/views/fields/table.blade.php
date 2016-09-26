@@ -1,12 +1,17 @@
 <!-- array input -->
 
 @php
+    $max = isset($field['max']) ? $field['max'] : -1;
+    $min = isset($field['min']) ? $field['min'] : -1;
+    $item_name = strtolower( isset($field['entity_singular']) && !empty($field['entity_singular']) ? $field['entity_singular'] : $field['label']);
     $items = old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' ));
     if( empty($items) ){
         $items = '[]';
+    } elseif( is_string($items) && !is_array(json_encode($items)) ){
+        $items = '[]';
     }
 @endphp
-<div ng-app="arrayApp" ng-controller="arrayController" @include('crud::inc.field_wrapper_attributes') >
+<div ng-app="backpackTable" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
 
@@ -14,7 +19,7 @@
 
     <div class="array-container form-group">
 
-        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{$items}}; max = {{isset($field['max']) ? $field['max'] : -1}}; min = {{isset($field['min']) ? $field['min'] : -1}};">
+        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{$items}}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'">
 
             <thead>
                 <tr>
@@ -51,7 +56,7 @@
         </table>
 
         <div class="array-controls btn-group">
-            <button class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{ strtolower($field['entity_singular']?$field['entity_singular']:$field['label']) }}</button>
+            <button class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{ $item_name }}</button>
         </div>
 
     </div>
@@ -71,9 +76,6 @@
     @push('crud_fields_styles')
     {{-- @push('crud_fields_styles')
         {{-- YOUR CSS HERE --}}
-        <style media="screen">
-
-        </style>
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
@@ -83,17 +85,14 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
         <script>
-            angular.module('arrayApp', ['ui.sortable'], function($interpolateProvider){
+            angular.module('backpackTable', ['ui.sortable'], function($interpolateProvider){
                 $interpolateProvider.startSymbol('<%');
                 $interpolateProvider.endSymbol('%>');
             })
-            .controller('arrayController', function($scope){
+            .controller('tableController', function($scope){
 
                 $scope.sortableOptions = {
-                    handle: '.sort-handle',
-                    stop: function(){
-                        console.log('khghjg');
-                    }
+                    handle: '.sort-handle'
                 };
 
                 $scope.addItem = function(){
@@ -102,6 +101,12 @@
                         if( $scope.items.length < $scope.max ){
                             var item = {};
                             $scope.items.push(item);
+                        } else {
+                            new PNotify({
+                                title: $scope.maxErrorTitle,
+                                text: $scope.maxErrorMessage,
+                                type: 'error'
+                            });
                         }
                     }
                     else {
