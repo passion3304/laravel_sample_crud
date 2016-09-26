@@ -175,7 +175,14 @@ class CrudController extends BaseController
         // show a success message
         \Alert::success(trans('backpack::crud.update_success'))->flash();
 
-        return \Redirect::to($this->crud->route);
+        // redirect the user where he chose to be redirected
+        switch ($request->input('redirect_after_save')) {
+            case 'current_item_edit':
+                return \Redirect::to($this->crud->route.'/'.$request->input('id').'/edit');
+
+            default:
+                return \Redirect::to($request->input('redirect_after_save'));
+        }
     }
 
     /**
