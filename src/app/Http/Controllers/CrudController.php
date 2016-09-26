@@ -112,13 +112,17 @@ class CrudController extends BaseController
         // show a success message
         \Alert::success(trans('backpack::crud.insert_success'))->flash();
 
+        //save the redirect choice for next time
+        $redirect_after_save = $request->input('redirect_after_save');
+        session(['redirect_after_save' => $redirect_after_save]);
+
         // redirect the user where he chose to be redirected
-        switch ($request->input('redirect_after_save')) {
+        switch ($redirect_after_save) {
             case 'current_item_edit':
                 return \Redirect::to($this->crud->route.'/'.$item->getKey().'/edit');
 
             default:
-                return \Redirect::to($request->input('redirect_after_save'));
+                return \Redirect::to($redirect_after_save);
         }
     }
 
@@ -175,7 +179,18 @@ class CrudController extends BaseController
         // show a success message
         \Alert::success(trans('backpack::crud.update_success'))->flash();
 
-        return \Redirect::to($this->crud->route);
+        //save the redirect choice for next time
+        $redirect_after_update = $request->input('redirect_after_update');
+        session(['redirect_after_update' => $redirect_after_update]);
+
+        // redirect the user where he chose to be redirected
+        switch ($redirect_after_update) {
+            case 'current_item_edit':
+                return \Redirect::to($this->crud->route.'/'.$request->input('id').'/edit');
+
+            default:
+                return \Redirect::to($redirect_after_update);
+        }
     }
 
     /**

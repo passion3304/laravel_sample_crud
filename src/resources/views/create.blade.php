@@ -40,19 +40,31 @@
 		    	  <span>{{ trans('backpack::crud.after_saving') }}:</span>
 		          <div class="radio">
 		            <label>
-		              <input type="radio" name="redirect_after_save" value="{{ $crud->route }}" checked="">
+		              <input type="radio" name="redirect_after_save" value="{{ $crud->route }}"
+                      @if ( session('redirect_after_save', null) == $crud->route)
+                      checked="checked"
+                      @endif
+                      >
 		              {{ trans('backpack::crud.go_to_the_table_view') }}
 		            </label>
 		          </div>
 		          <div class="radio">
 		            <label>
-		              <input type="radio" name="redirect_after_save" value="{{ $crud->route.'/create' }}">
+		              <input type="radio" name="redirect_after_save" value="{{ $crud->route.'/create' }}"
+                      @if ( session('redirect_after_save', null) == ($crud->route.'/create'))
+                      checked="checked"
+                      @endif
+                      >
 		              {{ trans('backpack::crud.let_me_add_another_item') }}
 		            </label>
 		          </div>
 		          <div class="radio">
 		            <label>
-		              <input type="radio" name="redirect_after_save" value="current_item_edit">
+		              <input type="radio" name="redirect_after_save" value="current_item_edit"
+                      @if ( session('redirect_after_save', null) != $crud->route &&  session('redirect_after_save', null) != ($crud->route.'/create'))
+                      checked="checked"
+                      @endif
+                      >
 		              {{ trans('backpack::crud.edit_the_new_item') }}
 		            </label>
 		          </div>
