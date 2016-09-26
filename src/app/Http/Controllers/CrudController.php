@@ -325,8 +325,8 @@ class CrudController extends BaseController
         // crate an array with the names of the searchable columns
         $columns = collect($this->crud->columns)
                     ->reject(function ($column, $key) {
-                    // the select_multiple columns are not searchable
-                        return isset($column['type']) && $column['type']=='select_multiple';
+                        // the select_multiple columns are not searchable
+                        return isset($column['type']) && $column['type'] == 'select_multiple';
                     })
                     ->pluck('name')
                     // add the primary key, otherwise the buttons won't work
