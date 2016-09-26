@@ -8,6 +8,8 @@
 @endphp
 <div ng-app="arrayApp" ng-controller="arrayController" @include('crud::inc.field_wrapper_attributes') >
 
+    <label>{!! $field['label'] !!}</label>
+
     <input class="array-json" type="hidden" id="{{ $field['name'] }}" name="{{ $field['name'] }}">
 
     <div class="array-container form-group">
@@ -18,7 +20,7 @@
                 <tr>
 
                     @foreach( $field['columns'] as $prop )
-                    <th>
+                    <th style="font-weight: 600!important;">
                         {{ $prop }}
                     </th>
                     @endforeach
@@ -49,7 +51,7 @@
         </table>
 
         <div class="array-controls btn-group">
-            <button class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{$field['label']}}</button>
+            <button class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{ strtolower($field['entity_singular']?$field['entity_singular']:$field['label']) }}</button>
         </div>
 
     </div>
