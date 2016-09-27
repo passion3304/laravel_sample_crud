@@ -1,4 +1,14 @@
 <!-- text input -->
+
+<?php
+
+// the field should work whether or not Laravel attribute casting is used
+if (isset($field['value']) && (is_array($field['value']) || is_object($field['value']))) {
+    $field['value'] = json_encode($field['value']);
+}
+
+?>
+
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
 
