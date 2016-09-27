@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.24] - 2016-09-27
+
+### Added
+- address field type - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+
+
 ## [3.1.23] - 2016-09-27
 
 ### Added
