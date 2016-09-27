@@ -63,7 +63,7 @@
     </script>
     <div class="row" >
         <div class="col-xs-12">
-           <label>{{ $primary_dependency['label'] }}</label>
+           <label>{!! $primary_dependency['label'] !!}</label>
         </div>
 
         <div class="hidden_fields_primary" data-name = "{{ $primary_dependency['name'] }}">
@@ -111,7 +111,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-          <label>{{ $secondary_dependency['label'] }}</label>
+          <label>{!! $secondary_dependency['label'] !!}</label>
         </div>
 
         <div class="hidden_fields_secondary" data-name="{{ $secondary_dependency['name'] }}">

@@ -109,4 +109,8 @@ return [
     'external_link' => 'External link',
     'choose_file' => 'Choose file',
 
+    //Table field
+    'table_cant_add' => 'Cannot add new :entity',
+    'table_max_reached' => 'Maximum number of :max reached',
+
 ];
