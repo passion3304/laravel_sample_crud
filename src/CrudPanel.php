@@ -16,10 +16,11 @@ use Backpack\CRUD\PanelTraits\Read;
 use Backpack\CRUD\PanelTraits\Reorder;
 use Backpack\CRUD\PanelTraits\Update;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
+use Backpack\CRUD\PanelTraits\AutoFocus;
 
 class CrudPanel
 {
-    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions;
+    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus;
 
     // --------------
     // CRUD variables

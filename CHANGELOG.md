@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.23] - 2016-09-27
+
+### Added
+- autoFocus() and autoFocusOnFirstField() - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+
+
 ## [3.1.22] - 2016-09-27
 
 ### Fixed
