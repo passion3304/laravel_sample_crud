@@ -34,23 +34,7 @@
 		      	@include('crud::form_content', ['fields' => $crud->getFields('update', $entry->getKey())])
 		      @endif
 		    </div><!-- /.box-body -->
-
-            <div class="box-footer">
-		    	<div class="form-group">
-		    	  <span>{{ trans('backpack::crud.after_saving') }}:</span>
-		          <div class="radio">
-		            <label>
-		              <input type="radio" name="redirect_after_save" value="{{ $crud->route }}">
-		              {{ trans('backpack::crud.go_to_the_table_view') }}
-		            </label>
-		          </div>
-		          <div class="radio">
-		            <label>
-		              <input type="radio" name="redirect_after_save" value="current_item_edit" checked="">
-		              {{ trans('backpack::crud.edit_the_same_item') }}
-		            </label>
-		          </div>
-		        </div>
+		    <div class="box-footer">
 
 			  <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
 		      <a href="{{ url($crud->route) }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label">{{ trans('backpack::crud.cancel') }}</span></a>
