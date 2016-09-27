@@ -38,30 +38,32 @@
 	<script>
         jQuery('document').ready(function($){
 
-    		// Ctrl+S and Cmd+S trigger Save button click
-    		$(document).keydown(function(e) {
-    		    if ((e.which == '115' || e.which == '83' ) && (e.ctrlKey || e.metaKey))
-    		    {
-    		        e.preventDefault();
-    		        // alert("Ctrl-s pressed");
-    		        $("button[type=submit]").trigger('click');
-    		        return false;
-    		    }
-    		    return true;
-    		});
+      		// Ctrl+S and Cmd+S trigger Save button click
+      		$(document).keydown(function(e) {
+      		    if ((e.which == '115' || e.which == '83' ) && (e.ctrlKey || e.metaKey))
+      		    {
+      		        e.preventDefault();
+      		        // alert("Ctrl-s pressed");
+      		        $("button[type=submit]").trigger('click');
+      		        return false;
+      		    }
+      		    return true;
+      		});
 
-            @if( $crud->autoFocusOnFirstField )
-            //Focus first field
+          @if( $crud->autoFocusOnFirstField )
+            //Focus on first field
             @php
-            $focusField = array_first($fields, function($field){
-                return isset($field['auto_focus']) && $field['auto_focus'] == true;
-            })
+              $focusField = array_first($fields, function($field){
+                  return isset($field['auto_focus']) && $field['auto_focus'] == true;
+              })
             @endphp
+
             @if($focusField)
-            window.focusField = $('[name="{{$focusField['name']}}"]').eq(0),
+              window.focusField = $('[name="{{$focusField['name']}}"]').eq(0),
             @else
-            var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
+              var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
             @endif
+
             fieldOffset = focusField.offset().top,
             scrollTolerance = $(window).height() / 2;
 
@@ -70,7 +72,7 @@
             if( fieldOffset > scrollTolerance ){
                 $('html, body').animate({scrollTop: (fieldOffset - 30)});
             }
-            @endif
+          @endif
         });
 	</script>
 @endsection
