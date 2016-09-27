@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.22] - 2016-09-27
+
+### Fixed
+- checklist and checklist_dependency fields allow html on labels;
+
+
 ## [3.1.21] - 2016-09-26
 
 ### Added
