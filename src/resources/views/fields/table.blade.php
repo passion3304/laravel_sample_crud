@@ -7,15 +7,20 @@
 
     $items = old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' ));
 
-    if(!is_array($items)) {
-        $items = json_decode($items);
+    // make sure not matter the attribute casting
+    // the $items variable contains a properly defined JSON
+    if(is_array($items)) {
+        if (count($items)) {
+            $items = json_encode($items);
+        }
+        else
+        {
+            $items = '[]';
+        }
+    } elseif (is_string($items) && !is_array(json_decode($items))) {
+        $items = '[]';
     }
 
-    if (empty($items)) {
-        $items = '[]';
-    } elseif ( is_string($items) && !is_array(json_decode($items)) ) {
-        $items = '[]';
-    }
 ?>
 <div ng-app="backpackTable" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
@@ -25,7 +30,7 @@
 
     <div class="array-container form-group">
 
-        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ json_encode($items) }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'">
+        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ $items }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'">
 
             <thead>
                 <tr>
