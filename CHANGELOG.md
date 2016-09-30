@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.1.25] - 2016-09-30
+## [3.1.26] - 2016-09-30
 
 ### Fixed
 - bug fix for 'table' field type - you can now have multiple fields on the same form;
