@@ -5,8 +5,7 @@
         name="{{ $field['name'] }}[]"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2'])
         multiple>
-        <option value="">-</option>
-
+        
         @if (isset($field['model']))
             @foreach ($field['model']::all() as $connected_entity_entry)
                 <option value="{{ $connected_entity_entry->getKey() }}"

@@ -29,6 +29,17 @@ return [
     'edit'                 => 'Editează',
     'save'                 => 'Salvează',
 
+    // Revisions
+    'revisions'            => 'Reviziile',
+    'no_revisions'         => 'Reviziile Determinat',
+    'created_this'          => 'creatd acest lucru',
+    'changed_the'          => 'schimbat',
+    'restore_this_value'   => 'a restabili această valoare',
+    'from'                 => 'din',
+    'to'                   => 'la',
+    'undo'                 => 'Anula',
+    'revision_restored'    => 'Revizia restaurat cu succes',
+
     // CRUD table view
     'all'                  => 'Toate ',
     'in_the_database'      => 'din baza de date',

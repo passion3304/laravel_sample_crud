@@ -29,6 +29,17 @@ return [
     'edit'                 => 'Edit',
     'save'                 => 'Save',
 
+    // Revisions
+    'revisions'            => 'Revisions',
+    'no_revisions'         => 'No revisions found',
+    'created_this'          => 'created this',
+    'changed_the'          => 'changed the',
+    'restore_this_value'   => 'Restore this value',
+    'from'                 => 'from',
+    'to'                   => 'to',
+    'undo'                 => 'Undo',
+    'revision_restored'    => 'Revision successfully restored',
+
     // CRUD table view
     'all'                       => 'All ',
     'in_the_database'           => 'in the database',
@@ -97,5 +108,9 @@ return [
     'internal_link_placeholder' => 'Internal slug. Ex: \'admin/page\' (no quotes) for \':url\'',
     'external_link' => 'External link',
     'choose_file' => 'Choose file',
+
+    //Table field
+    'table_cant_add' => 'Cannot add new :entity',
+    'table_max_reached' => 'Maximum number of :max reached',
 
 ];

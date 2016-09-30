@@ -29,6 +29,17 @@ return [
     'edit'                 => 'Editar',
     'save'                 => 'Guardar',
 
+    // Revisions
+    'revisions'            => 'Las revisiones',
+    'no_revisions'         => 'No hay revisiones encontrados',
+    'created_this'          => 'creado este',
+    'changed_the'          => 'cambiado el',
+    'restore_this_value'   => 'restaurar este valor',
+    'from'                 => 'de',
+    'to'                   => 'a',
+    'undo'                 => 'Deshacer',
+    'revision_restored'    => 'Revisión restaurado correctamente',
+
     // CRUD table view
     'all'                       => 'Todos ',
     'in_the_database'           => 'en la base de datos',
