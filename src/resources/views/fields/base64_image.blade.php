@@ -7,7 +7,7 @@
         <div class="col-sm-6" style="margin-bottom: 20px;">
             <img id="mainImage" src="{{ isset($field['src']) ? $entry->where('id', $entry->id)->first()->{$field['src']}() : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
         </div>
-        @if($field['crop'])
+        @if(isset($field['crop']) && $field['crop'])
         <div class="col-sm-3">
             <div class="docs-preview clearfix">
                 <div id="{{ $field['name'] }}" class="img-preview preview-lg">
@@ -20,10 +20,10 @@
     </div>
     <div class="btn-group">
         <label class="btn btn-primary btn-file">
-            Choose file <input type="file" accept="image/*" id="uploadImage" class="hide">
-            <input type="hidden" id="hiddenImage" name="{{ $field['name'] }}" @include('crud::inc.field_attributes')>
+            Choose file <input type="file" accept="image/*" id="uploadImage" @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
+            <input type="hidden" id="hiddenImage" name="{{ $field['name'] }}">
         </label>
-        @if($field['crop'])
+        @if(isset($field['crop']) && $field['crop'])
         <button class="btn btn-default" id="rotateLeft" type="button" style="display: none;"><i class="fa fa-rotate-left"></i></button>
         <button class="btn btn-default" id="rotateRight" type="button" style="display: none;"><i class="fa fa-rotate-right"></i></button>
         <button class="btn btn-default" id="zoomIn" type="button" style="display: none;"><i class="fa fa-search-plus"></i></button>
