@@ -1,13 +1,26 @@
 <!-- text input -->
 <div data-video @include('crud::inc.field_wrapper_attributes') >
     <label for="{{ $field['name'] }}_link}">{!! $field['label'] !!}</label>
-    <div class="video-preview">
-        <a class="video-previewLink hidden" target="_blank" href="" title="">
-            <i class="fa video-previewIcon"></i>
-        </a><img class="video-previewImage" alt="" src="" />
-    </div>
-    <input class="video-link form-control" type="text" name="{{ $field['name'] }}_link" id="{{ $field['name'] }}_link">
     <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' )) }}">
+    <div class="input-group">
+        <input class="video-link form-control" type="text" name="{{ $field['name'] }}_link" id="{{ $field['name'] }}_link">
+        <div class="input-group-addon video-previewSuffix video-noPadding">
+            <div class="video-preview">
+                <span class="video-previewImage"></span>
+                <a class="video-previewLink hidden" target="_blank" href="" title="">
+                    <i class="fa video-previewIcon"></i>
+                </a>
+            </div>
+            <div class="video-dummy">
+                <a class="video-previewLink youtube dummy" target="_blank" href="" title="">
+                    <i class="fa fa-youtube video-previewIcon dummy"></i>
+                </a>
+                <a class="video-previewLink vimeo dummy" target="_blank" href="" title="">
+                    <i class="fa fa-vimeo video-previewIcon dummy"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
     {{-- HINT --}}
     @if (isset($field['hint']))
@@ -25,31 +38,31 @@
     {{-- @push('crud_fields_styles')
         {{-- YOUR CSS HERE --}}
         <style media="screen">
+            .video-previewSuffix {
+                border: 0;
+                min-width: 68px; }
+            .video-noPadding {
+                padding: 0; }
             .video-preview {
-                margin-bottom: 10px;
-                display: none;
-            }
+                display: none; }
             .video-previewLink {
                  color: #fff;
-                 display: inline-block;
-                 width: 30px; height: 25px;
+                 display: block;
+                 width: 34px; height: 34px;
                  text-align: center;
-                 border-top-left-radius: 3px; border-bottom-left-radius: 3px;
-                 transform: translateY(-1px);
-            }
+                 float: left; }
             .video-previewLink.youtube {
-                background: #DA2724;
-            }
+                background: #DA2724; }
             .video-previewLink.vimeo {
-                background: #00ADEF;
-            }
+                background: #00ADEF; }
             .video-previewIcon {
-                transform: translateY(2px);
-            }
+                transform: translateY(10px); }
             .video-previewImage {
-                height: 25px;
-                border-top-right-radius: 3px; border-bottom-right-radius: 3px;
-            }
+                float: left;
+                display: block;
+                width: 34px; height: 34px;
+                background-size: cover;
+                background-position: center center; }
         </style>
     @endpush
 
@@ -220,13 +233,27 @@
                 var updateVideoPreview = function(video, container){
 
                     var pWrap = container.find('.video-preview'),
-                        pLink = container.find('.video-previewLink'),
-                        pImage = container.find('.video-previewImage'),
-                        pIcon  = container.find('.video-previewIcon');
+                        pLink = container.find('.video-previewLink').not('.dummy'),
+                        pImage = container.find('.video-previewImage').not('dummy'),
+                        pIcon  = container.find('.video-previewIcon').not('.dummy'),
+                        pSuffix = container.find('.video-previewSuffix'),
+                        pDummy  = container.find('.video-dummy');
 
-                    pLink.attr('href', video.url).attr('title', video.title).removeClass('youtube vimeo hidden').addClass(video.provider);
-                    pImage.attr('src', video.image).attr('alt', video.title);
-                    pIcon.addClass('fa-' + video.provider);
+                    pDummy.hide();
+
+                    pLink
+                    .attr('href', video.url)
+                    .attr('title', video.title)
+                    .removeClass('youtube vimeo hidden')
+                    .addClass(video.provider);
+
+                    pImage
+                    .css('backgroundImage', 'url('+video.image+')')
+                    .attr('title', video.title);
+
+                    pIcon
+                    .removeClass('fa-vimeo fa-youtube')
+                    .addClass('fa-' + video.provider);
                     pWrap.fadeIn();
                 };
 
@@ -235,7 +262,9 @@
 
                     var $this = $(this),
                         jsonField = $this.find('.video-json'),
-                        linkField = $this.find('.video-link');
+                        linkField = $this.find('.video-link'),
+                        pDummy = $this.find('.video-dummy'),
+                        pWrap = $this.find('.video-preview');
 
                         try {
                             var videoJson = JSON.parse(jsonField.val());
@@ -244,6 +273,8 @@
                             updateVideoPreview(videoJson, $this);
                         }
                         catch(e){
+                            pDummy.show();
+                            pWrap.hide();
                             jsonField.val('');
                             linkField.val('');
                         }
@@ -252,15 +283,15 @@
                         linkField.originalState = linkField.val();
                     });
 
-                    linkField.on('blur', function(){
+                    linkField.on('change', function(){
 
                         if( linkField.originalState != linkField.val() ){
 
                             if( linkField.val().length ){
 
-                                parseVideoLink( linkField.val(), function( videoJson ){
+                                videoParsing = true;
 
-                                    console.log(videoJson);
+                                parseVideoLink( linkField.val(), function( videoJson ){
 
                                     if( videoJson.success ){
                                         linkField.val( videoJson.data.url );
@@ -268,17 +299,34 @@
                                         updateVideoPreview(videoJson.data, $this);
                                     }
                                     else {
+                                        pDummy.show();
+                                        pWrap.hide();
                                         alert(videoJson.message);
                                     }
+
+                                    videoParsing = false;
                                 });
                             }
                             else {
+                                videoParsing = false;
                                 jsonField.val('');
                                 $this.find('.video-preview').fadeOut();
+                                pDummy.show();
+                                pWrap.hide();
                             }
                         }
                     });
                 });
+
+                var videoParsing = false;
+
+                $('form').on('submit', function(e){
+                    if( videoParsing ){
+                        alert('Video details are still loading, please wait a moment and try again');
+                        e.preventDefault();
+                        return false;
+                    }
+                })
             });
         </script>
 
