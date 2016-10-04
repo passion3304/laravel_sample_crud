@@ -61,6 +61,7 @@
                     defaultDate: $field.val()
                 }, $fake.data('bs-datetimepicker'));
 
+                $customConfig.locale = $customConfig['language'];
                 delete($customConfig['language']);
                 $picker = $fake.datetimepicker($customConfig);
 
