@@ -42,7 +42,7 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
     <script src="/vendor/adminlte/plugins/datepicker/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script type="text/javascript" src="/vendor/adminlte/plugins/daterangepicker/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.datetimepicker/4.17.42/js/bootstrap-datetimepicker.min.js"></script>
     @if (isset($field['datetime_picker_options']) && isset($field['datetime_picker_options']['language']) && $field['datetime_picker_options']['language'] !== 'en')
     <script charset="UTF-8" src="/vendor/adminlte/plugins/datepicker/locales/bootstrap-datepicker.{{$field['datetime_picker_options']['language']}}.js"></script>
