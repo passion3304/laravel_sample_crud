@@ -13,7 +13,6 @@
     <label>{!! $field['label'] !!}</label>
     <div class="input-group date">
         <input
-            readonly="readonly"
             data-bs-datepicker="{{ isset($field['date_picker_options']) ? json_encode($field['date_picker_options']) : '{}'}}"
             type="text"
             @include('crud::inc.field_attributes')
@@ -37,11 +36,6 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
     <link rel="stylesheet" href="/vendor/adminlte/plugins/datepicker/datepicker3.css">
-    <style media="screen">
-        .input-group.date input {
-            background-color: #fff;
-        }
-    </style>
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
@@ -61,11 +55,17 @@
                 $customConfig = $.extend({
                     format: 'dd/mm/yyyy'
                 }, $fake.data('bs-datepicker'));
+
                 $picker = $fake.datepicker($customConfig);
 
                 preparedDate = new Date($field.val()).format($customConfig.format);
                 $fake.val(preparedDate);
                 $picker.datepicker('update', preparedDate);
+
+                $fake.on('keydown', function(e){
+                    e.preventDefault();
+                    return false;
+                });
 
                 $picker.on('show hide change', function(e){
                      if( e.date ){
