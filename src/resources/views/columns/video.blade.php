@@ -1,7 +1,15 @@
 {{-- regular object attribute --}}
 @php
     if( !empty($entry->{$column['name']}) ) {
-        $video = json_decode($entry->{$column['name']});
+
+        // if attribute casting is used, convert to object
+        if (is_array($entry->{$column['name']})) {
+            $video = (object)$entry->{$column['name']};
+        } elseif (is_string($entry->{$column['name']})) {
+            $video = json_decode($entry->{$column['name']});
+        } else {
+            $video = $entry->{$column['name']};
+        }
         $bgColor = $video->provider == 'vimeo' ? '#00ADEF' : '#DA2724';
     }
 @endphp

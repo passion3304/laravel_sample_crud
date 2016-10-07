@@ -1,7 +1,23 @@
 <!-- text input -->
+<?php
+
+$value = old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' ));
+
+// if attribute casting is used, convert to JSON
+if (is_array($value)) {
+    $value = json_encode((object)$value);
+} elseif (is_object($value)) {
+    $value = json_encode($value);
+} else {
+    $value = $value;
+}
+
+?>
+
+
 <div data-video @include('crud::inc.field_wrapper_attributes') >
     <label for="{{ $field['name'] }}_link}">{!! $field['label'] !!}</label>
-    <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' )) }}">
+    <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ $value }}">
     <div class="input-group">
         <input @include('crud::inc.field_attributes', ['default_class' => 'video-link form-control']) type="text" name="{{ $field['name'] }}_link" id="{{ $field['name'] }}_link">
         <div class="input-group-addon video-previewSuffix video-noPadding">
