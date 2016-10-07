@@ -22,7 +22,7 @@
     }
 
 ?>
-<div ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
+<div ng-app="backPackTableApp" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
 
@@ -97,7 +97,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
         <script>
 
-            window.angularApp = window.angularApp || angular.module('backPack', ['ui.sortable'], function($interpolateProvider){
+            window.angularApp = window.angularApp || angular.module('backPackTableApp', ['ui.sortable'], function($interpolateProvider){
                 $interpolateProvider.startSymbol('<%');
                 $interpolateProvider.endSymbol('%>');
             });
@@ -158,6 +158,16 @@
                     }
                 }
             });
+
+            angular.element(document).ready(function(){
+                angular.forEach(angular.element('[ng-app]'), function(ctrl){
+                    var ctrlDom = angular.element(ctrl);
+                    if( !ctrlDom.hasClass('ng-scope') ){
+                        angular.bootstrap(ctrl, [ctrlDom.attr('ng-app')]);
+                    }
+                });
+            })
+
         </script>
 
     @endpush

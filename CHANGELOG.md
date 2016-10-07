@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.27] - 2016-10-x
+
+### Fixed
+- 'table' field is properly encapsulated now;
+
+
 ## [3.1.26] - 2016-09-30
 
 ### Fixed
