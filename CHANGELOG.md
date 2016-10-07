@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.25] - 2016-09-28
+
+### Fixed
+- table field JSON bug;
+
+
 ## [3.1.24] - 2016-09-27
 
 ### Added
