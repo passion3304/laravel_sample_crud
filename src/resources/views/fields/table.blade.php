@@ -22,7 +22,7 @@
     }
 
 ?>
-<div ng-app="backpackTable" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
+<div ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
 
@@ -66,7 +66,7 @@
 
         </table>
 
-        <div class="array-controls btn-group">
+        <div class="array-controls btn-group m-t-10">
             <button class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{ $item_name }}</button>
         </div>
 
@@ -96,11 +96,13 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
         <script>
-            angular.module('backpackTable', ['ui.sortable'], function($interpolateProvider){
+
+            window.angularApp = window.angularApp || angular.module('backPack', ['ui.sortable'], function($interpolateProvider){
                 $interpolateProvider.startSymbol('<%');
                 $interpolateProvider.endSymbol('%>');
-            })
-            .controller('tableController', function($scope){
+            });
+
+            window.angularApp.controller('tableController', function($scope){
 
                 $scope.sortableOptions = {
                     handle: '.sort-handle'
