@@ -23,15 +23,15 @@ if (is_array($value)) {
         <div class="input-group-addon video-previewSuffix video-noPadding">
             <div class="video-preview">
                 <span class="video-previewImage"></span>
-                <a class="video-previewLink hidden" target="_blank" href="" title="">
+                <a class="video-previewLink hidden" target="_blank" href="">
                     <i class="fa video-previewIcon"></i>
                 </a>
             </div>
             <div class="video-dummy">
-                <a class="video-previewLink youtube dummy" target="_blank" href="" title="">
+                <a class="video-previewLink youtube dummy" target="_blank" href="">
                     <i class="fa fa-youtube video-previewIcon dummy"></i>
                 </a>
-                <a class="video-previewLink vimeo dummy" target="_blank" href="" title="">
+                <a class="video-previewLink vimeo dummy" target="_blank" href="">
                     <i class="fa fa-vimeo video-previewIcon dummy"></i>
                 </a>
             </div>
@@ -259,13 +259,11 @@ if (is_array($value)) {
 
                     pLink
                     .attr('href', video.url)
-                    .attr('title', video.title)
                     .removeClass('youtube vimeo hidden')
                     .addClass(video.provider);
 
                     pImage
-                    .css('backgroundImage', 'url('+video.image+')')
-                    .attr('title', video.title);
+                    .css('backgroundImage', 'url('+video.image+')');
 
                     pIcon
                     .removeClass('fa-vimeo fa-youtube')
