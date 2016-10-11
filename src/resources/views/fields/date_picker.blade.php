@@ -55,12 +55,15 @@
                 $customConfig = $.extend({
                     format: 'dd/mm/yyyy'
                 }, $fake.data('bs-datepicker'));
-
                 $picker = $fake.datepicker($customConfig);
 
-                preparedDate = new Date($field.val()).format($customConfig.format);
-                $fake.val(preparedDate);
-                $picker.datepicker('update', preparedDate);
+                var $existingVal = $field.val();
+
+                if( $existingVal.length ){
+                    preparedDate = new Date($existingVal).format($customConfig.format);
+                    $fake.val(preparedDate);
+                    $picker.datepicker('update', preparedDate);
+                }
 
                 $fake.on('keydown', function(e){
                     e.preventDefault();
