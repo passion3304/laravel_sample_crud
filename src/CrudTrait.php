@@ -30,7 +30,7 @@ trait CrudTrait
     public static function isColumnNullable($column_name)
     {
         $instance = new static(); // create an instance of the model to be able to get the table name
-        return !DB::connection()->getDoctrineColumn($instance->getTable(), $column_name)->getNotnull();
+        return ! DB::connection()->getDoctrineColumn($instance->getTable(), $column_name)->getNotnull();
     }
 
     /*
