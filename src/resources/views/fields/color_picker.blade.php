@@ -40,10 +40,12 @@
 @push('crud_fields_scripts')
 <script type="text/javascript">
     jQuery('document').ready(function($){
-
         //https://itsjaviaguilar.com/bootstrap-colorpicker/
-        var config = jQuery.extend({}, {!! isset($field['colorpicker_options']) ? json_encode($field['colorpicker_options']) : '{}' !!});
-        $('[name="{{ $field['name'] }}"]').parents('.colorpicker-component').colorpicker(config);
+        var config = jQuery.extend({}, {!! isset($field['color_picker_options']) ? json_encode($field['color_picker_options']) : '{}' !!});
+        var picker = $('[name="{{ $field['name'] }}"]').parents('.colorpicker-component').colorpicker(config);
+        $('[name="{{ $field['name'] }}"]').on('focus', function(){
+            picker.colorpicker('show');
+        });
     })
 </script>
 @endpush
