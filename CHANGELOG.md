@@ -20,13 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.1.28] - 2016-10-15
+## [3.1.28] - 2016-10-16
 
 ### Added
 - When elfinder is launched as it's own window, display full-screen;
 
 ### Fixed
 - Update routes and editor links to follow the route_prefix set in config;
+- elFinder iframe now has no white background and uses backpack theme;
 
 
 ## [3.1.27] - 2016-10-7
