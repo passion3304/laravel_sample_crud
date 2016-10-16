@@ -30,7 +30,7 @@
         <script>
             jQuery(document).ready(function($) {
                 $('textarea.ckeditor' ).ckeditor({
-                    "filebrowserBrowseUrl": "{{ url('admin/elfinder/ckeditor') }}",
+                    "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
                     "extraPlugins" : 'oembed,widget'
                 });
             });
