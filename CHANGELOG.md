@@ -20,7 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.1.27] - 2016-10-x
+## [3.1.28] - 2016-10-15
+
+### Fixed
+- Update routes and editor links to follow the route_prefix set in config;
+
+
+## [3.1.27] - 2016-10-7
 
 ### Fixed
 - 'table' field is properly encapsulated now;
