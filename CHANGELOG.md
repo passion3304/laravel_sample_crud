@@ -22,6 +22,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.1.28] - 2016-10-15
 
+### Added
+- When elfinder is launched as it's own window, display full-screen;
+
 ### Fixed
 - Update routes and editor links to follow the route_prefix set in config;
 

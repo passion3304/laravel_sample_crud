@@ -39,6 +39,7 @@
 
             var elf = $('#elfinder').elfinder({
                 // set your elFinder options here
+                resizable: false,                
                 <?php if ($locale) {
     ?>
                     lang: '<?= $locale ?>', // locale
@@ -54,9 +55,15 @@
                 }
             }).elfinder('instance');
         });
+        $(window).resize(function(){
+            var h = ($(window).height());
+            if($('#elfinder').height() != h){
+                $('#elfinder').height(h).resize();
+            }
+        });
     </script>
 </head>
-<body>
+<body class="elfinder">
     <!-- Element where elFinder will be created (REQUIRED) -->
     <div id="elfinder"></div>
 </body>
