@@ -56,7 +56,7 @@
             }).elfinder('instance');
         });
         $(window).resize(function(){
-            var h = ($(window).height());
+            var h = ($(window).height())-2;
             if($('#elfinder').height() != h){
                 $('#elfinder').height(h).resize();
             }
