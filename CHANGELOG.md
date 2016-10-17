@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.33] - 2016-10-x
+
+### Fixed
+- all fields now have hint, default value and customizable wrapper class - thanks to [Owen Melbourne](https://github.com/OwenMelbz); modifications were made in the following fields: base64_image, checklist, checklist_dependecy, image;
+
+
 ## [3.1.32] - 2016-10-17
 
 ### Added
