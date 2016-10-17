@@ -42,7 +42,7 @@
               <th>{{ $column['label'] }}</th>
             @endforeach
 
-            @if ( $crud->buttons->where('stack', 'line') )
+            @if ( $crud->buttons->where('stack', 'line')->count() )
               <th>{{ trans('backpack::crud.actions') }}</th>
             @endif
           </tr>
@@ -97,7 +97,7 @@
               <th>{{ $column['label'] }}</th>
             @endforeach
 
-            @if ( $crud->buttons->where('stack', 'line') )
+            @if ( $crud->buttons->where('stack', 'line')->count() )
               <th>{{ trans('backpack::crud.actions') }}</th>
             @endif
           </tr>

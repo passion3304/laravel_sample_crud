@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.31] - 2016-10-17
+
+### Added
+- $this->crud->removeAllButtons() and $this->crud->removeAllButtonsFromStack();
+
+
+
 ## [3.1.30] - 2016-10-17
 
 ### Fixed
