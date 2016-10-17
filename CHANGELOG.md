@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - all fields now have hint, default value and customizable wrapper class - thanks to [Owen Melbourne](https://github.com/OwenMelbz); modifications were made in the following fields: base64_image, checklist, checklist_dependecy, image;
+- creating/updating elements works with morphable fields too; you need to define "morph" => true on the field for it to work;
 
 
 ## [3.1.32] - 2016-10-17
