@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.30] - 2016-10-17
+
+### Fixed
+- upload_multiple field did not remove the files from disk if no new files were added; solved with a hack - added a hidden input with the same name before it, so it always has a value and the mutator is always triggered;
+
+
 ## [3.1.29] - 2016-10-17
 
 ### Fixed
