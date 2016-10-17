@@ -29,7 +29,12 @@ trait CrudTrait
 
     public static function isColumnNullable($column_name)
     {
-        $instance = new static(); // create an instance of the model to be able to get the table name
+        // create an instance of the model to be able to get the table name
+        $instance = new static();
+
+        // register the enum column type, because Doctrine doesn't support it
+        DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+
         return ! DB::connection()->getDoctrineColumn($instance->getTable(), $column_name)->getNotnull();
     }
 
