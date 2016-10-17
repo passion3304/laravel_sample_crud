@@ -114,6 +114,7 @@ class CrudController extends BaseController
         \Alert::success(trans('backpack::crud.insert_success'))->flash();
 
         $this->setSaveAction();
+
         return $this->performSaveAction($item->getKey());
     }
 
@@ -172,6 +173,7 @@ class CrudController extends BaseController
 
         //save the redirect choice for next time
         $this->setSaveAction();
+
         return $this->performSaveAction();
     }
 
