@@ -42,7 +42,7 @@
               <th>{{ $column['label'] }}</th>
             @endforeach
 
-            @if ( $crud->buttons->where('stack', 'line') )
+            @if ( $crud->buttons->where('stack', 'line')->count() )
               <th>{{ trans('backpack::crud.actions') }}</th>
             @endif
           </tr>
@@ -97,7 +97,7 @@
               <th>{{ $column['label'] }}</th>
             @endforeach
 
-            @if ( $crud->buttons->where('stack', 'line') )
+            @if ( $crud->buttons->where('stack', 'line')->count() )
               <th>{{ trans('backpack::crud.actions') }}</th>
             @endif
           </tr>
@@ -286,7 +286,7 @@
 
             if ( row.child.isShown() ) {
                 // This row is already open - close it
-                $(this).children('i').removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
+                $(this).removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
                 $('div.table_row_slider', row.child()).slideUp( function () {
                     row.child.hide();
                     tr.removeClass('shown');
@@ -294,7 +294,7 @@
             }
             else {
                 // Open this row
-                $(this).children('i').removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+                $(this).removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
                 // Get the details with ajax
                 $.ajax({
                   url: '{{ Request::url() }}/'+btn.data('entry-id')+'/details',

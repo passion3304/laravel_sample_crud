@@ -7,17 +7,22 @@
 
     $items = old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' ));
 
-    if(!is_array($items)) {
-        $items = json_decode($items);
+    // make sure not matter the attribute casting
+    // the $items variable contains a properly defined JSON
+    if(is_array($items)) {
+        if (count($items)) {
+            $items = json_encode($items);
+        }
+        else
+        {
+            $items = '[]';
+        }
+    } elseif (is_string($items) && !is_array(json_decode($items))) {
+        $items = '[]';
     }
 
-    if (empty($items)) {
-        $items = '[]';
-    } elseif ( is_string($items) && !is_array(json_decode($items)) ) {
-        $items = '[]';
-    }
 ?>
-<div ng-app="backpackTable" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
+<div ng-app="backPackTableApp" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
 
@@ -25,7 +30,7 @@
 
     <div class="array-container form-group">
 
-        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ json_encode($items) }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'">
+        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ $items }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'">
 
             <thead>
                 <tr>
@@ -61,7 +66,7 @@
 
         </table>
 
-        <div class="array-controls btn-group">
+        <div class="array-controls btn-group m-t-10">
             <button class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{ $item_name }}</button>
         </div>
 
@@ -91,11 +96,13 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
         <script>
-            angular.module('backpackTable', ['ui.sortable'], function($interpolateProvider){
+
+            window.angularApp = window.angularApp || angular.module('backPackTableApp', ['ui.sortable'], function($interpolateProvider){
                 $interpolateProvider.startSymbol('<%');
                 $interpolateProvider.endSymbol('%>');
-            })
-            .controller('tableController', function($scope){
+            });
+
+            window.angularApp.controller('tableController', function($scope){
 
                 $scope.sortableOptions = {
                     handle: '.sort-handle'
@@ -151,6 +158,16 @@
                     }
                 }
             });
+
+            angular.element(document).ready(function(){
+                angular.forEach(angular.element('[ng-app]'), function(ctrl){
+                    var ctrlDom = angular.element(ctrl);
+                    if( !ctrlDom.hasClass('ng-scope') ){
+                        angular.bootstrap(ctrl, [ctrlDom.attr('ng-app')]);
+                    }
+                });
+            })
+
         </script>
 
     @endpush
