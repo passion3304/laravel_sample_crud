@@ -11,7 +11,7 @@ trait SaveActions
         $saveOptions = [];
         $saveCurrent = [
             'value' => $saveAction,
-            'label' => $this->getSaveActionButtonName($saveAction)
+            'label' => $this->getSaveActionButtonName($saveAction),
         ];
 
         switch ($saveAction) {
@@ -32,26 +32,26 @@ trait SaveActions
 
         return [
             'active' => $saveCurrent,
-            'options' => $saveOptions
+            'options' => $saveOptions,
         ];
     }
 
-    public function setSaveAction( $forceSaveAction = null )
+    public function setSaveAction($forceSaveAction = null)
     {
-        if( $forceSaveAction ){
+        if ($forceSaveAction) {
             $saveAction = $forceSaveAction;
         } else {
             $saveAction = \Request::input('save_action', config('backback.crud.default_save_action', 'save_and_back'));
         }
 
-        if( session('save_action', 'save_and_back') !== $saveAction ){
+        if (session('save_action', 'save_and_back') !== $saveAction) {
             \Alert::info(trans('backpack::crud.save_action_changed_notification'))->flash();
         }
 
         session(['save_action' => $saveAction]);
     }
 
-    public function performSaveAction( $itemId = null )
+    public function performSaveAction($itemId = null)
     {
         $saveAction = \Request::input('save_action', config('backback.crud.default_save_action', 'save_and_back'));
         $itemId = $itemId ? $itemId : \Request::input('id');
@@ -72,7 +72,7 @@ trait SaveActions
         return \Redirect::to($redirectUrl);
     }
 
-    private function getSaveActionButtonName( $actionValue = 'save_and_black' )
+    private function getSaveActionButtonName($actionValue = 'save_and_black')
     {
         switch ($actionValue) {
             case 'save_and_edit':
