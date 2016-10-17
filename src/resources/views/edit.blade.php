@@ -36,24 +36,33 @@
 		    </div><!-- /.box-body -->
 
             <div class="box-footer">
-		    	<div class="form-group">
-		    	  <span>{{ trans('backpack::crud.after_saving') }}:</span>
-		          <div class="radio">
-		            <label>
-		              <input type="radio" name="redirect_after_save" value="{{ $crud->route }}">
-		              {{ trans('backpack::crud.go_to_the_table_view') }}
-		            </label>
-		          </div>
-		          <div class="radio">
-		            <label>
-		              <input type="radio" name="redirect_after_save" value="current_item_edit" checked="">
-		              {{ trans('backpack::crud.edit_the_same_item') }}
-		            </label>
-		          </div>
-		        </div>
+                <div id="saveActions" class="form-group">
 
-			  <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
-		      <a href="{{ url($crud->route) }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label">{{ trans('backpack::crud.cancel') }}</span></a>
+                    <input type="hidden" name="save_action" value="{{ $saveAction['active']['value'] }}">
+
+                    <div class="btn-group">
+
+                        <button type="submit" class="btn btn-success">
+                            <span class="fa fa-save" role="presentation" aria-hidden="true"></span> &nbsp;
+                            <span data-value="{{ $saveAction['active']['value'] }}">{{ $saveAction['active']['label'] }}</span>
+                        </button>
+
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aira-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Save Dropdown</span>
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            @foreach( $saveAction['options'] as $value => $label)
+                            <li><a href="javascript:void(0);" data-value="{{ $value }}">{{ $label }}</a></li>
+                            @endforeach
+                        </ul>
+
+                    </div>
+
+                    <a href="{{ url($crud->route) }}" class="btn btn-default"><span class="fa fa-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
+                </div>
+
 		    </div><!-- /.box-footer-->
 		  </div><!-- /.box -->
 		  {!! Form::close() !!}

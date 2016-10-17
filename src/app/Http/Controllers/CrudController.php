@@ -14,11 +14,12 @@ use Backpack\CRUD\app\Http\Controllers\CrudFeatures\AjaxTable;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Reorder;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Revisions;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\ShowDetailsRow;
+use Backpack\CRUD\app\Http\Controllers\CrudFeatures\SaveActions;
 
 class CrudController extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
-    use AjaxTable, Reorder, Revisions, ShowDetailsRow;
+    use AjaxTable, Reorder, Revisions, ShowDetailsRow, SaveActions;
 
     public $data = [];
     public $crud;
@@ -80,7 +81,7 @@ class CrudController extends BaseController
         $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('crud::create', $this->data);
+        return view('crud::create', $this->data)->with('saveAction', $this->getSaveAction());
     }
 
     /**
@@ -112,18 +113,8 @@ class CrudController extends BaseController
         // show a success message
         \Alert::success(trans('backpack::crud.insert_success'))->flash();
 
-        //save the redirect choice for next time
-        $redirect_after_save = $request->input('redirect_after_save');
-        session(['redirect_after_save' => $redirect_after_save]);
-
-        // redirect the user where he chose to be redirected
-        switch ($redirect_after_save) {
-            case 'current_item_edit':
-                return \Redirect::to($this->crud->route.'/'.$item->getKey().'/edit');
-
-            default:
-                return \Redirect::to($redirect_after_save);
-        }
+        $this->setSaveAction();
+        return $this->performSaveAction($item->getKey());
     }
 
     /**
@@ -146,7 +137,7 @@ class CrudController extends BaseController
         $this->data['id'] = $id;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('crud::edit', $this->data);
+        return view('crud::edit', $this->data)->with('saveAction', $this->getSaveAction());
     }
 
     /**
@@ -180,17 +171,8 @@ class CrudController extends BaseController
         \Alert::success(trans('backpack::crud.update_success'))->flash();
 
         //save the redirect choice for next time
-        $redirect_after_update = $request->input('redirect_after_update');
-        session(['redirect_after_update' => $redirect_after_update]);
-
-        // redirect the user where he chose to be redirected
-        switch ($redirect_after_update) {
-            case 'current_item_edit':
-                return \Redirect::to($this->crud->route.'/'.$request->input('id').'/edit');
-
-            default:
-                return \Redirect::to($redirect_after_update);
-        }
+        $this->setSaveAction();
+        return $this->performSaveAction();
     }
 
     /**

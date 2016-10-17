@@ -13,6 +13,12 @@ return [
     |
     */
 
+    // Forms
+    'save_action_save_and_new' => 'Save and new item',
+    'save_action_save_and_edit' => 'Save and edit this item',
+    'save_action_save_and_back' => 'Save and back',
+    'save_action_changed_notification' => 'Default save action changed',
+
     // Create form
     'add'                 => 'Add',
     'back_to_all'         => 'Back to all ',
@@ -20,17 +26,17 @@ return [
     'add_a_new'           => 'Add a new ',
 
         // Create form - advanced options
-        'after_saving'            => 'After saving',
-        'go_to_the_table_view'    => 'go to the table view',
-        'let_me_add_another_item' => 'let me add another item',
-        'edit_the_new_item'       => 'edit the new item',
+        'after_saving'            => 'After saving', //deprecated
+        'go_to_the_table_view'    => 'go to the table view', //deprecated
+        'let_me_add_another_item' => 'let me add another item', //deprecated
+        'edit_the_new_item'       => 'edit the new item', //deprecated
 
     // Edit form
     'edit'                 => 'Edit',
     'save'                 => 'Save',
 
         //Edit form - advanced options
-        'edit_the_same_item' => 'remain on this page',
+        'edit_the_same_item' => 'remain on this page', //deprecated
 
     // Revisions
     'revisions'            => 'Revisions',

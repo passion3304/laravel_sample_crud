@@ -7,6 +7,7 @@ return [
     | Backpack\CRUD preferences
     |--------------------------------------------------------------------------
     */
+    'default_save_action' => 'save_and_back', //save_and_back, save_and_edit, save_and_new
 
     /*
     |------------
