@@ -1,4 +1,3 @@
-
 <!-- html5 date input -->
 
 <?php

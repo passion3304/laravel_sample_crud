@@ -20,7 +20,47 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.1.27] - 2016-10-x
+## [3.1.33] - 2016-10-x
+
+### Fixed
+- all fields now have hint, default value and customizable wrapper class - thanks to [Owen Melbourne](https://github.com/OwenMelbz); modifications were made in the following fields: base64_image, checklist, checklist_dependecy, image;
+
+
+## [3.1.32] - 2016-10-17
+
+### Added
+- video field type - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+
+
+## [3.1.31] - 2016-10-17
+
+### Added
+- $this->crud->removeAllButtons() and $this->crud->removeAllButtonsFromStack();
+
+
+## [3.1.30] - 2016-10-17
+
+### Fixed
+- upload_multiple field did not remove the files from disk if no new files were added; solved with a hack - added a hidden input with the same name before it, so it always has a value and the mutator is always triggered;
+
+
+## [3.1.29] - 2016-10-17
+
+### Fixed
+- elFinder height needed a 2px adjustment in javascript; now that's solved using css;
+
+
+## [3.1.28] - 2016-10-16
+
+### Added
+- When elfinder is launched as it's own window, display full-screen;
+
+### Fixed
+- Update routes and editor links to follow the route_prefix set in config;
+- elFinder iframe now has no white background and uses backpack theme;
+
+
+## [3.1.27] - 2016-10-7
 
 ### Fixed
 - 'table' field is properly encapsulated now;
