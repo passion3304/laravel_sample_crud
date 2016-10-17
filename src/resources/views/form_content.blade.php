@@ -36,9 +36,9 @@
 	@stack('crud_fields_scripts')
 
 	<script>
-<<<<<<< HEAD
-        //Save Action Toggle
-        jQuery(document).ready(function($){
+        jQuery('document').ready(function($){
+
+            //Save button dropdown toggles
             var saveActions = $('#saveActions'),
             crudForm        = saveActions.parents('form'),
             saveActionField = $('[name="save_action"]');
@@ -48,20 +48,6 @@
                 saveActionField.val( saveAction );
                 crudForm.submit();
             });
-        });
-		// Ctrl+S and Cmd+S trigger Save button click
-		$(document).keydown(function(e) {
-		    if ((e.which == '115' || e.which == '83' ) && (e.ctrlKey || e.metaKey))
-		    {
-		        e.preventDefault();
-		        // alert("Ctrl-s pressed");
-		        $("button[type=submit]").trigger('click');
-		        return false;
-		    }
-		    return true;
-		});
-=======
-        jQuery('document').ready(function($){
 
       		// Ctrl+S and Cmd+S trigger Save button click
       		$(document).keydown(function(e) {
@@ -99,6 +85,5 @@
             }
           @endif
         });
->>>>>>> master
 	</script>
 @endsection
