@@ -16,10 +16,11 @@ use Backpack\CRUD\PanelTraits\Read;
 use Backpack\CRUD\PanelTraits\Reorder;
 use Backpack\CRUD\PanelTraits\Update;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
+use Backpack\CRUD\PanelTraits\AutoFocus;
 
 class CrudPanel
 {
-    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions;
+    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus;
 
     // --------------
     // CRUD variables
@@ -126,9 +127,9 @@ class CrudPanel
      * Get the current CrudController route.
      *
      * Can be defined in the CrudController with:
-     * - $this->crud->setRoute('admin/article')
-     * - $this->crud->setRouteName('admin.article')
-     * - $this->crud->route = "admin/article"
+     * - $this->crud->setRoute(config('backpack.base.route_prefix').'/article')
+     * - $this->crud->setRouteName(config('backpack.base.route_prefix').'.article')
+     * - $this->crud->route = config('backpack.base.route_prefix')."/article"
      *
      * @return [string]
      */

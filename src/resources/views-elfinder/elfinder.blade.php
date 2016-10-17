@@ -44,7 +44,7 @@
         File manager
       </h1>
       <ol class="breadcrumb">
-        <li><a href="{{ url('admin') }}">Admin</a></li>
+        <li><a href="{{ url(config('backpack.base.route_prefix')) }}">Admin</a></li>
         <li class="active">File Manager</li>
       </ol>
     </section>
