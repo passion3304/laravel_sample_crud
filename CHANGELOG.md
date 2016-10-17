@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.29] - 2016-10-17
+
+### Fixed
+- elFinder height needed a 2px adjustment in javascript; now that's solved using css;
+
+
 ## [3.1.28] - 2016-10-16
 
 ### Added
