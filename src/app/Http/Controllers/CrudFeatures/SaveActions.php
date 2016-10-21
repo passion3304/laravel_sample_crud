@@ -5,6 +5,10 @@ namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
 //save_and_back save_and_edit save_and_new
 trait SaveActions
 {
+    /**
+     * Get the save configured save action or the one stored in a session variable.
+     * @return [type] [description]
+     */
     public function getSaveAction()
     {
         $saveAction = session('save_action', config('backback.crud.default_save_action', 'save_and_back'));
@@ -36,6 +40,10 @@ trait SaveActions
         ];
     }
 
+    /**
+     * Change the session variable that remembers what to do after the "Save" action.
+     * @param [type] $forceSaveAction [description]
+     */
     public function setSaveAction($forceSaveAction = null)
     {
         if ($forceSaveAction) {
@@ -51,6 +59,11 @@ trait SaveActions
         session(['save_action' => $saveAction]);
     }
 
+    /**
+     * Redirect to the correct URL, depending on which save action has been selected.
+     * @param  [type] $itemId [description]
+     * @return [type]         [description]
+     */
     public function performSaveAction($itemId = null)
     {
         $saveAction = \Request::input('save_action', config('backback.crud.default_save_action', 'save_and_back'));
@@ -72,6 +85,11 @@ trait SaveActions
         return \Redirect::to($redirectUrl);
     }
 
+    /**
+     * Get the translated text for the Save button.
+     * @param  string $actionValue [description]
+     * @return [type]              [description]
+     */
     private function getSaveActionButtonName($actionValue = 'save_and_black')
     {
         switch ($actionValue) {
