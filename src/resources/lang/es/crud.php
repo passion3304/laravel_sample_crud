@@ -13,17 +13,18 @@ return [
     |
     */
 
+    // Forms
+    'save_action_save_and_new' => 'Save and new item', // TODO: translate
+    'save_action_save_and_edit' => 'Save and edit this item', // TODO: translate
+    'save_action_save_and_back' => 'Save and back', // TODO: translate
+    'save_action_changed_notification' => 'Default save action changed', // TODO: translate
+
+
     // Create form
     'add'                 => 'Añadir',
     'back_to_all'         => 'Volver al listado ',
     'cancel'              => 'Cancelar',
     'add_a_new'           => 'Añadir nuevo ',
-
-        // Create form - advanced options
-        'after_saving'            => 'Después de guardar',
-        'go_to_the_table_view'    => 'ir al listado',
-        'let_me_add_another_item' => 'añadir otro item',
-        'edit_the_new_item'       => 'editar este item',
 
     // Edit form
     'edit'                 => 'Editar',

@@ -37,7 +37,7 @@
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">
 
-                @include('crud::inc.save_and_cancel_buttons')
+                @include('crud::inc.form_save_buttons')
 
 		    </div><!-- /.box-footer-->
 
