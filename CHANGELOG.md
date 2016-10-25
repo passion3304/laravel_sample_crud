@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.34] - 2016-10-22
+
+### Fixed
+- Config file is now published in the right folder.
+
+
 ## [3.1.33] - 2016-10-17
 
 ### Fixed
