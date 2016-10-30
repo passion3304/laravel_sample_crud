@@ -1,4 +1,4 @@
-<!-- text input -->
+<!-- upload multiple input -->
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
 
@@ -15,6 +15,7 @@
     </div>
     @endif
 	{{-- Show the file picker on CREATE form. --}}
+	<input name="{{ $field['name'] }}[]" type="hidden" value="">
 	<input
         type="file"
         id="{{ $field['name'] }}_file_input"

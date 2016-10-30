@@ -82,6 +82,18 @@ trait Buttons
         });
     }
 
+    public function removeAllButtons()
+    {
+        $this->buttons = collect([]);
+    }
+
+    public function removeAllButtonsFromStack($stack)
+    {
+        $this->buttons = $this->buttons->reject(function ($button) use ($stack) {
+            return $button->stack == $stack;
+        });
+    }
+
     public function removeButtonFromStack($name, $stack)
     {
         $this->buttons = $this->buttons->reject(function ($button) use ($name, $stack) {

@@ -99,6 +99,10 @@ return [
     'reorder_error_title'          => 'Erreur',
     'reorder_error_message'        => 'L’ordre n’a pas pu être enregistré.',
 
+    // CRUD yes/no
+    'yes' => 'Oui',
+    'no' => 'Non',
+
     // Fields
     'browse_uploads' => 'Parcourir les fichier chargés',
     'clear' => 'Effacer',
