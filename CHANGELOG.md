@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.36] - 2016-10-30
+
+### Added
+- SimpleMDE field type (simple markdown editor).
+
+
 ## [3.1.35] - 2016-10-30
 
 ### Added
