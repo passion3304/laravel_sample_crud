@@ -14,7 +14,7 @@
 @endsection
 
 @section('content')
-<div class="row" ng-app="backPack">
+<div class="row">
 	<div class="col-md-8 col-md-offset-2">
 		<!-- Default box -->
 		@if ($crud->hasAccess('list'))
