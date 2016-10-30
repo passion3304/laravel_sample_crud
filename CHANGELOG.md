@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - new column type: boolean;
+- new field type: color_picker;
 
 
 ## [3.1.34] - 2016-10-22
