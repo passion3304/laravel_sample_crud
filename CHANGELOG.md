@@ -26,6 +26,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - new column type: boolean;
 - new field type: color_picker;
 - new field type: date_picker;
+- new field type: datetime_picker;
 
 ### Fixed
 - fixed default of 0 for radio field types;
