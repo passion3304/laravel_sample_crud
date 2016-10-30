@@ -32,6 +32,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - fixed default of 0 for radio field types;
 - fixes #187 - can now clear old address entries;
 - fixes hiding/showing buttons when the min/max are reached;
+- ckeditor field type now has customizable plugins;
 
 
 ## [3.1.34] - 2016-10-22
