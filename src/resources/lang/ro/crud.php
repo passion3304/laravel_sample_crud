@@ -97,6 +97,10 @@ return [
     'reorder_error_title'          => 'Eroare',
     'reorder_error_message'        => 'Ordinea nu a fost salvată.',
 
+    // CRUD yes/no
+    'yes' => 'Da',
+    'no' => 'Nu',
+
     // Fields
     'browse_uploads' => 'Alege din fișierele urcate',
     'clear' => 'Curăță',
