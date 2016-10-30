@@ -58,7 +58,7 @@
                 type="text"
                 class="form-control"
                 name="link"
-                placeholder="{{ trans('backpack::crud.internal_link_placeholder', ['url', url('admin/page')]) }}"
+                placeholder="{{ trans('backpack::crud.internal_link_placeholder', ['url', url(config('backpack.base.route_prefix').'/page')]) }}"
 
                 @if (!isset($entry) || $entry->type!='internal_link')
                     disabled="disabled"

@@ -40,7 +40,7 @@ class CrudServiceProvider extends ServiceProvider
         $this->publishes([__DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud')], 'views');
 
         // publish config file
-        $this->publishes([__DIR__.'/config/backpack/crud.php' => resource_path('config/backpack/crud.php')], 'config');
+        $this->publishes([__DIR__.'/config' => config_path()], 'config');
 
         // publish public Backpack CRUD assets
         $this->publishes([__DIR__.'/public' => public_path('vendor/backpack')], 'public');

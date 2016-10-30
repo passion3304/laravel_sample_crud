@@ -27,7 +27,7 @@
     @push('crud_fields_scripts')
     <!-- include tinymce js-->
     <script src="{{ asset('vendor/backpack/tinymce/tinymce.min.js') }}"></script>
-    {{-- <script src="{{ asset('admin/js/vendor/tinymce/jquery.tinymce.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset(config('backpack.base.route_prefix').'/js/vendor/tinymce/jquery.tinymce.min.js') }}"></script> --}}
 
     <script type="text/javascript">
     tinymce.init({
@@ -39,7 +39,7 @@
 
     function elFinderBrowser (field_name, url, type, win) {
       tinymce.activeEditor.windowManager.open({
-        file: '{{ url('admin/elfinder/tinymce4') }}',// use an absolute path!
+        file: '{{ url(config('backpack.base.route_prefix').'/elfinder/tinymce4') }}',// use an absolute path!
         title: 'elFinder 2.0',
         width: 900,
         height: 450,
