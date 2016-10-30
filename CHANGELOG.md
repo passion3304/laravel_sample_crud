@@ -20,6 +20,20 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.35] - 2016-10-30
+
+### Added
+- new column type: boolean;
+- new field type: color_picker;
+- new field type: date_picker;
+- new field type: datetime_picker;
+
+### Fixed
+- fixed default of 0 for radio field types;
+- fixes #187 - can now clear old address entries;
+- fixes hiding/showing buttons when the min/max are reached;
+
+
 ## [3.1.34] - 2016-10-22
 
 ### Fixed

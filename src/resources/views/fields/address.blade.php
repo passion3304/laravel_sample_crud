@@ -11,6 +11,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
 
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
+    <input type="hidden" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}" name="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix'])) <div class="input-group"> @endif
         @if(isset($field['prefix'])) <div class="input-group-addon">{!! $field['prefix'] !!}</div> @endif
@@ -20,7 +21,6 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             data-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
             @include('crud::inc.field_attributes')
         >
-        <input type="hidden" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}" name="{{ $field['name'] }}">
         @else
         <input
             type="text"
@@ -72,6 +72,12 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
                     container: $this[0]
                 });
 
+                function clearInput() {
+                    if( !$this.val().length ){
+                        $field.val('');
+                    }
+                }
+
                 if( $addressConfig.full ){
 
                     $place.on('change', function(e){
@@ -81,8 +87,13 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
                         $field.val( JSON.stringify(result) );
                     });
 
-                    var existingData = JSON.parse($field.val());
-                    $this.val(existingData.value);
+                    $this.on('change blur', clearInput);
+                    $place.on('clear', clearInput);
+
+                    if( $field.val().length ){
+                        var existingData = JSON.parse($field.val());
+                        $this.val(existingData.value);
+                    }
                 }
 
                 window.AlgoliaPlaces[ $addressConfig.field ] = $place;
