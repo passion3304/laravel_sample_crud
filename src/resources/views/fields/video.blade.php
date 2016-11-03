@@ -19,7 +19,7 @@ if (is_array($value)) {
     <label for="{{ $field['name'] }}_link">{!! $field['label'] !!}</label>
     <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ $value }}">
     <div class="input-group">
-        <input @include('crud::inc.field_attributes', ['default_class' => 'video-link form-control']) type="text" name="{{ $field['name'] }}_link" id="{{ $field['name'] }}_link">
+        <input @include('crud::inc.field_attributes', ['default_class' => 'video-link form-control']) type="text" id="{{ $field['name'] }}_link">
         <div class="input-group-addon video-previewSuffix video-noPadding">
             <div class="video-preview">
                 <span class="video-previewImage"></span>
