@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.37] - 2016-11-03
+
+### Fixed
+- Boolean column type triggered error because of improper use of the trans() helper;
+
+
 ## [3.1.36] - 2016-10-30
 
 ### Added
