@@ -19,32 +19,44 @@
 	</select>
 </div>
 
-@section('after_scripts')
-<script>
-	function updateQueryStringParameter(uri, key, value) {
-	  var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-	  var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-	  if (uri.match(re)) {
-	    return uri.replace(re, '$1' + key + "=" + value + '$2');
-	  }
-	  else {
-	    return uri + separator + key + "=" + value;
-	  }
-	}
 
-	jQuery(document).ready(function($) {
-		$("select[name=filter_{{ $filter->name }}]").change(function() {
-			var value = $(this).val();
-			var current_name = '{{ $filter->name }}';
-			var current_url = '{{ Request::url() }}';
-			var new_url = '';
+{{-- FILTERS EXTRA CSS  --}}
+{{-- push things in the after_styles section --}}
 
-			new_url = updateQueryStringParameter(current_url, current_name, value);
-			if (value == '') {
-				new_url = new_url.replace(current_name+"=", "");
+    {{-- @push('crud_list_styles')
+        <!-- no styles -->
+    @endpush --}}
+
+
+{{-- FILTERS EXTRA JS --}}
+{{-- push things in the after_scripts section --}}
+
+    @push('crud_list_scripts')
+        <script>
+			function updateQueryStringParameter(uri, key, value) {
+			  var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+			  var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+			  if (uri.match(re)) {
+			    return uri.replace(re, '$1' + key + "=" + value + '$2');
+			  }
+			  else {
+			    return uri + separator + key + "=" + value;
+			  }
 			}
-			window.location.href = new_url;
-		})
-	});
-</script>
-@endsection
+
+			jQuery(document).ready(function($) {
+				$("select[name=filter_{{ $filter->name }}]").change(function() {
+					var value = $(this).val();
+					var current_name = '{{ $filter->name }}';
+					var current_url = '{{ Request::url() }}';
+					var new_url = '';
+
+					new_url = updateQueryStringParameter(current_url, current_name, value);
+					if (value == '') {
+						new_url = new_url.replace(current_name+"=", "");
+					}
+					window.location.href = new_url;
+				})
+			});
+		</script>
+    @endpush

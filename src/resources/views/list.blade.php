@@ -3,6 +3,9 @@
 @section('after_styles')
 	<!-- DATA TABLES -->
     <link href="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+
+  <!-- CRUD LIST CONTENT - crud_list_styles stack -->
+  @stack('crud_list_styles')
 @endsection
 
 @section('header')
@@ -374,4 +377,7 @@
 
 	  });
 	</script>
+
+  <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
+  @stack('crud_list_scripts')
 @endsection
