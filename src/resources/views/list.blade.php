@@ -21,94 +21,140 @@
 
 @section('content')
 <!-- Default box -->
-  <div class="box">
-    <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
-
-      @include('crud::inc.button_stack', ['stack' => 'top'])
-
-      <div id="datatable_button_stack" class="pull-right text-right"></div>
+  @if ($crud->filters->where('stack', 'top')->count())
+  <!-- TOP FILTERS STACK -->
+  <div class="row">
+    <div class="col-md-12 text-center">
+      @include('crud::inc.filter_stack', ['stack' => 'top'])
     </div>
-    <div class="box-body">
+  </div>
+  @endif
+  <div class="row">
+    @if ($crud->filters->where('stack', 'left')->count())
+    <!-- LEFT FILTERS STACK -->
+    <div class="col-md-3">
+    @include('crud::inc.filter_stack', ['stack' => 'left'])
+    </div>
+    @endif
 
-		<table id="crudTable" class="table table-bordered table-striped display">
-        <thead>
-          <tr>
-            @if ($crud->details_row)
-              <th></th> <!-- expand/minimize button column -->
-            @endif
+    <?php
+      $content_box_width = 12;
+      if ($crud->filters->where('stack', 'left')->count()) $content_box_width -= 3;
+      if ($crud->filters->where('stack', 'right')->count()) $content_box_width -= 3;
+    ?>
 
-            {{-- Table columns --}}
-            @foreach ($crud->columns as $column)
-              <th>{{ $column['label'] }}</th>
-            @endforeach
+    <!-- THE ACTUAL CONTENT -->
+    <div class="col-md-{{ $content_box_width }}">
+      <div class="box">
+        <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
 
-            @if ( $crud->buttons->where('stack', 'line')->count() )
-              <th>{{ trans('backpack::crud.actions') }}</th>
-            @endif
-          </tr>
-        </thead>
-        <tbody>
+          @include('crud::inc.button_stack', ['stack' => 'top'])
 
-          @if (!$crud->ajaxTable())
-            @foreach ($entries as $k => $entry)
-            <tr data-entry-id="{{ $entry->getKey() }}">
+          <div id="datatable_button_stack" class="pull-right text-right"></div>
+        </div>
+        <div class="box-body">
 
-              @if ($crud->details_row)
-                @include('crud::columns.details_row_button')
-              @endif
-
-              {{-- load the view from the application if it exists, otherwise load the one in the package --}}
-              @foreach ($crud->columns as $column)
-                @if (!isset($column['type']))
-                  @include('crud::columns.text')
-                @else
-                  @if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
-                    @include('vendor.backpack.crud.columns.'.$column['type'])
-                  @else
-                    @if(view()->exists('crud::columns.'.$column['type']))
-                      @include('crud::columns.'.$column['type'])
-                    @else
-                      @include('crud::columns.text')
-                    @endif
-                  @endif
+        <table id="crudTable" class="table table-bordered table-striped display">
+            <thead>
+              <tr>
+                @if ($crud->details_row)
+                  <th></th> <!-- expand/minimize button column -->
                 @endif
 
-              @endforeach
+                {{-- Table columns --}}
+                @foreach ($crud->columns as $column)
+                  <th>{{ $column['label'] }}</th>
+                @endforeach
 
-              @if ($crud->buttons->where('stack', 'line')->count())
-                <td>
-                  @include('crud::inc.button_stack', ['stack' => 'line'])
-                </td>
+                @if ( $crud->buttons->where('stack', 'line')->count() )
+                  <th>{{ trans('backpack::crud.actions') }}</th>
+                @endif
+              </tr>
+            </thead>
+            <tbody>
+
+              @if (!$crud->ajaxTable())
+                @foreach ($entries as $k => $entry)
+                <tr data-entry-id="{{ $entry->getKey() }}">
+
+                  @if ($crud->details_row)
+                    @include('crud::columns.details_row_button')
+                  @endif
+
+                  {{-- load the view from the application if it exists, otherwise load the one in the package --}}
+                  @foreach ($crud->columns as $column)
+                    @if (!isset($column['type']))
+                      @include('crud::columns.text')
+                    @else
+                      @if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
+                        @include('vendor.backpack.crud.columns.'.$column['type'])
+                      @else
+                        @if(view()->exists('crud::columns.'.$column['type']))
+                          @include('crud::columns.'.$column['type'])
+                        @else
+                          @include('crud::columns.text')
+                        @endif
+                      @endif
+                    @endif
+
+                  @endforeach
+
+                  @if ($crud->buttons->where('stack', 'line')->count())
+                    <td>
+                      @include('crud::inc.button_stack', ['stack' => 'line'])
+                    </td>
+                  @endif
+
+                </tr>
+                @endforeach
               @endif
 
-            </tr>
-            @endforeach
-          @endif
+            </tbody>
+            <tfoot>
+              <tr>
+                @if ($crud->details_row)
+                  <th></th> <!-- expand/minimize button column -->
+                @endif
 
-        </tbody>
-        <tfoot>
-          <tr>
-            @if ($crud->details_row)
-              <th></th> <!-- expand/minimize button column -->
-            @endif
+                {{-- Table columns --}}
+                @foreach ($crud->columns as $column)
+                  <th>{{ $column['label'] }}</th>
+                @endforeach
 
-            {{-- Table columns --}}
-            @foreach ($crud->columns as $column)
-              <th>{{ $column['label'] }}</th>
-            @endforeach
+                @if ( $crud->buttons->where('stack', 'line')->count() )
+                  <th>{{ trans('backpack::crud.actions') }}</th>
+                @endif
+              </tr>
+            </tfoot>
+          </table>
 
-            @if ( $crud->buttons->where('stack', 'line')->count() )
-              <th>{{ trans('backpack::crud.actions') }}</th>
-            @endif
-          </tr>
-        </tfoot>
-      </table>
+        </div><!-- /.box-body -->
 
-    </div><!-- /.box-body -->
+        @include('crud::inc.button_stack', ['stack' => 'bottom'])
 
-    @include('crud::inc.button_stack', ['stack' => 'bottom'])
+      </div><!-- /.box -->
+    </div>
 
-  </div><!-- /.box -->
+
+
+    @if ($crud->filters->where('stack', 'right')->count())
+    <!-- RIGHT FILTERS STACK -->
+    <div class="col-md-3">
+      @include('crud::inc.filter_stack', ['stack' => 'right'])
+    </div>
+    @endif
+  </div>
+
+  @if ($crud->filters->where('stack', 'bottom')->count())
+  <!-- BOTTOM FILTERS STACK -->
+  <div class="row">
+    <div class="col-md-12 text-center">
+      @include('crud::inc.filter_stack', ['stack' => 'bottom'])
+    </div>
+  </div>
+  @endif
+
+
 @endsection
 
 @section('after_scripts')
