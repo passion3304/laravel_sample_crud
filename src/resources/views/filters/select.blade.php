@@ -39,7 +39,10 @@
 			var current_url = '{{ Request::url() }}';
 			var new_url = '';
 
-			new_url = updateQueryStringParameter(current_url, current_name, value)
+			new_url = updateQueryStringParameter(current_url, current_name, value);
+			if (value == '') {
+				new_url = new_url.replace(current_name+"=", "");
+			}
 			window.location.href = new_url;
 		})
 	});
