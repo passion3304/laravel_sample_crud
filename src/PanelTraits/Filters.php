@@ -45,25 +45,22 @@ trait Filters
         }
         else
         {
-            // if an operator was passed
-            if ($filter_logic)
-            {
-                $this->addDefaultFilterLogic($filter->name, $filter_logic);
-            }
+            $this->addDefaultFilterLogic($filter->name, $filter_logic);
         }
     }
 
     public function addDefaultFilterLogic($name, $operator) {
-        if (!is_string($operator)) {
-            abort(500, "The filter logic be either a closure or a string.");
-        }
-
         $input = \Request::all();
 
         // if this filter is active (the URL has it as a GET parameter)
         if (isset($input[$name]))
         {
             switch ($operator) {
+                // if no operator was passed, just use the equals operator
+                case false:
+                    $this->addClause('where', $name, $input[$name]);
+                    break;
+
                 case 'scope':
                     $this->addClause($operator);
                     break;
@@ -154,6 +151,8 @@ class CrudFilter
     public $stack; // stacks: top, right, bottom, left
     public $name; // the name of the filtered variable (db column name)
     public $type = 'select'; // the name of the filter view that will be loaded
+    public $values;
+    public $currentValue;
     public $view;
 
     public function __construct($options, $values, $filter_logic)
@@ -170,6 +169,20 @@ class CrudFilter
         }
         $this->type = $options['type'];
 
+        $this->values = $values;
         $this->view = 'crud::filters.'.$this->type;
+
+        if (\Request::input($this->name)) {
+            $this->currentValue = \Request::input($this->name);
+        }
+    }
+
+    public function isActive()
+    {
+        if (\Request::input($this->name)) {
+            return true;
+        }
+
+        return false;
     }
 }
