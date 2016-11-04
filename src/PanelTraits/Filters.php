@@ -27,8 +27,7 @@ trait Filters
     public function addFilter($options, $values = false, $filter_logic = false)
     {
         // if a closure was passed as "values"
-        if (is_callable($values))
-        {
+        if (is_callable($values)) {
             // get its results
             $values = $values();
         }
@@ -38,23 +37,20 @@ trait Filters
         $this->filters->push($filter);
 
         // if a closure was passed as "filter_logic"
-        if (is_callable($filter_logic))
-        {
+        if (is_callable($filter_logic)) {
             // apply it
             $filter_logic();
-        }
-        else
-        {
+        } else {
             $this->addDefaultFilterLogic($filter->name, $filter_logic);
         }
     }
 
-    public function addDefaultFilterLogic($name, $operator) {
+    public function addDefaultFilterLogic($name, $operator)
+    {
         $input = \Request::all();
 
         // if this filter is active (the URL has it as a GET parameter)
-        if (isset($input[$name]))
-        {
+        if (isset($input[$name])) {
             switch ($operator) {
                 // if no operator was passed, just use the equals operator
                 case false:
@@ -92,7 +88,7 @@ trait Filters
                     break;
 
                 default:
-                    abort(500, "Unknown filter operator.");
+                    abort(500, 'Unknown filter operator.');
                     break;
             }
         }
