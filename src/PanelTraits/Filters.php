@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
-use Illuminate\Support\Collection;
-
 trait Filters
 {
     // ------------
@@ -141,8 +139,12 @@ trait Filters
 
 class FiltersCollection extends \Illuminate\Support\Collection
 {
-    public function stackItems($stack) {}
-    public function stackCount($stack) {
+    public function stackItems($stack)
+    {
+    }
+
+    public function stackCount($stack)
+    {
         dd($this);
     }
 }
@@ -156,15 +158,15 @@ class CrudFilter
 
     public function __construct($options, $values, $filter_logic)
     {
-        $this->stack = isset($options['stack'])?$options['stack']:'top';
+        $this->stack = isset($options['stack']) ? $options['stack'] : 'top';
 
-        if (!isset($options['name'])) {
-            abort(500, "Please make sure all your filters have names.");
+        if (! isset($options['name'])) {
+            abort(500, 'Please make sure all your filters have names.');
         }
         $this->name = $options['name'];
 
-        if (!isset($options['name'])) {
-            abort(500, "Please make sure all your filters have types.");
+        if (! isset($options['name'])) {
+            abort(500, 'Please make sure all your filters have types.');
         }
         $this->type = $options['type'];
 
