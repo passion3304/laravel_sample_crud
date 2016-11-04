@@ -7,7 +7,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Form as Form;
 use Illuminate\Http\Request;
-
 use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
 use Backpack\CRUD\CrudPanel;
@@ -41,8 +40,9 @@ class CrudController extends BaseController
     /**
      * Allow developers to set their configuration options for a CrudPanel.
      */
-    public function setup(Request $request) {}
-
+    public function setup(Request $request)
+    {
+    }
 
     /**
      * Display all rows in the database for this entity.
