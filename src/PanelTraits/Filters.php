@@ -28,7 +28,79 @@ trait Filters
      */
     public function addFilter($options, $values = false, $filter_logic = false)
     {
-        $this->filters->push(new CrudFilter($options, $values, $filter_logic));
+        // if a closure was passed as "values"
+        if (is_callable($values))
+        {
+            // get its results
+            $values = $values();
+        }
+
+        // add a new filter to the interface
+        $filter = new CrudFilter($options, $values, $filter_logic);
+        $this->filters->push($filter);
+
+        // if a closure was passed as "filter_logic"
+        if (is_callable($filter_logic))
+        {
+            // apply it
+            $filter_logic();
+        }
+        else
+        {
+            // if an operator was passed
+            if ($filter_logic)
+            {
+                $this->addDefaultFilterLogic($filter->name, $filter_logic);
+            }
+        }
+    }
+
+    public function addDefaultFilterLogic($name, $operator) {
+        if (!is_string($operator)) {
+            abort(500, "The filter logic be either a closure or a string.");
+        }
+
+        $input = \Request::all();
+
+        // if this filter is active (the URL has it as a GET parameter)
+        if (isset($input[$name]))
+        {
+            switch ($operator) {
+                case 'scope':
+                    $this->addClause($operator);
+                    break;
+
+                // TODO:
+                // whereBetween
+                // whereNotBetween
+                // whereIn
+                // whereNotIn
+                // whereNull
+                // whereNotNull
+                // whereDate
+                // whereMonth
+                // whereDay
+                // whereYear
+                // whereColumn
+                // like
+
+                // sql comparison operators
+                case '=':
+                case '<=>':
+                case '<>':
+                case '!=':
+                case '>':
+                case '>=':
+                case '<':
+                case '<=':
+                    $this->addClause('where', $name, $operator, $input[$name]);
+                    break;
+
+                default:
+                    abort(500, "Unknown filter operator.");
+                    break;
+            }
+        }
     }
 
     public function filters()

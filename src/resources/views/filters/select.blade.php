@@ -8,3 +8,6 @@
 	    <option>option 5</option>
 	  </select>
 </div>
+
+@php echo '<pre>'; var_dump($filter); echo '</pre>'; @endphp
+{{-- important variables in here: $filter --}}
