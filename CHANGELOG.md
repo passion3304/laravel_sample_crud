@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.38] - 2016-11-04
+
+### Fixed
+- SimpleMDE field type did not allow multiple such field types in one form; fixes #222;
+
+
 ## [3.1.37] - 2016-11-03
 
 ### Fixed
