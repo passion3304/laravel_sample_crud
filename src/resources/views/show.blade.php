@@ -1,5 +1,15 @@
 @extends('backpack::layout')
 
+@section('after_styles')
+<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/show.css') }}">
+@endsection
+
+@section('after_scripts')
+<script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
+<script src="{{ asset('vendor/backpack/crud/js/show.js') }}"></script>
+@endsection
+
 @section('content-header')
 	<section class="content-header">
 	  <h1>

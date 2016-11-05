@@ -1,6 +1,18 @@
 @extends('backpack::layout')
 
 @section('after_styles')
+<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/form.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/list.css') }}">
+@endsection
+
+@section('after_scripts')
+<script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
+<script src="{{ asset('vendor/backpack/crud/js/form.js') }}"></script>
+<script src="{{ asset('vendor/backpack/crud/js/list.js') }}"></script>
+@endsection
+
+@section('after_styles')
 	<!-- DATA TABLES -->
     <link href="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
 @endsection
