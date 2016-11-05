@@ -47,9 +47,21 @@ class CrudServiceProvider extends ServiceProvider
 
         // publish custom files for elFinder
         $this->publishes([
-                            __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
-                            __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
-                            ], 'elfinder');
+            __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
+            __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
+        ], 'elfinder');
+
+        // AUTO PUBLISH
+        if( \App::environment('local') ){
+
+            if( $this->shouldAutoPublishPublic() ){
+
+                \Artisan::call('vendor:publish', [
+                    '--provider' => 'Backpack\CRUD\CrudServiceProvider',
+                    '--tag' => 'public'
+                ]);
+            }
+        }
 
 
         // use the vendor configuration file as fallback
@@ -128,5 +140,22 @@ class CrudServiceProvider extends ServiceProvider
             ], $options);
 
         Route::resource($name, $controller, $options_with_default_route_names);
+    }
+
+    /**
+     * Checks to see if we should automatically publish
+     * vendor files from the public tag
+     *
+     * @return boolean
+     */
+    private function shouldAutoPublishPublic()
+    {
+        $crudPubPath = public_path('vendor/backpack/crud');
+
+        if( !is_dir( $crudPubPath ) ){
+            return true;
+        }
+
+        return false;
     }
 }
