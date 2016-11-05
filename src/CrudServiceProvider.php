@@ -52,13 +52,11 @@ class CrudServiceProvider extends ServiceProvider
         ], 'elfinder');
 
         // AUTO PUBLISH
-        if( \App::environment('local') ){
-
-            if( $this->shouldAutoPublishPublic() ){
-
+        if (\App::environment('local')) {
+            if ($this->shouldAutoPublishPublic()) {
                 \Artisan::call('vendor:publish', [
                     '--provider' => 'Backpack\CRUD\CrudServiceProvider',
-                    '--tag' => 'public'
+                    '--tag' => 'public',
                 ]);
             }
         }
@@ -144,15 +142,15 @@ class CrudServiceProvider extends ServiceProvider
 
     /**
      * Checks to see if we should automatically publish
-     * vendor files from the public tag
+     * vendor files from the public tag.
      *
-     * @return boolean
+     * @return bool
      */
     private function shouldAutoPublishPublic()
     {
         $crudPubPath = public_path('vendor/backpack/crud');
 
-        if( !is_dir( $crudPubPath ) ){
+        if (! is_dir($crudPubPath)) {
             return true;
         }
 
