@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - fixed video field having an extra input on page;
+- fixed hasUploadFields() check for update edit form; fixes #211;
 
 
 ## [3.1.39] - 2016-11-06
