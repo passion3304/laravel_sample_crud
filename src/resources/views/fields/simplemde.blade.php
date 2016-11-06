@@ -27,11 +27,14 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-        <script>
-            var simplemde = new SimpleMDE({ element: $("#simplemde-{{ $field['name'] }}")[0] });
-        </script>
     @endpush
 
 @endif
+
+@push('crud_fields_scripts')
+<script>
+    var simplemde = new SimpleMDE({ element: $("#simplemde-{{ $field['name'] }}")[0] });
+</script>
+@endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
