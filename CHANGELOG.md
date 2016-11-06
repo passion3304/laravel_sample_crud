@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.40] - 2016-11-06
+
+### Fixed
+- fixed video field having an extra input on page;
+
+
 ## [3.1.39] - 2016-11-06
 
 ### Fixed
