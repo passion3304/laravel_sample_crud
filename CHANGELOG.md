@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.39] - 2016-11-06
+
+### Fixed
+- fixed SimpleMDE which was broken by last commit; really fixes #222;
+
+
 ## [3.1.38] - 2016-11-04
 
 ### Fixed
