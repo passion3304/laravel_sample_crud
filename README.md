@@ -23,7 +23,8 @@ Features:
 - Easily extend fields (customising a field type or adding a new one is as easy as creating a new view with a particular name)
 - Easily overwrite functionality (customising how the create/update/delete/reorder process works is as easy as creating a new function with the proper name in your EntityCrudCrontroller)
 
-**Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced of any major features or breaking changes (once every 1-3 months).**
+### Security updates and breaking changes
+Please **[subscribe to the Backpack Newsletter](http://eepurl.com/bUEGjf)** so you can find out about any security updates, breaking changes or major features. We send an email every 1-2 months.
 
 ![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
 
