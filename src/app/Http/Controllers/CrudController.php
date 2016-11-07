@@ -23,6 +23,7 @@ class CrudController extends BaseController
 
     public $data = [];
     public $crud;
+    public $request;
 
     public function __construct()
     {
@@ -31,7 +32,8 @@ class CrudController extends BaseController
         // call the setup function inside this closure to also have the request there
         // this way, developers can use things stored in session (auth variables, etc)
         $this->middleware(function ($request, $next) {
-            $this->setup($request);
+            $this->request = $request;
+            $this->setup();
 
             return $next($request);
         });
@@ -40,7 +42,7 @@ class CrudController extends BaseController
     /**
      * Allow developers to set their configuration options for a CrudPanel.
      */
-    public function setup(Request $request)
+    public function setup()
     {
     }
 
