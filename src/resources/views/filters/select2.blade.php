@@ -2,8 +2,8 @@
 {{-- important variables in here: $filter --}}
 
 <div class="form-group backpack-filter">
-	<label for="filter_{{ $filter->name }}">{{ $filter->label }}</label>
-	<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control select2" placeholder="{{ $filter->placeholder }}">
+	<label for="filter_{{ $filter->name }}">{{ $filter->label }}:</label>
+	<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm select2" placeholder="{{ $filter->placeholder }}">
 		<option></option>
 		<option value="">-</option>
 
@@ -31,6 +31,11 @@
         <!-- include select2 css-->
         <link href="{{ asset('vendor/backpack/select2/select2.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('vendor/backpack/select2/select2-bootstrap-dick.css') }}" rel="stylesheet" type="text/css" />
+        <style>
+		  .form-inline .select2-container {
+		    display: inline-block;
+		  }
+        </style>
     @endpush
 
 

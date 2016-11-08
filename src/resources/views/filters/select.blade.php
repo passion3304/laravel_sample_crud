@@ -2,9 +2,9 @@
 {{-- important variables in here: $filter --}}
 
 <div class="form-group backpack-filter">
-	<label for="filter_{{ $filter->name }}">{{ $filter->label }}</label>
-	<div>
-		<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control">
+	<label for="filter_{{ $filter->name }}">{{ $filter->label }}:</label>
+	<div class="filter-content">
+		<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm">
 			<option value="">-</option>
 
 			@if (is_array($filter->values) && count($filter->values))
