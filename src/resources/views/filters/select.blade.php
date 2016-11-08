@@ -48,14 +48,26 @@
 				$("select[name=filter_{{ $filter->name }}]").change(function() {
 					var value = $(this).val();
 					var current_name = '{{ $filter->name }}';
-					var current_url = '{{ Request::url() }}';
+					var current_url = '{{ $crud->ajaxTable()?url($crud->route.'/search'):Request::url() }}';
 					var new_url = '';
+
 
 					new_url = updateQueryStringParameter(current_url, current_name, value);
 					if (value == '') {
 						new_url = new_url.replace(current_name+"=", "");
 					}
-					window.location.href = new_url;
+
+
+					@if ($crud->ajaxTable())
+						// behaviour for ajax table
+						var ajax_table = $("#crudTable").DataTable();
+						console.log(new_url);
+						ajax_table.ajax.url(new_url);
+						ajax_table.ajax.reload();
+				    @else
+				    	// behaviour for normal table
+				    	window.location.href = new_url;
+				    @endif
 				})
 			});
 		</script>
