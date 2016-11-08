@@ -48,6 +48,7 @@
 						var current_url = '{{ Request::fullUrl() }}';
 						var new_url = addOrUpdateUriParameter(current_url, parameter, value);
 
+						// refresh the page to the new_url
 				    	window.location.href = new_url;
 				    @else
 				    	// behaviour for ajax table
@@ -55,9 +56,10 @@
 						var current_url = ajax_table.ajax.url();
 						var new_url = addOrUpdateUriParameter(current_url, parameter, value);
 
+						// replace the datatables ajax url with new_url and reload it
 						ajax_table.ajax.url(new_url).load();
 
-						// also set all duplicate filters to the same value
+						// also set any duplicate filters to the same value
 						$("select[name=filter_{{ $filter->name }}]").val(value);
 				    @endif
 				})
