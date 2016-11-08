@@ -53,36 +53,27 @@
         </script>
 
         <script>
-			function updateQueryStringParameter(uri, key, value) {
-			  var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-			  var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-			  if (uri.match(re)) {
-			    return uri.replace(re, '$1' + key + "=" + value + '$2');
-			  }
-			  else {
-			    return uri + separator + key + "=" + value;
-			  }
-			}
-
 			jQuery(document).ready(function($) {
 				$("select[name=filter_{{ $filter->name }}]").change(function() {
 					var value = $(this).val();
-					var current_name = '{{ $filter->name }}';
-					var current_url = '{{ $crud->ajaxTable()?url($crud->route.'/search'):Request::url() }}';
-					var new_url = '';
+					var parameter = '{{ $filter->name }}';
 
-					new_url = updateQueryStringParameter(current_url, current_name, value);
-					if (value == '') { new_url = new_url.replace(current_name+"=", ""); }
+					@if (!$crud->ajaxTable())
+						// behaviour for normal table
+						var current_url = '{{ Request::fullUrl() }}';
+						var new_url = addOrUpdateUriParameter(current_url, parameter, value);
 
-					@if ($crud->ajaxTable())
-						// behaviour for ajax table
+				    	window.location.href = new_url;
+				    @else
+				    	// behaviour for ajax table
 						var ajax_table = $("#crudTable").DataTable();
+						var current_url = ajax_table.ajax.url();
+						var new_url = addOrUpdateUriParameter(current_url, parameter, value);
+
 						ajax_table.ajax.url(new_url).load();
+
 						// also set all duplicate filters to the same value
 						$("select[name=filter_{{ $filter->name }}]").val(value);
-				    @else
-				    	// behaviour for normal table
-				    	window.location.href = new_url;
 				    @endif
 				})
 			});
