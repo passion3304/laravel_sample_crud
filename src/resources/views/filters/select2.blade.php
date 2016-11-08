@@ -3,7 +3,8 @@
 
 <div class="form-group backpack-filter">
 	<label for="filter_{{ $filter->name }}">{{ $filter->label }}</label>
-	<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control">
+	<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control select2" placeholder="{{ $filter->placeholder }}">
+		<option></option>
 		<option value="">-</option>
 
 		@if (is_array($filter->values) && count($filter->values))
@@ -26,15 +27,31 @@
 {{-- FILTERS EXTRA CSS  --}}
 {{-- push things in the after_styles section --}}
 
-    {{-- @push('crud_list_styles')
-        <!-- no css-->
-    @endpush --}}
+    @push('crud_list_styles')
+        <!-- include select2 css-->
+        <link href="{{ asset('vendor/backpack/select2/select2.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('vendor/backpack/select2/select2-bootstrap-dick.css') }}" rel="stylesheet" type="text/css" />
+    @endpush
 
 
 {{-- FILTERS EXTRA JS --}}
 {{-- push things in the after_scripts section --}}
 
     @push('crud_list_scripts')
+    	<!-- include select2 js-->
+        <script src="{{ asset('vendor/backpack/select2/select2.js') }}"></script>
+        <script>
+            jQuery(document).ready(function($) {
+                // trigger select2 for each untriggered select2 box
+                $('.select2').each(function (i, obj) {
+                    if (!$(obj).data("select2"))
+                    {
+                        $(obj).select2();
+                    }
+                });
+            });
+        </script>
+
         <script>
 			function updateQueryStringParameter(uri, key, value) {
 			  var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");

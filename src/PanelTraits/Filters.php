@@ -147,7 +147,10 @@ class CrudFilter
     public $stack; // stacks: top, right, bottom, left
     public $name; // the name of the filtered variable (db column name)
     public $type = 'select'; // the name of the filter view that will be loaded
+    public $label;
+    public $placeholder;
     public $values;
+    public $options;
     public $currentValue;
     public $view;
 
@@ -165,7 +168,19 @@ class CrudFilter
         }
         $this->type = $options['type'];
 
+        if (! isset($options['label'])) {
+            abort(500, 'Please make sure all your filters have labels.');
+        }
+        $this->label = $options['label'];
+
+        if (! isset($options['placeholder'])) {
+            $this->placeholder = '';
+        } else {
+            $this->placeholder = $options['placeholder'];
+        }
+
         $this->values = $values;
+        $this->options = $options;
         $this->view = 'crud::filters.'.$this->type;
 
         if (\Request::input($this->name)) {

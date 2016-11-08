@@ -1,13 +1,5 @@
 @extends('backpack::layout')
 
-@section('after_styles')
-	<!-- DATA TABLES -->
-    <link href="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
-
-  <!-- CRUD LIST CONTENT - crud_list_styles stack -->
-  @stack('crud_list_styles')
-@endsection
-
 @section('header')
 	<section class="content-header">
 	  <h1>
@@ -25,19 +17,19 @@
 @section('content')
 <!-- Default box -->
   @if ($crud->filters->where('stack', 'top')->count())
-  <!-- TOP FILTERS STACK -->
-  <div class="row">
-    <div class="col-md-12 text-center">
-      @include('crud::inc.filter_stack', ['stack' => 'top'])
+    <!-- TOP FILTERS STACK -->
+    <div class="row">
+      <div class="col-md-12 text-center">
+        @include('crud::inc.filter_stack', ['stack' => 'top'])
+      </div>
     </div>
-  </div>
   @endif
   <div class="row">
     @if ($crud->filters->where('stack', 'left')->count())
-    <!-- LEFT FILTERS STACK -->
-    <div class="col-md-3">
-    @include('crud::inc.filter_stack', ['stack' => 'left'])
-    </div>
+      <!-- LEFT FILTERS STACK -->
+      <div class="col-md-3">
+      @include('crud::inc.filter_stack', ['stack' => 'left'])
+      </div>
     @endif
 
     <?php
@@ -141,27 +133,43 @@
 
 
     @if ($crud->filters->where('stack', 'right')->count())
-    <!-- RIGHT FILTERS STACK -->
-    <div class="col-md-3">
-      @include('crud::inc.filter_stack', ['stack' => 'right'])
-    </div>
+      <!-- RIGHT FILTERS STACK -->
+      <div class="col-md-3">
+        @include('crud::inc.filter_stack', ['stack' => 'right'])
+      </div>
     @endif
   </div>
 
   @if ($crud->filters->where('stack', 'bottom')->count())
-  <!-- BOTTOM FILTERS STACK -->
-  <div class="row">
-    <div class="col-md-12 text-center">
-      @include('crud::inc.filter_stack', ['stack' => 'bottom'])
+    <!-- BOTTOM FILTERS STACK -->
+    <div class="row">
+      <div class="col-md-12 text-center">
+        @include('crud::inc.filter_stack', ['stack' => 'bottom'])
+      </div>
     </div>
-  </div>
   @endif
 
 
 @endsection
 
+@section('after_styles')
+  <!-- DATA TABLES -->
+    <link href="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+
+    <style>
+    .backpack-filter label {
+      color: #868686;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    </style>
+
+  <!-- CRUD LIST CONTENT - crud_list_styles stack -->
+  @stack('crud_list_styles')
+@endsection
+
 @section('after_scripts')
-	<!-- DATA TABES SCRIPT -->
+	<!-- DATA TABLES SCRIPT -->
     <script src="{{ asset('vendor/adminlte/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
 
     @if ($crud->exportButtons())
