@@ -16,30 +16,10 @@
 
 @section('content')
 <!-- Default box -->
-  @if ($crud->filters->where('stack', 'top')->count())
-    <!-- TOP FILTERS STACK -->
-    <div class="row">
-      <div class="col-md-12 text-center">
-        @include('crud::inc.filter_stack', ['stack' => 'top'])
-      </div>
-    </div>
-  @endif
   <div class="row">
-    @if ($crud->filters->where('stack', 'left')->count())
-      <!-- LEFT FILTERS STACK -->
-      <div class="col-md-3">
-      @include('crud::inc.filter_stack', ['stack' => 'left'])
-      </div>
-    @endif
-
-    <?php
-      $content_box_width = 12;
-      if ($crud->filters->where('stack', 'left')->count()) $content_box_width -= 3;
-      if ($crud->filters->where('stack', 'right')->count()) $content_box_width -= 3;
-    ?>
 
     <!-- THE ACTUAL CONTENT -->
-    <div class="col-md-{{ $content_box_width }}">
+    <div class="col-md-12">
       <div class="box">
         <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
 
@@ -47,7 +27,11 @@
 
           <div id="datatable_button_stack" class="pull-right text-right"></div>
         </div>
+
         <div class="box-body">
+
+        {{-- Backpack List Filters --}}
+        @include('crud::inc.filters_navbar')
 
         <table id="crudTable" class="table table-bordered table-striped display">
             <thead>
@@ -130,39 +114,13 @@
       </div><!-- /.box -->
     </div>
 
-
-
-    @if ($crud->filters->where('stack', 'right')->count())
-      <!-- RIGHT FILTERS STACK -->
-      <div class="col-md-3">
-        @include('crud::inc.filter_stack', ['stack' => 'right'])
-      </div>
-    @endif
   </div>
-
-  @if ($crud->filters->where('stack', 'bottom')->count())
-    <!-- BOTTOM FILTERS STACK -->
-    <div class="row">
-      <div class="col-md-12 text-center">
-        @include('crud::inc.filter_stack', ['stack' => 'bottom'])
-      </div>
-    </div>
-  @endif
-
 
 @endsection
 
 @section('after_styles')
   <!-- DATA TABLES -->
     <link href="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
-
-    <style>
-    .backpack-filter label {
-      color: #868686;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    </style>
 
   <!-- CRUD LIST CONTENT - crud_list_styles stack -->
   @stack('crud_list_styles')
