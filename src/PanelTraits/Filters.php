@@ -147,7 +147,7 @@ class CrudFilter
         if (! isset($options['type'])) {
             abort(500, 'Please make sure all your filters have types.');
         }
-        if (! \View::exists("crud::filters.".$options['type'])) {
+        if (! \View::exists('crud::filters.'.$options['type'])) {
             abort(500, 'No filter view named "'.$options['type'].'.blade.php" was found.');
         }
         $this->type = $options['type'];
