@@ -31,7 +31,9 @@
         <div class="box-body">
 
         {{-- Backpack List Filters --}}
-        @include('crud::inc.filters_navbar')
+        @if ($crud->filters->count())
+          @include('crud::inc.filters_navbar')
+        @endif
 
         <table id="crudTable" class="table table-bordered table-striped display">
             <thead>
@@ -143,25 +145,6 @@
     @endif
 
     <script src="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.2/URI.min.js" type="text/javascript"></script>
-    <script>
-      function addOrUpdateUriParameter(uri, parameter, value) {
-            var new_url = uri.replace("&amp;", "&");
-
-            new_url = URI(new_url).normalizeSearch();
-
-            if (new_url.hasSearch(parameter)) {
-              new_url.removeSearch(parameter);
-            }
-
-            if (value != '') {
-              new_url = new_url.addSearch(parameter, value);
-            }
-
-        return new_url.toString();
-      }
-    </script>
 
 	<script type="text/javascript">
 	  jQuery(document).ready(function($) {

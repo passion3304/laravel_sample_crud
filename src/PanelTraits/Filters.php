@@ -15,12 +15,12 @@ trait Filters
         $this->filters = new FiltersCollection;
     }
 
-    // TODO: $this->crud->reorderFilters('stack_name', ['one', 'two']);
+    // TODO: $this->crud->reorderFilters(['one', 'two']);
 
     /**
      * Add a filter to the CRUD table view.
      *
-     * @param array         $options        Name, type, label, stack, etc.
+     * @param array         $options        Name, type, label, etc.
      * @param array/closure $values         The HTML for the filter.
      * @param closure       $filter_logic   Query modification (filtering) logic.
      */
@@ -112,39 +112,22 @@ trait Filters
     {
         $this->filters = collect([]);
     }
-
-    // TODO
-    public function removeAllFiltersFromStack($stack)
-    {
-        $this->filters = $this->filters->reject(function ($filter) use ($stack) {
-            return $filter->stack == $stack;
-        });
-    }
-
-    // TODO
-    public function removeFilterFromStack($name, $stack)
-    {
-        $this->filters = $this->filters->reject(function ($filter) use ($name, $stack) {
-            return $filter->name == $name && $filter->stack == $stack;
-        });
-    }
 }
 
 class FiltersCollection extends \Illuminate\Support\Collection
 {
-    public function stackItems($stack)
+    public function removeFilter($name)
     {
     }
 
-    public function stackCount($stack)
-    {
-        dd($this);
-    }
+    // public function count()
+    // {
+    //     dd($this);
+    // }
 }
 
 class CrudFilter
 {
-    public $stack; // stacks: top, right, bottom, left
     public $name; // the name of the filtered variable (db column name)
     public $type = 'select'; // the name of the filter view that will be loaded
     public $label;
@@ -156,15 +139,16 @@ class CrudFilter
 
     public function __construct($options, $values, $filter_logic)
     {
-        $this->stack = isset($options['stack']) ? $options['stack'] : 'top';
-
         if (! isset($options['name'])) {
             abort(500, 'Please make sure all your filters have names.');
         }
         $this->name = $options['name'];
 
-        if (! isset($options['name'])) {
+        if (! isset($options['type'])) {
             abort(500, 'Please make sure all your filters have types.');
+        }
+        if (! \View::exists("crud::filters.".$options['type'])) {
+            abort(500, 'No filter view named "'.$options['type'].'.blade.php" was found.');
         }
         $this->type = $options['type'];
 

@@ -16,6 +16,7 @@
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Trashed <span class="sr-only">(current)</span></a></li>
           <li><a href="#">Active</a></li>
+          <li><a href="#">Active</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -29,38 +30,20 @@
             </ul>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select2 <span class="caret"></span></a>
-            <div class="dropdown-menu padding-10">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi suscipit tempora dolores! Aliquid qui fugiat repellendus. Ex ut blanditiis, eveniet vero natus laboriosam, porro, harum magnam nihil qui, ea perspiciatis.
-            </div>
-          </li>
-          <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Custom <span class="caret"></span></a>
             <div class="dropdown-menu padding-10">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi suscipit tempora dolores! Aliquid qui fugiat repellendus. Ex ut blanditiis, eveniet vero natus laboriosam, porro, harum magnam nihil qui, ea perspiciatis.
             </div>
           </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#"><i class="fa fa-ban"></i> Clear filters</a></li>
+          <!-- THE ACTUAL FILTERS -->
+			@foreach ($crud->filters as $filter)
+				@include($filter->view)
+			@endforeach
+          <li><a href="#"><i class="fa fa-eraser"></i> Remove filters</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
-
-
-  @if ($crud->filters->count())
-    <!-- TOP FILTERS STACK -->
-    <div class="row">
-      <div class="col-md-12 text-center">
-		@if ($crud->filters->count())
-			@foreach ($crud->filters as $filter)
-				@include($filter->view)
-			@endforeach
-		@endif
-      </div>
-    </div>
-  @endif
 
 
 @push('crud_list_styles')
@@ -79,6 +62,10 @@
       border-color: #f4f4f4;
     }
 
+    .navbar-filters .navbar-collapse {
+    	padding: 0;
+    }
+
     .navbar-filters .navbar-toggle {
       padding: 10px 15px;
       border-radius: 0;
@@ -91,10 +78,31 @@
       text-transform: uppercase;
     }
     @media (min-width: 768px) {
-      .navbar-nav>li>a {
+      .navbar-filters .navbar-nav>li>a {
           padding-top: 5px;
           padding-bottom: 5px;
       }
     }
     </style>
+@endpush
+
+@push('crud_list_scripts')
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.2/URI.min.js" type="text/javascript"></script>
+    <script>
+      function addOrUpdateUriParameter(uri, parameter, value) {
+            var new_url = uri.replace("&amp;", "&");
+
+            new_url = URI(new_url).normalizeQuery();
+
+            if (new_url.hasQuery(parameter)) {
+              new_url.removeQuery(parameter);
+            }
+
+            if (value != '') {
+              new_url = new_url.addQuery(parameter, value);
+            }
+
+        return new_url.toString();
+      }
+    </script>
 @endpush
