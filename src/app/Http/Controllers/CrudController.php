@@ -27,7 +27,7 @@ class CrudController extends BaseController
 
     public function __construct()
     {
-        if (!$this->crud) {
+        if (! $this->crud) {
             $this->crud = new CrudPanel();
 
             // call the setup function inside this closure to also have the request there
