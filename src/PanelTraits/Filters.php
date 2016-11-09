@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+use Illuminate\Http\Request;
+
 trait Filters
 {
     // ------------
@@ -47,7 +49,9 @@ trait Filters
         // if a closure was passed as "filter_logic"
         if (is_callable($filter_logic)) {
             // apply it
-            $filter_logic();
+            if ($this->request->input($options['name'])) {
+                $filter_logic();
+            }
         } else {
             $this->addDefaultFilterLogic($filter->name, $filter_logic);
         }

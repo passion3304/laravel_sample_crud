@@ -1,4 +1,4 @@
-{{-- Select2 backpack filter --}}
+{{-- Select2 Backpack CRUD filter --}}
 
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
@@ -70,7 +70,7 @@
 
 				@if (!$crud->ajaxTable())
 					// behaviour for normal table
-					var current_url = '{{ Request::fullUrl() }}';
+					var current_url = '{{ Request::fullUrl() }}'.replace("&amp;", "&");
 					var new_url = addOrUpdateUriParameter(current_url, parameter, value);
 
 					// refresh the page to the new_url

@@ -14,14 +14,6 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Trashed <span class="sr-only">(current)</span></a></li>
-          <li><a href="#">Active</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Custom <span class="caret"></span></a>
-            <div class="dropdown-menu padding-10">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi suscipit tempora dolores! Aliquid qui fugiat repellendus. Ex ut blanditiis, eveniet vero natus laboriosam, porro, harum magnam nihil qui, ea perspiciatis.
-            </div>
-          </li>
           <!-- THE ACTUAL FILTERS -->
 			@foreach ($crud->filters as $filter)
 				@include($filter->view)
