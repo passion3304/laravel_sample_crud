@@ -17,8 +17,6 @@ trait Filters
         $this->filters = new FiltersCollection;
     }
 
-    // TODO: $this->crud->reorderFilters(['one', 'two']);
-
     /**
      * Add a filter to the CRUD table view.
      *
@@ -62,47 +60,45 @@ trait Filters
         $input = \Request::all();
 
         // if this filter is active (the URL has it as a GET parameter)
-        if (isset($input[$name])) {
-            switch ($operator) {
-                // if no operator was passed, just use the equals operator
-                case false:
-                    $this->addClause('where', $name, $input[$name]);
-                    break;
+        switch ($operator) {
+            // if no operator was passed, just use the equals operator
+            case false:
+                $this->addClause('where', $name, $input[$name]);
+                break;
 
-                case 'scope':
-                    $this->addClause($operator);
-                    break;
+            case 'scope':
+                $this->addClause($operator);
+                break;
 
-                // TODO:
-                // whereBetween
-                // whereNotBetween
-                // whereIn
-                // whereNotIn
-                // whereNull
-                // whereNotNull
-                // whereDate
-                // whereMonth
-                // whereDay
-                // whereYear
-                // whereColumn
-                // like
+            // TODO:
+            // whereBetween
+            // whereNotBetween
+            // whereIn
+            // whereNotIn
+            // whereNull
+            // whereNotNull
+            // whereDate
+            // whereMonth
+            // whereDay
+            // whereYear
+            // whereColumn
+            // like
 
-                // sql comparison operators
-                case '=':
-                case '<=>':
-                case '<>':
-                case '!=':
-                case '>':
-                case '>=':
-                case '<':
-                case '<=':
-                    $this->addClause('where', $name, $operator, $input[$name]);
-                    break;
+            // sql comparison operators
+            case '=':
+            case '<=>':
+            case '<>':
+            case '!=':
+            case '>':
+            case '>=':
+            case '<':
+            case '<=':
+                $this->addClause('where', $name, $operator, $input[$name]);
+                break;
 
-                default:
-                    abort(500, 'Unknown filter operator.');
-                    break;
-            }
+            default:
+                abort(500, 'Unknown filter operator.');
+                break;
         }
     }
 
@@ -111,15 +107,13 @@ trait Filters
         return $this->filters;
     }
 
-    // TODO
     public function removeFilter($name)
     {
-        // $this->filters = $this->filters->reject(function ($filter) use ($name) {
-        //     return $filter->name == $name;
-        // });
+        $this->filters = $this->filters->reject(function ($filter) use ($name) {
+            return $filter->name == $name;
+        });
     }
 
-    // TODO
     public function removeAllFilters()
     {
         $this->filters = collect([]);
