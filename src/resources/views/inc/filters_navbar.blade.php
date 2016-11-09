@@ -39,7 +39,7 @@
 			@foreach ($crud->filters as $filter)
 				@include($filter->view)
 			@endforeach
-          <li><a href="#"><i class="fa fa-eraser"></i> Remove filters</a></li>
+          <li><a href="#" id="remove_filters_button"><i class="fa fa-eraser"></i> Remove filters</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -104,5 +104,30 @@
 
         return new_url.toString();
       }
+
+      // button to remove all filters
+      jQuery(document).ready(function($) {
+      	$("#remove_filters_button").click(function(e) {
+      		e.preventDefault();
+
+      		@if (!$crud->ajaxTable())
+				// behaviour for normal table
+				var clean_url = '{{ Request::url() }}';
+
+				// refresh the page to the clean_url
+		    	window.location.href = clean_url;
+		    @else
+		    	// behaviour for ajax table
+		    	var new_url = '{{ url($crud->route.'/search') }}';
+		    	var ajax_table = $("#crudTable").DataTable();
+
+				// replace the datatables ajax url with new_url and reload it
+				ajax_table.ajax.url(new_url).load();
+
+				// clear all filters
+				$(".navbar-filters li[filter-name]").trigger('filter:clear');
+		    @endif
+      	})
+      });
     </script>
 @endpush
