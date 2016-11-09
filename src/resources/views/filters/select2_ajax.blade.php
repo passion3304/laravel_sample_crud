@@ -6,7 +6,7 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu ajax-select padding-10">
 	    <div class="form-group m-b-0">
-	    	<input type="text" value="{{ Request::get($filter->name)?Request::get($filter->name):'' }}" id="filter_{{ $filter->name }}">
+	    	<input type="text" value="{{ Request::get($filter->name)?Request::get($filter->name).'|'.Request::get($filter->name.'_text'):'' }}" id="filter_{{ $filter->name }}">
 	    </div>
     </div>
   </li>
@@ -64,15 +64,30 @@
 			                })
 			            };
 			        }
-			    }
+			    },
+		        initSelection: function (element, callback) {
+		        	var value = element.val().split('|');
+		        	var results = [];
+
+		        	if (value != '') {
+		        		console.log(value);
+		        		results.push({
+				          id: value[0],
+				          text: value[1]
+				        });
+		        	}
+				    callback(results[0]);
+				}
 			}).on('change', function (evt) {
-				var value = $(this).val();
+				var val = $(this).val();
+				var val_text = $(this).select2('data').text;
 				var parameter = '{{ $filter->name }}';
 
 				@if (!$crud->ajaxTable())
 					// behaviour for normal table
 					var current_url = '{{ Request::fullUrl() }}'.replace("&amp;", "&");
-					var new_url = addOrUpdateUriParameter(current_url, parameter, value);
+					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
+					var new_url = addOrUpdateUriParameter(current_url, parameter+"_text", val_text);
 
 					// refresh the page to the new_url
 			    	window.location.href = new_url;
@@ -80,7 +95,8 @@
 			    	// behaviour for ajax table
 					var ajax_table = $("#crudTable").DataTable();
 					var current_url = ajax_table.ajax.url();
-					var new_url = addOrUpdateUriParameter(current_url, parameter, value);
+					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
+					var new_url = addOrUpdateUriParameter(current_url, parameter+"_text", val_text);
 
 					// replace the datatables ajax url with new_url and reload it
 					ajax_table.ajax.url(new_url).load();
@@ -95,6 +111,11 @@
 					}
 			    @endif
 			});
+
+			@if (Request::get($filter->name))
+			// default value
+			// $('#filter_{{ $filter->name }}').select2('val', ["{{ Request::get($filter->name) }}","{{ Request::get($filter->name.'_text') }}"], 'true');
+			@endif
 
 			// clear filter event (used here and by the Remove all filters button)
 			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
