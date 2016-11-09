@@ -151,22 +151,10 @@ class CrudFilter
 
     public function __construct($options, $values, $filter_logic)
     {
-        if (! isset($options['name'])) {
-            abort(500, 'Please make sure all your filters have names.');
-        }
+        $this->checkOptionsIntegrity($options);
+
         $this->name = $options['name'];
-
-        if (! isset($options['type'])) {
-            abort(500, 'Please make sure all your filters have types.');
-        }
-        if (! \View::exists('crud::filters.'.$options['type'])) {
-            abort(500, 'No filter view named "'.$options['type'].'.blade.php" was found.');
-        }
         $this->type = $options['type'];
-
-        if (! isset($options['label'])) {
-            abort(500, 'Please make sure all your filters have labels.');
-        }
         $this->label = $options['label'];
 
         if (! isset($options['placeholder'])) {
@@ -181,6 +169,22 @@ class CrudFilter
 
         if (\Request::input($this->name)) {
             $this->currentValue = \Request::input($this->name);
+        }
+    }
+
+    public function checkOptionsIntegrity($options)
+    {
+        if (! isset($options['name'])) {
+            abort(500, 'Please make sure all your filters have names.');
+        }
+        if (! isset($options['type'])) {
+            abort(500, 'Please make sure all your filters have types.');
+        }
+        if (! \View::exists('crud::filters.'.$options['type'])) {
+            abort(500, 'No filter view named "'.$options['type'].'.blade.php" was found.');
+        }
+        if (! isset($options['label'])) {
+            abort(500, 'Please make sure all your filters have labels.');
         }
     }
 
