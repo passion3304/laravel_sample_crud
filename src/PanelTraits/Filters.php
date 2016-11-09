@@ -32,6 +32,14 @@ trait Filters
             $values = $values();
         }
 
+        // check if another filter with the same name exists
+        if (!isset($options['name'])) {
+            abort(500, "All your filters need names.");
+        }
+        if ($this->filters->contains('name', $options['name'])) {
+            abort(500, "Sorry, you can't have two filters with the same name.");
+        }
+
         // add a new filter to the interface
         $filter = new CrudFilter($options, $values, $filter_logic);
         $this->filters->push($filter);
