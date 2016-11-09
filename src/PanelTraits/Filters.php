@@ -45,13 +45,13 @@ trait Filters
         $this->filters->push($filter);
 
         // if a closure was passed as "filter_logic"
-        if (is_callable($filter_logic)) {
-            // apply it
-            if ($this->request->input($options['name'])) {
+        if ($this->request->input($options['name'])) {
+            if (is_callable($filter_logic)) {
+                // apply it
                 $filter_logic();
+            } else {
+                $this->addDefaultFilterLogic($filter->name, $filter_logic);
             }
-        } else {
-            $this->addDefaultFilterLogic($filter->name, $filter_logic);
         }
     }
 
