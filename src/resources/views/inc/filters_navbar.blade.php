@@ -62,6 +62,12 @@
           padding-bottom: 5px;
       }
     }
+
+    @media (max-width: 768px) {
+      .navbar-filters .navbar-nav {
+        margin: 0;
+      }
+    }
     </style>
 @endpush
 

@@ -4,11 +4,10 @@
 	filter-type="{{ $filter->type }}"
 	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
-    <div class="dropdown-menu padding-10">
+    <div class="dropdown-menu">
       <div class="form-group backpack-filter m-b-0">
 			<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm select2" placeholder="{{ $filter->placeholder }}">
 				<option></option>
-				<option value="">-</option>
 
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)
@@ -40,6 +39,16 @@
 	  .form-inline .select2-container {
 	    display: inline-block;
 	  }
+	  .select2-drop-active {
+	  	border:none;
+	  }
+	  .select2-container .select2-choices .select2-search-field input, .select2-container .select2-choice, .select2-container .select2-choices {
+	  	border: none;
+	  }
+	  .select2-container-active .select2-choice {
+	  	border: none;
+	  	box-shadow: none;
+	  }
     </style>
 @endpush
 
@@ -56,7 +65,10 @@
             $('.select2').each(function (i, obj) {
                 if (!$(obj).data("select2"))
                 {
-                    $(obj).select2();
+                    $(obj).select2({
+                    	allowClear: true,
+    					closeOnSelect: false
+                    });
                 }
             });
         });
@@ -95,6 +107,11 @@
 						$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
 					}
 			    @endif
+			});
+
+			// when the dropdown is opened, autofocus on the select2
+			$("li[filter-name={{ $filter->name }}]").on('shown.bs.dropdown', function () {
+				$('#filter_{{ $filter->name }}').select2('open');
 			});
 
 			// clear filter event (used here and by the Remove all filters button)

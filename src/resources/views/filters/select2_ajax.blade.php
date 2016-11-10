@@ -4,7 +4,7 @@
 	filter-type="{{ $filter->type }}"
 	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
-    <div class="dropdown-menu ajax-select padding-10">
+    <div class="dropdown-menu ajax-select">
 	    <div class="form-group m-b-0">
 	    	<input type="text" value="{{ Request::get($filter->name)?Request::get($filter->name).'|'.Request::get($filter->name.'_text'):'' }}" id="filter_{{ $filter->name }}">
 	    </div>
@@ -28,6 +28,16 @@
 	  li[filter-type="{{ $filter->type }}"] .select2-container {
 	  	display: block;
 	  }
+	  .select2-drop-active {
+	  	border:none;
+	  }
+	  .select2-container .select2-choices .select2-search-field input, .select2-container .select2-choice, .select2-container .select2-choices {
+	  	border: none;
+	  }
+	  .select2-container-active .select2-choice {
+	  	border: none;
+	  	box-shadow: none;
+	  }
     </style>
 @endpush
 
@@ -43,6 +53,9 @@
             // trigger select2 for each untriggered select2 box
             $('#filter_{{ $filter->name }}').select2({
 			    minimumInputLength: 2,
+            	allowClear: true,
+        	    placeholder: " ",
+				closeOnSelect: false,
 			    // tags: [],
 			    ajax: {
 			        url: "{{ $filter->values }}",
@@ -79,14 +92,16 @@
 				}
 			}).on('change', function (evt) {
 				var val = $(this).val();
-				var val_text = $(this).select2('data').text;
+				var val_text = $(this).select2('data')?$(this).select2('data').text:null;
 				var parameter = '{{ $filter->name }}';
 
 				@if (!$crud->ajaxTable())
 					// behaviour for normal table
 					var current_url = normalizeAmpersand('{{ Request::fullUrl() }}');
 					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					new_url = addOrUpdateUriParameter(new_url, parameter+"_text", val_text);
+					if (val_text) {
+						new_url = addOrUpdateUriParameter(new_url, parameter+"_text", val_text);
+					}
 
 					// refresh the page to the new_url
 			    	new_url = normalizeAmpersand(new_url.toString());
@@ -96,7 +111,9 @@
 					var ajax_table = $("#crudTable").DataTable();
 					var current_url = ajax_table.ajax.url();
 					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					new_url = addOrUpdateUriParameter(new_url, parameter+"_text", val_text);
+					if (val_text) {
+						new_url = addOrUpdateUriParameter(new_url, parameter+"_text", val_text);
+					}
 					new_url = normalizeAmpersand(new_url.toString());
 
 
@@ -112,6 +129,11 @@
 						$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
 					}
 			    @endif
+			});
+
+			// when the dropdown is opened, autofocus on the select2
+			$("li[filter-name={{ $filter->name }}]").on('shown.bs.dropdown', function () {
+				$('#filter_{{ $filter->name }}').select2('open');
 			});
 
 			// clear filter event (used here and by the Remove all filters button)
