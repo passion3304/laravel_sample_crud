@@ -45,7 +45,9 @@ trait Filters
         $this->filters->push($filter);
 
         // if a closure was passed as "filter_logic"
-        if ($this->request->input($options['name'])) {
+        if ($this->request->input($options['name']) &&
+            $this->request->input($options['name']) != null &&
+            $this->request->input($options['name']) != 'null') {
             if (is_callable($filter_logic)) {
                 // apply it
                 $filter_logic();
