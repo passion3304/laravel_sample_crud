@@ -54,7 +54,7 @@
             $('#filter_{{ $filter->name }}').select2({
 			    minimumInputLength: 2,
             	allowClear: true,
-        	    placeholder: " ",
+        	    placeholder: "{{ $filter->placeholder?$filter->placeholder:' ' }}",
 				closeOnSelect: false,
 			    // tags: [],
 			    ajax: {

@@ -20,7 +20,7 @@
 				@endif
 			@endforeach
 			<li role="separator" class="divider"></li>
-			<li><a parameter="{{ $filter->name }}" key="" href=""><i class="fa fa-eraser"></i> Remove filter</a></li>
+			<li><a parameter="{{ $filter->name }}" key="" href="">-</a></li>
 		@endif
 
     </ul>
