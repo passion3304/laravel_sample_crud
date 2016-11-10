@@ -69,7 +69,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.2/URI.min.js" type="text/javascript"></script>
     <script>
       function addOrUpdateUriParameter(uri, parameter, value) {
-            var new_url = uri.replace("&amp;", "&");
+            var new_url = normalizeAmpersand(uri);
 
             new_url = URI(new_url).normalizeQuery();
 
@@ -82,6 +82,10 @@
             }
 
         return new_url.toString();
+      }
+
+      function normalizeAmpersand(string) {
+        return string.replace(/&amp;/g, "&").replace(/amp%3B/g, "");
       }
 
       // button to remove all filters

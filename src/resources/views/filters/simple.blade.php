@@ -33,7 +33,7 @@
 
 				@if (!$crud->ajaxTable())
 					// behaviour for normal table
-					var current_url = "{{ Request::fullUrl() }}".replace("&amp;", "&");
+					var current_url = normalizeAmpersand("{{ Request::fullUrl() }}");
 
 					if (URI(current_url).hasQuery(parameter)) {
 						var new_url = URI(current_url).removeQuery(parameter, true);
@@ -42,7 +42,8 @@
 					}
 
 					// refresh the page to the new_url
-			    	window.location.href = new_url.toString();
+			    	new_url = normalizeAmpersand(new_url.toString());
+			    	window.location.href = new_url;
 			    @else
 			    	// behaviour for ajax table
 					var ajax_table = $("#crudTable").DataTable();
@@ -54,8 +55,10 @@
 						var new_url = URI(current_url).addQuery(parameter, true);
 					}
 
+					new_url = normalizeAmpersand(new_url.toString());
+
 					// replace the datatables ajax url with new_url and reload it
-					ajax_table.ajax.url(new_url.toString()).load();
+					ajax_table.ajax.url(new_url).load();
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {

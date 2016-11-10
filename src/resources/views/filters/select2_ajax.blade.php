@@ -70,7 +70,6 @@
 		        	var results = [];
 
 		        	if (value != '') {
-		        		console.log(value);
 		        		results.push({
 				          id: value[0],
 				          text: value[1]
@@ -85,18 +84,21 @@
 
 				@if (!$crud->ajaxTable())
 					// behaviour for normal table
-					var current_url = '{{ Request::fullUrl() }}'.replace("&amp;", "&");
+					var current_url = normalizeAmpersand('{{ Request::fullUrl() }}');
 					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					var new_url = addOrUpdateUriParameter(current_url, parameter+"_text", val_text);
+					new_url = addOrUpdateUriParameter(new_url, parameter+"_text", val_text);
 
 					// refresh the page to the new_url
+			    	new_url = normalizeAmpersand(new_url.toString());
 			    	window.location.href = new_url;
 			    @else
 			    	// behaviour for ajax table
 					var ajax_table = $("#crudTable").DataTable();
 					var current_url = ajax_table.ajax.url();
 					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					var new_url = addOrUpdateUriParameter(current_url, parameter+"_text", val_text);
+					new_url = addOrUpdateUriParameter(new_url, parameter+"_text", val_text);
+					new_url = normalizeAmpersand(new_url.toString());
+
 
 					// replace the datatables ajax url with new_url and reload it
 					ajax_table.ajax.url(new_url).load();
@@ -111,11 +113,6 @@
 					}
 			    @endif
 			});
-
-			@if (Request::get($filter->name))
-			// default value
-			// $('#filter_{{ $filter->name }}').select2('val', ["{{ Request::get($filter->name) }}","{{ Request::get($filter->name.'_text') }}"], 'true');
-			@endif
 
 			// clear filter event (used here and by the Remove all filters button)
 			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {

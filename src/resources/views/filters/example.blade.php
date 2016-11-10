@@ -47,7 +47,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 
 				@if (!$crud->ajaxTable())
 					// behaviour for normal table
-					var current_url = "{{ Request::fullUrl() }}".replace("&amp;", "&");
+					var current_url = normalizeAmpersand("{{ Request::fullUrl() }}");
 
 					if (URI(current_url).hasQuery(parameter)) {
 						var new_url = URI(current_url).removeQuery(parameter, true);
@@ -56,6 +56,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 					}
 
 					// refresh the page to the new_url
+			    	new_url = normalizeAmpersand(new_url.toString());
 			    	window.location.href = new_url.toString();
 			    @else
 			    	// behaviour for ajax table
@@ -69,7 +70,8 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 					}
 
 					// replace the datatables ajax url with new_url and reload it
-					ajax_table.ajax.url(new_url.toString()).load();
+					new_url = normalizeAmpersand(new_url.toString());
+					ajax_table.ajax.url(new_url).load();
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
