@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.41] - 2016-11-11
+
+### Added
+- filters on list view;
+
+
 ## [3.1.40] - 2016-11-06
 
 ### Fixed
