@@ -123,10 +123,11 @@ trait Filters
     }
 
     /**
-     * Determine if the current CRUD action is a list operation (using standard or ajax DataTables)
+     * Determine if the current CRUD action is a list operation (using standard or ajax DataTables).
      * @return bool
      */
-    public function doingListOperation() {
+    public function doingListOperation()
+    {
         $route = $this->route;
 
         switch ($this->request->url()) {
@@ -142,7 +143,6 @@ trait Filters
                 return false;
                 break;
         }
-
     }
 }
 
