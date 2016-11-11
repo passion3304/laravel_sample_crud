@@ -45,7 +45,8 @@ trait Filters
         $this->filters->push($filter);
 
         // if a closure was passed as "filter_logic"
-        if ($this->request->input($options['name']) &&
+        if ($this->doingListOperation() &&
+            $this->request->input($options['name']) &&
             $this->request->input($options['name']) != null &&
             $this->request->input($options['name']) != 'null') {
             if (is_callable($filter_logic)) {
@@ -119,6 +120,29 @@ trait Filters
     public function removeAllFilters()
     {
         $this->filters = collect([]);
+    }
+
+    /**
+     * Determine if the current CRUD action is a list operation (using standard or ajax DataTables)
+     * @return bool
+     */
+    public function doingListOperation() {
+        $route = $this->route;
+
+        switch ($this->request->url()) {
+            case url($this->route):
+                return true;
+                break;
+
+            case url($this->route.'/search'):
+                return true;
+                break;
+
+            default:
+                return false;
+                break;
+        }
+
     }
 }
 
