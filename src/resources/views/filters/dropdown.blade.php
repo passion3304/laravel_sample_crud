@@ -5,7 +5,8 @@
 	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <ul class="dropdown-menu">
-
+		<li><a parameter="{{ $filter->name }}" key="" href="">-</a></li>
+		<li role="separator" class="divider"></li>
 		@if (is_array($filter->values) && count($filter->values))
 			@foreach($filter->values as $key => $value)
 				@if ($key == 'dropdown-separator')
@@ -19,10 +20,7 @@
 					</li>
 				@endif
 			@endforeach
-			<li role="separator" class="divider"></li>
-			<li><a parameter="{{ $filter->name }}" key="" href="">-</a></li>
 		@endif
-
     </ul>
   </li>
 

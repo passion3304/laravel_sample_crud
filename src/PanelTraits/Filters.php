@@ -51,7 +51,7 @@ trait Filters
             $this->request->input($options['name']) != 'null') {
             if (is_callable($filter_logic)) {
                 // apply it
-                $filter_logic();
+                $filter_logic($this->request->input($options['name']));
             } else {
                 $this->addDefaultFilterLogic($filter->name, $filter_logic);
             }
