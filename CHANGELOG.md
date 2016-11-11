@@ -20,6 +20,19 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.40] - 2016-11-06
+
+### Fixed
+- fixed video field having an extra input on page;
+- fixed hasUploadFields() check for update edit form; fixes #211;
+
+
+## [3.1.39] - 2016-11-06
+
+### Fixed
+- fixed SimpleMDE which was broken by last commit; really fixes #222;
+
+
 ## [3.1.38] - 2016-11-04
 
 ### Fixed

@@ -70,11 +70,12 @@ trait Read
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
      * @param  [form] create / update / both - defaults to 'both'
+     * @param  [id] id of the entity - defaults to false
      * @return bool
      */
-    public function hasUploadFields($form)
+    public function hasUploadFields($form, $id = false)
     {
-        $fields = $this->getFields($form);
+        $fields = $this->getFields($form, $id);
         $upload_fields = array_where($fields, function ($value, $key) {
             return isset($value['upload']) && $value['upload'] == true;
         });

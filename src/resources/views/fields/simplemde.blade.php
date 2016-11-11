@@ -31,8 +31,10 @@
 
 @endif
 
+@push('crud_fields_scripts')
 <script>
     var simplemde = new SimpleMDE({ element: $("#simplemde-{{ $field['name'] }}")[0] });
 </script>
+@endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
