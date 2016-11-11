@@ -3,7 +3,6 @@
 namespace Backpack\CRUD;
 
 use Illuminate\Support\ServiceProvider;
-use Backpack\CRUD\CrudRouter;
 
 class CrudServiceProvider extends ServiceProvider
 {

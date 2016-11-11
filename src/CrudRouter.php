@@ -91,7 +91,7 @@ class CrudRouter
     private function inject()
     {
         foreach ($this->requiredInjectables as $injectable) {
-            if( is_string($injectable) ){
+            if (is_string($injectable)) {
                 $this->{$injectable}();
             } else {
                 $injectable();
