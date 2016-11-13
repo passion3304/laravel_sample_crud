@@ -29,10 +29,19 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.0] - 2016-11-13
+
+### Added
+- redirect_after_save button actions;
+- filters on list views (deleted the 3.1.41 and 4.1.42 tags because they were breaking changes);
+- routes are now abstracted intro CrudRoute, so that new routes can be easily added;
+
+
 ## [3.1.42] - 2016-11-13
 
 ### Fixed
 - n-n filters prevented CRUD items from being added;
+
 
 ## [3.1.41] - 2016-11-11
 
