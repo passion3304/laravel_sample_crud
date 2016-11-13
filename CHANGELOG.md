@@ -29,6 +29,58 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.41] - 2016-11-11
+
+### Added
+- filters on list view;
+
+
+## [3.1.40] - 2016-11-06
+
+### Fixed
+- fixed video field having an extra input on page;
+- fixed hasUploadFields() check for update edit form; fixes #211;
+
+
+## [3.1.39] - 2016-11-06
+
+### Fixed
+- fixed SimpleMDE which was broken by last commit; really fixes #222;
+
+
+## [3.1.38] - 2016-11-04
+
+### Fixed
+- SimpleMDE field type did not allow multiple such field types in one form; fixes #222;
+
+
+## [3.1.37] - 2016-11-03
+
+### Fixed
+- Boolean column type triggered error because of improper use of the trans() helper;
+
+
+## [3.1.36] - 2016-10-30
+
+### Added
+- SimpleMDE field type (simple markdown editor).
+
+
+## [3.1.35] - 2016-10-30
+
+### Added
+- new column type: boolean;
+- new field type: color_picker;
+- new field type: date_picker;
+- new field type: datetime_picker;
+
+### Fixed
+- fixed default of 0 for radio field types;
+- fixes #187 - can now clear old address entries;
+- fixes hiding/showing buttons when the min/max are reached;
+- ckeditor field type now has customizable plugins;
+
+
 ## [3.1.34] - 2016-10-22
 
 ### Fixed

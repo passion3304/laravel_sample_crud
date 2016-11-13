@@ -27,6 +27,20 @@ trait CrudTrait
         return $enum;
     }
 
+    public static function getEnumValuesAsAssociativeArray($field_name)
+    {
+        $instance = new static();
+        $enum_values = $instance->getPossibleEnumValues($field_name);
+
+        $array = array_flip($enum_values);
+
+        foreach ($array as $key => $value) {
+            $array[$key] = $key;
+        }
+
+        return $array;
+    }
+
     public static function isColumnNullable($column_name)
     {
         // create an instance of the model to be able to get the table name

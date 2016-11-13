@@ -100,6 +100,10 @@ return [
     'reorder_error_title'          => 'Error',
     'reorder_error_message'        => 'El orden no se ha guardado.',
 
+    // CRUD yes/no
+    'yes' => 'Si',
+    'no' => 'No',
+
     // Fields
     'browse_uploads' => 'Subir archivos',
     'clear' => 'Limpiar',

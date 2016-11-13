@@ -99,6 +99,10 @@ return [
     'reorder_error_title'          => 'Errore',
     'reorder_error_message'        => 'Il tuo ordinamento non è stato salvato.',
 
+    // CRUD yes/no
+    'yes' => 'Sì',
+    'no' => 'No',
+
     // Fields
     'browse_uploads' => 'Sfoglia file caricati',
     'clear' => 'Pulisci',

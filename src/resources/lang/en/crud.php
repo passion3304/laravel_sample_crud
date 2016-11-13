@@ -99,6 +99,10 @@ return [
     'reorder_error_title'          => 'Error',
     'reorder_error_message'        => 'Your order has not been saved.',
 
+    // CRUD yes/no
+    'yes' => 'Yes',
+    'no' => 'No',
+
     // Fields
     'browse_uploads' => 'Browse uploads',
     'clear' => 'Clear',

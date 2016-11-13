@@ -6,6 +6,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Form as Form;
+use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
 use Backpack\CRUD\CrudPanel;
@@ -23,18 +24,23 @@ class CrudController extends BaseController
 
     public $data = [];
     public $crud;
+    public $request;
 
     public function __construct()
     {
-        $this->crud = new CrudPanel();
+        if (! $this->crud) {
+            $this->crud = new CrudPanel();
 
-        // call the setup function inside this closure to also have the request there
-        // this way, developers can use things stored in session (auth variables, etc)
-        $this->middleware(function ($request, $next) {
-            $this->setup();
+            // call the setup function inside this closure to also have the request there
+            // this way, developers can use things stored in session (auth variables, etc)
+            $this->middleware(function ($request, $next) {
+                $this->request = $request;
+                $this->crud->request = $request;
+                $this->setup();
 
-            return $next($request);
-        });
+                return $next($request);
+            });
+        }
     }
 
     /**
