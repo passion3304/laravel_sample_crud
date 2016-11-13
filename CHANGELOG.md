@@ -29,6 +29,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.42] - 2016-11-13
+
+### Fixed
+- n-n filters prevented CRUD items from being added;
+
 ## [3.1.41] - 2016-11-11
 
 ### Added
