@@ -132,6 +132,10 @@ trait Filters
 
         switch ($this->request->url()) {
             case url($this->route):
+                if ($this->request->getMethod() == 'POST' ||
+                    $this->request->getMethod() == 'PATCH') {
+                    return false;
+                }
                 return true;
                 break;
 
