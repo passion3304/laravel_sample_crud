@@ -6,19 +6,22 @@ use Route;
 
 class CrudRouter
 {
-    protected $requiredInjectables = [];
+    protected $extraRoutes = [];
 
     protected $name = null;
     protected $options = null;
     protected $controller = null;
 
+    /**
+     * Some CRUD routes should be registered no matter what.
+     */
     public function __construct($name, $controller, $options)
     {
         $this->name = $name;
         $this->options = $options;
         $this->controller = $controller;
 
-        // CRUD routes
+        // CRUD routes for core features
         Route::post($this->name.'/search', [
             'as' => 'crud.'.$this->name.'.search',
             'uses' => $this->controller.'@search',
@@ -69,32 +72,47 @@ class CrudRouter
         Route::resource($this->name, $this->controller, $options_with_default_route_names);
     }
 
+    /**
+     * Call other methods in this class, that register extra routes.
+     *
+     * @param  [type] $injectables [description]
+     * @return [type]              [description]
+     */
     public function with($injectables)
     {
         if (is_string($injectables)) {
-            $this->requiredInjectables[] = 'with'.ucwords($injectables);
+            $this->extraRoutes[] = 'with'.ucwords($injectables);
         } elseif (is_array($injectables)) {
             foreach ($injectables as $injectable) {
-                $this->requiredInjectables[] = 'with'.ucwords($injectable);
+                $this->extraRoutes[] = 'with'.ucwords($injectable);
             }
         } else {
             $reflection = new \ReflectionFunction($injectables);
 
             if ($reflection->isClosure()) {
-                $this->requiredInjectables[] = $injectables;
+                $this->extraRoutes[] = $injectables;
             }
         }
 
-        return $this->inject();
+        return $this->registerExtraRoutes();
     }
 
-    private function inject()
+    /**
+     * TODO
+     * Give developers the ability to unregister a route.
+     */
+    // public function without($injectables) {}
+
+    /**
+     * Register the routes that were passed using the "with" syntax.
+     */
+    private function registerExtraRoutes()
     {
-        foreach ($this->requiredInjectables as $injectable) {
-            if (is_string($injectable)) {
-                $this->{$injectable}();
+        foreach ($this->extraRoutes as $route) {
+            if (is_string($route)) {
+                $this->{$route}();
             } else {
-                $injectable();
+                $route();
             }
         }
     }
