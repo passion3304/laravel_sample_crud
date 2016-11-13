@@ -84,32 +84,32 @@ return [
         ],
 
     // global crud - errors
-    'unauthorized_access' => 'Accesso non autorizzato - non hai i permessi necessari per vedere questa pagina.',
-    'please_fix' => 'Per favore correggi i seguenti errori:',
+        'unauthorized_access' => 'Accesso non autorizzato - non hai i permessi necessari per vedere questa pagina.',
+        'please_fix' => 'Per favore correggi i seguenti errori:',
 
     // global crud - success / error notification bubbles
-    'insert_success' => "L'elemento è stato aggiunto correttamente.",
-    'update_success' => "L'elemento è stato aggiornato correttamente.",
+        'insert_success' => "L'elemento è stato aggiunto correttamente.",
+        'update_success' => "L'elemento è stato aggiornato correttamente.",
 
     // CRUD reorder view
-    'reorder'                      => 'Riordina',
-    'reorder_text'                 => 'Seleziona e trascina per riordinare.',
-    'reorder_success_title'        => 'Fatto',
-    'reorder_success_message'      => 'Il tuo ordinamento è stato salvato.',
-    'reorder_error_title'          => 'Errore',
-    'reorder_error_message'        => 'Il tuo ordinamento non è stato salvato.',
+        'reorder'                      => 'Riordina',
+        'reorder_text'                 => 'Seleziona e trascina per riordinare.',
+        'reorder_success_title'        => 'Fatto',
+        'reorder_success_message'      => 'Il tuo ordinamento è stato salvato.',
+        'reorder_error_title'          => 'Errore',
+        'reorder_error_message'        => 'Il tuo ordinamento non è stato salvato.',
 
     // CRUD yes/no
-    'yes' => 'Sì',
-    'no' => 'No',
+        'yes' => 'Sì',
+        'no' => 'No',
 
     // Fields
-    'browse_uploads' => 'Sfoglia file caricati',
-    'clear' => 'Pulisci',
-    'page_link' => 'Link Pagina',
-    'page_link_placeholder' => 'http://esempio.com/pagina-desiderata',
-    'internal_link' => 'Link Interno',
-    'internal_link_placeholder' => 'Slug interno. Es: \'admin/page\' (no quotes) for \':url\'',
-    'external_link' => 'Link Esterno',
+        'browse_uploads' => 'Sfoglia file caricati',
+        'clear' => 'Pulisci',
+        'page_link' => 'Link Pagina',
+        'page_link_placeholder' => 'http://esempio.com/pagina-desiderata',
+        'internal_link' => 'Link Interno',
+        'internal_link_placeholder' => 'Slug interno. Es: \'admin/page\' (no quotes) for \':url\'',
+        'external_link' => 'Link Esterno',
 
 ];

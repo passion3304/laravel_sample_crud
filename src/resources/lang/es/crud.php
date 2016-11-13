@@ -85,32 +85,32 @@ return [
         ],
 
     // global crud - errors
-    'unauthorized_access' => 'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.',
-    'please_fix' => 'Por favor corrija los siguientes errores:',
+        'unauthorized_access' => 'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.',
+        'please_fix' => 'Por favor corrija los siguientes errores:',
 
     // global crud - success / error notification bubbles
-    'insert_success' => 'El elemento ha sido añadido satisfactoriamente.',
-    'update_success' => 'El elemento ha sido modificado satisfactoriamente.',
+        'insert_success' => 'El elemento ha sido añadido satisfactoriamente.',
+        'update_success' => 'El elemento ha sido modificado satisfactoriamente.',
 
     // CRUD reorder view
-    'reorder'                      => 'Reordenar',
-    'reorder_text'                 => 'Arrastrar y soltar para reordenar.',
-    'reorder_success_title'        => 'Hecho',
-    'reorder_success_message'      => 'El orden ha sido guardado.',
-    'reorder_error_title'          => 'Error',
-    'reorder_error_message'        => 'El orden no se ha guardado.',
+        'reorder'                      => 'Reordenar',
+        'reorder_text'                 => 'Arrastrar y soltar para reordenar.',
+        'reorder_success_title'        => 'Hecho',
+        'reorder_success_message'      => 'El orden ha sido guardado.',
+        'reorder_error_title'          => 'Error',
+        'reorder_error_message'        => 'El orden no se ha guardado.',
 
     // CRUD yes/no
-    'yes' => 'Si',
-    'no' => 'No',
+        'yes' => 'Si',
+        'no' => 'No',
 
     // Fields
-    'browse_uploads' => 'Subir archivos',
-    'clear' => 'Limpiar',
-    'page_link' => 'Enlace',
-    'page_link_placeholder' => 'http://example.com/su-pagina',
-    'internal_link' => 'Enlace interno',
-    'internal_link_placeholder' => 'Slug interno. Ejplo: \'admin/page\' (sin comillas) para \':url\'',
-    'external_link' => 'Enlace externo',
+        'browse_uploads' => 'Subir archivos',
+        'clear' => 'Limpiar',
+        'page_link' => 'Enlace',
+        'page_link_placeholder' => 'http://example.com/su-pagina',
+        'internal_link' => 'Enlace interno',
+        'internal_link_placeholder' => 'Slug interno. Ejplo: \'admin/page\' (sin comillas) para \':url\'',
+        'external_link' => 'Enlace externo',
 
 ];

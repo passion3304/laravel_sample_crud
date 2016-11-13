@@ -174,8 +174,10 @@ class CrudController extends BaseController
         }
 
         // update the row in the db
-        $this->crud->update($request->get($this->crud->model->getKeyName()),
-                            $request->except('redirect_after_save', '_token'));
+        $this->crud->update(
+            $request->get($this->crud->model->getKeyName()),
+            $request->except('redirect_after_save', '_token')
+        );
 
         // show a success message
         \Alert::success(trans('backpack::crud.update_success'))->flash();

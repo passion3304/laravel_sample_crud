@@ -84,33 +84,33 @@ return [
         ],
 
     // global crud - errors
-    'unauthorized_access' => 'Accès non autorisé - vous n’avez pas les droits nécessaires à la consultation de cette page.',
-    'please_fix' => 'Veuillez corriger les erreurs suivantes:',
+        'unauthorized_access' => 'Accès non autorisé - vous n’avez pas les droits nécessaires à la consultation de cette page.',
+        'please_fix' => 'Veuillez corriger les erreurs suivantes:',
 
     // global crud - success / error notification bubbles
-    'insert_success' => 'L’élément a été ajouté avec succès.',
-    'update_success' => 'L’élément a été modifié avec succès.',
+        'insert_success' => 'L’élément a été ajouté avec succès.',
+        'update_success' => 'L’élément a été modifié avec succès.',
 
     // CRUD reorder view
-    'reorder'                      => 'Réordonner',
-    'reorder_text'                 => 'Utilisez le glisser-déposer pour réordonner.',
-    'reorder_success_title'        => 'Fait',
-    'reorder_success_message'      => 'L’ordre a été enregistré.',
-    'reorder_error_title'          => 'Erreur',
-    'reorder_error_message'        => 'L’ordre n’a pas pu être enregistré.',
+        'reorder'                      => 'Réordonner',
+        'reorder_text'                 => 'Utilisez le glisser-déposer pour réordonner.',
+        'reorder_success_title'        => 'Fait',
+        'reorder_success_message'      => 'L’ordre a été enregistré.',
+        'reorder_error_title'          => 'Erreur',
+        'reorder_error_message'        => 'L’ordre n’a pas pu être enregistré.',
 
     // CRUD yes/no
-    'yes' => 'Oui',
-    'no' => 'Non',
+        'yes' => 'Oui',
+        'no' => 'Non',
 
     // Fields
-    'browse_uploads' => 'Parcourir les fichier chargés',
-    'clear' => 'Effacer',
-    'page_link' => 'Lien de la page',
-    'page_link_placeholder' => 'http://example.com/votre-page',
-    'internal_link' => 'Lien interne',
-    'internal_link_placeholder' => 'Identifiant de lien interne. Ex: \'admin/page\' (sans guillemets) pour \':url\'',
-    'external_link' => 'Lien externe',
-    'choose_file' => 'Choisissez un fichier',
+        'browse_uploads' => 'Parcourir les fichier chargés',
+        'clear' => 'Effacer',
+        'page_link' => 'Lien de la page',
+        'page_link_placeholder' => 'http://example.com/votre-page',
+        'internal_link' => 'Lien interne',
+        'internal_link_placeholder' => 'Identifiant de lien interne. Ex: \'admin/page\' (sans guillemets) pour \':url\'',
+        'external_link' => 'Lien externe',
+        'choose_file' => 'Choisissez un fichier',
 
 ];

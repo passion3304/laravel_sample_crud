@@ -52,7 +52,8 @@ class CrudServiceProvider extends ServiceProvider
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
-            __DIR__.'/config/backpack/crud.php', 'backpack.crud'
+            __DIR__.'/config/backpack/crud.php',
+            'backpack.crud'
         );
     }
 

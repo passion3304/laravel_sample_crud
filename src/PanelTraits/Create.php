@@ -83,7 +83,7 @@ trait Create
 
                 if (isset($field['pivotFields'])) {
                     foreach ($field['pivotFields'] as $pivotField) {
-                        foreach ($data[$pivotField] as $pivot_id =>  $field) {
+                        foreach ($data[$pivotField] as $pivot_id => $field) {
                             $model->{$field['name']}()->updateExistingPivot($pivot_id, [$pivotField => $field]);
                         }
                     }
