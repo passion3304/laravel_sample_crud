@@ -12,14 +12,12 @@ class CrudRouter
     protected $options = null;
     protected $controller = null;
 
-    /**
-     * Some CRUD routes should be registered no matter what.
-     */
+
     public function __construct($name, $controller, $options)
     {
         $this->name = $name;
-        $this->options = $options;
         $this->controller = $controller;
+        $this->options = $options;
 
         // CRUD routes for core features
         Route::post($this->name.'/search', [
@@ -56,7 +54,13 @@ class CrudRouter
             'as' => 'crud.'.$this->name.'.restoreRevision',
             'uses' => $this->controller.'@restoreRevision',
         ]);
+    }
 
+    /**
+     * The CRUD resource needs to be registered after all the other routes.
+     */
+    public function __destruct()
+    {
         $options_with_default_route_names = array_merge([
             'names' => [
                 'index'     => 'crud.'.$this->name.'.index',
