@@ -13,17 +13,17 @@ return [
     |
     */
 
+    // Forms
+    'save_action_save_and_new' => 'Save and new item',
+    'save_action_save_and_edit' => 'Save and edit this item',
+    'save_action_save_and_back' => 'Save and back',
+    'save_action_changed_notification' => 'Default behaviour after saving has been changed.',
+
     // Create form
     'add'                 => 'Add',
     'back_to_all'         => 'Back to all ',
     'cancel'              => 'Cancel',
     'add_a_new'           => 'Add a new ',
-
-        // Create form - advanced options
-        'after_saving'            => 'After saving',
-        'go_to_the_table_view'    => 'go to the table view',
-        'let_me_add_another_item' => 'let me add another item',
-        'edit_the_new_item'       => 'edit the new item',
 
     // Edit form
     'edit'                 => 'Edit',

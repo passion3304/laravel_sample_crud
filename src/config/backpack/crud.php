@@ -7,6 +7,8 @@ return [
     | Backpack\CRUD preferences
     |--------------------------------------------------------------------------
     */
+    // Where do you want to redirect the user by default, after a CRUD entry is saved in the Add or Edit forms?
+    'default_save_action' => 'save_and_back', //options: save_and_back, save_and_edit, save_and_new
 
     /*
     |------------

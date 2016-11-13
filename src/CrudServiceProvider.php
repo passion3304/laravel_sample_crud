@@ -29,7 +29,6 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
 
-
         // PUBLISH FILES
 
         // publish lang files

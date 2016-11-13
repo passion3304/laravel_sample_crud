@@ -13,17 +13,17 @@ return [
     |
     */
 
+    // Forms
+    'save_action_save_and_new' => 'Salvează și adaugă o nouă intrare',
+    'save_action_save_and_edit' => 'Salvează și editează intrarea',
+    'save_action_save_and_back' => 'Salvează și mergi înapoi',
+    'save_action_changed_notification' => 'A fost salvată preferința redirectării după salvare.',
+
     // Create form
     'add'                 => 'Adaugă',
     'back_to_all'         => 'Înapoi la toate ',
     'cancel'              => 'Anulează',
     'add_a_new'           => 'Adaugă un nou ',
-
-        // Create form - advanced options
-        'after_saving'            => 'După salvare',
-        'go_to_the_table_view'    => 'du-mă la toate intrările',
-        'let_me_add_another_item' => 'vreu să adaug o altă intrare',
-        'edit_the_new_item'       => 'vreau să editez intrarea',
 
     // Edit form
     'edit'                 => 'Editează',
