@@ -12,7 +12,6 @@ class CrudRouter
     protected $options = null;
     protected $controller = null;
 
-
     public function __construct($name, $controller, $options)
     {
         $this->name = $name;
