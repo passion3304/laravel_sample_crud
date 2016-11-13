@@ -136,6 +136,7 @@ trait Filters
                     $this->request->getMethod() == 'PATCH') {
                     return false;
                 }
+
                 return true;
                 break;
 
