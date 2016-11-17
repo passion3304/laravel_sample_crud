@@ -36,10 +36,15 @@ For Laravel 5.3 projects please follow [these steps in the documentation](https:
 
 For Laravel 5.2 projects please follow [these steps in the documentation](https://laravel-backpack.readme.io/docs/installation). Please note Backpack on Laravel 5.2 is considered deprecated. It doesn't have all the features and will not receive updates. You should really update your Laravel to 5.3, since 5.4 is right around the corner, too.
 
+
+## Features
+
+Check out [the about page in the documentation](https://laravel-backpack.readme.io/docs/crud) to get familiar with all the Backpack\CRUD features.
+
+
 ## Usage
 
-Check out the documentation at https://laravelbackpack.com
-
+If you've already checked out the features link above, take a look at how you can create a CRUD for a model in [this example](https://laravel-backpack.readme.io/docs/crud-example). At the end of the page you'll also find a way you can do everything in 1-2 minutes, using the command line and [backpack/generators](https://github.com/laravel-backpack/generators).
 
 In short:
 
@@ -52,39 +57,6 @@ In short:
 4. **(optional)** Define your validation rules in a Request files.
 
 
-## **(Optional)** Enable Revisions
-
-CRUD supports tracking and restoring Model change Revisions with the help of [VentureCraft/revisionable](https://github.com/VentureCraft/revisionable).
-
-To enable revisions on your Model do the following:
-
-1. Run:
-```bash
-$ php artisan migrate --path=vendor/venturecraft/revisionable/src/migrations #run revisionable migrations
-```
-
-2. Add the `\Venturecraft\Revisionable\RevisionableTrait` Trait to your Model. E.g:
-```php
-namespace MyApp\Models;
-
-class Article extends Eloquent {
-    use \Backpack\CRUD\CrudTrait, \Venturecraft\Revisionable\RevisionableTrait;
-
-    // If you are using another bootable trait the be sure to override the boot method in your model
-    public static function boot()
-    {
-        parent::boot();
-    }
-}
-```
-
-3. Enable access to Revisions in your CrudController with:
-```php
-$this->crud->allowAccess('revisions');
-```
-
-Head on over to the [VentureCraft/revisionable](https://github.com/VentureCraft/revisionable) GitHub repo to see the full documentation and extra configuration options.
-
 ## Screenshots
 
 - List view pictured above.
@@ -92,6 +64,8 @@ Head on over to the [VentureCraft/revisionable](https://github.com/VentureCraft/
 ![Create or update view for Backpack/CRUD](https://infinit.io/_/32czWa8.png)
 - File manager (elFinder):
 ![File manager interface for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_elfinder.png)
+
+More screenshots available at [backpackforlaravel.com](https://backpackforlaravel.com).
 
 ## Change log
 
