@@ -30,40 +30,11 @@ Features:
 
 ## Install
 
-1) In your terminal:
+Please note you need to install Backpack\Base before you cand use Backpack\CRUD. It will provide you with the AdminLTE design.
 
-``` bash
-$ composer require backpack/crud
-```
+For Laravel 5.3 projects please follow [these steps in the documentation](https://laravel-backpack.readme.io/docs/installation-on-laravel-53). 
 
-2) Add this to your config/app.php, under "providers":
-```php
-        Backpack\CRUD\CrudServiceProvider::class,
-```
-
-3) Run:
-```bash
-$ php artisan elfinder:publish #published elfinder assets
-$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="public" #publish CRUD assets
-$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="lang" #publish the lang files
-$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="config" #publish the config file
-$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
-```
-
-4) Define an 'uploads' disk. In your config/filesystems.php add this disk:
-```php
-'uploads' => [
-            'driver' => 'local',
-            'root' => public_path('uploads'),
-        ],
-```
-
-5) If you haven't already, go through [steps 3-5 from the Backpack\Base installation](https://github.com/Laravel-Backpack/Base#install) (it provides the general views for the admin panel - layout, menu, notification bubbles, etc).
-
-6) [Optional] You can now the file manager to the menu, in `resources/views/vendor/backpack/base/inc/sidebar.blade.php` or `menu.blade.php`:
-```html
-<li><a href="{{ url(config('backpack.base.route_prefix').'/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>
-```
+For Laravel 5.2 projects please follow [these steps in the documentation](https://laravel-backpack.readme.io/docs/installation). Please note Backpack on Laravel 5.2 is considered deprecated. It doesn't have all the features and will not receive updates. You should really update your Laravel to 5.3, since 5.4 is right around the corner, too.
 
 ## Usage
 
