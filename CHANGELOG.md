@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - Allow mixed simple and complex column definitions (thanks [JamesGuthrie](https://github.com/JamesGuthrie));
+- disable default DataTable ordering;
 
 
 ## [3.1.42] - 2016-11-13

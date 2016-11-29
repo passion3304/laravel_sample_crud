@@ -172,6 +172,8 @@
 
 	  	var table = $("#crudTable").DataTable({
         "pageLength": {{ $crud->getDefaultPageLength() }},
+        /* Disable initial sort */
+        "aaSorting": [],
         "language": {
               "emptyTable":     "{{ trans('backpack::crud.emptyTable') }}",
               "info":           "{{ trans('backpack::crud.info') }}",
