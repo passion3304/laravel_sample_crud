@@ -21,7 +21,8 @@
     ?>
         <!-- elFinder translation (OPTIONAL) -->
         <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
-    <?php 
+    <?php
+
 } ?>
     <!-- Include jQuery, jQuery UI, elFinder (REQUIRED) -->
 
@@ -32,7 +33,8 @@
                 <?php if ($locale) {
     ?>
                     lang: '<?= $locale ?>', // locale
-                <?php 
+                <?php
+
 } ?>
                 customData: {
                     _token: '<?= csrf_token() ?>'

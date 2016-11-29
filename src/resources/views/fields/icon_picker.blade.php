@@ -1,10 +1,10 @@
 <!-- icon picker input -->
 
 <?php
-    // if no iconset was provided, set the default iconset to Font-Awesome
-    if (!isset($field['iconset'])) {
-        $field['iconset'] = 'fontawesome';
-    }
+// if no iconset was provided, set the default iconset to Font-Awesome
+if (!isset($field['iconset'])) {
+    $field['iconset'] = 'fontawesome';
+}
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
