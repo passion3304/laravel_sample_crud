@@ -36,6 +36,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - filters on list views (deleted the 3.1.41 and 4.1.42 tags because they were breaking changes);
 - routes are now abstracted intro CrudRoute, so that new routes can be easily added;
 
+### Fixed
+- excluded _method from massAssignment, so create/update errors will be more useful;
+
 
 ## [3.1.42] - 2016-11-13
 
