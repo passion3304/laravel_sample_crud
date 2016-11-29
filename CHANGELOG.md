@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.43] - 2016-11-29
+
+### Fixed
+- Allow mixed simple and complex column definitions (thanks [JamesGuthrie](https://github.com/JamesGuthrie));
+
+
 ## [3.1.42] - 2016-11-13
 
 ### Fixed

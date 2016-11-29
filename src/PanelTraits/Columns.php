@@ -22,7 +22,7 @@ trait Columns
         if (is_array($columns) && count($columns)) {
             foreach ($columns as $key => $column) {
                 // if label and other details have been defined in the array
-                if (is_array($columns[0])) {
+                if (is_array($column)) {
                     $this->addColumn($column);
                 } else {
                     $this->addColumn([
