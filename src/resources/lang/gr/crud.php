@@ -13,6 +13,12 @@ return [
     |
      */
 
+    // Forms
+    'save_action_save_and_new' => 'Save and new item',
+    'save_action_save_and_edit' => 'Save and edit this item',
+    'save_action_save_and_back' => 'Save and back',
+    'save_action_changed_notification' => 'Default behaviour after saving has been changed.',
+
     // Create form
     'add'                                     => 'Προσθήκη',
     'back_to_all'                             => 'Επιστροφή στη λίστα ',
@@ -98,6 +104,10 @@ return [
     'reorder_success_message'                 => 'Η σειρά εμφάνισης έχει αποθηκευτεί.',
     'reorder_error_title'                     => 'Σφάλμα',
     'reorder_error_message'                   => 'Η σειρά εμφάνισης δεν έχει αποθηκευτεί.',
+
+    // CRUD yes/no
+    'yes' => 'Yes',
+    'no' => 'No',
 
     // Fields
     'browse_uploads'                          => 'Αναζήτηση μεταφορτωμένων αρχείων',
