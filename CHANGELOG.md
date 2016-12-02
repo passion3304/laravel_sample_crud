@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.44] - 2016-12-02
+
+### Added
+- Better ability to interact with the entity that was just saved, in EntityCrudController::create() and update() [the $this->crud->entry and $this->data['entry'] variables];
+
+
 ## [3.1.43] - 2016-11-29
 
 ### Fixed
