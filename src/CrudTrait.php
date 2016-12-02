@@ -46,10 +46,12 @@ trait CrudTrait
         // create an instance of the model to be able to get the table name
         $instance = new static();
 
+        $conn = DB::connection($instance->getConnectionName());
+        
         // register the enum column type, because Doctrine doesn't support it
-        DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
 
-        return ! DB::connection($instance->getConnectionName())->getDoctrineColumn($instance->getTable(), $column_name)->getNotnull();
+        return ! $conn->getDoctrineColumn($instance->getTable(), $column_name)->getNotnull();
     }
 
     /*
