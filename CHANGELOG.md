@@ -28,7 +28,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Security
 - Nothing
 
-
 ## [3.2.0] - 2016-11-13
 
 ### Added
@@ -39,6 +38,29 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;
+
+
+## [3.1.45] - 2016-12-02
+
+### Added
+- $this->crud->with() method, which allows you to easily eager load relationships;
+- auto eager loading relationships that are used in the CRUD columns;
+
+### Fixed
+- select and select_multiple columns use a considerably lower number of database queries;
+
+
+## [3.1.44] - 2016-12-02
+
+### Added
+- Better ability to interact with the entity that was just saved, in EntityCrudController::create() and update() [the $this->crud->entry and $this->data['entry'] variables];
+
+
+## [3.1.43] - 2016-11-29
+
+### Fixed
+- Allow mixed simple and complex column definitions (thanks [JamesGuthrie](https://github.com/JamesGuthrie));
+- disable default DataTable ordering;
 
 
 ## [3.1.42] - 2016-11-13
