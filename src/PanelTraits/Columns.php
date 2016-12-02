@@ -191,7 +191,7 @@ trait Columns
     {
         $columns = $this->getColumns();
 
-        return collect($columns)->pluck('entity')->reject(function($value, $key) {
+        return collect($columns)->pluck('entity')->reject(function ($value, $key) {
             return $value == null;
         })->toArray();
     }
