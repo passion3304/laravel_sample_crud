@@ -20,6 +20,16 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.45] - 2016-12-02
+
+### Added
+- $this->crud->with() method, which allows you to easily eager load relationships;
+- auto eager loading relationships that are used in the CRUD columns;
+
+### Fixed
+- select and select_multiple columns use a considerably lower number of database queries;
+
+
 ## [3.1.44] - 2016-12-02
 
 ### Added

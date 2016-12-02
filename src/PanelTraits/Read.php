@@ -25,12 +25,27 @@ trait Read
     }
 
     /**
+     * Make the query JOIN all relationships used in the columns, too,
+     * so there will be less database queries overall.
+     */
+    public function autoEagerLoadRelationshipColumns()
+    {
+        $relationships = $this->getColumnsRelationships();
+
+        if (count($relationships)) {
+            $this->with($relationships);
+        }
+    }
+
+    /**
      * Get all entries from the database.
      *
      * @return [Collection of your model]
      */
     public function getEntries()
     {
+        $this->autoEagerLoadRelationshipColumns();
+
         $entries = $this->query->get();
 
         // add the fake columns for each entry

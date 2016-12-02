@@ -183,6 +183,19 @@ trait Columns
         $this->setColumnOrder($columns);
     }
 
+    /**
+     * Get the relationships used in the CRUD columns.
+     * @return [array] Relationship names
+     */
+    public function getColumnsRelationships()
+    {
+        $columns = $this->getColumns();
+
+        return collect($columns)->pluck('entity')->reject(function($value, $key) {
+            return $value == null;
+        })->toArray();
+    }
+
     // ------------
     // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED
     // ------------
