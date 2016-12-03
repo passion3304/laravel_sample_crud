@@ -19,11 +19,12 @@ trait Create
      */
     public function create($data)
     {
-        $values_to_store = $this->compactFakeFields($data, 'create');
+        $mutatedData = $this->mutateFieldData($data, 'create_fields');
+        $values_to_store = $this->compactFakeFields($mutatedData, 'create');
         $item = $this->model->create($values_to_store);
 
         // if there are any relationships available, also sync those
-        $this->syncPivot($item, $data);
+        $this->syncPivot($item, $mutatedData);
 
         return $item;
     }

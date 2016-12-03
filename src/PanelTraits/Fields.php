@@ -142,4 +142,23 @@ trait Fields
     {
         $this->setSort('fields', (array) $order);
     }
+
+    public function mutateFieldData($data, $fields)
+    {
+        foreach ($this->{$fields} as $field) {
+
+            // Handle table field type mutation
+            if (isset($field['type']) && $field['type'] == 'table') {
+                if (isset($data[$field['name']]) && is_string($field['name']) && !empty($field['name'])) {
+                    try {
+                        $data[$field['name']] = json_decode($data[$field['name']]);
+                    } catch (Exception $e){
+                        $data[$field['name']] = array();
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
 }
