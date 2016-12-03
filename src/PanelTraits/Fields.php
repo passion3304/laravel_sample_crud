@@ -149,11 +149,11 @@ trait Fields
 
             // Handle table field type mutation
             if (isset($field['type']) && $field['type'] == 'table') {
-                if (isset($data[$field['name']]) && is_string($field['name']) && !empty($field['name'])) {
+                if (isset($data[$field['name']]) && is_string($field['name']) && ! empty($field['name'])) {
                     try {
                         $data[$field['name']] = json_decode($data[$field['name']]);
-                    } catch (Exception $e){
-                        $data[$field['name']] = array();
+                    } catch (Exception $e) {
+                        $data[$field['name']] = [];
                     }
                 }
             }
