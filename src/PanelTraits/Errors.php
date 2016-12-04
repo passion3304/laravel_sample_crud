@@ -16,12 +16,14 @@ trait Errors
     public function enableGroupedErrors()
     {
         $this->errorsGrouped = true;
+
         return $this->errorsGrouped;
     }
 
     public function disableGroupedErrors()
     {
         $this->errorsGrouped = false;
+
         return $this->errorsGrouped;
     }
 
@@ -33,12 +35,14 @@ trait Errors
     public function enableInlineErrors()
     {
         $this->errorsInline = true;
+
         return $this->errorsInline;
     }
 
     public function disableInlineErrors()
     {
         $this->errorsInline = false;
+
         return $this->errorsInline;
     }
 

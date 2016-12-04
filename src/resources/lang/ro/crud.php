@@ -88,7 +88,6 @@ return [
     'insert_success' => 'Intrarea a fost adăugată cu succes.',
     'update_success' => 'Intrarea a fost modificată cu succes.',
 
-
     // CRUD reorder view
     'reorder'                      => 'Reordonare',
     'reorder_text'                 => 'Folosește drag&drop pentru a reordona.',
