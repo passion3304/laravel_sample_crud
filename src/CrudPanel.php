@@ -8,6 +8,7 @@ use Backpack\CRUD\PanelTraits\Buttons;
 use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Create;
 use Backpack\CRUD\PanelTraits\Delete;
+use Backpack\CRUD\PanelTraits\Errors;
 use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\Fields;
@@ -21,7 +22,7 @@ use Backpack\CRUD\PanelTraits\Filters;
 
 class CrudPanel
 {
-    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters;
+    use Create, Read, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters;
 
     // --------------
     // CRUD variables

@@ -7,6 +7,8 @@ return [
     | Backpack\CRUD preferences
     |--------------------------------------------------------------------------
     */
+    'errors_inline' => false,
+    'errors_grouped' => true,
 
     /*
     |------------
