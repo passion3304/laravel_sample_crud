@@ -4,13 +4,13 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Tabs
 {
-    public $tabs = array();
+    public $tabs = [];
     public $tabsHorizontal = true;
 
     private function initTabs()
     {
-        if(is_array($this->tabs)){
-            $this->tabs = collect(array());
+        if (is_array($this->tabs)) {
+            $this->tabs = collect([]);
             $this->tabsHorizontal = config('backpack.crud.tabs_horizontal', true);
         }
     }
@@ -18,30 +18,34 @@ trait Tabs
     public function enableVerticalTabs()
     {
         $this->tabsHorizontal = false;
+
         return $this->tabsHorizontal;
     }
 
     public function disableVerticalTabs()
     {
         $this->tabsHorizontal = true;
+
         return $this->tabsHorizontal;
     }
 
     public function enableHorizontalTabs()
     {
         $this->tabsHorizontal = true;
+
         return $this->tabsHorizontal;
     }
 
     public function disableHorizontalTabs()
     {
         $this->tabsHorizontal = false;
+
         return $this->tabsHorizontal;
     }
 
     public function clearTabs()
     {
-        $this->tabs = collect(array());
+        $this->tabs = collect([]);
 
         return $this->tabs;
     }
@@ -57,12 +61,12 @@ trait Tabs
     {
         $this->initTabs();
 
-        $newTab = (object) array(
+        $newTab = (object) [
             'label' => $label,
             'name'  =>  snake_case($label),
-            'fields' => collect(array()),
-            'horizontal' => $this->tabsHorizontal
-        );
+            'fields' => collect([]),
+            'horizontal' => $this->tabsHorizontal,
+        ];
 
         $this->tabs->push($newTab);
 
