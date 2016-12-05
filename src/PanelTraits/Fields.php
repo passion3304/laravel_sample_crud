@@ -48,6 +48,11 @@ trait Fields
                 $this->update_fields[$complete_field_array['name']] = $complete_field_array;
                 break;
         }
+
+        // add to the tabset if there is one
+        if ($this->getTabs()->count() > 0) {
+            $this->getTabs()->last()->fields->push($complete_field_array);
+        }
     }
 
     public function addFields($fields, $form = 'both')

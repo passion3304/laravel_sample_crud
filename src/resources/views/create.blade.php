@@ -32,7 +32,7 @@
 		      @if(view()->exists('vendor.backpack.crud.form_content'))
 		      	@include('vendor.backpack.crud.form_content', ['fields' => $crud->getFields('create')])
 		      @else
-		      	@include('crud::form_content', ['fields' => $crud->getFields('create')])
+		      	@include('crud::form_content', ['fields' => $crud->getFields('create'), 'tabs' => $crud->getTabs()])
 		      @endif
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">

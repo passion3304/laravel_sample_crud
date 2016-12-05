@@ -3,6 +3,7 @@
 namespace Backpack\CRUD;
 
 use Backpack\CRUD\PanelTraits\Access;
+use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\AutoSet;
 use Backpack\CRUD\PanelTraits\Buttons;
 use Backpack\CRUD\PanelTraits\Columns;
@@ -11,17 +12,17 @@ use Backpack\CRUD\PanelTraits\Delete;
 use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\Fields;
+use Backpack\CRUD\PanelTraits\Filters;
 use Backpack\CRUD\PanelTraits\Query;
 use Backpack\CRUD\PanelTraits\Read;
 use Backpack\CRUD\PanelTraits\Reorder;
+use Backpack\CRUD\PanelTraits\Tabs;
 use Backpack\CRUD\PanelTraits\Update;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
-use Backpack\CRUD\PanelTraits\AutoFocus;
-use Backpack\CRUD\PanelTraits\Filters;
 
 class CrudPanel
 {
-    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters;
+    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs;
 
     // --------------
     // CRUD variables
