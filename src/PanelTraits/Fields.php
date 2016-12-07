@@ -148,7 +148,9 @@ trait Fields
         foreach ($this->{$fields} as $field) {
 
             // Handle table field type mutation
-            if (isset($field['type']) && $field['type'] == 'table') {
+            $jsonCastableFields = array('table', 'video', 'address');
+
+            if (isset($field['type']) && in_array($field['type'], $jsonCastableFields)) {
                 if (isset($data[$field['name']]) && is_string($field['name']) && ! empty($field['name'])) {
                     try {
                         $data[$field['name']] = json_decode($data[$field['name']]);
