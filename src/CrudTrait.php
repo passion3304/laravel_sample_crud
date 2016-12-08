@@ -3,8 +3,8 @@
 namespace Backpack\CRUD;
 
 use DB;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
 
 trait CrudTrait
 {

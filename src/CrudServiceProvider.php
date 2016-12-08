@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD;
 
-use Illuminate\Support\ServiceProvider;
 use Route;
+use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
 {
@@ -30,7 +30,6 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
 
-
         // PUBLISH FILES
 
         // publish lang files
@@ -50,7 +49,6 @@ class CrudServiceProvider extends ServiceProvider
                             __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
                             __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
                             ], 'elfinder');
-
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
