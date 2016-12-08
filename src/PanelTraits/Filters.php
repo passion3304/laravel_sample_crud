@@ -46,9 +46,7 @@ trait Filters
 
         // if a closure was passed as "filter_logic"
         if ($this->doingListOperation() &&
-            $this->request->input($options['name']) &&
-            $this->request->input($options['name']) != null &&
-            $this->request->input($options['name']) != 'null') {
+            $this->request->has($options['name'])) {
             if (is_callable($filter_logic)) {
                 // apply it
                 $filter_logic($this->request->input($options['name']));
@@ -192,7 +190,7 @@ class CrudFilter
         $this->options = $options;
         $this->view = 'crud::filters.'.$this->type;
 
-        if (\Request::input($this->name)) {
+        if (\Request::has($this->name)) {
             $this->currentValue = \Request::input($this->name);
         }
     }
@@ -215,7 +213,7 @@ class CrudFilter
 
     public function isActive()
     {
-        if (\Request::input($this->name)) {
+        if (\Request::has($this->name)) {
             return true;
         }
 
