@@ -87,7 +87,6 @@ trait Tabs
     public function getCreateTabs()
     {
         return $this->tabs->filter(function (&$tab) {
-
             $tab->fields = $tab->fields->reject(function ($field) {
                 return $field['method'] == 'update';
             });
@@ -99,7 +98,6 @@ trait Tabs
     public function getUpdateTabs()
     {
         return $this->tabs->filter(function (&$tab) {
-
             $tab->fields = $tab->fields->reject(function ($field) {
                 return $field['method'] == 'create';
             });
