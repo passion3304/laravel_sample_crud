@@ -51,7 +51,7 @@ trait Fields
 
         // add to the tabset if there is one
         if ($this->getTabs()->count() > 0) {
-            $this->getTabs()->last()->fields->push($complete_field_array);
+            $this->getTabs()->last()->fields->push(array_merge($complete_field_array, ['method' => strtolower($form)]));
         }
     }
 

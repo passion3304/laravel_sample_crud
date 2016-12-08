@@ -83,4 +83,28 @@ trait Tabs
 
         return $this->tabs;
     }
+
+    public function getCreateTabs()
+    {
+        return $this->tabs->filter(function (&$tab) {
+
+            $tab->fields = $tab->fields->reject(function ($field) {
+                return $field['method'] == 'update';
+            });
+
+            return $tab->fields->count();
+        });
+    }
+
+    public function getUpdateTabs()
+    {
+        return $this->tabs->filter(function (&$tab) {
+
+            $tab->fields = $tab->fields->reject(function ($field) {
+                return $field['method'] == 'create';
+            });
+
+            return $tab->fields->count();
+        });
+    }
 }
