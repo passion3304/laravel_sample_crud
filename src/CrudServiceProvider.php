@@ -49,7 +49,6 @@ class CrudServiceProvider extends ServiceProvider
                             __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
                             ], 'elfinder');
 
-
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
             __DIR__.'/config/backpack/crud.php',
