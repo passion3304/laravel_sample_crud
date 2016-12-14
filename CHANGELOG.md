@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+## [3.1.x] - 2016-12-14
+
+### Fixed
+- Escaped table name for ENUM column types, so reserved PHP/MySQL names can also be used for table names; Fixes #261;
+
+
+
 ## [3.1.48] - 2016-12-14
 
 ### Fixed
