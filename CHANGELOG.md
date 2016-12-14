@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - Don't mutate date/datetime if they are empty. It will default to now;
 - select_from_array has a new option: "allows_multiple";
+- syncPivot is now done before saving the main entity in Update::edit();
 
 
 ## [3.1.46] - 2016-12-13
