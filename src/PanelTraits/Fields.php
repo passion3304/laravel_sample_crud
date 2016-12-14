@@ -151,10 +151,10 @@ trait Fields
             if (isset($field['name']) && array_key_exists($field['name'], $this->model->getCasts())) {
 
                 // Handle JSON field types
-                $jsonCastables = array('array', 'object', 'json');
+                $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $this->model->getCasts()[$field['name']];
 
-                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && !empty($data[$field['name']])) {
+                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']])) {
                     try {
                         $data[$field['name']] = json_decode($data[$field['name']]);
                     } catch (Exception $e) {
