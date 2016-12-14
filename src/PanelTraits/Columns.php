@@ -81,28 +81,30 @@ trait Columns
     }
 
     /**
-     * Moves the recently added column to 'before' the $target_col
+     * Moves the recently added column to 'before' the $target_col.
      *
      * @param $target_col
      */
-    public function beforeColumn($target_col) {
+    public function beforeColumn($target_col)
+    {
         foreach ($this->columns as $column => $value) {
             if ($value['name'] == $target_col) {
-                array_splice($this->columns, $column, 0, array(array_pop($this->columns)));
+                array_splice($this->columns, $column, 0, [array_pop($this->columns)]);
                 break;
             }
         }
     }
 
     /**
-     * Moves the recently added column to 'after' the $target_col
+     * Moves the recently added column to 'after' the $target_col.
      *
      * @param $target
      */
-    public function afterColumn($target_col) {
+    public function afterColumn($target_col)
+    {
         foreach ($this->columns as $column => $value) {
             if ($value['name'] == $target_col) {
-                array_splice($this->columns, $column + 1, 0, array(array_pop($this->columns)));
+                array_splice($this->columns, $column + 1, 0, [array_pop($this->columns)]);
                 break;
             }
         }

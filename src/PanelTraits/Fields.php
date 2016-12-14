@@ -62,11 +62,12 @@ trait Fields
     }
 
     /**
-     * Moves the recently added field to 'after' the $target_field
+     * Moves the recently added field to 'after' the $target_field.
      *
      * @param $target_field
      */
-    public function afterField($target_field) {
+    public function afterField($target_field)
+    {
         foreach ($this->create_fields as $field => $value) {
             if ($value['name'] == $target_field) {
                 array_splice($this->create_fields, $field + 1, 0, [$field => array_pop($this->create_fields)]);
@@ -82,11 +83,12 @@ trait Fields
     }
 
     /**
-     * Moves the recently added field to 'before' the $target_field
+     * Moves the recently added field to 'before' the $target_field.
      *
      * @param $target_field
      */
-    public function beforeField($target_field) {
+    public function beforeField($target_field)
+    {
         $key = 0;
         foreach ($this->create_fields as $field => $value) {
             if ($value['name'] == $target_field) {
