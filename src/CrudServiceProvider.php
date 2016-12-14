@@ -79,6 +79,11 @@ class CrudServiceProvider extends ServiceProvider
         $loader->alias('Form', \Collective\Html\FormFacade::class);
         $loader->alias('Html', \Collective\Html\HtmlFacade::class);
         $loader->alias('Image', \Intervention\Image\Facades\Image::class);
+
+        // map the elfinder prefix
+        if (! \Config::get('elfinder.route.prefix')) {
+            \Config::set('elfinder.route.prefix', \Config::get('backpack.base.route_prefix').'/elfinder');
+        }
     }
 
     public static function resource($name, $controller, array $options = [])

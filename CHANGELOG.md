@@ -20,6 +20,22 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.47] - 2016-12-14
+
+### Fixed
+- Don't mutate date/datetime if they are empty. It will default to now;
+- select_from_array has a new option: "allows_multiple";
+- syncPivot is now done before saving the main entity in Update::edit();
+- added beforeColumn(), afterColumn(), beforeField() and afterField() methods to more easily reorder fields and columns - big up to [Ben Sutter](https://github.com/b8ne) for this feature;
+
+
+## [3.1.46] - 2016-12-13
+
+### Fixed
+- a filter will be triggered if the variable exists, wether it's null or not;
+- if the elfinder route has not been registered, it will be by the CrudServiceProvider;
+
+
 ## [3.1.45] - 2016-12-02
 
 ### Added

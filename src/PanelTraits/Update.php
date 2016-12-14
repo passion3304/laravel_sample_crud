@@ -20,11 +20,13 @@ trait Update
      */
     public function update($id, $data)
     {
-        $mutatedData = $this->mutateFieldData($data, 'update_fields');
-        $item = $this->model->findOrFail($id);
-        $updated = $item->update($this->compactFakeFields($mutatedData, 'update'));
+        $data = $this->decodeJsonCastedAttributes($data, 'update', $id);
+        $data = $this->compactFakeFields($data, 'update', $id);
 
-        /*if ($updated) */$this->syncPivot($item, $mutatedData, 'update');
+        $item = $this->model->findOrFail($id);
+
+        $this->syncPivot($item, $data, 'update');
+        $updated = $item->update($data);
 
         return $item;
     }
