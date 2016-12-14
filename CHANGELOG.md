@@ -40,6 +40,20 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - excluded _method from massAssignment, so create/update errors will be more useful;
 
 
+## [3.1.47] - 2016-12-14
+
+### Fixed
+- Don't mutate date/datetime if they are empty. It will default to now.
+- 
+
+
+## [3.1.46] - 2016-12-13
+
+### Fixed
+- a filter will be triggered if the variable exists, wether it's null or not;
+- if the elfinder route has not been registered, it will be by the CrudServiceProvider;
+
+
 ## [3.1.45] - 2016-12-02
 
 ### Added
