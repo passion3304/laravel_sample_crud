@@ -48,6 +48,8 @@ trait Fields
                 $this->update_fields[$complete_field_array['name']] = $complete_field_array;
                 break;
         }
+
+        return $this;
     }
 
     public function addFields($fields, $form = 'both')
@@ -56,6 +58,50 @@ trait Fields
             foreach ($fields as $field) {
                 $this->addField($field, $form);
             }
+        }
+    }
+
+    /**
+     * Moves the recently added field to 'after' the $target_field
+     *
+     * @param $target_field
+     */
+    public function afterField($target_field) {
+        foreach ($this->create_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->create_fields, $field + 1, 0, [$field => array_pop($this->create_fields)]);
+                break;
+            }
+        }
+        foreach ($this->update_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->update_fields, $field + 1, 0, [$field => array_pop($this->update_fields)]);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Moves the recently added field to 'before' the $target_field
+     *
+     * @param $target_field
+     */
+    public function beforeField($target_field) {
+        $key = 0;
+        foreach ($this->create_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->create_fields, $key, 0, [$field => array_pop($this->create_fields)]);
+                break;
+            }
+            $key++;
+        }
+        $key = 0;
+        foreach ($this->update_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->update_fields, $key, 0, [$field => array_pop($this->update_fields)]);
+                break;
+            }
+            $key++;
         }
     }
 
