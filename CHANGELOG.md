@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.48] - 2016-12-14
+
+### Fixed
+- Prevent double-json-encoding on complicated field types, when using attribute casting; Fixes #259;
+
+
 ## [3.1.47] - 2016-12-14
 
 ### Fixed
