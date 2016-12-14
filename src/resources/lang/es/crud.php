@@ -19,7 +19,6 @@ return [
     'save_action_save_and_back' => 'Save and back', // TODO: translate
     'save_action_changed_notification' => 'Default save action changed', // TODO: translate
 
-
     // Create form
     'add'                 => 'Añadir',
     'back_to_all'         => 'Volver al listado ',

@@ -53,7 +53,7 @@
             .hide {
                 display: none;
             }
-            .btn-group {
+            .image .btn-group {
                 margin-top: 10px;
             }
             img {
