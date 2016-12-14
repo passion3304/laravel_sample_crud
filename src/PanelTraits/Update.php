@@ -20,10 +20,13 @@ trait Update
      */
     public function update($id, $data)
     {
-        $item = $this->model->findOrFail($id);
-        $updated = $item->update($this->compactFakeFields($data, 'update'));
+        $data = $this->decodeJsonCastedAttributes($data, 'update', $id);
+        $data = $this->compactFakeFields($data, 'update', $id);
 
-        /*if ($updated) */$this->syncPivot($item, $data, 'update');
+        $item = $this->model->findOrFail($id);
+
+        $this->syncPivot($item, $data, 'update');
+        $updated = $item->update($data);
 
         return $item;
     }
@@ -57,10 +60,10 @@ trait Update
 
         // always have a hidden input for the entry id
         $fields['id'] = [
-                        'name'  => $entry->getKeyName(),
-                        'value' => $entry->getKey(),
-                        'type'  => 'hidden',
-                    ];
+            'name'  => $entry->getKeyName(),
+            'value' => $entry->getKey(),
+            'type'  => 'hidden',
+        ];
 
         return $fields;
     }
