@@ -200,7 +200,7 @@ trait Fields
                 $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $this->model->getCasts()[$field['name']];
 
-                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && !is_array($data[$field['name']])) {
+                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && ! is_array($data[$field['name']])) {
                     try {
                         $data[$field['name']] = json_decode($data[$field['name']]);
                     } catch (Exception $e) {
@@ -222,6 +222,4 @@ trait Fields
     {
         $this->setSort('fields', (array) $order);
     }
-
-
 }
