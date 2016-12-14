@@ -147,11 +147,14 @@ trait Fields
     {
         foreach ($this->{$fields} as $field) {
 
-            // Handle table field type mutation
-            $jsonCastableFields = ['table', 'video', 'address'];
+            // Test the field is castable
+            if (isset($field['name']) && array_key_exists($field['name'], $this->model->getCasts())) {
 
-            if (isset($field['type']) && in_array($field['type'], $jsonCastableFields)) {
-                if (isset($data[$field['name']]) && is_string($field['name']) && ! empty($field['name'])) {
+                // Handle JSON field types
+                $jsonCastables = array('array', 'object', 'json');
+                $fieldCasting = $this->model->getCasts()[$field['name']];
+
+                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && !empty($data[$field['name']])) {
                     try {
                         $data[$field['name']] = json_decode($data[$field['name']]);
                     } catch (Exception $e) {
