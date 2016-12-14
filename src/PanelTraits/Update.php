@@ -21,9 +21,9 @@ trait Update
     public function update($id, $data)
     {
         $item = $this->model->findOrFail($id);
-        
+
         $this->syncPivot($item, $data, 'update');
-        
+
         $updated = $item->update($this->compactFakeFields($data, 'update'));
 
         return $item;
