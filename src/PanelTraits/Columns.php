@@ -58,13 +58,12 @@ trait Columns
             $column = ['name' => $column];
         }
 
-        // make sure the column has a type
-        $column_with_details = $this->addDefaultTypeToColumn($column);
-
         // make sure the column has a label
         $column_with_details = $this->addDefaultLabel($column);
 
-        return array_filter($this->columns[] = $column_with_details);
+        array_filter($this->columns[] = $column_with_details);
+
+        return $this;
     }
 
     /**
@@ -77,6 +76,34 @@ trait Columns
         if (count($columns)) {
             foreach ($columns as $key => $column) {
                 $this->addColumn($column);
+            }
+        }
+    }
+
+    /**
+     * Moves the recently added column to 'before' the $target_col
+     *
+     * @param $target_col
+     */
+    public function beforeColumn($target_col) {
+        foreach ($this->columns as $column => $value) {
+            if ($value['name'] == $target_col) {
+                array_splice($this->columns, $column, 0, array(array_pop($this->columns)));
+                break;
+            }
+        }
+    }
+
+    /**
+     * Moves the recently added column to 'after' the $target_col
+     *
+     * @param $target
+     */
+    public function afterColumn($target_col) {
+        foreach ($this->columns as $column => $value) {
+            if ($value['name'] == $target_col) {
+                array_splice($this->columns, $column + 1, 0, array(array_pop($this->columns)));
+                break;
             }
         }
     }
