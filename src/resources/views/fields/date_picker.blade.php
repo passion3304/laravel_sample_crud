@@ -73,28 +73,30 @@
                 });
 
                 $picker.on('show hide change', function(e){
-                     if( e.date ){
-                         var sqlDate = e.format('yyyy-mm-dd');
-                     } else {
-                         try {
-                             var sqlDate = $fake.val();
+                    if( e.date ){
+                        var sqlDate = e.format('yyyy-mm-dd');
+                    } else {
+                        try {
+                            var sqlDate = $fake.val();
 
-                             if( $customConfig.format === 'dd/mm/yyyy' ){
-                                 sqlDate = new Date(sqlDate.split('/')[2], sqlDate.split('/')[1] - 1, sqlDate.split('/')[0]).format('yyyy-mm-dd');
-                             }
-                         } catch(e){
-                             PNotify.removeAll();
-                             new PNotify({
-                                title: 'Whoops!',
-                                text: 'Sorry we did not recognise that date format, please make sure it uses a yyyy mm dd combination',
-                                type: 'error',
-                                icon: false
-                            });
-                         }
-                     }
-                     $field.val(sqlDate);
+                            if( $customConfig.format === 'dd/mm/yyyy' ){
+                                sqlDate = new Date(sqlDate.split('/')[2], sqlDate.split('/')[1] - 1, sqlDate.split('/')[0]).format('yyyy-mm-dd');
+                            }
+                        } catch(e){
+                            if( $fake.val() ){
+                                PNotify.removeAll();
+                                new PNotify({
+                                    title: 'Whoops!',
+                                    text: 'Sorry we did not recognise that date format, please make sure it uses a yyyy mm dd combination',
+                                    type: 'error',
+                                    icon: false
+                                });
+                            }
+                        }
+                    }
+
+                    $field.val(sqlDate);
                 });
-
             });
         });
     </script>
