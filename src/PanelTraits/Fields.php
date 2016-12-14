@@ -181,6 +181,38 @@ trait Fields
         $this->setFieldOrder($fields);
     }
 
+    /**
+     * Decode attributes that are casted as array/object/json in the model.
+     * So that they are not json_encoded twice before they are stored in the db
+     * (once by Backpack in front-end, once by Laravel Attribute Casting).
+     */
+    public function decodeJsonCastedAttributes($data, $form, $id = false)
+    {
+        // get the right fields according to the form type (create/update)
+        $fields = $this->getFields($form, $id);
+
+        foreach ($fields as $field) {
+
+            // Test the field is castable
+            if (isset($field['name']) && array_key_exists($field['name'], $this->model->getCasts())) {
+
+                // Handle JSON field types
+                $jsonCastables = ['array', 'object', 'json'];
+                $fieldCasting = $this->model->getCasts()[$field['name']];
+
+                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && !is_array($data[$field['name']])) {
+                    try {
+                        $data[$field['name']] = json_decode($data[$field['name']]);
+                    } catch (Exception $e) {
+                        $data[$field['name']] = [];
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
     // ------------
     // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED
     // ------------
@@ -190,4 +222,6 @@ trait Fields
     {
         $this->setSort('fields', (array) $order);
     }
+
+
 }
