@@ -13,6 +13,10 @@
   	</div>
   @endif
 
+  @if ($crud->model->translationEnabled())
+    <input type="hidden" name="locale" value={{ App::getLocale() }}>
+  @endif
+
   {{-- Show the inputs --}}
   @foreach ($fields as $field)
     <!-- load the view from the application if it exists, otherwise load the one in the package -->

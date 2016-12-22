@@ -190,15 +190,16 @@ trait Fields
     {
         // get the right fields according to the form type (create/update)
         $fields = $this->getFields($form, $id);
+        $casted_attributes = $this->model->getCastedAttributes();
 
         foreach ($fields as $field) {
 
             // Test the field is castable
-            if (isset($field['name']) && array_key_exists($field['name'], $this->model->getCasts())) {
+            if (isset($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
 
                 // Handle JSON field types
                 $jsonCastables = ['array', 'object', 'json'];
-                $fieldCasting = $this->model->getCasts()[$field['name']];
+                $fieldCasting = $casted_attributes[$field['name']];
 
                 if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && ! is_array($data[$field['name']])) {
                     try {
