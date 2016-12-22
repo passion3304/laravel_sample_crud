@@ -142,7 +142,6 @@ class CrudController extends BaseController
 
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
-        $this->data['entry']->getAvailableLocales();
         $this->data['crud'] = $this->crud;
         $this->data['fields'] = $this->crud->getUpdateFields($id);
         $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;

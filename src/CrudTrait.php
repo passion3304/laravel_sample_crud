@@ -206,12 +206,12 @@ trait CrudTrait
         $this->attributes[$attribute_name] = json_encode($attribute_value);
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Methods for working with translatable models.
     |--------------------------------------------------------------------------
     */
+
     /**
      * Get the attributes that were casted in the model.
      * Used for translations because Spatie/Laravel-Translatable
@@ -232,8 +232,7 @@ trait CrudTrait
      */
     public function translationEnabled()
     {
-        if (method_exists($this, 'translationEnabledForModel'))
-        {
+        if (method_exists($this, 'translationEnabledForModel')) {
             return $this->translationEnabledForModel();
         }
 
