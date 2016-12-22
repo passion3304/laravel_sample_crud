@@ -14,7 +14,7 @@
   @endif
 
   @if ($crud->model->translationEnabled())
-    <input type="hidden" name="locale" value={{ App::getLocale() }}>
+    <input type="hidden" name="locale" value={{ $crud->request->input('locale')?$crud->request->input('locale'):App::getLocale() }}>
   @endif
 
   {{-- Show the inputs --}}

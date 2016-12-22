@@ -142,6 +142,7 @@ class CrudController extends BaseController
 
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['entry']->getAvailableLocales();
         $this->data['crud'] = $this->crud;
         $this->data['fields'] = $this->crud->getUpdateFields($id);
         $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
@@ -177,7 +178,7 @@ class CrudController extends BaseController
 
         // update the row in the db
         $item = $this->crud->update($request->get($this->crud->model->getKeyName()),
-                            $request->except('redirect_after_save', '_token'));
+                            $request->except('redirect_after_save', '_token', '_method'));
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
