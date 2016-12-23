@@ -2,8 +2,35 @@
 
 namespace Backpack\CRUD\ModelTraits\Translatable;
 
+use Spatie\Translatable\HasTranslations;
+
 trait SpatieTranslatableAdaptor
 {
+	use HasTranslations;
+
+    public $locale = false;
+
+    /*
+    |--------------------------------------------------------------------------
+    |                 SPATIE/LARAVEL-TRANSLATABLE OVERWRITES
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Use the forced locale if present.
+     *
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    public function getAttributeValue($key)
+    {
+        if (!$this->isTranslatableAttribute($key)) {
+            return parent::getAttributeValue($key);
+        }
+
+        return $this->getTranslation($key, $this->locale ?: config('app.locale'));
+    }
+
     /*
     |--------------------------------------------------------------------------
     |                            ELOQUENT OVERWRITES
@@ -25,7 +52,7 @@ trait SpatieTranslatableAdaptor
 
     	// do the actual saving
     	foreach ($attributes as $attribute => $value) {
-    		if ($this->isTranslatableAttribute($attribute))
+    		if ($model->isTranslatableAttribute($attribute))
     		{ // the attribute is translatable
     			$model->setTranslation($attribute, $locale, $value);
     		}
@@ -100,19 +127,20 @@ trait SpatieTranslatableAdaptor
      *
      * @return [Eloquent Collection] The row in the db.
      */
-    // public function find($id)
-    // {
-    // 	$translation_locale = \Request::input('locale');
-    // 	$default_locale = \App::getLocale();
+    public function find($id)
+    {
+    	$translation_locale = \Request::input('locale');
+    	$default_locale = \App::getLocale();
 
-    // 	if ($translation_locale) {
-    // 		$item = parent::find($id);
+    	if ($translation_locale) {
+    		$item = parent::find($id);
+    		$item->setLocale($translation_locale);
 
-    // 		return $item->translateTo($translation_locale);
-    // 	}
+    		return $item;
+    	}
 
-    // 	return parent::find($id);
-    // }
+    	return parent::find($id);
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -130,8 +158,24 @@ trait SpatieTranslatableAdaptor
     	return property_exists($this, 'translatable');
     }
 
+    /**
+     * Get all locales the admin is allowed to use.
+     *
+     * @return array
+     */
     public function getAvailableLocales()
     {
     	return config('backpack.crud.locales');
+    }
+
+    /**
+     * Set the locale property. Used in normalizeLocale() to force the translation
+     * to a different language that the one set in app()->getLocale();
+     *
+     * @param string
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }
