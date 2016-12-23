@@ -85,8 +85,9 @@ trait SpatieTranslatableAdaptor
 
     	if ($translation_locale) {
     		$item = parent::findOrFail($id);
+    		$item->setLocale($translation_locale);
 
-    		return $item->forceTranslationTo($translation_locale);
+    		return $item;
     	}
 
     	return parent::findOrFail($id);
@@ -99,19 +100,19 @@ trait SpatieTranslatableAdaptor
      *
      * @return [Eloquent Collection] The row in the db.
      */
-    public function find($id)
-    {
-    	$translation_locale = \Request::input('locale');
-    	$default_locale = \App::getLocale();
+    // public function find($id)
+    // {
+    // 	$translation_locale = \Request::input('locale');
+    // 	$default_locale = \App::getLocale();
 
-    	if ($translation_locale) {
-    		$item = parent::find($id);
+    // 	if ($translation_locale) {
+    // 		$item = parent::find($id);
 
-    		return $item->forceTranslationTo($translation_locale);
-    	}
+    // 		return $item->translateTo($translation_locale);
+    // 	}
 
-    	return parent::find($id);
-    }
+    // 	return parent::find($id);
+    // }
 
     /*
     |--------------------------------------------------------------------------
@@ -132,20 +133,5 @@ trait SpatieTranslatableAdaptor
     public function getAvailableLocales()
     {
     	return config('backpack.crud.locales');
-    }
-
-    public function forceTranslationTo($locale)
-    {
-    	foreach ($this->attributes as $attribute => $value) {
-    		if ($this->isTranslatableAttribute($attribute))
-    		{ // the attribute is translatable
-    			$this->attributes[$attribute] = $this->getTranslation($attribute, $locale);
-    		}
-    	}
-
-    	// forget which attributes are translatable, so they don't get translated again
-    	$this->translatable = [];
-
-    	return $this;
     }
 }
