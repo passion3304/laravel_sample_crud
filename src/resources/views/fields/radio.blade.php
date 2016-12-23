@@ -8,6 +8,7 @@
 
     <div>
         <label>{!! $field['label'] !!}</label>
+        @include('crud::inc.field_translatable_icon')
     </div>
 
     @if( isset($field['options']) && is_array($field['options']) )
