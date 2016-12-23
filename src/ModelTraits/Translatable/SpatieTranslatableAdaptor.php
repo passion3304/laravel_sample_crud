@@ -10,30 +10,27 @@ trait SpatieTranslatableAdaptor
     |--------------------------------------------------------------------------
     */
 
-	/**
-	 * Create translated items as json.
-	 *
-	 * @param  array  $attributes [description]
-	 * @return [type]             [description]
-	 */
+    /**
+     * Create translated items as json.
+     *
+     * @param  array  $attributes [description]
+     * @return [type]             [description]
+     */
     public static function create(array $attributes = [])
     {
-        $locale = $attributes['locale']?$attributes['locale']:App::getLocale();
+        $locale = $attributes['locale'] ? $attributes['locale'] : App::getLocale();
         $attributes = array_except($attributes, ['locale']);
 
-    	$model = new static();
+        $model = new static();
 
-    	// do the actual saving
-    	foreach ($attributes as $attribute => $value) {
-    		if ($this->isTranslatableAttribute($attribute))
-    		{ // the attribute is translatable
-    			$model->setTranslation($attribute, $locale, $value);
-    		}
-    		else
-    		{ // the attribute is NOT translatable
-    			$model->{$attribute} = $value;
-    		}
-    	}
+        // do the actual saving
+        foreach ($attributes as $attribute => $value) {
+            if ($this->isTranslatableAttribute($attribute)) { // the attribute is translatable
+                $model->setTranslation($attribute, $locale, $value);
+            } else { // the attribute is NOT translatable
+                $model->{$attribute} = $value;
+            }
+        }
         $model->save();
 
         return $model;
@@ -52,20 +49,17 @@ trait SpatieTranslatableAdaptor
             return false;
         }
 
-        $locale = $attributes['locale']?$attributes['locale']:App::getLocale();
+        $locale = $attributes['locale'] ? $attributes['locale'] : App::getLocale();
         $attributes = array_except($attributes, ['locale']);
 
         // do the actual saving
-    	foreach ($attributes as $attribute => $value) {
-    		if ($this->isTranslatableAttribute($attribute))
-    		{ // the attribute is translatable
-    			$this->setTranslation($attribute, $locale, $value);
-    		}
-    		else
-    		{ // the attribute is NOT translatable
-    			$this->{$attribute} = $value;
-    		}
-    	}
+        foreach ($attributes as $attribute => $value) {
+            if ($this->isTranslatableAttribute($attribute)) { // the attribute is translatable
+                $this->setTranslation($attribute, $locale, $value);
+            } else { // the attribute is NOT translatable
+                $this->{$attribute} = $value;
+            }
+        }
         $this->save($options);
 
         return $this;
@@ -80,17 +74,17 @@ trait SpatieTranslatableAdaptor
      */
     public function findOrFail($id)
     {
-    	$translation_locale = \Request::input('locale');
-    	$default_locale = \App::getLocale();
+        $translation_locale = \Request::input('locale');
+        $default_locale = \App::getLocale();
 
-    	if ($translation_locale) {
-    		$item = parent::findOrFail($id);
-    		$item->setLocale($translation_locale);
+        if ($translation_locale) {
+            $item = parent::findOrFail($id);
+            $item->setLocale($translation_locale);
 
-    		return $item;
-    	}
+            return $item;
+        }
 
-    	return parent::findOrFail($id);
+        return parent::findOrFail($id);
     }
 
     /**
@@ -127,11 +121,11 @@ trait SpatieTranslatableAdaptor
      */
     public function translationEnabledForModel()
     {
-    	return property_exists($this, 'translatable');
+        return property_exists($this, 'translatable');
     }
 
     public function getAvailableLocales()
     {
-    	return config('backpack.crud.locales');
+        return config('backpack.crud.locales');
     }
 }
