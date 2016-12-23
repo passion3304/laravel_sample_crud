@@ -87,11 +87,10 @@ trait Create
     {
         $all_relation_fields = $this->getRelationFields($form);
 
-        return array_where($all_relation_fields, function($value, $key) {
+        return array_where($all_relation_fields, function ($value, $key) {
             return isset($value['pivot']) && $value['pivot'];
         });
     }
-
 
     public function syncPivot($model, $data, $form = 'create')
     {
