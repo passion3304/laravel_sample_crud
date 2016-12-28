@@ -43,9 +43,6 @@ trait SpatieTranslatableAdaptor
      * Create translated items as json.
      *
      * @param  array  $attributes [description]
-     $translation = $this->getTranslation($key, $this->locale ?: config('app.locale'));
-
-        return is_array($translation) ? array_first($translation) : $translation;
      */
     public static function create(array $attributes = [])
     {
