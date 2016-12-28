@@ -45,7 +45,7 @@ trait SpatieTranslatableAdaptor
      */
     public static function create(array $attributes = [])
     {
-        $locale = $attributes['locale'] ? $attributes['locale'] : App::getLocale();
+        $locale = $attributes['locale'] ?? \App::getLocale();
         $attributes = array_except($attributes, ['locale']);
 
         $model = new static();
