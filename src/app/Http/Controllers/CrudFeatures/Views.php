@@ -14,18 +14,19 @@ trait Views
     protected $showView = 'crud::show';
 
     /**
-     * Sets the details row template
+     * Sets the details row template.
      * @param string $view name of the template file
      * @return string $view name of the template file
      */
     public function setDetailsRowView($view)
     {
         $this->detailsRowView = $view;
+
         return $this->detailsRowView;
     }
 
     /**
-     * Gets the details row template
+     * Gets the details row template.
      * @return string name of the template file
      */
     public function getDetailsRowView()
@@ -34,18 +35,19 @@ trait Views
     }
 
     /**
-     * Sets the revision template
+     * Sets the revision template.
      * @param string $view name of the template file
      * @return string $view name of the template file
      */
     public function setRevisionsView($view)
     {
         $this->revisionsView = $view;
+
         return $this->revisionsView;
     }
 
     /**
-     * Gets the revisions template
+     * Gets the revisions template.
      * @return string name of the template file
      */
     public function getRevisionsView()
@@ -54,18 +56,19 @@ trait Views
     }
 
     /**
-     * Sets the reorder template
+     * Sets the reorder template.
      * @param string $view name of the template file
      * @return string $view name of the template file
      */
     public function setReorderView($view)
     {
         $this->reorderView = $view;
+
         return $this->reorderView;
     }
 
     /**
-     * Gets the reorder template
+     * Gets the reorder template.
      * @return string name of the template file
      */
     public function getReorderView()
@@ -74,18 +77,19 @@ trait Views
     }
 
     /**
-     * Sets the list template
+     * Sets the list template.
      * @param string $view name of the template file
      * @return string $view name of the template file
      */
     public function setListView($view)
     {
         $this->listView = $view;
+
         return $this->listView;
     }
 
     /**
-     * Gets the list template
+     * Gets the list template.
      * @return string name of the template file
      */
     public function getListView()
@@ -94,18 +98,19 @@ trait Views
     }
 
     /**
-     * Sets the list template
+     * Sets the list template.
      * @param string $view name of the template file
      * @return string $view name of the template file
      */
     public function setCreateView($view)
     {
         $this->createView = $view;
+
         return $this->createView;
     }
 
     /**
-     * Gets the create template
+     * Gets the create template.
      * @return string name of the template file
      */
     public function getCreateView()
@@ -114,18 +119,19 @@ trait Views
     }
 
     /**
-     * Sets the edit template
+     * Sets the edit template.
      * @param string $view name of the template file
      * @return string $view name of the template file
      */
     public function setEditView($view)
     {
         $this->editView = $view;
+
         return $this->editView;
     }
 
     /**
-     * Gets the edit template
+     * Gets the edit template.
      * @return string name of the template file
      */
     public function getEditView()
@@ -134,18 +140,19 @@ trait Views
     }
 
     /**
-     * Sets the show template
+     * Sets the show template.
      * @param string $view name of the template file
      * @return string $view name of the template file
      */
     public function setShowView($view)
     {
         $this->showView = $view;
+
         return $this->showView;
     }
 
     /**
-     * Gets the show template
+     * Gets the show template.
      * @return string name of the template file
      */
     public function getShowView()
