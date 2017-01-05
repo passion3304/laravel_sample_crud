@@ -28,7 +28,9 @@ trait SpatieTranslatableAdaptor
             return parent::getAttributeValue($key);
         }
 
-        return $this->getTranslation($key, $this->locale ?: config('app.locale'));
+        $translation = $this->getTranslation($key, $this->locale ?: config('app.locale'));
+
+        return is_array($translation) ? array_first($translation) : $translation;
     }
 
     /*
@@ -41,11 +43,10 @@ trait SpatieTranslatableAdaptor
      * Create translated items as json.
      *
      * @param  array  $attributes [description]
-     * @return [type]             [description]
      */
     public static function create(array $attributes = [])
     {
-        $locale = $attributes['locale'] ? $attributes['locale'] : App::getLocale();
+        $locale = $attributes['locale'] ?? \App::getLocale();
         $attributes = array_except($attributes, ['locale']);
 
         $model = new static();
