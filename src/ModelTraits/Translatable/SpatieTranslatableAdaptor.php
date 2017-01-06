@@ -130,7 +130,6 @@ trait SpatieTranslatableAdaptor
         $this->locale = $locale;
     }
 
-
     /**
      * Magic method to get the db entries already translated in the wanted locale.
      */
