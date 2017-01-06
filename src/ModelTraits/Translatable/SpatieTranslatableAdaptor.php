@@ -93,50 +93,6 @@ trait SpatieTranslatableAdaptor
         return $this;
     }
 
-    /**
-     * Get the database entry in the wanted locale.
-     *
-     * @param  [int] The id of the row in the db to fetch.
-     *
-     * @return [Eloquent Collection] The row in the db.
-     */
-    public function findOrFail($id)
-    {
-        $translation_locale = \Request::input('locale');
-        $default_locale = \App::getLocale();
-
-        if ($translation_locale) {
-            $item = parent::findOrFail($id);
-            $item->setLocale($translation_locale);
-
-            return $item;
-        }
-
-        return parent::findOrFail($id);
-    }
-
-    /**
-     * Get the database entry in the wanted locale.
-     *
-     * @param  [int] The id of the row in the db to fetch.
-     *
-     * @return [Eloquent Collection] The row in the db.
-     */
-    public function find($id)
-    {
-        $translation_locale = \Request::input('locale');
-        $default_locale = \App::getLocale();
-
-        if ($translation_locale) {
-            $item = parent::find($id);
-            $item->setLocale($translation_locale);
-
-            return $item;
-        }
-
-        return parent::find($id);
-    }
-
     /*
     |--------------------------------------------------------------------------
     |                            CUSTOM METHODS
@@ -172,5 +128,37 @@ trait SpatieTranslatableAdaptor
     public function setLocale($locale)
     {
         $this->locale = $locale;
+    }
+
+
+    /**
+     * Magic method to get the db entries already translated in the wanted locale.
+     */
+    public function __call($method, $parameters)
+    {
+        switch ($method) {
+            // translate all find methods
+            case 'find':
+            case 'findOrFail':
+            case 'findMany':
+
+                $translation_locale = \Request::input('locale');
+                $default_locale = \App::getLocale();
+
+                if ($translation_locale) {
+                    $item = parent::__call($method, $parameters);
+                    $item->setLocale($translation_locale);
+
+                    return $item;
+                }
+
+                return parent::__call($method, $parameters);
+                break;
+
+            // do not translate any other methods
+            default:
+                return parent::__call($method, $parameters);
+                break;
+        }
     }
 }
