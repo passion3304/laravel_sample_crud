@@ -8,6 +8,9 @@ trait SpatieTranslatableAdaptor
 {
     use HasTranslations;
 
+    /**
+     * @var bool
+     */
     public $locale = false;
 
     /*
@@ -19,8 +22,8 @@ trait SpatieTranslatableAdaptor
     /**
      * Use the forced locale if present.
      *
-     * @param  [type] $key [description]
-     * @return [type]      [description]
+     * @param string $key
+     * @return mixed
      */
     public function getAttributeValue($key)
     {
@@ -42,7 +45,8 @@ trait SpatieTranslatableAdaptor
     /**
      * Create translated items as json.
      *
-     * @param  array  $attributes [description]
+     * @param array $attributes
+     * @return static
      */
     public static function create(array $attributes = [])
     {
@@ -77,7 +81,7 @@ trait SpatieTranslatableAdaptor
             return false;
         }
 
-        $locale = $attributes['locale'] ? $attributes['locale'] : App::getLocale();
+        $locale = $attributes['locale'] ?? \App::getLocale();
         $attributes = array_except($attributes, ['locale']);
 
         // do the actual saving
@@ -88,9 +92,8 @@ trait SpatieTranslatableAdaptor
                 $this->{$attribute} = $value;
             }
         }
-        $this->save($options);
 
-        return $this;
+        return $this->save($options);
     }
 
     /*
@@ -132,6 +135,10 @@ trait SpatieTranslatableAdaptor
 
     /**
      * Magic method to get the db entries already translated in the wanted locale.
+     *
+     * @param string $method
+     * @param array $parameters
+     * @return
      */
     public function __call($method, $parameters)
     {
@@ -141,8 +148,7 @@ trait SpatieTranslatableAdaptor
             case 'findOrFail':
             case 'findMany':
 
-                $translation_locale = \Request::input('locale');
-                $default_locale = \App::getLocale();
+                $translation_locale = \Request::input('locale', \App::getLocale());
 
                 if ($translation_locale) {
                     $item = parent::__call($method, $parameters);
