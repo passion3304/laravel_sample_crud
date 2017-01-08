@@ -21,7 +21,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 
 
-## [3.1.50] - xxx-xx-xx - UPCOMING TAG
+## [3.1.50] - 2017-01-08
 
 ### Added
 - Chinese (Traditional) translation, thanks to [Isaac Kwan](https://github.com/isaackwan);
