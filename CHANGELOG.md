@@ -21,11 +21,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 
 
-## [3.1.x] - 2016-12-14
+## [3.1.50] - xxx-xx-xx - UPCOMING TAG
+
+### Added
+- Chinese (Traditional) translation, thanks to [Isaac Kwan](https://github.com/isaackwan);
 
 ### Fixed
 - Escaped table name for ENUM column types, so reserved PHP/MySQL names can also be used for table names; Fixes #261;
-
 
 
 ## [3.1.49] - 2017-01-08
