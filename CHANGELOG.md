@@ -31,6 +31,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Escaped table name for ENUM column types, so reserved PHP/MySQL names can also be used for table names; Fixes #261;
 - CrudTrait's isColumnNullable() should now work for multiple-database systems, by getting the connection type automatically;
 - Can use DB prefixed tables in CrudTrait's isColumnNullable(); fixes #300;
+- Radio field type could not be used inside Settings; Now it can;
 
 
 ## [3.1.49] - 2017-01-08
