@@ -25,7 +25,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - the table in list view is responsive (scrollable horizontally) by default;
-
+- new syntax for details_row URL in javascript;
+- new syntax for the current URL in layout.blade.php, for making the current menu items active;
 
 ## [3.1.50] - 2017-01-08
 
