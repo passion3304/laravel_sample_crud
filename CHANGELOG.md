@@ -29,7 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - Escaped table name for ENUM column types, so reserved PHP/MySQL names can also be used for table names; Fixes #261;
-
+- CrudTrait's isColumnNullable() should now work for multiple-database systems, by getting the connection type automatically;
 
 ## [3.1.49] - 2017-01-08
 
