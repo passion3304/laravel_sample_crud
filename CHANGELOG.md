@@ -28,6 +28,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 
 
+## [3.1.49] - 2017-01-08
+
+### Fixed
+- select_from_array field triggered an "Undefined index: value" error; fixes #312 thanks to [Chris Thompson](https://christhompsontldr.com/);
+
+
 ## [3.1.48] - 2016-12-14
 
 ### Fixed
