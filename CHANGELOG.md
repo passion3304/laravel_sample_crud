@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - Chinese (Traditional) translation, thanks to [Isaac Kwan](https://github.com/isaackwan);
+- You can now create a CRUD field to overwrite the primary key, thanks to [Isaac Kwan](https://github.com/isaackwan);
 
 ### Fixed
 - Escaped table name for ENUM column types, so reserved PHP/MySQL names can also be used for table names; Fixes #261;
