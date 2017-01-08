@@ -21,6 +21,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 
 
+## [3.1.51] - xxxx-xx-xx - UPCOMING TAG
+
+### Fixed
+- the table in list view is responsive (scrollable horizontally) by default;
+
+
 ## [3.1.50] - 2017-01-08
 
 ### Added

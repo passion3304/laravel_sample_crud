@@ -28,7 +28,7 @@
           <div id="datatable_button_stack" class="pull-right text-right"></div>
         </div>
 
-        <div class="box-body">
+        <div class="box-body table-responsive">
 
         {{-- Backpack List Filters --}}
         @if ($crud->filters->count())
