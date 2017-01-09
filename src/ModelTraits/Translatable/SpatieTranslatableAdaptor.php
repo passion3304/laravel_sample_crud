@@ -27,7 +27,7 @@ trait SpatieTranslatableAdaptor
      */
     public function getAttributeValue($key)
     {
-        if (!$this->isTranslatableAttribute($key)) {
+        if (! $this->isTranslatableAttribute($key)) {
             return parent::getAttributeValue($key);
         }
 
@@ -77,7 +77,7 @@ trait SpatieTranslatableAdaptor
      */
     public function update(array $attributes = [], array $options = [])
     {
-        if (!$this->exists) {
+        if (! $this->exists) {
             return false;
         }
 
