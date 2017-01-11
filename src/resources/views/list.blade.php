@@ -316,7 +316,7 @@
                 $(this).removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
                 // Get the details with ajax
                 $.ajax({
-                  url: '{{ Request::url() }}/'+btn.data('entry-id')+'/details',
+                  url: '{{ url($crud->route) }}/'+btn.data('entry-id')+'/details',
                   type: 'GET',
                   // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
                   // data: {param1: 'value1'},
