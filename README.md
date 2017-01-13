@@ -62,7 +62,7 @@ $ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --ta
 
 6) [Optional] You can now the file manager to the menu, in `resources/views/vendor/backpack/base/inc/sidebar.blade.php` or `menu.blade.php`:
 ```html
-<li><a href="{{ url(config('backpack.base.route_prefix').'/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>
+<li><a href="{{ url(config('backpack.base.route_prefix').'/elfinder') }}"><i class="fa fa-files-o"></i> <span>{{ trans('backpack::crud.file_manager') }}</span></a></li>
 ```
 
 ## Usage
