@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Dick Crud Language Lines
+    | Backpack Crud Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are used by the CRUD interface.
