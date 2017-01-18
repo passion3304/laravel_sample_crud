@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.52] - 2017-01-18
+
+### Fixed
+- revisions are sorted by key, not by date, since they keys are auto-incremented anyway; this should allow for multidimensional arrays;
+
 
 ## [3.1.51] - 2017-01-11
 
