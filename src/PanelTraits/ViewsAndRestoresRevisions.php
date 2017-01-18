@@ -30,7 +30,7 @@ trait ViewsAndRestoresRevisions
         }
 
         // Sort the array by timestamp descending (so that the most recent are at the top)
-        arsort($revisions);
+        krsort($revisions);
 
         return $revisions;
     }
