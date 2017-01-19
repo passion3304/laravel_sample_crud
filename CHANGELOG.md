@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+## [3.1.53] - 2017-01-19
+
+### Fixed
+- revisions;
+
+
 ## [3.1.52] - 2017-01-18
 
 ### Fixed
