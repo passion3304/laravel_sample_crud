@@ -27,6 +27,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - revisions;
 
 
+## [3.1.53] - 2017-01-20
+
+### Fixed
+- Revisions: $this->update() removed many to many relations;
+
+
 ## [3.1.52] - 2017-01-18
 
 ### Fixed
