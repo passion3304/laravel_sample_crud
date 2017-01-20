@@ -47,7 +47,7 @@ trait ViewsAndRestoresRevisions
         $revision = Revision::findOrFail($revisionId);
 
         // Update the revisioned field with the old value
-        $this->update($entry->getKey(), [$revision->key => $revision->old_value]);
+        $entry->update([$revision->key => $revision->old_value]);
 
         // Reload the entry so we have the latest revisions
         $entry = $this->getEntry($id);
