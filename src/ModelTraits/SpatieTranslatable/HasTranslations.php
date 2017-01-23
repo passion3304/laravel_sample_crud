@@ -1,10 +1,10 @@
 <?php
 
-namespace Backpack\CRUD\ModelTraits\Translatable;
+namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
 
 use Spatie\Translatable\HasTranslations;
 
-trait SpatieTranslatableAdaptor
+trait HasTranslations
 {
     use HasTranslations;
 
@@ -134,6 +134,21 @@ trait SpatieTranslatableAdaptor
     }
 
     /**
+     * Get the locale property. Used in SpatieTranslatableSluggableService
+     * to save the slug for the appropriate language.
+     *
+     * @param string
+     */
+    public function getLocale()
+    {
+        if ($this->locale) {
+            return $this->locale;
+        }
+
+        return \Request::input('locale', \App::getLocale());
+    }
+
+    /**
      * Magic method to get the db entries already translated in the wanted locale.
      *
      * @param string $method
@@ -147,12 +162,17 @@ trait SpatieTranslatableAdaptor
             case 'find':
             case 'findOrFail':
             case 'findMany':
+            case 'findBySlug':
+            case 'findBySlugOrFail':
 
                 $translation_locale = \Request::input('locale', \App::getLocale());
 
                 if ($translation_locale) {
                     $item = parent::__call($method, $parameters);
-                    $item->setLocale($translation_locale);
+
+                    if ($item) {
+                        $item->setLocale($translation_locale);
+                    }
 
                     return $item;
                 }
