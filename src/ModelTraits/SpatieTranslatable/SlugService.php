@@ -2,13 +2,10 @@
 
 namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
 
-use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
 {
-
     /**
      * Slug the current model.
      *
@@ -42,7 +39,6 @@ class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
         return $this->model->isDirty($attributes);
     }
 
-
     /**
      * Checks if the slug should be unique, and makes it so if needed.
      *
@@ -53,7 +49,7 @@ class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
      */
     protected function makeSlugUnique($slug, array $config, $attribute)
     {
-        if (!$config['unique']) {
+        if (! $config['unique']) {
             return $slug;
         }
 
@@ -94,10 +90,9 @@ class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
         } elseif (is_callable($method)) {
             $suffix = call_user_func($method, $slug, $separator, $list);
         } else {
-            throw new \UnexpectedValueException('Sluggable "reserved" for ' . get_class($this->model) . ':' . $attribute . ' is not null, an array, or a closure that returns null/array.');
+            throw new \UnexpectedValueException('Sluggable "reserved" for '.get_class($this->model).':'.$attribute.' is not null, an array, or a closure that returns null/array.');
         }
 
-        return $slug . $separator . $suffix;
+        return $slug.$separator.$suffix;
     }
-
 }

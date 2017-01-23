@@ -2,9 +2,8 @@
 
 namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
 
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\SlugService;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Events\Dispatcher;
 
 class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
 {
@@ -32,7 +31,7 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @return boolean|null
+     * @return bool|null
      */
     public function saving(Model $model)
     {
@@ -42,7 +41,7 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
     /**
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param string $event
-     * @return boolean|null
+     * @return bool|null
      */
     protected function generateSlug(Model $model, $event)
     {
@@ -64,7 +63,7 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
      */
     protected function fireSluggingEvent(Model $model, $event)
     {
-        return $this->events->until('eloquent.slugging: ' . get_class($model), [$model, $event]);
+        return $this->events->until('eloquent.slugging: '.get_class($model), [$model, $event]);
     }
 
     /**
@@ -76,6 +75,6 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
      */
     protected function fireSluggedEvent(Model $model, $status)
     {
-        $this->events->fire('eloquent.slugged: ' . get_class($model), [$model, $status]);
+        $this->events->fire('eloquent.slugged: '.get_class($model), [$model, $status]);
     }
 }

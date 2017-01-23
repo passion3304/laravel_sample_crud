@@ -2,10 +2,8 @@
 
 namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\SluggableObserver;
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\SlugService;
+use Illuminate\Database\Eloquent\Builder;
 
 trait Sluggable
 {
@@ -47,11 +45,11 @@ trait Sluggable
     public function scopeFindSimilarSlugs(Builder $query, Model $model, $attribute, $config, $slug)
     {
         $separator = $config['separator'];
-        $attribute = $attribute."->".$this->getLocale();
+        $attribute = $attribute.'->'.$this->getLocale();
 
-        return $query->where(function(Builder $q) use ($attribute, $slug, $separator) {
+        return $query->where(function (Builder $q) use ($attribute, $slug, $separator) {
             $q->where($attribute, '=', $slug)
-                ->orWhere($attribute, 'LIKE', $slug . $separator . '%');
+                ->orWhere($attribute, 'LIKE', $slug.$separator.'%');
         });
     }
 }
