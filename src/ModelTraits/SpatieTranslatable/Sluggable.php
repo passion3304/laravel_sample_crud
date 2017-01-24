@@ -4,10 +4,11 @@ namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Cviebrock\EloquentSluggable\Sluggable as OriginalSluggable;
 
 trait Sluggable
 {
-    use \Cviebrock\EloquentSluggable\Sluggable;
+    use OriginalSluggable;
 
     /**
      * Hook into the Eloquent model events to create or

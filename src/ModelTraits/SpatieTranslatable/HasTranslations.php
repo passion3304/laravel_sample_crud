@@ -2,11 +2,11 @@
 
 namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
 
-use Spatie\Translatable\HasTranslations;
+use Spatie\Translatable\HasTranslations as OriginalHasTranslations;
 
 trait HasTranslations
 {
-    use HasTranslations;
+    use OriginalHasTranslations;
 
     /**
      * @var bool

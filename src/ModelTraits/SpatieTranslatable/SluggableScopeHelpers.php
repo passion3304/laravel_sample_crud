@@ -2,11 +2,11 @@
 
 namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
 
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers as OriginalSluggableScopeHelpers;
 
 trait SluggableScopeHelpers
 {
-    use SluggableScopeHelpers;
+    use OriginalSluggableScopeHelpers;
 
     /**
      * Query scope for finding a model by its primary slug.
