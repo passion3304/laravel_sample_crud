@@ -26,6 +26,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - allow custom primary key in field types base64_image and checklist_dependency;
 - dropdown filter triggered separator on 0 index;
 - make sure model events are triggered when deleting;
+- in edit view, use the fields variable passed to the view;
 
 ## [3.1.54] - 2017-01-19
 
