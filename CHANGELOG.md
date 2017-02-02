@@ -27,6 +27,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - dropdown filter triggered separator on 0 index;
 - make sure model events are triggered when deleting;
 - in edit view, use the fields variable passed to the view;
+- fix conflict bootstrap-datepicker & jquery-ui;
 
 ## [3.1.54] - 2017-01-19
 
