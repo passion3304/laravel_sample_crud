@@ -10,7 +10,7 @@
         <label>{!! $field['label'] !!}</label>
     </div>
 
-    @if( isset($field['options']) && is_array($field['options']) )
+    @if( isset($field['options']) && $field['options'] = (array)$field['options'] )
 
         @foreach ($field['options'] as $value => $label )
             @php ($optionPointer++)
