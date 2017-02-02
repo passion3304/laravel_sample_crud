@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - allow custom primary key in field types base64_image and checklist_dependency;
+- dropdown filter triggered separator on 0 index;
 
 
 ## [3.1.54] - 2017-01-19
