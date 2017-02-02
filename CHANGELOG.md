@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - make sure model events are triggered when deleting;
 - in edit view, use the fields variable passed to the view;
 - fix conflict bootstrap-datepicker & jquery-ui;
+- fix "undefined index: disk" in upload field type;
 
 ## [3.1.54] - 2017-01-19
 
