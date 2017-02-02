@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.55] - 2017-02-02 - NOT LAUNCHED
+
+### Fixed
+- allow custom primary key in field types base64_image and checklist_dependency;
+
 
 ## [3.1.54] - 2017-01-19
 
