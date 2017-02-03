@@ -37,10 +37,10 @@ If you have never used Backpack before, the best place to understand it and get 
 
 Please note you need to install Backpack\Base before you cand use Backpack\CRUD. It will provide you with the AdminLTE design.
 
-Please follow these steps in the documentation:
+Installation guides:
 - [Install Backpack on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
 - [Install Backpack on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
-- [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - ;
+- [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - recommended;
 
 
 ## Features
