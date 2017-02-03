@@ -17,6 +17,7 @@ if (is_array($value)) {
 
 <div data-video @include('crud::inc.field_wrapper_attributes') >
     <label for="{{ $field['name'] }}_link">{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ $value }}">
     <div class="input-group">
         <input @include('crud::inc.field_attributes', ['default_class' => 'video-link form-control']) type="text" id="{{ $field['name'] }}_link">

@@ -11,6 +11,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
 
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <input type="hidden" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}" name="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix'])) <div class="input-group"> @endif

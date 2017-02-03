@@ -13,6 +13,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
 <div @include('crud::inc.field_wrapper_attributes') >
     <input type="hidden" name="{{ $field['name'] }}" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <div class="input-group date">
         <input
             data-bs-datetimepicker="{{ isset($field['datetime_picker_options']) ? json_encode($field['datetime_picker_options']) : '{}'}}"

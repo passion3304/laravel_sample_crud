@@ -23,6 +23,7 @@
 <div ng-app="backPackTableApp" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
 
     <input class="array-json" type="hidden" id="{{ $field['name'] }}" name="{{ $field['name'] }}">
 

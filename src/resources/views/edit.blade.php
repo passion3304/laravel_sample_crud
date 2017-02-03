@@ -24,7 +24,22 @@
 		  {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey(), 'method' => 'put', 'files'=>$crud->hasUploadFields('update', $entry->getKey()))) !!}
 		  <div class="box">
 		    <div class="box-header with-border">
-		      <h3 class="box-title">{{ trans('backpack::crud.edit') }}</h3>
+		    	@if ($crud->model->translationEnabled())
+			    	<!-- Single button -->
+					<div class="btn-group pull-right">
+					  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    Language: {{ $crud->model->getAvailableLocales()[$crud->request->input('locale')?$crud->request->input('locale'):App::getLocale()] }} <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu">
+					  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
+						  	<li><a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?locale={{ $key }}">{{ $locale }}</a></li>
+					  	@endforeach
+					  </ul>
+					</div>
+					<h3 class="box-title" style="line-height: 30px;">{{ trans('backpack::crud.edit') }}</h3>
+				@else
+					<h3 class="box-title">{{ trans('backpack::crud.edit') }}</h3>
+				@endif
 		    </div>
 		    <div class="box-body row">
 		      <!-- load the view from the application if it exists, otherwise load the one in the package -->
