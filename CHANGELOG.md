@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.56] - 2017-02-03
+
+### Fixed
+- Laravel 5.4 compatibility;
+- elfinder redirected to /login instead of /admin, because it used the "auth" middleware instead of "admin";
+
+
 ## [3.1.55] - 2017-02-02
 
 ### Fixed
