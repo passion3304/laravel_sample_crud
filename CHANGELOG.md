@@ -33,6 +33,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - excluded _method from massAssignment, so create/update errors will be more useful;
 
 
+## [3.1.56] - 2017-02-03
+
+### Fixed
+- deleting a CRUD entry showed a warning;
+
+
 ## [3.1.55] - 2017-02-02
 
 ### Fixed

@@ -22,6 +22,6 @@ trait Delete
      */
     public function delete($id)
     {
-        return $this->model->find($id)->delete();
+        return (string) $this->model->find($id)->delete();
     }
 }
