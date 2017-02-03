@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+
+## [3.1.xx] - 2017-02-03
+
+### Fixed
+- DateTime Picker error when date deleted after being set - fixes #386;
+
+
 ## [3.1.57] - 2017-02-03
 
 ### Added
