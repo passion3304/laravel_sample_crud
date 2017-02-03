@@ -32,6 +32,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;
 
+## [3.1.57] - 2017-02-03
+
+### Added
+- Laravel 5.4 compatibility;
+
+### Fixed
+- elfinder redirected to /login instead of /admin, because it used the "auth" middleware instead of "admin";
+
 
 ## [3.1.56] - 2017-02-03
 
