@@ -28,13 +28,19 @@ Features:
 
 ![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
 
+
+## Getting started
+
+If you have never used Backpack before, the best place to understand it and get started is [backpackforlaravel.com](https://backpackforlaravel.com/). 
+
 ## Install
 
 Please note you need to install Backpack\Base before you cand use Backpack\CRUD. It will provide you with the AdminLTE design.
 
-For Laravel 5.3 projects please follow [these steps in the documentation](https://laravel-backpack.readme.io/docs/installation-on-laravel-53). 
-
-For Laravel 5.2 projects please follow [these steps in the documentation](https://laravel-backpack.readme.io/docs/installation). Please note Backpack on Laravel 5.2 is considered deprecated. It doesn't have all the features and will not receive updates. You should really update your Laravel to 5.3, since 5.4 is right around the corner, too.
+Please follow these steps in the documentation:
+- [Install Backpack on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
+- [Install Backpack on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
+- [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - ;
 
 
 ## Features
@@ -83,10 +89,11 @@ Please **[subscribe to the Backpack Newsletter](http://eepurl.com/bUEGjf)** so y
 
 ## Credits
 
-- [Cristian Tabacitu](http://tabacitu.ro) - architect, designer, manager, main coder, PR guy, customer service guy & chief honcho
-- [Cristian Tone](http://updivision.com) - architecture improvements
-- [Marius Constantin](http://updivision.com) - bug fixing & improvements
-- [Federico Liva](https://github.com/fede91it) - bug fixing
+- [Cristian Tabacitu](http://tabacitu.ro) - architect, designer, manager, main coder, PR guy, customer service guy & chief honcho;
+- [Owen Melbourne](https://github.com/OwenMelbz) - new features, bug fixing and support;
+- [Cristian Tone](http://updivision.com) - architecture improvements;
+- [Marius Constantin](http://updivision.com) - bug fixing & improvements;
+- [Federico Liva](https://github.com/fede91it) - bug fixing;
 - [All Contributors][link-contributors]
 
 Special thanks go to:
