@@ -20,12 +20,74 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.57] - 2017-02-03
 
-## [3.1.x] - 2016-12-14
+### Added
+- Laravel 5.4 compatibility;
+
+### Fixed
+- elfinder redirected to /login instead of /admin, because it used the "auth" middleware instead of "admin";
+
+
+## [3.1.56] - 2017-02-03
+
+### Fixed
+- deleting a CRUD entry showed a warning;
+
+
+## [3.1.55] - 2017-02-02
+
+### Fixed
+- allow custom primary key in field types base64_image and checklist_dependency;
+- dropdown filter triggered separator on 0 index;
+- make sure model events are triggered when deleting;
+- in edit view, use the fields variable passed to the view;
+- fix conflict bootstrap-datepicker & jquery-ui;
+- fix "undefined index: disk" in upload field type;
+
+## [3.1.54] - 2017-01-19
+
+### Fixed
+- revisions;
+
+
+## [3.1.53] - 2017-01-20
+
+### Fixed
+- Revisions: $this->update() removed many to many relations;
+
+
+## [3.1.52] - 2017-01-18
+
+### Fixed
+- revisions are sorted by key, not by date, since they keys are auto-incremented anyway; this should allow for multidimensional arrays;
+
+
+## [3.1.51] - 2017-01-11
+
+### Fixed
+- revisions work when there are hidden (fake) fields present;
+- the table in list view is responsive (scrollable horizontally) by default;
+- new syntax for details_row URL in javascript;
+- new syntax for the current URL in layout.blade.php, for making the current menu items active;
+
+## [3.1.50] - 2017-01-08
+
+### Added
+- Chinese (Traditional) translation, thanks to [Isaac Kwan](https://github.com/isaackwan);
+- You can now create a CRUD field to overwrite the primary key, thanks to [Isaac Kwan](https://github.com/isaackwan);
 
 ### Fixed
 - Escaped table name for ENUM column types, so reserved PHP/MySQL names can also be used for table names; Fixes #261;
+- CrudTrait's isColumnNullable() should now work for multiple-database systems, by getting the connection type automatically;
+- Can use DB prefixed tables in CrudTrait's isColumnNullable(); fixes #300;
+- Radio field type could not be used inside Settings; Now it can;
 
+
+## [3.1.49] - 2017-01-08
+
+### Fixed
+- select_from_array field triggered an "Undefined index: value" error; fixes #312 thanks to [Chris Thompson](https://christhompsontldr.com/);
 
 
 ## [3.1.48] - 2016-12-14

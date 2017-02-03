@@ -29,8 +29,7 @@
         //get entity with relations for primary dependency
         $entity_dependencies = $entity_model->with($primary_dependency['entity'])
           ->with($primary_dependency['entity'].'.'.$primary_dependency['entity_secondary'])
-          ->where('id', $id)
-          ->first();
+          ->find($id);
 
         $secondaries_from_primary = [];
 

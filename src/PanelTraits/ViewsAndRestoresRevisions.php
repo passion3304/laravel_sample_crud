@@ -30,7 +30,7 @@ trait ViewsAndRestoresRevisions
         }
 
         // Sort the array by timestamp descending (so that the most recent are at the top)
-        arsort($revisions);
+        krsort($revisions);
 
         return $revisions;
     }
@@ -47,8 +47,7 @@ trait ViewsAndRestoresRevisions
         $revision = Revision::findOrFail($revisionId);
 
         // Update the revisioned field with the old value
-        $entry->{$revision->fieldName()} = $revision->oldValue();
-        $entry->save();
+        $entry->update([$revision->key => $revision->old_value]);
 
         // Reload the entry so we have the latest revisions
         $entry = $this->getEntry($id);
