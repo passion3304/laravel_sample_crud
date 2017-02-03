@@ -75,6 +75,9 @@ trait SaveActions
                 break;
             case 'save_and_edit':
                 $redirectUrl = $this->crud->route.'/'.$itemId.'/edit';
+                if (\Request::has('locale')) {
+                    $redirectUrl .= '?locale='.\Request::input('locale');
+                }
                 break;
             case 'save_and_back':
             default:
