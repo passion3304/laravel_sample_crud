@@ -24,7 +24,7 @@
     "require": {
         "backpack/base": "^0.7.0",
         "laravelcollective/html": "~5.0",
-        "barryvdh/laravel-elfinder": "^0.3.5",
+        "barryvdh/laravel-elfinder": "^0.3.10",
         "livecontrol/eloquent-datatable": "^0.1.5",
         "doctrine/dbal": "^2.5",
         "venturecraft/revisionable": "1.*",
