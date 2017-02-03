@@ -2,10 +2,9 @@
 <td>
     <?php
         $results = $entry->{$column['entity']};
-        $primary_key = (new $column['model'])->getKeyName();
 
         if ($results && $results->count()) {
-            $results_array = $results->pluck($column['attribute'], $primary_key);
+            $results_array = $results->pluck($column['attribute']);
             echo implode(', ', $results_array->toArray());
         } else {
             echo '-';
