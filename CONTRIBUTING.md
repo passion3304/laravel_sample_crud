@@ -35,10 +35,11 @@ If you've never submitted a PR before, don't worry, it's not that difficult. Rea
 # Want to help out?
 
 Thank you, thank you, thank you! You can:
-1) [add a StackOverflow filter](https://stackexchange.com/filters) to receive emails for backpack-for-laravel questions;
-2) [install Gitter](https://gitter.im/BackpackForLaravel/Lobby) and help people out in real-time;
-3) [star Backpack\CRUD on Github](https://github.com/laravel-backpack/crud) so the repository can get more views;
-4) [purchase a commercial license](https://www.backpackforlaravel.com/commercial-license/form), if you use Backpack to make money;
-5) [stock up on cheaper commercial licenses](https://www.backpackforlaravel.com/commercial-license/form) before we bump the price to $39;
+- [add a StackOverflow filter](https://stackexchange.com/filters) to receive emails for backpack-for-laravel questions;
+- [install Gitter](https://gitter.im/BackpackForLaravel/Lobby) and help people out in real-time;
+- [star Backpack\CRUD on Github](https://github.com/laravel-backpack/crud) so the repository can get more views;
+- [purchase a commercial license](https://www.backpackforlaravel.com/commercial-license/form), if you use Backpack to make money;
+- [stock up on cheaper commercial licenses](https://www.backpackforlaravel.com/commercial-license/form) before we bump the price to $39;
+- ALL OF THE ABOVE. Groundbreaking, I know, right? :-)
 
 **Happy coding**!
