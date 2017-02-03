@@ -144,7 +144,6 @@ trait CrudTrait
 
         // if a new file is uploaded, store it on disk and its filename in the database
         if ($request->hasFile($attribute_name) && $request->file($attribute_name)->isValid()) {
-
             // 1. Generate a new file name
             $file = $request->file($attribute_name);
             $new_file_name = md5($file->getClientOriginalName().time()).'.'.$file->getClientOriginalExtension();

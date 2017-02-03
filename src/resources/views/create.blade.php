@@ -36,30 +36,9 @@
 		      @endif
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">
-		    	<div class="form-group">
-		    	  <span>{{ trans('backpack::crud.after_saving') }}:</span>
-		          <div class="radio">
-		            <label>
-		              <input type="radio" name="redirect_after_save" value="{{ $crud->route }}" checked="">
-		              {{ trans('backpack::crud.go_to_the_table_view') }}
-		            </label>
-		          </div>
-		          <div class="radio">
-		            <label>
-		              <input type="radio" name="redirect_after_save" value="{{ $crud->route.'/create' }}">
-		              {{ trans('backpack::crud.let_me_add_another_item') }}
-		            </label>
-		          </div>
-		          <div class="radio">
-		            <label>
-		              <input type="radio" name="redirect_after_save" value="current_item_edit">
-		              {{ trans('backpack::crud.edit_the_new_item') }}
-		            </label>
-		          </div>
-		        </div>
 
-			  <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.add') }}</span></button>
-		      <a href="{{ url($crud->route) }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label">{{ trans('backpack::crud.cancel') }}</span></a>
+                @include('crud::inc.form_save_buttons')
+
 		    </div><!-- /.box-footer-->
 
 		  </div><!-- /.box -->

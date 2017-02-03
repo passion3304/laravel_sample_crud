@@ -49,10 +49,11 @@
 		      	@include('crud::form_content', ['fields' => $fields])
 		      @endif
 		    </div><!-- /.box-body -->
-		    <div class="box-footer">
 
-			  <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
-		      <a href="{{ url($crud->route) }}" class="btn btn-default ladda-button" data-style="zoom-in"><span class="ladda-label">{{ trans('backpack::crud.cancel') }}</span></a>
+            <div class="box-footer">
+
+                @include('crud::inc.form_save_buttons')
+
 		    </div><!-- /.box-footer-->
 		  </div><!-- /.box -->
 		  {!! Form::close() !!}
