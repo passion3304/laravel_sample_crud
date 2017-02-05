@@ -23,8 +23,8 @@ trait FakeFields
 
         // go through each defined field
         foreach ($fields as $k => $field) {
-            // if it's a fake field
-            if (isset($fields[$k]['fake']) && $fields[$k]['fake'] == true) {
+            // if it's a fake field and the field is included in the request
+            if (isset($fields[$k]['fake']) && $fields[$k]['fake'] == true && isset($request[$fields[$k]])) {
                 // add it to the request in its appropriate variable - the one defined, if defined
                 if (isset($fields[$k]['store_in'])) {
                     $request[$fields[$k]['store_in']][$fields[$k]['name']] = $request[$fields[$k]['name']];
