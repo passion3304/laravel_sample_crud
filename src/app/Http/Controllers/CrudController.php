@@ -28,7 +28,7 @@ class CrudController extends BaseController
     public function __construct()
     {
         if (! $this->crud) {
-            $this->crud = new CrudPanel();
+            $this->crud = app()->make(CrudPanel::class);
 
             // call the setup function inside this closure to also have the request there
             // this way, developers can use things stored in session (auth variables, etc)
