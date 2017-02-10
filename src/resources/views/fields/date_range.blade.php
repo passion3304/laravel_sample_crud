@@ -8,16 +8,16 @@
     }
 
     //Do the same as the above but for the range end field
-    if ( isset($entry) && ($entry->{$field['name_end']} instanceof \Carbon\Carbon || $entry->{$field['name_end']} instanceof \Jenssegers\Date\Date) ) {
-        $name_end = $entry->{$field['name_end']}->format( 'Y-m-d H:i:s' );
+    if ( isset($entry) && ($entry->{$field['end_name']} instanceof \Carbon\Carbon || $entry->{$field['end_name']} instanceof \Jenssegers\Date\Date) ) {
+        $end_name = $entry->{$field['end_name']}->format( 'Y-m-d H:i:s' );
     } else {
-        $name_end = null;
+        $end_name = null;
     }
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
-    <input class="datepicker-range-start" type="hidden" name="{{ $field['name'] }}" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
-    <input class="datepicker-range-end" type="hidden" name="{{ $field['name_end'] }}" value="{{ old($field['name_end']) ? old($field['name_end']) : (!empty($name_end) ? $name_end : (isset($field['default_end']) ? $field['default_end'] : '' )) }}">
+    <input class="datepicker-range-start" type="hidden" name="{{ $field['start_name'] }}" value="{{ old($field['start_name']) ? old($field['start_name']) : (isset($field['value']) ? $field['value'] : (isset($field['start_default']) ? $field['start_default'] : '' )) }}">
+    <input class="datepicker-range-end" type="hidden" name="{{ $field['end_name'] }}" value="{{ old($field['end_name']) ? old($field['end_name']) : (!empty($end_name) ? $end_name : (isset($field['end_default']) ? $field['end_default'] : '' )) }}">
     <label>{!! $field['label'] !!}</label>
     <div class="input-group date">
         <input
