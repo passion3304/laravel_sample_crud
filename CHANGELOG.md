@@ -35,10 +35,17 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 =======
 
 
-## [3.1.xx] - 2017-02-03
+## [3.1.58] - 2017-02-10
+
+### Added
+- Bulgarian translation, thanks to [Petyo Tsonev](https://github.com/petyots);
+- select2_from_array, thanks to [Nick Barrett](https://github.com/njbarrett);
 
 ### Fixed
 - DateTime Picker error when date deleted after being set - fixes #386;
+- Abstracted primary key in select_multiple column - fixes #377 and #412;
+- AutoSet methods now using the connection on the model, instead of the default connection; This should allow for CRUDs from multiple databases inside one app; Big thanks to [Hamid Alaei Varnosfaderani](https://github.com/halaei) for this PR;
+- Check that the Fake field is included in the request before trying to use it;
 
 >>>>>>> 70a526ebe040d913667c6f0c2cc606f7ca5730f8
 
