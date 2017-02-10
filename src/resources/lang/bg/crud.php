@@ -56,7 +56,7 @@ return [
         'delete_confirmation_title'                   => 'Запис изтрит',
         'delete_confirmation_message'                 => 'Записът беше успешно изтрит.',
         'delete_confirmation_not_title'               => 'НЕ Е ИЗТРИТ',
-        'delete_confirmation_not_message'             => "Възникна грешка. Записът не бе изтрит.",
+        'delete_confirmation_not_message'             => 'Възникна грешка. Записът не бе изтрит.',
         'delete_confirmation_not_deleted_title'       => 'Не е изтрит',
         'delete_confirmation_not_deleted_message'     => 'Споко :). Записът е на сигурно място.',
 
