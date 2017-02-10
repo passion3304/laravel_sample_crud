@@ -18,12 +18,12 @@
   @endif
 
     {{-- See if we're using tabs --}}
-    @php
-    $usingTabs = $tabs->count() > 0;
-    $horizontalTabs = !$usingTabs ? false : ($tabs->last()->horizontal);
-    @endphp
 
-    @if ($usingTabs)
+    @if ($crud->tabsEnabled())
+
+        @php
+        $horizontalTabs = $crud->getTabsType()=='horizontal' ? true : false;
+        @endphp
 
         @push('crud_fields_styles')
             <style>
@@ -42,13 +42,13 @@
             </style>
         @endpush
 
-        <div class="tab-container {{$horizontalTabs ? 'col-md-12' : 'col-md-3 m-t-10'}}">
+        <div class="tab-container {{ $horizontalTabs ? 'col-md-12' : 'col-md-3 m-t-10' }}">
 
             <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs{{!$horizontalTabs ? ' nav-stacked' : ''}}" role="tablist">
-                    @foreach ($tabs as $k => $t)
+                <ul class="nav nav-tabs {{!$horizontalTabs ? ' nav-stacked' : ''}}" role="tablist">
+                    @foreach ($crud->getTabs() as $k => $tab)
                         <li role="presentation" class="{{$k == 0 ? 'active' : ''}}">
-                            <a href="#tab_{{$t->name}}" aria-controls="tab_{{$t->name}}" role="tab" data-toggle="tab">{{$t->label}}</a>
+                            <a href="#tab_{{ camel_case($tab) }}" aria-controls="tab_{{ camel_case($tab) }}" role="tab" data-toggle="tab">{{ $tab }}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -58,11 +58,11 @@
 
         <div class="tab-content {{$horizontalTabs ? 'col-md-12' : 'col-md-9 m-t-10'}}">
 
-            @foreach ($tabs as $k => $t)
-            <div role="tabpanel" class="tab-pane{{$k == 0 ? ' active' : ''}}" id="tab_{{$t->name}}">
+            @foreach ($crud->getTabs() as $k => $tab)
+            <div role="tabpanel" class="tab-pane{{$k == 0 ? ' active' : ''}}" id="tab_{{ camel_case($tab) }}">
 
                 {{-- Show the inputs --}}
-                @foreach ($t->fields as $field)
+                @foreach ($crud->getTabFields($tab) as $field)
                     <!-- load the view from the application if it exists, otherwise load the one in the package -->
                     @if(view()->exists('vendor.backpack.crud.fields.'.$field['type']))
                         @include('vendor.backpack.crud.fields.'.$field['type'], array('field' => $field))

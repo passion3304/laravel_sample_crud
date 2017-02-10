@@ -49,11 +49,6 @@ trait Fields
                 break;
         }
 
-        // add to the last tab if tabs are used, but no tab was specified for this field
-        if ($this->getTabs()->count() > 0) {
-            $this->getTabs()->last()->fields->push(array_merge($complete_field_array, ['method' => strtolower($form)]));
-        }
-
         return $this;
     }
 
@@ -217,6 +212,16 @@ trait Fields
         }
 
         return $data;
+    }
+
+    public function getCurrentFields()
+    {
+        if ($this->entry)
+        {
+            return $this->getUpdateFields($this->entry->primaryKey());
+        }
+
+        return $this->getCreateFields();
     }
 
     // ------------

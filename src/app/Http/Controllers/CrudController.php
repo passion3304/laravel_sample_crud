@@ -85,7 +85,6 @@ class CrudController extends BaseController
         $this->data['crud'] = $this->crud;
         $this->data['saveAction'] = $this->getSaveAction();
         $this->data['fields'] = $this->crud->getCreateFields();
-        $this->data['tabs'] = $this->crud->getCreateTabs();
         $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
@@ -144,7 +143,6 @@ class CrudController extends BaseController
         $this->data['crud'] = $this->crud;
         $this->data['saveAction'] = $this->getSaveAction();
         $this->data['fields'] = $this->crud->getUpdateFields($id);
-        $this->data['tabs'] = $this->crud->getUpdateTabs();
         $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
 
         $this->data['id'] = $id;
