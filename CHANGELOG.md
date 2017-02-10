@@ -22,7 +22,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 
 
-## [3.1.xx] - 2017-02-03
+## [3.1.58] - 2017-02-10
 
 ### Added
 - Bulgarian translation, thanks to [Petyo Tsonev](https://github.com/petyots);
