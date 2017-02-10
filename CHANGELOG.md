@@ -26,6 +26,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - Bulgarian translation, thanks to [Petyo Tsonev](https://github.com/petyots);
+- select2_from_array, thanks to [Nick Barrett](https://github.com/njbarrett);
 
 ### Fixed
 - DateTime Picker error when date deleted after being set - fixes #386;
