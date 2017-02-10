@@ -7,7 +7,7 @@ trait Reorder
     /**
      *  Reorder the items in the database using the Nested Set pattern.
      *
-     *	Database columns needed: id, parent_id, lft, rgt, depth, name/title
+     *  Database columns needed: id, parent_id, lft, rgt, depth, name/title
      *
      *  @return Response
      */

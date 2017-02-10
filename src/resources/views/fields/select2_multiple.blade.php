@@ -1,11 +1,12 @@
 <!-- select2 multiple -->
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <select
         name="{{ $field['name'] }}[]"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2'])
         multiple>
-        
+
         @if (isset($field['model']))
             @foreach ($field['model']::all() as $connected_entity_entry)
                 <option value="{{ $connected_entity_entry->getKey() }}"

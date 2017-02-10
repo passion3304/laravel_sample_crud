@@ -9,7 +9,7 @@
 		<li role="separator" class="divider"></li>
 		@if (is_array($filter->values) && count($filter->values))
 			@foreach($filter->values as $key => $value)
-				@if ($key == 'dropdown-separator')
+				@if ($key === 'dropdown-separator')
 					<li role="separator" class="divider"></li>
 				@else
 					<li class="{{ ($filter->isActive() && $filter->currentValue == $key)?'active':'' }}">

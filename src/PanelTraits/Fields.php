@@ -49,10 +49,12 @@ trait Fields
                 break;
         }
 
-        // add to the tabset if there is one
+        // add to the last tab if tabs are used, but no tab was specified for this field
         if ($this->getTabs()->count() > 0) {
             $this->getTabs()->last()->fields->push(array_merge($complete_field_array, ['method' => strtolower($form)]));
         }
+
+        return $this;
     }
 
     public function addFields($fields, $form = 'both')
@@ -61,6 +63,52 @@ trait Fields
             foreach ($fields as $field) {
                 $this->addField($field, $form);
             }
+        }
+    }
+
+    /**
+     * Moves the recently added field to 'after' the $target_field.
+     *
+     * @param $target_field
+     */
+    public function afterField($target_field)
+    {
+        foreach ($this->create_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->create_fields, $field + 1, 0, [$field => array_pop($this->create_fields)]);
+                break;
+            }
+        }
+        foreach ($this->update_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->update_fields, $field + 1, 0, [$field => array_pop($this->update_fields)]);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Moves the recently added field to 'before' the $target_field.
+     *
+     * @param $target_field
+     */
+    public function beforeField($target_field)
+    {
+        $key = 0;
+        foreach ($this->create_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->create_fields, $key, 0, [$field => array_pop($this->create_fields)]);
+                break;
+            }
+            $key++;
+        }
+        $key = 0;
+        foreach ($this->update_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->update_fields, $key, 0, [$field => array_pop($this->update_fields)]);
+                break;
+            }
+            $key++;
         }
     }
 
@@ -136,6 +184,39 @@ trait Fields
     public function setFieldsOrder($fields)
     {
         $this->setFieldOrder($fields);
+    }
+
+    /**
+     * Decode attributes that are casted as array/object/json in the model.
+     * So that they are not json_encoded twice before they are stored in the db
+     * (once by Backpack in front-end, once by Laravel Attribute Casting).
+     */
+    public function decodeJsonCastedAttributes($data, $form, $id = false)
+    {
+        // get the right fields according to the form type (create/update)
+        $fields = $this->getFields($form, $id);
+        $casted_attributes = $this->model->getCastedAttributes();
+
+        foreach ($fields as $field) {
+
+            // Test the field is castable
+            if (isset($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
+
+                // Handle JSON field types
+                $jsonCastables = ['array', 'object', 'json'];
+                $fieldCasting = $casted_attributes[$field['name']];
+
+                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && ! is_array($data[$field['name']])) {
+                    try {
+                        $data[$field['name']] = json_decode($data[$field['name']]);
+                    } catch (Exception $e) {
+                        $data[$field['name']] = [];
+                    }
+                }
+            }
+        }
+
+        return $data;
     }
 
     // ------------

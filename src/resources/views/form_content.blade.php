@@ -13,6 +13,10 @@
         </div>
     @endif
 
+  @if ($crud->model->translationEnabled())
+    <input type="hidden" name="locale" value={{ $crud->request->input('locale')?$crud->request->input('locale'):App::getLocale() }}>
+  @endif
+
     {{-- See if we're using tabs --}}
     @php
     $usingTabs = $tabs->count() > 0;
@@ -23,6 +27,9 @@
 
         @push('crud_fields_styles')
             <style>
+                .nav-tabs-custom {
+                    box-shadow: none;
+                }
                 .nav-tabs-custom > .nav-tabs.nav-stacked > li {
                     margin-right: 0;
                 }

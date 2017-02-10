@@ -20,10 +20,17 @@ trait Update
      */
     public function update($id, $data)
     {
-        $item = $this->model->findOrFail($id);
-        $updated = $item->update($this->compactFakeFields($data, 'update'));
+        $data = $this->decodeJsonCastedAttributes($data, 'update', $id);
+        $data = $this->compactFakeFields($data, 'update', $id);
 
-        /*if ($updated) */$this->syncPivot($item, $data, 'update');
+        $item = $this->model->findOrFail($id);
+
+        $this->syncPivot($item, $data, 'update');
+
+        // ommit the n-n relationships when updating the eloquent item
+        $nn_relationships = array_pluck($this->getRelationFieldsWithPivot('update'), 'name');
+        $data = array_except($data, $nn_relationships);
+        $updated = $item->update($data);
 
         return $item;
     }
@@ -56,11 +63,13 @@ trait Update
         }
 
         // always have a hidden input for the entry id
-        $fields['id'] = [
-                        'name'  => $entry->getKeyName(),
-                        'value' => $entry->getKey(),
-                        'type'  => 'hidden',
-                    ];
+        if (! array_key_exists('id', $fields)) {
+            $fields['id'] = [
+                'name'  => $entry->getKeyName(),
+                'value' => $entry->getKey(),
+                'type'  => 'hidden',
+            ];
+        }
 
         return $fields;
     }
