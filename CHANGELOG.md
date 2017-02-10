@@ -20,7 +20,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-<<<<<<< HEAD
 ## [3.2.0] - 2017-xx-xx
 
 ### Added
@@ -32,7 +31,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;
-=======
+
 
 
 ## [3.1.58] - 2017-02-10
@@ -47,7 +46,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - AutoSet methods now using the connection on the model, instead of the default connection; This should allow for CRUDs from multiple databases inside one app; Big thanks to [Hamid Alaei Varnosfaderani](https://github.com/halaei) for this PR;
 - Check that the Fake field is included in the request before trying to use it;
 
->>>>>>> 70a526ebe040d913667c6f0c2cc606f7ca5730f8
 
 ## [3.1.57] - 2017-02-03
 
