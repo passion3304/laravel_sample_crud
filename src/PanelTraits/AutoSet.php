@@ -47,10 +47,10 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $table_columns = \Schema::getColumnListing($this->model->getTable());
+        $table_columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
 
         foreach ($table_columns as $key => $column) {
-            $column_type = \Schema::getColumnType($this->model->getTable(), $column);
+            $column_type = $this->model->getConnection()->getSchemaBuilder()->getColumnType($this->model->getTable(), $column);
             $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $this->db_column_types[$column]['default'] = ''; // no way to do this using DBAL?!
         }
@@ -145,7 +145,7 @@ trait AutoSet
     public function getDbColumnsNames()
     {
         // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
-        $columns = \Schema::getColumnListing($this->model->getTable());
+        $columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
         $fillable = $this->model->getFillable();
 
         if (! empty($fillable)) {

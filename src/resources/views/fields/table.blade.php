@@ -1,8 +1,8 @@
 <!-- array input -->
 
 <?php
-    $max = isset($field['max']) ? $field['max'] : -1;
-    $min = isset($field['min']) ? $field['min'] : -1;
+    $max = isset($field['max']) && (int) $field['max'] > 0 ? $field['max'] : -1;
+    $min = isset($field['min']) && (int) $field['min'] > 0 ? $field['min'] : -1;
     $item_name = strtolower( isset($field['entity_singular']) && !empty($field['entity_singular']) ? $field['entity_singular'] : $field['label']);
 
     $items = old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' ));
@@ -22,7 +22,7 @@
     }
 
 ?>
-<div ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
+<div ng-app="backPackTableApp" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
 
@@ -40,8 +40,8 @@
                         {{ $prop }}
                     </th>
                     @endforeach
-                    <th class="text-center"> {{-- <i class="fa fa-sort"></i> --}} </th>
-                    <th class="text-center"> {{-- <i class="fa fa-trash"></i> --}} </th>
+                    <th class="text-center" ng-if="max == -1 || max > 1"> {{-- <i class="fa fa-sort"></i> --}} </th>
+                    <th class="text-center" ng-if="max == -1 || max > 1"> {{-- <i class="fa fa-trash"></i> --}} </th>
                 </tr>
             </thead>
 
@@ -54,10 +54,10 @@
                         <input class="form-control input-sm" type="text" ng-model="item.{{ $prop }}">
                     </td>
                     @endforeach
-                    <td>
+                    <td ng-if="max == -1 || max > 1">
                         <span class="btn btn-sm btn-default sort-handle"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
                     </td>
-                    <td>
+                    <td ng-if="max == -1 || max > 1">
                         <button ng-hide="min > -1 && $index < min" class="btn btn-sm btn-default" type="button" ng-click="removeItem(item);"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
                     </td>
                 </tr>
@@ -67,7 +67,7 @@
         </table>
 
         <div class="array-controls btn-group m-t-10">
-            <button class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{ $item_name }}</button>
+            <button ng-if="max == -1 || items.length < max" class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> Add {{ $item_name }}</button>
         </div>
 
     </div>
@@ -97,7 +97,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
         <script>
 
-            window.angularApp = window.angularApp || angular.module('backPack', ['ui.sortable'], function($interpolateProvider){
+            window.angularApp = window.angularApp || angular.module('backPackTableApp', ['ui.sortable'], function($interpolateProvider){
                 $interpolateProvider.startSymbol('<%');
                 $interpolateProvider.endSymbol('%>');
             });
@@ -158,6 +158,16 @@
                     }
                 }
             });
+
+            angular.element(document).ready(function(){
+                angular.forEach(angular.element('[ng-app]'), function(ctrl){
+                    var ctrlDom = angular.element(ctrl);
+                    if( !ctrlDom.hasClass('ng-scope') ){
+                        angular.bootstrap(ctrl, [ctrlDom.attr('ng-app')]);
+                    }
+                });
+            })
+
         </script>
 
     @endpush

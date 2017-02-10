@@ -3,8 +3,8 @@
 namespace Backpack\CRUD;
 
 use DB;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
 
 trait CrudTrait
 {
@@ -17,7 +17,7 @@ trait CrudTrait
     public static function getPossibleEnumValues($field_name)
     {
         $instance = new static(); // create an instance of the model to be able to get the table name
-        $type = DB::select(DB::raw('SHOW COLUMNS FROM '.Config::get('database.connections.'.env('DB_CONNECTION').'.prefix').$instance->getTable().' WHERE Field = "'.$field_name.'"'))[0]->Type;
+        $type = DB::select(DB::raw('SHOW COLUMNS FROM `'.Config::get('database.connections.'.env('DB_CONNECTION').'.prefix').$instance->getTable().'` WHERE Field = "'.$field_name.'"'))[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
         $enum = [];
         foreach (explode(',', $matches[1]) as $value) {
@@ -27,12 +27,32 @@ trait CrudTrait
         return $enum;
     }
 
+    public static function getEnumValuesAsAssociativeArray($field_name)
+    {
+        $instance = new static();
+        $enum_values = $instance->getPossibleEnumValues($field_name);
+
+        $array = array_flip($enum_values);
+
+        foreach ($array as $key => $value) {
+            $array[$key] = $key;
+        }
+
+        return $array;
+    }
+
     public static function isColumnNullable($column_name)
     {
-        $instance = new static(); // create an instance of the model to be able to get the table name
-        $answer = DB::select(DB::raw("SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='".Config::get('database.connections.'.env('DB_CONNECTION').'.prefix').$instance->getTable()."' AND COLUMN_NAME='".$column_name."' AND table_schema='".env('DB_DATABASE')."'"))[0];
+        // create an instance of the model to be able to get the table name
+        $instance = new static();
 
-        return $answer->IS_NULLABLE === 'YES';
+        $conn = DB::connection($instance->getConnectionName());
+        $table = Config::get('database.connections.'.env('DB_CONNECTION').'.prefix').$instance->getTable();
+
+        // register the enum column type, because Doctrine doesn't support it
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+
+        return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
     }
 
     /*

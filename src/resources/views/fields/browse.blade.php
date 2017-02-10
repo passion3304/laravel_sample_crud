@@ -36,6 +36,11 @@
 	@push('crud_fields_styles')
 		<!-- include browse server css -->
 		<link href="{{ asset('vendor/backpack/colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
+		<style>
+			#cboxContent, #cboxLoadedContent, .cboxIframe {
+				background: transparent;
+			}
+		</style>
 	@endpush
 
 	@push('crud_fields_scripts')
@@ -57,8 +62,8 @@
 		        href: triggerUrl,
 		        fastIframe: true,
 		        iframe: true,
-		        width: '70%',
-		        height: '50%'
+		        width: '80%',
+		        height: '80%'
 		    });
 		});
 

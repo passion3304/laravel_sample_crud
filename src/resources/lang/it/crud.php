@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Dick Crud Language Lines
+    | Backpack Crud Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are used by the CRUD interface.
@@ -98,6 +98,10 @@ return [
     'reorder_success_message'      => 'Il tuo ordinamento è stato salvato.',
     'reorder_error_title'          => 'Errore',
     'reorder_error_message'        => 'Il tuo ordinamento non è stato salvato.',
+
+    // CRUD yes/no
+    'yes' => 'Sì',
+    'no' => 'No',
 
     // Fields
     'browse_uploads' => 'Sfoglia file caricati',

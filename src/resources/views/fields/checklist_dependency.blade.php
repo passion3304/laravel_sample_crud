@@ -1,5 +1,5 @@
 <!-- dependencyJson -->
-  <div class="form-group col-md-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}">
+<div class="form-group col-md-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}" @include('crud::inc.field_wrapper_attributes')>
     <label>{!! $field['label'] !!}</label>
     <?php
       $entity_model = $crud->getModel();
@@ -28,8 +28,7 @@
         //get entity with relations for primary dependency
         $entity_dependencies = $entity_model->with($primary_dependency['entity'])
           ->with($primary_dependency['entity'].'.'.$primary_dependency['entity_secondary'])
-          ->where('id', $id)
-          ->first();
+          ->find($id);
 
         $secondaries_from_primary = [];
 
@@ -52,18 +51,19 @@
             }
           }
         }
-
       }
 
       //json encode of dependency matrix
       $dependencyJson = json_encode($dependencyArray);
     ?>
     <script>
-     var  {{ $field['field_unique_name'] }} = {!! $dependencyJson !!};
+        var  {{ $field['field_unique_name'] }} = {!! $dependencyJson !!};
     </script>
+
     <div class="row" >
+
         <div class="col-xs-12">
-           <label>{!! $primary_dependency['label'] !!}</label>
+            <label>{!! $primary_dependency['label'] !!}</label>
         </div>
 
         <div class="hidden_fields_primary" data-name = "{{ $primary_dependency['name'] }}">
@@ -80,10 +80,10 @@
           @endif
         </div>
 
-        @foreach ($primary_dependency['model']::all() as $connected_entity_entry)
-            <div class="col-sm-{{ isset($primary_dependency['number_columns']) ? intval(12/$primary_dependency['number_columns']) : '4'}}">
-                <div class="checkbox">
-                  <label>
+    @foreach ($primary_dependency['model']::all() as $connected_entity_entry)
+        <div class="col-sm-{{ isset($primary_dependency['number_columns']) ? intval(12/$primary_dependency['number_columns']) : '4'}}">
+            <div class="checkbox">
+                <label>
                     <input type="checkbox"
                         data-id = "{{ $connected_entity_entry->id }}"
                         class = 'primary_list'
@@ -102,16 +102,15 @@
                                checked = "checked"
                         @endif >
                         {{ $connected_entity_entry->{$primary_dependency['attribute']} }}
-
-                  </label>
-                </div>
+                </label>
             </div>
-        @endforeach
+        </div>
+    @endforeach
     </div>
 
     <div class="row">
         <div class="col-xs-12">
-          <label>{!! $secondary_dependency['label'] !!}</label>
+            <label>{!! $secondary_dependency['label'] !!}</label>
         </div>
 
         <div class="hidden_fields_secondary" data-name="{{ $secondary_dependency['name'] }}">
@@ -131,7 +130,7 @@
         @foreach ($secondary_dependency['model']::all() as $connected_entity_entry)
             <div class="col-sm-{{ isset($secondary_dependency['number_columns']) ? intval(12/$secondary_dependency['number_columns']) : '4'}}">
                 <div class="checkbox">
-                  <label>
+                    <label>
                     <input type="checkbox"
                         class = 'secondary_list'
                         data-id = "{{ $connected_entity_entry->id }}"
@@ -152,17 +151,18 @@
                               disabled = disabled
                              @endif
                         @endif > {{ $connected_entity_entry->{$secondary_dependency['attribute']} }}
-                  </label>
+                    </label>
                 </div>
             </div>
         @endforeach
     </div>
 
+    {{-- HINT --}}
+    @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+    @endif
+
   </div>
-
-
-
-
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

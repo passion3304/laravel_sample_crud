@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Dick Crud Language Lines
+    | Backpack Crud Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are used by the CRUD interface.
@@ -98,6 +98,10 @@ return [
     'reorder_success_message'      => 'Your order has been saved.',
     'reorder_error_title'          => 'Error',
     'reorder_error_message'        => 'Your order has not been saved.',
+
+    // CRUD yes/no
+    'yes' => 'Yes',
+    'no' => 'No',
 
     // Fields
     'browse_uploads' => 'Browse uploads',

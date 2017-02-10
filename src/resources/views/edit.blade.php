@@ -14,14 +14,14 @@
 @endsection
 
 @section('content')
-<div class="row" ng-app="backPack">
+<div class="row">
 	<div class="col-md-8 col-md-offset-2">
 		<!-- Default box -->
 		@if ($crud->hasAccess('list'))
 			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 
-		  {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey(), 'method' => 'put', 'files'=>$crud->hasUploadFields('create'))) !!}
+		  {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey(), 'method' => 'put', 'files'=>$crud->hasUploadFields('update', $entry->getKey()))) !!}
 		  <div class="box">
 		    <div class="box-header with-border">
 		      <h3 class="box-title">{{ trans('backpack::crud.edit') }}</h3>
@@ -31,7 +31,7 @@
 		      @if(view()->exists('vendor.backpack.crud.form_content'))
 		      	@include('vendor.backpack.crud.form_content')
 		      @else
-		      	@include('crud::form_content', ['fields' => $crud->getFields('update', $entry->getKey())])
+		      	@include('crud::form_content', ['fields' => $fields])
 		      @endif
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">

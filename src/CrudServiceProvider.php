@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD;
 
-use Illuminate\Support\ServiceProvider;
 use Route;
+use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
 {
@@ -30,7 +30,6 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
 
-
         // PUBLISH FILES
 
         // publish lang files
@@ -40,7 +39,7 @@ class CrudServiceProvider extends ServiceProvider
         $this->publishes([__DIR__.'/resources/views' => resource_path('views/vendor/backpack/crud')], 'views');
 
         // publish config file
-        $this->publishes([__DIR__.'/config/backpack/crud.php' => resource_path('config/backpack/crud.php')], 'config');
+        $this->publishes([__DIR__.'/config' => config_path()], 'config');
 
         // publish public Backpack CRUD assets
         $this->publishes([__DIR__.'/public' => public_path('vendor/backpack')], 'public');
@@ -50,7 +49,6 @@ class CrudServiceProvider extends ServiceProvider
                             __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
                             __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
                             ], 'elfinder');
-
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
@@ -81,6 +79,11 @@ class CrudServiceProvider extends ServiceProvider
         $loader->alias('Form', \Collective\Html\FormFacade::class);
         $loader->alias('Html', \Collective\Html\HtmlFacade::class);
         $loader->alias('Image', \Intervention\Image\Facades\Image::class);
+
+        // map the elfinder prefix
+        if (! \Config::get('elfinder.route.prefix')) {
+            \Config::set('elfinder.route.prefix', \Config::get('backpack.base.route_prefix').'/elfinder');
+        }
     }
 
     public static function resource($name, $controller, array $options = [])

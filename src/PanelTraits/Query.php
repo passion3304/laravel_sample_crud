@@ -28,6 +28,19 @@ trait Query
     }
 
     /**
+     * Use eager loading to reduce the number of queries on the table view.
+     *
+     * @param  [type]
+     * @param  string
+     *
+     * @return [type]
+     */
+    public function with($entities)
+    {
+        return $this->query->with($entities);
+    }
+
+    /**
      * Order the results of the query in a certain way.
      *
      * @param  [type]

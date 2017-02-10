@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Dick Crud Language Lines
+    | Backpack Crud Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are used by the CRUD interface.
@@ -88,7 +88,6 @@ return [
     'insert_success' => 'Intrarea a fost adăugată cu succes.',
     'update_success' => 'Intrarea a fost modificată cu succes.',
 
-
     // CRUD reorder view
     'reorder'                      => 'Reordonare',
     'reorder_text'                 => 'Folosește drag&drop pentru a reordona.',
@@ -96,6 +95,10 @@ return [
     'reorder_success_message'      => 'Ordinea a fost salvată.',
     'reorder_error_title'          => 'Eroare',
     'reorder_error_message'        => 'Ordinea nu a fost salvată.',
+
+    // CRUD yes/no
+    'yes' => 'Da',
+    'no' => 'Nu',
 
     // Fields
     'browse_uploads' => 'Alege din fișierele urcate',

@@ -19,8 +19,10 @@ trait Create
      */
     public function create($data)
     {
-        $values_to_store = $this->compactFakeFields($data, 'create');
-        $item = $this->model->create($values_to_store);
+        $data = $this->decodeJsonCastedAttributes($data, 'create');
+        $data = $this->compactFakeFields($data, 'create');
+
+        $item = $this->model->create($data);
 
         // if there are any relationships available, also sync those
         $this->syncPivot($item, $data);
@@ -87,6 +89,15 @@ trait Create
                             $model->{$field['name']}()->updateExistingPivot($pivot_id, [$pivotField => $field]);
                         }
                     }
+                }
+            }
+
+            if (isset($field['morph']) && $field['morph']) {
+                $values = isset($data[$field['name']]) ? $data[$field['name']] : [];
+                if ($model->{$field['name']}) {
+                    $model->{$field['name']}()->update($values);
+                } else {
+                    $model->{$field['name']}()->create($values);
                 }
             }
         }

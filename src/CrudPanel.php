@@ -2,25 +2,26 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\CRUD\PanelTraits\Read;
+use Backpack\CRUD\PanelTraits\Query;
 use Backpack\CRUD\PanelTraits\Access;
+use Backpack\CRUD\PanelTraits\Create;
+use Backpack\CRUD\PanelTraits\Delete;
+use Backpack\CRUD\PanelTraits\Fields;
+use Backpack\CRUD\PanelTraits\Update;
 use Backpack\CRUD\PanelTraits\AutoSet;
 use Backpack\CRUD\PanelTraits\Buttons;
 use Backpack\CRUD\PanelTraits\Columns;
-use Backpack\CRUD\PanelTraits\Create;
-use Backpack\CRUD\PanelTraits\Delete;
-use Backpack\CRUD\PanelTraits\FakeColumns;
-use Backpack\CRUD\PanelTraits\FakeFields;
-use Backpack\CRUD\PanelTraits\Fields;
-use Backpack\CRUD\PanelTraits\Query;
-use Backpack\CRUD\PanelTraits\Read;
+use Backpack\CRUD\PanelTraits\Filters;
 use Backpack\CRUD\PanelTraits\Reorder;
-use Backpack\CRUD\PanelTraits\Update;
-use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 use Backpack\CRUD\PanelTraits\AutoFocus;
+use Backpack\CRUD\PanelTraits\FakeFields;
+use Backpack\CRUD\PanelTraits\FakeColumns;
+use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel
 {
-    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus;
+    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters;
 
     // --------------
     // CRUD variables
@@ -35,6 +36,7 @@ class CrudPanel
     public $route; // what route have you defined for your entity? used for links.
     public $entity_name = 'entry'; // what name will show up on the buttons, in singural (ex: Add entity)
     public $entity_name_plural = 'entries'; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
+    public $request;
 
     public $access = ['list', 'create', 'update', 'delete'/* 'revisions', reorder', 'show', 'details_row' */];
 
@@ -127,9 +129,9 @@ class CrudPanel
      * Get the current CrudController route.
      *
      * Can be defined in the CrudController with:
-     * - $this->crud->setRoute('admin/article')
-     * - $this->crud->setRouteName('admin.article')
-     * - $this->crud->route = "admin/article"
+     * - $this->crud->setRoute(config('backpack.base.route_prefix').'/article')
+     * - $this->crud->setRouteName(config('backpack.base.route_prefix').'.article')
+     * - $this->crud->route = config('backpack.base.route_prefix')."/article"
      *
      * @return [string]
      */
