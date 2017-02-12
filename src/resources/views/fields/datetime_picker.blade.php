@@ -1,11 +1,11 @@
 <!-- bootstrap datetimepicker input -->
 
 <?php
-    // if the column has been cast to Carbon or Date (using attribute casting)
-    // get the value as a date string
-    if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $field['value'] instanceof \Jenssegers\Date\Date )) {
-        $field['value'] = $field['value']->format( 'Y-m-d H:i:s' );
-    }
+// if the column has been cast to Carbon or Date (using attribute casting)
+// get the value as a date string
+if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $field['value'] instanceof \Jenssegers\Date\Date )) {
+    $field['value'] = $field['value']->format('Y-m-d H:i:s');
+}
 
     $field_language = isset($field['datetime_picker_options']['language'])?$field['datetime_picker_options']['language']:\App::getLocale();
 ?>
@@ -13,6 +13,7 @@
 <div @include('crud::inc.field_wrapper_attributes') >
     <input type="hidden" name="{{ $field['name'] }}" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <div class="input-group date">
         <input
             data-bs-datetimepicker="{{ isset($field['datetime_picker_options']) ? json_encode($field['datetime_picker_options']) : '{}'}}"
@@ -73,7 +74,7 @@
                 });
 
                 $picker.on('dp.change', function(e){
-                    var sqlDate = e.date.format('YYYY-MM-DD HH:mm:ss');
+                    var sqlDate = e.date ? e.date.format('YYYY-MM-DD HH:mm:ss') : null;
                     $field.val(sqlDate);
                 });
 

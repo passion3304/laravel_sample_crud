@@ -33,6 +33,13 @@ trait Fields
             $complete_field_array['type'] = $this->getFieldTypeFromDbColumnType($complete_field_array['name']);
         }
 
+        // if a tab was mentioned, we should enable it
+        if (isset($complete_field_array['tab'])) {
+            if (! $this->tabsEnabled()) {
+                $this->enableTabs();
+            }
+        }
+
         // store the field information into the correct variable on the CRUD object
         switch (strtolower($form)) {
             case 'create':
@@ -190,15 +197,16 @@ trait Fields
     {
         // get the right fields according to the form type (create/update)
         $fields = $this->getFields($form, $id);
+        $casted_attributes = $this->model->getCastedAttributes();
 
         foreach ($fields as $field) {
 
             // Test the field is castable
-            if (isset($field['name']) && array_key_exists($field['name'], $this->model->getCasts())) {
+            if (isset($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
 
                 // Handle JSON field types
                 $jsonCastables = ['array', 'object', 'json'];
-                $fieldCasting = $this->model->getCasts()[$field['name']];
+                $fieldCasting = $casted_attributes[$field['name']];
 
                 if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && ! is_array($data[$field['name']])) {
                     try {
@@ -211,6 +219,15 @@ trait Fields
         }
 
         return $data;
+    }
+
+    public function getCurrentFields()
+    {
+        if ($this->entry) {
+            return $this->getUpdateFields($this->entry->getKey());
+        }
+
+        return $this->getCreateFields();
     }
 
     // ------------

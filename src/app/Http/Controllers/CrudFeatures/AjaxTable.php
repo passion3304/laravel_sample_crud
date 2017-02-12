@@ -12,7 +12,7 @@ trait AjaxTable
     {
         $this->crud->hasAccessOrFail('list');
 
-        // crate an array with the names of the searchable columns
+        // create an array with the names of the searchable columns
         $columns = collect($this->crud->columns)
                     ->reject(function ($column, $key) {
                         // the select_multiple columns are not searchable

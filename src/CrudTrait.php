@@ -46,10 +46,13 @@ trait CrudTrait
         // create an instance of the model to be able to get the table name
         $instance = new static();
 
-        // register the enum column type, because Doctrine doesn't support it
-        DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        $conn = DB::connection($instance->getConnectionName());
+        $table = Config::get('database.connections.'.env('DB_CONNECTION').'.prefix').$instance->getTable();
 
-        return ! DB::connection()->getDoctrineColumn($instance->getTable(), $column_name)->getNotnull();
+        // register the enum column type, because Doctrine doesn't support it
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+
+        return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
     }
 
     /*
@@ -141,7 +144,6 @@ trait CrudTrait
 
         // if a new file is uploaded, store it on disk and its filename in the database
         if ($request->hasFile($attribute_name) && $request->file($attribute_name)->isValid()) {
-
             // 1. Generate a new file name
             $file = $request->file($attribute_name);
             $new_file_name = md5($file->getClientOriginalName().time()).'.'.$file->getClientOriginalExtension();
@@ -204,5 +206,38 @@ trait CrudTrait
         }
 
         $this->attributes[$attribute_name] = json_encode($attribute_value);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods for working with translatable models.
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the attributes that were casted in the model.
+     * Used for translations because Spatie/Laravel-Translatable
+     * overwrites the getCasts() method.
+     *
+     * @return [type] [description]
+     */
+    public function getCastedAttributes() : array
+    {
+        return parent::getCasts();
+    }
+
+    /**
+     * Check if a model is translatable.
+     * All translation adaptors must have the translationEnabledForModel() method.
+     *
+     * @return bool
+     */
+    public function translationEnabled()
+    {
+        if (method_exists($this, 'translationEnabledForModel')) {
+            return $this->translationEnabledForModel();
+        }
+
+        return false;
     }
 }

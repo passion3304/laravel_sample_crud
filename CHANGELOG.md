@@ -20,12 +20,112 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.0] - 2017-02-xx
 
-## [3.1.x] - 2016-12-14
+### Added
+- form save button better UI&UX: they have the options in a dropdown instead of radio buttons and the default behaviour is stored in the session upon change - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- redirect_after_save button actions;
+- filters on list views (deleted the 3.1.41 and 4.1.42 tags because they were breaking changes);
+- routes are now abstracted intro CrudRoute, so that new routes can be easily added;
+- Greek translation (thanks [Stamatis Katsaounis](https://github.com/skatsaounis));
+- tabbed create&update forms - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- grouped and inline errors - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+
+### Fixed
+- excluded _method from massAssignment, so create/update errors will be more useful;
+
+
+## [3.1.59] - 2017-02-xx - TODO - release this tag
+
+### Added
+- date_range field, thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+
+### Fixed
+- change the way the CrudPanel class is injected, so it can be overwritten more easily;
+
+
+
+## [3.1.58] - 2017-02-10
+
+### Added
+- Bulgarian translation, thanks to [Petyo Tsonev](https://github.com/petyots);
+- select2_from_array, thanks to [Nick Barrett](https://github.com/njbarrett);
+
+### Fixed
+- DateTime Picker error when date deleted after being set - fixes #386;
+- Abstracted primary key in select_multiple column - fixes #377 and #412;
+- AutoSet methods now using the connection on the model, instead of the default connection; This should allow for CRUDs from multiple databases inside one app; Big thanks to [Hamid Alaei Varnosfaderani](https://github.com/halaei) for this PR;
+- Check that the Fake field is included in the request before trying to use it;
+
+
+## [3.1.57] - 2017-02-03
+
+### Added
+- Laravel 5.4 compatibility;
+
+### Fixed
+- elfinder redirected to /login instead of /admin, because it used the "auth" middleware instead of "admin";
+
+
+## [3.1.56] - 2017-02-03
+
+### Fixed
+- deleting a CRUD entry showed a warning;
+
+
+## [3.1.55] - 2017-02-02
+
+### Fixed
+- allow custom primary key in field types base64_image and checklist_dependency;
+- dropdown filter triggered separator on 0 index;
+- make sure model events are triggered when deleting;
+- in edit view, use the fields variable passed to the view;
+- fix conflict bootstrap-datepicker & jquery-ui;
+- fix "undefined index: disk" in upload field type;
+
+## [3.1.54] - 2017-01-19
+
+### Fixed
+- revisions;
+
+
+## [3.1.53] - 2017-01-20
+
+### Fixed
+- Revisions: $this->update() removed many to many relations;
+
+
+## [3.1.52] - 2017-01-18
+
+### Fixed
+- revisions are sorted by key, not by date, since they keys are auto-incremented anyway; this should allow for multidimensional arrays;
+
+
+## [3.1.51] - 2017-01-11
+
+### Fixed
+- revisions work when there are hidden (fake) fields present;
+- the table in list view is responsive (scrollable horizontally) by default;
+- new syntax for details_row URL in javascript;
+- new syntax for the current URL in layout.blade.php, for making the current menu items active;
+
+## [3.1.50] - 2017-01-08
+
+### Added
+- Chinese (Traditional) translation, thanks to [Isaac Kwan](https://github.com/isaackwan);
+- You can now create a CRUD field to overwrite the primary key, thanks to [Isaac Kwan](https://github.com/isaackwan);
 
 ### Fixed
 - Escaped table name for ENUM column types, so reserved PHP/MySQL names can also be used for table names; Fixes #261;
+- CrudTrait's isColumnNullable() should now work for multiple-database systems, by getting the connection type automatically;
+- Can use DB prefixed tables in CrudTrait's isColumnNullable(); fixes #300;
+- Radio field type could not be used inside Settings; Now it can;
 
+
+## [3.1.49] - 2017-01-08
+
+### Fixed
+- select_from_array field triggered an "Undefined index: value" error; fixes #312 thanks to [Chris Thompson](https://christhompsontldr.com/);
 
 
 ## [3.1.48] - 2016-12-14
@@ -77,6 +177,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - n-n filters prevented CRUD items from being added;
+
 
 ## [3.1.41] - 2016-11-11
 
