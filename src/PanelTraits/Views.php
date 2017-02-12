@@ -13,11 +13,9 @@ trait Views
     protected $reorderView = 'crud::reorder';
     protected $listView = 'crud::list';
 
-
     // -------
     // CREATE
     // -------
-
 
     /**
      * Sets the list template.
@@ -40,11 +38,9 @@ trait Views
         return $this->createView;
     }
 
-
     // -------
     // READ
     // -------
-
 
     /**
      * Sets the list template.
@@ -109,11 +105,9 @@ trait Views
         return $this->showView;
     }
 
-
     // -------
     // UPDATE
     // -------
-
 
     /**
      * Sets the edit template.
@@ -199,11 +193,9 @@ trait Views
         return $this->revisionsTimelineView;
     }
 
-
     // -------
     // ALIASES
     // -------
-
 
     public function getPreviewView()
     {
