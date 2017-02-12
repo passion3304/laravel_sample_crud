@@ -30,7 +30,6 @@ class CrudController extends BaseController
     {
         if (! $this->crud) {
             $this->crud = app()->make(CrudPanel::class);
-            $this->crud->setErrorDefaults();
 
             // call the setup function inside this closure to also have the request there
             // this way, developers can use things stored in session (auth variables, etc)

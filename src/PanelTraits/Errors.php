@@ -13,6 +13,20 @@ trait Errors
         $this->inlineErrors = config('backpack.crud.show_inline_errors', false);
     }
 
+    // Getters
+
+    public function groupedErrorsEnabled()
+    {
+        return $this->groupedErrors;
+    }
+
+    public function inlineErrorsEnabled()
+    {
+        return $this->inlineErrors;
+    }
+
+    // Setters
+
     public function enableGroupedErrors()
     {
         $this->groupedErrors = true;
@@ -27,11 +41,6 @@ trait Errors
         return $this->groupedErrors;
     }
 
-    public function groupedErrorsEnabled()
-    {
-        return $this->groupedErrors;
-    }
-
     public function enableInlineErrors()
     {
         $this->inlineErrors = true;
@@ -43,11 +52,6 @@ trait Errors
     {
         $this->inlineErrors = false;
 
-        return $this->inlineErrors;
-    }
-
-    public function inlineErrorsEnabled()
-    {
         return $this->inlineErrors;
     }
 }
