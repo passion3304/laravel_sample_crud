@@ -35,7 +35,7 @@ trait Fields
 
         // if a tab was mentioned, we should enable it
         if (isset($complete_field_array['tab'])) {
-            if (!$this->tabsEnabled()) {
+            if (! $this->tabsEnabled()) {
                 $this->enableTabs();
             }
         }
