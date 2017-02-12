@@ -1,6 +1,7 @@
 <!-- summernote editor -->
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <textarea
         name="{{ $field['name'] }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control summernote'])

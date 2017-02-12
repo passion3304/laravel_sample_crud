@@ -1,14 +1,15 @@
 <!-- icon picker input -->
 
 <?php
-    // if no iconset was provided, set the default iconset to Font-Awesome
-    if (!isset($field['iconset'])) {
-        $field['iconset'] = 'fontawesome';
-    }
+// if no iconset was provided, set the default iconset to Font-Awesome
+if (!isset($field['iconset'])) {
+    $field['iconset'] = 'fontawesome';
+}
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
 
     <div>
         <button class="btn btn-default " role="iconpicker" data-icon="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}" data-iconset="{{ $field['iconset'] }}"></button>

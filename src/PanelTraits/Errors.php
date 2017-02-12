@@ -4,50 +4,50 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Errors
 {
-    protected $errorsGrouped = true;
-    protected $errorsInline = false;
+    protected $groupedErrors = true;
+    protected $inlineErrors = false;
 
     public function setErrorDefaults()
     {
-        $this->errorsGrouped = config('backpack.crud.errors_grouped', true);
-        $this->errorsInline = config('backpack.crud.errors_inline', false);
+        $this->groupedErrors = config('backpack.crud.show_grouped_errors', true);
+        $this->inlineErrors = config('backpack.crud.show_inline_errors', false);
     }
 
     public function enableGroupedErrors()
     {
-        $this->errorsGrouped = true;
+        $this->groupedErrors = true;
 
-        return $this->errorsGrouped;
+        return $this->groupedErrors;
     }
 
     public function disableGroupedErrors()
     {
-        $this->errorsGrouped = false;
+        $this->groupedErrors = false;
 
-        return $this->errorsGrouped;
+        return $this->groupedErrors;
     }
 
-    public function isGroupedErrorsEnabled()
+    public function groupedErrorsEnabled()
     {
-        return $this->errorsGrouped;
+        return $this->groupedErrors;
     }
 
     public function enableInlineErrors()
     {
-        $this->errorsInline = true;
+        $this->inlineErrors = true;
 
-        return $this->errorsInline;
+        return $this->inlineErrors;
     }
 
     public function disableInlineErrors()
     {
-        $this->errorsInline = false;
+        $this->inlineErrors = false;
 
-        return $this->errorsInline;
+        return $this->inlineErrors;
     }
 
-    public function isInlineErrorsEnabled()
+    public function inlineErrorsEnabled()
     {
-        return $this->errorsInline;
+        return $this->inlineErrors;
     }
 }

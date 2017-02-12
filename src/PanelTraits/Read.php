@@ -20,8 +20,9 @@ trait Read
     public function getEntry($id)
     {
         $entry = $this->model->findOrFail($id);
+        $this->entry = $entry->withFakes();
 
-        return $entry->withFakes();
+        return $entry;
     }
 
     /**

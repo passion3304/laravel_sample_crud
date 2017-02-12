@@ -1,6 +1,7 @@
 <!-- configurable color picker -->
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <div class="input-group colorpicker-component">
 
         <input

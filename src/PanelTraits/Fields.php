@@ -33,6 +33,13 @@ trait Fields
             $complete_field_array['type'] = $this->getFieldTypeFromDbColumnType($complete_field_array['name']);
         }
 
+        // if a tab was mentioned, we should enable it
+        if (isset($complete_field_array['tab'])) {
+            if (! $this->tabsEnabled()) {
+                $this->enableTabs();
+            }
+        }
+
         // store the field information into the correct variable on the CRUD object
         switch (strtolower($form)) {
             case 'create':
@@ -48,6 +55,8 @@ trait Fields
                 $this->update_fields[$complete_field_array['name']] = $complete_field_array;
                 break;
         }
+
+        return $this;
     }
 
     public function addFields($fields, $form = 'both')
@@ -56,6 +65,52 @@ trait Fields
             foreach ($fields as $field) {
                 $this->addField($field, $form);
             }
+        }
+    }
+
+    /**
+     * Moves the recently added field to 'after' the $target_field.
+     *
+     * @param $target_field
+     */
+    public function afterField($target_field)
+    {
+        foreach ($this->create_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->create_fields, $field + 1, 0, [$field => array_pop($this->create_fields)]);
+                break;
+            }
+        }
+        foreach ($this->update_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->update_fields, $field + 1, 0, [$field => array_pop($this->update_fields)]);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Moves the recently added field to 'before' the $target_field.
+     *
+     * @param $target_field
+     */
+    public function beforeField($target_field)
+    {
+        $key = 0;
+        foreach ($this->create_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->create_fields, $key, 0, [$field => array_pop($this->create_fields)]);
+                break;
+            }
+            $key++;
+        }
+        $key = 0;
+        foreach ($this->update_fields as $field => $value) {
+            if ($value['name'] == $target_field) {
+                array_splice($this->update_fields, $key, 0, [$field => array_pop($this->update_fields)]);
+                break;
+            }
+            $key++;
         }
     }
 
@@ -131,6 +186,48 @@ trait Fields
     public function setFieldsOrder($fields)
     {
         $this->setFieldOrder($fields);
+    }
+
+    /**
+     * Decode attributes that are casted as array/object/json in the model.
+     * So that they are not json_encoded twice before they are stored in the db
+     * (once by Backpack in front-end, once by Laravel Attribute Casting).
+     */
+    public function decodeJsonCastedAttributes($data, $form, $id = false)
+    {
+        // get the right fields according to the form type (create/update)
+        $fields = $this->getFields($form, $id);
+        $casted_attributes = $this->model->getCastedAttributes();
+
+        foreach ($fields as $field) {
+
+            // Test the field is castable
+            if (isset($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
+
+                // Handle JSON field types
+                $jsonCastables = ['array', 'object', 'json'];
+                $fieldCasting = $casted_attributes[$field['name']];
+
+                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && ! is_array($data[$field['name']])) {
+                    try {
+                        $data[$field['name']] = json_decode($data[$field['name']]);
+                    } catch (Exception $e) {
+                        $data[$field['name']] = [];
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    public function getCurrentFields()
+    {
+        if ($this->entry) {
+            return $this->getUpdateFields($this->entry->getKey());
+        }
+
+        return $this->getCreateFields();
     }
 
     // ------------
