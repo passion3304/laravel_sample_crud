@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.0] - 2017-xx-xx
+## [3.2.0] - 2017-02-xx
 
 ### Added
 - form save button better UI&UX: they have the options in a dropdown instead of radio buttons and the default behaviour is stored in the session upon change - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
@@ -28,6 +28,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - filters on list views (deleted the 3.1.41 and 4.1.42 tags because they were breaking changes);
 - routes are now abstracted intro CrudRoute, so that new routes can be easily added;
 - Greek translation (thanks [Stamatis Katsaounis](https://github.com/skatsaounis));
+- tabbed create&update forms - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- grouped and inline errors - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
 
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;

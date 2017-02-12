@@ -8,6 +8,7 @@ use Backpack\CRUD\PanelTraits\Query;
 use Backpack\CRUD\PanelTraits\Access;
 use Backpack\CRUD\PanelTraits\Create;
 use Backpack\CRUD\PanelTraits\Delete;
+use Backpack\CRUD\PanelTraits\Errors;
 use Backpack\CRUD\PanelTraits\Fields;
 use Backpack\CRUD\PanelTraits\Update;
 use Backpack\CRUD\PanelTraits\AutoSet;
@@ -22,7 +23,7 @@ use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel
 {
-    use Create, Read, Update, Delete, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs;
+    use Create, Read, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs;
 
     // --------------
     // CRUD variables
@@ -64,9 +65,17 @@ class CrudPanel
 
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 
+
+    public function __construct()
+    {
+        $this->setErrorDefaults();
+    }
+
+
     // ------------------------------------------------------
     // BASICS - model, route, entity_name, entity_name_plural
     // ------------------------------------------------------
+
 
     /**
      * This function binds the CRUD to its corresponding Model (which extends Eloquent).

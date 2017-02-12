@@ -21,7 +21,7 @@
 
 <div class="tab-container {{ $horizontalTabs ? 'col-md-12' : 'col-md-3 m-t-10' }}">
 
-    <div class="nav-tabs-custom">
+    <div class="nav-tabs-custom" id="form_tabs">
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'nav-stacked nav-pills'}}" role="tablist">
             @foreach ($crud->getTabs() as $k => $tab)
                 <li role="presentation" class="{{$k == 0 ? 'active' : ''}}">

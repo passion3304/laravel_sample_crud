@@ -6,13 +6,32 @@ use Illuminate\Http\Request;
 
 trait Filters
 {
-    // ------------
-    // FILTERS
-    // ------------
-
     public $filters = [];
 
-    public function __construct()
+    public function filtersEnabled()
+    {
+        return !is_array($this->filters);
+    }
+
+    public function filtersDisabled()
+    {
+        return is_array($this->filters);
+    }
+
+    public function enableFilters()
+    {
+        if ($this->filtersDisabled())
+        {
+            $this->filters = new FiltersCollection;
+        }
+    }
+
+    public function disableFilters()
+    {
+        $this->filters = [];
+    }
+
+    public function clearFilters()
     {
         $this->filters = new FiltersCollection;
     }
@@ -31,6 +50,9 @@ trait Filters
             // get its results
             $values = $values();
         }
+
+        // enable the filters functionality
+        $this->enableFilters();
 
         // check if another filter with the same name exists
         if (! isset($options['name'])) {
