@@ -65,17 +65,14 @@ class CrudPanel
 
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 
-
     public function __construct()
     {
         $this->setErrorDefaults();
     }
 
-
     // ------------------------------------------------------
     // BASICS - model, route, entity_name, entity_name_plural
     // ------------------------------------------------------
-
 
     /**
      * This function binds the CRUD to its corresponding Model (which extends Eloquent).

@@ -10,7 +10,7 @@ trait Filters
 
     public function filtersEnabled()
     {
-        return !is_array($this->filters);
+        return ! is_array($this->filters);
     }
 
     public function filtersDisabled()
@@ -20,8 +20,7 @@ trait Filters
 
     public function enableFilters()
     {
-        if ($this->filtersDisabled())
-        {
+        if ($this->filtersDisabled()) {
             $this->filters = new FiltersCollection;
         }
     }
