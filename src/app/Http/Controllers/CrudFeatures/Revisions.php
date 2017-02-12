@@ -23,7 +23,7 @@ trait Revisions
         $this->data['revisions'] = $this->crud->listRevisions($id);
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('crud::revisions', $this->data);
+        return view($this->crud->getRevisionsView(), $this->data);
     }
 
     /**
@@ -52,7 +52,7 @@ trait Revisions
 
             // Rebuild the revision timeline HTML and return it to the AJAX call
             // @TODO: Return only the latest revision to save bandwidth - 15/9/16 @se1exin
-            return view('crud::inc.revision_timeline', $this->data);
+            return view($this->crud->getRevisionsTimelineView(), $this->data);
         }
     }
 }

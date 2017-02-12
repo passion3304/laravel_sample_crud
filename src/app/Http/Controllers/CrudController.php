@@ -68,8 +68,7 @@ class CrudController extends BaseController
         }
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        // $this->crud->getListView() returns 'list' by default, or 'list_ajax' if ajax was enabled
-        return view('crud::list', $this->data);
+        return view($this->crud->getListView(), $this->data);
     }
 
     /**
@@ -88,7 +87,7 @@ class CrudController extends BaseController
         $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('crud::create', $this->data);
+        return view($this->crud->getCreateView(), $this->data);
     }
 
     /**
@@ -148,7 +147,7 @@ class CrudController extends BaseController
         $this->data['id'] = $id;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('crud::edit', $this->data);
+        return view($this->crud->getEditView(), $this->data);
     }
 
     /**
@@ -205,7 +204,7 @@ class CrudController extends BaseController
         $this->data['title'] = trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('crud::show', $this->data);
+        return view($this->crud->getShowView(), $this->data);
     }
 
     /**

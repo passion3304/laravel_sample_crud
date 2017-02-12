@@ -31,7 +31,7 @@
         <div class="box-body table-responsive">
 
         {{-- Backpack List Filters --}}
-        @if ($crud->filters->count())
+        @if ($crud->filtersEnabled())
           @include('crud::inc.filters_navbar')
         @endif
 
