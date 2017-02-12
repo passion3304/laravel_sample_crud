@@ -10,7 +10,6 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Reorder;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\AjaxTable;
-
 // CRUD Traits for non-core features
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Revisions;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\SaveActions;
