@@ -1,82 +1,17 @@
-<form role="form">
+@if ($crud->model->translationEnabled())
+<input type="hidden" name="locale" value={{ $crud->request->input('locale')?$crud->request->input('locale'):App::getLocale() }}>
+@endif
 
+{{-- See if we're using tabs --}}
+@if ($crud->tabsEnabled())
 
-  @if ($crud->model->translationEnabled())
-    <input type="hidden" name="locale" value={{ $crud->request->input('locale')?$crud->request->input('locale'):App::getLocale() }}>
-  @endif
+    @include('crud::inc.show_tabs')
 
-    {{-- See if we're using tabs --}}
+@else
 
-    @if ($crud->tabsEnabled())
+    @include('crud::inc.show_fields', ['fields' => $fields])
 
-        @php
-        $horizontalTabs = $crud->getTabsType()=='horizontal' ? true : false;
-        @endphp
-
-        @push('crud_fields_styles')
-            <style>
-                .nav-tabs-custom {
-                    box-shadow: none;
-                }
-                .nav-tabs-custom > .nav-tabs.nav-stacked > li {
-                    margin-right: 0;
-                }
-
-                .tab-pane .form-group h1:first-child,
-                .tab-pane .form-group h2:first-child,
-                .tab-pane .form-group h3:first-child {
-                    margin-top: 0;
-                }
-            </style>
-        @endpush
-
-        <div class="tab-container {{ $horizontalTabs ? 'col-md-12' : 'col-md-3 m-t-10' }}">
-
-            <div class="nav-tabs-custom">
-                <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'nav-stacked nav-pills'}}" role="tablist">
-                    @foreach ($crud->getTabs() as $k => $tab)
-                        <li role="presentation" class="{{$k == 0 ? 'active' : ''}}">
-                            <a href="#tab_{{ camel_case($tab) }}" aria-controls="tab_{{ camel_case($tab) }}" role="tab" data-toggle="tab">{{ $tab }}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="tab-content {{$horizontalTabs ? 'col-md-12' : 'col-md-9 m-t-10'}}">
-
-            @foreach ($crud->getTabs() as $k => $tab)
-            <div role="tabpanel" class="tab-pane{{$k == 0 ? ' active' : ''}}" id="tab_{{ camel_case($tab) }}">
-
-                {{-- Show the inputs --}}
-                @foreach ($crud->getTabFields($tab) as $field)
-                    <!-- load the view from the application if it exists, otherwise load the one in the package -->
-                    @if(view()->exists('vendor.backpack.crud.fields.'.$field['type']))
-                        @include('vendor.backpack.crud.fields.'.$field['type'], array('field' => $field))
-                    @else
-                        @include('crud::fields.'.$field['type'], array('field' => $field))
-                    @endif
-                @endforeach
-
-            </div>
-            @endforeach
-
-        </div>
-    @else
-
-        {{-- Show the inputs --}}
-        @foreach ($fields as $field)
-            <!-- load the view from the application if it exists, otherwise load the one in the package -->
-            @if(view()->exists('vendor.backpack.crud.fields.'.$field['type']))
-                @include('vendor.backpack.crud.fields.'.$field['type'], array('field' => $field))
-            @else
-                @include('crud::fields.'.$field['type'], array('field' => $field))
-            @endif
-        @endforeach
-
-    @endif
-</form>
+@endif
 
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
 
@@ -124,7 +59,7 @@
             @endphp
 
             @if($focusField)
-              window.focusField = $('[name="{{$focusField['name']}}"]').eq(0),
+              window.focusField = $('[name="{{ $focusField['name'] }}"]').eq(0),
             @else
               var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
             @endif
