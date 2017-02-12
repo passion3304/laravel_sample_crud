@@ -1,17 +1,5 @@
 <form role="form">
-    {{-- Show the erros, if any --}}
-    @if ($errors->any())
-        <div class="col-md-12">
-            <div class="callout callout-danger">
-                <h4>{{ trans('backpack::crud.please_fix') }}</h4>
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-    @endif
+
 
   @if ($crud->model->translationEnabled())
     <input type="hidden" name="locale" value={{ $crud->request->input('locale')?$crud->request->input('locale'):App::getLocale() }}>
@@ -45,7 +33,7 @@
         <div class="tab-container {{ $horizontalTabs ? 'col-md-12' : 'col-md-3 m-t-10' }}">
 
             <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs {{!$horizontalTabs ? ' nav-stacked' : ''}}" role="tablist">
+                <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'nav-stacked nav-pills'}}" role="tablist">
                     @foreach ($crud->getTabs() as $k => $tab)
                         <li role="presentation" class="{{$k == 0 ? 'active' : ''}}">
                             <a href="#tab_{{ camel_case($tab) }}" aria-controls="tab_{{ camel_case($tab) }}" role="tab" data-toggle="tab">{{ $tab }}</a>

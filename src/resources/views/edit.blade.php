@@ -21,6 +21,18 @@
 			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 
+		{{-- Show the errors, if any --}}
+	    @if ($errors->any())
+            <div class="callout callout-danger">
+                <h4>{{ trans('backpack::crud.please_fix') }}</h4>
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+	    @endif
+
 		  {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey(), 'method' => 'put', 'files'=>$crud->hasUploadFields('update', $entry->getKey()))) !!}
 		  <div class="box">
 		    <div class="box-header with-border">

@@ -33,6 +33,13 @@ trait Fields
             $complete_field_array['type'] = $this->getFieldTypeFromDbColumnType($complete_field_array['name']);
         }
 
+        // if a tab was mentioned, we should enable it
+        if (isset($complete_field_array['tab'])) {
+            if (!$this->tabsEnabled()) {
+                $this->enableTabs();
+            }
+        }
+
         // store the field information into the correct variable on the CRUD object
         switch (strtolower($form)) {
             case 'create':

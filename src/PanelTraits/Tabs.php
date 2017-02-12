@@ -10,7 +10,7 @@ trait Tabs
     public function enableTabs()
     {
         $this->tabsEnabled = true;
-        $this->tabsType = config('backpack.crud.tabs_horizontal', true);
+        $this->setTabsType(config('backpack.crud.tabs_type', 'horizontal'));
 
         return $this->tabsEnabled;
     }
