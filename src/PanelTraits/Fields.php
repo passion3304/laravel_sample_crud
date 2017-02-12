@@ -224,7 +224,7 @@ trait Fields
     public function getCurrentFields()
     {
         if ($this->entry) {
-            return $this->getUpdateFields($this->entry->primaryKey());
+            return $this->getUpdateFields($this->entry->getKey());
         }
 
         return $this->getCreateFields();
