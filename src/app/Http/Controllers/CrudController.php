@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Form as Form;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Views;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Reorder;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\AjaxTable;
+
 // CRUD Traits for non-core features
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Revisions;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\SaveActions;
@@ -21,7 +21,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudFeatures\ShowDetailsRow;
 class CrudController extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
-    use AjaxTable, Reorder, Revisions, ShowDetailsRow, SaveActions, Views;
+    use AjaxTable, Reorder, Revisions, ShowDetailsRow, SaveActions;
 
     public $data = [];
     public $crud;
@@ -69,7 +69,7 @@ class CrudController extends BaseController
         }
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view($this->getListView(), $this->data);
+        return view($this->crud->getListView(), $this->data);
     }
 
     /**
@@ -88,7 +88,7 @@ class CrudController extends BaseController
         $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view($this->getCreateView(), $this->data);
+        return view($this->crud->getCreateView(), $this->data);
     }
 
     /**
@@ -148,7 +148,7 @@ class CrudController extends BaseController
         $this->data['id'] = $id;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view($this->getEditView(), $this->data);
+        return view($this->crud->getEditView(), $this->data);
     }
 
     /**
@@ -205,7 +205,7 @@ class CrudController extends BaseController
         $this->data['title'] = trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view($this->getShowView(), $this->data);
+        return view($this->crud->getShowView(), $this->data);
     }
 
     /**

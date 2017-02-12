@@ -19,11 +19,12 @@ use Backpack\CRUD\PanelTraits\Reorder;
 use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\FakeColumns;
+use Backpack\CRUD\PanelTraits\Views;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel
 {
-    use Create, Read, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs;
+    use Create, Read, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views;
 
     // --------------
     // CRUD variables

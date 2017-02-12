@@ -1,11 +1,12 @@
 <?php
 
-namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
+namespace Backpack\CRUD\PanelTraits;
 
 trait Views
 {
     protected $detailsRowView = 'crud::details_row';
     protected $revisionsView = 'crud::revisions';
+    protected $revisionsTimelineView = 'crud::inc.revision_timeline';
     protected $reorderView = 'crud::reorder';
     protected $listView = 'crud::list';
 
@@ -47,12 +48,33 @@ trait Views
     }
 
     /**
+     * Sets the revision template.
+     * @param string $view name of the template file
+     * @return string $view name of the template file
+     */
+    public function setRevisionsTimelineView($view)
+    {
+        $this->revisionsTimelineView = $view;
+
+        return $this->revisionsTimelineView;
+    }
+
+    /**
      * Gets the revisions template.
      * @return string name of the template file
      */
     public function getRevisionsView()
     {
         return $this->revisionsView;
+    }
+
+    /**
+     * Gets the revisions template.
+     * @return string name of the template file
+     */
+    public function getRevisionsTimelineView()
+    {
+        return $this->revisionsTimelineView;
     }
 
     /**
