@@ -223,8 +223,7 @@ trait Fields
 
     public function getCurrentFields()
     {
-        if ($this->entry)
-        {
+        if ($this->entry) {
             return $this->getUpdateFields($this->entry->primaryKey());
         }
 
