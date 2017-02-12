@@ -4,13 +4,9 @@
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled())
-
-    @include('crud::inc.show_tabs')
-
+    @include('crud::inc.show_tabbed_fields')
 @else
-
     @include('crud::inc.show_fields', ['fields' => $fields])
-
 @endif
 
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
