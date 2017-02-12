@@ -30,6 +30,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Greek translation (thanks [Stamatis Katsaounis](https://github.com/skatsaounis));
 - tabbed create&update forms - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
 - grouped and inline errors - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- developers can now choose custom views per CRUD panel - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
 
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;
