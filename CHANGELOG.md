@@ -31,6 +31,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - tabbed create&update forms - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
 - grouped and inline errors - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
 - developers can now choose custom views per CRUD panel - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- select2_ajax and select2_ajax_multiple field types - thanks to [maesklaas](https://github.com/maesklaas);
 
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;
