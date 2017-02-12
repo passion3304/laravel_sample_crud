@@ -1,26 +1,27 @@
 <!-- dependencyJson -->
 <div class="form-group col-md-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}" @include('crud::inc.field_wrapper_attributes')>
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <?php
-      $entity_model = $crud->getModel();
+        $entity_model = $crud->getModel();
 
-      //short name for dependency fields
-      $primary_dependency = $field['subfields']['primary'];
-      $secondary_dependency = $field['subfields']['secondary'];
+        //short name for dependency fields
+        $primary_dependency = $field['subfields']['primary'];
+        $secondary_dependency = $field['subfields']['secondary'];
 
 
-      //all items with relation
-      $dependencies = $primary_dependency['model']::with($primary_dependency['entity_secondary'])->get();
+        //all items with relation
+        $dependencies = $primary_dependency['model']::with($primary_dependency['entity_secondary'])->get();
 
-      $dependencyArray = [];
+        $dependencyArray = [];
 
-      //convert dependency array to simple matrix ( prymary id as key and array with secondaries id )
-      foreach($dependencies as $primary){
-          $dependencyArray[$primary->id] = [];
-        foreach($primary->{$primary_dependency['entity_secondary']} as $secondary){
-            $dependencyArray[$primary->id][] = $secondary->id;
+        //convert dependency array to simple matrix ( prymary id as key and array with secondaries id )
+        foreach ($dependencies as $primary) {
+            $dependencyArray[$primary->id] = [];
+            foreach ($primary->{$primary_dependency['entity_secondary']} as $secondary) {
+                $dependencyArray[$primary->id][] = $secondary->id;
+            }
         }
-      }
 
       //for update form, get initial state of the entity
       if( isset($id) && $id ){
@@ -28,34 +29,33 @@
         //get entity with relations for primary dependency
         $entity_dependencies = $entity_model->with($primary_dependency['entity'])
           ->with($primary_dependency['entity'].'.'.$primary_dependency['entity_secondary'])
-          ->where('id', $id)
-          ->first();
+          ->find($id);
 
-        $secondaries_from_primary = [];
+            $secondaries_from_primary = [];
 
-        //convert relation in array
-        $primary_array = $entity_dependencies->{$primary_dependency['entity']}->toArray();
+            //convert relation in array
+            $primary_array = $entity_dependencies->{$primary_dependency['entity']}->toArray();
 
-        $secondary_ids = [];
+            $secondary_ids = [];
 
-        //create secondary dependency from primary relation, used to check what chekbox must be check from second checklist
-        if( old($primary_dependency['name']) ) {
-          foreach( old($primary_dependency['name']) as $primary_item ){
-            foreach($dependencyArray[$primary_item] as $second_item ){
-                $secondary_ids[$second_item] = $second_item;
+            //create secondary dependency from primary relation, used to check what chekbox must be check from second checklist
+            if (old($primary_dependency['name'])) {
+                foreach (old($primary_dependency['name']) as $primary_item) {
+                    foreach ($dependencyArray[$primary_item] as $second_item) {
+                        $secondary_ids[$second_item] = $second_item;
+                    }
+                }
+            } else { //create dependecies from relation if not from validate error
+                foreach ($primary_array as $primary_item) {
+                    foreach ($primary_item[$secondary_dependency['entity']] as $second_item) {
+                        $secondary_ids[$second_item['id']] = $second_item['id'];
+                    }
+                }
             }
-          }
-        }else{ //create dependecies from relation if not from validate error
-          foreach( $primary_array as $primary_item ){
-            foreach($primary_item[$secondary_dependency['entity']] as $second_item ){
-                $secondary_ids[$second_item['id']] = $second_item['id'];
-            }
-          }
         }
-      }
 
-      //json encode of dependency matrix
-      $dependencyJson = json_encode($dependencyArray);
+        //json encode of dependency matrix
+        $dependencyJson = json_encode($dependencyArray);
     ?>
     <script>
         var  {{ $field['field_unique_name'] }} = {!! $dependencyJson !!};
@@ -68,15 +68,15 @@
         </div>
 
         <div class="hidden_fields_primary" data-name = "{{ $primary_dependency['name'] }}">
-          @if(isset($field['value']))
+        @if(isset($field['value']))
             @if(old($primary_dependency['name']))
-              @foreach( old($primary_dependency['name']) as $item )
+                @foreach( old($primary_dependency['name']) as $item )
                 <input type="hidden" class="primary_hidden" name="{{ $primary_dependency['name'] }}[]" value="{{ $item }}">
-              @endforeach
+                @endforeach
             @else
-              @foreach( $field['value'][0]->pluck('id', 'id')->toArray() as $item )
+                @foreach( $field['value'][0]->pluck('id', 'id')->toArray() as $item )
                 <input type="hidden" class="primary_hidden" name="{{ $primary_dependency['name'] }}[]" value="{{ $item }}">
-              @endforeach
+                @endforeach
             @endif
           @endif
         </div>
@@ -90,17 +90,17 @@
                         class = 'primary_list'
                         @foreach ($primary_dependency as $attribute => $value)
                             @if (is_string($attribute) && $attribute != 'value')
-                              @if ($attribute=='name')
+                                @if ($attribute=='name')
                                 {{ $attribute }}="{{ $value }}_show[]"
-                              @else
+                                @else
                                 {{ $attribute }}="{{ $value }}"
-                              @endif
+                                @endif
                             @endif
                         @endforeach
-                         value="{{ $connected_entity_entry->id }}"
+                        value="{{ $connected_entity_entry->id }}"
 
-                         @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || ( old($primary_dependency["name"]) && in_array($connected_entity_entry->id, old( $primary_dependency["name"])) ) )
-                               checked = "checked"
+                        @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || ( old($primary_dependency["name"]) && in_array($connected_entity_entry->id, old( $primary_dependency["name"])) ) )
+                        checked = "checked"
                         @endif >
                         {{ $connected_entity_entry->{$primary_dependency['attribute']} }}
                 </label>

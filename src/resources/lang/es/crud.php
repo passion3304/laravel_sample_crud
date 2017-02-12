@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Dick Crud Language Lines
+    | Backpack Crud Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are used by the CRUD interface.
@@ -13,17 +13,17 @@ return [
     |
     */
 
+    // Forms
+    'save_action_save_and_new' => 'Save and new item', // TODO: translate
+    'save_action_save_and_edit' => 'Save and edit this item', // TODO: translate
+    'save_action_save_and_back' => 'Save and back', // TODO: translate
+    'save_action_changed_notification' => 'Default save action changed', // TODO: translate
+
     // Create form
     'add'                 => 'Añadir',
     'back_to_all'         => 'Volver al listado ',
     'cancel'              => 'Cancelar',
     'add_a_new'           => 'Añadir nuevo ',
-
-        // Create form - advanced options
-        'after_saving'            => 'Después de guardar',
-        'go_to_the_table_view'    => 'ir al listado',
-        'let_me_add_another_item' => 'añadir otro item',
-        'edit_the_new_item'       => 'editar este item',
 
     // Edit form
     'edit'                 => 'Editar',
@@ -84,32 +84,32 @@ return [
         ],
 
     // global crud - errors
-    'unauthorized_access' => 'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.',
-    'please_fix' => 'Por favor corrija los siguientes errores:',
+        'unauthorized_access' => 'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.',
+        'please_fix' => 'Por favor corrija los siguientes errores:',
 
     // global crud - success / error notification bubbles
-    'insert_success' => 'El elemento ha sido añadido satisfactoriamente.',
-    'update_success' => 'El elemento ha sido modificado satisfactoriamente.',
+        'insert_success' => 'El elemento ha sido añadido satisfactoriamente.',
+        'update_success' => 'El elemento ha sido modificado satisfactoriamente.',
 
     // CRUD reorder view
-    'reorder'                      => 'Reordenar',
-    'reorder_text'                 => 'Arrastrar y soltar para reordenar.',
-    'reorder_success_title'        => 'Hecho',
-    'reorder_success_message'      => 'El orden ha sido guardado.',
-    'reorder_error_title'          => 'Error',
-    'reorder_error_message'        => 'El orden no se ha guardado.',
+        'reorder'                      => 'Reordenar',
+        'reorder_text'                 => 'Arrastrar y soltar para reordenar.',
+        'reorder_success_title'        => 'Hecho',
+        'reorder_success_message'      => 'El orden ha sido guardado.',
+        'reorder_error_title'          => 'Error',
+        'reorder_error_message'        => 'El orden no se ha guardado.',
 
     // CRUD yes/no
-    'yes' => 'Si',
-    'no' => 'No',
+        'yes' => 'Si',
+        'no' => 'No',
 
     // Fields
-    'browse_uploads' => 'Subir archivos',
-    'clear' => 'Limpiar',
-    'page_link' => 'Enlace',
-    'page_link_placeholder' => 'http://example.com/su-pagina',
-    'internal_link' => 'Enlace interno',
-    'internal_link_placeholder' => 'Slug interno. Ejplo: \'admin/page\' (sin comillas) para \':url\'',
-    'external_link' => 'Enlace externo',
+        'browse_uploads' => 'Subir archivos',
+        'clear' => 'Limpiar',
+        'page_link' => 'Enlace',
+        'page_link_placeholder' => 'http://example.com/su-pagina',
+        'internal_link' => 'Enlace interno',
+        'internal_link_placeholder' => 'Slug interno. Ejplo: \'admin/page\' (sin comillas) para \':url\'',
+        'external_link' => 'Enlace externo',
 
 ];

@@ -1,11 +1,12 @@
   <div class="form-group col-md-12 image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}" data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}" @include('crud::inc.field_wrapper_attributes')>
     <div>
         <label>{!! $field['label'] !!}</label>
+        @include('crud::inc.field_translatable_icon')
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
         <div class="col-sm-6" style="margin-bottom: 20px;">
-            <img id="mainImage" src="{{ isset($field['src']) ? $entry->where('id', $entry->id)->first()->{$field['src']}() : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
+            <img id="mainImage" src="{{ isset($field['src']) ? $entry->find($entry->id)->{$field['src']}() : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
         <div class="col-sm-3">
@@ -53,7 +54,7 @@
             .hide {
                 display: none;
             }
-            .btn-group {
+            .image .btn-group {
                 margin-top: 10px;
             }
             img {

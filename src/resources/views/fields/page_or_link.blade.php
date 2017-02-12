@@ -10,6 +10,7 @@
 
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
     <div class="clearfix"></div>
 
     <div class="col-sm-3">
@@ -36,7 +37,9 @@
     </div>
     <div class="col-sm-9">
         <!-- external link input -->
-          <div class="page_or_link_value <?php if (!isset($entry) || $entry->type != 'external_link') { echo 'hidden'; } ?>" id="page_or_link_external_link">
+          <div class="page_or_link_value <?php if (!isset($entry) || $entry->type != 'external_link') {
+                echo 'hidden';
+} ?>" id="page_or_link_external_link">
             <input
                 type="url"
                 class="form-control"
@@ -53,7 +56,9 @@
                 >
           </div>
           <!-- internal link input -->
-          <div class="page_or_link_value <?php if (!isset($entry) || $entry->type != 'internal_link') { echo 'hidden'; } ?>" id="page_or_link_internal_link">
+          <div class="page_or_link_value <?php if (!isset($entry) || $entry->type != 'internal_link') {
+                echo 'hidden';
+} ?>" id="page_or_link_internal_link">
             <input
                 type="text"
                 class="form-control"
@@ -70,7 +75,9 @@
                 >
           </div>
           <!-- page slug input -->
-          <div class="page_or_link_value <?php if (isset($entry) && $entry->type != 'page_link') { echo 'hidden'; } ?>" id="page_or_link_page">
+          <div class="page_or_link_value <?php if (isset($entry) && $entry->type != 'page_link') {
+                echo 'hidden';
+} ?>" id="page_or_link_page">
             <select
                 class="form-control"
                 name="page_id"

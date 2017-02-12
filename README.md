@@ -23,51 +23,34 @@ Features:
 - Easily extend fields (customising a field type or adding a new one is as easy as creating a new view with a particular name)
 - Easily overwrite functionality (customising how the create/update/delete/reorder process works is as easy as creating a new function with the proper name in your EntityCrudCrontroller)
 
-**Subscribe to the [Mailchimp list](http://eepurl.com/bUEGjf) to be announced of any major features or breaking changes (once every 1-3 months).**
+> ### Security updates and breaking changes
+> Please **[subscribe to the Backpack Newsletter](http://eepurl.com/bUEGjf)** so you can find out about any security updates, breaking changes or major features. We send an email every 1-2 months.
 
 ![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
 
+
+## Getting started
+
+If you have never used Backpack before, the best place to understand it and get started is [backpackforlaravel.com](https://backpackforlaravel.com/). 
+
 ## Install
 
-1) In your terminal:
+Please note you need to install Backpack\Base before you cand use Backpack\CRUD. It will provide you with the AdminLTE design.
 
-``` bash
-$ composer require backpack/crud
-```
+Installation guides:
+- [Install Backpack on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
+- [Install Backpack on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
+- [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - recommended;
 
-2) Add this to your config/app.php, under "providers":
-```php
-        Backpack\CRUD\CrudServiceProvider::class,
-```
 
-3) Run:
-```bash
-$ php artisan elfinder:publish #published elfinder assets
-$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="public" #publish CRUD assets
-$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="lang" #publish the lang files
-$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="config" #publish the config file
-$ php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder" #publish overwritten elFinder assets
-```
+## Features
 
-4) Define an 'uploads' disk. In your config/filesystems.php add this disk:
-```php
-'uploads' => [
-            'driver' => 'local',
-            'root' => public_path('uploads'),
-        ],
-```
+Check out [the about page in the documentation](https://laravel-backpack.readme.io/docs/crud) to get familiar with all the Backpack\CRUD features.
 
-5) If you haven't already, go through [steps 3-5 from the Backpack\Base installation](https://github.com/Laravel-Backpack/Base#install) (it provides the general views for the admin panel - layout, menu, notification bubbles, etc).
-
-6) [Optional] You can now the file manager to the menu, in `resources/views/vendor/backpack/base/inc/sidebar.blade.php` or `menu.blade.php`:
-```html
-<li><a href="{{ url(config('backpack.base.route_prefix').'/elfinder') }}"><i class="fa fa-files-o"></i> <span>File manager</span></a></li>
-```
 
 ## Usage
 
-Check out the documentation at https://laravelbackpack.com
-
+If you've already checked out the features link above, take a look at how you can create a CRUD for a model in [this example](https://laravel-backpack.readme.io/docs/crud-example). At the end of the page you'll also find a way you can do everything in 1-2 minutes, using the command line and [backpack/generators](https://github.com/laravel-backpack/generators).
 
 In short:
 
@@ -80,39 +63,6 @@ In short:
 4. **(optional)** Define your validation rules in a Request files.
 
 
-## **(Optional)** Enable Revisions
-
-CRUD supports tracking and restoring Model change Revisions with the help of [VentureCraft/revisionable](https://github.com/VentureCraft/revisionable).
-
-To enable revisions on your Model do the following:
-
-1. Run:
-```bash
-$ php artisan migrate --path=vendor/venturecraft/revisionable/src/migrations #run revisionable migrations
-```
-
-2. Add the `\Venturecraft\Revisionable\RevisionableTrait` Trait to your Model. E.g:
-```php
-namespace MyApp\Models;
-
-class Article extends Eloquent {
-    use \Backpack\CRUD\CrudTrait, \Venturecraft\Revisionable\RevisionableTrait;
-
-    // If you are using another bootable trait the be sure to override the boot method in your model
-    public static function boot()
-    {
-        parent::boot();
-    }
-}
-```
-
-3. Enable access to Revisions in your CrudController with:
-```php
-$this->crud->allowAccess('revisions');
-```
-
-Head on over to the [VentureCraft/revisionable](https://github.com/VentureCraft/revisionable) GitHub repo to see the full documentation and extra configuration options.
-
 ## Screenshots
 
 - List view pictured above.
@@ -120,6 +70,8 @@ Head on over to the [VentureCraft/revisionable](https://github.com/VentureCraft/
 ![Create or update view for Backpack/CRUD](https://infinit.io/_/32czWa8.png)
 - File manager (elFinder):
 ![File manager interface for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_elfinder.png)
+
+More screenshots available at [backpackforlaravel.com](https://backpackforlaravel.com).
 
 ## Change log
 
@@ -133,12 +85,15 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 If you discover any security related issues, please email hello@tabacitu.ro instead of using the issue tracker.
 
+Please **[subscribe to the Backpack Newsletter](http://eepurl.com/bUEGjf)** so you can find out about any security updates, breaking changes or major features. We send an email every 1-2 months.
+
 ## Credits
 
-- [Cristian Tabacitu](http://tabacitu.ro) - architect, designer, manager, main coder, PR guy, customer service guy & chief honcho
-- [Cristian Tone](http://updivision.com) - architecture improvements
-- [Marius Constantin](http://updivision.com) - bug fixing & improvements
-- [Federico Liva](https://github.com/fede91it) - bug fixing
+- [Cristian Tabacitu](http://tabacitu.ro) - architect, designer, manager, main coder, PR guy, customer service guy & chief honcho;
+- [Owen Melbourne](https://github.com/OwenMelbz) - new features, bug fixing and support;
+- [Cristian Tone](http://updivision.com) - architecture improvements;
+- [Marius Constantin](http://updivision.com) - bug fixing & improvements;
+- [Federico Liva](https://github.com/fede91it) - bug fixing;
 - [All Contributors][link-contributors]
 
 Special thanks go to:
@@ -148,7 +103,7 @@ Special thanks go to:
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+Backpack is free for non-commercial use and $19/project for commercial use. Please see [License File](LICENSE.md) and [backpackforlaravel.com](https://backpackforlaravel.com/#pricing) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/dick/crud.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square

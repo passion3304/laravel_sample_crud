@@ -31,7 +31,10 @@
 	<!-- Default box -->
 	  <div class="box">
 	    <div class="box-header with-border">
-	      <h3 class="box-title">{{ trans('backpack::crud.preview') }} <span class="text-lowercase">{{ $crud->entity_name }}</h3>
+	      <h3 class="box-title">
+            {{ trans('backpack::crud.preview') }}
+            <span class="text-lowercase">{{ $crud->entity_name }}</span>
+          </h3>
 	    </div>
 	    <div class="box-body">
 	      {{ dump($entry) }}

@@ -7,7 +7,7 @@ trait Reorder
     /**
      *  Reorder the items in the database using the Nested Set pattern.
      *
-     *	Database columns needed: id, parent_id, lft, rgt, depth, name/title
+     *  Database columns needed: id, parent_id, lft, rgt, depth, name/title
      *
      *  @return Response
      */
@@ -25,7 +25,7 @@ trait Reorder
         $this->data['title'] = trans('backpack::crud.reorder').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('crud::reorder', $this->data);
+        return view($this->crud->getReorderView(), $this->data);
     }
 
     /**

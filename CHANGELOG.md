@@ -20,6 +20,186 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.0] - 2017-02-xx
+
+### Added
+- form save button better UI&UX: they have the options in a dropdown instead of radio buttons and the default behaviour is stored in the session upon change - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- redirect_after_save button actions;
+- filters on list views (deleted the 3.1.41 and 4.1.42 tags because they were breaking changes);
+- routes are now abstracted intro CrudRoute, so that new routes can be easily added;
+- Greek translation (thanks [Stamatis Katsaounis](https://github.com/skatsaounis));
+- tabbed create&update forms - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- grouped and inline errors - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- developers can now choose custom views per CRUD panel - thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- select2_ajax and select2_ajax_multiple field types - thanks to [maesklaas](https://github.com/maesklaas);
+
+### Fixed
+- excluded _method from massAssignment, so create/update errors will be more useful;
+
+
+## [3.1.59] - 2017-02-xx - TODO - release this tag
+
+### Added
+- date_range field, thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+
+### Fixed
+- change the way the CrudPanel class is injected, so it can be overwritten more easily;
+
+
+
+## [3.1.58] - 2017-02-10
+
+### Added
+- Bulgarian translation, thanks to [Petyo Tsonev](https://github.com/petyots);
+- select2_from_array, thanks to [Nick Barrett](https://github.com/njbarrett);
+
+### Fixed
+- DateTime Picker error when date deleted after being set - fixes #386;
+- Abstracted primary key in select_multiple column - fixes #377 and #412;
+- AutoSet methods now using the connection on the model, instead of the default connection; This should allow for CRUDs from multiple databases inside one app; Big thanks to [Hamid Alaei Varnosfaderani](https://github.com/halaei) for this PR;
+- Check that the Fake field is included in the request before trying to use it;
+
+
+## [3.1.57] - 2017-02-03
+
+### Added
+- Laravel 5.4 compatibility;
+
+### Fixed
+- elfinder redirected to /login instead of /admin, because it used the "auth" middleware instead of "admin";
+
+
+## [3.1.56] - 2017-02-03
+
+### Fixed
+- deleting a CRUD entry showed a warning;
+
+
+## [3.1.55] - 2017-02-02
+
+### Fixed
+- allow custom primary key in field types base64_image and checklist_dependency;
+- dropdown filter triggered separator on 0 index;
+- make sure model events are triggered when deleting;
+- in edit view, use the fields variable passed to the view;
+- fix conflict bootstrap-datepicker & jquery-ui;
+- fix "undefined index: disk" in upload field type;
+
+## [3.1.54] - 2017-01-19
+
+### Fixed
+- revisions;
+
+
+## [3.1.53] - 2017-01-20
+
+### Fixed
+- Revisions: $this->update() removed many to many relations;
+
+
+## [3.1.52] - 2017-01-18
+
+### Fixed
+- revisions are sorted by key, not by date, since they keys are auto-incremented anyway; this should allow for multidimensional arrays;
+
+
+## [3.1.51] - 2017-01-11
+
+### Fixed
+- revisions work when there are hidden (fake) fields present;
+- the table in list view is responsive (scrollable horizontally) by default;
+- new syntax for details_row URL in javascript;
+- new syntax for the current URL in layout.blade.php, for making the current menu items active;
+
+## [3.1.50] - 2017-01-08
+
+### Added
+- Chinese (Traditional) translation, thanks to [Isaac Kwan](https://github.com/isaackwan);
+- You can now create a CRUD field to overwrite the primary key, thanks to [Isaac Kwan](https://github.com/isaackwan);
+
+### Fixed
+- Escaped table name for ENUM column types, so reserved PHP/MySQL names can also be used for table names; Fixes #261;
+- CrudTrait's isColumnNullable() should now work for multiple-database systems, by getting the connection type automatically;
+- Can use DB prefixed tables in CrudTrait's isColumnNullable(); fixes #300;
+- Radio field type could not be used inside Settings; Now it can;
+
+
+## [3.1.49] - 2017-01-08
+
+### Fixed
+- select_from_array field triggered an "Undefined index: value" error; fixes #312 thanks to [Chris Thompson](https://christhompsontldr.com/);
+
+
+## [3.1.48] - 2016-12-14
+
+### Fixed
+- Prevent double-json-encoding on complicated field types, when using attribute casting; Fixes #259;
+
+
+## [3.1.47] - 2016-12-14
+
+### Fixed
+- Don't mutate date/datetime if they are empty. It will default to now;
+- select_from_array has a new option: "allows_multiple";
+- syncPivot is now done before saving the main entity in Update::edit();
+- added beforeColumn(), afterColumn(), beforeField() and afterField() methods to more easily reorder fields and columns - big up to [Ben Sutter](https://github.com/b8ne) for this feature;
+
+
+## [3.1.46] - 2016-12-13
+
+### Fixed
+- a filter will be triggered if the variable exists, wether it's null or not;
+- if the elfinder route has not been registered, it will be by the CrudServiceProvider;
+
+
+## [3.1.45] - 2016-12-02
+
+### Added
+- $this->crud->with() method, which allows you to easily eager load relationships;
+- auto eager loading relationships that are used in the CRUD columns;
+
+### Fixed
+- select and select_multiple columns use a considerably lower number of database queries;
+
+
+## [3.1.44] - 2016-12-02
+
+### Added
+- Better ability to interact with the entity that was just saved, in EntityCrudController::create() and update() [the $this->crud->entry and $this->data['entry'] variables];
+
+
+## [3.1.43] - 2016-11-29
+
+### Fixed
+- Allow mixed simple and complex column definitions (thanks [JamesGuthrie](https://github.com/JamesGuthrie));
+- disable default DataTable ordering;
+
+
+## [3.1.42] - 2016-11-13
+
+### Fixed
+- n-n filters prevented CRUD items from being added;
+
+
+## [3.1.41] - 2016-11-11
+
+### Added
+- filters on list view;
+
+
+## [3.1.40] - 2016-11-06
+
+### Fixed
+- fixed video field having an extra input on page;
+- fixed hasUploadFields() check for update edit form; fixes #211;
+
+
+## [3.1.39] - 2016-11-06
+
+### Fixed
+- fixed SimpleMDE which was broken by last commit; really fixes #222;
+
+
 ## [3.1.38] - 2016-11-04
 
 ### Fixed

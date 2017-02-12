@@ -20,8 +20,22 @@ trait Read
     public function getEntry($id)
     {
         $entry = $this->model->findOrFail($id);
+        $this->entry = $entry->withFakes();
 
-        return $entry->withFakes();
+        return $entry;
+    }
+
+    /**
+     * Make the query JOIN all relationships used in the columns, too,
+     * so there will be less database queries overall.
+     */
+    public function autoEagerLoadRelationshipColumns()
+    {
+        $relationships = $this->getColumnsRelationships();
+
+        if (count($relationships)) {
+            $this->with($relationships);
+        }
     }
 
     /**
@@ -31,6 +45,8 @@ trait Read
      */
     public function getEntries()
     {
+        $this->autoEagerLoadRelationshipColumns();
+
         $entries = $this->query->get();
 
         // add the fake columns for each entry
@@ -70,11 +86,12 @@ trait Read
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
      * @param  [form] create / update / both - defaults to 'both'
+     * @param  [id] id of the entity - defaults to false
      * @return bool
      */
-    public function hasUploadFields($form)
+    public function hasUploadFields($form, $id = false)
     {
-        $fields = $this->getFields($form);
+        $fields = $this->getFields($form, $id);
         $upload_fields = array_where($fields, function ($value, $key) {
             return isset($value['upload']) && $value['upload'] == true;
         });

@@ -1,6 +1,7 @@
 <!-- upload multiple input -->
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
+    @include('crud::inc.field_translatable_icon')
 
 	{{-- Show the file name and a "Clear" button on EDIT form. --}}
 	@if (isset($field['value']) && count($field['value']))
@@ -20,7 +21,7 @@
         type="file"
         id="{{ $field['name'] }}_file_input"
         name="{{ $field['name'] }}[]"
-        value="{{ old($field['name']) ? old($field['name']) : (isset($field['default']) ? $field['default'] : '' ) }}"
+        value="@if (old($field['name'])) old($field['name']) @elseif (isset($field['default'])) $field['default'] @endif"
         @include('crud::inc.field_attributes')
         multiple
     >
