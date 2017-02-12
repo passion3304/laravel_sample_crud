@@ -15,6 +15,11 @@
     @endif
 </div>
 
+@php
+    $connected_entity = new $field['model'];
+    $connected_entity_key_name = $connected_entity->getKeyName();
+@endphp
+
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
@@ -59,16 +64,18 @@
                         results: function (data, params) {
                             params.page = params.page || 1;
 
-                            return {
+                            var result = {
                                 results: $.map(data.data, function (item) {
-                                    textField = "{{$field['attribute']}}";
+                                    textField = "{{ $field['attribute'] }}";
                                     return {
                                         text: item[textField],
-                                        id: item["id"]
+                                        id: item["{{ $connected_entity_key_name }}"]
                                     }
                                 }),
                                 more: data.current_page < data.last_page
                             };
+
+                            return result;
                         },
                         cache: true
                     },
@@ -79,8 +86,8 @@
                         $.ajax("{{ $field['data_source'] }}" + '/' + "{{ $field['value'] ?? 0 }}", {
                             dataType: "json"
                         }).done(function(data) {
-                            textField = "{{$field['attribute']}}";
-                            callback({ text: data[textField], id: data["id"] });
+                            textField = "{{ $field['attribute'] }}";
+                            callback({ text: data[textField], id: data["{{ $connected_entity_key_name }}"] });
                         });
                     },
                 });
