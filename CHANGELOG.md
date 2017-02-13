@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.2] - 2017-02-13
+
+### Fixed
+- CrudTrait::getCastedAttributes();
+
+
+
 ## [3.2.1] - 2017-02-13
 
 ### Fixed

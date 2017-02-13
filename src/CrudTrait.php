@@ -215,6 +215,18 @@ trait CrudTrait
     */
 
     /**
+     * Get the attributes that were casted in the model.
+     * Used for translations because Spatie/Laravel-Translatable
+     * overwrites the getCasts() method.
+     *
+     * @return [type] [description]
+     */
+    public function getCastedAttributes()
+    {
+        return parent::getCasts();
+    }
+
+    /**
      * Check if a model is translatable.
      * All translation adaptors must have the translationEnabledForModel() method.
      *
