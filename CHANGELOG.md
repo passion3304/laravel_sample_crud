@@ -37,14 +37,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - excluded _method from massAssignment, so create/update errors will be more useful;
 
 
-## [3.1.59] - 2017-02-xx - TODO - release this tag
+## [3.1.59] - 2017-02-13
 
 ### Added
 - date_range field, thanks to [Owen Melbourne](https://github.com/OwenMelbz);
+- select2_ajax and select2_ajax_multiple field types - thanks to [maesklaas](https://github.com/maesklaas);
 
 ### Fixed
 - change the way the CrudPanel class is injected, so it can be overwritten more easily;
-
+- simpleMDE field type - full screen fixed;
 
 
 ## [3.1.58] - 2017-02-10
