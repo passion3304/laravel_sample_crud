@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.1.60] - 2017-02-13
+
+### Fixed
+- select2_ajax and select2_ajax_multiple field types have been renamed to select2_from_ajax and select2_from_ajax_multiple for field naming consistency;
+
+
 ## [3.1.59] - 2017-02-13
 
 ### Added

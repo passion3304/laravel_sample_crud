@@ -1,7 +1,8 @@
-<!-- select2 ajax multiple -->
+<!-- select2 from ajax -->
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
-    <input type="hidden" name="{{ $field['name'] }}" id="select2_ajax_multiple_{{ $field['name'] }}"
+    <?php $entity_model = $crud->model; ?>
+    <input type="hidden" name="{{ $field['name'] }}" id="select2_ajax_{{ $field['name'] }}"
         @if(isset($field['value']))
             value="{{ $field['value'] }}"
         @endif
@@ -44,11 +45,10 @@
 <script>
     jQuery(document).ready(function($) {
         // trigger select2 for each untriggered select2 box
-        $("#select2_ajax_multiple_{{ $field['name'] }}").each(function (i, obj) {
+        $("#select2_ajax_{{ $field['name'] }}").each(function (i, obj) {
             if (!$(obj).data("select2"))
             {
                 $(obj).select2({
-                    multiple: true,
                     placeholder: "{{ $field['placeholder'] }}",
                     minimumInputLength: "{{ $field['minimum_input_length'] }}",
                     ajax: {
@@ -64,9 +64,9 @@
                         results: function (data, params) {
                             params.page = params.page || 1;
 
-                            return {
+                            var result = {
                                 results: $.map(data.data, function (item) {
-                                    textField = "{{$field['attribute']}}";
+                                    textField = "{{ $field['attribute'] }}";
                                     return {
                                         text: item[textField],
                                         id: item["{{ $connected_entity_key_name }}"]
@@ -74,6 +74,8 @@
                                 }),
                                 more: data.current_page < data.last_page
                             };
+
+                            return result;
                         },
                         cache: true
                     },
@@ -84,7 +86,7 @@
                         $.ajax("{{ $field['data_source'] }}" + '/' + "{{ $field['value'] ?? 0 }}", {
                             dataType: "json"
                         }).done(function(data) {
-                            textField = "{{$field['attribute']}}";
+                            textField = "{{ $field['attribute'] }}";
                             callback({ text: data[textField], id: data["{{ $connected_entity_key_name }}"] });
                         });
                     },
