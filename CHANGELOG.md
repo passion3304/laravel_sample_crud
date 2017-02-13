@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.1] - 2017-02-13
+
+### Fixed
+- removed a few PHP7 methods, so that PHP 5.6.x is still supported;
+
+
 ## [3.2.0] - 2017-02-13
 
 ### Added

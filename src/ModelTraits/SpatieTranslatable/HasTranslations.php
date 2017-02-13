@@ -13,6 +13,19 @@ trait HasTranslations
      */
     public $locale = false;
 
+
+    /**
+     * Get the attributes that were casted in the model.
+     * Used for translations because Spatie/Laravel-Translatable
+     * overwrites the getCasts() method.
+     *
+     * @return [type] [description]
+     */
+    public function getCastedAttributes() : array
+    {
+        return parent::getCasts();
+    }
+
     /*
     |--------------------------------------------------------------------------
     |                 SPATIE/LARAVEL-TRANSLATABLE OVERWRITES
