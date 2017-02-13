@@ -12,6 +12,12 @@ return [
     | you want to customize your views to better match your application.
     |
     */
+   
+    // Forms
+    'save_action_save_and_new' => 'Запиши и добави нов',
+    'save_action_save_and_edit' => 'Запиши и поправи текущия запис',
+    'save_action_save_and_back' => 'Запиши и се върни назад',
+    'save_action_changed_notification' => 'Действието след запис по подразбиране слез запис беше променено.',
 
     // Create form
     'add'                 => 'Добави',
