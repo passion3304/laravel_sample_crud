@@ -22,6 +22,11 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <style type="text/css">
+        .CodeMirror-fullscreen, .editor-toolbar.fullscreen {
+            z-index: 9999 !important;
+        }
+        </style>
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
