@@ -12,7 +12,7 @@ return [
     | you want to customize your views to better match your application.
     |
     */
-   
+
     // Forms
     'save_action_save_and_new' => 'Запиши и добави нов',
     'save_action_save_and_edit' => 'Запиши и поправи текущия запис',
