@@ -53,7 +53,15 @@ trait FakeFields
         // json_encode all fake_value columns in the database, so they can be properly stored and interpreted
         if (count($fake_field_columns_to_encode)) {
             foreach ($fake_field_columns_to_encode as $key => $value) {
-                $request[$value] = json_encode($request[$value]);
+                if (property_exists($this->model, 'translatable') && in_array($value, $this->model->getTranslatableAttributes(), true))
+                {
+                    // don't json_encode spatie/translatable fake columns
+                    $request[$value] = $request[$value];
+                }
+                else
+                {
+                    $request[$value] = json_encode($request[$value]);
+                }
             }
         }
 

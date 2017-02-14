@@ -33,7 +33,13 @@ trait HasTranslations
 
         $translation = $this->getTranslation($key, $this->locale ?: config('app.locale'));
 
-        return is_array($translation) ? array_first($translation) : $translation;
+        // if it's a fake field, json_encode it
+        if (is_array($translation))
+        {
+            return json_encode($translation);
+        }
+
+        return $translation;
     }
 
     /*

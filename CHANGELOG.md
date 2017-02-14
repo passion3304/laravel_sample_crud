@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.3] - 2017-02-14
+
+### Fixed
+- Spatie/Translatable fake columns had some slashed added to the json - fixes #442;
+
+
 ## [3.2.2] - 2017-02-13
 
 ### Fixed
