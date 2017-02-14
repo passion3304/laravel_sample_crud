@@ -34,8 +34,7 @@ trait HasTranslations
         $translation = $this->getTranslation($key, $this->locale ?: config('app.locale'));
 
         // if it's a fake field, json_encode it
-        if (is_array($translation))
-        {
+        if (is_array($translation)) {
             return json_encode($translation);
         }
 
