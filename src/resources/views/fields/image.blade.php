@@ -6,7 +6,7 @@
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
         <div class="col-sm-6" style="margin-bottom: 20px;">
-            <img id="mainImage" src="{{ url(old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '') )) }}">
+          <img id="mainImage" src="{{ old($field['name']) ? url(old($field['name'])) : (isset($field['value']) ? url($field['value']) : (isset($field['default']) ? url($field['default']) : '')) }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
         <div class="col-sm-3">
