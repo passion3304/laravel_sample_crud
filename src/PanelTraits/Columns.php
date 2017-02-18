@@ -108,7 +108,6 @@ trait Columns
                 $offset = array_search($column, array_keys($this->columns));
                 array_splice($this->columns, $offset + 1, 0, [array_pop($this->columns)]);
                 break;
-            }
         }
     }
 
