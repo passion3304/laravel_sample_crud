@@ -25,7 +25,7 @@
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'nav-stacked nav-pills'}}" role="tablist">
             @foreach ($crud->getTabs() as $k => $tab)
                 <li role="presentation" class="{{$k == 0 ? 'active' : ''}}">
-                    <a href="#tab_{{ camel_case($tab) }}" aria-controls="tab_{{ camel_case($tab) }}" role="tab" data-toggle="tab">{{ $tab }}</a>
+                    <a href="#tab_{{ str_slug($tab) }}" aria-controls="tab_{{ str_slug($tab) }}" role="tab" data-toggle="tab">{{ $tab }}</a>
                 </li>
             @endforeach
         </ul>
@@ -36,7 +36,7 @@
 <div class="tab-content {{$horizontalTabs ? 'col-md-12' : 'col-md-9 m-t-10'}}">
 
     @foreach ($crud->getTabs() as $k => $tab)
-    <div role="tabpanel" class="tab-pane{{$k == 0 ? ' active' : ''}}" id="tab_{{ camel_case($tab) }}">
+    <div role="tabpanel" class="tab-pane{{$k == 0 ? ' active' : ''}}" id="tab_{{ str_slug($tab) }}">
 
         @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
 
