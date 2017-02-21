@@ -37,14 +37,14 @@ return [
 
     // Revisions
     'revisions'                               => 'Αναθεωρήσεις',
-    'no_revisions'                            => 'Δεν βρέθηκαν αναθεωρήσεις', // TODO: fully translate
+    'no_revisions'                            => 'Δεν βρέθηκαν αναθεωρήσεις',
     'created_this'                            => 'δημιούργησε',
     'changed_the'                             => 'άλλαξε',
     'restore_this_value'                      => 'επανέφερε αυτή την τιμή',
     'from'                                    => 'από',
     'to'                                      => 'σε',
     'undo'                                    => 'Αναίρεση',
-    'revision_restored'                       => 'Η αναθεώρηση ανακτήθηκε με επιτυχία', // TODO: fully translate
+    'revision_restored'                       => 'Η αναθεώρηση ανακτήθηκε με επιτυχία',
 
     // CRUD table view
     'all'                                     => '',
