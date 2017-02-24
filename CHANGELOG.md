@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.4] - 2017-02-?? - NOT TAGGED YET
+## [3.2.4] - 2017-02-24
 
 ### Fixed
 - Spanish translation;
