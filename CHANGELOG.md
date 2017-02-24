@@ -24,7 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - Spanish translation;
-
+- select2_from_ajax, thanks to [MarcosBL](https://github.com/MarcosBL);
 
 
 ## [3.2.3] - 2017-02-14
