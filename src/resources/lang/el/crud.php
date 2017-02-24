@@ -14,10 +14,10 @@ return [
      */
 
     // Forms
-    'save_action_save_and_new' => 'Save and new item',
-    'save_action_save_and_edit' => 'Save and edit this item',
-    'save_action_save_and_back' => 'Save and back',
-    'save_action_changed_notification' => 'Default behaviour after saving has been changed.',
+    'save_action_save_and_new' => 'Αποθήκευση και εισαγωγή νέου',
+    'save_action_save_and_edit' => 'Αποθήκευση και επεξεργασία',
+    'save_action_save_and_back' => 'Αποθήκευση και επιστροφή',
+    'save_action_changed_notification' => 'Η προκαθορισμένη συμπεριφορά μετά την αποθήκευση έχει αλλάξει.',
 
     // Create form
     'add'                                     => 'Προσθήκη',
@@ -36,15 +36,15 @@ return [
     'save'                                    => 'Αποθήκευση',
 
     // Revisions
-    'revisions'                               => 'Revisions',
-    'no_revisions'                            => 'Δεν βρέθηκαν revisions', // TODO: fully translate
+    'revisions'                               => 'Αναθεωρήσεις',
+    'no_revisions'                            => 'Δεν βρέθηκαν αναθεωρήσεις',
     'created_this'                            => 'δημιούργησε',
     'changed_the'                             => 'άλλαξε',
     'restore_this_value'                      => 'επανέφερε αυτή την τιμή',
     'from'                                    => 'από',
     'to'                                      => 'σε',
     'undo'                                    => 'Αναίρεση',
-    'revision_restored'                       => 'Το revision ανακτήθηκε με επιτυχία', // TODO: fully translate
+    'revision_restored'                       => 'Η αναθεώρηση ανακτήθηκε με επιτυχία',
 
     // CRUD table view
     'all'                                     => '',
@@ -106,8 +106,8 @@ return [
     'reorder_error_message'                   => 'Η σειρά εμφάνισης δεν έχει αποθηκευτεί.',
 
     // CRUD yes/no
-    'yes' => 'Yes',
-    'no' => 'No',
+    'yes' => 'Ναι',
+    'no' => 'Όχι',
 
     // Fields
     'browse_uploads'                          => 'Αναζήτηση μεταφορτωμένων αρχείων',
