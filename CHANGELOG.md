@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.5] - 2017-02-xx
+
+### Fixed
+- SaveActions typo - fixes #504;
+
+
 ## [3.2.4] - 2017-02-24
 
 ### Fixed

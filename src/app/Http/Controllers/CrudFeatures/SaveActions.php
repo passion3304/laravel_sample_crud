@@ -27,7 +27,7 @@ trait SaveActions
                 $saveOptions['save_and_back'] = $this->getSaveActionButtonName('save_and_back');
                 $saveOptions['save_and_edit'] = $this->getSaveActionButtonName('save_and_edit');
                 break;
-            case 'save_and_black':
+            case 'save_and_back':
             default:
                 $saveOptions['save_and_edit'] = $this->getSaveActionButtonName('save_and_edit');
                 $saveOptions['save_and_new'] = $this->getSaveActionButtonName('save_and_new');
@@ -93,7 +93,7 @@ trait SaveActions
      * @param  string $actionValue [description]
      * @return [type]              [description]
      */
-    private function getSaveActionButtonName($actionValue = 'save_and_black')
+    private function getSaveActionButtonName($actionValue = 'save_and_back')
     {
         switch ($actionValue) {
             case 'save_and_edit':
