@@ -184,7 +184,7 @@
                                     $mainImage.cropper(options).cropper("reset", true).cropper("replace", this.result);
                                     // Override form submit to copy canvas to hidden input before submitting
                                     $('form').submit(function() {
-                                        var imageURL = $mainImage.cropper('getCroppedCanvas').toDataURL();
+                                        var imageURL = $mainImage.cropper('getCroppedCanvas').toDataURL(file.type);
                                         $hiddenImage.val(imageURL);
                                         return true; // return false to cancel form action
                                     });
