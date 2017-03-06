@@ -26,6 +26,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - SaveActions typo - fixes #504;
 - Allow for custom created_at and updated_at db columns - fixes #518;
 - base64_image field - preserve the original image format when uploading cropped image;
+- fix bug where n-n relationship on CREATE only triggers error - fixes #512;
 
 
 ## [3.2.4] - 2017-02-24
