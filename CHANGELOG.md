@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - SaveActions typo - fixes #504;
+- Allow for custom created_at and updated_at db columns - fixes #518;
 
 
 ## [3.2.4] - 2017-02-24

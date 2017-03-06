@@ -153,6 +153,6 @@ trait AutoSet
         }
 
         // but not updated_at, deleted_at
-        return array_values(array_diff($columns, [$this->model->getKeyName(), 'created_at', 'updated_at', 'deleted_at']));
+        return array_values(array_diff($columns, [$this->model->getKeyName(), $this->model::CREATED_AT, $this->model::UPDATED_AT, 'deleted_at']));
     }
 }
