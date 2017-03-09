@@ -19,7 +19,7 @@ trait Read
      */
     public function getEntry($id)
     {
-        if (!$this->entry) {
+        if (! $this->entry) {
             $this->entry = $this->model->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
