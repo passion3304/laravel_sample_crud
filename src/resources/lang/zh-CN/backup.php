@@ -25,7 +25,7 @@ return [
     'delete_confirmation_message'        => '备份文件已被删除',
     'delete_error_title'                 => '错误',
     'delete_error_message'               => '备份文件无法被删除',
-    'delete_cancel_title'                => "放心吧",
+    'delete_cancel_title'                => '放心吧',
     'delete_cancel_message'              => '备份文件并没有被删除',
     'create_confirmation_title'          => '备份已完成',
     'create_confirmation_message'        => '3秒后将自动刷新本页',
@@ -35,6 +35,6 @@ return [
     'create_warning_message'             => '您的备份文件无法被创建。请检测日志文件以定位问题。',
     'location'                           => '位置',
     'no_disks_configured'                => 'config/laravel-backup.php 中没有设置备份磁盘',
-    'backup_doesnt_exist'                => "备份文件不存在",
+    'backup_doesnt_exist'                => '备份文件不存在',
     'only_local_downloads_supported'     => '只支持从本地文件系统下载',
 ];
