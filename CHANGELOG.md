@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.6] - 2017-03-13
+
+### Fixed
+- custom created_at and updated_at columns threw errors on PHP 5.6;
+
+
 ## [3.2.5] - 2017-03-12
 
 ### Fixed
