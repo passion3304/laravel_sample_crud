@@ -12,11 +12,19 @@
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
 
 @section('after_styles')
+    <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/form.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/'.$action.'.css') }}">
+
     <!-- CRUD FORM CONTENT - crud_fields_styles stack -->
     @stack('crud_fields_styles')
 @endsection
 
 @section('after_scripts')
+    <script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
+    <script src="{{ asset('vendor/backpack/crud/js/form.js') }}"></script>
+    <script src="{{ asset('vendor/backpack/crud/js/'.$action.'.js') }}"></script>
+
     <!-- CRUD FORM CONTENT - crud_fields_scripts stack -->
     @stack('crud_fields_scripts')
 

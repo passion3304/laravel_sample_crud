@@ -32,9 +32,9 @@
 		    <div class="box-body row">
 		      <!-- load the view from the application if it exists, otherwise load the one in the package -->
 		      @if(view()->exists('vendor.backpack.crud.form_content'))
-		      	@include('vendor.backpack.crud.form_content', ['fields' => $crud->getFields('create')])
+		      	@include('vendor.backpack.crud.form_content', [ 'fields' => $crud->getFields('create'), 'action' => 'create' ])
 		      @else
-		      	@include('crud::form_content', ['fields' => $crud->getFields('create')])
+		      	@include('crud::form_content', [ 'fields' => $crud->getFields('create'), 'action' => 'create' ])
 		      @endif
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">
@@ -48,17 +48,4 @@
 	</div>
 </div>
 
-@endsection
-
-
-@section('after_styles')
-	<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
-	<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/form.css') }}">
-	<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/create.css') }}">
-@endsection
-
-@section('after_scripts')
-	<script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
-	<script src="{{ asset('vendor/backpack/crud/js/form.js') }}"></script>
-	<script src="{{ asset('vendor/backpack/crud/js/create.js') }}"></script>
 @endsection
