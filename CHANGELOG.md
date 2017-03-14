@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.7] - 2017-03-xx
+
+### Fixed
+- fixed horizontal scrollbar showing on list view;
+
+
+
 ## [3.2.6] - 2017-03-13
 
 ### Fixed
