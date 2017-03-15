@@ -7,11 +7,20 @@
 	<div class="dropdown-menu">
 		<div class="form-group backpack-filter m-b-0">
 			<div class="input-group date">
-        <div class="input-group-addon">
-          <i class="fa fa-calendar"></i>
-        </div>
-        <input class="form-control pull-right" id="datepicker-{{ str_slug($filter->name) }}" type="text">
-      </div>
+		        <div class="input-group-addon">
+		          <i class="fa fa-calendar"></i>
+		        </div>
+		        <input class="form-control pull-right"
+		        		id="datepicker-{{ str_slug($filter->name) }}"
+		        		type="text"
+						@if ($filter->currentValue)
+							value="{{ $filter->currentValue }}"
+						@endif
+		        		>
+		        <div class="input-group-addon">
+		          <a class="datepicker-{{ str_slug($filter->name) }}-clear-button" href=""><i class="fa fa-times"></i></a>
+		        </div>
+		    </div>
 		</div>
 	</div>
 </li>
@@ -24,11 +33,12 @@
 
 @push('crud_list_styles')
     <link href="{{ asset('vendor/adminlte/plugins/datepicker/datepicker3.css') }}" rel="stylesheet" type="text/css" />
-		<style>
-			.input-group.date {
-				width: 320px;
-				max-width: 100%; }
-		</style>
+	<style>
+		.input-group.date {
+			width: 320px;
+			max-width: 100%;
+		}
+	</style>
 @endpush
 
 
@@ -40,16 +50,22 @@
 	<script type="text/javascript" src="{{ asset('vendor/adminlte/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
   <script>
 		jQuery(document).ready(function($) {
-			var dateInput = $('#datepicker-{{ str_slug($filter->name) }}');
-			dateInput.datepicker({
-				autoclose: true
+			var dateInput = $('#datepicker-{{ str_slug($filter->name) }}').datepicker({
+				autoclose: true,
+				format: 'yyyy-mm-dd',
+				todayHighlight: true
 			})
 			.on('changeDate', function(e) {
 				var d = new Date(e.date);
-				console.log(e);
-				var value = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-		     ("0" + d.getDate()).slice(-2) + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-				console.log(value);
+				// console.log(e);
+				// console.log(d);
+				if (isNaN(d.getFullYear())) {
+					var value = '';
+				} else {
+					var value = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+				}
+
+				// console.log(value);
 
 				var parameter = '{{ $filter->name }}';
 
@@ -61,7 +77,7 @@
 					// refresh the page to the new_url
 					new_url = normalizeAmpersand(new_url.toString());
 			    	window.location.href = new_url;
-		    @else
+			    @else
 			    	// behaviour for ajax table
 					var ajax_table = $('#crudTable').DataTable();
 					var current_url = ajax_table.ajax.url();
@@ -79,13 +95,21 @@
 					{
 						$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
 					}
-		    @endif
+			    @endif
 			});
-			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
-				// console.log('select2 filter cleared');
+			$('li[filter-name={{ str_slug($filter->name) }}]').on('filter:clear', function(e) {
+				// console.log('date filter cleared');
 				$('li[filter-name={{ $filter->name }}]').removeClass('active');
 				$('#datepicker-{{ str_slug($filter->name) }}').datepicker('clearDates');
 			});
+
+			// datepicker clear button
+			$(".datepicker-{{ str_slug($filter->name) }}-clear-button").click(function(e) {
+				e.preventDefault();
+
+				$('li[filter-name={{ str_slug($filter->name) }}]').trigger('filter:clear');
+				$('#datepicker-{{ str_slug($filter->name) }}').trigger('changeDate');
+			})
 		});
   </script>
 @endpush
