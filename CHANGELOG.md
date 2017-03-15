@@ -22,9 +22,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.2.7] - 2017-03-xx
 
+### Added
+- Simplified Chinese translation - thanks to [Zhongwei Sun](https://github.com/sunzhongwei);
+
 ### Fixed
 - fixed horizontal scrollbar showing on list view;
 - fixed edit and create extended CSS and JS files not loading;
+
+
 
 
 ## [3.2.6] - 2017-03-13
