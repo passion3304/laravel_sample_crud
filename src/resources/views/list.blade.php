@@ -209,7 +209,7 @@
           "processing": true,
           "serverSide": true,
           "ajax": {
-              "url": "{{ url($crud->route.'/search').'?'.Request::getQueryString() }}",
+              "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
               "type": "POST"
           },
           @endif
