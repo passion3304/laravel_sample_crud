@@ -30,6 +30,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - fixed horizontal scrollbar showing on list view;
 - fixed edit and create extended CSS and JS files not loading;
 - fixed AjaxDataTables + filters bug (encoded URL strings);
+- replaced camel_case() with str_slug() in tab ids, to provide multibyte support;
 
 
 ## [3.2.6] - 2017-03-13
