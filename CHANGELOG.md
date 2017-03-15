@@ -28,8 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - fixed horizontal scrollbar showing on list view;
 - fixed edit and create extended CSS and JS files not loading;
-
-
+- fixed AjaxDataTables + filters bug (encoded URL strings);
 
 
 ## [3.2.6] - 2017-03-13
