@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - Simplified Chinese translation - thanks to [Zhongwei Sun](https://github.com/sunzhongwei);
+- date and date_range filters - thanks to [adriancaamano](https://github.com/adriancaamano);
 
 ### Fixed
 - fixed horizontal scrollbar showing on list view;
