@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.7] - 2017-03-xx
+## [3.2.7] - 2017-03-16
 
 ### Added
 - Simplified Chinese translation - thanks to [Zhongwei Sun](https://github.com/sunzhongwei);
