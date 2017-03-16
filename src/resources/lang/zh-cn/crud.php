@@ -56,7 +56,7 @@ return [
         'delete_confirmation_title'                   => '项目已删除',
         'delete_confirmation_message'                 => '项目删除成功。',
         'delete_confirmation_not_title'               => '未删除',
-        'delete_confirmation_not_message'             => '发生错误，你的项目没有被删除。',
+        'delete_confirmation_not_message'             => "发生错误，你的项目没有被删除。",
         'delete_confirmation_not_deleted_title'       => '未删除',
         'delete_confirmation_not_deleted_message'     => '什么都没有发生，你的项目是安全的。',
 
