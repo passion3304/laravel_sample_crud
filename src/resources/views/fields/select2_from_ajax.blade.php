@@ -84,12 +84,18 @@
                         cache: true
                     },
                     initSelection: function(element, callback) {
+                        // the input tag has a value attribute preloaded that points to a preselected repository's id
+                        // this function resolves that id attribute to an object that select2 can render
+                        // using its formatResult renderer - that way the repository name is shown preselected
+                        // My test
+
                         var data = [];
                         @foreach($field['value'] as $item)
                             data.push({
                                 text: '{{$item[$field['attribute']]}}', id: '{{ $item[$connected_entity_key_name] }}'
                             });
                         @endforeach
+
                         callback(data);
                     },
                 });
