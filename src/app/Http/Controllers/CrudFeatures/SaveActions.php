@@ -11,7 +11,7 @@ trait SaveActions
      */
     public function getSaveAction()
     {
-        $saveAction = session('save_action', config('backback.crud.default_save_action', 'save_and_back'));
+        $saveAction = session('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
         $saveOptions = [];
         $saveCurrent = [
             'value' => $saveAction,
@@ -49,7 +49,7 @@ trait SaveActions
         if ($forceSaveAction) {
             $saveAction = $forceSaveAction;
         } else {
-            $saveAction = \Request::input('save_action', config('backback.crud.default_save_action', 'save_and_back'));
+            $saveAction = \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
         }
 
         if (session('save_action', 'save_and_back') !== $saveAction) {
@@ -66,7 +66,7 @@ trait SaveActions
      */
     public function performSaveAction($itemId = null)
     {
-        $saveAction = \Request::input('save_action', config('backback.crud.default_save_action', 'save_and_back'));
+        $saveAction = \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
         $itemId = $itemId ? $itemId : \Request::input('id');
 
         switch ($saveAction) {
