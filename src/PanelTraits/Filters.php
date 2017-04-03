@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
-use Illuminate\Http\Request;
-
 trait Filters
 {
     public $filters = [];
