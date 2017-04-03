@@ -24,7 +24,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - fixed typo in saveAction functionality;
-- 
+- checklist field had hardcoded primary key names;
+- french translation for buttons;
 
 ## [3.2.7] - 2017-03-16
 
