@@ -26,7 +26,7 @@ Features:
 > ### Security updates and breaking changes
 > Please **[subscribe to the Backpack Newsletter](http://eepurl.com/bUEGjf)** so you can find out about any security updates, breaking changes or major features. We send an email every 1-2 months.
 
-![List / table view for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_list.png)
+![List / table view for Backpack/CRUD](https://backpackforlaravel.com/uploads/home_slider/1.png)
 
 
 ## Getting started
@@ -67,9 +67,9 @@ In short:
 
 - List view pictured above.
 - Create/update view:
-![Create or update view for Backpack/CRUD](https://infinit.io/_/32czWa8.png)
+![Create or update view for Backpack/CRUD](https://backpackforlaravel.com/uploads/home_slider/2.png)
 - File manager (elFinder):
-![File manager interface for Backpack/CRUD](https://dl.dropboxusercontent.com/u/2431352/backpack_crud_elfinder.png)
+![File manager interface for Backpack/CRUD](https://backpackforlaravel.com/uploads/home_slider/4.png)
 
 More screenshots available at [backpackforlaravel.com](https://backpackforlaravel.com).
 
