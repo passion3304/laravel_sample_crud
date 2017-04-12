@@ -13,7 +13,7 @@
 	    <span class="caret"></span>
 	    <span class="sr-only">Toggle Dropdown</span>
 	  </button>
-	  <ul class="dropdown-menu">
+	  <ul class="dropdown-menu dropdown-menu-right">
   	    <li class="dropdown-header">{{ trans('backpack::crud.edit_translations') }}:</li>
 	  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
 		  	<li><a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?locale={{ $key }}">{{ $locale }}</a></li>
