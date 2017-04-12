@@ -40,6 +40,10 @@ return [
     'undo'                 => 'Undo',
     'revision_restored'    => 'Revision successfully restored',
 
+    // Translatable models
+    'edit_translations' => 'EDIT TRANSLATIONS',
+    'language'          => 'Language',
+
     // CRUD table view
     'all'                       => 'All ',
     'in_the_database'           => 'in the database',
