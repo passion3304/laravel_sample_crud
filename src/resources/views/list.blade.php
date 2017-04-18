@@ -304,8 +304,12 @@
 
       @if ($crud->details_row)
       function register_details_row_button_action() {
+        var crudTable = $('#crudTable tbody');
+        // Remove any previously registered event handlers from draw.dt event callback
+        crudTable.off('click', 'td .details-row-button');
+
         // Add event listener for opening and closing details
-        $('#crudTable tbody').on('click', 'td .details-row-button', function () {
+        crudTable.on('click', 'td .details-row-button', function () {
             var tr = $(this).closest('tr');
             var btn = $(this);
             var row = table.row( tr );
