@@ -25,6 +25,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - email column type;
 
+### Fixed
+- fewer ajax requests when using detailsRow;
+
 
 ## [3.2.8] - 2017-04-03
 
