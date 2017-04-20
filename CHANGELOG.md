@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.10] - 2017-04-xx
+
+### Added
+
+### Fixed
+- select_multiple has allows_null option;
+
 ## [3.2.9] - 2017-04-20
 
 ### Added
