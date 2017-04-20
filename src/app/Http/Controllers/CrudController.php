@@ -184,7 +184,7 @@ class CrudController extends BaseController
         // save the redirect choice for next time
         $this->setSaveAction();
 
-        return $this->performSaveAction();
+        return $this->performSaveAction($item->getKey());
     }
 
     /**
