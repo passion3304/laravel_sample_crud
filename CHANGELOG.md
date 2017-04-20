@@ -20,6 +20,18 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.9] - 2017-04-xx
+
+### Added
+- email column type;
+
+### Fixed
+- fewer ajax requests when using detailsRow;
+- redirect back to the same entry - fixed by #612;
+- use "admin" as default elfinder prefix;
+- datepicker error fixed by [Pavol Tanuška](https://github.com/pavoltanuska);
+
+
 ## [3.2.8] - 2017-04-03
 
 ### Added
