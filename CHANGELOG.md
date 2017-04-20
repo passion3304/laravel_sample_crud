@@ -30,6 +30,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - redirect back to the same entry - fixed by #612;
 - use "admin" as default elfinder prefix;
 - datepicker error fixed by [Pavol Tanuška](https://github.com/pavoltanuska);
+- simplemde field also triggered ckeditor when place before it, because of an extra class;
 
 
 ## [3.2.8] - 2017-04-03
