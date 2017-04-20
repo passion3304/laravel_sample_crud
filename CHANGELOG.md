@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.9] - 2017-04-xx
+## [3.2.9] - 2017-04-20
 
 ### Added
 - email column type;
@@ -34,6 +34,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - details row column can be clicked entirely (thanks to [votintsev](https://github.com/votintsev));
 - simpleMDE bug fixes and features #507 (thanks to [MarcosBL](https://github.com/MarcosBL));
 - allow for dot notation when specifying the label of a reordered item (thanks to [Adam Kelsven](https://github.com/a2thek26));
+
 
 ## [3.2.8] - 2017-04-03
 
