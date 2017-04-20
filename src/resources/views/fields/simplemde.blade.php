@@ -44,12 +44,12 @@
 <script>
     var simplemde_{{ $field['name'] }} = new SimpleMDE({
     	element: $("#simplemde_{{ $field['name'] }}")[0],
-    	@if(isset($field['simplemde_attributes']))
-    		@foreach($field['simplemde_attributes'] as $index => $value)
+    	@if(isset($field['simplemdeAttributes']))
+    		@foreach($field['simplemdeAttributes'] as $index => $value)
     			{{$index}} : @if(is_bool($value)) {{ ($value?'true':'false') }} @else {!! '"'.$value.'"' !!} @endif,
     		@endforeach
     	@endif
-    	{!! isset($field['simplemde_attributes_raw']) ? $field['simplemde_attributes_raw'] : "" !!}
+    	{!! isset($field['simplemdeAttributesRaw']) ? $field['simplemdeAttributesRaw'] : "" !!}
     });
     simplemde_{{ $field['name'] }}.options.minHeight = simplemde_{{ $field['name'] }}.options.minHeight || "300px";
     simplemde_{{ $field['name'] }}.codemirror.getScrollerElement().style.minHeight = simplemde_{{ $field['name'] }}.options.minHeight;
