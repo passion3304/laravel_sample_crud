@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - allow for revisions by non-logged-in users; fixes #566;
 - upgraded Select2 to the latest version, in all select2 fields;
 - fixed select2_from_ajax_multiple;
+- translated "edit translations" button;
 
 
 ## [3.2.11] - 2017-04-21
