@@ -41,6 +41,10 @@ return [
     'revision_restored'    => 'Revision successfully restored',
     'guest_user'           => 'Guest User',
 
+    // Translatable models
+    'edit_translations' => 'EDIT TRANSLATIONS',
+    'language'          => 'Language',
+
     // CRUD table view
     'all'                       => 'All ',
     'in_the_database'           => 'in the database',
