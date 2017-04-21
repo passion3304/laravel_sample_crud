@@ -9,8 +9,9 @@
     @include('crud::inc.field_translatable_icon')
     <select
         name="{{ $field['name'] }}[]"
+        style="width: 100%"
         id="select2_ajax_multiple_{{ $field['name'] }}"
-        @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2'])
+        @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
         multiple>
 
         @if (isset($field['model']) && isset($field['value']) && count($field['value']))
@@ -60,7 +61,7 @@
     jQuery(document).ready(function($) {
         // trigger select2 for each untriggered select2 box
         $("#select2_ajax_multiple_{{ $field['name'] }}").each(function (i, obj) {
-            if (!$(obj).data("select2"))
+            if (!$(obj).hasClass("select2-hidden-accessible"))
             {
                 $(obj).select2({
                     multiple: true,
