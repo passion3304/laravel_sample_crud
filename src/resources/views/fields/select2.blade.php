@@ -6,7 +6,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2'])
+        @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
         >
 
         @if ($entity_model::isColumnNullable($field['name']))
@@ -49,7 +49,7 @@
         <script>
             jQuery(document).ready(function($) {
                 // trigger select2 for each untriggered select2 box
-                $('.select2').each(function (i, obj) {
+                $('.select2_field').each(function (i, obj) {
                     if (!$(obj).hasClass("select2-hidden-accessible"))
                     {
                         $(obj).select2();

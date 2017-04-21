@@ -4,7 +4,7 @@
     <select
         name="{{ $field['name'] }}@if (isset($field['allows_multiple']) && $field['allows_multiple']==true)[]@endif"
         style="width: 100%"
-        @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
+        @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_from_array'])
         @if (isset($field['allows_multiple']) && $field['allows_multiple']==true)multiple @endif
         >
 
@@ -49,7 +49,7 @@
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box
-            $('.select2').each(function (i, obj) {
+            $('.select2_from_array').each(function (i, obj) {
                 if (!$(obj).hasClass("select2-hidden-accessible"))
                 {
                     $(obj).select2();
