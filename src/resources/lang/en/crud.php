@@ -108,6 +108,11 @@ return [
         'yes' => 'Yes',
         'no' => 'No',
 
+    // CRUD filters navbar view
+        'filters' => 'Filters',
+        'toggle_filters' => 'Toggle filters',
+        'remove_filters' => 'Remove filters',
+
     // Fields
         'browse_uploads' => 'Browse uploads',
         'clear' => 'Clear',
