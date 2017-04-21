@@ -23,6 +23,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## [3.2.10] - 2017-04-xx
 
 ### Added
+- prefix feature to the image field;
 
 ### Fixed
 - select_multiple has allows_null option;
