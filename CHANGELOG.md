@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.11] - 2017-04-21
+
+### Removed
+- Backpack\CRUD no longer loads translations, as Backpack\Base does it for him.
+
 ## [3.2.10] - 2017-04-21
 
 ### Added
