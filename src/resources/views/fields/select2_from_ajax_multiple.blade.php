@@ -65,6 +65,7 @@
             if (!$(obj).hasClass("select2-hidden-accessible"))
             {
                 $(obj).select2({
+                    theme: 'bootstrap',
                     multiple: true,
                     placeholder: "{{ $field['placeholder'] }}",
                     minimumInputLength: "{{ $field['minimum_input_length'] }}",

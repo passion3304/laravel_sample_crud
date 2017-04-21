@@ -52,7 +52,9 @@
             $('.select2_from_array').each(function (i, obj) {
                 if (!$(obj).hasClass("select2-hidden-accessible"))
                 {
-                    $(obj).select2();
+                    $(obj).select2({
+                        theme: "bootstrap"
+                    });
                 }
             });
         });

@@ -3,9 +3,6 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
     $old_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : false ));
-    if (is_array($old_value) && count($old_value)) {
-        $old_value = $old_value[0];
-    }
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -13,7 +10,7 @@
     <?php $entity_model = $crud->model; ?>
 
     <select
-        name="{{ $field['name'] }}[]"
+        name="{{ $field['name'] }}"
         style="width: 100%"
         id="select2_ajax_{{ $field['name'] }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
@@ -66,6 +63,8 @@
             if (!$(obj).hasClass("select2-hidden-accessible"))
             {
                 $(obj).select2({
+                    theme: 'bootstrap',
+                    multiple: false,
                     placeholder: "{{ $field['placeholder'] }}",
                     minimumInputLength: "{{ $field['minimum_input_length'] }}",
                     ajax: {
