@@ -6,12 +6,26 @@
 
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
-    <input type="hidden" name="{{ $field['name'] }}" id="select2_ajax_multiple_{{ $field['name'] }}"
-           @if(isset($field['value']) && count($field['value']) > 0)
-           value="@php echo join(',',$field['value']->pluck($connected_entity_key_name)->toArray()); @endphp"
-            @endif
-            @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
-    >
+    @include('crud::inc.field_translatable_icon')
+    <select
+        name="{{ $field['name'] }}[]"
+        id="select2_ajax_multiple_{{ $field['name'] }}"
+        @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2'])
+        multiple>
+
+        @if (isset($field['model']) && isset($field['value']) && count($field['value']))
+            @foreach ($field['value'] as $result_key)
+                @php
+                    $item = $connected_entity->find($result_key);
+                @endphp
+                @if ($item)
+                <option value="{{ $item->getKey() }}" selected>
+                    {{ $item->{$field['attribute']} }}
+                </option>
+                @endif
+            @endforeach
+        @endif
+    </select>
 
     {{-- HINT --}}
     @if (isset($field['hint']))
@@ -28,14 +42,14 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
     <!-- include select2 css-->
-    <link href="{{ asset('vendor/backpack/select2/select2.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('vendor/backpack/select2/select2-bootstrap-dick.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('vendor/adminlte/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link href="{{ asset('vendor/backpack/select2/select2-bootstrap-dick.css') }}" rel="stylesheet" type="text/css" /> --}}
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
     <!-- include select2 js-->
-    <script src="{{ asset('vendor/backpack/select2/select2.js') }}"></script>
+    <script src="{{ asset('vendor/adminlte/plugins/select2/select2.min.js') }}"></script>
     @endpush
 
 @endif
@@ -56,13 +70,13 @@
                         url: "{{ $field['data_source'] }}",
                         dataType: 'json',
                         quietMillis: 250,
-                        data: function (term, page) {
+                        data: function (params) {
                             return {
-                                q: term, // search term
-                                page: page
+                                q: params.term, // search term
+                                page: params.page
                             };
                         },
-                        results: function (data, params) {
+                        processResults: function (data, params) {
                             params.page = params.page || 1;
 
                             return {
@@ -76,17 +90,6 @@
                             };
                         },
                         cache: true
-                    },
-                    initSelection: function (element, callback) {
-                        var data = [];
-
-                        @foreach($field['value'] as $item)
-                            data.push({
-                            text: '{{$item[$field['attribute']]}}', id: '{{ $item[$connected_entity_key_name] }}'
-                        });
-                        @endforeach
-
-                        callback(data);
                     },
                 });
             }
