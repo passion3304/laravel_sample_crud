@@ -2,6 +2,7 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
+    $old_value = old($field['name'])?old($field['name']):(isset($field['value'])?$field['value']:false);
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -14,8 +15,8 @@
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
         multiple>
 
-        @if (isset($field['model']) && isset($field['value']) && count($field['value']))
-            @foreach ($field['value'] as $result_key)
+        @if ($old_value)
+            @foreach ($old_value as $result_key)
                 @php
                     $item = $connected_entity->find($result_key);
                 @endphp

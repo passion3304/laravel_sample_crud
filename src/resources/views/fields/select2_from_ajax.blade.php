@@ -2,6 +2,10 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
+    $old_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : false ));
+    if (is_array($old_value) && count($old_value)) {
+        $old_value = $old_value[0];
+    }
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -15,9 +19,9 @@
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
         >
 
-        @if (isset($field['value']))
+        @if ($old_value)
             @php
-                $item = $connected_entity->find($field['value']);
+                $item = $connected_entity->find($old_value);
             @endphp
             @if ($item)
             <option value="{{ $item->getKey() }}" selected>
