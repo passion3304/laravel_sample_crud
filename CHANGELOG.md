@@ -20,6 +20,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.11] - 2017-04-xx
+
+### Added
+- xx
+
+### Fixed
+- allow for revisions by non-logged-in users; fixes #566;
+
+
 ## [3.2.10] - 2017-04-21
 
 ### Added
@@ -28,6 +37,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - select_multiple has allows_null option;
 - details_row for AjaxDataTables;
+
 
 ## [3.2.9] - 2017-04-20
 
