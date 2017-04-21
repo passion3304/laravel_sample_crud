@@ -20,13 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.10] - 2017-04-xx
+## [3.2.10] - 2017-04-21
 
 ### Added
 - prefix feature to the image field;
 
 ### Fixed
 - select_multiple has allows_null option;
+- details_row for AjaxDataTables;
 
 ## [3.2.9] - 2017-04-20
 

@@ -304,12 +304,18 @@
 
       @if ($crud->details_row)
       function register_details_row_button_action() {
-        var crudTable = $('#crudTable tbody');
+        // var crudTable = $('#crudTable tbody');
         // Remove any previously registered event handlers from draw.dt event callback
-        crudTable.off('click', 'td .details-row-button');
+        $('#crudTable tbody').off('click', 'td .details-row-button');
+
+        // Make sure the ajaxDatatables rows also have the correct classes
+        $('#crudTable tbody td .details-row-button').parent('td')
+          .removeClass('details-control').addClass('details-control')
+          .removeClass('text-center').addClass('text-center')
+          .removeClass('cursor-pointer').addClass('cursor-pointer');
 
         // Add event listener for opening and closing details
-        crudTable.on('click', 'td.details-control', function () {
+        $('#crudTable tbody td.details-control').on('click', function () {
             var tr = $(this).closest('tr');
             var btn = $(this).find('.details-row-button');
             var row = table.row( tr );
