@@ -164,7 +164,9 @@ trait Fields
      */
     public function checkIfFieldIsFirstOfItsType($field, $fields_array)
     {
-        if ($field['name'] == $this->getFirstOfItsTypeInArray($field['type'], $fields_array)['name']) {
+        $first_field = $this->getFirstOfItsTypeInArray($field['type'], $fields_array);
+
+        if ($field['name'] == $first_field['name']) {
             return true;
         }
 
