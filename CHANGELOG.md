@@ -31,6 +31,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - fixed select2_from_ajax_multiple;
 - translated "edit translations" button;
 - localize the filters navbar view;
+- inline validation error for array fields;
 
 
 ## [3.2.11] - 2017-04-21
