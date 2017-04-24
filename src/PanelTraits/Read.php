@@ -83,9 +83,9 @@ trait Read
                 foreach ($this->columns as $column) {
                     if ($this->getColumnQuery($column) !== null) {
                         $query->orWhere(
-                            new Expression($this->getColumnQuery($column)),
+                            $this->getColumnQuery($column),
                             'like',
-                            '%' . $filter . '%'
+                            '%' .$filter. '%'
                         );
                     }
                 }
@@ -102,13 +102,11 @@ trait Read
             $entries = $this->query->orderBy($orderBy, $orderDirection);
         }
 
-
         if ($modifiers == 0) {
             $entries = $this->query->get();
         } else {
             $entries = $entries->get();
         }
-
 
         // add the fake columns for each entry
         foreach ($entries as $key => $entry) {
@@ -119,9 +117,7 @@ trait Read
     }
 
     /**
-     * Receives a filter and tries to get all the columns to be filtered by that filter *Work in progress*
-     *
-     * TODO: Move this to a more appropriate place
+     * Receives a filter and tries to get all the columns to be filtered by that filter *Work in progress*.
      *
      * @param $column
      * @return null|string
@@ -137,7 +133,6 @@ trait Read
         }
 
         return Model::resolveConnection()->getQueryGrammar()->wrap($column);
-
     }
 
     /**
@@ -268,21 +263,25 @@ trait Read
     /**
      * Get the HTML of a cell, using the column types.
      * @param  array $column
-     * @param  Entity $entry   A db entry of the current entity;
+     * @param  Entity $entry A db entry of the current entity;
      * @return HTML
      */
     public function getCellView($column, $entry)
     {
-        if (! isset($column['type'])) {
-            return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
+        if (!isset($column['type'])) {
+            return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry',
+                $entry)->render();
         } else {
-            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
-                return \View::make('vendor.backpack.crud.columns.'.$column['type'])->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
+            if (view()->exists('vendor.backpack.crud.columns.' . $column['type'])) {
+                return \View::make('vendor.backpack.crud.columns.' . $column['type'])->with('crud',
+                    $this)->with('column', $column)->with('entry', $entry)->render();
             } else {
-                if (view()->exists('crud::columns.'.$column['type'])) {
-                    return \View::make('crud::columns.'.$column['type'])->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
+                if (view()->exists('crud::columns.' . $column['type'])) {
+                    return \View::make('crud::columns.' . $column['type'])->with('crud', $this)->with('column',
+                        $column)->with('entry', $entry)->render();
                 } else {
-                    return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
+                    return \View::make('crud::columns.text')->with('crud', $this)->with('column',
+                        $column)->with('entry', $entry)->render();
                 }
             }
         }

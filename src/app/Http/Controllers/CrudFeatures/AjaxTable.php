@@ -24,18 +24,18 @@ trait AjaxTable
     {
         $this->crud->hasAccessOrFail('list');
 
-        $this->input = Input::all();
+        $this->input = $_REQUEST;
         $this->totalRows = $this->filteredRows = $this->crud->getEntries()->count();
 
         $data = $this->crud->getEntriesWithConditions(
             $this->input['length'],
             $this->input['start'],
-            $this->addOrderBy()[0],
-            $this->addOrderBy()[1],
-            $this->addFilters()
+            $this->addAjaxOrderBy()[0],
+            $this->addAjaxOrderBy()[1],
+            $this->addSearchConditions()
         );
 
-        if ($this->addFilters() !== null) {
+        if ($this->addSearchConditions() !== null) {
             $this->filteredRows = $data->count();
         }
 
@@ -94,11 +94,11 @@ trait AjaxTable
 
     /**
      * Checks of teh user has anything written in the search bar and if so a string with the filtered is returned.
-     * In case no filter is detected null is returned
+     * In case no filter is detected null is returned.
      *
      * @return null | string $filter
      */
-    private function addFilters()
+    private function addSearchConditions()
     {
         if (isset($this->input['search']) && isset($this->input['search']['value'])) {
             $filter = $this->input['search']['value'];
@@ -116,7 +116,7 @@ trait AjaxTable
      *
      * @return array [column, direction]
      */
-    public function addOrderBy()
+    public function addAjaxOrderBy()
     {
         if (isset($this->input['order']) && isset($this->input['order'][0])) {
             $orderBy = $this->input['order'][0]['column'];
