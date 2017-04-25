@@ -56,7 +56,7 @@ return [
         'delete_confirmation_title'                   => 'Ieraksts Izdzēsts',
         'delete_confirmation_message'                 => 'Elements tika izdzēsts veiksmīgi.',
         'delete_confirmation_not_title'               => 'NAV izdzēsts',
-        'delete_confirmation_not_message'             => "Notika kļūda. Ieraksts var būt neizdzēsts.",
+        'delete_confirmation_not_message'             => 'Notika kļūda. Ieraksts var būt neizdzēsts.',
         'delete_confirmation_not_deleted_title'       => 'Nav izdzēsts',
         'delete_confirmation_not_deleted_message'     => 'Nekas nenotika. Ieraksts ir drošībā.',
 
