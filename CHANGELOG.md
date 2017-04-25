@@ -23,7 +23,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## [3.2.12] - 2017-04-xx
 
 ### Added
-- xx
+- Latvian translation files (thanks to [Erik Bonder](https://github.com/erik-ropez));
+- Russian translation files (thanks to [Aleksei Budaev](https://a-budaev.ru/));
 
 ### Fixed
 - allow for revisions by non-logged-in users; fixes #566;
