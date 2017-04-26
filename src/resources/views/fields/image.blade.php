@@ -6,7 +6,10 @@
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
         <div class="col-sm-6" style="margin-bottom: 20px;">
-            <img id="mainImage" src="{{ url( (isset($field['prefix']) ? $field['prefix'] : '') . (old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '') ))) }}">
+            @php
+                $value = (isset($field['prefix']) ? $field['prefix'] : '') . (old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '') ));
+            @endphp
+            <img id="mainImage" src="{{ isset($field['disk']) ? Storage::disk($field['disk'])->url($value) : url($value) }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
         <div class="col-sm-3">
