@@ -35,7 +35,7 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="table table-bordered table-striped display">
+        <table id="crudTable" class="table table-striped display">
             <thead>
               <tr>
                 @if ($crud->details_row)
