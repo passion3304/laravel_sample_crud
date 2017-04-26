@@ -33,6 +33,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - translated "edit translations" button;
 - localize the filters navbar view;
 - inline validation error for array fields;
+- moved button initialization to CrudPanel constructor;
 
 
 ## [3.2.11] - 2017-04-21

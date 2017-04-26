@@ -69,6 +69,7 @@ class CrudPanel
     public function __construct()
     {
         $this->setErrorDefaults();
+        $this->initButtons();
     }
 
     // ------------------------------------------------------
@@ -111,7 +112,6 @@ class CrudPanel
     public function setRoute($route)
     {
         $this->route = $route;
-        $this->initButtons();
     }
 
     /**
