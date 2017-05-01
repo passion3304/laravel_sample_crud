@@ -20,21 +20,21 @@ trait AutoSet
             // $this->labels[$field] = $this->makeLabel($field);
 
             $new_field = [
-                'name'       => $field,
-                'label'      => ucfirst($field),
-                'value'      => null,
-                'type'       => $this->getFieldTypeFromDbColumnType($field),
-                'values'     => [],
+                'name' => $field,
+                'label' => ucfirst($field),
+                'value' => null,
+                'type' => $this->getFieldTypeFromDbColumnType($field),
+                'values' => [],
                 'attributes' => [],
             ];
             $this->create_fields[$field] = $new_field;
             $this->update_fields[$field] = $new_field;
 
-            if (! in_array($field, $this->model->getHidden())) {
+            if (!in_array($field, $this->model->getHidden())) {
                 $this->columns[$field] = [
-                    'name'  => $field,
+                    'name' => $field,
                     'label' => ucfirst($field),
-                    'type'  => $this->getFieldTypeFromDbColumnType($field),
+                    'type' => $this->getFieldTypeFromDbColumnType($field),
                 ];
             }
         }, $this->getDbColumnsNames());
@@ -47,9 +47,10 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $table_columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
+        // Pass this variable in instance proprierty to avoid multiple request to database to get column listing
+        $this->table_columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
 
-        foreach ($table_columns as $key => $column) {
+        foreach ($this->table_columns as $key => $column) {
             $column_type = $this->model->getConnection()->getSchemaBuilder()->getColumnType($this->model->getTable(), $column);
             $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $this->db_column_types[$column]['default'] = ''; // no way to do this using DBAL?!
@@ -67,7 +68,7 @@ trait AutoSet
      */
     public function getFieldTypeFromDbColumnType($field)
     {
-        if (! array_key_exists($field, $this->db_column_types)) {
+        if (!array_key_exists($field, $this->db_column_types)) {
             return 'text';
         }
 
@@ -85,13 +86,13 @@ trait AutoSet
             case 'mediumint':
             case 'longint':
                 return 'number';
-            break;
+                break;
 
             case 'string':
             case 'varchar':
             case 'set':
                 return 'text';
-            break;
+                break;
 
             // case 'enum':
             //     return 'enum';
@@ -99,29 +100,29 @@ trait AutoSet
 
             case 'tinyint':
                 return 'active';
-            break;
+                break;
 
             case 'text':
             case 'mediumtext':
             case 'longtext':
                 return 'textarea';
-            break;
+                break;
 
             case 'date':
                 return 'date';
-            break;
+                break;
 
             case 'datetime':
             case 'timestamp':
                 return 'datetime';
-            break;
+                break;
             case 'time':
                 return 'time';
-            break;
+                break;
 
             default:
                 return 'text';
-            break;
+                break;
         }
     }
 
@@ -145,11 +146,13 @@ trait AutoSet
     public function getDbColumnsNames()
     {
         // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
-        $columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
+
+        $columns = $this->table_columns;
+
         $fillable = $this->model->getFillable();
 
-        if (! empty($fillable)) {
-            $columns = array_intersect($columns, $fillable);
+        if (!empty($fillable)) {
+            $columns = array_intersect($this->table_columns, $fillable);
         }
 
         // but not updated_at, deleted_at
