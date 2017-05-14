@@ -146,6 +146,11 @@ class CrudController extends BaseController
 
         $this->data['id'] = $id;
 
+        // Correctly remove "Save and new item" option if user don't have create access.
+        if (! $this->crud->hasAccess('create')) {
+            unset($this->data['saveAction']['options']['save_and_new']);
+        }
+
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getEditView(), $this->data);
     }
