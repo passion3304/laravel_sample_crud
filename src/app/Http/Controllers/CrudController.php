@@ -146,7 +146,7 @@ class CrudController extends BaseController
 
         $this->data['id'] = $id;
 
-        // Correctly remove "Save and new item" option if user don't have create access.
+        // Correctly remove "Save and new item" option if user is denied create permission.
         if (! $this->crud->hasAccess('create')) {
             unset($this->data['saveAction']['options']['save_and_new']);
         }
