@@ -24,7 +24,7 @@ trait AutoSet
             if (isset($labeller) && is_callable($labeller)) {
                 $label = $labeller($field);
             } else {
-                $label = $this->makeLabel();
+                $label = $this->makeLabel($field);
             }
 
             $new_field = [
