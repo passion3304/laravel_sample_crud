@@ -21,9 +21,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.2.12] - 2017-05-19 EDT
 
-- Added a PHP callable to the `PanelTraits\Autoset` trait to allow developers to customise label fields
-- Moved hard coded `ucfirst($field)` down to the commented out `makeLabel($value)` method
-    - this change means that this method may be overridden globally reducing the need to pass a PHP callable each time, if desired
+- Added a PHP callable to the `PanelTraits\Autoset` trait to allow developers
+  to customise label fields
+- Moved hard coded `ucfirst($field)` down to the commented out
+  `makeLabel($value)` method
+    - this change means that this method may be overridden globally reducing
+      the need to pass a PHP callable each time, if desired
 
 ## [3.2.11] - 2017-04-21
 
