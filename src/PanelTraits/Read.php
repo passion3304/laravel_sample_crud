@@ -87,7 +87,7 @@ trait Read
                         $query->orWhere(
                             $this->getColumnQuery($column),
                             'like',
-                            '%' .$filter. '%'
+                            '%'.$filter.'%'
                         );
                     }
                 }
@@ -127,7 +127,7 @@ trait Read
     private function getColumnQuery($column)
     {
         if (isset($column['type']) && $column['type'] == 'model_function') {
-            return null;
+            return;
         }
 
         if (is_array($column)) {
@@ -270,16 +270,16 @@ trait Read
      */
     public function getCellView($column, $entry)
     {
-        if (!isset($column['type'])) {
+        if (! isset($column['type'])) {
             return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry',
                 $entry)->render();
         } else {
-            if (view()->exists('vendor.backpack.crud.columns.' . $column['type'])) {
-                return \View::make('vendor.backpack.crud.columns.' . $column['type'])->with('crud',
+            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
+                return \View::make('vendor.backpack.crud.columns.'.$column['type'])->with('crud',
                     $this)->with('column', $column)->with('entry', $entry)->render();
             } else {
-                if (view()->exists('crud::columns.' . $column['type'])) {
-                    return \View::make('crud::columns.' . $column['type'])->with('crud', $this)->with('column',
+                if (view()->exists('crud::columns.'.$column['type'])) {
+                    return \View::make('crud::columns.'.$column['type'])->with('crud', $this)->with('column',
                         $column)->with('entry', $entry)->render();
                 } else {
                     return \View::make('crud::columns.text')->with('crud', $this)->with('column',
