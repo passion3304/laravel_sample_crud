@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.12] - 2017-04-xx
+## [3.2.12] - 2017-05-31
 
 ### Added
 - Latvian translation files (thanks to [Erik Bonder](https://github.com/erik-ropez));
