@@ -270,20 +270,35 @@ trait Read
      */
     public function getCellView($column, $entry)
     {
+        // if column type not set, show as text
         if (! isset($column['type'])) {
-            return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry',
-                $entry)->render();
+            return \View::make('crud::columns.text')
+                            ->with('crud', $this)
+                            ->with('column', $column)
+                            ->with('entry', $entry)
+                            ->render();
         } else {
+            // if the column has been overwritten show that one
             if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
-                return \View::make('vendor.backpack.crud.columns.'.$column['type'])->with('crud',
-                    $this)->with('column', $column)->with('entry', $entry)->render();
+                return \View::make('vendor.backpack.crud.columns.'.$column['type'])
+                                ->with('crud', $this)
+                                ->with('column', $column)
+                                ->with('entry', $entry)
+                                ->render();
             } else {
+                // show the column from the package
                 if (view()->exists('crud::columns.'.$column['type'])) {
-                    return \View::make('crud::columns.'.$column['type'])->with('crud', $this)->with('column',
-                        $column)->with('entry', $entry)->render();
+                    return \View::make('crud::columns.'.$column['type'])
+                                    ->with('crud', $this)
+                                    ->with('column', $column)
+                                    ->with('entry', $entry)
+                                    ->render();
                 } else {
-                    return \View::make('crud::columns.text')->with('crud', $this)->with('column',
-                        $column)->with('entry', $entry)->render();
+                    return \View::make('crud::columns.text')
+                                    ->with('crud', $this)
+                                    ->with('column', $column)
+                                    ->with('entry', $entry)
+                                    ->render();
                 }
             }
         }

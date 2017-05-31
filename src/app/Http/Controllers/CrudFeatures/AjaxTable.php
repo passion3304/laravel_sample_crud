@@ -25,7 +25,7 @@ trait AjaxTable
         $this->input = $_REQUEST;
         $this->totalRows = $this->filteredRows = $this->crud->getEntries()->count();
 
-        $data = $this->crud->getEntriesWithConditions(
+        $entries = $this->crud->getEntriesWithConditions(
             $this->input['length'],
             $this->input['start'],
             $this->addAjaxOrderBy()[0],
@@ -34,10 +34,10 @@ trait AjaxTable
         );
 
         if ($this->addSearchConditions() !== null) {
-            $this->filteredRows = $data->count();
+            $this->filteredRows = $entries->count();
         }
 
-        return $this->make($data);
+        return $this->prepareDataForDatatables($entries);
     }
 
     /**
@@ -46,7 +46,7 @@ trait AjaxTable
      * @param $entry
      * @return array
      */
-    private function format($entry)
+    private function formatRow($entry)
     {
         $row_items = $this->crud->getRowViews($entry, $this->crud);
 
@@ -74,11 +74,12 @@ trait AjaxTable
      * @param $data
      * @return array
      */
-    private function make($data)
+    private function prepareDataForDatatables($entries)
     {
         $rows = [];
-        foreach ($data as $row) {
-            $rows[] = $this->format($row);
+
+        foreach ($entries as $row) {
+            $rows[] = $this->formatRow($row);
         }
 
         return [
