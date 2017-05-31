@@ -35,6 +35,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - localize the filters navbar view;
 - inline validation error for array fields;
 - moved button initialization to CrudPanel constructor;
+- pagelength bug; undoes PR #596;
 
 
 ## [3.2.11] - 2017-04-21
