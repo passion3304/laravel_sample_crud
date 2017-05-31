@@ -61,7 +61,7 @@ trait Columns
         // make sure the column has a label
         $column_with_details = $this->addDefaultLabel($column);
 
-        array_filter($this->columns[] = $column_with_details);
+        array_filter($this->columns[$column_with_details['name']] = $column_with_details);
 
         return $this;
     }
