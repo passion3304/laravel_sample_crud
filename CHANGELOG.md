@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.13] - 2017-06-xx
+
+### Fixed
+- resources loaded twice on tabbed forms - fixes #509;
+
+
 ## [3.2.12] - 2017-05-31
 
 ### Added
