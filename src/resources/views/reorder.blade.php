@@ -55,7 +55,7 @@ function tree_element($entry, $key, $all_entries, $crud)
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
     @if ($crud->hasAccess('list'))
-        <a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
+        <a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
     @endif
 
         <!-- Default box -->
