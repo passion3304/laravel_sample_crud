@@ -56,7 +56,7 @@ return [
         'delete_confirmation_title'                   => 'Item verwijderd',
         'delete_confirmation_message'                 => 'Het item is succesvol verwijderd.',
         'delete_confirmation_not_title'               => 'NIET verwijderd',
-        'delete_confirmation_not_message'             => "Er is een fout opgetreden. Het item is misschien niet verwijderd.",
+        'delete_confirmation_not_message'             => 'Er is een fout opgetreden. Het item is misschien niet verwijderd.',
         'delete_confirmation_not_deleted_title'       => 'Niet verwijderd',
         'delete_confirmation_not_deleted_message'     => 'Er is niks gebeurd. Je item is veilig.',
 
