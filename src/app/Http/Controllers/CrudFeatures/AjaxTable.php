@@ -14,7 +14,7 @@ trait AjaxTable
     private $versionTransformer;
 
     /**
-     * The search function. This function it's called by the data table
+     * The search function. This function it's called by the data table.
      *
      * @return array
      */
@@ -41,7 +41,7 @@ trait AjaxTable
     }
 
     /**
-     * Formats the row of the table from the entry(instance of a model)
+     * Formats the row of the table from the entry(instance of a model).
      *
      * @param $entry
      * @return array
@@ -70,7 +70,7 @@ trait AjaxTable
     }
 
     /**
-     * Created the array to be fed to the data table
+     * Created the array to be fed to the data table.
      * @param $data
      * @return array
      */
@@ -82,12 +82,11 @@ trait AjaxTable
         }
 
         return [
-            'draw'            => (isset($this->input['draw']) ? (int)$this->input['draw'] : 0),
+            'draw'            => (isset($this->input['draw']) ? (int) $this->input['draw'] : 0),
             'recordsTotal'    => $this->totalRows,
             'recordsFiltered' => $this->filteredRows,
             'data'            => $rows,
         ];
-
     }
 
     /**
@@ -104,13 +103,11 @@ trait AjaxTable
                 return $filter;
             }
         }
-        return null;
     }
-
 
     /**
      * Checks if the user tried to order a column and if so an array with the
-     * column to be order and the direction are returned
+     * column to be order and the direction are returned.
      *
      * @return array [column, direction]
      */
@@ -118,10 +115,11 @@ trait AjaxTable
     {
         if (isset($this->input['order']) && isset($this->input['order'][0])) {
             $orderBy = $this->input['order'][0]['column'];
-            if (isset($this->crud->columns[(int)$orderBy]['name'])) {
-                return [$this->crud->columns[(int)$orderBy]['name'], $this->input['order'][0]['dir']];
+            if (isset($this->crud->columns[(int) $orderBy]['name'])) {
+                return [$this->crud->columns[(int) $orderBy]['name'], $this->input['order'][0]['dir']];
             }
         }
+
         return [null, null];
     }
 }
