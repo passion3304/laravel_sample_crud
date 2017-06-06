@@ -23,6 +23,7 @@ trait AutoSet
                 'name'       => $field,
                 'label'      => ucfirst($field),
                 'value'      => null,
+                'default'    => isset($this->db_column_types[$field]['default']) ? $this->db_column_types[$field]['default'] : null,
                 'type'       => $this->getFieldTypeFromDbColumnType($field),
                 'values'     => [],
                 'attributes' => [],
@@ -52,7 +53,7 @@ trait AutoSet
         foreach ($table_columns as $key => $column) {
             $column_type = $this->model->getConnection()->getSchemaBuilder()->getColumnType($this->model->getTable(), $column);
             $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
-            $this->db_column_types[$column]['default'] = ''; // no way to do this using DBAL?!
+            $this->db_column_types[$column]['default'] = $this->model->getConnection()->getDoctrineSchemaManager()->listTableDetails($this->model->getTable())->getColumn($column)->getDefault();
         }
 
         return $this->db_column_types;
