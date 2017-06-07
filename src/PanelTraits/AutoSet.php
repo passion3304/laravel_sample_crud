@@ -48,14 +48,15 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $table_columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
+        $table = $this->model->getTable();
+        $conn = $this->model->getConnection();
+        $table_columns = $conn->getSchemaBuilder()->getColumnListing($table);
 
         foreach ($table_columns as $key => $column) {
-            $column_type = $this->model->getConnection()->getSchemaBuilder()->getColumnType($this->model->getTable(), $column);
+            $column_type = $conn->getSchemaBuilder()->getColumnType($table, $column);
             $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
-            $this->db_column_types[$column]['default'] = $this->model->getConnection()->getDoctrineSchemaManager()->listTableDetails($this->model->getTable())->getColumn($column)->getDefault();
+            $this->db_column_types[$column]['default'] = $conn->getDoctrineSchemaManager()->listTableDetails($table)->getColumn($column)->getDefault();
         }
-
         return $this->db_column_types;
     }
 
