@@ -57,6 +57,7 @@ trait AutoSet
             $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $this->db_column_types[$column]['default'] = $conn->getDoctrineSchemaManager()->listTableDetails($table)->getColumn($column)->getDefault();
         }
+
         return $this->db_column_types;
     }
 
