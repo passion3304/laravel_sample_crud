@@ -88,17 +88,18 @@ trait HasTranslations
 
         $locale = $attributes['locale'] ?? \App::getLocale();
         $attributes = array_except($attributes, ['locale']);
+        $non_translatable = [];
 
         // do the actual saving
         foreach ($attributes as $attribute => $value) {
             if ($this->isTranslatableAttribute($attribute)) { // the attribute is translatable
                 $this->setTranslation($attribute, $locale, $value);
             } else { // the attribute is NOT translatable
-                $this->{$attribute} = $value;
+                $non_translatable[$attribute] = $value;
             }
         }
 
-        return $this->save($options);
+        return $this->fill($non_translatable)->save($options);
     }
 
     /*
