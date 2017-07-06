@@ -20,14 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.13] - 2017-06-xx
+## [3.2.13] - 2017-07-xx
 
 ### Fixed
 - resources loaded twice on tabbed forms - fixes #509;
 - beforeColumn and afterColumn not working after setFromDb();
 - afterField() always placing the field on the second position;
 - date_range filter - clear button now works;
-
+- select2 variants load the JS and CSS from CDN now to fix styling issues;
 
 ## [3.2.12] - 2017-05-31
 
