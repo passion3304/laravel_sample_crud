@@ -22,6 +22,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.2.13] - 2017-07-xx
 
+## Added
+- German translation, thanks to [Oliver Ziegler](https://github.com/OliverZiegler);
+
 ### Fixed
 - resources loaded twice on tabbed forms - fixes #509;
 - beforeColumn and afterColumn not working after setFromDb();
