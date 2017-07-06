@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - afterField() always placing the field on the second position;
 - date_range filter - clear button now works;
 - select2 variants load the JS and CSS from CDN now to fix styling issues;
+- show_fields error when no tabs on CRUD entity;
 
 ## [3.2.12] - 2017-05-31
 
