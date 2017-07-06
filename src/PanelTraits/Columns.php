@@ -61,7 +61,7 @@ trait Columns
         // make sure the column has a label
         $column_with_details = $this->addDefaultLabel($column);
 
-        array_filter($this->columns[] = $column_with_details);
+        array_filter($this->columns[$column_with_details['name']] = $column_with_details);
 
         return $this;
     }
@@ -89,7 +89,8 @@ trait Columns
     {
         foreach ($this->columns as $column => $value) {
             if ($value['name'] == $target_col) {
-                array_splice($this->columns, $column, 0, [array_pop($this->columns)]);
+                $offset = array_search($column, array_keys($this->columns));
+                array_splice($this->columns, $offset, 0, [array_pop($this->columns)]);
                 break;
             }
         }
@@ -104,7 +105,8 @@ trait Columns
     {
         foreach ($this->columns as $column => $value) {
             if ($value['name'] == $target_col) {
-                array_splice($this->columns, $column + 1, 0, [array_pop($this->columns)]);
+                $offset = array_search($column, array_keys($this->columns));
+                array_splice($this->columns, $offset + 1, 0, [array_pop($this->columns)]);
                 break;
             }
         }

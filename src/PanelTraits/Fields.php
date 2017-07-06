@@ -77,13 +77,15 @@ trait Fields
     {
         foreach ($this->create_fields as $field => $value) {
             if ($value['name'] == $target_field) {
-                array_splice($this->create_fields, $field + 1, 0, [$field => array_pop($this->create_fields)]);
+                $offset = array_search($field, array_keys($this->create_fields));
+                array_splice($this->create_fields, $offset + 1, 0, [$field => array_pop($this->create_fields)]);
                 break;
             }
         }
         foreach ($this->update_fields as $field => $value) {
             if ($value['name'] == $target_field) {
-                array_splice($this->update_fields, $field + 1, 0, [$field => array_pop($this->update_fields)]);
+                $offset = array_search($field, array_keys($this->update_fields));
+                array_splice($this->update_fields, $offset + 1, 0, [$field => array_pop($this->update_fields)]);
                 break;
             }
         }
