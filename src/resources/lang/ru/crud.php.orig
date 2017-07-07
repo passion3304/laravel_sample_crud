@@ -107,7 +107,11 @@ return [
     'filters'                                 => 'Фильтры',
     'toggle_filters'                          => 'Переключить фильтры',
     'remove_filters'                          => 'Очистить фильтры',
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 0559fde0cf3d287e6987886a7993463ee704ace2
     // Fields
     'browse_uploads'                          => 'Загрузить файлы',
     'clear'                                   => 'Очистить',
