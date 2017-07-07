@@ -19,6 +19,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Security
 - Nothing
 
+## [3.2.14] - 2017-07-xx
+
+## Fixed
+- setFromDb() now uses the column name as index, for afterColumn() and beforeColumn() to work with it - #759;
+
 
 ## [3.2.13] - 2017-07-07
 
