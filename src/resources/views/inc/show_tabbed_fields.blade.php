@@ -38,7 +38,7 @@
     @foreach ($crud->getTabs() as $k => $tab)
     <div role="tabpanel" class="tab-pane{{$k == 0 ? ' active' : ''}}" id="tab_{{ str_slug($tab, "") }}">
 
-        @include('crud::inc.show_fields', ['tab_fields' => $crud->getTabFields($tab)])
+        @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
 
     </div>
     @endforeach
