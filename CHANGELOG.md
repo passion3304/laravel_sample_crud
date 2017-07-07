@@ -21,6 +21,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.2.14] - 2017-07-xx
 
+## Added
+- Brasilian Portugese translation, thanks to [Guilherme Augusto Henschel](https://github.com/cenoura);
+
 ## Fixed
 - setFromDb() now uses the column name as index, for afterColumn() and beforeColumn() to work with it - #759;
 
