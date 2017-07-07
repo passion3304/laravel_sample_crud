@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - German translation, thanks to [Oliver Ziegler](https://github.com/OliverZiegler);
+- PHP 7.1 to TravisCI;
 
 ### Fixed
 - resources loaded twice on tabbed forms - fixes #509;
