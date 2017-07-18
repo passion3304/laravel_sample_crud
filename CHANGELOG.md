@@ -23,6 +23,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - Brasilian Portugese translation, thanks to [Guilherme Augusto Henschel](https://github.com/cenoura);
+- $crud parameter to the model function that adds a button;
 
 ## Fixed
 - setFromDb() now uses the column name as array index - so $this->crud->columns[id] instead of $this->crud->columns[arbitrary_number]; this makes afterColumn() and beforeColumn() work with setFromDb() too - #759;
