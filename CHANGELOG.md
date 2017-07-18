@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - setFromDb() now uses the column name as array index - so $this->crud->columns[id] instead of $this->crud->columns[arbitrary_number]; this makes afterColumn() and beforeColumn() work with setFromDb() too - #759;
 - radio field type now has customizable attributes - fixes #718;
 - model_function column breaking when not naming it - fixes #784;
+- video column type uses HTTPs and no longer triggers console error - fixes #735;
 
 
 ## [3.2.13] - 2017-07-07
