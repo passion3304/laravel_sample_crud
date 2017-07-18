@@ -31,7 +31,7 @@ trait AutoSet
             $this->update_fields[$field] = $new_field;
 
             if (! in_array($field, $this->model->getHidden())) {
-                $this->columns[$field] = [
+                $this->columns[] = [
                     'name'  => $field,
                     'label' => ucfirst($field),
                     'type'  => $this->getFieldTypeFromDbColumnType($field),

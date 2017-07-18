@@ -19,6 +19,17 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Security
 - Nothing
 
+## [3.2.14] - 2017-07-xx
+
+## Added
+- Brasilian Portugese translation, thanks to [Guilherme Augusto Henschel](https://github.com/cenoura);
+- $crud parameter to the model function that adds a button;
+
+## Fixed
+- setFromDb() now uses the column name as array index - so $this->crud->columns[id] instead of $this->crud->columns[arbitrary_number]; this makes afterColumn() and beforeColumn() work with setFromDb() too - #759;
+- radio field type now has customizable attributes - fixes #718;
+- model_function column breaking when not naming it - fixes #784;
+
 
 ## [3.2.13] - 2017-07-07
 
