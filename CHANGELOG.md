@@ -25,7 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Brasilian Portugese translation, thanks to [Guilherme Augusto Henschel](https://github.com/cenoura);
 
 ## Fixed
-- setFromDb() now uses the column name as index, for afterColumn() and beforeColumn() to work with it - #759;
+- setFromDb() now uses the column name as array index - so $this->crud->columns[id] instead of $this->crud->columns[arbitrary_number]; this makes afterColumn() and beforeColumn() work with setFromDb() too - #759;
 
 
 ## [3.2.13] - 2017-07-07
