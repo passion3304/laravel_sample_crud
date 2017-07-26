@@ -20,6 +20,20 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.13] - 2017-07-07
+
+## Added
+- German translation, thanks to [Oliver Ziegler](https://github.com/OliverZiegler);
+- PHP 7.1 to TravisCI;
+
+### Fixed
+- resources loaded twice on tabbed forms - fixes #509;
+- beforeColumn and afterColumn not working after setFromDb();
+- afterField() always placing the field on the second position;
+- date_range filter - clear button now works;
+- select2 variants load the JS and CSS from CDN now to fix styling issues;
+- show_fields error when no tabs on CRUD entity;
+
 ## [3.2.12] - 2017-05-31
 
 ### Added
