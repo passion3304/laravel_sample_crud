@@ -60,7 +60,7 @@ return [
         'delete_confirmation_title'                   => 'Emne slettet',
         'delete_confirmation_message'                 => 'Emnet er blevet slettet successfuldt.',
         'delete_confirmation_not_title'               => 'IKKE slettet',
-        'delete_confirmation_not_message'             => "Der opstod en fejl. Dit emne er måske ikke fjernet.",
+        'delete_confirmation_not_message'             => 'Der opstod en fejl. Dit emne er måske ikke fjernet.',
         'delete_confirmation_not_deleted_title'       => 'ikke fjernet',
         'delete_confirmation_not_deleted_message'     => 'Der skete intet. Dit emne er i god behold',
 
