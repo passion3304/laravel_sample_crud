@@ -19,7 +19,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Security
 - Nothing
 
-## [3.2.14] - 2017-07-xx
+## [3.2.14] - 2017-08-04
 
 ## Added
 - Brasilian Portugese translation, thanks to [Guilherme Augusto Henschel](https://github.com/cenoura);
