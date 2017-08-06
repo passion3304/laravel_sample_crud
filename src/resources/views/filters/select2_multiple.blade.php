@@ -77,7 +77,14 @@
     <script>
 		jQuery(document).ready(function($) {
 			$("select[name=filter_{{ $filter->name }}]").change(function() {
-				var value = JSON.stringify($(this).val());
+                var value = '';
+                if ($(this).val() !== null) {
+                    // clean array from undefined, null, "".
+                    var values = $(this).val().filter(function(e){ return e === 0 || e });
+                    // stringify only if values is not empty. otherwise it will be '[]'.
+                    value = values.length !== 0 ? JSON.stringify(values) : '';
+                }
+
 				var parameter = '{{ $filter->name }}';
 
 				@if (!$crud->ajaxTable())
