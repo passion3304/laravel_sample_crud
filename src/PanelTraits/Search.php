@@ -10,15 +10,6 @@ trait Search
     |--------------------------------------------------------------------------
     */
 
-    public function columnIsSearchable($column)
-    {
-        if (! isset($column['type'])) {
-            abort(400, 'Missing column type when checking if column is searchable.');
-        }
-
-        return true;
-    }
-
     public function applySearchTerm($searchTerm)
     {
         return $this->query->where(function ($query) use ($searchTerm) {
@@ -27,12 +18,12 @@ trait Search
                     abort(400, 'Missing column type when trying to apply search term.');
                 }
 
-                $this->applySearchLogic($query, $column, $searchTerm);
+                $this->applySearchLogicForColumn($query, $column, $searchTerm);
             }
         });
     }
 
-    public function applySearchLogic($query, $column, $searchTerm)
+    public function applySearchLogicForColumn($query, $column, $searchTerm)
     {
         // if there's a particular search logic defined, apply that one
         if (isset($column['searchLogic'])) {
