@@ -3,7 +3,6 @@
 namespace Backpack\CRUD;
 
 use Backpack\CRUD\PanelTraits\Read;
-use Backpack\CRUD\PanelTraits\Search;
 use Backpack\CRUD\PanelTraits\Tabs;
 use Backpack\CRUD\PanelTraits\Query;
 use Backpack\CRUD\PanelTraits\Views;
@@ -12,6 +11,7 @@ use Backpack\CRUD\PanelTraits\Create;
 use Backpack\CRUD\PanelTraits\Delete;
 use Backpack\CRUD\PanelTraits\Errors;
 use Backpack\CRUD\PanelTraits\Fields;
+use Backpack\CRUD\PanelTraits\Search;
 use Backpack\CRUD\PanelTraits\Update;
 use Backpack\CRUD\PanelTraits\AutoSet;
 use Backpack\CRUD\PanelTraits\Buttons;

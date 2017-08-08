@@ -89,7 +89,7 @@ trait Query
     /**
      * Start the result set from a certain number.
      *
-     * @param  integer $number [description]
+     * @param  int $number [description]
      * @return [type]         [description]
      */
     public function skip($number)
