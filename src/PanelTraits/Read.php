@@ -62,8 +62,8 @@ trait Read
     /**
      * Get all entries from the database with conditions.
      *
-     * @param integer $numberOfEntries the number of records requested
-     * @param integer $skip how many to skip
+     * @param int $numberOfEntries the number of records requested
+     * @param int $skip how many to skip
      * @param string $orderBy the column to order by
      * @param string $orderDirection how to order asc/desc
      * @param string $filter how to order (one of `asc` or `desc`); defaults to `asc`
@@ -79,11 +79,11 @@ trait Read
     ) {
         $modifiers = false;
 
-        if (!is_null($filter)) {
+        if (! is_null($filter)) {
             $modifiers = true;
             $entries = $this->query->where(function ($query) use ($filter) {
                 foreach ($this->columns as $column) {
-                    if (!is_null($this->getColumnQuery($column))) {
+                    if (! is_null($this->getColumnQuery($column))) {
                         $query->orWhere(
                             $this->getColumnQuery($column),
                             'like',
@@ -94,12 +94,12 @@ trait Read
             });
         }
 
-        if (!is_null($numberOfEntries)) {
+        if (! is_null($numberOfEntries)) {
             $modifiers = true;
             $entries = $this->query->skip($skip)->take($numberOfEntries);
         }
 
-        if (!is_null($orderBy)) {
+        if (! is_null($orderBy)) {
             $modifiers = true;
             $entries = $this->query->orderBy($orderBy, $orderDirection);
         }

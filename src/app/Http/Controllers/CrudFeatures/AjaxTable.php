@@ -30,7 +30,7 @@ trait AjaxTable
             $this->input['start'],
             $this->addAjaxOrderBy()[0],
             $this->addAjaxOrderBy()[1],
-            $this->input['search']['value']?$this->input['search']['value']:null
+            $this->input['search']['value'] ? $this->input['search']['value'] : null
         );
 
         if ($this->input['search']['value']) {
