@@ -10,16 +10,10 @@ trait Search
     |--------------------------------------------------------------------------
     */
 
-    public $searchableColumnTypes = ['text', 'select', 'select_multiple'];
-
     public function columnIsSearchable($column)
     {
         if (! isset($column['type'])) {
             abort(400, 'Missing column type when checking if column is searchable.');
-        }
-
-        if (! in_array($column['type'], $this->getSearchableColumnTypes())) {
-            return false;
         }
 
         return true;
@@ -65,21 +59,6 @@ trait Search
                 return;
                 break;
         }
-    }
-
-    public function getSearchableColumnTypes()
-    {
-        return $this->searchableColumnTypes;
-    }
-
-    public function removeColumnTypeFromSearch()
-    {
-        $this->searchableColumnTypes = array_except($this->searchableColumnTypes, $column_type);
-    }
-
-    public function addColumnTypeToSearch($column_type)
-    {
-        $this->searchableColumnTypes = array_add($this->searchableColumnTypes, $column_type);
     }
 
     /**
