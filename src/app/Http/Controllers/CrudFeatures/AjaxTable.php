@@ -14,7 +14,7 @@ trait AjaxTable
     private $versionTransformer;
 
     /**
-     * The search function. This function it's called by the data table.
+     * The search function that is called by the data table.
      *
      * @return array
      */
@@ -30,10 +30,10 @@ trait AjaxTable
             $this->input['start'],
             $this->addAjaxOrderBy()[0],
             $this->addAjaxOrderBy()[1],
-            $this->addSearchConditions()
+            $this->input['search']['value']?$this->input['search']['value']:null
         );
 
-        if ($this->addSearchConditions() !== null) {
+        if ($this->input['search']['value']) {
             $this->filteredRows = $entries->count();
         }
 
@@ -41,9 +41,9 @@ trait AjaxTable
     }
 
     /**
-     * Formats the row of the table from the entry(instance of a model).
+     * Formats the row of the table from the entry.
      *
-     * @param $entry
+     * @param $entry The instance of an Eloquent model.
      * @return array
      */
     private function formatRow($entry)
@@ -71,7 +71,8 @@ trait AjaxTable
 
     /**
      * Created the array to be fed to the data table.
-     * @param $data
+     *
+     * @param $entries Eloquent results.
      * @return array
      */
     private function prepareDataForDatatables($entries)
@@ -91,23 +92,7 @@ trait AjaxTable
     }
 
     /**
-     * Checks of teh user has anything written in the search bar and if so a string with the filtered is returned.
-     * In case no filter is detected null is returned.
-     *
-     * @return null | string $filter
-     */
-    private function addSearchConditions()
-    {
-        if (isset($this->input['search']) && isset($this->input['search']['value'])) {
-            $filter = $this->input['search']['value'];
-            if ($filter !== '') {
-                return $filter;
-            }
-        }
-    }
-
-    /**
-     * Checks if the user tried to order a column and if so an array with the
+     * Checks if the user tried to order a column. If so, an array with the
      * column to be order and the direction are returned.
      *
      * @return array [column, direction]
