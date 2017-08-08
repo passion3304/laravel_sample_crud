@@ -103,17 +103,18 @@ trait Read
     /**
      * Receives a filter and tries to get all the columns to be filtered by that filter *Work in progress*.
      *
-     * @param $column
+     * @param $column Array of column details.
      * @return null|string
      */
     private function getColumnQuery($column)
     {
         // TODO: provide a way to add or remove column types from the search
+
         if (isset($column['type']) && $column['type'] == 'model_function') {
             return;
         }
 
-        if (is_array($column)) {
+        if (is_array($column) && isset($column['name'])) {
             return $column['name'];
         }
 
