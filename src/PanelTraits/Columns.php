@@ -66,6 +66,11 @@ trait Columns
             $column_with_details['name'] = 'anonymous_column_'.str_random(5);
         }
 
+        // make sure the column has a type
+        if (! array_key_exists('type', $column_with_details)) {
+            $column_with_details['type'] = 'text';
+        }
+
         array_filter($this->columns[$column_with_details['name']] = $column_with_details);
 
         return $this;
