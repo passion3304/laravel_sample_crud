@@ -35,6 +35,9 @@ trait Search
         }
 
         switch ($column['type']) {
+            case 'email':
+            case 'date':
+            case 'datetime':
             case 'text':
                 $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
                 break;
