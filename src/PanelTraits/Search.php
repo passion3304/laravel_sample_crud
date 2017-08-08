@@ -10,6 +10,11 @@ trait Search
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Add conditions to the CRUD query for a particular search term.
+     *
+     * @param  [string] $searchTerm Whatever string the user types in the search bar.
+     */
     public function applySearchTerm($searchTerm)
     {
         return $this->query->where(function ($query) use ($searchTerm) {
@@ -23,6 +28,9 @@ trait Search
         });
     }
 
+    /**
+     * Apply the search logic for each CRUD column.
+     */
     public function applySearchLogicForColumn($query, $column, $searchTerm)
     {
         // if there's a particular search logic defined, apply that one
