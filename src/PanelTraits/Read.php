@@ -71,11 +71,11 @@ trait Read
     {
         $modifiers = false;
 
-        if (!is_null($filter)) {
+        if (! is_null($filter)) {
             $modifiers = true;
             $entries = $this->query->where(function ($query) use ($filter) {
                 foreach ($this->columns as $column) {
-                    if (!is_null($this->getColumnQuery($column))) {
+                    if (! is_null($this->getColumnQuery($column))) {
                         $query->orWhere(
                             $this->getColumnQuery($column),
                             'like',
