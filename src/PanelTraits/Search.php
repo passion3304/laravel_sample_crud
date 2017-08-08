@@ -30,11 +30,27 @@ trait Search
         return $this->query->where(function ($query) use ($searchTerm) {
             foreach ($this->getColumns() as $column) {
                 if ($this->columnIsSearchable($column)) {
-                    $query->orWhere(
-                            $column['name'],
-                            'like',
-                            '%'.$searchTerm.'%'
-                        );
+
+                    switch ($column['type']) {
+                        case 'text':
+                            $query->orWhere(
+                                $column['name'],
+                                'like',
+                                '%'.$searchTerm.'%'
+                            );
+                            break;
+
+                        case 'select':
+                            $query->orWhereHas($column['entity'], function($q) use ($column, $searchTerm) {
+                                $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
+                            });
+                            break;
+
+                        default:
+                            // TODO: apply the search scope, if it exists
+                            break;
+                    }
+
                 }
             }
         });
