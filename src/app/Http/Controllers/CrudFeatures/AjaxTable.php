@@ -8,10 +8,8 @@ trait AjaxTable
      * Respond with the JSON of one or more rows, depending on the POST parameters.
      * @return JSON Array of cells in HTML form.
      */
-    private $input;
     private $totalRows = 0;
     private $filteredRows = 0;
-    private $versionTransformer;
 
     /**
      * The search function that is called by the data table.
@@ -22,18 +20,29 @@ trait AjaxTable
     {
         $this->crud->hasAccessOrFail('list');
 
-        $this->input = $_REQUEST;
         $this->totalRows = $this->filteredRows = $this->crud->getEntries()->count();
 
+        // overwrite any order set in the setup() method with the datatables order
+        if ($this->request->has('order')) {
+            $column_number      = $this->request->input('order')[0]['column'];
+            $column_direction   = $this->request->input('order')[0]['dir'];
+            $column             = $this->crud->findColumnById($column_number);
+
+            $this->crud->orderBy($column['name'], $column_direction);
+        }
+
+        // limit the number of results to the one specified by the datatable
+        if ($this->request->has('length')) {
+            $this->crud->limit($this->request->input('length'));
+        }
+
         $entries = $this->crud->getEntriesWithConditions(
-            $this->input['length'],
-            $this->input['start'],
-            $this->addAjaxOrderBy()[0],
-            $this->addAjaxOrderBy()[1],
-            $this->input['search']['value']?$this->input['search']['value']:null
+            $this->request->input('start'),
+            $this->request->has('search')?$this->request->input('search')['value']:null
         );
 
-        if ($this->input['search']['value']) {
+        // if a search term was present, recalculate the number of filtered rows
+        if ($this->request->has('search')) {
             $this->filteredRows = $entries->count();
         }
 
@@ -84,28 +93,10 @@ trait AjaxTable
         }
 
         return [
-            'draw'            => (isset($this->input['draw']) ? (int) $this->input['draw'] : 0),
+            'draw'            => (isset($this->request['draw']) ? (int) $this->request['draw'] : 0),
             'recordsTotal'    => $this->totalRows,
             'recordsFiltered' => $this->filteredRows,
             'data'            => $rows,
         ];
-    }
-
-    /**
-     * Checks if the user tried to order a column. If so, an array with the
-     * column to be order and the direction are returned.
-     *
-     * @return array [column, direction]
-     */
-    public function addAjaxOrderBy()
-    {
-        if (isset($this->input['order']) && isset($this->input['order'][0])) {
-            $orderBy = $this->input['order'][0]['column'];
-            if (isset($this->crud->columns[(int) $orderBy]['name'])) {
-                return [$this->crud->columns[(int) $orderBy]['name'], $this->input['order'][0]['dir']];
-            }
-        }
-
-        return [null, null];
     }
 }

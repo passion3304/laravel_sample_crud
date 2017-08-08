@@ -62,21 +62,13 @@ trait Read
     /**
      * Get all entries from the database with conditions.
      *
-     * @param integer $numberOfEntries the number of records requested
      * @param integer $skip how many to skip
-     * @param string $orderBy the column to order by
-     * @param string $orderDirection how to order asc/desc
      * @param string $filter how to order (one of `asc` or `desc`); defaults to `asc`
      *
      * @return [Collection of your model]
      */
-    public function getEntriesWithConditions(
-        $numberOfEntries = null,
-        $skip = 0,
-        $orderBy = null,
-        $orderDirection = 'asc',
-        $filter = null
-    ) {
+    public function getEntriesWithConditions($skip = 0, $filter = null)
+    {
         $modifiers = false;
 
         if (!is_null($filter)) {
@@ -92,16 +84,6 @@ trait Read
                     }
                 }
             });
-        }
-
-        if (!is_null($numberOfEntries)) {
-            $modifiers = true;
-            $entries = $this->query->skip($skip)->take($numberOfEntries);
-        }
-
-        if (!is_null($orderBy)) {
-            $modifiers = true;
-            $entries = $this->query->orderBy($orderBy, $orderDirection);
         }
 
         if ($modifiers) {

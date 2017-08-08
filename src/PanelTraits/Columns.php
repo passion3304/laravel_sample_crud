@@ -232,6 +232,19 @@ trait Columns
         })->toArray();
     }
 
+    /**
+     * Get a column by the id, from the associative array.
+     *
+     * @param  [integer] $column_number Placement inside the columns array.
+     * @return [array] Column details.
+     */
+    public function findColumnById($column_number)
+    {
+        $result = array_slice($this->getColumns(), $column_number, 1);
+
+        return reset($result);
+    }
+
     // ------------
     // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED
     // ------------
