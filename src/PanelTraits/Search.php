@@ -14,7 +14,7 @@ trait Search
 
     public function columnIsSearchable($column)
     {
-        if (!isset($column['type'])) {
+        if (! isset($column['type'])) {
             abort(400, 'Missing column type when checking if column is searchable.');
         }
 
@@ -28,16 +28,16 @@ trait Search
     public function applySearchTerm($searchTerm)
     {
         return $this->query->where(function ($query) use ($searchTerm) {
-                foreach ($this->getColumns() as $column) {
-                    if ($this->columnIsSearchable($column)) {
-                        $query->orWhere(
+            foreach ($this->getColumns() as $column) {
+                if ($this->columnIsSearchable($column)) {
+                    $query->orWhere(
                             $column['name'],
                             'like',
                             '%'.$searchTerm.'%'
                         );
-                    }
                 }
-            });
+            }
+        });
     }
 
     public function getUnsearchableColumnTypes()

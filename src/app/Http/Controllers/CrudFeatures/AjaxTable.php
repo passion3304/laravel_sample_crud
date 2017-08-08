@@ -46,5 +46,4 @@ trait AjaxTable
 
         return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows);
     }
-
 }
