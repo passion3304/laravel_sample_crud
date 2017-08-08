@@ -50,7 +50,7 @@ trait Search
 
             case 'select':
             case 'select_multiple':
-                $query->orWhereHas($column['entity'], function($q) use ($column, $searchTerm) {
+                $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
                     $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
                 });
                 break;
