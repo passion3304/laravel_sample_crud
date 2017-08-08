@@ -24,9 +24,9 @@ trait AjaxTable
 
         // overwrite any order set in the setup() method with the datatables order
         if ($this->request->has('order')) {
-            $column_number      = $this->request->input('order')[0]['column'];
-            $column_direction   = $this->request->input('order')[0]['dir'];
-            $column             = $this->crud->findColumnById($column_number);
+            $column_number = $this->request->input('order')[0]['column'];
+            $column_direction = $this->request->input('order')[0]['dir'];
+            $column = $this->crud->findColumnById($column_number);
 
             $this->crud->orderBy($column['name'], $column_direction);
         }
@@ -38,7 +38,7 @@ trait AjaxTable
 
         $entries = $this->crud->getEntriesWithConditions(
             $this->request->input('start'),
-            $this->request->has('search')?$this->request->input('search')['value']:null
+            $this->request->has('search') ? $this->request->input('search')['value'] : null
         );
 
         // if a search term was present, recalculate the number of filtered rows

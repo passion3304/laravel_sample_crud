@@ -62,7 +62,7 @@ trait Read
     /**
      * Get all entries from the database with conditions.
      *
-     * @param integer $skip how many to skip
+     * @param int $skip how many to skip
      * @param string $filter how to order (one of `asc` or `desc`); defaults to `asc`
      *
      * @return [Collection of your model]
