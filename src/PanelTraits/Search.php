@@ -10,7 +10,7 @@ trait Search
     |--------------------------------------------------------------------------
     */
 
-    public $unsearchableColumnTypes = ['model_function'];
+    public $searchableColumnTypes = ['text', 'select', 'select_multiple'];
 
     public function columnIsSearchable($column)
     {
@@ -18,7 +18,7 @@ trait Search
             abort(400, 'Missing column type when checking if column is searchable.');
         }
 
-        if (in_array($column['type'], $this->getUnsearchableColumnTypes())) {
+        if (! in_array($column['type'], $this->getSearchableColumnTypes())) {
             return false;
         }
 
@@ -29,46 +29,57 @@ trait Search
     {
         return $this->query->where(function ($query) use ($searchTerm) {
             foreach ($this->getColumns() as $column) {
-                if ($this->columnIsSearchable($column)) {
-
-                    switch ($column['type']) {
-                        case 'text':
-                            $query->orWhere(
-                                $column['name'],
-                                'like',
-                                '%'.$searchTerm.'%'
-                            );
-                            break;
-
-                        case 'select':
-                            $query->orWhereHas($column['entity'], function($q) use ($column, $searchTerm) {
-                                $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
-                            });
-                            break;
-
-                        default:
-                            // TODO: apply the search scope, if it exists
-                            break;
-                    }
-
+                if (! isset($column['type'])) {
+                    abort(400, 'Missing column type when trying to apply search term.');
                 }
+
+                $this->applySearchLogic($query, $column, $searchTerm);
             }
         });
     }
 
-    public function getUnsearchableColumnTypes()
+    public function applySearchLogic($query, $column, $searchTerm)
     {
-        return $this->unsearchableColumnTypes;
+        // if there's a particular search logic defined, apply that one
+        if (isset($column['searchLogic'])) {
+            $searchLogic = $column['searchLogic'];
+
+            if (is_callable($searchLogic)) {
+                return $searchLogic($query, $column, $searchTerm);
+            }
+        }
+
+        switch ($column['type']) {
+            case 'text':
+                $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
+                break;
+
+            case 'select':
+            case 'select_multiple':
+                $query->orWhereHas($column['entity'], function($q) use ($column, $searchTerm) {
+                    $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
+                });
+                break;
+
+            default:
+                return;
+                break;
+        }
+    }
+
+    public function getSearchableColumnTypes()
+    {
+        return $this->searchableColumnTypes;
     }
 
     public function removeColumnTypeFromSearch()
     {
-        $this->unsearchableColumnTypes = array_except($this->unsearchableColumnTypes, $column_type);
+        $this->searchableColumnTypes = array_except($this->searchableColumnTypes, $column_type);
     }
 
     public function addColumnTypeToSearch($column_type)
     {
-        $this->unsearchableColumnTypes = array_add($this->unsearchableColumnTypes, $column_type);
+        $this->searchableColumnTypes = array_add($this->searchableColumnTypes, $column_type);
     }
 
     /**
