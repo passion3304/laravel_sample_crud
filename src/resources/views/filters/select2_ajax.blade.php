@@ -140,7 +140,7 @@
 			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
 				// console.log('select2 filter cleared');
 				$("li[filter-name={{ $filter->name }}]").removeClass('active');
-				$("li[filter-name={{ $filter->name }}] .select2").select2("val", "");
+                $('#filter_{{ $filter->name }}').select2("val", "");
 			});
         });
     </script>
