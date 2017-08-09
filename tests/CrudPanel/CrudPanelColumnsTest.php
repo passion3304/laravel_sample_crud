@@ -1,23 +1,20 @@
 <?php
 
-
 namespace CrudPanel;
-
 
 class CrudPanelColumnsTest extends BaseCrudPanelTest
 {
-
     /** @test */
     public function it_can_add_column_by_name()
     {
         $expectedColumn = [
             'name'  => 'column',
-            'label' => 'Column'
+            'label' => 'Column',
         ];
 
         $this->crudPanel->addColumn('column');
 
-        $this->assertEquals(1,count($this->crudPanel->columns));
+        $this->assertEquals(1, count($this->crudPanel->columns));
         $this->assertContains($expectedColumn, $this->crudPanel->columns);
     }
 
@@ -26,7 +23,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
     {
         $expectedColumn = [
             'name'  => 'column',
-            'label' => 'Column'
+            'label' => 'Column',
         ];
 
         $this->crudPanel->addColumn($expectedColumn);
@@ -41,12 +38,12 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $expectedColumns = [
             [
                 'name'  => 'column',
-                'label' => 'Column'
+                'label' => 'Column',
             ],
             [
                 'name' => 'column2',
-                'label' => 'Column2'
-            ]
+                'label' => 'Column2',
+            ],
         ];
 
         $this->crudPanel->addColumns(['column', 'column2']);
@@ -62,17 +59,17 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $expectedColumns = [
             [
                 'name'  => 'column',
-                'label' => 'Column'
+                'label' => 'Column',
             ],
             [
                 'name' => 'column2',
-                'label' => 'Column2'
-            ]
+                'label' => 'Column2',
+            ],
         ];
 
         $this->crudPanel->addColumns($expectedColumns);
 
-        $this->assertEquals(2,count($this->crudPanel->columns));
+        $this->assertEquals(2, count($this->crudPanel->columns));
         $this->assertContains($expectedColumns[0], $this->crudPanel->columns);
         $this->assertContains($expectedColumns[1], $this->crudPanel->columns);
     }
@@ -83,16 +80,16 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $expectedColumns = [
             [
                 'name'  => 'column',
-                'label' => 'Column'
+                'label' => 'Column',
             ],
             [
                 'name' => 'column2',
-                'label' => 'Column2'
-            ]
+                'label' => 'Column2',
+            ],
         ];
 
         $this->crudPanel->addColumns($expectedColumns);
-        $this->assertEquals(2,count($this->crudPanel->columns) );
+        $this->assertEquals(2, count($this->crudPanel->columns));
         $this->assertContains($expectedColumns[0], $this->crudPanel->columns);
         $this->assertContains($expectedColumns[1], $this->crudPanel->columns);
 
@@ -111,16 +108,16 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $expectedColumns = [
             [
                 'name'  => 'column',
-                'label' => 'Column'
+                'label' => 'Column',
             ],
             [
                 'name' => 'column2',
-                'label' => 'Column2'
+                'label' => 'Column2',
             ],
             [
                 'name' => 'column3',
-                'label' => 'Column3'
-            ]
+                'label' => 'Column3',
+            ],
         ];
 
         $this->crudPanel->addColumns($expectedColumns);
@@ -155,7 +152,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
     {
         $column = [
             'name'  => 'column1',
-            'label' => 'Column1'
+            'label' => 'Column1',
         ];
 
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);

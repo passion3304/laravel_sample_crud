@@ -1,15 +1,12 @@
 <?php
 
-
 namespace CrudPanel;
-
 
 use Backpack\CRUD\CrudPanel;
 use Orchestra\Testbench\TestCase;
 
 abstract class BaseCrudPanelTest extends TestCase
 {
-
     /**
      * @var CrudPanel
      */
