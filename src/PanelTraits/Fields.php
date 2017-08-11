@@ -25,7 +25,7 @@ trait Fields
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
-        if (isset($complete_field_array['entity']) && !isset($complete_field_array['model'])) {
+        if (isset($complete_field_array['entity']) && ! isset($complete_field_array['model'])) {
             $complete_field_array['model'] = $this->getRelationModel($complete_field_array['entity']);
         }
 

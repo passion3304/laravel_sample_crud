@@ -239,11 +239,11 @@ class CrudPanel
      *
      * @param $relationString String Relation string. A dot notation can be used to chain multiple relations.
      *
-     * @return String relation model name
+     * @return string relation model name
      */
     private function getRelationModel($relationString)
     {
-        $result = array_reduce(explode(".", $relationString), function ($obj, $method) {
+        $result = array_reduce(explode('.', $relationString), function ($obj, $method) {
             return $obj->$method()->getRelated();
         }, $this->model);
 
