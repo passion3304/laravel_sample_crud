@@ -19,6 +19,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Security
 - Nothing
 
+
+## [3.2.15] - 2017-08-11
+
+## Added
+- Danish (da_DK) language files, thanks to [Frederik Rabøl](https://github.com/Xayer);
+
+
 ## [3.2.14] - 2017-08-04
 
 ## Added
