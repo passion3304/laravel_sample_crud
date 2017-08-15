@@ -62,11 +62,17 @@ trait Columns
         $column_with_details = $this->addDefaultLabel($column);
 
         // make sure the column has a name
-        if (!array_key_exists('name', $column_with_details)) {
+        if (! array_key_exists('name', $column_with_details)) {
             $column_with_details['name'] = 'anonymous_column_'.str_random(5);
         }
 
         array_filter($this->columns[$column_with_details['name']] = $column_with_details);
+
+        // if this is a relation type field and no corresponding model was specified, get it from the relation method
+        // defined in the main model
+        if (isset($column_with_details['entity']) && ! isset($column_with_details['model'])) {
+            $column_with_details['model'] = $this->getRelationModel($column_with_details['entity']);
+        }
 
         return $this;
     }
