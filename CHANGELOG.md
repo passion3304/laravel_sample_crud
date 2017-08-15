@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.16] - 2017-xx-xx
+
+## Fixed
+- you can now skip mentioning the model for relation fields and columns (select, select2, select2multiple, etc) - it will be picked up from the relation automatically;
+
+
 ## [3.2.15] - 2017-08-11
 
 ## Added
