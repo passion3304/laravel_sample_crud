@@ -237,16 +237,54 @@ class CrudPanel
      *          App/Models/Address defined by a company() method on the user model and an address() method on the
      *          company model, the 'App/Models/Address' string will be returned.
      *
-     * @param $relationString String Relation string. A dot notation can be used to chain multiple relations.
+     * @param string $relationString Relation string. A dot notation can be used to chain multiple relations.
+     * @param int $length Optionally specify a sub
+     * @param mixed $model Optionally specify a different model than the one in the crud object
      *
      * @return String relation model name
      */
-    private function getRelationModel($relationString)
+    public function getRelationModel($relationString, $length = null, $model = null)
     {
-        $result = array_reduce(explode(".", $relationString), function ($obj, $method) {
+        $relationArray = explode(".", $relationString);
+        if($length == null) {
+            $length = count($relationArray);
+        }
+        if($model == null) {
+            $model = $this->model;
+        }
+        $result = array_reduce(array_splice($relationArray,0, $length), function ($obj, $method) {
             return $obj->$method()->getRelated();
-        }, $this->model);
+        }, $model);
 
         return get_class($result);
+    }
+
+    public function getNestedRelationsAttributes($model, $relationString, $attribute) {
+        $resultsArray = array();
+
+        // TODO: refactor recursive method so there would be no need for this one
+        $this->addRelationAttributes($model, $relationString, $attribute, $resultsArray);
+
+        return $resultsArray;
+    }
+
+    private function addRelationAttributes($model, $relationString, $attribute, &$resultedValues = array()) {
+        $relationArray = explode(".", $relationString);
+        if (count($relationArray) == 1 || get_class($model) == $this->getRelationModel($relationString, -1, $model)) {
+            $resultedValues[] = $model->{$relationString}->{$attribute};
+        } else {
+            foreach ($relationArray as $relation) {
+                $results = $model->{$relation};
+                if($results != null) {
+                    if (count($results) == 1) {
+                        $this->addRelationAttributes($results, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
+                    } else {
+                        foreach ($results as $result) {
+                            $this->addRelationAttributes($result, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

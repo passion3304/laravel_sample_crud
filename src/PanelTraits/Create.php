@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 trait Create
 {
     /*
@@ -22,12 +24,12 @@ trait Create
         $data = $this->decodeJsonCastedAttributes($data, 'create');
         $data = $this->compactFakeFields($data, 'create');
 
-        // ommit the n-n relationships when updating the eloquent item
+        // omit the n-n relationships when updating the eloquent item
         $nn_relationships = array_pluck($this->getRelationFieldsWithPivot('create'), 'name');
         $item = $this->model->create(array_except($data, $nn_relationships));
 
         // if there are any relationships available, also sync those
-        $this->syncPivot($item, $data);
+        $this->createRelations($item, $data);
 
         return $item;
     }
@@ -92,6 +94,17 @@ trait Create
         });
     }
 
+    /**
+     * Create the relations for the current model.
+     *
+     * @param mixed $item current model
+     * @param array $data form data
+     */
+    public function createRelations($item, $data) {
+        $this->syncPivot($item, $data);
+        $this->createOneToOneRelations($item, $data);
+    }
+
     public function syncPivot($model, $data, $form = 'create')
     {
         $fields_with_relationships = $this->getRelationFields($form);
@@ -117,6 +130,44 @@ trait Create
                 } else {
                     $model->{$field['name']}()->create($values);
                 }
+            }
+        }
+    }
+
+    private function createOneToOneRelations($item, $data, $form = 'create')
+    {
+        $fieldWithOneToOneRelations = collect($this->getRelationFields($form))
+            ->sortBy(function ($value) {
+                return substr_count($value['entity'], ".");
+            })
+            ->groupBy('entity')
+            ->filter(function ($value) {
+                return (!isset($value['pivot']) || (0 === strpos($value['type'], 'select')));
+            })
+            ->map(function ($value) {
+                $relationArray['model'] = $value->pluck('model')->first();
+                $relationArray['attributes'] = $value->pluck('name');
+                return $relationArray;
+            })
+            ->all();
+
+        $currentItem = $item;
+        foreach ($fieldWithOneToOneRelations as $relationString => $relation) {
+            $modelRelations = explode(".", $relationString);
+            $currentRelation = $currentItem->{end($modelRelations)}();
+
+            if ($currentRelation instanceof BelongsTo) {
+                $associatedModelName = $this->getRelationModel($relationString);
+                $associatedModel = $associatedModelName::find($data[$relation['attributes']->first()]);
+                $currentRelation->associate($associatedModel)->save();
+
+                $currentItem = $associatedModel;
+            } else {
+                $relationModel = new $relation['model']();
+                $modelInstance = $relationModel->create(array_only($data, $relation['attributes']->toArray()));
+                $currentRelation->save($modelInstance);
+
+                $currentItem = $modelInstance;
             }
         }
     }

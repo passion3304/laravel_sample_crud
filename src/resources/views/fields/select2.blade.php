@@ -2,7 +2,7 @@
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-    <?php $entity_model = $crud->model; ?>
+    <?php $entity_model = (strpos($field['entity'], '.') !== false) ? $crud->getRelationModel($field['entity'], (count(explode(".", $field['entity'])) - 1)) : $crud->model; ?>
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
