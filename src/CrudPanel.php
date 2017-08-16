@@ -274,7 +274,9 @@ class CrudPanel
     {
         $relationArray = explode(".", $relationString);
         if (count($relationArray) == 1 || get_class($model) == $this->getRelationModel($relationString, -1, $model)) {
-            $resultedValues[] = $model->{$relationString}->{$attribute};
+            if ($model->{$relationString}) {
+                $resultedValues[] = $model->{$relationString}->{$attribute};
+            }
         } else {
             foreach ($relationArray as $relation) {
                 $results = $model->{$relation};
