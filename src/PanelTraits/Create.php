@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\PanelTraits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait Create
 {
@@ -153,8 +154,16 @@ trait Create
                 if ($modelInstance != null) {
                     $relation->associate($modelInstance)->save();
                 }
+            } else if ($relation instanceof HasOne) {
+                if($parent->{$relationMethod} != null) {
+                    $parent->{$relationMethod}->update($relationData['values']);
+                    $modelInstance = $parent->{$relationMethod};
+                } else {
+                    $relationModel = new $model();
+                    $modelInstance = $relationModel->create($relationData['values']);
+                    $relation->save($modelInstance);
+                }
             } else {
-                // save on model
                 $relationModel = new $model();
                 $modelInstance = $relationModel->create($relationData['values']);
                 $relation->save($modelInstance);
