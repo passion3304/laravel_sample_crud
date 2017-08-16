@@ -183,7 +183,7 @@ trait Create
             })
             ->groupBy('entity')
             ->filter(function ($value) {
-                return (!isset($value['pivot']) || (0 === strpos($value['type'], 'select'))); // TODO: also filter out null form data values
+                return (!isset($value['pivot']) || (0 === strpos($value['type'], 'select')));
             })
             ->map(function ($value) use ($data){
                 $relationArray['model'] = $value->pluck('model')->first();
