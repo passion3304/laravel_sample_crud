@@ -136,39 +136,73 @@ trait Create
 
     private function createOneToOneRelations($item, $data, $form = 'create')
     {
+        $formattedData = $this->formatData($data, $form);
+        $this->createRelationsForItem($item, $formattedData);
+    }
+
+    private function createRelationsForItem($item, $formattedData)
+    {
+        foreach ($formattedData['relations'] as $relationMethod => $relationData) {
+            $parent = $item;
+            $model = $relationData['model'];
+            $relation = $parent->{$relationMethod}();
+
+            if ($relation instanceof BelongsTo) {
+                $modelInstance = $model::find($relationData['values'])->first();
+                if ($modelInstance != null) {
+                    $relation->associate($modelInstance)->save();
+                }
+            } else {
+                // save on model
+                $relationModel = new $model();
+                $modelInstance = $relationModel->create($relationData['values']);
+                $relation->save($modelInstance);
+            }
+
+            if (isset($relationData['relations'])) {
+                $this->createRelationsForItem($modelInstance, ['relations' => $relationData['relations']]);
+            }
+        }
+    }
+
+    private function formatData($data, $form = 'create')
+    {
         $fieldWithOneToOneRelations = collect($this->getRelationFields($form))
             ->sortBy(function ($value) {
                 return substr_count($value['entity'], ".");
             })
             ->groupBy('entity')
             ->filter(function ($value) {
-                return (!isset($value['pivot']) || (0 === strpos($value['type'], 'select')));
+                return (!isset($value['pivot']) || (0 === strpos($value['type'], 'select'))); // TODO: also filter out null form data values
             })
-            ->map(function ($value) {
+            ->map(function ($value) use ($data){
                 $relationArray['model'] = $value->pluck('model')->first();
-                $relationArray['attributes'] = $value->pluck('name');
+                $relationArray['parent'] = $this->getRelationModel($relationArray['model'], -1);
+                $relationArray['values'] = array_only($data, $value->pluck('name')->toArray());
                 return $relationArray;
+            })
+            ->filter(function ($value) {
+                return array_filter($value['values']);
             })
             ->all();
 
-        $currentItem = $item;
-        foreach ($fieldWithOneToOneRelations as $relationString => $relation) {
-            $modelRelations = explode(".", $relationString);
-            $currentRelation = $currentItem->{end($modelRelations)}();
-
-            if ($currentRelation instanceof BelongsTo) {
-                $associatedModelName = $this->getRelationModel($relationString);
-                $associatedModel = $associatedModelName::find($data[$relation['attributes']->first()]);
-                $currentRelation->associate($associatedModel)->save();
-
-                $currentItem = $associatedModel;
-            } else {
-                $relationModel = new $relation['model']();
-                $modelInstance = $relationModel->create(array_only($data, $relation['attributes']->toArray()));
-                $currentRelation->save($modelInstance);
-
-                $currentItem = $modelInstance;
-            }
+        $formattedData['relations'] = array();
+        foreach ($fieldWithOneToOneRelations as $itemKey => $itemValue) {
+            $itemKeys = collect(explode('.', $itemKey));
+            $lastItemKey = $itemKeys->pop();
+            $path = "relations." . ($itemKeys->count() ? implode('.', $itemKeys->toArray()) . ".relations." . $lastItemKey : $itemKey);
+            $this->setValue($formattedData, $path, $itemValue);
         }
+
+        return $formattedData;
+    }
+
+    function setValue(&$arr, $path, $value)
+    {
+        $location = &$arr;
+        foreach (explode('.', $path) as $step) {
+            $location = &$location[$step];
+        }
+        return $location = $value;
     }
 }
