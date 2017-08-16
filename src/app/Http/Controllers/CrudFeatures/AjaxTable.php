@@ -16,7 +16,7 @@ trait AjaxTable
         $columns = collect($this->crud->columns)
                     ->reject(function ($column, $key) {
                         // the select_multiple, model_function and model_function_attribute columns are not searchable
-            return isset($column['type']) && ($column['type'] == 'select_multiple' || $column['type'] == 'model_function' || $column['type'] == 'model_function_attribute');
+                        return isset($column['type']) && ($column['type'] == 'select_multiple' || $column['type'] == 'model_function' || $column['type'] == 'model_function_attribute');
                     })
                     ->pluck('name')
                     // add the primary key, otherwise the buttons won't work
