@@ -25,7 +25,7 @@ trait Update
 
         $item = $this->model->findOrFail($id);
 
-        $this->syncPivot($item, $data, 'update');
+        $this->createRelations($item, $data, 'update');
 
         // omit the n-n relationships when updating the eloquent item
         $nn_relationships = array_pluck($this->getRelationFieldsWithPivot('update'), 'name');

@@ -99,10 +99,11 @@ trait Create
      *
      * @param mixed $item current model
      * @param array $data form data
+     * @param string $form form type
      */
-    public function createRelations($item, $data) {
-        $this->syncPivot($item, $data);
-        $this->createOneToOneRelations($item, $data);
+    public function createRelations($item, $data, $form = 'create') {
+        $this->syncPivot($item, $data, $form);
+        $this->createOneToOneRelations($item, $data, $form);
     }
 
     public function syncPivot($model, $data, $form = 'create')
