@@ -2,24 +2,24 @@
 
 namespace Backpack\CRUD;
 
-use Backpack\CRUD\PanelTraits\Read;
-use Backpack\CRUD\PanelTraits\Tabs;
-use Backpack\CRUD\PanelTraits\Query;
-use Backpack\CRUD\PanelTraits\Views;
 use Backpack\CRUD\PanelTraits\Access;
-use Backpack\CRUD\PanelTraits\Create;
-use Backpack\CRUD\PanelTraits\Delete;
-use Backpack\CRUD\PanelTraits\Errors;
-use Backpack\CRUD\PanelTraits\Fields;
-use Backpack\CRUD\PanelTraits\Update;
+use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\AutoSet;
 use Backpack\CRUD\PanelTraits\Buttons;
 use Backpack\CRUD\PanelTraits\Columns;
-use Backpack\CRUD\PanelTraits\Filters;
-use Backpack\CRUD\PanelTraits\Reorder;
-use Backpack\CRUD\PanelTraits\AutoFocus;
-use Backpack\CRUD\PanelTraits\FakeFields;
+use Backpack\CRUD\PanelTraits\Create;
+use Backpack\CRUD\PanelTraits\Delete;
+use Backpack\CRUD\PanelTraits\Errors;
 use Backpack\CRUD\PanelTraits\FakeColumns;
+use Backpack\CRUD\PanelTraits\FakeFields;
+use Backpack\CRUD\PanelTraits\Fields;
+use Backpack\CRUD\PanelTraits\Filters;
+use Backpack\CRUD\PanelTraits\Query;
+use Backpack\CRUD\PanelTraits\Read;
+use Backpack\CRUD\PanelTraits\Reorder;
+use Backpack\CRUD\PanelTraits\Tabs;
+use Backpack\CRUD\PanelTraits\Update;
+use Backpack\CRUD\PanelTraits\Views;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel
@@ -259,32 +259,36 @@ class CrudPanel
         return get_class($result);
     }
 
-    public function getNestedRelationsAttributes($model, $relationString, $attribute) {
-        $resultsArray = array();
-
-        // TODO: refactor recursive method so there would be no need for this one
-        $this->addRelationAttributes($model, $relationString, $attribute, $resultsArray);
-
-        return $resultsArray;
-    }
-
-    private function addRelationAttributes($model, $relationString, $attribute, &$resultedValues = array()) {
+    /**
+     * Get the given attribute from the specified nested relations of the given model
+     * (ex: the list of streets from the many addresses of the company of a given user).
+     *
+     * @param mixed $model model (ex: user)
+     * @param string $relationString model relation string chained using the dot notation (ex: user.company.address)
+     * @param string $attribute the attribute from the chain relation model (ex: the street attribute from the address model)
+     * @param array $resultedValues result aggregator
+     *
+     * @return array an array containing a list of attributes from the given chained relation
+     */
+    public function getAttributeFromNestedRelations($model, $relationString, $attribute, &$resultedValues = array())
+    {
         $relationArray = explode(".", $relationString);
         if (count($relationArray) == 1 || get_class($model) == $this->getRelationModel($relationString, -1, $model)) {
             $resultedValues[] = $model->{$relationString}->{$attribute};
         } else {
             foreach ($relationArray as $relation) {
                 $results = $model->{$relation};
-                if($results != null) {
+                if ($results != null) {
                     if (count($results) == 1) {
-                        $this->addRelationAttributes($results, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
+                        $this->getAttributeFromNestedRelations($results, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
                     } else {
                         foreach ($results as $result) {
-                            $this->addRelationAttributes($result, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
+                            $this->getAttributeFromNestedRelations($result, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
                         }
                     }
                 }
             }
         }
+        return $resultedValues;
     }
 }

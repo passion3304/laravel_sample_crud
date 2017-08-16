@@ -6,7 +6,7 @@
             echo $entry->{$column['entity']}->{$column['attribute']};
 		}
 		else {
-            $resultsArray = $crud->getNestedRelationsAttributes($entry, $column['entity'], $column['attribute']);
+            $resultsArray = $crud->getAttributeFromNestedRelations($entry, $column['entity'], $column['attribute']);
             if (count($resultsArray)) {
                 echo implode(', ', $resultsArray);
             } else {
