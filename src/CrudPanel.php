@@ -2,24 +2,24 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\CRUD\PanelTraits\Read;
+use Backpack\CRUD\PanelTraits\Tabs;
+use Backpack\CRUD\PanelTraits\Query;
+use Backpack\CRUD\PanelTraits\Views;
 use Backpack\CRUD\PanelTraits\Access;
-use Backpack\CRUD\PanelTraits\AutoFocus;
-use Backpack\CRUD\PanelTraits\AutoSet;
-use Backpack\CRUD\PanelTraits\Buttons;
-use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Create;
 use Backpack\CRUD\PanelTraits\Delete;
 use Backpack\CRUD\PanelTraits\Errors;
-use Backpack\CRUD\PanelTraits\FakeColumns;
-use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\Fields;
-use Backpack\CRUD\PanelTraits\Filters;
-use Backpack\CRUD\PanelTraits\Query;
-use Backpack\CRUD\PanelTraits\Read;
-use Backpack\CRUD\PanelTraits\Reorder;
-use Backpack\CRUD\PanelTraits\Tabs;
 use Backpack\CRUD\PanelTraits\Update;
-use Backpack\CRUD\PanelTraits\Views;
+use Backpack\CRUD\PanelTraits\AutoSet;
+use Backpack\CRUD\PanelTraits\Buttons;
+use Backpack\CRUD\PanelTraits\Columns;
+use Backpack\CRUD\PanelTraits\Filters;
+use Backpack\CRUD\PanelTraits\Reorder;
+use Backpack\CRUD\PanelTraits\AutoFocus;
+use Backpack\CRUD\PanelTraits\FakeFields;
+use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel
@@ -241,18 +241,18 @@ class CrudPanel
      * @param int $length Optionally specify a sub
      * @param mixed $model Optionally specify a different model than the one in the crud object
      *
-     * @return String relation model name
+     * @return string relation model name
      */
     public function getRelationModel($relationString, $length = null, $model = null)
     {
-        $relationArray = explode(".", $relationString);
-        if($length == null) {
+        $relationArray = explode('.', $relationString);
+        if ($length == null) {
             $length = count($relationArray);
         }
-        if($model == null) {
+        if ($model == null) {
             $model = $this->model;
         }
-        $result = array_reduce(array_splice($relationArray,0, $length), function ($obj, $method) {
+        $result = array_reduce(array_splice($relationArray, 0, $length), function ($obj, $method) {
             return $obj->$method()->getRelated();
         }, $model);
 
@@ -270,9 +270,9 @@ class CrudPanel
      *
      * @return array an array containing a list of attributes from the given chained relation
      */
-    public function getAttributeFromNestedRelations($model, $relationString, $attribute, &$resultedValues = array())
+    public function getAttributeFromNestedRelations($model, $relationString, $attribute, &$resultedValues = [])
     {
-        $relationArray = explode(".", $relationString);
+        $relationArray = explode('.', $relationString);
         if (count($relationArray) == 1 || get_class($model) == $this->getRelationModel($relationString, -1, $model)) {
             if ($model->{$relationString}) {
                 $resultedValues[] = $model->{$relationString}->{$attribute};
@@ -282,15 +282,16 @@ class CrudPanel
                 $results = $model->{$relation};
                 if ($results != null) {
                     if (count($results) == 1) {
-                        $this->getAttributeFromNestedRelations($results, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
+                        $this->getAttributeFromNestedRelations($results, implode('.', array_diff($relationArray, [$relation])), $attribute, $resultedValues);
                     } else {
                         foreach ($results as $result) {
-                            $this->getAttributeFromNestedRelations($result, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
+                            $this->getAttributeFromNestedRelations($result, implode('.', array_diff($relationArray, [$relation])), $attribute, $resultedValues);
                         }
                     }
                 }
             }
         }
+
         return $resultedValues;
     }
 }
