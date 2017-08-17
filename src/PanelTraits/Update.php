@@ -38,26 +38,25 @@ trait Update
     /**
      * Get all fields needed for the EDIT ENTRY form.
      *
-     * @param  [integer] The id of the entry that is being edited.
-     * @param int $id
+     * @param int $id The id of the entry that is being edited.
      *
-     * @return [array] The fields with attributes, fake attributes and values.
+     * @return array The fields with attributes, fake attributes and values
      */
     public function getUpdateFields($id)
     {
         $fields = $this->update_fields;
         $entry = $this->getEntry($id);
 
-        foreach ($fields as $k => $field) {
+        foreach ($fields as &$field) {
             // set the value
-            if (! isset($fields[$k]['value'])) {
+            if (! isset($field['value'])) {
                 if (isset($field['subfields'])) {
-                    $fields[$k]['value'] = [];
-                    foreach ($field['subfields'] as $key => $subfield) {
-                        $fields[$k]['value'][] = $entry->{$subfield['name']};
+                    $field['value'] = [];
+                    foreach ($field['subfields'] as $subfield) {
+                        $field['value'][] = $entry->{$subfield['name']};
                     }
                 } else {
-                    $fields[$k]['value'] = $entry->{$field['name']};
+                    $field['value'] = $entry->{$field['name']};
                 }
             }
         }
