@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+
 trait Update
 {
     /*
@@ -56,7 +58,7 @@ trait Update
                         $field['value'][] = $entry->{$subfield['name']};
                     }
                 } else {
-                    $field['value'] = $entry->{$field['name']};
+                    $field['value'] = $this->getEntryValue($entry, $field);
                 }
             }
         }
@@ -71,5 +73,22 @@ trait Update
         }
 
         return $fields;
+    }
+
+    private function getEntryValue($entry, $field)
+    {
+        if(isset($field['entity'])) {
+            $relationArray = explode(".", $field['entity']);
+            $relatedModel = array_reduce(array_splice($relationArray,0, -1), function ($obj, $method) {
+                return $obj->{$method} ? $obj->{$method} : $obj;
+            }, $entry);
+
+            if($relatedModel->{end($relationArray)} && $relatedModel->{end($relationArray)}() instanceof HasOneOrMany) {
+                return $relatedModel->{end($relationArray)}->{$field['name']};
+            } else {
+                return $relatedModel->{$field['name']};
+            }
+        }
+        return $entry->{$field['name']};
     }
 }
