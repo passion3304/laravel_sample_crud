@@ -205,7 +205,7 @@ trait Create
         return $relationData;
     }
 
-    function setValue(&$arr, $path, $value)
+    private function setValue(&$arr, $path, $value)
     {
         $location = &$arr;
         foreach (explode('.', $path) as $step) {
