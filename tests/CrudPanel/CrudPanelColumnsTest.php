@@ -96,10 +96,8 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $this->crudPanel->beforeColumn('column');
         $keys = array_keys($this->crudPanel->columns);
         $this->assertEquals($expectedColumns[1], $this->crudPanel->columns[$keys[0]]);
-
-        //TODO: seems like reordering clears the reordered column key which should be treated as a bug
-        // thus test should look like:
-        // $this->assertEquals(['column2', 'column'], $keys);
+        
+        $this->assertEquals(['column2', 'column'], $keys);
     }
 
     /** @test */
@@ -128,11 +126,10 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
         $this->crudPanel->afterColumn('column');
         $keys = array_keys($this->crudPanel->columns);
+
         $this->assertEquals($expectedColumns[2], $this->crudPanel->columns[$keys[1]]);
 
-        //TODO: seems like reordering clears the reordered column key which should be treated as a bug
-        // thus test should look like:
-        // $this->assertEquals(['column', 'column3', 'column2'], $keys);
+        $this->assertEquals(['column', 'column3', 'column2'], $keys);
     }
 
     /** @test */
