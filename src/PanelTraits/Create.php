@@ -153,9 +153,11 @@ trait Create
                 $modelInstance = $model::find($relationData['values'])->first();
                 if ($modelInstance != null) {
                     $relation->associate($modelInstance)->save();
+                } else {
+                    $relation->dissociate()->save();
                 }
             } else if ($relation instanceof HasOne) {
-                if($parent->{$relationMethod} != null) {
+                if ($parent->{$relationMethod} != null) {
                     $parent->{$relationMethod}->update($relationData['values']);
                     $modelInstance = $parent->{$relationMethod};
                 } else {
@@ -182,11 +184,11 @@ trait Create
                 return substr_count($value['entity'], ".");
             })
             ->groupBy('entity')
-            ->filter(function ($value) use ($data){
+            ->filter(function ($value) use ($data) {
                 return array_filter(array_only($data, $value->pluck('name')->toArray()))
                     && (!isset($value['pivot']) || (0 === strpos($value['type'], 'select')));
             })
-            ->map(function ($value) use ($data){
+            ->map(function ($value) use ($data) {
                 $relationArray['model'] = $value->pluck('model')->first();
                 $relationArray['parent'] = $this->getRelationModel($relationArray['model'], -1);
                 $relationArray['values'] = array_only($data, $value->pluck('name')->toArray());
