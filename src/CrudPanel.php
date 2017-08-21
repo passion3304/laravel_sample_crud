@@ -17,11 +17,11 @@ use Backpack\CRUD\PanelTraits\Buttons;
 use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Filters;
 use Backpack\CRUD\PanelTraits\Reorder;
+use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
-use Illuminate\Database\Eloquent\Model;
 
 class CrudPanel
 {
@@ -258,7 +258,7 @@ class CrudPanel
             $model = $this->model;
         }
 
-        $result = array_reduce(array_splice($relationArray,0, $length), function ($obj, $method) {
+        $result = array_reduce(array_splice($relationArray, 0, $length), function ($obj, $method) {
             return $obj->$method()->getRelated();
         }, $model);
 
