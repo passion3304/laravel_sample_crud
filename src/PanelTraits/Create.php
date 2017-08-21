@@ -169,9 +169,8 @@ trait Create
     private function createRelationsForItem($item, $formattedData)
     {
         foreach ($formattedData['relations'] as $relationMethod => $relationData) {
-            $parent = $item;
             $model = $relationData['model'];
-            $relation = $parent->{$relationMethod}();
+            $relation = $item->{$relationMethod}();
 
             if ($relation instanceof BelongsTo) {
                 $modelInstance = $model::find($relationData['values'])->first();
@@ -181,9 +180,9 @@ trait Create
                     $relation->dissociate()->save();
                 }
             } elseif ($relation instanceof HasOne) {
-                if ($parent->{$relationMethod} != null) {
-                    $parent->{$relationMethod}->update($relationData['values']);
-                    $modelInstance = $parent->{$relationMethod};
+                if ($item->{$relationMethod} != null) {
+                    $item->{$relationMethod}->update($relationData['values']);
+                    $modelInstance = $item->{$relationMethod};
                 } else {
                     $relationModel = new $model();
                     $modelInstance = $relationModel->create($relationData['values']);
