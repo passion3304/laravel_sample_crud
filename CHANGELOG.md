@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.16] - 2017-xx-xx
+## [3.2.16] - 2017-08-21
 
 ## Added
 - translation strings for CRUD export buttons, thanks to [Alashow](https://github.com/alashow);
