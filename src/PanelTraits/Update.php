@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 
 trait Update
@@ -42,7 +43,7 @@ trait Update
      *
      * @param int $id The id of the entry that is being edited.
      *
-     * @return array The fields with attributes, fake attributes and values
+     * @return array The fields with attributes, fake attributes and values.
      */
     public function getUpdateFields($id)
     {
@@ -75,6 +76,14 @@ trait Update
         return $fields;
     }
 
+    /**
+     * Get the value of the 'name' attribute from the declared relation model in the given field.
+     *
+     * @param Model $entry The model.
+     * @param array $field The CRUD field array.
+     *
+     * @return mixed The value of the 'name' attribute from the relation model.
+     */
     private function getEntryValue($entry, $field)
     {
         if (isset($field['entity'])) {
