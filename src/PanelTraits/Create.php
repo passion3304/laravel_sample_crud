@@ -215,7 +215,7 @@ trait Create
             ->groupBy('entity')
             ->filter(function ($value) use ($data) {
                 return array_filter(array_only($data, $value->pluck('name')->toArray()))
-                    && (!$value->contains('pivot', true));
+                    && (! $value->contains('pivot', true));
             })
             ->map(function ($value) use ($data) {
                 $relationArray['model'] = $value->pluck('model')->first();
