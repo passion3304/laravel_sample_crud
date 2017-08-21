@@ -92,8 +92,9 @@ trait Update
                 return $obj->{$method} ? $obj->{$method} : $obj;
             }, $entry);
 
-            if ($relatedModel->{end($relationArray)} && $relatedModel->{end($relationArray)}() instanceof HasOneOrMany) {
-                return $relatedModel->{end($relationArray)}->{$field['name']};
+            $relationMethod = end($relationArray);
+            if ($relatedModel->{$relationMethod}() instanceof HasOneOrMany) {
+                return $relatedModel->{$relationMethod}->{$field['name']};
             } else {
                 return $relatedModel->{$field['name']};
             }
