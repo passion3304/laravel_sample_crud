@@ -228,9 +228,11 @@ trait Create
 
         $relationData['relations'] = [];
         foreach ($fieldsWithOneToOneRelations as $itemKey => $itemValue) {
-            $itemKeys = collect(explode('.', $itemKey));
-            $lastItemKey = $itemKeys->pop();
-            $path = 'relations.'.($itemKeys->count() ? implode('.', $itemKeys->toArray()).'.relations.'.$lastItemKey : $itemKey);
+            $itemKeys = explode('.', $itemKey);
+            $lastItemKey = array_pop($itemKeys);
+
+            $relationKey = count($itemKeys) ? implode('.', $itemKeys).'.relations.'.$lastItemKey : $itemKey;
+            $path = 'relations.'.$relationKey;
             array_set($relationData, $path, $itemValue);
         }
 
