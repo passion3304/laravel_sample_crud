@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -98,15 +99,22 @@ trait Create
     /**
      * Create the relations for the current model.
      *
-     * @param mixed $item current model
-     * @param array $data form data
-     * @param string $form form type
+     * @param mixed $item The current CRUD model.
+     * @param array $data The form data.
+     * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
     public function createRelations($item, $data, $form = 'create') {
         $this->syncPivot($item, $data, $form);
         $this->createOneToOneRelations($item, $data, $form);
     }
 
+    /**
+     * Sync the declared many-to-many associations through the pivot field.
+     *
+     * @param Model $model The current CRUD model.
+     * @param array $data The form data.
+     * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
+     */
     public function syncPivot($model, $data, $form = 'create')
     {
         $fields_with_relationships = $this->getRelationFields($form);
@@ -136,12 +144,27 @@ trait Create
         }
     }
 
+
+    /**
+     * Create any existing one to one relations for the current model from the form data.
+     *
+     * @param Model $item The current CRUD model.
+     * @param array $data The form data.
+     * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
+     */
     private function createOneToOneRelations($item, $data, $form = 'create')
     {
         $relationData = $this->formatData($data, $form);
         $this->createRelationsForItem($item, $relationData);
     }
 
+
+    /**
+     * Create any existing one to one relations for the current model from the relation data.
+     *
+     * @param Model $item The current CRUD model.
+     * @param array $formattedData The form data.
+     */
     private function createRelationsForItem($item, $formattedData)
     {
         foreach ($formattedData['relations'] as $relationMethod => $relationData) {
@@ -177,6 +200,14 @@ trait Create
         }
     }
 
+    /**
+     * Create a model relation data array from the form data.
+     *
+     * @param array $data The form data.
+     * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
+     *
+     * @return array The formatted relation data.
+     */
     private function formatData($data, $form = 'create')
     {
         $fieldsWithOneToOneRelations = collect($this->getRelationFields($form))
@@ -201,18 +232,9 @@ trait Create
             $itemKeys = collect(explode('.', $itemKey));
             $lastItemKey = $itemKeys->pop();
             $path = "relations." . ($itemKeys->count() ? implode('.', $itemKeys->toArray()) . ".relations." . $lastItemKey : $itemKey);
-            $this->setValue($relationData, $path, $itemValue);
+            array_set($relationData, $path, $itemValue);
         }
 
         return $relationData;
-    }
-
-    private function setValue(&$arr, $path, $value)
-    {
-        $location = &$arr;
-        foreach (explode('.', $path) as $step) {
-            $location = &$location[$step];
-        }
-        return $location = $value;
     }
 }

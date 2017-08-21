@@ -21,6 +21,7 @@ use Backpack\CRUD\PanelTraits\Tabs;
 use Backpack\CRUD\PanelTraits\Update;
 use Backpack\CRUD\PanelTraits\Views;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
+use Illuminate\Database\Eloquent\Model;
 
 class CrudPanel
 {
@@ -238,20 +239,25 @@ class CrudPanel
      *          company model, the 'App/Models/Address' string will be returned.
      *
      * @param string $relationString Relation string. A dot notation can be used to chain multiple relations.
-     * @param int $length Optionally specify a sub
-     * @param mixed $model Optionally specify a different model than the one in the crud object
+     * @param int $length Optionally specify the number of relations to omit from the start of the relation string. If
+     *        the provided length is negative, then that many relations will be omitted from the end of the relation
+     *        string.
+     * @param Model $model Optionally specify a different model than the one in the crud object.
      *
-     * @return String relation model name
+     * @return string Relation model name
      */
     public function getRelationModel($relationString, $length = null, $model = null)
     {
         $relationArray = explode(".", $relationString);
-        if($length == null) {
+
+        if(!isset($length)) {
             $length = count($relationArray);
         }
-        if($model == null) {
+
+        if(!isset($model)) {
             $model = $this->model;
         }
+
         $result = array_reduce(array_splice($relationArray,0, $length), function ($obj, $method) {
             return $obj->$method()->getRelated();
         }, $model);
@@ -260,15 +266,17 @@ class CrudPanel
     }
 
     /**
-     * Get the given attribute from the specified nested relations of the given model
-     * (ex: the list of streets from the many addresses of the company of a given user).
+     * Get the given attribute from the specified relation or relations of the given model (eg: the list of streets from
+     * the many addresses of the company of a given user).
      *
-     * @param mixed $model model (ex: user)
-     * @param string $relationString model relation string chained using the dot notation (ex: user.company.address)
-     * @param string $attribute the attribute from the chain relation model (ex: the street attribute from the address model)
-     * @param array $resultedValues result aggregator
+     * @param Model $model Model (eg: user).
+     * @param string $relationString Model relation. Can be a string representing the name of a relation method in the given
+     *        Model or one from a different Model through multiple relations. A dot notation can be used to specify
+     *        multiple relations (eg: user.company.address).
+     * @param string $attribute The attribute from the relation model (eg: the street attribute from the address model).
+     * @param array $resultedValues Result aggregator.
      *
-     * @return array an array containing a list of attributes from the given chained relation
+     * @return array An array containing a list of attributes from the given relation.
      */
     public function getAttributeFromNestedRelations($model, $relationString, $attribute, &$resultedValues = array())
     {
@@ -280,7 +288,8 @@ class CrudPanel
         } else {
             foreach ($relationArray as $relation) {
                 $results = $model->{$relation};
-                if ($results != null) {
+
+                if (isset($results)) {
                     if (count($results) == 1) {
                         $this->getAttributeFromNestedRelations($results, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
                     } else {
