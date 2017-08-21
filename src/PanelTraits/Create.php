@@ -145,7 +145,6 @@ trait Create
         }
     }
 
-
     /**
      * Create any existing one to one relations for the current model from the form data.
      *
@@ -158,7 +157,6 @@ trait Create
         $relationData = $this->formatData($data, $form);
         $this->createRelationsForItem($item, $relationData);
     }
-
 
     /**
      * Create any existing one to one relations for the current model from the relation data.
