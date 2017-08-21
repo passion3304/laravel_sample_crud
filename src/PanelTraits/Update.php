@@ -77,18 +77,19 @@ trait Update
 
     private function getEntryValue($entry, $field)
     {
-        if(isset($field['entity'])) {
-            $relationArray = explode(".", $field['entity']);
-            $relatedModel = array_reduce(array_splice($relationArray,0, -1), function ($obj, $method) {
+        if (isset($field['entity'])) {
+            $relationArray = explode('.', $field['entity']);
+            $relatedModel = array_reduce(array_splice($relationArray, 0, -1), function ($obj, $method) {
                 return $obj->{$method} ? $obj->{$method} : $obj;
             }, $entry);
 
-            if($relatedModel->{end($relationArray)} && $relatedModel->{end($relationArray)}() instanceof HasOneOrMany) {
+            if ($relatedModel->{end($relationArray)} && $relatedModel->{end($relationArray)}() instanceof HasOneOrMany) {
                 return $relatedModel->{end($relationArray)}->{$field['name']};
             } else {
                 return $relatedModel->{$field['name']};
             }
         }
+
         return $entry->{$field['name']};
     }
 }

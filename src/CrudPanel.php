@@ -2,24 +2,24 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\CRUD\PanelTraits\Read;
+use Backpack\CRUD\PanelTraits\Tabs;
+use Backpack\CRUD\PanelTraits\Query;
+use Backpack\CRUD\PanelTraits\Views;
 use Backpack\CRUD\PanelTraits\Access;
-use Backpack\CRUD\PanelTraits\AutoFocus;
-use Backpack\CRUD\PanelTraits\AutoSet;
-use Backpack\CRUD\PanelTraits\Buttons;
-use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Create;
 use Backpack\CRUD\PanelTraits\Delete;
 use Backpack\CRUD\PanelTraits\Errors;
-use Backpack\CRUD\PanelTraits\FakeColumns;
-use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\Fields;
-use Backpack\CRUD\PanelTraits\Filters;
-use Backpack\CRUD\PanelTraits\Query;
-use Backpack\CRUD\PanelTraits\Read;
-use Backpack\CRUD\PanelTraits\Reorder;
-use Backpack\CRUD\PanelTraits\Tabs;
 use Backpack\CRUD\PanelTraits\Update;
-use Backpack\CRUD\PanelTraits\Views;
+use Backpack\CRUD\PanelTraits\AutoSet;
+use Backpack\CRUD\PanelTraits\Buttons;
+use Backpack\CRUD\PanelTraits\Columns;
+use Backpack\CRUD\PanelTraits\Filters;
+use Backpack\CRUD\PanelTraits\Reorder;
+use Backpack\CRUD\PanelTraits\AutoFocus;
+use Backpack\CRUD\PanelTraits\FakeFields;
+use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 use Illuminate\Database\Eloquent\Model;
 
@@ -244,17 +244,17 @@ class CrudPanel
      *        string.
      * @param Model $model Optionally specify a different model than the one in the crud object.
      *
-     * @return string Relation model name
+     * @return string Relation model name.
      */
     public function getRelationModel($relationString, $length = null, $model = null)
     {
-        $relationArray = explode(".", $relationString);
+        $relationArray = explode('.', $relationString);
 
-        if(!isset($length)) {
+        if (! isset($length)) {
             $length = count($relationArray);
         }
 
-        if(!isset($model)) {
+        if (! isset($model)) {
             $model = $this->model;
         }
 
@@ -278,9 +278,9 @@ class CrudPanel
      *
      * @return array An array containing a list of attributes from the given relation.
      */
-    public function getAttributeFromNestedRelations($model, $relationString, $attribute, &$resultedValues = array())
+    public function getAttributeFromNestedRelations($model, $relationString, $attribute, &$resultedValues = [])
     {
-        $relationArray = explode(".", $relationString);
+        $relationArray = explode('.', $relationString);
         if (count($relationArray) == 1 || get_class($model) == $this->getRelationModel($relationString, -1, $model)) {
             if ($model->{$relationString}) {
                 $resultedValues[] = $model->{$relationString}->{$attribute};
@@ -291,15 +291,16 @@ class CrudPanel
 
                 if (isset($results)) {
                     if (count($results) == 1) {
-                        $this->getAttributeFromNestedRelations($results, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
+                        $this->getAttributeFromNestedRelations($results, implode('.', array_diff($relationArray, [$relation])), $attribute, $resultedValues);
                     } else {
                         foreach ($results as $result) {
-                            $this->getAttributeFromNestedRelations($result, implode(".", array_diff($relationArray, array($relation))), $attribute, $resultedValues);
+                            $this->getAttributeFromNestedRelations($result, implode('.', array_diff($relationArray, [$relation])), $attribute, $resultedValues);
                         }
                     }
                 }
             }
         }
+
         return $resultedValues;
     }
 }
