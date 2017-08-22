@@ -154,7 +154,7 @@ trait Create
      */
     private function createOneToOneRelations($item, $data, $form = 'create')
     {
-        $relationData = $this->formatData($data, $form);
+        $relationData = $this->getRelationDataFromFormData($data, $form);
         $this->createRelationsForItem($item, $relationData);
     }
 
@@ -199,41 +199,38 @@ trait Create
     }
 
     /**
-     * Create a model relation data array from the form data.
+     * Get a relation data array from the form data. For each relation defined in the fields through the entity
+     * attribute, set the model, the parent model and the attribute values. For relations defined with the "dot"
+     * notations, this will be used to calculate the depth in the final array (@see \Illuminate\Support\Arr::set() for more).
      *
      * @param array $data The form data.
      * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      *
      * @return array The formatted relation data.
      */
-    private function formatData($data, $form = 'create')
+    private function getRelationDataFromFormData($data, $form = 'create')
     {
-        $fieldsWithOneToOneRelations = collect($this->getRelationFields($form))
-            ->sortBy(function ($value) {
-                return substr_count($value['entity'], '.');
-            })
-            ->groupBy('entity')
-            ->filter(function ($value) use ($data) {
-                return array_filter(array_only($data, $value->pluck('name')->toArray()))
-                    && (! $value->contains('pivot', true));
-            })
-            ->map(function ($value) use ($data) {
-                $relationArray['model'] = $value->pluck('model')->first();
-                $relationArray['parent'] = $this->getRelationModel($relationArray['model'], -1);
-                $relationArray['values'] = array_only($data, $value->pluck('name')->toArray());
+        $relationFields = $this->getRelationFields($form);
 
-                return $relationArray;
-            })
-            ->all();
+        $relationData = [];
+        foreach ($relationFields as $relationField) {
+            if (array_key_exists($relationField['name'], $data) && empty($relationField['pivot'])) {
 
-        $relationData['relations'] = [];
-        foreach ($fieldsWithOneToOneRelations as $itemKey => $itemValue) {
-            $itemKeys = explode('.', $itemKey);
-            $lastItemKey = array_pop($itemKeys);
+                $key = implode('.relations.', explode('.', $relationField['entity']));
+                $fieldData = array_get($relationData, 'relations.' . $key, []);
 
-            $relationKey = count($itemKeys) ? implode('.', $itemKeys).'.relations.'.$lastItemKey : $itemKey;
-            $path = 'relations.'.$relationKey;
-            array_set($relationData, $path, $itemValue);
+                if (!array_key_exists('model', $fieldData)) {
+                    $fieldData['model'] = $relationField['model'];
+                }
+
+                if (!array_key_exists('parent', $fieldData)) {
+                    $fieldData['parent'] = $this->getRelationModel($relationField['entity'], -1);
+                }
+
+                $fieldData['values'][$relationField['name']] = $data[$relationField['name']];
+
+                array_set($relationData, 'relations.' . $key, $fieldData);
+            }
         }
 
         return $relationData;
