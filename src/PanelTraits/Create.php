@@ -215,21 +215,20 @@ trait Create
         $relationData = [];
         foreach ($relationFields as $relationField) {
             if (array_key_exists($relationField['name'], $data) && empty($relationField['pivot'])) {
-
                 $key = implode('.relations.', explode('.', $relationField['entity']));
-                $fieldData = array_get($relationData, 'relations.' . $key, []);
+                $fieldData = array_get($relationData, 'relations.'.$key, []);
 
-                if (!array_key_exists('model', $fieldData)) {
+                if (! array_key_exists('model', $fieldData)) {
                     $fieldData['model'] = $relationField['model'];
                 }
 
-                if (!array_key_exists('parent', $fieldData)) {
+                if (! array_key_exists('parent', $fieldData)) {
                     $fieldData['parent'] = $this->getRelationModel($relationField['entity'], -1);
                 }
 
                 $fieldData['values'][$relationField['name']] = $data[$relationField['name']];
 
-                array_set($relationData, 'relations.' . $key, $fieldData);
+                array_set($relationData, 'relations.'.$key, $fieldData);
             }
         }
 
