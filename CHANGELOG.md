@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.17] - 2017-08-22
+
+## Fixed
+- SluggableScopeHelpers::scopeWhereSlug() signature, thanks to [Pascal VINEY](https://github.com/shaoshiva);
+
+
 ## [3.2.16] - 2017-08-21
 
 ## Added
