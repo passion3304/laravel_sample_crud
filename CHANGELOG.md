@@ -19,7 +19,29 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Security
 - Nothing
 
-## [3.2.14] - 2017-07-xx
+
+## [3.2.17] - 2017-08-22
+
+## Fixed
+- SluggableScopeHelpers::scopeWhereSlug() signature, thanks to [Pascal VINEY](https://github.com/shaoshiva);
+
+
+## [3.2.16] - 2017-08-21
+
+## Added
+- translation strings for CRUD export buttons, thanks to [Alashow](https://github.com/alashow);
+
+## Fixed
+- you can now skip mentioning the model for relation fields and columns (select, select2, select2multiple, etc) - it will be picked up from the relation automatically;
+
+
+## [3.2.15] - 2017-08-11
+
+## Added
+- Danish (da_DK) language files, thanks to [Frederik Rabøl](https://github.com/Xayer);
+
+
+## [3.2.14] - 2017-08-04
 
 ## Added
 - Brasilian Portugese translation, thanks to [Guilherme Augusto Henschel](https://github.com/cenoura);
