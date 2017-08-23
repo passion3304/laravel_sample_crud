@@ -59,7 +59,7 @@ trait Update
                         $field['value'][] = $entry->{$subfield['name']};
                     }
                 } else {
-                    $field['value'] = $this->getEntryValue($entry, $field);
+                    $field['value'] = $this->getModelAttributeValue($entry, $field);
                 }
             }
         }
@@ -79,18 +79,18 @@ trait Update
     /**
      * Get the value of the 'name' attribute from the declared relation model in the given field.
      *
-     * @param Model $entry The model.
+     * @param Model $model The current CRUD model.
      * @param array $field The CRUD field array.
      *
      * @return mixed The value of the 'name' attribute from the relation model.
      */
-    private function getEntryValue($entry, $field)
+    private function getModelAttributeValue($model, $field)
     {
         if (isset($field['entity'])) {
             $relationArray = explode('.', $field['entity']);
             $relatedModel = array_reduce(array_splice($relationArray, 0, -1), function ($obj, $method) {
                 return $obj->{$method} ? $obj->{$method} : $obj;
-            }, $entry);
+            }, $model);
 
             $relationMethod = end($relationArray);
             if ($relatedModel->{$relationMethod} && $relatedModel->{$relationMethod}() instanceof HasOneOrMany) {
@@ -100,6 +100,6 @@ trait Update
             }
         }
 
-        return $entry->{$field['name']};
+        return $model->{$field['name']};
     }
 }
