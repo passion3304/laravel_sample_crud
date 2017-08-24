@@ -17,11 +17,11 @@ use Backpack\CRUD\PanelTraits\Buttons;
 use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Filters;
 use Backpack\CRUD\PanelTraits\Reorder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\FakeColumns;
+use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel
@@ -287,6 +287,7 @@ class CrudPanel
                 $attributes[] = $model->{$attribute};
             }
         }
+
         return $attributes;
     }
 
@@ -305,8 +306,7 @@ class CrudPanel
         $relation = $model->{$firstRelationName};
 
         $results = [];
-        if (!empty($relation)) {
-
+        if (! empty($relation)) {
             if ($relation instanceof Collection) {
                 $currentResults = $relation->toArray();
             } else {
@@ -315,7 +315,7 @@ class CrudPanel
 
             array_shift($relationArray);
 
-            if (!empty($relationArray)) {
+            if (! empty($relationArray)) {
                 foreach ($currentResults as $currentResult) {
                     $results = array_merge($results, $this->getRelationModelInstance($currentResult, implode('.', $relationArray)));
                 }
