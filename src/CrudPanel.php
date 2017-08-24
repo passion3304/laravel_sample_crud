@@ -17,6 +17,7 @@ use Backpack\CRUD\PanelTraits\Buttons;
 use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Filters;
 use Backpack\CRUD\PanelTraits\Reorder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\FakeFields;
@@ -266,7 +267,7 @@ class CrudPanel
     }
 
     /**
-     * Get the given attribute from the specified relation or relations of the given model (eg: the list of streets from
+     * Get the given attribute from a model or models resulting from the specified relation string (eg: the list of streets from
      * the many addresses of the company of a given user).
      *
      * @param Model $model Model (eg: user).
@@ -274,33 +275,55 @@ class CrudPanel
      *        Model or one from a different Model through multiple relations. A dot notation can be used to specify
      *        multiple relations (eg: user.company.address).
      * @param string $attribute The attribute from the relation model (eg: the street attribute from the address model).
-     * @param array $resultedValues Result aggregator.
      *
-     * @return array An array containing a list of attributes from the given relation.
+     * @return array An array containing a list of attributes from the resulting model.
      */
-    public function getAttributeFromNestedRelations($model, $relationString, $attribute, &$resultedValues = [])
+    public function getModelAttributeFromRelation($model, $relationString, $attribute)
+    {
+        $lastModels = $this->getRelationModelInstance($model, $relationString);
+        $attributes = [];
+        foreach ($lastModels as $model) {
+            if ($model->{$attribute}) {
+                $attributes[] = $model->{$attribute};
+            }
+        }
+        return $attributes;
+    }
+
+    /**
+     * Traverse the tree of relations for the given model, defined by the given relation string, and return the ending
+     * associated model instance or instances.
+     *
+     * @param Model $model The CRUD model.
+     * @param string $relationString Relation string. A dot notation can be used to chain multiple relations.
+     * @return array An array of the associated model instances defined by the relation string.
+     */
+    private function getRelationModelInstance($model, $relationString)
     {
         $relationArray = explode('.', $relationString);
-        if (count($relationArray) == 1 || get_class($model) == $this->getRelationModel($relationString, -1, $model)) {
-            if ($model->{$relationString}) {
-                $resultedValues[] = $model->{$relationString}->{$attribute};
-            }
-        } else {
-            foreach ($relationArray as $relation) {
-                $results = $model->{$relation};
+        $firstRelationName = array_first($relationArray);
+        $relation = $model->{$firstRelationName};
 
-                if (isset($results)) {
-                    if (count($results) == 1) {
-                        $this->getAttributeFromNestedRelations($results, implode('.', array_diff($relationArray, [$relation])), $attribute, $resultedValues);
-                    } else {
-                        foreach ($results as $result) {
-                            $this->getAttributeFromNestedRelations($result, implode('.', array_diff($relationArray, [$relation])), $attribute, $resultedValues);
-                        }
-                    }
+        $results = [];
+        if (!empty($relation)) {
+
+            if ($relation instanceof Collection) {
+                $currentResults = $relation->toArray();
+            } else {
+                $currentResults[] = $relation;
+            }
+
+            array_shift($relationArray);
+
+            if (!empty($relationArray)) {
+                foreach ($currentResults as $currentResult) {
+                    $results = array_merge($results, $this->getRelationModelInstance($currentResult, implode('.', $relationArray)));
                 }
+            } else {
+                $results = $currentResults;
             }
         }
 
-        return $resultedValues;
+        return $results;
     }
 }
