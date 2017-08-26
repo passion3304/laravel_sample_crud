@@ -96,7 +96,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $this->crudPanel->beforeColumn('column');
         $keys = array_keys($this->crudPanel->columns);
         $this->assertEquals($expectedColumns[1], $this->crudPanel->columns[$keys[0]]);
-        
+
         $this->assertEquals(['column2', 'column'], $keys);
     }
 
