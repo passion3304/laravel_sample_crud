@@ -280,9 +280,9 @@ class CrudPanel
      */
     public function getModelAttributeFromRelation($model, $relationString, $attribute)
     {
-        $lastModels = $this->getRelationModelInstance($model, $relationString);
+        $endModels = $this->getRelationModelInstances($model, $relationString);
         $attributes = [];
-        foreach ($lastModels as $model) {
+        foreach ($endModels as $model) {
             if ($model->{$attribute}) {
                 $attributes[] = $model->{$attribute};
             }
@@ -298,7 +298,7 @@ class CrudPanel
      * @param string $relationString Relation string. A dot notation can be used to chain multiple relations.
      * @return array An array of the associated model instances defined by the relation string.
      */
-    private function getRelationModelInstance($model, $relationString)
+    private function getRelationModelInstances($model, $relationString)
     {
         $relationArray = explode('.', $relationString);
         $firstRelationName = array_first($relationArray);
@@ -317,7 +317,7 @@ class CrudPanel
 
             if (!empty($relationArray)) {
                 foreach ($currentResults as $currentResult) {
-                    $results = array_merge($results, $this->getRelationModelInstance($currentResult, implode('.', $relationArray)));
+                    $results = array_merge($results, $this->getRelationModelInstances($currentResult, implode('.', $relationArray)));
                 }
             } else {
                 $results = $currentResults;
