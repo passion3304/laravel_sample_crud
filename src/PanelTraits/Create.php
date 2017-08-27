@@ -199,9 +199,10 @@ trait Create
     }
 
     /**
-     * Get a relation data array from the form data. For each relation defined in the fields through the entity
-     * attribute, set the model, the parent model and the attribute values. For relations defined with the "dot"
-     * notations, this will be used to calculate the depth in the final array (@see \Illuminate\Support\Arr::set() for more).
+     * Get a relation data array from the form data.
+     * For each relation defined in the fields through the entity attribute, set the model, the parent model and the
+     * attribute values. For relations defined with the "dot" notations, this will be used to calculate the depth in the
+     * final array (@see \Illuminate\Support\Arr::set() for more).
      *
      * @param array $data The form data.
      * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
@@ -214,7 +215,8 @@ trait Create
 
         $relationData = [];
         foreach ($relationFields as $relationField) {
-            if (array_key_exists($relationField['name'], $data) && empty($relationField['pivot'])) {
+            $attributeKey = $relationField['name'];
+            if (array_key_exists($attributeKey, $data) && empty($relationField['pivot'])) {
                 $key = implode('.relations.', explode('.', $relationField['entity']));
                 $fieldData = array_get($relationData, 'relations.'.$key, []);
 
@@ -226,7 +228,7 @@ trait Create
                     $fieldData['parent'] = $this->getRelationModel($relationField['entity'], -1);
                 }
 
-                $fieldData['values'][$relationField['name']] = $data[$relationField['name']];
+                $fieldData['values'][$attributeKey] = $data[$attributeKey];
 
                 array_set($relationData, 'relations.'.$key, $fieldData);
             }
