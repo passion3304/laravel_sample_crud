@@ -39,8 +39,9 @@ trait Filters
      * @param array         $options        Name, type, label, etc.
      * @param array/closure $values         The HTML for the filter.
      * @param closure       $filter_logic   Query modification (filtering) logic.
+     * @param closure       $default_logic  Query modification (filtering) logic when filter is not active.
      */
-    public function addFilter($options, $values = false, $filter_logic = false)
+    public function addFilter($options, $values = false, $filter_logic = false, $default_logic)
     {
         // if a closure was passed as "values"
         if (is_callable($values)) {
@@ -64,14 +65,21 @@ trait Filters
         $this->filters->push($filter);
 
         // if a closure was passed as "filter_logic"
-        if ($this->doingListOperation() &&
-            $this->request->has($options['name'])) {
-            if (is_callable($filter_logic)) {
-                // apply it
-                $filter_logic($this->request->input($options['name']));
-            } else {
-                $this->addDefaultFilterLogic($filter->name, $filter_logic);
-            }
+        if ($this->doingListOperation()){
+        	if($this->request->has($options['name'])) {
+		        if (is_callable($filter_logic)) {
+			        // apply it
+			        $filter_logic($this->request->input($options['name']));
+		        } else {
+			        $this->addDefaultFilterLogic($filter->name, $filter_logic);
+		        }
+	        } else {
+        		//if the filter is not active, but default logic was supplied
+		        if (is_callable($default_logic)) {
+			        // apply the default logic
+			        $default_logic();
+		        }
+	        }
         }
     }
 
