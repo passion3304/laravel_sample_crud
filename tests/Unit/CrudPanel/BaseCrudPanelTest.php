@@ -1,21 +1,24 @@
 <?php
 
-namespace CrudPanel;
+namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\CrudPanel;
-use Orchestra\Testbench\TestCase;
+use Backpack\CRUD\Tests\BaseTest;
 
-abstract class BaseCrudPanelTest extends TestCase
+abstract class BaseCrudPanelTest extends BaseTest
 {
     /**
      * @var CrudPanel
      */
     protected $crudPanel;
 
+    protected $model;
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->crudPanel = new CrudPanel();
+        $this->model = new TestModel();
     }
 }
