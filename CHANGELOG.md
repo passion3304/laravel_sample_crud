@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.18] - 2017-08-30
+
+## Added
+- Package autodiscovery for Laravel 5.5;
+
+
 ## [3.2.17] - 2017-08-22
 
 ## Fixed
