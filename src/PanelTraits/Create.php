@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -99,7 +98,7 @@ trait Create
     /**
      * Create the relations for the current model.
      *
-     * @param mixed $item The current CRUD model.
+     * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
      * @param array $data The form data.
      * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
@@ -112,7 +111,7 @@ trait Create
     /**
      * Sync the declared many-to-many associations through the pivot field.
      *
-     * @param Model $model The current CRUD model.
+     * @param \Illuminate\Database\Eloquent\Model $model The current CRUD model.
      * @param array $data The form data.
      * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
@@ -148,7 +147,7 @@ trait Create
     /**
      * Create any existing one to one relations for the current model from the form data.
      *
-     * @param Model $item The current CRUD model.
+     * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
      * @param array $data The form data.
      * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
@@ -161,7 +160,7 @@ trait Create
     /**
      * Create any existing one to one relations for the current model from the relation data.
      *
-     * @param Model $item The current CRUD model.
+     * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
      * @param array $formattedData The form data.
      */
     private function createRelationsForItem($item, $formattedData)

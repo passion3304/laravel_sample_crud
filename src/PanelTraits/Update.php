@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 
 trait Update
@@ -79,7 +78,7 @@ trait Update
     /**
      * Get the value of the 'name' attribute from the declared relation model in the given field.
      *
-     * @param Model $model The current CRUD model.
+     * @param \Illuminate\Database\Eloquent\Model $model The current CRUD model.
      * @param array $field The CRUD field array.
      *
      * @return mixed The value of the 'name' attribute from the relation model.

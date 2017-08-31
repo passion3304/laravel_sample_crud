@@ -17,7 +17,6 @@ use Backpack\CRUD\PanelTraits\Buttons;
 use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Filters;
 use Backpack\CRUD\PanelTraits\Reorder;
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\FakeColumns;
@@ -243,7 +242,7 @@ class CrudPanel
      * @param int $length Optionally specify the number of relations to omit from the start of the relation string. If
      *        the provided length is negative, then that many relations will be omitted from the end of the relation
      *        string.
-     * @param Model $model Optionally specify a different model than the one in the crud object.
+     * @param \Illuminate\Database\Eloquent\Model $model Optionally specify a different model than the one in the crud object.
      *
      * @return string Relation model name.
      */
@@ -270,7 +269,7 @@ class CrudPanel
      * Get the given attribute from a model or models resulting from the specified relation string (eg: the list of streets from
      * the many addresses of the company of a given user).
      *
-     * @param Model $model Model (eg: user).
+     * @param \Illuminate\Database\Eloquent\Model $model Model (eg: user).
      * @param string $relationString Model relation. Can be a string representing the name of a relation method in the given
      *        Model or one from a different Model through multiple relations. A dot notation can be used to specify
      *        multiple relations (eg: user.company.address).
@@ -295,7 +294,7 @@ class CrudPanel
      * Traverse the tree of relations for the given model, defined by the given relation string, and return the ending
      * associated model instance or instances.
      *
-     * @param Model $model The CRUD model.
+     * @param \Illuminate\Database\Eloquent\Model $model The CRUD model.
      * @param string $relationString Relation string. A dot notation can be used to chain multiple relations.
      * @return array An array of the associated model instances defined by the relation string.
      */
