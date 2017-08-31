@@ -307,7 +307,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testRemoveFieldsByNameInvalidArray()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->addFields($this->threeTextFieldsArray);
 
