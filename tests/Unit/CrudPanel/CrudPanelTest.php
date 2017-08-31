@@ -46,13 +46,17 @@ class CrudPanelTest extends BaseCrudPanelTest
 
     public function testSync()
     {
-        // TODO: find out what sync method does
         $this->markTestIncomplete();
+
+        // TODO: the sync method should not be in the CrudPanel class and should not be exposed in the public API.
+        //       it is an utility method and should be refactored.
     }
 
     public function testSort()
     {
-        // TODO: find out what sort method does
         $this->markTestIncomplete();
+
+        // TODO: the sort method should not be in the CrudPanel class and should not be exposed in the public API.
+        //       it is an utility method and should be refactored.
     }
 }
