@@ -118,7 +118,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testMoveColumnBeforeUnknownColumnName()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->addColumns($this->twoColumnsArray);
 
