@@ -293,24 +293,68 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
         $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
     }
 
-    public function testRemoveFields()
+    public function testRemoveFieldsByName()
     {
-        $this->markTestIncomplete();
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->removeFields(['field1']);
+
+        $this->assertEquals(2, count($this->crudPanel->create_fields));
+        $this->assertEquals(2, count($this->crudPanel->update_fields));
+        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->create_fields));
+        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->update_fields));
+    }
+
+    public function testRemoveFieldsByNameInvalidArray()
+    {
+        $this->markTestIncomplete("Not correctly implemented");
+
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        // TODO: this should not work because the method specifically asks for an array of field keys, but it does
+        //       because the removeField method will actually work with arrays instead of a string
+        $this->crudPanel->removeFields($this->twoTextFieldsArray);
+
+        $this->assertEquals(3, count($this->crudPanel->create_fields));
+        $this->assertEquals(3, count($this->crudPanel->update_fields));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->create_fields));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
     }
 
     public function testRemoveFieldsFromCreateForm()
     {
-        $this->markTestIncomplete();
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->removeFields(['field1'], 'create');
+
+        $this->assertEquals(2, count($this->crudPanel->create_fields));
+        $this->assertEquals(3, count($this->crudPanel->update_fields));
+        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->create_fields));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
     }
 
     public function testRemoveFieldsFromUpdateForm()
     {
-        $this->markTestIncomplete();
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->removeFields(['field1'], 'update');
+
+        $this->assertEquals(3, count($this->crudPanel->create_fields));
+        $this->assertEquals(2, count($this->crudPanel->update_fields));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->create_fields));
+        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->update_fields));
     }
 
     public function testRemoveUnknownFields()
     {
-        $this->markTestIncomplete();
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->removeFields(['field4']);
+
+        $this->assertEquals(3, count($this->crudPanel->create_fields));
+        $this->assertEquals(3, count($this->crudPanel->update_fields));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->create_fields));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
     }
 
     public function testCheckIfFieldIsFirstOfItsType()
