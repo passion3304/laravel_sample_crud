@@ -30,7 +30,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
         ],
         [
             'otherKey' => 'field2',
-        ]
+        ],
     ];
 
     private $twoTextFieldsArray = [
@@ -146,63 +146,63 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
         'field1' => [
             'name' => 'field1',
             'label' => 'Field1',
-            'type' => 'text'
+            'type' => 'text',
         ],
         'field2' => [
             'name' => 'field2',
             'type' => 'address',
-            'label' => 'Field2'
+            'label' => 'Field2',
         ],
         'field3' => [
             'name' => 'field3',
             'type' => 'address',
-            'label' => 'Field3'
+            'label' => 'Field3',
         ],
         'field4' => [
             'name' => 'field4',
             'type' => 'checkbox',
-            'label' => 'Field4'
+            'label' => 'Field4',
         ],
         'field5' => [
             'name' => 'field5',
             'type' => 'date',
-            'label' => 'Field5'
+            'label' => 'Field5',
         ],
         'field6' => [
             'name' => 'field6',
             'type' => 'email',
-            'label' => 'Field6'
+            'label' => 'Field6',
         ],
         'field7' => [
             'name' => 'field7',
             'type' => 'hidden',
-            'label' => 'Field7'
+            'label' => 'Field7',
         ],
         'field8' => [
             'name' => 'field8',
             'type' => 'password',
-            'label' => 'Field8'
+            'label' => 'Field8',
         ],
         'field9' => [
             'name' => 'field9',
             'type' => 'select2',
-            'label' => 'Field9'
+            'label' => 'Field9',
         ],
         'field10' => [
             'name' => 'field10',
             'type' => 'select2_multiple',
-            'label' => 'Field10'
+            'label' => 'Field10',
         ],
         'field11' => [
             'name' => 'field11',
             'type' => 'table',
-            'label' => 'Field11'
+            'label' => 'Field11',
         ],
         'field12' => [
             'name' => 'field12',
             'type' => 'url',
-            'label' => 'Field12'
-        ]
+            'label' => 'Field12',
+        ],
     ];
 
     public function testAddFieldByName()
