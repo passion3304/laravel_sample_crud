@@ -40,7 +40,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
             'name' => 'field2',
             'label' => 'Field2',
             'type' => 'text',
-        ]
+        ],
     ];
 
     private $threeTextFieldsArray = [
@@ -131,7 +131,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testBeforeField()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->addFields($this->threeTextFieldsArray);
 
@@ -149,7 +149,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testBeforeFieldCreateForm()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->addFields($this->threeTextFieldsArray, 'create');
 
@@ -165,7 +165,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testBeforeFieldUpdateForm()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->addFields($this->threeTextFieldsArray, 'update');
 
@@ -181,7 +181,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testBeforeFieldForDifferentFieldsInCreateAndUpdate()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->addFields($this->threeTextFieldsArray, 'create');
         $this->crudPanel->addFields($this->twoTextFieldsArray, 'update');
