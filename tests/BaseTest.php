@@ -4,7 +4,7 @@ namespace Backpack\CRUD\Tests;
 
 use Orchestra\Testbench\TestCase;
 
-abstract class TestCase extends TestCase
+abstract class BaseTest extends TestCase
 {
     protected function setUp()
     {
