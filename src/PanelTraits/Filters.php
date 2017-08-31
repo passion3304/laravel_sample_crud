@@ -65,8 +65,8 @@ trait Filters
         $this->filters->push($filter);
 
         // if a closure was passed as "filter_logic"
-        if ($this->doingListOperation()){
-        	if($this->request->has($options['name'])) {
+        if ($this->doingListOperation()) {
+        	if ($this->request->has($options['name'])) {
 		        if (is_callable($filter_logic)) {
 			        // apply it
 			        $filter_logic($this->request->input($options['name']));
