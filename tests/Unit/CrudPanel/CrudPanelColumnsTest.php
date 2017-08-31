@@ -109,38 +109,44 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
     {
         $this->crudPanel->addColumns($this->twoColumnsArray);
 
-        $this->assertEquals(2, count($this->crudPanel->columns));
-        $this->assertEquals($this->expectedTwoColumnsArray, $this->crudPanel->columns);
-
         $this->crudPanel->beforeColumn('column1');
+
         $keys = array_keys($this->crudPanel->columns);
         $this->assertEquals($this->expectedTwoColumnsArray['column2'], $this->crudPanel->columns[$keys[0]]);
-
         $this->assertEquals(['column2', 'column1'], $keys);
     }
 
     public function testMoveColumnBeforeUnknownColumnName()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete("Not correctly implemented");
+
+        $this->crudPanel->addColumns($this->twoColumnsArray);
+
+        // TODO: fix the before column. it should not change the columns if the given target column does not exist.
+        $this->crudPanel->beforeColumn('column3');
+
+        $this->assertEquals(array_keys($this->expectedTwoColumnsArray), array_keys($this->crudPanel->columns));
     }
 
     public function testMoveColumnAfter()
     {
         $this->crudPanel->addColumns($this->threeColumnsArray);
-        $this->assertEquals(3, count($this->crudPanel->columns));
-        $this->assertEquals($this->expectedThreeColumnsArray, $this->crudPanel->columns);
 
         $this->crudPanel->afterColumn('column1');
+
         $keys = array_keys($this->crudPanel->columns);
-
         $this->assertEquals($this->expectedThreeColumnsArray['column3'], $this->crudPanel->columns[$keys[1]]);
-
         $this->assertEquals(['column1', 'column3', 'column2'], $keys);
     }
 
     public function testMoveColumnAfterUnknownColumnName()
     {
-        $this->markTestIncomplete();
+        $this->crudPanel->addColumns($this->twoColumnsArray);
+
+        // TODO: although this works, the processing should stop if the target column is not found in columns array.
+        $this->crudPanel->afterColumn('column3');
+
+        $this->assertEquals(array_keys($this->expectedTwoColumnsArray), array_keys($this->crudPanel->columns));
     }
 
     public function testRemoveColumnByName()

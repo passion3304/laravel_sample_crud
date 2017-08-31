@@ -33,6 +33,7 @@ class CrudPanelTest extends BaseCrudPanelTest
 
     public function testSetRouteName()
     {
+        // TODO: check if we need an app instance to test this out
         $this->markTestIncomplete();
     }
 
@@ -45,11 +46,13 @@ class CrudPanelTest extends BaseCrudPanelTest
 
     public function testSync()
     {
+        // TODO: find out what sync method does
         $this->markTestIncomplete();
     }
 
     public function testSort()
     {
+        // TODO: find out what sort method does
         $this->markTestIncomplete();
     }
 }
