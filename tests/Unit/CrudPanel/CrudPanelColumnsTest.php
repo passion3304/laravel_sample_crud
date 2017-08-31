@@ -151,7 +151,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testRemoveColumnByName()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         //TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
@@ -164,7 +164,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testRemoveUnknownColumnName()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         // TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
@@ -179,7 +179,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testRemoveColumns()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         // TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
@@ -192,7 +192,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testRemoveUnknownColumns()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         // TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);

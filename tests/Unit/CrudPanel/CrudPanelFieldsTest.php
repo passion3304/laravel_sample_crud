@@ -5,65 +5,65 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 class CrudPanelFieldsTest extends BaseCrudPanelTest
 {
     private $oneTextFieldArray = [
-        "name" => "field1",
-        "label" => "Field1",
-        "type" => "text"
+        'name' => 'field1',
+        'label' => 'Field1',
+        'type' => 'text',
     ];
 
     private $expectedOneTextFieldArray = [
-        "field1" => [
-            "name" => "field1",
-            "label" => "Field1",
-            "type" => "text"
-        ]
+        'field1' => [
+            'name' => 'field1',
+            'label' => 'Field1',
+            'type' => 'text',
+        ],
     ];
 
     private $twoTextFieldsArray = [
         [
-            "name" => "field1",
-            "label" => "Field1",
-            "type" => "text"
+            'name' => 'field1',
+            'label' => 'Field1',
+            'type' => 'text',
         ],
         [
-            "name" => "field2",
-            "label" => "Field2",
-            "type" => "text"
-        ]
+            'name' => 'field2',
+            'label' => 'Field2',
+            'type' => 'text',
+        ],
     ];
 
     private $threeTextFieldsArray = [
         [
-            "name" => "field1",
-            "label" => "Field1",
-            "type" => "text"
+            'name' => 'field1',
+            'label' => 'Field1',
+            'type' => 'text',
         ],
         [
-            "name" => "field2",
-            "label" => "Field2",
-            "type" => "text"
+            'name' => 'field2',
+            'label' => 'Field2',
+            'type' => 'text',
         ],
         [
-            "name" => "field3",
-            "label" => "Field3",
-            "type" => "text"
-        ]
+            'name' => 'field3',
+            'label' => 'Field3',
+            'type' => 'text',
+        ],
     ];
     private $expectedThreeTextFieldsArray = [
-        "field1" => [
-            "name" => "field1",
-            "label" => "Field1",
-            "type" => "text"
+        'field1' => [
+            'name' => 'field1',
+            'label' => 'Field1',
+            'type' => 'text',
         ],
-        "field2" => [
-            "name" => "field2",
-            "label" => "Field2",
-            "type" => "text"
+        'field2' => [
+            'name' => 'field2',
+            'label' => 'Field2',
+            'type' => 'text',
         ],
-        "field3" => [
-            "name" => "field3",
-            "label" => "Field3",
-            "type" => "text"
-        ]
+        'field3' => [
+            'name' => 'field3',
+            'label' => 'Field3',
+            'type' => 'text',
+        ],
     ];
 
     public function testAddFieldByName()
