@@ -18,6 +18,21 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
         ],
     ];
 
+    private $unknownFieldTypeArray = [
+        'name' => 'field1',
+        'type' => 'unknownType',
+    ];
+
+    private $invalidTwoFieldsArray = [
+        [
+            'keyOne' => 'field1',
+            'keyTwo' => 'Field1',
+        ],
+        [
+            'otherKey' => 'field2',
+        ]
+    ];
+
     private $twoTextFieldsArray = [
         [
             'name' => 'field1',
@@ -76,6 +91,120 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
         ],
     ];
 
+    private $multipleFieldTypesArray = [
+        [
+            'name' => 'field1',
+            'label' => 'Field1',
+        ],
+        [
+            'name' => 'field2',
+            'type' => 'address',
+        ],
+        [
+            'name' => 'field3',
+            'type' => 'address',
+        ],
+        [
+            'name' => 'field4',
+            'type' => 'checkbox',
+        ],
+        [
+            'name' => 'field5',
+            'type' => 'date',
+        ],
+        [
+            'name' => 'field6',
+            'type' => 'email',
+        ],
+        [
+            'name' => 'field7',
+            'type' => 'hidden',
+        ],
+        [
+            'name' => 'field8',
+            'type' => 'password',
+        ],
+        [
+            'name' => 'field9',
+            'type' => 'select2',
+        ],
+        [
+            'name' => 'field10',
+            'type' => 'select2_multiple',
+        ],
+        [
+            'name' => 'field11',
+            'type' => 'table',
+        ],
+        [
+            'name' => 'field12',
+            'type' => 'url',
+        ],
+    ];
+
+    private $expectedMultipleFieldTypesArray = [
+        'field1' => [
+            'name' => 'field1',
+            'label' => 'Field1',
+            'type' => 'text'
+        ],
+        'field2' => [
+            'name' => 'field2',
+            'type' => 'address',
+            'label' => 'Field2'
+        ],
+        'field3' => [
+            'name' => 'field3',
+            'type' => 'address',
+            'label' => 'Field3'
+        ],
+        'field4' => [
+            'name' => 'field4',
+            'type' => 'checkbox',
+            'label' => 'Field4'
+        ],
+        'field5' => [
+            'name' => 'field5',
+            'type' => 'date',
+            'label' => 'Field5'
+        ],
+        'field6' => [
+            'name' => 'field6',
+            'type' => 'email',
+            'label' => 'Field6'
+        ],
+        'field7' => [
+            'name' => 'field7',
+            'type' => 'hidden',
+            'label' => 'Field7'
+        ],
+        'field8' => [
+            'name' => 'field8',
+            'type' => 'password',
+            'label' => 'Field8'
+        ],
+        'field9' => [
+            'name' => 'field9',
+            'type' => 'select2',
+            'label' => 'Field9'
+        ],
+        'field10' => [
+            'name' => 'field10',
+            'type' => 'select2_multiple',
+            'label' => 'Field10'
+        ],
+        'field11' => [
+            'name' => 'field11',
+            'type' => 'table',
+            'label' => 'Field11'
+        ],
+        'field12' => [
+            'name' => 'field12',
+            'type' => 'url',
+            'label' => 'Field12'
+        ]
+    ];
+
     public function testAddFieldByName()
     {
         $this->crudPanel->addField('field1');
@@ -108,7 +237,28 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testAddFieldsDifferentTypes()
     {
-        $this->markTestIncomplete();
+        $this->crudPanel->addFields($this->multipleFieldTypesArray);
+
+        $this->assertEquals(12, count($this->crudPanel->create_fields));
+        $this->assertEquals(12, count($this->crudPanel->update_fields));
+        $this->assertEquals($this->expectedMultipleFieldTypesArray, $this->crudPanel->create_fields);
+        $this->assertEquals($this->expectedMultipleFieldTypesArray, $this->crudPanel->update_fields);
+    }
+
+    public function testAddFieldsInvalidArray()
+    {
+        $this->setExpectedException(\ErrorException::class);
+
+        $this->crudPanel->addFields($this->invalidTwoFieldsArray);
+    }
+
+    public function testAddFieldWithInvalidType()
+    {
+        $this->markTestIncomplete('Not correctly implemented');
+
+        // TODO: should we validate field types and throw an error if they're not in the pre-defined list of fields or
+        //       in the list of custom field?
+        $this->crudPanel->addFields($this->unknownFieldTypeArray);
     }
 
     public function testAddFieldsForCreateForm()
@@ -359,12 +509,25 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testCheckIfFieldIsFirstOfItsType()
     {
-        $this->markTestIncomplete();
+        $isFirstAddressFieldFirst = $this->crudPanel->checkIfFieldIsFirstOfItsType($this->multipleFieldTypesArray[1], $this->expectedMultipleFieldTypesArray);
+        $isSecondAddressFieldFirst = $this->crudPanel->checkIfFieldIsFirstOfItsType($this->multipleFieldTypesArray[2], $this->expectedMultipleFieldTypesArray);
+
+        $this->assertTrue($isFirstAddressFieldFirst);
+        $this->assertFalse($isSecondAddressFieldFirst);
     }
 
     public function testCheckIfUnknownFieldIsFirstOfItsType()
     {
-        $this->markTestIncomplete();
+        $isUnknownFieldFirst = $this->crudPanel->checkIfFieldIsFirstOfItsType($this->unknownFieldTypeArray, $this->expectedMultipleFieldTypesArray);
+
+        $this->assertFalse($isUnknownFieldFirst);
+    }
+
+    public function testCheckIfInvalidFieldIsFirstOfItsType()
+    {
+        $this->setExpectedException(\ErrorException::class);
+
+        $this->crudPanel->checkIfFieldIsFirstOfItsType($this->invalidTwoFieldsArray[0], $this->expectedMultipleFieldTypesArray);
     }
 
     public function testDecodeJsonCastedAttributes()
