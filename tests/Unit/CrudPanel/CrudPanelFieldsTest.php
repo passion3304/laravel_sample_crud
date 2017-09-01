@@ -338,7 +338,8 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         // TODO: fix the before field method not preserving field keys
         // TODO: in the case of the create form, this will move the 'field3' field before the 'field1' field, but for
-        //       the update form, it will move the 'field2' field before the 'field1' field. should it work like this?
+        //       the update form, it will move the 'field2' field before the 'field1' field. fix by adding second
+        //       optional $form parameter with 'both' as a default value.
         $this->crudPanel->beforeField('field1');
 
         $createKeys = array_keys($this->crudPanel->create_fields);

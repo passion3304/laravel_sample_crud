@@ -153,7 +153,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
     {
         $this->markTestIncomplete('Not correctly implemented');
 
-        //TODO: fix the remove column functionality
+        // TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
         $this->crudPanel->removeColumn('column1');
 
