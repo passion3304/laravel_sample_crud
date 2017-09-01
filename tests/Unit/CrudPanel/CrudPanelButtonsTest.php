@@ -7,7 +7,7 @@ use Backpack\CRUD\PanelTraits\CrudButton;
 class CrudPanelButtonsTest extends BaseCrudPanelTest
 {
     private $defaultButtonNames = [
-        'preview', 'update', 'revisions', 'delete', 'create', 'reorder'
+        'preview', 'update', 'revisions', 'delete', 'create', 'reorder',
     ];
 
     private $topViewButton;
@@ -64,7 +64,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
     public function testAddButtonBottomUnknownStackName()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->setExpectedException(\Exception::class);
 
@@ -76,7 +76,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
     public function testAddButtonsWithSameName()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $expectedButton = $this->topViewButton;
 
@@ -108,7 +108,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
     public function testAddButtonUnknownPosition()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->setExpectedException(\Exception::class);
 
@@ -139,7 +139,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
         $this->assertEquals($expectedButton->stack, $actualButton->stack);
         $this->assertEquals($expectedButton->name, $actualButton->name);
-        $this->assertEquals($backpackButtonViewPackage . $viewName, $actualButton->content);
+        $this->assertEquals($backpackButtonViewPackage.$viewName, $actualButton->content);
         $this->assertEquals($expectedButton->stack, $actualButton->stack);
     }
 
@@ -193,7 +193,6 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
         $this->crudPanel->removeButtonFromStack($button->name, 'someStackName');
 
         $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons));
-
     }
 
     public function testRemoveAllButtonsFromStack()
@@ -216,5 +215,4 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
             return $value->name == $name;
         });
     }
-
 }
