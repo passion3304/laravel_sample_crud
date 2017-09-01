@@ -1,11 +1,11 @@
 <td>
-  @if( !empty($entry->{$column['name']}) ) 
-    <a 
-      href="{{ $entry->{$column['name']} }}"
+  @if( !empty($entry->{$column['src']}) )
+    <a
+      href="{{ $entry->{$column['src']} }}"
       target="_blank"
     >
-      <img 
-        src="{{ $entry->{$column['name']} }}" 
+      <img
+        src="{{ $entry->{$column['src']} }}"
         style="
           height: {{ isset($column['height']) ? $column['height'] : "25px" }};
           width: {{ isset($column['width']) ? $column['width'] : "auto" }};
