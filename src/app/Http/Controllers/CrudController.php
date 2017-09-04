@@ -137,33 +137,10 @@ class CrudController extends BaseController
     {
         $this->crud->hasAccessOrFail('update');
 
-        // Get initial list of save actions.
-        $saveAction = $this->getSaveAction();
-
-        // Add current active on top of the stack.
-        $saveAction['options'] = [$saveAction['active']['value'] => $saveAction['active']['label']] + $saveAction['options'];
-
-        // Correctly remove "Save and back item" option.
-        if (! $this->crud->hasAccess('list')) {
-            unset($saveAction['options']['save_and_back']);
-        }
-
-        // Correctly remove "Save and new item" option.
-        if (! $this->crud->hasAccess('create')) {
-            unset($saveAction['options']['save_and_new']);
-        }
-
-        // Set first available action.
-        $saveAction['active']['label'] = reset($saveAction['options']);
-        $saveAction['active']['value'] = key($saveAction['options']);
-
-        // Remove active value from options.
-        unset($saveAction['options'][key($saveAction['options'])]);
-
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
-        $this->data['saveAction'] = $saveAction;
+        $this->data['saveAction'] = $this->getSaveAction();
         $this->data['fields'] = $this->crud->getUpdateFields($id);
         $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
 

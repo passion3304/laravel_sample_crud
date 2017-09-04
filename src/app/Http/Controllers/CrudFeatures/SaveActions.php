@@ -12,27 +12,39 @@ trait SaveActions
     public function getSaveAction()
     {
         $saveAction = session('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
-        $saveOptions = [];
-        $saveCurrent = [
-            'value' => $saveAction,
-            'label' => $this->getSaveActionButtonName($saveAction),
+
+        // Generate list of actions to main action order.
+        $saveOptions = [
+            'save_and_back' => $this->getSaveActionButtonName('save_and_back'),
+            'save_and_edit' => $this->getSaveActionButtonName('save_and_edit'),
+            'save_and_new' => $this->getSaveActionButtonName('save_and_new'),
         ];
 
-        switch ($saveAction) {
-            case 'save_and_edit':
-                $saveOptions['save_and_back'] = $this->getSaveActionButtonName('save_and_back');
-                $saveOptions['save_and_new'] = $this->getSaveActionButtonName('save_and_new');
-                break;
-            case 'save_and_new':
-                $saveOptions['save_and_back'] = $this->getSaveActionButtonName('save_and_back');
-                $saveOptions['save_and_edit'] = $this->getSaveActionButtonName('save_and_edit');
-                break;
-            case 'save_and_back':
-            default:
-                $saveOptions['save_and_edit'] = $this->getSaveActionButtonName('save_and_edit');
-                $saveOptions['save_and_new'] = $this->getSaveActionButtonName('save_and_new');
-                break;
+        // Correctly remove "Save and back" action.
+        if (! $this->crud->hasAccess('list')) {
+            unset($saveOptions['save_and_back']);
         }
+
+        // Correctly remove "Save and new" action.
+        if (! $this->crud->hasAccess('create')) {
+            unset($saveOptions['save_and_new']);
+        }
+
+        // Set current action if it exist, or first available option.
+        if (isset($saveOptions[$saveAction])) {
+            $saveCurrent = [
+                'value' => $saveAction,
+                'label' => $saveOptions[$saveAction],
+            ];
+        } else {
+            $saveCurrent = [
+                'value' => key($saveOptions),
+                'label' => reset($saveOptions),
+            ];
+        }
+
+        // Remove active action from options.
+        unset($saveOptions[$saveCurrent['value']]);
 
         return [
             'active' => $saveCurrent,
