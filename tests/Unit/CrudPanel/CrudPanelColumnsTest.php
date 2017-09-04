@@ -204,4 +204,39 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $this->assertNotContains('column4', $this->crudPanel->columns);
         $this->assertNotContains($this->otherOneColumnArray, $this->crudPanel->columns);
     }
+
+    public function testSetColumnDetails()
+    {
+        $this->markTestIncomplete('Not correctly implemented');
+
+        // TODO: refactor crud panel sync method
+    }
+
+    public function testSetColumnsDetails()
+    {
+        $this->markTestIncomplete('Not correctly implemented');
+
+        // TODO: refactor crud panel sync method
+    }
+
+    public function testSetColumnOrder()
+    {
+        $this->markTestIncomplete('Not yet implemented');
+
+        // TODO: implement method
+    }
+
+    public function testSetColumnsOrder()
+    {
+        $this->markTestIncomplete('Not yet implemented');
+
+        // TODO: implement method
+    }
+
+    public function testOrderColumns()
+    {
+        $this->markTestIncomplete('Not correctly implemented');
+
+        // TODO: fix order columns method
+    }
 }
