@@ -22,9 +22,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.2.19] - 2017-09-xx
 
+## Added
+- text filter type;
+
 ## Fixed
 - date_range field start_name value always falled back to default - #450;
-
 
 
 ## [3.2.18] - 2017-08-30
