@@ -8,6 +8,8 @@
     @if (!isset($field['wrapperAttributes']['class']))
 		class="form-group col-md-12"
     @endif
+@elseif ($field['type'] == 'hidden')
+	class="hidden"
 @else
 	class="form-group col-md-12"
 @endif
