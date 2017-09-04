@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - date_range field start_name value always falled back to default - #450;
 - hidden field types now have no height - fixes #555;
 - image field type can now be modified in size - fixes #572;
+- we were unable to save model with optional fake fields - fixes #616;
 
 ## [3.2.18] - 2017-08-30
 
