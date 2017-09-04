@@ -12,7 +12,7 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
         'list',
         'create',
         'update',
-        'delete'
+        'delete',
     ];
 
     private $fullAccessList = [
@@ -23,7 +23,7 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
         'revisions',
         'reorder',
         'show',
-        'details_row'
+        'details_row',
     ];
 
     public function testDefaultAccess()
@@ -101,7 +101,7 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 
     public function testHasAccessOrFail()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         foreach ($this->defaultAccessList as $permission) {
 
@@ -118,5 +118,4 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 
         $this->crudPanel->hasAccessOrFail($this->unknownPermission);
     }
-
 }
