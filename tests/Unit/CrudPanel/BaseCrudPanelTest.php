@@ -19,6 +19,7 @@ abstract class BaseCrudPanelTest extends BaseTest
         parent::setUp();
 
         $this->crudPanel = new CrudPanel();
-        $this->model = new TestModel();
+        $this->crudPanel->setModel(TestModel::class);
+        $this->model = $this->crudPanel->getModel();
     }
 }
