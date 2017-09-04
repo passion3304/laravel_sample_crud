@@ -27,7 +27,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Fixed
 - date_range field start_name value always falled back to default - #450;
-
+- hidden field types now have no height - fixes #555;
 
 ## [3.2.18] - 2017-08-30
 
