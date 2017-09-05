@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.20] - 2017-09-x
+
+## Fixed
+- zh-cn instead of zh-CN language folder - fixes #849;
+
+
 ## [3.2.19] - 2017-09-05
 
 ## Added
