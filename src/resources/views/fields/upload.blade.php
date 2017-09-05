@@ -6,13 +6,10 @@
 	{{-- Show the file name and a "Clear" button on EDIT form. --}}
     @if (!empty($field['value']))
     <div class="well well-sm">
-        @php
-            $prefix = !empty($field['prefix']) ? $field['prefix'] : '';
-        @endphp
         @if (isset($field['disk']))
-            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->url($prefix.$field['value']))) }}">
+            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->url(array_get($field, 'prefix', '').$field['value']))) }}">
         @else
-            <a target="_blank" href="{{ (asset($prefix.$field['value'])) }}">
+            <a target="_blank" href="{{ (asset(array_get($field, 'prefix', '').$field['value'])) }}">
         @endif
             {{ $field['value'] }}
         </a>
