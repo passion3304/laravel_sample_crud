@@ -4,7 +4,7 @@
     @include('crud::inc.field_translatable_icon')
 
 	{{-- Show the file name and a "Clear" button on EDIT form. --}}
-    @if (isset($field['value']) && $field['value']!=null)
+    @if (!empty($field['value']))
     <div class="well well-sm">
         @php
             $prefix = !empty($field['prefix']) ? $field['prefix'] : '';
