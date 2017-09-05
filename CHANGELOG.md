@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.19] - 2017-09-xx
+## [3.2.19] - 2017-09-05
 
 ## Added
 - text filter type;
