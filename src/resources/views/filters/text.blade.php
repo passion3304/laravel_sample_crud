@@ -2,7 +2,7 @@
 
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
+	class="dropdown {{ Request::get($filter->name) ? 'active' : '' }}">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
 	<div class="dropdown-menu">
 		<div class="form-group backpack-filter m-b-0">
@@ -25,26 +25,12 @@
 {{-- ########################################### --}}
 {{-- Extra CSS and JS for this particular filter --}}
 
-{{-- FILTERS EXTRA CSS  --}}
-{{-- push things in the after_styles section --}}
-
-@push('crud_list_styles')
-    {{-- <link href="{{ asset('vendor/adminlte/plugins/datepicker/datepicker3.css') }}" rel="stylesheet" type="text/css" /> --}}
-	<style>
-		.input-group.date {
-			width: 320px;
-			max-width: 100%;
-		}
-	</style>
-@endpush
-
 
 {{-- FILTERS EXTRA JS --}}
 {{-- push things in the after_scripts section --}}
 
 @push('crud_list_scripts')
 	<!-- include select2 js-->
-	{{-- <script type="text/javascript" src="{{ asset('vendor/adminlte/plugins/datepicker/bootstrap-datepicker.js') }}"></script> --}}
   <script>
 		jQuery(document).ready(function($) {
 			$('#text-filter-{{ str_slug($filter->name) }}').on('change', function(e) {
@@ -73,16 +59,13 @@
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 						$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
-					}
-					else
-					{
+					} else {
 						$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
 					}
 			    @endif
 			});
 
 			$('li[filter-name={{ str_slug($filter->name) }}]').on('filter:clear', function(e) {
-				// console.log('date filter cleared');
 				$('li[filter-name={{ $filter->name }}]').removeClass('active');
 				$('#text-filter-{{ str_slug($filter->name) }}').val('');
 			});
