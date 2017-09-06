@@ -2,7 +2,11 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-class CrudPanelFakeFieldsTest extends BaseCrudPanelTest
+use Backpack\CRUD\Tests\Unit\Models\Article;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+
+class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 {
     private $fakeFieldsArray = [
         [
@@ -31,7 +35,7 @@ class CrudPanelFakeFieldsTest extends BaseCrudPanelTest
             'name' => 'tags',
             'label' => "Tags",
             'fake' => true,
-            'store_in' => 'tagsz'
+            'store_in' => 'tags'
         ],
         [
             'name' => 'extra_details',
@@ -56,30 +60,66 @@ class CrudPanelFakeFieldsTest extends BaseCrudPanelTest
         'extra_details' => ['detail1', 'detail2', 'detail3']
     ];
 
+    private $expectedInputDataWithCompactedFakeFields = [
+        'value1' => 'Value 1',
+        'value2' => 'Value 2',
+        'value3' => 'Value 3',
+        'metas' => '{"meta_title":"Meta Title Value","meta_description":"Meta Description Value"}',
+        'tags' => '{"tags":["tag1","tag2","tag3"]}',
+        'extras' => '{"extra_details":["detail1","detail2","detail3"]}',
+    ];
+
     public function testCompactFakeFieldsFromCreateForm()
     {
         $this->markTestIncomplete("Not correctly implemented");
 
         $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData);
+        // TODO: the compactFakeFields method fails when a fake field has the same value for the 'name' and 'store_in'
+        //       attributes (in our case, the tags field in the fake field array)
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'create');
 
-        // TODO: check error when fake name is same as database table name
+        $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }
 
     public function testCompactFakeFieldsFromUpdateForm()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete("Not correctly implemented");
+
+        $article = DB::table('articles')->where('id', 1)->first();
+        $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+
+        // TODO: the compactFakeFields method fails when a fake field has the same value for the 'name' and 'store_in'
+        //       attributes (in our case, the tags field in the fake field array)
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update', $article->id);
+
+        $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }
 
-    public function testCompactFakeFieldsFromUpdateFormWithId()
+    public function testCompactFakeFieldsFromUpdateFormWithoutId()
     {
-        $this->markTestIncomplete();
+        $this->setExpectedException(ModelNotFoundException::class);
+
+        $this->crudPanel->setModel(Article::class);
+
+        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update');
+
+        $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }
 
     public function testCompactFakeFieldsFromUpdateFormWithUnknownId()
     {
-        $this->markTestIncomplete();
+        $this->setExpectedException(ModelNotFoundException::class);
+
+        $unknownId = DB::getPdo()->lastInsertId() + 1;
+        $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update', $unknownId);
+
+        $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }
 
     public function testCompactFakeFieldsFromEmptyRequest()

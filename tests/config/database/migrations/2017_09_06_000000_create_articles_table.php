@@ -14,11 +14,17 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function ($table) {
             $table->increments('id');
+            $table->string('user_id');
             $table->string('content');
-            $table->string('author');
-            $table->string('tags');
             $table->string('metas');
+            $table->string('tags');
+            $table->string('extras');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
