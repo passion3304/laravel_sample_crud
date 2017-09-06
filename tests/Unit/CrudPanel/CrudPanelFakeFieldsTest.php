@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\Tests\Unit\Models\Article;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
 class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 {
@@ -15,39 +15,39 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
         ],
         [
             'name' => 'meta_title',
-            'label' => "Meta Title",
+            'label' => 'Meta Title',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'meta_description',
-            'label' => "Meta Description",
+            'label' => 'Meta Description',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'meta_keywords',
-            'label' => "Meta Keywords",
+            'label' => 'Meta Keywords',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'tags',
-            'label' => "Tags",
+            'label' => 'Tags',
             'fake' => true,
-            'store_in' => 'tags'
+            'store_in' => 'tags',
         ],
         [
             'name' => 'extra_details',
-            'label' => "Extra Details",
+            'label' => 'Extra Details',
             'fake' => true,
-        ]
+        ],
     ];
 
     private $noFakeFieldsInputData = [
         'value1' => 'Value 1',
         'value2' => 'Value 2',
-        'value3' => 'Value 3'
+        'value3' => 'Value 3',
     ];
 
     private $fakeFieldsInputData = [
@@ -57,7 +57,7 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
         'meta_title' => 'Meta Title Value',
         'meta_description' => 'Meta Description Value',
         'tags' => ['tag1', 'tag2', 'tag3'],
-        'extra_details' => ['detail1', 'detail2', 'detail3']
+        'extra_details' => ['detail1', 'detail2', 'detail3'],
     ];
 
     private $expectedInputDataWithCompactedFakeFields = [
@@ -71,7 +71,7 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 
     public function testCompactFakeFieldsFromCreateForm()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->addFields($this->fakeFieldsArray);
 
@@ -84,7 +84,7 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 
     public function testCompactFakeFieldsFromUpdateForm()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $article = DB::table('articles')->where('id', 1)->first();
         $this->crudPanel->setModel(Article::class);

@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
             'name' => $faker->name,
             'email' => $faker->safeEmail,
             'password' => bcrypt('secret'),
-            'remember_token' => str_random(10)
+            'remember_token' => str_random(10),
         ]]);
     }
 }
