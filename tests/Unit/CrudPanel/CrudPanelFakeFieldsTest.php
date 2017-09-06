@@ -11,39 +11,39 @@ class CrudPanelFakeFieldsTest extends BaseCrudPanelTest
         ],
         [
             'name' => 'meta_title',
-            'label' => "Meta Title",
+            'label' => 'Meta Title',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'meta_description',
-            'label' => "Meta Description",
+            'label' => 'Meta Description',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'meta_keywords',
-            'label' => "Meta Keywords",
+            'label' => 'Meta Keywords',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'tags',
-            'label' => "Tags",
+            'label' => 'Tags',
             'fake' => true,
-            'store_in' => 'tagsz'
+            'store_in' => 'tagsz',
         ],
         [
             'name' => 'extra_details',
-            'label' => "Extra Details",
+            'label' => 'Extra Details',
             'fake' => true,
-        ]
+        ],
     ];
 
     private $noFakeFieldsInputData = [
         'value1' => 'Value 1',
         'value2' => 'Value 2',
-        'value3' => 'Value 3'
+        'value3' => 'Value 3',
     ];
 
     private $fakeFieldsInputData = [
@@ -53,12 +53,12 @@ class CrudPanelFakeFieldsTest extends BaseCrudPanelTest
         'meta_title' => 'Meta Title Value',
         'meta_description' => 'Meta Description Value',
         'tags' => ['tag1', 'tag2', 'tag3'],
-        'extra_details' => ['detail1', 'detail2', 'detail3']
+        'extra_details' => ['detail1', 'detail2', 'detail3'],
     ];
 
     public function testCompactFakeFieldsFromCreateForm()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->addFields($this->fakeFieldsArray);
 

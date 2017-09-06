@@ -26,7 +26,7 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
         // call migrations specific to our tests
         $this->loadMigrationsFrom([
             '--database' => 'testing',
-            '--realpath' => realpath(__DIR__ . '/../../config/Database/migrations'),
+            '--realpath' => realpath(__DIR__.'/../../config/Database/migrations'),
         ]);
     }
 

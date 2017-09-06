@@ -15,40 +15,40 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
         ],
         [
             'name' => 'meta_title',
-            'label' => "Meta Title",
+            'label' => 'Meta Title',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'meta_description',
-            'label' => "Meta Description",
+            'label' => 'Meta Description',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'meta_keywords',
-            'label' => "Meta Keywords",
+            'label' => 'Meta Keywords',
             'fake' => true,
-            'store_in' => 'metas'
+            'store_in' => 'metas',
         ],
         [
             'name' => 'tags',
-            'label' => "Tags",
+            'label' => 'Tags',
             'fake' => true,
-            'store_in' => 'tags'
+            'store_in' => 'tags',
         ],
         [
             'name' => 'extra_details',
-            'label' => "Extra Details",
+            'label' => 'Extra Details',
             'fake' => true,
-        ]
+        ],
     ];
 
     private $expectedFakeFieldsColumnNames = ['metas', 'tags', 'extras'];
 
     public function testGetFakeColumnsAsArray()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->setModel(Article::class);
 
@@ -64,7 +64,7 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
 
     public function testGetFakeColumnsAsArrayFromCreateForm()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->setModel(Article::class);
 
@@ -80,7 +80,7 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
 
     public function testGetFakeColumnsAsArrayFromUpdateForm()
     {
-        $this->markTestIncomplete("Not correctly implemented");
+        $this->markTestIncomplete('Not correctly implemented');
 
         $this->crudPanel->setModel(Article::class);
 
