@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\Unit\Models\TestModel;
 use Illuminate\Database\Eloquent\Builder;
 
 class CrudPanelTest extends BaseCrudPanelTest
@@ -17,7 +18,7 @@ class CrudPanelTest extends BaseCrudPanelTest
 
     public function testSetModelFromModelClassName()
     {
-        $modelClassName = '\Backpack\CRUD\Tests\Unit\CrudPanel\TestModel';
+        $modelClassName = '\Backpack\CRUD\Tests\Unit\Models\TestModel';
 
         $this->crudPanel->setModel($modelClassName);
 

@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-class CrudPanelFakeColumnsTest extends BaseCrudPanelTest
+use Backpack\CRUD\Tests\Unit\Models\Article;
+
+class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
 {
     private $emptyFakeColumnsArray = ['extras'];
 
@@ -44,12 +46,31 @@ class CrudPanelFakeColumnsTest extends BaseCrudPanelTest
 
     private $expectedFakeFieldsColumnNames = ['metas', 'tags', 'extras'];
 
-    public function testGetFakeColumnsAsArrayFromCreateForm()
+    public function testGetFakeColumnsAsArray()
     {
-        $this->markTestIncomplete("Fails because of DB connection");
+        $this->markTestIncomplete("Not correctly implemented");
+
+        $this->crudPanel->setModel(Article::class);
 
         $this->crudPanel->addFields($this->fakeFieldsArray);
 
+        // TODO: fix getFakeColumnsAsArray calling getFields method without an entity ID for the update form
+        $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
+        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update');
+
+        $this->assertEquals($this->expectedFakeFieldsColumnNames, $createFakeColumnsArray);
+        $this->assertEquals($this->expectedFakeFieldsColumnNames, $updateFakeColumnsArray);
+    }
+
+    public function testGetFakeColumnsAsArrayFromCreateForm()
+    {
+        $this->markTestIncomplete("Not correctly implemented");
+
+        $this->crudPanel->setModel(Article::class);
+
+        $this->crudPanel->addFields($this->fakeFieldsArray, 'create');
+
+        // TODO: fix getFakeColumnsAsArray calling getFields method without an entity ID for the update form
         $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
         $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update');
 
@@ -59,10 +80,13 @@ class CrudPanelFakeColumnsTest extends BaseCrudPanelTest
 
     public function testGetFakeColumnsAsArrayFromUpdateForm()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete("Not correctly implemented");
+
+        $this->crudPanel->setModel(Article::class);
 
         $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
 
+        // TODO: fix getFakeColumnsAsArray calling getFields method without an entity ID for the update form
         $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
         $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update');
 
