@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
 use Illuminate\Support\Facades\DB;
+use Backpack\CRUD\Tests\Unit\Models\Article;
 
 class CrudPanelTabsTest extends BaseDBCrudPanelTest
 {
@@ -15,23 +15,23 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
         [
             'name' => 'field2',
             'label' => 'Field2',
-            'tab' => 'First Tab'
+            'tab' => 'First Tab',
         ],
         [
             'name' => 'field3',
             'label' => 'Field3',
             'tab' => 'First Tab',
-            'type' => 'email'
+            'type' => 'email',
         ],
         [
             'name' => 'field4',
             'label' => 'Field4',
-            'tab' => 'Second Tab'
+            'tab' => 'Second Tab',
         ],
         [
             'name' => 'field5',
             'label' => 'Field5',
-            'tab' => 'Third Tab'
+            'tab' => 'Third Tab',
         ],
     ];
 
@@ -42,14 +42,14 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
             'name' => 'field2',
             'label' => 'Field2',
             'tab' => 'First Tab',
-            'type' => 'text'
+            'type' => 'text',
         ],
         'field3' => [
             'name' => 'field3',
             'label' => 'Field3',
             'tab' => 'First Tab',
-            'type' => 'email'
-        ]
+            'type' => 'email',
+        ],
     ];
 
     private $expectedFieldsInSecondTab = [
@@ -57,8 +57,8 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
             'name' => 'field4',
             'label' => 'Field4',
             'tab' => 'Second Tab',
-            'type' => 'text'
-        ]
+            'type' => 'text',
+        ],
     ];
 
     private $expectedFieldsInThirdTab = [
@@ -66,8 +66,8 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
             'name' => 'field5',
             'label' => 'Field5',
             'tab' => 'Third Tab',
-            'type' => 'text'
-        ]
+            'type' => 'text',
+        ],
     ];
 
     public function testTabExists()
