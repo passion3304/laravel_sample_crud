@@ -46,22 +46,6 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
 
     private $expectedFakeFieldsColumnNames = ['metas', 'tags', 'extras'];
 
-    public function testGetFakeColumnsAsArray()
-    {
-        $this->markTestIncomplete("Not correctly implemented");
-
-        $this->crudPanel->setModel(Article::class);
-
-        $this->crudPanel->addFields($this->fakeFieldsArray);
-
-        // TODO: fix getFakeColumnsAsArray calling getFields method without an entity ID for the update form
-        $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
-        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update');
-
-        $this->assertEquals($this->expectedFakeFieldsColumnNames, $createFakeColumnsArray);
-        $this->assertEquals($this->expectedFakeFieldsColumnNames, $updateFakeColumnsArray);
-    }
-
     public function testGetFakeColumnsAsArrayFromCreateForm()
     {
         $this->markTestIncomplete("Not correctly implemented");
