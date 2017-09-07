@@ -2,11 +2,11 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
-use Backpack\CRUD\Tests\Unit\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\Unit\Models\Article;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CrudPanelReadTest extends BaseDBCrudPanelTest
 {
@@ -14,7 +14,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         'name' => 'user_id',
         'type' => 'select',
         'entity' => 'user',
-        'attribute' => 'name'
+        'attribute' => 'name',
     ];
 
     private $nonRelationshipColumn = [
@@ -290,12 +290,11 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     public function testHasUploadFieldsUpdateFormUnknownId()
     {
         $this->setExpectedException(ModelNotFoundException::class);
-        
+
         $this->crudPanel->setModel(Article::class);
         $this->crudPanel->addField($this->uploadField, 'update');
 
         $unknownId = DB::getPdo()->lastInsertId() + 1;
         $this->crudPanel->hasUploadFields('update', $unknownId);
     }
-
 }
