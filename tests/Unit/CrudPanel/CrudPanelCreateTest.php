@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
-use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
+use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\Unit\Models\Article;
 
 class CrudPanelCreateTest extends BaseDBCrudPanelTest
 {
@@ -16,82 +16,82 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     private $userInputFieldsNoRelationships = [
         [
             'name' => 'id',
-            'type' => 'hidden'
+            'type' => 'hidden',
         ], [
             'name' => 'name',
         ], [
             'name' => 'email',
-            'type' => 'email'
+            'type' => 'email',
         ], [
             'name' => 'password',
-            'type' => 'password'
-        ]
+            'type' => 'password',
+        ],
     ];
 
     private $articleInputFieldsOneToMany = [
         [
             'name' => 'id',
-            'type' => 'hidden'
+            'type' => 'hidden',
         ], [
             'name' => 'content',
         ], [
             'name' => 'tags',
         ], [
-            'label' => "Author",
+            'label' => 'Author',
             'type' => 'select',
             'name' => 'user_id',
             'entity' => 'user',
             'attribute' => 'name',
-        ]
+        ],
     ];
 
     private $userInputFieldsManyToMany = [
         [
             'name' => 'id',
-            'type' => 'hidden'
+            'type' => 'hidden',
         ], [
             'name' => 'name',
         ], [
             'name' => 'email',
-            'type' => 'email'
+            'type' => 'email',
         ], [
             'name' => 'password',
-            'type' => 'password'
+            'type' => 'password',
         ], [
-            'label' => "Roles",
+            'label' => 'Roles',
             'type' => 'select_multiple',
             'name' => 'roles',
             'entity' => 'roles',
             'attribute' => 'name',
             'pivot' => true,
-        ]
+        ],
     ];
 
     private $userInputFieldsDotNotation = [
         [
             'name' => 'id',
-            'type' => 'hidden'
+            'type' => 'hidden',
         ], [
             'name' => 'name',
         ], [
             'name' => 'email',
-            'type' => 'email'
+            'type' => 'email',
         ], [
             'name' => 'password',
-            'type' => 'password'
+            'type' => 'password',
         ], [
-            'label' => "Roles",
+            'label' => 'Roles',
             'type' => 'select_multiple',
             'name' => 'roles',
             'entity' => 'roles',
             'attribute' => 'name',
             'pivot' => true,
         ], [
-            'label' => "Street",
+            'label' => 'Street',
             'name' => 'street',
             'entity' => 'accountDetails.addresses',
             'attribute' => 'street',
-        ]
+        ],
     ];
 
     public function testCreate()
@@ -114,7 +114,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
     public function testCreateWithOneToOneRelationship()
     {
-        $this->markTestIncomplete("Not yet implemented");
+        $this->markTestIncomplete('Not yet implemented');
     }
 
     public function testCreateWithOneToManyRelationship()
@@ -127,7 +127,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'tags' => $faker->words(3, true),
             'user_id' => 1,
             'metas' => null,
-            'extras' => null
+            'extras' => null,
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -147,7 +147,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'email' => $faker->safeEmail,
             'password' => bcrypt($faker->password()),
             'remember_token' => null,
-            'roles' => [1, 2]
+            'roles' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -260,7 +260,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'email' => $faker->safeEmail,
             'password' => bcrypt($faker->password()),
             'remember_token' => null,
-            'roles' => [1, 2]
+            'roles' => [1, 2],
         ];
 
         $entry = User::find(1);
@@ -279,7 +279,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'email' => $faker->safeEmail,
             'password' => bcrypt($faker->password()),
             'remember_token' => null,
-            'roles' => [1, 2]
+            'roles' => [1, 2],
         ];
 
         $entry = User::find(1);
@@ -300,7 +300,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'email' => $faker->safeEmail,
             'password' => bcrypt($faker->password()),
             'remember_token' => null,
-            'roles' => [1, 2]
+            'roles' => [1, 2],
         ];
 
         $entry = Article::find(1);
