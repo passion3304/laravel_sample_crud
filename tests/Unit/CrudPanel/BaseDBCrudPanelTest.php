@@ -30,6 +30,7 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
         ]);
 
         $this->artisan('db:seed', ['--class' => 'UsersTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'UsersRolesTableSeeder']);
         $this->artisan('db:seed', ['--class' => 'ArticlesTableSeeder']);
     }
 

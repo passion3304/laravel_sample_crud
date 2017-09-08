@@ -21,5 +21,23 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('secret'),
             'remember_token' => str_random(10),
         ]]);
+
+        DB::table('user_role')->insert([
+            'user_id' => 1,
+            'role_id' => 1
+        ]);
+
+        DB::table('account_details')->insert([
+            'user_id' => 1,
+            'nickname' => $faker->firstName(),
+            'profile_picture' => $faker->imageUrl()
+        ]);
+
+        DB::table('addresses')->insert([
+            'account_details_id' => 1,
+            'city' => $faker->city,
+            'street' => $faker->streetName,
+            'number' => $faker->randomDigitNotNull,
+        ]);
     }
 }

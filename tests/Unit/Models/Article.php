@@ -10,6 +10,7 @@ class Article extends Model
     use CrudTrait;
 
     protected $table = 'articles';
+    protected $fillable = ['user_id', 'content', 'metas', 'tags', 'extras'];
 
     /**
      * Get the author for the article.

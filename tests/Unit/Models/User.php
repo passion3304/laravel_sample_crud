@@ -10,6 +10,15 @@ class User extends Model
     use CrudTrait;
 
     protected $table = 'users';
+    protected $fillable = ['name', 'email', 'password'];
+
+    /**
+     * Get the account details associated with the user.
+     */
+    public function accountDetails()
+    {
+        return $this->hasOne('Backpack\CRUD\Tests\Unit\Models\AccountDetails');
+    }
 
     /**
      * Get the articles for this user.
@@ -17,5 +26,13 @@ class User extends Model
     public function articles()
     {
         return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Article');
+    }
+
+    /**
+     * Get the user roles.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Role', 'user_role');
     }
 }
