@@ -59,4 +59,24 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
             ConsoleServiceProvider::class,
         ];
     }
+
+    /**
+     * Assert that the attributes of a model entry are equal to the expected array of attributes.
+     *
+     * @param array $expected attributes
+     * @param \Illuminate\Database\Eloquent\Model $actual model
+     */
+    protected function assertEntryEquals($expected, $actual)
+    {
+        foreach ($expected as $key => $value) {
+            if (is_array($value)) {
+                $this->assertEquals(count($value), $actual->{$key}->count());
+            } else {
+                $this->assertEquals($value, $actual->{$key});
+            }
+        }
+
+        $this->assertNotNull($actual->created_at);
+        $this->assertNotNull($actual->updated_at);
+    }
 }

@@ -306,18 +306,4 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $entry = Article::find(1);
         $this->crudPanel->syncPivot($entry, $inputData);
     }
-
-    private function assertEntryEquals($expected, $actual)
-    {
-        foreach ($expected as $key => $value) {
-            if (is_array($value)) {
-                $this->assertEquals(count($value), $actual->{$key}->count());
-            } else {
-                $this->assertEquals($value, $actual->{$key});
-            }
-        }
-
-        $this->assertNotNull($actual->created_at);
-        $this->assertNotNull($actual->updated_at);
-    }
 }
