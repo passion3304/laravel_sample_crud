@@ -2,26 +2,26 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Backpack\CRUD\Tests\Unit\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 {
     private $userInputFields = [
         [
             'name' => 'id',
-            'type' => 'hidden'
+            'type' => 'hidden',
         ], [
             'name' => 'name',
         ], [
             'name' => 'email',
-            'type' => 'email'
+            'type' => 'email',
         ], [
             'name' => 'password',
-            'type' => 'password'
-        ]
+            'type' => 'password',
+        ],
     ];
 
     private $expectedUpdatedFields = [
@@ -44,7 +44,7 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
             'name' => 'password',
             'type' => 'password',
             'label' => 'Password',
-        ]
+        ],
     ];
 
     public function testUpdate()
@@ -117,5 +117,4 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
         }
         $this->expectedUpdatedFields['id']['value'] = $id;
     }
-
 }

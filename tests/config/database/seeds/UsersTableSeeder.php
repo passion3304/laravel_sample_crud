@@ -27,13 +27,13 @@ class UsersTableSeeder extends Seeder
 
         DB::table('user_role')->insert([
             'user_id' => 1,
-            'role_id' => 1
+            'role_id' => 1,
         ]);
 
         DB::table('account_details')->insert([
             'user_id' => 1,
             'nickname' => $faker->firstName(),
-            'profile_picture' => $faker->imageUrl()
+            'profile_picture' => $faker->imageUrl(),
         ]);
 
         DB::table('addresses')->insert([
