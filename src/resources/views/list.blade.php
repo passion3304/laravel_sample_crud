@@ -202,7 +202,15 @@
               "aria": {
                   "sortAscending":  "{{ trans('backpack::crud.aria.sortAscending') }}",
                   "sortDescending": "{{ trans('backpack::crud.aria.sortDescending') }}"
-              }
+              },
+              "buttons": {
+                  "copy":   "{{ trans('backpack::crud.export.copy') }}",
+                  "excel":  "{{ trans('backpack::crud.export.excel') }}",
+                  "csv":    "{{ trans('backpack::crud.export.csv') }}",
+                  "pdf":    "{{ trans('backpack::crud.export.pdf') }}",
+                  "print":  "{{ trans('backpack::crud.export.print') }}",
+                  "colvis": "{{ trans('backpack::crud.export.column_visibility') }}"
+              },
           },
 
           @if ($crud->ajaxTable())
