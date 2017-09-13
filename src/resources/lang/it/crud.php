@@ -113,6 +113,11 @@ return [
     // CRUD yes/no
     'yes' => 'Sì',
     'no' => 'No',
+    
+    // CRUD filters navbar view
+    'filters' => 'Filtri',
+    'toggle_filters' => 'Attiva/disattiva filtri',
+    'remove_filters' => 'Rimuovi filtri',
 
     // Fields
     'browse_uploads' => 'Sfoglia file caricati',
