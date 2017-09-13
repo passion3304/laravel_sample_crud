@@ -39,7 +39,12 @@ return [
     'to'                   => 'a',
     'undo'                 => 'Disfare',
     'revision_restored'    => 'Revisione successo restaurato',
-
+    'guest_user'           => 'Utente Ospite',
+    
+    // Translatable models
+    'edit_translations' => 'MODIFICA TRADUZIONI',
+    'language'          => 'Lingua',
+    
     // CRUD table view
     'all'                       => 'Tutti i ',
     'in_the_database'           => 'nel database',
@@ -82,6 +87,11 @@ return [
             'sortAscending'  => ': attiva per ordinare la colonna ascendentemente',
             'sortDescending' => ': attiva per ordinare la colonna discendentemente',
         ],
+        'export' => [
+            'copy'              => 'Copia',
+            'print'             => 'Stampa',
+            'column_visibility' => 'Visibilità colonne',
+        ],
 
     // global crud - errors
         'unauthorized_access' => 'Accesso non autorizzato - non hai i permessi necessari per vedere questa pagina.',
@@ -111,5 +121,9 @@ return [
         'internal_link' => 'Link Interno',
         'internal_link_placeholder' => 'Slug interno. Es: \'admin/page\' (no quotes) for \':url\'',
         'external_link' => 'Link Esterno',
-
+        'choose_file' => 'Scegli file',
+    
+    //Table field
+        'table_cant_add' => 'Impossibile aggiungere una nuova :entity',
+        'table_max_reached' => 'Numero massimo di :max raggiunto',
 ];
