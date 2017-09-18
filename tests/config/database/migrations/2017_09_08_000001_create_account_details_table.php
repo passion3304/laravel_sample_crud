@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateArticlesTable extends Migration
+class CreateAccountDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +13,11 @@ class CreateArticlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('articles', function ($table) {
+        Schema::create('account_details', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->string('content');
-            $table->string('metas')->nullable();
-            $table->string('tags')->nullable();
-            $table->string('extras')->nullable();
+            $table->string('nickname');
+            $table->string('profile_picture');
             $table->timestamps();
 
             $table->foreign('user_id')
@@ -35,6 +34,6 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('articles');
+        Schema::drop('account_details');
     }
 }
