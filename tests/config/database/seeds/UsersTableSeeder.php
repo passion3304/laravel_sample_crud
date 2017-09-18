@@ -13,6 +13,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
+        $now = \Carbon\Carbon::now();
 
         DB::table('users')->insert([[
             'id' => 1,
@@ -20,6 +21,8 @@ class UsersTableSeeder extends Seeder
             'email' => $faker->safeEmail,
             'password' => bcrypt('secret'),
             'remember_token' => str_random(10),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]]);
 
         DB::table('user_role')->insert([
