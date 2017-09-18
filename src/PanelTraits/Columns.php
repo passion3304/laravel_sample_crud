@@ -94,33 +94,37 @@ trait Columns
     /**
      * Moves the recently added column to 'before' the $target_col.
      *
-     * @param $target_col
+     * @param $target string|array the name or array of the target column
      */
-    public function beforeColumn($target_col)
+    public function beforeColumn($target)
     {
-        foreach ($this->columns as $column => $value) {
-            if ($value['name'] == $target_col) {
-                $offset = array_search($column, array_keys($this->columns));
-                array_splice($this->columns, $offset, 0, [array_pop($this->columns)]);
-                break;
-            }
-        }
+        $name = is_array($target) ? $target['name'] : $target;
+
+        $offset = array_search($name, array_keys($this->columns));
+        $moving_col = array_pop($this->columns);
+        $array = array_slice($this->columns, 0, $offset, true) +
+            [$moving_col['name'] => $moving_col] +
+            array_slice($this->columns, $offset, null, true);
+
+        $this->columns = $array;
     }
 
     /**
      * Moves the recently added column to 'after' the $target_col.
      *
-     * @param $target
+     * @param $target string|array the name or array of the target column
      */
-    public function afterColumn($target_col)
+    public function afterColumn($target)
     {
-        foreach ($this->columns as $column => $value) {
-            if ($value['name'] == $target_col) {
-                $offset = array_search($column, array_keys($this->columns));
-                array_splice($this->columns, $offset + 1, 0, [array_pop($this->columns)]);
-                break;
-            }
-        }
+        $name = is_array($target) ? $target['name'] : $target;
+
+        $offset = array_search($name, array_keys($this->columns)) + 1;
+        $moving_col = array_pop($this->columns);
+        $array = array_slice($this->columns, 0, $offset, true) +
+                 [$moving_col['name'] => $moving_col] +
+                 array_slice($this->columns, $offset, null, true);
+
+        $this->columns = $array;
     }
 
     /**
