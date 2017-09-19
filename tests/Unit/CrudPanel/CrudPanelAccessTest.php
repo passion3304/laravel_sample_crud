@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Backpack\CRUD\Exception\AccessDeniedException;
 
 class CrudPanelAccessTest extends BaseCrudPanelTest
 {
@@ -53,9 +53,6 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 
     public function testAllowAccessToUnknownPermission()
     {
-        $this->markTestIncomplete();
-
-        // TODO: do we allow any value for permissions?
         $this->crudPanel->allowAccess($this->unknownPermission);
 
         $this->assertTrue($this->crudPanel->hasAccess($this->unknownPermission));
@@ -101,20 +98,14 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 
     public function testHasAccessOrFail()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         foreach ($this->defaultAccessList as $permission) {
-
-            // TODO: the documentation for this method says that the return type is either bool or null. in case the
-            //       permission exists, it should return true (which it never does) instead of null.
             $this->assertTrue($this->crudPanel->hasAccessOrFail($permission));
         }
     }
 
     public function testHasAccessOrFailDenied()
     {
-        // TODO: the CRUD panel should not be dependent on HTTP related classes.
-        $this->setExpectedException(HttpException::class);
+        $this->setExpectedException(AccessDeniedException::class);
 
         $this->crudPanel->hasAccessOrFail($this->unknownPermission);
     }
