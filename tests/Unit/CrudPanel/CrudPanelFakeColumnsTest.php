@@ -48,15 +48,12 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
 
     public function testGetFakeColumnsAsArrayFromCreateForm()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $this->crudPanel->setModel(Article::class);
 
         $this->crudPanel->addFields($this->fakeFieldsArray, 'create');
 
-        // TODO: fix getFakeColumnsAsArray calling getFields method without an entity ID for the update form
         $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
-        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update');
+        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update', 1);
 
         $this->assertEquals($this->expectedFakeFieldsColumnNames, $createFakeColumnsArray);
         $this->assertEquals($this->emptyFakeColumnsArray, $updateFakeColumnsArray);
@@ -64,15 +61,12 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
 
     public function testGetFakeColumnsAsArrayFromUpdateForm()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $this->crudPanel->setModel(Article::class);
 
         $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
 
-        // TODO: fix getFakeColumnsAsArray calling getFields method without an entity ID for the update form
         $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
-        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update');
+        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update', 1);
 
         $this->assertEquals($this->emptyFakeColumnsArray, $createFakeColumnsArray);
         $this->assertEquals($this->expectedFakeFieldsColumnNames, $updateFakeColumnsArray);
