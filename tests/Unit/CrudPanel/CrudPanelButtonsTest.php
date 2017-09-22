@@ -76,16 +76,22 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
     public function testAddButtonsWithSameName()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $expectedButton = $this->topViewButton;
 
-        // TODO: the documentation requires an unique button name. the expected behavior would be that a button with the
-        //       same name to not be added twice.
         $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content);
         $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content);
 
         $this->assertEquals(count($this->defaultButtonNames) + 1, count($this->crudPanel->buttons));
+    }
+
+    public function testAddButtonsWithSameNameWithoutReplacing()
+    {
+        $expectedButton = $this->topViewButton;
+
+        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content, false, false);
+        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content, false, false);
+
+        $this->assertEquals(count($this->defaultButtonNames) + 2, count($this->crudPanel->buttons));
     }
 
     public function testAddButtonBeginning()
