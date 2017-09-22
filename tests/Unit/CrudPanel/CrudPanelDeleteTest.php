@@ -25,15 +25,11 @@ class CrudPanelDeleteTest extends BaseDBCrudPanelTest
 
     public function testDeleteUnknown()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $this->setExpectedException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(Article::class);
         $unknownId = DB::getPdo()->lastInsertId() + 1;
 
-        // TODO: if the delete method is called with an unknown id, it should return a model not found exception. change
-        //       the find call inside the delete method to a findOrFail to avoid the error.
         $this->crudPanel->delete($unknownId);
     }
 }
