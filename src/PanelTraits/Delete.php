@@ -15,7 +15,7 @@ trait Delete
      *
      * @param  int $id The id of the item to be deleted.
      *
-     * @return boolean True if the item was deleted.
+     * @return bool True if the item was deleted.
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if the model was not found.
      *
