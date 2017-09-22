@@ -9,7 +9,7 @@ trait FakeColumns
      * been found.
      *
      * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'create'.
-     * @param int|boolean $id Optional entity ID needed in the case of the update form.
+     * @param int|bool $id Optional entity ID needed in the case of the update form.
      * @return array The fake columns array.
      */
     public function getFakeColumnsAsArray($form = 'create', $id = false)
