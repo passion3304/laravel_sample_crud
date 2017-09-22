@@ -17,9 +17,9 @@ trait Buttons
      * @param string $name The name of the button. Unique.
      * @param string $type Type of button: view or model_function.
      * @param string $content The HTML for the button.
-     * @param boolean|string $position Position on the stack: beginning or end. If false, the position will be
+     * @param bool|string $position Position on the stack: beginning or end. If false, the position will be
      *                                 'beginning' for the line stack or 'end' otherwise.
-     * @param boolean $replaceExisting True if a button with the same name on the given stack should be replaced.
+     * @param bool $replaceExisting True if a button with the same name on the given stack should be replaced.
      * @return \Backpack\CRUD\PanelTraits\CrudButton The new CRUD button.
      */
     public function addButton($stack, $name, $type, $content, $position = false, $replaceExisting = true)
