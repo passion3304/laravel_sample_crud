@@ -103,7 +103,8 @@ trait Fields
      * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      * @param bool $before If true, the field will be moved before the target field, otherwise it will be moved after it.
      */
-    protected function moveFieldInForm($targetFieldName, $form = 'both', $before = true) {
+    protected function moveFieldInForm($targetFieldName, $form = 'both', $before = true)
+    {
         switch ($form) {
             case 'create':
                 $this->moveField($this->create_fields, $targetFieldName, $before);
