@@ -151,57 +151,47 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testRemoveColumnByName()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        // TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
+
         $this->crudPanel->removeColumn('column1');
 
         $this->assertEquals(2, count($this->crudPanel->columns));
-        $this->assertNotContains('column1', $this->crudPanel->columns);
+        $this->assertEquals(['column2', 'column3'], array_keys($this->crudPanel->columns));
         $this->assertNotContains($this->oneColumnArray, $this->crudPanel->columns);
     }
 
     public function testRemoveUnknownColumnName()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        // TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
 
         // TODO: should this fail with an exception or just log as warning?
         $this->crudPanel->removeColumn('column4');
 
         $this->assertEquals(3, count($this->crudPanel->columns));
-        $this->assertNotContains('column4', $this->crudPanel->columns);
+        $this->assertEquals(['column1', 'column2', 'column3'], array_keys($this->crudPanel->columns));
         $this->assertNotContains($this->otherOneColumnArray, $this->crudPanel->columns);
     }
 
     public function testRemoveColumns()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        // TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
-        $this->crudPanel->removeColumns($this->twoColumnArray);
 
-        $this->assertEquals(2, count($this->crudPanel->columns));
-        $this->assertNotContains(['column1', 'column2'], $this->crudPanel->columns);
+        $this->crudPanel->removeColumns($this->twoColumnsArray);
+
+        $this->assertEquals(1, count($this->crudPanel->columns));
+        $this->assertEquals(['column3'], array_keys($this->crudPanel->columns));
         $this->assertNotEquals($this->expectedThreeColumnsArray, $this->crudPanel->columns);
     }
 
     public function testRemoveUnknownColumns()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        // TODO: fix the remove column functionality
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
 
         // TODO: should this fail with an exception or just log as warning?
-        $this->crudPanel->removeColumn($this->otherOneColumnArray);
+        $this->crudPanel->removeColumn('column4');
 
         $this->assertEquals(3, count($this->crudPanel->columns));
-        $this->assertNotContains('column4', $this->crudPanel->columns);
+        $this->assertEquals(['column1', 'column2', 'column3'], array_keys($this->crudPanel->columns));
         $this->assertNotContains($this->otherOneColumnArray, $this->crudPanel->columns);
     }
 

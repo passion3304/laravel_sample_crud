@@ -161,27 +161,40 @@ trait Columns
     }
 
     /**
-     * Remove multiple columns from the CRUD object using their names.
+     * Remove a column from the CRUD panel by name.
      *
-     * @param  [column array]
-     */
-    public function removeColumns($columns)
-    {
-        $this->columns = $this->remove('columns', $columns);
-    }
-
-    /**
-     * Remove a column from the CRUD object using its name.
-     *
-     * @param  [column array]
+     * @param string $column The column name.
      */
     public function removeColumn($column)
     {
-        return $this->removeColumns([$column]);
+        array_forget($this->columns, $column);
     }
 
     /**
+     * Remove multiple columns from the CRUD panel by name.
+     *
+     * @param array $columns Array of column names.
+     */
+    public function removeColumns($columns)
+    {
+        if (! empty($columns)) {
+            foreach ($columns as $columnName) {
+                $this->removeColumn($columnName);
+            }
+        }
+    }
+
+    /**
+     * Remove an entry from an array.
+     *
      * @param string $entity
+     * @param array $fields
+     * @return array values
+     *
+     * @deprecated This method is no longer used by internal code and is not recommended as it does not preserve the
+     *             target array keys.
+     * @see Columns::removeColumn() to remove a column from the CRUD panel by name.
+     * @see Columns::removeColumns() to remove multiple columns from the CRUD panel by name.
      */
     public function remove($entity, $fields)
     {
