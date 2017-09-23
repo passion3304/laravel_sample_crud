@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\Tests\Unit\Models\Article;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
 class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 {

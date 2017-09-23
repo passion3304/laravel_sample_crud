@@ -11,7 +11,7 @@ trait FakeFields
      *
      * @param array $requestInput The request input.
      * @param string $form The CRUD form. Can be 'create' or 'update' . Default is 'create'.
-     * @param int|boolean $id The CRUD entry id in the case of the 'update' form.
+     * @param int|bool $id The CRUD entry id in the case of the 'update' form.
      *
      * @see \Illuminate\Http\Request::all() For an example on how to get the request input.
      *
