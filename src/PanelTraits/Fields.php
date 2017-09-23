@@ -122,7 +122,7 @@ trait Fields
      * Move the most recently added field before or after the given target field. Default is before.
      *
      * @param array $fields The form fields.
-     * @param string $targetFieldName The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
+     * @param string $targetFieldName The target field name.
      * @param bool $before If true, the field will be moved before the target field, otherwise it will be moved after it.
      */
     private function moveField(&$fields, $targetFieldName, $before = true)
