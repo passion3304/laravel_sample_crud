@@ -75,50 +75,73 @@ trait Fields
     }
 
     /**
-     * Moves the recently added field to 'after' the $target_field.
+     * Move the most recently added field after the given target field.
      *
-     * @param $target_field
+     * @param string $targetFieldName The target field name.
+     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
-    public function afterField($target_field)
+    public function afterField($targetFieldName, $form = 'both')
     {
-        foreach ($this->create_fields as $field => $value) {
-            if ($value['name'] == $target_field) {
-                $offset = array_search($field, array_keys($this->create_fields));
-                array_splice($this->create_fields, $offset + 1, 0, [$field => array_pop($this->create_fields)]);
+        $this->moveFieldInForm($targetFieldName, $form, false);
+    }
+
+    /**
+     * Move the most recently added field before the given target field.
+     *
+     * @param string $targetFieldName The target field name.
+     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
+     */
+    public function beforeField($targetFieldName, $form = 'both')
+    {
+        $this->moveFieldInForm($targetFieldName, $form);
+    }
+
+    /**
+     * Move the most recently added field from a given form before or after the given target field. Default is before.
+     *
+     * @param string $targetFieldName The target field name.
+     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
+     * @param bool $before If true, the field will be moved before the target field, otherwise it will be moved after it.
+     */
+    protected function moveFieldInForm($targetFieldName, $form = 'both', $before = true)
+    {
+        switch ($form) {
+            case 'create':
+                $this->moveField($this->create_fields, $targetFieldName, $before);
                 break;
-            }
-        }
-        foreach ($this->update_fields as $field => $value) {
-            if ($value['name'] == $target_field) {
-                $offset = array_search($field, array_keys($this->update_fields));
-                array_splice($this->update_fields, $offset + 1, 0, [$field => array_pop($this->update_fields)]);
+            case 'update':
+                $this->moveField($this->update_fields, $targetFieldName, $before);
                 break;
-            }
+            default:
+                $this->moveField($this->create_fields, $targetFieldName, $before);
+                $this->moveField($this->update_fields, $targetFieldName, $before);
+                break;
         }
     }
 
     /**
-     * Moves the recently added field to 'before' the $target_field.
+     * Move the most recently added field before or after the given target field. Default is before.
      *
-     * @param $target_field
+     * @param array $fields The form fields.
+     * @param string $targetFieldName The target field name.
+     * @param bool $before If true, the field will be moved before the target field, otherwise it will be moved after it.
      */
-    public function beforeField($target_field)
+    private function moveField(&$fields, $targetFieldName, $before = true)
     {
-        $key = 0;
-        foreach ($this->create_fields as $field => $value) {
-            if ($value['name'] == $target_field) {
-                array_splice($this->create_fields, $key, 0, [$field => array_pop($this->create_fields)]);
-                break;
+        if (array_key_exists($targetFieldName, $fields)) {
+            $targetFieldPosition = $before ? array_search($targetFieldName, array_keys($fields))
+                : array_search($targetFieldName, array_keys($fields)) + 1;
+
+            if ($targetFieldPosition >= (count($fields) - 1)) {
+                // target field name is same as element
+                return;
             }
-            $key++;
-        }
-        $key = 0;
-        foreach ($this->update_fields as $field => $value) {
-            if ($value['name'] == $target_field) {
-                array_splice($this->update_fields, $key, 0, [$field => array_pop($this->update_fields)]);
-                break;
-            }
-            $key++;
+
+            $element = array_pop($fields);
+            $beginningArrayPart = array_slice($fields, 0, $targetFieldPosition, true);
+            $endingArrayPart = array_slice($fields, $targetFieldPosition, null, true);
+
+            $fields = array_merge($beginningArrayPart, [$element['name'] => $element], $endingArrayPart);
         }
     }
 
