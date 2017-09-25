@@ -118,11 +118,8 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testMoveColumnBeforeUnknownColumnName()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $this->crudPanel->addColumns($this->twoColumnsArray);
 
-        // TODO: fix the before column. it should not change the columns if the given target column does not exist.
         $this->crudPanel->beforeColumn('column3');
 
         $this->assertEquals(array_keys($this->expectedTwoColumnsArray), array_keys($this->crudPanel->columns));
@@ -143,7 +140,6 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
     {
         $this->crudPanel->addColumns($this->twoColumnsArray);
 
-        // TODO: although this works, the processing should stop if the target column is not found in columns array.
         $this->crudPanel->afterColumn('column3');
 
         $this->assertEquals(array_keys($this->expectedTwoColumnsArray), array_keys($this->crudPanel->columns));
@@ -162,17 +158,17 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testRemoveUnknownColumnName()
     {
+        $unknownColumnName = 'column4';
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
 
-        // TODO: should this fail with an exception or just log as warning?
-        $this->crudPanel->removeColumn('column4');
+        $this->crudPanel->removeColumn($unknownColumnName);
 
         $this->assertEquals(3, count($this->crudPanel->columns));
         $this->assertEquals(['column1', 'column2', 'column3'], array_keys($this->crudPanel->columns));
         $this->assertNotContains($this->otherOneColumnArray, $this->crudPanel->columns);
     }
 
-    public function testRemoveColumns()
+    public function testRemoveColumnsByName()
     {
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
 
@@ -183,12 +179,12 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $this->assertNotEquals($this->expectedThreeColumnsArray, $this->crudPanel->columns);
     }
 
-    public function testRemoveUnknownColumns()
+    public function testRemoveUnknownColumnsByName()
     {
+        $unknownColumnNames = ['column4', 'column5'];
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
 
-        // TODO: should this fail with an exception or just log as warning?
-        $this->crudPanel->removeColumn('column4');
+        $this->crudPanel->removeColumns($unknownColumnNames);
 
         $this->assertEquals(3, count($this->crudPanel->columns));
         $this->assertEquals(['column1', 'column2', 'column3'], array_keys($this->crudPanel->columns));

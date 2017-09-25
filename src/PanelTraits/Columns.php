@@ -92,39 +92,47 @@ trait Columns
     }
 
     /**
-     * Moves the recently added column to 'before' the $target_col.
+     * Move the most recently added column after the given target column.
      *
-     * @param $target string|array the name or array of the target column
+     * @param string|array $targetColumn The target column name or array.
      */
-    public function beforeColumn($target)
+    public function afterColumn($targetColumn)
     {
-        $name = is_array($target) ? $target['name'] : $target;
-
-        $offset = array_search($name, array_keys($this->columns));
-        $moving_col = array_pop($this->columns);
-        $array = array_slice($this->columns, 0, $offset, true) +
-            [$moving_col['name'] => $moving_col] +
-            array_slice($this->columns, $offset, null, true);
-
-        $this->columns = $array;
+        $this->moveColumn($targetColumn, false);
     }
 
     /**
-     * Moves the recently added column to 'after' the $target_col.
+     * Move the most recently added column before the given target column.
      *
-     * @param $target string|array the name or array of the target column
+     * @param string|array $targetColumn The target column name or array.
      */
-    public function afterColumn($target)
+    public function beforeColumn($targetColumn)
     {
-        $name = is_array($target) ? $target['name'] : $target;
+        $this->moveColumn($targetColumn);
+    }
 
-        $offset = array_search($name, array_keys($this->columns)) + 1;
-        $moving_col = array_pop($this->columns);
-        $array = array_slice($this->columns, 0, $offset, true) +
-                 [$moving_col['name'] => $moving_col] +
-                 array_slice($this->columns, $offset, null, true);
+    /**
+     * Move the most recently added column before or after the given target column. Default is before.
+     *
+     * @param string|array $targetColumn The target column name or array.
+     * @param bool $before If true, the column will be moved before the target column, otherwise it will be moved after it.
+     */
+    private function moveColumn($targetColumn, $before = true)
+    {
+        // TODO: this and the moveField method from the Fields trait should be refactored into a single method and moved
+        //       into a common class
+        $targetColumnName = is_array($targetColumn) ? $targetColumn['name'] : $targetColumn;
 
-        $this->columns = $array;
+        if (array_key_exists($targetColumnName, $this->columns)) {
+            $targetColumnPosition = $before ? array_search($targetColumnName, array_keys($this->columns)) :
+                array_search($targetColumnName, array_keys($this->columns)) + 1;
+
+            $element = array_pop($this->columns);
+            $beginningPart = array_slice($this->columns, 0, $targetColumnPosition, true);
+            $endingArrayPart = array_slice($this->columns, $targetColumnPosition, null, true);
+
+            $this->columns = array_merge($beginningPart, [$element['name'] => $element], $endingArrayPart);
+        }
     }
 
     /**

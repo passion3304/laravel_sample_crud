@@ -71,12 +71,8 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 
     public function testCompactFakeFieldsFromCreateForm()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        // TODO: the compactFakeFields method fails when a fake field has the same value for the 'name' and 'store_in'
-        //       attributes (in our case, the tags field in the fake field array)
         $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'create');
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
@@ -84,14 +80,10 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 
     public function testCompactFakeFieldsFromUpdateForm()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $article = DB::table('articles')->where('id', 1)->first();
         $this->crudPanel->setModel(Article::class);
         $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
 
-        // TODO: the compactFakeFields method fails when a fake field has the same value for the 'name' and 'store_in'
-        //       attributes (in our case, the tags field in the fake field array)
         $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update', $article->id);
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
@@ -102,8 +94,8 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
         $this->setExpectedException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(Article::class);
-
         $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+
         $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update');
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
@@ -144,6 +136,6 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 
         // TODO: this should throw an invalid argument exception but doesn't because of the getFields method in the
         //       read trait, which returns the create fields in case of an unknown form type.
-        $this->crudPanel->getFakeColumnsAsArray('unknownForm');
+        $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'unknownForm');
     }
 }
