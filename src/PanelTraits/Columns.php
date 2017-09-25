@@ -269,14 +269,13 @@ trait Columns
             }
         }
 
-        if(empty($orderedColumns)) {
+        if (empty($orderedColumns)) {
             return;
         }
 
         $remaining = array_diff_key($this->columns, $orderedColumns);
         $this->columns = array_merge($orderedColumns, $remaining);
     }
-
 
     /**
      * Set the order of the CRUD columns.
