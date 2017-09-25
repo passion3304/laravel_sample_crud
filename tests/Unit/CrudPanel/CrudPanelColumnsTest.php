@@ -152,7 +152,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $this->crudPanel->removeColumn('column1');
 
         $this->assertEquals(2, count($this->crudPanel->columns));
-        $this->assertNotContains('column1', $this->crudPanel->columns);
+        $this->assertEquals(['column2', 'column3'], array_keys($this->crudPanel->columns));
         $this->assertNotContains($this->oneColumnArray, $this->crudPanel->columns);
     }
 
@@ -164,19 +164,18 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $this->crudPanel->removeColumn($unknownColumnName);
 
         $this->assertEquals(3, count($this->crudPanel->columns));
-        $this->assertNotContains($unknownColumnName, $this->crudPanel->columns);
+        $this->assertEquals(['column1', 'column2', 'column3'], array_keys($this->crudPanel->columns));
         $this->assertNotContains($this->otherOneColumnArray, $this->crudPanel->columns);
     }
 
     public function testRemoveColumnsByName()
     {
-        $columnNames = ['column1', 'column2'];
         $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
 
-        $this->crudPanel->removeColumns($columnNames);
+        $this->crudPanel->removeColumns($this->twoColumnsArray);
 
         $this->assertEquals(1, count($this->crudPanel->columns));
-        $this->assertNotContains($columnNames, $this->crudPanel->columns);
+        $this->assertEquals(['column3'], array_keys($this->crudPanel->columns));
         $this->assertNotEquals($this->expectedThreeColumnsArray, $this->crudPanel->columns);
     }
 
@@ -188,7 +187,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         $this->crudPanel->removeColumns($unknownColumnNames);
 
         $this->assertEquals(3, count($this->crudPanel->columns));
-        $this->assertNotContains($unknownColumnNames, $this->crudPanel->columns);
+        $this->assertEquals(['column1', 'column2', 'column3'], array_keys($this->crudPanel->columns));
         $this->assertNotContains($this->otherOneColumnArray, $this->crudPanel->columns);
     }
 
