@@ -118,11 +118,8 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testMoveColumnBeforeUnknownColumnName()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $this->crudPanel->addColumns($this->twoColumnsArray);
 
-        // TODO: fix the before column. it should not change the columns if the given target column does not exist.
         $this->crudPanel->beforeColumn('column3');
 
         $this->assertEquals(array_keys($this->expectedTwoColumnsArray), array_keys($this->crudPanel->columns));
@@ -143,7 +140,6 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
     {
         $this->crudPanel->addColumns($this->twoColumnsArray);
 
-        // TODO: although this works, the processing should stop if the target column is not found in columns array.
         $this->crudPanel->afterColumn('column3');
 
         $this->assertEquals(array_keys($this->expectedTwoColumnsArray), array_keys($this->crudPanel->columns));
