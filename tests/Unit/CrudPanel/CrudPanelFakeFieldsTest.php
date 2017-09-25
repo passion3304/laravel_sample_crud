@@ -144,6 +144,6 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 
         // TODO: this should throw an invalid argument exception but doesn't because of the getFields method in the
         //       read trait, which returns the create fields in case of an unknown form type.
-        $this->crudPanel->getFakeColumnsAsArray('unknownForm');
+        $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'unknownForm');
     }
 }
