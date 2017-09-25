@@ -138,14 +138,11 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testGetEntryExists()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
         $this->crudPanel->setModel(User::class);
         $userEntry = $this->crudPanel->getEntry(1);
 
         $this->assertInstanceOf(User::class, $userEntry);
 
-        // TODO: setting a new model should also set the crud panel entry to null
         $this->crudPanel->setModel(Article::class);
         $articleEntry = $this->crudPanel->getEntry(1);
 
