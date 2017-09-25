@@ -29,8 +29,8 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
             '--realpath' => realpath(__DIR__.'/../../config/database/migrations'),
         ]);
 
-        $this->artisan('db:seed', ['--class' => 'UsersTableSeeder']);
         $this->artisan('db:seed', ['--class' => 'UsersRolesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'UsersTableSeeder']);
         $this->artisan('db:seed', ['--class' => 'ArticlesTableSeeder']);
     }
 

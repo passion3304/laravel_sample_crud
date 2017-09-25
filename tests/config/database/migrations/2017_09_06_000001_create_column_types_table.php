@@ -12,6 +12,9 @@ class CreateColumnTypesTable extends Migration
      */
     public function up()
     {
+        // uncomment the next statement to map strings to enum types in doctrine and get over the 'Unknown database type enum' DBAL error
+        // Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+
         Schema::create('column_types', function ($table) {
             $table->bigInteger('bigIntegerCol');
             $table->binary('binaryCol');
@@ -39,7 +42,7 @@ class CreateColumnTypesTable extends Migration
             $table->timeTz('timeTzCol');
             $table->tinyInteger('tinyIntegerCol');
             $table->timestamp('timestampCol');
-            $table->timestampTz('timestampTzCol');
+            $table->timestampTz('timestampTzCol')->nullable();
             $table->uuid('uuidCol');
         });
     }

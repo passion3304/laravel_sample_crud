@@ -14,7 +14,7 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function ($table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->length(10)->unsigned();
             $table->string('content');
             $table->string('metas')->nullable();
             $table->string('tags')->nullable();

@@ -15,7 +15,7 @@ class CreateAccountDetailsTable extends Migration
     {
         Schema::create('account_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->length(10)->unsigned();
             $table->string('nickname');
             $table->string('profile_picture');
             $table->timestamps();
