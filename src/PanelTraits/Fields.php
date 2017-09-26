@@ -47,11 +47,11 @@ trait Fields
             }
         }
 
-       $this->transformFields($form, function ($fields) use ($completeFieldsArray) {
-           $fields[$completeFieldsArray['name']] = $completeFieldsArray;
+        $this->transformFields($form, function ($fields) use ($completeFieldsArray) {
+            $fields[$completeFieldsArray['name']] = $completeFieldsArray;
 
-           return $fields;
-       });
+            return $fields;
+        });
     }
 
     /**
@@ -251,6 +251,7 @@ trait Fields
         }
 
         $remaining = array_diff_key($fields, $orderedFields);
+
         return array_merge($orderedFields, $remaining);
     }
 
