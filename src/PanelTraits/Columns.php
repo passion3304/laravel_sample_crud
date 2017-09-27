@@ -282,7 +282,7 @@ trait Columns
      *
      * @param array $columns Column order.
      *
-     * @deprecated This method was not and will not be implemented since its a duplicate of the orderColumns method.
+     * @deprecated This method was not and will not be implemented since it's a duplicate of the orderColumns method.
      * @see Columns::orderColumns() to order the CRUD columns.
      */
     public function setColumnOrder($columns)
@@ -295,7 +295,7 @@ trait Columns
      *
      * @param array $columns Column order.
      *
-     * @deprecated This method was not and will not be implemented since its a duplicate of the orderColumns method.
+     * @deprecated This method was not and will not be implemented since it's a duplicate of the orderColumns method.
      * @see Columns::orderColumns() to order the CRUD columns.
      */
     public function setColumnsOrder($columns)
