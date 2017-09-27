@@ -66,23 +66,22 @@ trait Filters
 
         // if a closure was passed as "filter_logic"
         if ($this->doingListOperation()) {
-	        if ( $this->request->has( $options['name'] ) ) {
-		        if ( is_callable( $filter_logic ) ) {
-			        // apply it
-			        $filter_logic( $this->request->input( $options['name'] ) );
-		        } else {
-			        $this->addDefaultFilterLogic( $filter->name, $filter_logic );
-		        }
-	        } else {
-		        //if the filter is not active, but fallback logic was supplied
-		        if ( is_callable( $fallback_logic ) ) {
-			        // apply the fallback logic
-			        $fallback_logic();
-		        }
-	        }
+            if ($this->request->has($options['name'])) {
+                if (is_callable($filter_logic)) {
+                    // apply it
+                    $filter_logic($this->request->input($options['name']));
+                } else {
+                    $this->addDefaultFilterLogic($filter->name, $filter_logic);
+                }
+            } else {
+                //if the filter is not active, but fallback logic was supplied
+                if (is_callable($fallback_logic)) {
+                    // apply the fallback logic
+                    $fallback_logic();
+                }
+            }
         }
     }
-
 
     public function addDefaultFilterLogic($name, $operator)
     {
