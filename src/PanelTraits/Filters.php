@@ -41,7 +41,7 @@ trait Filters
      * @param closure       $filter_logic   Query modification (filtering) logic.
      * @param closure       $default_logic  Query modification (filtering) logic when filter is not active.
      */
-    public function addFilter($options, $values = false, $filter_logic = false, $default_logic = false)
+    public function addFilter($options, $values = false, $filter_logic = false, $fallback_logic = false)
     {
         // if a closure was passed as "values"
         if (is_callable($values)) {
@@ -74,10 +74,10 @@ trait Filters
 			        $this->addDefaultFilterLogic( $filter->name, $filter_logic );
 		        }
 	        } else {
-		        //if the filter is not active, but default logic was supplied
-		        if ( is_callable( $default_logic ) ) {
+		        //if the filter is not active, but fallback logic was supplied
+		        if ( is_callable( $fallback_logic ) ) {
 			        // apply the default logic
-			        $default_logic();
+			        $fallback_logic();
 		        }
 	        }
         }
