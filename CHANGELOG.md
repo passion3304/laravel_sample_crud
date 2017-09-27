@@ -39,6 +39,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - select2 filter clear button now works with ajax datatables;
 - select2_from_ajax_multiple field old values fix;
 - CrudTrait::isColumnNullabel support for json and jsonb columns in postgres;
+- form_save_buttons had an untranslated string;
 
 
 ## [3.2.19] - 2017-09-05
