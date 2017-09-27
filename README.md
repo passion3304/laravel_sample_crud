@@ -39,7 +39,8 @@ Please note you need to install Backpack\Base before you can use Backpack\CRUD. 
 Installation guides:
 - [Install Backpack on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
 - [Install Backpack on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
-- [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - recommended;
+- [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - last feature update was 27 Sep 2017;
+- [Install Backpack on Laravel 5.5](https://laravel-backpack.readme.io/docs/install-on-laravel-55) - recommended;
 
 
 ## Features
