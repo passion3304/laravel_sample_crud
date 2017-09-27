@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.20] - 2017-09-x
+## [3.2.20] - 2017-09-27
 
 ## Added
 - UNIT TESTS!!! I KNOW, RIGHT?!
