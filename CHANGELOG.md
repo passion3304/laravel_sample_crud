@@ -37,6 +37,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - you can now store a fake field inside a column with the same name (ex: extras.extras);
 - boolean column values can now be HTML;
 - select2 filter clear button now works with ajax datatables;
+- select2_from_ajax_multiple field old values fix;
 
 
 ## [3.2.19] - 2017-09-05
