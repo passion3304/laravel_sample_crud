@@ -226,7 +226,7 @@ trait Fields
     public function orderFields($order, $form = 'both')
     {
         $this->transformFields($form, function ($fields) use ($order) {
-            return $this->getOrderedFields($fields, $order);
+            return $this->applyOrderToFields($fields, $order);
         });
     }
 
@@ -237,7 +237,7 @@ trait Fields
      * @param array $order The desired field order array.
      * @return array The ordered fields array.
      */
-    private function getOrderedFields($fields, $order)
+    private function applyOrderToFields($fields, $order)
     {
         $orderedFields = [];
         foreach ($order as $fieldName) {
