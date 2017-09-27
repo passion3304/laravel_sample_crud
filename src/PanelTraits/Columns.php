@@ -92,34 +92,46 @@ trait Columns
     }
 
     /**
-     * Moves the recently added column to 'before' the $target_col.
+     * Move the most recently added column after the given target column.
      *
-     * @param $target_col
+     * @param string|array $targetColumn The target column name or array.
      */
-    public function beforeColumn($target_col)
+    public function afterColumn($targetColumn)
     {
-        foreach ($this->columns as $column => $value) {
-            if ($value['name'] == $target_col) {
-                $offset = array_search($column, array_keys($this->columns));
-                array_splice($this->columns, $offset, 0, [array_pop($this->columns)]);
-                break;
-            }
-        }
+        $this->moveColumn($targetColumn, false);
     }
 
     /**
-     * Moves the recently added column to 'after' the $target_col.
+     * Move the most recently added column before the given target column.
      *
-     * @param $target
+     * @param string|array $targetColumn The target column name or array.
      */
-    public function afterColumn($target_col)
+    public function beforeColumn($targetColumn)
     {
-        foreach ($this->columns as $column => $value) {
-            if ($value['name'] == $target_col) {
-                $offset = array_search($column, array_keys($this->columns));
-                array_splice($this->columns, $offset + 1, 0, [array_pop($this->columns)]);
-                break;
-            }
+        $this->moveColumn($targetColumn);
+    }
+
+    /**
+     * Move the most recently added column before or after the given target column. Default is before.
+     *
+     * @param string|array $targetColumn The target column name or array.
+     * @param bool $before If true, the column will be moved before the target column, otherwise it will be moved after it.
+     */
+    private function moveColumn($targetColumn, $before = true)
+    {
+        // TODO: this and the moveField method from the Fields trait should be refactored into a single method and moved
+        //       into a common class
+        $targetColumnName = is_array($targetColumn) ? $targetColumn['name'] : $targetColumn;
+
+        if (array_key_exists($targetColumnName, $this->columns)) {
+            $targetColumnPosition = $before ? array_search($targetColumnName, array_keys($this->columns)) :
+                array_search($targetColumnName, array_keys($this->columns)) + 1;
+
+            $element = array_pop($this->columns);
+            $beginningPart = array_slice($this->columns, 0, $targetColumnPosition, true);
+            $endingArrayPart = array_slice($this->columns, $targetColumnPosition, null, true);
+
+            $this->columns = array_merge($beginningPart, [$element['name'] => $element], $endingArrayPart);
         }
     }
 
@@ -157,27 +169,40 @@ trait Columns
     }
 
     /**
-     * Remove multiple columns from the CRUD object using their names.
+     * Remove a column from the CRUD panel by name.
      *
-     * @param  [column array]
-     */
-    public function removeColumns($columns)
-    {
-        $this->columns = $this->remove('columns', $columns);
-    }
-
-    /**
-     * Remove a column from the CRUD object using its name.
-     *
-     * @param  [column array]
+     * @param string $column The column name.
      */
     public function removeColumn($column)
     {
-        return $this->removeColumns([$column]);
+        array_forget($this->columns, $column);
     }
 
     /**
+     * Remove multiple columns from the CRUD panel by name.
+     *
+     * @param array $columns Array of column names.
+     */
+    public function removeColumns($columns)
+    {
+        if (! empty($columns)) {
+            foreach ($columns as $columnName) {
+                $this->removeColumn($columnName);
+            }
+        }
+    }
+
+    /**
+     * Remove an entry from an array.
+     *
      * @param string $entity
+     * @param array $fields
+     * @return array values
+     *
+     * @deprecated This method is no longer used by internal code and is not recommended as it does not preserve the
+     *             target array keys.
+     * @see Columns::removeColumn() to remove a column from the CRUD panel by name.
+     * @see Columns::removeColumns() to remove multiple columns from the CRUD panel by name.
      */
     public function remove($entity, $fields)
     {

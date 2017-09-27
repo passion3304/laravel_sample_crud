@@ -20,6 +20,25 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.20] - 2017-09-x
+
+## Added
+- UNIT TESTS!!! I KNOW, RIGHT?!
+- fourth parameter to addFilter method, that accepts a fallback logic closure;
+- ability to make columns non-orderable using the DataTables "orderable" parameter;
+
+## Fixed
+- zh-cn instead of zh-CN language folder - fixes #849;
+- can't move a column before/after an inexisting column;
+- can't move a field before/after an inexisting field;
+- fixed beforeField() and afterField() methods;
+- fixed beforeColumn() and afterColumn() methods;
+- calling setModel() more than once now resets the entry;
+- you can now store a fake field inside a column with the same name (ex: extras.extras);
+- boolean column values can now be HTML;
+- select2 filter clear button now works with ajax datatables;
+
+
 ## [3.2.19] - 2017-09-05
 
 ## Added
