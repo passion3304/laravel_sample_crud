@@ -38,8 +38,8 @@ trait Filters
      *
      * @param array         $options        Name, type, label, etc.
      * @param array/closure $values         The HTML for the filter.
-     * @param closure       $filter_logic   Query modification (filtering) logic.
-     * @param closure       $default_logic  Query modification (filtering) logic when filter is not active.
+     * @param closure       $filter_logic   Query modification (filtering) logic when filter is active.
+     * @param closure       $fallback_logic  Query modification (filtering) logic when filter is not active.
      */
     public function addFilter($options, $values = false, $filter_logic = false, $fallback_logic = false)
     {
@@ -76,7 +76,7 @@ trait Filters
 	        } else {
 		        //if the filter is not active, but fallback logic was supplied
 		        if ( is_callable( $fallback_logic ) ) {
-			        // apply the default logic
+			        // apply the fallback logic
 			        $fallback_logic();
 		        }
 	        }
