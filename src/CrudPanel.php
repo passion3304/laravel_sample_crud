@@ -206,11 +206,17 @@ class CrudPanel
         }
     }
 
+    /**
+     * @deprecated No longer used by internal code and not recommended.
+     */
     public function setSort($items, $order)
     {
         $this->sort[$items] = $order;
     }
 
+    /**
+     * @deprecated No longer used by internal code and not recommended.
+     */
     public function sort($items)
     {
         if (array_key_exists($items, $this->sort)) {
