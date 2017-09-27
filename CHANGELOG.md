@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - UNIT TESTS!!! I KNOW, RIGHT?!
+- fourth parameter to addFilter method, that accepts a fallback logic closure;
 
 ## Fixed
 - zh-cn instead of zh-CN language folder - fixes #849;
