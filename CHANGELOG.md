@@ -34,6 +34,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - calling setModel() more than once now resets the entry;
 - you can now store a fake field inside a column with the same name (ex: extras.extras);
 - boolean column values can now be HTML;
+- select2 filter clear button now works with ajax datatables;
 
 
 ## [3.2.19] - 2017-09-05
