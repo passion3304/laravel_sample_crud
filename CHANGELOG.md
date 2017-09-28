@@ -31,6 +31,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Fixed
 - bug where you couldn't remove the last row of a table field;
+- Switching from using env() call to config() call to avoid issues with cache:config as mentioned in issue #753;
 
 
 ## [3.2.20] - 2017-09-27
