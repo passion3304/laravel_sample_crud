@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - clear button to select2_from_ajax field type;
+- autoSet is now using the database defaults, if they exist;
 
 ## Fixed
 - bug where you couldn't remove the last row of a table field;
