@@ -14,6 +14,7 @@ trait AutoSet
      */
     public function setFromDb()
     {
+        $this->setDoctrineTypesMapping();
         $this->getDbColumnTypes();
 
         array_map(function ($field) {
@@ -105,6 +106,9 @@ trait AutoSet
             break;
 
             case 'text':
+                return 'textarea';
+            break;
+
             case 'mediumtext':
             case 'longtext':
                 return 'textarea';
@@ -125,6 +129,18 @@ trait AutoSet
             default:
                 return 'text';
             break;
+        }
+    }
+
+    // Fix for DBAL not supporting enum
+    public function setDoctrineTypesMapping()
+    {
+        $types = ['enum' => 'string'];
+        $platform = \DB::getDoctrineConnection()->getDatabasePlatform();
+        foreach ($types as $type_key => $type_value) {
+            if (!$platform->hasDoctrineTypeMappingFor($type_key)) {
+                $platform->registerDoctrineTypeMapping($type_key, $type_value);
+            }
         }
     }
 
