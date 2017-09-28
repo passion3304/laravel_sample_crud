@@ -180,7 +180,7 @@
       @endif
 
 	  	var table = $("#crudTable").DataTable({
-        "pageLength": "{{ $crud->getDefaultPageLength() }}",
+        "pageLength": {{ $crud->getDefaultPageLength() }},
         /* Disable initial sort */
         "aaSorting": [],
         "language": {
