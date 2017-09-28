@@ -87,6 +87,14 @@ return [
             'sortAscending'  => ': activate to sort column ascending',
             'sortDescending' => ': activate to sort column descending',
         ],
+        'export' => [
+            'copy'              => 'Copy',
+            'excel'             => 'Excel',
+            'csv'               => 'CSV',
+            'pdf'               => 'PDF',
+            'print'             => 'Print',
+            'column_visibility' => 'Column visibility',
+        ],
 
     // global crud - errors
         'unauthorized_access' => 'Unauthorized access - you do not have the necessary permissions to see this page.',
