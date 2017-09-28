@@ -23,6 +23,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## [3.2.21] - 2017-09-xx
 
 ## Added
+- clear button to select2_from_ajax field type;
 
 ## Fixed
 - bug where you couldn't remove the last row of a table field;
