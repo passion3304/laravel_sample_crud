@@ -199,19 +199,15 @@ class CrudController extends BaseController
         $this->crud->hasAccessOrFail('show');
 
         // set columns from db
+        $this->crud->columns = [];
         $this->crud->setFromDb();
 
         // cycle through old columns for removal
-        foreach($this->crud->columns as $old_id => $column) {
-            // replace any relationship columns
-            if(array_key_exists('model', $column)) {
-                $this->crud->columns[$column['name']] = $this->crud->columns[$old_id];
+        foreach($this->crud->columns as $key => $column) {
+            // remove any relationship columns
+            if (array_key_exists('model', $column)) {
+                $this->crud->removeColumn($column['name']);
             }
-            // remove old numbered columns
-            if(is_integer($old_id)) {
-                unset($this->crud->columns[$old_id]);
-            }
-
         }
 
         // get the info for that entry
@@ -221,6 +217,7 @@ class CrudController extends BaseController
 
         // remove preview button from stack:line
         $this->crud->removeButton('preview');
+        $this->crud->removeButton('delete');
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getShowView(), $this->data);

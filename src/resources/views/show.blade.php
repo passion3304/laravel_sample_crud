@@ -51,7 +51,7 @@
 		        @endforeach
 				@if ($crud->buttons->where('stack', 'line')->count())
 					<tr>
-						<td><strong>Actions</td>
+						<td><strong>{{ trans('backpack::crud.actions') }}</td>
 						<td>
 							@include('crud::inc.button_stack', ['stack' => 'line'])
 						</td>
@@ -67,8 +67,10 @@
 
 @section('after_styles')
 	<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
+	<link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/show.css') }}">
 @endsection
 
 @section('after_scripts')
 	<script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
+	<script src="{{ asset('vendor/backpack/crud/js/show.js') }}"></script>
 @endsection
