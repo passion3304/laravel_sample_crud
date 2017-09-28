@@ -80,7 +80,9 @@ class CrudPanel
      * This function binds the CRUD to its corresponding Model (which extends Eloquent).
      * All Create-Read-Update-Delete operations are done using that Eloquent Collection.
      *
-     * @param [string] Full model namespace. Ex: App\Models\Article
+     * @param string $model_namespace Full model namespace. Ex: App\Models\Article]
+     *
+     * @throws \Exception in case the model does not exist
      */
     public function setModel($model_namespace)
     {
@@ -90,6 +92,7 @@ class CrudPanel
 
         $this->model = new $model_namespace();
         $this->query = $this->model->select('*');
+        $this->entry = null;
     }
 
     /**
@@ -203,11 +206,17 @@ class CrudPanel
         }
     }
 
+    /**
+     * @deprecated No longer used by internal code and not recommended.
+     */
     public function setSort($items, $order)
     {
         $this->sort[$items] = $order;
     }
 
+    /**
+     * @deprecated No longer used by internal code and not recommended.
+     */
     public function sort($items)
     {
         if (array_key_exists($items, $this->sort)) {
@@ -225,5 +234,28 @@ class CrudPanel
         }
 
         return $this->{$items};
+    }
+
+    /**
+     * Get the Eloquent Model name from the given relation definition string.
+     *
+     * @example For a given string 'company' and a relation between App/Models/User and App/Models/Company, defined by a
+     *          company() method on the user model, the 'App/Models/Company' string will be returned.
+     *
+     * @example For a given string 'company.address' and a relation between App/Models/User, App/Models/Company and
+     *          App/Models/Address defined by a company() method on the user model and an address() method on the
+     *          company model, the 'App/Models/Address' string will be returned.
+     *
+     * @param $relationString String Relation string. A dot notation can be used to chain multiple relations.
+     *
+     * @return string relation model name
+     */
+    private function getRelationModel($relationString)
+    {
+        $result = array_reduce(explode('.', $relationString), function ($obj, $method) {
+            return $obj->$method()->getRelated();
+        }, $this->model);
+
+        return get_class($result);
     }
 }

@@ -16,15 +16,15 @@
         multiple>
 
         @if ($old_value)
-            @foreach ($old_value as $result_key)
-                @php
-                    $item = $connected_entity->find($result_key);
-                @endphp
-                @if ($item)
+            @foreach ($old_value as $item)
+                @if (!is_object($item))
+                    @php
+                        $item = $connected_entity->find($item);
+                    @endphp
+                @endif
                 <option value="{{ $item->getKey() }}" selected>
                     {{ $item->{$field['attribute']} }}
                 </option>
-                @endif
             @endforeach
         @endif
     </select>
@@ -45,7 +45,7 @@
     @push('crud_fields_styles')
     <!-- include select2 css-->
     <link href="{{ asset('vendor/adminlte/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    {{-- <link href="{{ asset('vendor/backpack/select2/select2-bootstrap-dick.css') }}" rel="stylesheet" type="text/css" /> --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}

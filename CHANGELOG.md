@@ -20,6 +20,113 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.3.0] - 2017-09-xx
+
+## Added
+
+## Fixed
+- in create/update, fields without a tab are displayed before all tabs;
+
+
+## [3.2.21] - 2017-09-xx
+
+## Added
+- clear button to select2_from_ajax field type;
+- autoSet is now using the database defaults, if they exist;
+- cleaner preview page, which shows the db columns using the list columns (big thanks to [AbbyJanke](https://github.com/AbbyJanke));
+
+## Fixed
+- bug where you couldn't remove the last row of a table field;
+
+
+## [3.2.20] - 2017-09-27
+
+## Added
+- UNIT TESTS!!! I KNOW, RIGHT?!
+- fourth parameter to addFilter method, that accepts a fallback logic closure;
+- ability to make columns non-orderable using the DataTables "orderable" parameter;
+
+## Fixed
+- zh-cn instead of zh-CN language folder - fixes #849;
+- can't move a column before/after an inexisting column;
+- can't move a field before/after an inexisting field;
+- fixed beforeField() and afterField() methods;
+- fixed beforeColumn() and afterColumn() methods;
+- calling setModel() more than once now resets the entry;
+- you can now store a fake field inside a column with the same name (ex: extras.extras);
+- boolean column values can now be HTML;
+- select2 filter clear button now works with ajax datatables;
+- select2_from_ajax_multiple field old values fix;
+- CrudTrait::isColumnNullabel support for json and jsonb columns in postgres;
+- form_save_buttons had an untranslated string;
+- deprecated unused methods in CrudPanel;
+
+
+## [3.2.19] - 2017-09-05
+
+## Added
+- text filter type;
+
+## Fixed
+- date_range field start_name value always falled back to default - #450;
+- hidden field types now have no height - fixes #555;
+- image field type can now be modified in size - fixes #572;
+- we were unable to save model with optional fake fields - fixes #616;
+
+## [3.2.18] - 2017-08-30
+
+## Added
+- Package autodiscovery for Laravel 5.5;
+
+
+## [3.2.17] - 2017-08-22
+
+## Fixed
+- SluggableScopeHelpers::scopeWhereSlug() signature, thanks to [Pascal VINEY](https://github.com/shaoshiva);
+
+
+## [3.2.16] - 2017-08-21
+
+## Added
+- translation strings for CRUD export buttons, thanks to [Alashow](https://github.com/alashow);
+
+## Fixed
+- you can now skip mentioning the model for relation fields and columns (select, select2, select2multiple, etc) - it will be picked up from the relation automatically;
+
+
+## [3.2.15] - 2017-08-11
+
+## Added
+- Danish (da_DK) language files, thanks to [Frederik Rabøl](https://github.com/Xayer);
+
+
+## [3.2.14] - 2017-08-04
+
+## Added
+- Brasilian Portugese translation, thanks to [Guilherme Augusto Henschel](https://github.com/cenoura);
+- $crud parameter to the model function that adds a button;
+
+## Fixed
+- setFromDb() now uses the column name as array index - so $this->crud->columns[id] instead of $this->crud->columns[arbitrary_number]; this makes afterColumn() and beforeColumn() work with setFromDb() too - #759;
+- radio field type now has customizable attributes - fixes #718;
+- model_function column breaking when not naming it - fixes #784;
+- video column type uses HTTPs and no longer triggers console error - fixes #735;
+
+
+## [3.2.13] - 2017-07-07
+
+## Added
+- German translation, thanks to [Oliver Ziegler](https://github.com/OliverZiegler);
+- PHP 7.1 to TravisCI;
+
+### Fixed
+- resources loaded twice on tabbed forms - fixes #509;
+- beforeColumn and afterColumn not working after setFromDb();
+- afterField() always placing the field on the second position;
+- date_range filter - clear button now works;
+- select2 variants load the JS and CSS from CDN now to fix styling issues;
+- show_fields error when no tabs on CRUD entity;
+
 ## [3.2.12] - 2017-05-31
 
 ### Added
