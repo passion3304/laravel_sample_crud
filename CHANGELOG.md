@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.21] - 2017-09-xx
+## [3.2.21] - 2017-09-28
 
 ## Added
 - clear button to select2_from_ajax field type;
