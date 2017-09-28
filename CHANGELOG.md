@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.21] - 2017-09-xx
+
+## Added
+
+## Fixed
+- bug where you couldn't remove the last row of a table field;
+
+
 ## [3.2.20] - 2017-09-27
 
 ## Added
