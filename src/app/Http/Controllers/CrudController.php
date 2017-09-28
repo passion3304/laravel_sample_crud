@@ -199,13 +199,12 @@ class CrudController extends BaseController
         $this->crud->hasAccessOrFail('show');
 
         // set columns from db
-        $this->crud->columns = [];
         $this->crud->setFromDb();
 
-        // cycle through old columns for removal
+        // cycle through columns
         foreach($this->crud->columns as $key => $column) {
-            // remove any relationship columns
-            if (array_key_exists('model', $column)) {
+            // remove any autoset relationship columns
+            if (array_key_exists('model', $column) && array_key_exists('autoset', $column) && $column['autoset']) {
                 $this->crud->removeColumn($column['name']);
             }
         }

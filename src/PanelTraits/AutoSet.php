@@ -28,15 +28,21 @@ trait AutoSet
                 'type'       => $this->getFieldTypeFromDbColumnType($field),
                 'values'     => [],
                 'attributes' => [],
+                'autoset'    => true,
             ];
-            $this->create_fields[$field] = $new_field;
-            $this->update_fields[$field] = $new_field;
+            if (!isset($this->create_fields[$field])) {
+                $this->create_fields[$field] = $new_field;
+            }
+            if (!isset($this->update_fields[$field])) {
+                $this->update_fields[$field] = $new_field;
+            }
 
-            if (! in_array($field, $this->model->getHidden())) {
-                $this->columns[] = [
+            if (!in_array($field, $this->model->getHidden()) && !isset($this->columns[$field])) {
+                $this->columns[$field] = [
                     'name'  => $field,
                     'label' => ucfirst($field),
                     'type'  => $this->getFieldTypeFromDbColumnType($field),
+                    'autoset' => true,
                 ];
             }
         }, $this->getDbColumnsNames());
