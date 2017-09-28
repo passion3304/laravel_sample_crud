@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - if a field has the required attribute, a red start will show up next to its label;
 - shorthand method for updating field and column labels - setColumnLabel() and setFieldLabel();
 - select_from_array column type;
+- image column type;
 
 ## Fixed
 - bug where you couldn't remove the last row of a table field;
