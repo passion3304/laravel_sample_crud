@@ -185,6 +185,22 @@ trait Fields
     }
 
     /**
+     * Set label for a specific field.
+     *
+     * @param string $field
+     * @param string $label
+     */
+    public function setFieldLabel($field, $label)
+    {
+        if (isset($this->create_fields[$field])) {
+            $this->create_fields[$field]['label'] = $label;
+        }
+        if (isset($this->update_fields[$field])) {
+            $this->update_fields[$field]['label'] = $label;
+        }
+    }
+
+    /**
      * Check if field is the first of its type in the given fields array.
      * It's used in each field_type.blade.php to determine wether to push the css and js content or not (we only need to push the js and css for a field the first time it's loaded in the form, not any subsequent times).
      *
