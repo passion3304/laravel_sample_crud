@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.3.0] - 2017-09-xx
+
+## Added
+
+## Fixed
+- in create/update, fields without a tab are displayed before all tabs;
+
+
 ## [3.2.21] - 2017-09-xx
 
 ## Added
