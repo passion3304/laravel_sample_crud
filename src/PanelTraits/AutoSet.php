@@ -30,14 +30,14 @@ trait AutoSet
                 'attributes' => [],
                 'autoset'    => true,
             ];
-            if (!isset($this->create_fields[$field])) {
+            if (! isset($this->create_fields[$field])) {
                 $this->create_fields[$field] = $new_field;
             }
-            if (!isset($this->update_fields[$field])) {
+            if (! isset($this->update_fields[$field])) {
                 $this->update_fields[$field] = $new_field;
             }
 
-            if (!in_array($field, $this->model->getHidden()) && !isset($this->columns[$field])) {
+            if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
                 $this->columns[$field] = [
                     'name'  => $field,
                     'label' => ucfirst($field),
@@ -144,7 +144,7 @@ trait AutoSet
         $types = ['enum' => 'string'];
         $platform = \DB::getDoctrineConnection()->getDatabasePlatform();
         foreach ($types as $type_key => $type_value) {
-            if (!$platform->hasDoctrineTypeMappingFor($type_key)) {
+            if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
                 $platform->registerDoctrineTypeMapping($type_key, $type_value);
             }
         }
