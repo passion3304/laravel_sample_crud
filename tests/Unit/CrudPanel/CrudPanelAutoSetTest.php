@@ -39,7 +39,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
         'uuidCol' => 'text',
     ];
 
-    private $expectedColumnTypes = [
+    private $expectedColumnTypesFromDb = [
         'bigIntegerCol' => [
             'type' => 'integer',
             'default' => '',
@@ -154,230 +154,569 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
         ],
     ];
 
-    private $expectedFieldsFromDb = [
+    private $expectedColumnTypes = [
         'bigIntegerCol' => [
             'name' => 'bigIntegerCol',
             'label' => 'BigIntegerCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'binaryCol' => [
             'name' => 'binaryCol',
             'label' => 'BinaryCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'booleanCol' => [
             'name' => 'booleanCol',
             'label' => 'BooleanCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'charCol' => [
             'name' => 'charCol',
             'label' => 'CharCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'dateCol' => [
             'name' => 'dateCol',
             'label' => 'DateCol',
             'value' => null,
+            'default' => null,
             'type' => 'date',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'dateTimeCol' => [
             'name' => 'dateTimeCol',
             'label' => 'DateTimeCol',
             'value' => null,
+            'default' => null,
             'type' => 'datetime',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'dateTimeTzCol' => [
             'name' => 'dateTimeTzCol',
             'label' => 'DateTimeTzCol',
             'value' => null,
+            'default' => null,
             'type' => 'datetime',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'decimalCol' => [
             'name' => 'decimalCol',
             'label' => 'DecimalCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'doubleCol' => [
             'name' => 'doubleCol',
             'label' => 'DoubleCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'enumCol' => [
             'name' => 'enumCol',
             'label' => 'EnumCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'floatCol' => [
             'name' => 'floatCol',
             'label' => 'FloatCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'integerCol' => [
             'name' => 'integerCol',
             'label' => 'IntegerCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'ipAddressCol' => [
             'name' => 'ipAddressCol',
             'label' => 'IpAddressCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'jsonCol' => [
             'name' => 'jsonCol',
             'label' => 'JsonCol',
             'value' => null,
+            'default' => null,
             'type' => 'textarea',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'jsonbCol' => [
             'name' => 'jsonbCol',
             'label' => 'JsonbCol',
             'value' => null,
+            'default' => null,
             'type' => 'textarea',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'longTextCol' => [
             'name' => 'longTextCol',
             'label' => 'LongTextCol',
             'value' => null,
+            'default' => null,
             'type' => 'textarea',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'macAddressCol' => [
             'name' => 'macAddressCol',
             'label' => 'MacAddressCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'mediumIntegerCol' => [
             'name' => 'mediumIntegerCol',
             'label' => 'MediumIntegerCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'mediumTextCol' => [
             'name' => 'mediumTextCol',
             'label' => 'MediumTextCol',
             'value' => null,
+            'default' => null,
             'type' => 'textarea',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'smallIntegerCol' => [
             'name' => 'smallIntegerCol',
             'label' => 'SmallIntegerCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'stringCol' => [
             'name' => 'stringCol',
             'label' => 'StringCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'textCol' => [
             'name' => 'textCol',
             'label' => 'TextCol',
             'value' => null,
+            'default' => null,
             'type' => 'textarea',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'timeCol' => [
             'name' => 'timeCol',
             'label' => 'TimeCol',
             'value' => null,
+            'default' => null,
             'type' => 'time',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'timeTzCol' => [
             'name' => 'timeTzCol',
             'label' => 'TimeTzCol',
             'value' => null,
+            'default' => null,
             'type' => 'time',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'tinyIntegerCol' => [
             'name' => 'tinyIntegerCol',
             'label' => 'TinyIntegerCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'timestampCol' => [
             'name' => 'timestampCol',
             'label' => 'TimestampCol',
             'value' => null,
+            'default' => null,
             'type' => 'datetime',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'timestampTzCol' => [
             'name' => 'timestampTzCol',
             'label' => 'TimestampTzCol',
             'value' => null,
+            'default' => null,
             'type' => 'datetime',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
         ],
         'uuidCol' => [
             'name' => 'uuidCol',
             'label' => 'UuidCol',
             'value' => null,
+            'default' => null,
             'type' => 'text',
             'values' => [],
             'attributes' => [],
+            'autoset' => true
+        ]
+    ];
+
+    private $expectedFieldsFromDb = [
+        'bigIntegerCol' => [
+            'name' => 'bigIntegerCol',
+            'label' => 'BigIntegerCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'binaryCol' => [
+            'name' => 'binaryCol',
+            'label' => 'BinaryCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'booleanCol' => [
+            'name' => 'booleanCol',
+            'label' => 'BooleanCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'charCol' => [
+            'name' => 'charCol',
+            'label' => 'CharCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'dateCol' => [
+            'name' => 'dateCol',
+            'label' => 'DateCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'date',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'dateTimeCol' => [
+            'name' => 'dateTimeCol',
+            'label' => 'DateTimeCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'datetime',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'dateTimeTzCol' => [
+            'name' => 'dateTimeTzCol',
+            'label' => 'DateTimeTzCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'datetime',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'decimalCol' => [
+            'name' => 'decimalCol',
+            'label' => 'DecimalCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'doubleCol' => [
+            'name' => 'doubleCol',
+            'label' => 'DoubleCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'enumCol' => [
+            'name' => 'enumCol',
+            'label' => 'EnumCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'floatCol' => [
+            'name' => 'floatCol',
+            'label' => 'FloatCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'integerCol' => [
+            'name' => 'integerCol',
+            'label' => 'IntegerCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'ipAddressCol' => [
+            'name' => 'ipAddressCol',
+            'label' => 'IpAddressCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'jsonCol' => [
+            'name' => 'jsonCol',
+            'label' => 'JsonCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'textarea',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'jsonbCol' => [
+            'name' => 'jsonbCol',
+            'label' => 'JsonbCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'textarea',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'longTextCol' => [
+            'name' => 'longTextCol',
+            'label' => 'LongTextCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'textarea',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'macAddressCol' => [
+            'name' => 'macAddressCol',
+            'label' => 'MacAddressCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'mediumIntegerCol' => [
+            'name' => 'mediumIntegerCol',
+            'label' => 'MediumIntegerCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'mediumTextCol' => [
+            'name' => 'mediumTextCol',
+            'label' => 'MediumTextCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'textarea',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'smallIntegerCol' => [
+            'name' => 'smallIntegerCol',
+            'label' => 'SmallIntegerCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'stringCol' => [
+            'name' => 'stringCol',
+            'label' => 'StringCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'textCol' => [
+            'name' => 'textCol',
+            'label' => 'TextCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'textarea',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'timeCol' => [
+            'name' => 'timeCol',
+            'label' => 'TimeCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'time',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'timeTzCol' => [
+            'name' => 'timeTzCol',
+            'label' => 'TimeTzCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'time',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'tinyIntegerCol' => [
+            'name' => 'tinyIntegerCol',
+            'label' => 'TinyIntegerCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'timestampCol' => [
+            'name' => 'timestampCol',
+            'label' => 'TimestampCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'datetime',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'timestampTzCol' => [
+            'name' => 'timestampTzCol',
+            'label' => 'TimestampTzCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'datetime',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
+        ],
+        'uuidCol' => [
+            'name' => 'uuidCol',
+            'label' => 'UuidCol',
+            'value' => null,
+            'default' => null,
+            'type' => 'text',
+            'values' => [],
+            'attributes' => [],
+            'autoset' => true
         ],
     ];
 
@@ -410,7 +749,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
 
         $columnTypes = $this->crudPanel->getDbColumnTypes();
 
-        $this->assertEquals($this->expectedColumnTypes, $columnTypes);
+        $this->assertEquals($this->expectedColumnTypesFromDb, $columnTypes);
     }
 
     public function testGetFieldTypeFromDbColumnTypeUnknownField()
