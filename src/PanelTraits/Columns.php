@@ -83,6 +83,8 @@ trait Columns
         if (isset($column_with_details['entity']) && ! isset($column_with_details['model'])) {
             $column_with_details['model'] = $this->getRelationModel($column_with_details['entity']);
         }
+
+        return $this;
     }
 
     /**
