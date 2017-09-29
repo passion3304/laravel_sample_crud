@@ -52,6 +52,8 @@ trait Fields
 
             return $fields;
         });
+
+        return $this;
     }
 
     /**
