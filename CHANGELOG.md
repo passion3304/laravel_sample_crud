@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.22] - 2017-09-xx
+
+## Fixed
+- date_picker initial display value offset - PR #767, fixes #768;
+
+
 ## [3.2.21] - 2017-09-28
 
 ## Added
