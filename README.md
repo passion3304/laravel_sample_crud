@@ -12,7 +12,7 @@
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
 
 Features:
-- 33+ field types
+- 49+ field types
 - 1-n relationships
 - n-n relationships
 - Table view with search, pagination, click column to sort by it
