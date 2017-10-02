@@ -234,6 +234,17 @@ trait Columns
     }
 
     /**
+     * Set label for a specific column.
+     *
+     * @param string $column
+     * @param string $label
+     */
+    public function setColumnLabel($column, $label)
+    {
+        $this->setColumnDetails($column, ['label' => $label]);
+    }
+
+    /**
      * Order the columns in a certain way.
      *
      * @param [string] Column name.
