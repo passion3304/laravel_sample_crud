@@ -18,7 +18,7 @@ Features:
 - Table view with search, pagination, click column to sort by it
 - Reordering (nested sortable)
 - Back-end validation using Requests
-- Translatable models (multi-language) // TODO
+- Translatable models (multi-language)
 - Easily extend fields (customising a field type or adding a new one is as easy as creating a new view with a particular name)
 - Easily overwrite functionality (customising how the create/update/delete/reorder process works is as easy as creating a new function with the proper name in your EntityCrudCrontroller)
 
