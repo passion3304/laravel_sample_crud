@@ -247,7 +247,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testAddFieldsInvalidArray()
     {
-        $this->setExpectedException(\ErrorException::class);
+        $this->expectException(\ErrorException::class);
 
         $this->crudPanel->addFields($this->invalidTwoFieldsArray);
     }
@@ -552,7 +552,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testCheckIfInvalidFieldIsFirstOfItsType()
     {
-        $this->setExpectedException(\ErrorException::class);
+        $this->expectException(\ErrorException::class);
 
         $this->crudPanel->checkIfFieldIsFirstOfItsType($this->invalidTwoFieldsArray[0], $this->expectedMultipleFieldTypesArray);
     }

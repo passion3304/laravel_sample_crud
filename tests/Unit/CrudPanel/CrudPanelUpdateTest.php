@@ -66,7 +66,7 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 
     public function testUpdateUnknownId()
     {
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFields);
@@ -101,7 +101,7 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 
     public function testGetUpdateFieldsUnknownId()
     {
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFields);
