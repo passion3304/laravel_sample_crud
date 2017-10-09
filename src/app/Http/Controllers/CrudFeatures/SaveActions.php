@@ -13,22 +13,23 @@ trait SaveActions
     {
         $saveAction = session('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
 
-        // Generate list of actions to main action order.
-        $saveOptions = [
-            'save_and_back' => $this->getSaveActionButtonName('save_and_back'),
-            'save_and_edit' => $this->getSaveActionButtonName('save_and_edit'),
-            'save_and_new' => $this->getSaveActionButtonName('save_and_new'),
+        // Permissions and their related actions.
+        $permissions = [
+            'list'   => 'save_and_back',
+            'update' => 'save_and_edit',
+            'create' => 'save_and_new',
         ];
 
-        // Correctly remove "Save and back" action.
-        if (! $this->crud->hasAccess('list')) {
-            unset($saveOptions['save_and_back']);
-        }
-
-        // Correctly remove "Save and new" action.
-        if (! $this->crud->hasAccess('create')) {
-            unset($saveOptions['save_and_new']);
-        }
+        $saveOptions = collect($permissions)
+            // Generate list of possible actions.
+            ->map(function ($action, $permission) {
+                return [$action => $this->getSaveActionButtonName($action)];
+            })
+            // Restrict list to allowed actions.
+            ->filter(function ($action, $permission) {
+                return $this->crud->hasAccess($action);
+            })
+            ->toArray();
 
         // Set current action if it exist, or first available option.
         if (isset($saveOptions[$saveAction])) {
