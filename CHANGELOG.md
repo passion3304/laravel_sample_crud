@@ -20,6 +20,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.23] - 2017-10-16
+
+## Added
+- Added config option to choose if the save actions changed bubble will be shown;
+
+## Fixed
+- lv language file spelling error;
+
+
 ## [3.2.22] - 2017-09-30
 
 ## Fixed
