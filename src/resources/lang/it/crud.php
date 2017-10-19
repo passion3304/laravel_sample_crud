@@ -36,9 +36,9 @@ return [
     'created_this'         => 'ha creato questo',
     'changed_the'          => 'cambiato il',
     'restore_this_value'   => 'ripristinare questo valore',
-    'from'                 => 'de parte di',
+    'from'                 => 'da parte di',
     'to'                   => 'a',
-    'undo'                 => 'Disfare',
+    'undo'                 => 'Annulla',
     'revision_restored'    => 'Revisione successo restaurato',
     'guest_user'           => 'Utente Ospite',
 
