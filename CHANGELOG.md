@@ -26,7 +26,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - daterange field did not use the correct value if the start_date and end_date were not casted in the model - merged #1036;
 - PR #1015 - fixes #798 - fixed field order methods;
 - PR #1011 - fixes #982 and #971 - fixed column order methods;
-
+- radio column not showing value - PR #1023;
 
 ## [3.2.23] - 2017-10-16
 
