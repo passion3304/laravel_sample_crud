@@ -66,7 +66,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
     {
         $this->markTestIncomplete('Not correctly implemented');
 
-        $this->setExpectedException(\Exception::class);
+        $this->expectException(\Exception::class);
 
         $expectedButton = $this->topViewButton;
 
@@ -116,7 +116,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
     {
         $this->markTestIncomplete('Not correctly implemented');
 
-        $this->setExpectedException(\Exception::class);
+        $this->expectException(\Exception::class);
 
         $expectedButton = $this->lineViewButton;
 

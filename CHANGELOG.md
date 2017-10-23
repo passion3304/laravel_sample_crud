@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.3.0] - 2017-09-xx
+
+## Added
+
+## Fixed
+- in create/update, fields without a tab are displayed before all tabs;
+- unit tests now use PHPUnit 6;
+
 ## [3.2.24] - 2017-10-23
 
 ## Fixed

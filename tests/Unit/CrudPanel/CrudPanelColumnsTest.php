@@ -100,7 +100,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testAddColumnNotArray()
     {
-        $this->setExpectedException(\ErrorException::class);
+        $this->expectException(\ErrorException::class);
 
         $this->crudPanel->addColumns('column1');
     }
