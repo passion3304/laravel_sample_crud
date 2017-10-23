@@ -244,6 +244,17 @@ trait Columns
     }
 
     /**
+     * Set label for a specific column.
+     *
+     * @param string $column
+     * @param string $label
+     */
+    public function setColumnLabel($column, $label)
+    {
+        $this->setColumnDetails($column, ['label' => $label]);
+    }
+
+    /**
      * Get the relationships used in the CRUD columns.
      * @return [array] Relationship names
      */
