@@ -205,24 +205,48 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         // TODO: refactor crud panel sync method
     }
 
-    public function testSetColumnOrder()
-    {
-        $this->markTestIncomplete('Not yet implemented');
-
-        // TODO: implement method
-    }
-
-    public function testSetColumnsOrder()
-    {
-        $this->markTestIncomplete('Not yet implemented');
-
-        // TODO: implement method
-    }
-
     public function testOrderColumns()
     {
-        $this->markTestIncomplete('Not correctly implemented');
+        $this->crudPanel->addColumns($this->threeColumnsArray);
 
-        // TODO: fix order columns method
+        $this->crudPanel->orderColumns(['column2', 'column1', 'column3']);
+
+        $this->assertEquals(['column2', 'column1', 'column3'], array_keys($this->crudPanel->columns));
+    }
+
+    public function testOrderColumnsIncompleteList()
+    {
+        $this->crudPanel->addColumns($this->threeColumnsArray);
+
+        $this->crudPanel->orderColumns(['column2', 'column3']);
+
+        $this->assertEquals(['column2', 'column3', 'column1'], array_keys($this->crudPanel->columns));
+    }
+
+    public function testOrderColumnsEmptyList()
+    {
+        $this->crudPanel->addColumns($this->threeColumnsArray);
+
+        $this->crudPanel->orderColumns([]);
+
+        $this->assertEquals($this->expectedThreeColumnsArray, $this->crudPanel->columns);
+    }
+
+    public function testOrderColumnsUnknownList()
+    {
+        $this->crudPanel->addColumns($this->threeColumnsArray);
+
+        $this->crudPanel->orderColumns(['column4', 'column5', 'column6']);
+
+        $this->assertEquals($this->expectedThreeColumnsArray, $this->crudPanel->columns);
+    }
+
+    public function testOrderColumnsMixedList()
+    {
+        $this->crudPanel->addColumns($this->threeColumnsArray);
+
+        $this->crudPanel->orderColumns(['column2', 'column5', 'column6']);
+
+        $this->assertEquals(['column2', 'column1', 'column3'], array_keys($this->crudPanel->columns));
     }
 }

@@ -9,6 +9,16 @@ trait Columns
     // ------------
 
     /**
+     * Get the CRUD columns.
+     *
+     * @return array CRUD columns.
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
+
+    /**
      * Add a bunch of column names and their details to the CRUD object.
      *
      * @param [array or multi-dimensional array]
@@ -245,23 +255,6 @@ trait Columns
     }
 
     /**
-     * Order the columns in a certain way.
-     *
-     * @param [string] Column name.
-     * @param [attributes and values array]
-     */
-    public function setColumnOrder($columns)
-    {
-        // TODO
-    }
-
-    // ALIAS of setColumnOrder($columns)
-    public function setColumnsOrder($columns)
-    {
-        $this->setColumnOrder($columns);
-    }
-
-    /**
      * Get the relationships used in the CRUD columns.
      * @return [array] Relationship names
      */
@@ -274,18 +267,52 @@ trait Columns
         })->toArray();
     }
 
-    // ------------
-    // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED
-    // ------------
-    // TODO: check them
-
-    public function getColumns()
-    {
-        return $this->sort('columns');
-    }
-
+    /**
+     * Order the CRUD columns. If certain columns are missing from the given order array, they will be pushed to the
+     * new columns array in the original order.
+     *
+     * @param array $order An array of column names in the desired order.
+     */
     public function orderColumns($order)
     {
-        $this->setSort('columns', (array) $order);
+        $orderedColumns = [];
+        foreach ($order as $columnName) {
+            if (array_key_exists($columnName, $this->columns)) {
+                $orderedColumns[$columnName] = $this->columns[$columnName];
+            }
+        }
+
+        if (empty($orderedColumns)) {
+            return;
+        }
+
+        $remaining = array_diff_key($this->columns, $orderedColumns);
+        $this->columns = array_merge($orderedColumns, $remaining);
+    }
+
+    /**
+     * Set the order of the CRUD columns.
+     *
+     * @param array $columns Column order.
+     *
+     * @deprecated This method was not and will not be implemented since it's a duplicate of the orderColumns method.
+     * @see Columns::orderColumns() to order the CRUD columns.
+     */
+    public function setColumnOrder($columns)
+    {
+        // not implemented
+    }
+
+    /**
+     * Set the order of the CRUD columns.
+     *
+     * @param array $columns Column order.
+     *
+     * @deprecated This method was not and will not be implemented since it's a duplicate of the orderColumns method.
+     * @see Columns::orderColumns() to order the CRUD columns.
+     */
+    public function setColumnsOrder($columns)
+    {
+        $this->setColumnOrder($columns);
     }
 }
