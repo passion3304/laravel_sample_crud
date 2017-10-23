@@ -294,4 +294,61 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $unknownId = DB::getPdo()->lastInsertId() + 1;
         $this->crudPanel->hasUploadFields('update', $unknownId);
     }
+
+    public function testEnableDetailsRow()
+    {
+        $this->crudPanel->enableDetailsRow();
+
+        $this->assertTrue($this->crudPanel->details_row);
+    }
+
+    public function testDisableDetailsRow()
+    {
+        $this->crudPanel->disableDetailsRow();
+
+        $this->assertFalse($this->crudPanel->details_row);
+    }
+
+    public function testSetDefaultPageLength()
+    {
+        $pageLength = 20;
+        $this->crudPanel->setDefaultPageLength($pageLength);
+
+        $this->assertEquals($pageLength, $this->crudPanel->getDefaultPageLength());
+    }
+
+    public function testGetDefaultPageLength()
+    {
+        $defaultPageLength = $this->crudPanel->getDefaultPageLength();
+
+        $this->assertEquals(25, $defaultPageLength);
+    }
+
+    public function testEnableAjaxTable()
+    {
+        $this->crudPanel->enableAjaxTable();
+
+        $this->assertTrue($this->crudPanel->ajaxTable());
+    }
+
+    public function testGetAjaxTable()
+    {
+        $ajaxTable = $this->crudPanel->ajaxTable();
+
+        $this->assertFalse($ajaxTable);
+    }
+
+    public function testEnableExportButtons()
+    {
+        $this->crudPanel->enableExportButtons();
+
+        $this->assertTrue($this->crudPanel->exportButtons());
+    }
+
+    public function testGetExportButtons()
+    {
+        $exportButtons = $this->crudPanel->exportButtons();
+
+        $this->assertFalse($exportButtons);
+    }
 }
