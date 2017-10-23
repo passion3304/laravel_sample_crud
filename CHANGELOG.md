@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.24] - 2017-10-xx
+## [3.2.24] - 2017-10-23
 
 ## Fixed
 - daterange field did not use the correct value if the start_date and end_date were not casted in the model - merged #1036;
