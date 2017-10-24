@@ -102,23 +102,15 @@
       	$("#remove_filters_button").click(function(e) {
       		e.preventDefault();
 
-      		@if (!$crud->ajaxTable())
-				// behaviour for normal table
-				var clean_url = '{{ Request::url() }}';
-
-				// refresh the page to the clean_url
-		    	window.location.href = clean_url;
-		    @else
 		    	// behaviour for ajax table
 		    	var new_url = '{{ url($crud->route.'/search') }}';
 		    	var ajax_table = $("#crudTable").DataTable();
 
-				// replace the datatables ajax url with new_url and reload it
-				ajax_table.ajax.url(new_url).load();
+  				// replace the datatables ajax url with new_url and reload it
+  				ajax_table.ajax.url(new_url).load();
 
-				// clear all filters
-				$(".navbar-filters li[filter-name]").trigger('filter:clear');
-		    @endif
+  				// clear all filters
+  				$(".navbar-filters li[filter-name]").trigger('filter:clear');
       	})
       });
     </script>

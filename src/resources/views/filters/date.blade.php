@@ -69,33 +69,23 @@
 
 				var parameter = '{{ $filter->name }}';
 
-				@if (!$crud->ajaxTable())
-					// behaviour for normal table
-					var current_url = normalizeAmpersand('{{ Request::fullUrl() }}');
-					var new_url = addOrUpdateUriParameter(current_url, parameter, value);
+		    	// behaviour for ajax table
+				var ajax_table = $('#crudTable').DataTable();
+				var current_url = ajax_table.ajax.url();
+				var new_url = addOrUpdateUriParameter(current_url, parameter, value);
 
-					// refresh the page to the new_url
-					new_url = normalizeAmpersand(new_url.toString());
-			    	window.location.href = new_url;
-			    @else
-			    	// behaviour for ajax table
-					var ajax_table = $('#crudTable').DataTable();
-					var current_url = ajax_table.ajax.url();
-					var new_url = addOrUpdateUriParameter(current_url, parameter, value);
+				// replace the datatables ajax url with new_url and reload it
+				new_url = normalizeAmpersand(new_url.toString());
+				ajax_table.ajax.url(new_url).load();
 
-					// replace the datatables ajax url with new_url and reload it
-					new_url = normalizeAmpersand(new_url.toString());
-					ajax_table.ajax.url(new_url).load();
-
-					// mark this filter as active in the navbar-filters
-					if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-						$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
-					}
-					else
-					{
-						$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
-					}
-			    @endif
+				// mark this filter as active in the navbar-filters
+				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
+					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
+				}
+				else
+				{
+					$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
+				}
 			});
 			$('li[filter-name={{ str_slug($filter->name) }}]').on('filter:clear', function(e) {
 				// console.log('date filter cleared');
