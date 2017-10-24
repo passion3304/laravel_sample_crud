@@ -42,6 +42,10 @@ trait Search
             if (is_callable($searchLogic)) {
                 return $searchLogic($query, $column, $searchTerm);
             }
+
+            if ($searchLogic == false) {
+                return;
+            }
         }
 
         switch ($column['type']) {
