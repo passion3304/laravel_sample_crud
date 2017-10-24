@@ -62,11 +62,6 @@ class CrudController extends BaseController
         $this->data['crud'] = $this->crud;
         $this->data['title'] = ucfirst($this->crud->entity_name_plural);
 
-        // get all entries if AJAX is not enabled
-        if (! $this->data['crud']->ajaxTable()) {
-            $this->data['entries'] = $this->data['crud']->getEntries();
-        }
-
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getListView(), $this->data);
     }
