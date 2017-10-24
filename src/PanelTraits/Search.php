@@ -42,26 +42,33 @@ trait Search
             if (is_callable($searchLogic)) {
                 return $searchLogic($query, $column, $searchTerm);
             }
+
+            if ($searchLogic == false) {
+                return;
+            }
         }
 
-        switch ($column['type']) {
-            case 'email':
-            case 'date':
-            case 'datetime':
-            case 'text':
-                $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
-                break;
+        // sensible fallback search logic, if none was explicitly given
+        if ($column['table_column']) {
+            switch ($column['type']) {
+                case 'email':
+                case 'date':
+                case 'datetime':
+                case 'text':
+                    $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
+                    break;
 
-            case 'select':
-            case 'select_multiple':
-                $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                    $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
-                });
-                break;
+                case 'select':
+                case 'select_multiple':
+                    $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
+                        $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
+                    });
+                    break;
 
-            default:
-                return;
-                break;
+                default:
+                    return;
+                    break;
+            }
         }
     }
 

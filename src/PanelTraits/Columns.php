@@ -9,6 +9,16 @@ trait Columns
     // ------------
 
     /**
+     * Get the CRUD columns.
+     *
+     * @return array CRUD columns.
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
+
+    /**
      * Add a bunch of column names and their details to the CRUD object.
      *
      * @param [array or multi-dimensional array]
@@ -74,6 +84,15 @@ trait Columns
         // make sure the column has a key
         if (! array_key_exists('key', $column_with_details)) {
             $column_with_details['key'] = $column_with_details['name'];
+        }
+
+        // check if the column exists in the DB table
+        if (\Schema::hasColumn($this->model->getTable(), $column_with_details['name'])) {
+            $column_with_details['table_column'] = true;
+        } else {
+            $column_with_details['table_column'] = false;
+            $column_with_details['orderable'] = false;
+            $column_with_details['searchLogic'] = false;
         }
 
         array_filter($this->columns[$column_with_details['key']] = $column_with_details);
@@ -244,20 +263,14 @@ trait Columns
     }
 
     /**
-     * Order the columns in a certain way.
+     * Set label for a specific column.
      *
-     * @param [string] Column name.
-     * @param [attributes and values array]
+     * @param string $column
+     * @param string $label
      */
-    public function setColumnOrder($columns)
+    public function setColumnLabel($column, $label)
     {
-        // TODO
-    }
-
-    // ALIAS of setColumnOrder($columns)
-    public function setColumnsOrder($columns)
-    {
-        $this->setColumnOrder($columns);
+        $this->setColumnDetails($column, ['label' => $label]);
     }
 
     /**
@@ -274,8 +287,56 @@ trait Columns
     }
 
     /**
-     * Get a column by the id, from the associative array.
+     * Order the CRUD columns. If certain columns are missing from the given order array, they will be pushed to the
+     * new columns array in the original order.
      *
+     * @param array $order An array of column names in the desired order.
+     */
+    public function orderColumns($order)
+    {
+        $orderedColumns = [];
+        foreach ($order as $columnName) {
+            if (array_key_exists($columnName, $this->columns)) {
+                $orderedColumns[$columnName] = $this->columns[$columnName];
+            }
+        }
+
+        if (empty($orderedColumns)) {
+            return;
+        }
+
+        $remaining = array_diff_key($this->columns, $orderedColumns);
+        $this->columns = array_merge($orderedColumns, $remaining);
+    }
+
+    /**
+     * Set the order of the CRUD columns.
+     *
+     * @param array $columns Column order.
+     *
+     * @deprecated This method was not and will not be implemented since it's a duplicate of the orderColumns method.
+     * @see Columns::orderColumns() to order the CRUD columns.
+     */
+    public function setColumnOrder($columns)
+    {
+        // not implemented
+    }
+
+    /**
+     * Set the order of the CRUD columns.
+     *
+     * @param array $columns Column order.
+     *
+     * @deprecated This method was not and will not be implemented since it's a duplicate of the orderColumns method.
+     * @see Columns::orderColumns() to order the CRUD columns.
+     */
+    public function setColumnsOrder($columns)
+    {
+        $this->setColumnOrder($columns);
+    }
+
+    /**
+     * Get a column by the id, from the associative array.
      * @param  [integer] $column_number Placement inside the columns array.
      * @return [array] Column details.
      */
@@ -284,20 +345,5 @@ trait Columns
         $result = array_slice($this->getColumns(), $column_number, 1);
 
         return reset($result);
-    }
-
-    // ------------
-    // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED
-    // ------------
-    // TODO: check them
-
-    public function getColumns()
-    {
-        return $this->sort('columns');
-    }
-
-    public function orderColumns($order)
-    {
-        $this->setSort('columns', (array) $order);
     }
 }
