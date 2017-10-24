@@ -10,6 +10,8 @@ trait Search
     |--------------------------------------------------------------------------
     */
 
+    public $ajax_table = true;
+
     /**
      * Add conditions to the CRUD query for a particular search term.
      *
@@ -69,6 +71,14 @@ trait Search
     public function enableAjaxTable()
     {
         $this->ajax_table = true;
+    }
+
+    /**
+     * Tell the list view to NOT use AJAX for loading multiple rows.
+     */
+    public function disableAjaxTable()
+    {
+        $this->ajax_table = false;
     }
 
     /**
