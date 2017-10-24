@@ -48,24 +48,27 @@ trait Search
             }
         }
 
-        switch ($column['type']) {
-            case 'email':
-            case 'date':
-            case 'datetime':
-            case 'text':
-                $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
-                break;
+        // sensible fallback search logic, if none was explicitly given
+        if (\Schema::hasColumn($this->model->getTable(), $column['name'])) {
+            switch ($column['type']) {
+                case 'email':
+                case 'date':
+                case 'datetime':
+                case 'text':
+                    $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
+                    break;
 
-            case 'select':
-            case 'select_multiple':
-                $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                    $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
-                });
-                break;
+                case 'select':
+                case 'select_multiple':
+                    $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
+                        $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
+                    });
+                    break;
 
-            default:
-                return;
-                break;
+                default:
+                    return;
+                    break;
+            }
         }
     }
 
