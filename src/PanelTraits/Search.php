@@ -83,16 +83,6 @@ trait Search
     }
 
     /**
-     * Tell the list view to NOT use AJAX for loading multiple rows.
-     *
-     * @deprecated 3.3.0 Even though the variable is set to false, this does nothing inside the app.
-     */
-    public function disableAjaxTable()
-    {
-        $this->ajax_table = false;
-    }
-
-    /**
      * Check if ajax is enabled for the table view.
      *
      * @deprecated 3.3.0 Since all tables use ajax, this will soon be removed.
