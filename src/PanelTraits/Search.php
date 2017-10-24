@@ -49,7 +49,7 @@ trait Search
         }
 
         // sensible fallback search logic, if none was explicitly given
-        if (\Schema::hasColumn($this->model->getTable(), $column['name'])) {
+        if ($column['table_column']) {
             switch ($column['type']) {
                 case 'email':
                 case 'date':

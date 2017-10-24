@@ -81,6 +81,15 @@ trait Columns
             $column_with_details['type'] = 'text';
         }
 
+        // check if the column exists in the DB table
+        if (\Schema::hasColumn($this->model->getTable(), $column_with_details['name'])) {
+            $column_with_details['table_column'] = true;
+        } else {
+            $column_with_details['table_column'] = false;
+            $column_with_details['orderable'] = false;
+            $column_with_details['searchLogic'] = false;
+        }
+
         array_filter($this->columns[$column_with_details['name']] = $column_with_details);
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
@@ -319,5 +328,17 @@ trait Columns
     public function setColumnsOrder($columns)
     {
         $this->setColumnOrder($columns);
+    }
+
+    /**
+     * Get a column by the id, from the associative array.
+     * @param  [integer] $column_number Placement inside the columns array.
+     * @return [array] Column details.
+     */
+    public function findColumnById($column_number)
+    {
+        $result = array_slice($this->getColumns(), $column_number, 1);
+
+        return reset($result);
     }
 }
