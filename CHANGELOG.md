@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - number of records per page menu now features "All", so people can use it before exporting results when using AjaxDataTables;
+- prefix option for the image column (merged #1056; fixes #1054);
 
 
 ## [3.2.24] - 2017-10-23
