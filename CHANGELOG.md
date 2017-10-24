@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.25] - 2017-10-xx
+## [3.2.25] - 2017-10-24
 
 ## Added
 - number of records per page menu now features "All", so people can use it before exporting results when using AjaxDataTables;
