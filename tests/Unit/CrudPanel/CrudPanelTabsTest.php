@@ -7,6 +7,9 @@ use Backpack\CRUD\Tests\Unit\Models\Article;
 
 class CrudPanelTabsTest extends BaseDBCrudPanelTest
 {
+    private $horizontalTabsType = 'horizontal';
+    private $verticalTabsType = 'vertical';
+
     private $threeTextFieldsArray = [
         [
             'name' => 'field1',
@@ -70,6 +73,76 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
         ],
     ];
 
+    public function testEnableTabs()
+    {
+        $this->crudPanel->enableTabs();
+
+        $this->assertTrue($this->crudPanel->tabsEnabled);
+    }
+
+    public function testDisableTabs()
+    {
+        $this->crudPanel->disableTabs();
+
+        $this->assertFalse($this->crudPanel->tabsEnabled);
+    }
+
+    public function testTabsEnabled()
+    {
+        $this->crudPanel->enableTabs();
+
+        $this->assertTrue($this->crudPanel->tabsEnabled());
+    }
+
+    public function testTabsDisabled()
+    {
+        $this->crudPanel->disableTabs();
+
+        $this->assertTrue($this->crudPanel->tabsDisabled());
+    }
+
+    public function testSetTabsType()
+    {
+        $this->crudPanel->setTabsType($this->verticalTabsType);
+
+        $this->assertEquals($this->verticalTabsType, $this->crudPanel->tabsType);
+    }
+
+    public function testGetTabsType()
+    {
+        $defaultTabsType = $this->crudPanel->getTabsType();
+
+        $this->assertEquals($this->horizontalTabsType, $defaultTabsType);
+    }
+
+    public function testEnableVerticalTabs()
+    {
+        $this->crudPanel->enableVerticalTabs();
+
+        $this->assertEquals($this->verticalTabsType, $this->crudPanel->getTabsType());
+    }
+
+    public function testDisableVerticalTabs()
+    {
+        $this->crudPanel->disableVerticalTabs();
+
+        $this->assertEquals($this->horizontalTabsType, $this->crudPanel->getTabsType());
+    }
+
+    public function testEnableHorizontalTabs()
+    {
+        $this->crudPanel->enableHorizontalTabs();
+
+        $this->assertEquals($this->horizontalTabsType, $this->crudPanel->getTabsType());
+    }
+
+    public function testDisableHorizontalTabs()
+    {
+        $this->crudPanel->disableHorizontalTabs();
+
+        $this->assertEquals($this->verticalTabsType, $this->crudPanel->getTabsType());
+    }
+
     public function testTabExists()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
@@ -95,6 +168,13 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
         $lastTab = $this->crudPanel->getLastTab();
 
         $this->assertEquals(array_last($this->expectedTabNames), $lastTab);
+    }
+
+    public function testGetLastTabNoTabs()
+    {
+        $lastTab = $this->crudPanel->getLastTab();
+
+        $this->assertFalse($lastTab);
     }
 
     public function testIsLastTab()

@@ -194,7 +194,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     {
         $this->markTestIncomplete('Not correctly implemented');
 
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsManyToMany);
@@ -290,7 +290,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
     public function testSyncPivotUnknownModel()
     {
-        $this->setExpectedException(\BadMethodCallException::class);
+        $this->expectException(\BadMethodCallException::class);
 
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsManyToMany);

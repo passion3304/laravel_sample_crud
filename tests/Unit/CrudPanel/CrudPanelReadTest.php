@@ -151,7 +151,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testGetEntryUnknownId()
     {
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(User::class);
 
@@ -229,7 +229,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testGetFieldsUpdateFormUnknownId()
     {
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(Article::class);
 
@@ -244,7 +244,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     {
         $this->markTestIncomplete('Not correctly implemented');
 
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->crudPanel->addFields($this->articleFieldsArray);
 
@@ -286,12 +286,69 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testHasUploadFieldsUpdateFormUnknownId()
     {
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(Article::class);
         $this->crudPanel->addField($this->uploadField, 'update');
 
         $unknownId = DB::getPdo()->lastInsertId() + 1;
         $this->crudPanel->hasUploadFields('update', $unknownId);
+    }
+
+    public function testEnableDetailsRow()
+    {
+        $this->crudPanel->enableDetailsRow();
+
+        $this->assertTrue($this->crudPanel->details_row);
+    }
+
+    public function testDisableDetailsRow()
+    {
+        $this->crudPanel->disableDetailsRow();
+
+        $this->assertFalse($this->crudPanel->details_row);
+    }
+
+    public function testSetDefaultPageLength()
+    {
+        $pageLength = 20;
+        $this->crudPanel->setDefaultPageLength($pageLength);
+
+        $this->assertEquals($pageLength, $this->crudPanel->getDefaultPageLength());
+    }
+
+    public function testGetDefaultPageLength()
+    {
+        $defaultPageLength = $this->crudPanel->getDefaultPageLength();
+
+        $this->assertEquals(25, $defaultPageLength);
+    }
+
+    public function testEnableAjaxTable()
+    {
+        $this->crudPanel->enableAjaxTable();
+
+        $this->assertTrue($this->crudPanel->ajaxTable());
+    }
+
+    public function testGetAjaxTable()
+    {
+        $ajaxTable = $this->crudPanel->ajaxTable();
+
+        $this->assertFalse($ajaxTable);
+    }
+
+    public function testEnableExportButtons()
+    {
+        $this->crudPanel->enableExportButtons();
+
+        $this->assertTrue($this->crudPanel->exportButtons());
+    }
+
+    public function testGetExportButtons()
+    {
+        $exportButtons = $this->crudPanel->exportButtons();
+
+        $this->assertFalse($exportButtons);
     }
 }

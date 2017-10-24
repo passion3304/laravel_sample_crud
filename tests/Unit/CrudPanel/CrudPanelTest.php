@@ -29,7 +29,7 @@ class CrudPanelTest extends BaseCrudPanelTest
 
     public function testSetUnknownModel()
     {
-        $this->setExpectedException(\Exception::class);
+        $this->expectException(\Exception::class);
 
         $this->crudPanel->setModel('\Foo\Bar');
     }
@@ -42,7 +42,7 @@ class CrudPanelTest extends BaseCrudPanelTest
 
     public function testSetUnknownRouteName()
     {
-        $this->setExpectedException(\Exception::class);
+        $this->expectException(\Exception::class);
 
         $this->crudPanel->setRouteName('unknown.route.name');
     }

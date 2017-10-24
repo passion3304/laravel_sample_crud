@@ -37,6 +37,9 @@
       min-height: 25px;
       border-radius: 0;
       margin-bottom: 10px;
+      margin-left: -10px;
+      margin-right: -10px;
+      margin-top: -11px;
       background: #f9f9f9;
       border-color: #f4f4f4;
     }
