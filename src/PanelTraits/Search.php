@@ -74,6 +74,8 @@ trait Search
 
     /**
      * Tell the list view to use AJAX for loading multiple rows.
+     *
+     * @deprecated 3.3.0 All tables are AjaxTables starting with 3.3.0.
      */
     public function enableAjaxTable()
     {
@@ -82,6 +84,8 @@ trait Search
 
     /**
      * Tell the list view to NOT use AJAX for loading multiple rows.
+     *
+     * @deprecated 3.3.0 Even though the variable is set to false, this does nothing inside the app.
      */
     public function disableAjaxTable()
     {
@@ -90,6 +94,8 @@ trait Search
 
     /**
      * Check if ajax is enabled for the table view.
+     *
+     * @deprecated 3.3.0 Since all tables use ajax, this will soon be removed.
      * @return bool
      */
     public function ajaxTable()
