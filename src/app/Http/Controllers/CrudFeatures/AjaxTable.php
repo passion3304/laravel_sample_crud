@@ -36,6 +36,9 @@ trait AjaxTable
         // overwrite any order set in the setup() method with the datatables order
         if ($this->request->input('order')) {
             $column_number = $this->request->input('order')[0]['column'];
+            if ($this->crud->details_row) {
+                $column_number = $column_number - 1;
+            }
             $column_direction = $this->request->input('order')[0]['dir'];
             $column = $this->crud->findColumnById($column_number);
 
