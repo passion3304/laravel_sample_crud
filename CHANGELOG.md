@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+## [3.2.27] - 2017-10-xx
+
+## Fixed
+- inline validation on nested attributes - merged #987, fixes #986;
+
 
 ## [3.2.26] - 2017-10-25
 
