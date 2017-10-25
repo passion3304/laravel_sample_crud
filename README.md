@@ -12,13 +12,13 @@
 Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
 
 Features:
-- 33+ field types
+- 49+ field types
 - 1-n relationships
 - n-n relationships
 - Table view with search, pagination, click column to sort by it
 - Reordering (nested sortable)
 - Back-end validation using Requests
-- Translatable models (multi-language) // TODO
+- Translatable models (multi-language)
 - Easily extend fields (customising a field type or adding a new one is as easy as creating a new view with a particular name)
 - Easily overwrite functionality (customising how the create/update/delete/reorder process works is as easy as creating a new function with the proper name in your EntityCrudCrontroller)
 

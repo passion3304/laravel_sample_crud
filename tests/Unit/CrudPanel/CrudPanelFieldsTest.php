@@ -534,6 +534,76 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
         $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
     }
 
+    public function testOrderFields()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->orderFields(['field2', 'field1', 'field3']);
+
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->create_fields));
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->update_fields));
+    }
+
+    public function testOrderFieldsCreateForm()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->orderFields(['field2', 'field1', 'field3'], 'create');
+
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->create_fields));
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
+    }
+
+    public function testOrderFieldsUpdateForm()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->orderFields(['field2', 'field1', 'field3'], 'update');
+
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->update_fields));
+    }
+
+    public function testOrderFieldsIncompleteList()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->orderFields(['field2', 'field3']);
+
+        $this->assertEquals(['field2', 'field3', 'field1'], array_keys($this->crudPanel->create_fields));
+        $this->assertEquals(['field2', 'field3', 'field1'], array_keys($this->crudPanel->update_fields));
+    }
+
+    public function testOrderFieldsEmptyList()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->orderFields([]);
+
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
+    }
+
+    public function testOrderFieldsUnknownList()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->orderFields(['field4', 'field5', 'field6']);
+
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
+    }
+
+    public function testOrderColumnsMixedList()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $this->crudPanel->orderFields(['field2', 'field5', 'field6']);
+
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->create_fields));
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->update_fields));
+    }
+
     public function testCheckIfFieldIsFirstOfItsType()
     {
         $isFirstAddressFieldFirst = $this->crudPanel->checkIfFieldIsFirstOfItsType($this->multipleFieldTypesArray[1], $this->expectedMultipleFieldTypesArray);

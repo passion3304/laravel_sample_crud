@@ -20,7 +20,38 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
-## [3.2.22] - 2017-09-xx
+
+## [3.2.26] - 2017-10-xx
+
+## Fixed
+- when creating an entry, pivot fields were overwriting the $field variable - merged #1046;
+- Italian translation file;
+
+## [3.2.25] - 2017-10-24
+
+## Added
+- number of records per page menu now features "All", so people can use it before exporting results when using AjaxDataTables;
+- prefix option for the image column (merged #1056; fixes #1054);
+
+
+## [3.2.24] - 2017-10-23
+
+## Fixed
+- daterange field did not use the correct value if the start_date and end_date were not casted in the model - merged #1036;
+- PR #1015 - fixes #798 - fixed field order methods;
+- PR #1011 - fixes #982 and #971 - fixed column order methods;
+- radio column not showing value - PR #1023;
+
+## [3.2.23] - 2017-10-16
+
+## Added
+- Added config option to choose if the save actions changed bubble will be shown;
+
+## Fixed
+- lv language file spelling error;
+
+
+## [3.2.22] - 2017-09-30
 
 ## Fixed
 - date_picker initial display value offset - PR #767, fixes #768;
