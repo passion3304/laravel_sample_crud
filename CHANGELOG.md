@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 
 
+
+## [3.2.26] - 2017-10-xx
+
+## Fixed
+- when creating an entry, pivot fields were overwriting the $field variable - merged #1046;
+
+
 ## [3.2.25] - 2017-10-24
 
 ## Added
