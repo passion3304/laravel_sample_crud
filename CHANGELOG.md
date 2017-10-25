@@ -31,6 +31,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Italian translation file;
 - select fields old data values;
 - date_range field triggered error on Create;
+- bug where non-translatable columns in translatable models got their $guarded updated - merged #754;
 
 
 ## [3.2.25] - 2017-10-24
