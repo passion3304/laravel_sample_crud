@@ -21,7 +21,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 
 
-## [3.2.26] - 2017-10-xx
+## [3.2.26] - 2017-10-25
 
 ## Added
 - prefix option to upload field type;
