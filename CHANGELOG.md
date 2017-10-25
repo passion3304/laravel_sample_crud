@@ -41,6 +41,20 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+
+## [3.2.26] - 2017-10-25
+
+## Added
+- prefix option to upload field type;
+
+## Fixed
+- when creating an entry, pivot fields were overwriting the $field variable - merged #1046;
+- Italian translation file;
+- select fields old data values;
+- date_range field triggered error on Create;
+- bug where non-translatable columns in translatable models got their $guarded updated - merged #754;
+
+
 ## [3.2.25] - 2017-10-24
 
 ## Added
