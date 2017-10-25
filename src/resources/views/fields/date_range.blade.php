@@ -17,8 +17,10 @@
         return $formattedDate;
     }
 
-    $start_name = formatDate($entry, $field['start_name']);
-    $end_name = formatDate($entry, $field['end_name']);
+    if (isset($entry)) {
+        $start_name = formatDate($entry, $field['start_name']);
+        $end_name = formatDate($entry, $field['end_name']);
+    }
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
