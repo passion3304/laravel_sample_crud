@@ -23,6 +23,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.2.26] - 2017-10-xx
 
+## Added
+- prefix option to upload field type;
+
 ## Fixed
 - when creating an entry, pivot fields were overwriting the $field variable - merged #1046;
 - Italian translation file;
