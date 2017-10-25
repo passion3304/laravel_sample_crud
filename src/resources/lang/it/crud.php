@@ -32,15 +32,15 @@ return [
 
     // Revisions
     'revisions'            => 'Revisioni',
-    'no_revisions'         => 'Nessuna revisione Trovato',
-    'created_this'          => 'ha creato questo',
-    'changed_the'          => 'cambiato il',
+    'no_revisions'         => 'Nessuna revisione trovata',
+    'created_this'         => 'ha creato questo',
+    'changed_the'          => 'ha cambiato il',
     'restore_this_value'   => 'ripristinare questo valore',
-    'from'                 => 'de parte di',
+    'from'                 => 'da',
     'to'                   => 'a',
-    'undo'                 => 'Disfare',
-    'revision_restored'    => 'Revisione successo restaurato',
-    'guest_user'           => 'Utente Ospite',
+    'undo'                 => 'Annulla',
+    'revision_restored'    => 'Revisione ripristinata con successo',
+    'guest_user'           => 'Un Ospite',
 
     // Translatable models
     'edit_translations' => 'MODIFICA TRADUZIONI',
