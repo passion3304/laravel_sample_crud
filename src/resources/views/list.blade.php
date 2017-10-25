@@ -4,7 +4,7 @@
 	<section class="content-header">
 	  <h1>
 	    <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
-	    <small>{{ trans('backpack::crud.all') }} <span>{{ $crud->entity_name_plural }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
+	    <small>{{ trans('backpack::crud.all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
 	  </h1>
 	  <ol class="breadcrumb">
 	    <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
@@ -35,7 +35,7 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="table table-bordered table-striped display">
+        <table id="crudTable" class="table table-striped table-hover display">
             <thead>
               <tr>
                 @if ($crud->details_row)
@@ -44,52 +44,17 @@
 
                 {{-- Table columns --}}
                 @foreach ($crud->columns as $column)
-                  <th>{{ $column['label'] }}</th>
+                  <th {{ isset($column['orderable']) ? 'data-orderable=' .var_export($column['orderable'], true) : '' }}>
+                    {{ $column['label'] }}
+                  </th>
                 @endforeach
 
                 @if ( $crud->buttons->where('stack', 'line')->count() )
-                  <th>{{ trans('backpack::crud.actions') }}</th>
+                  <th data-orderable="false">{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>
             </thead>
             <tbody>
-
-              @if (!$crud->ajaxTable())
-                @foreach ($entries as $k => $entry)
-                <tr data-entry-id="{{ $entry->getKey() }}">
-
-                  @if ($crud->details_row)
-                    @include('crud::columns.details_row_button')
-                  @endif
-
-                  {{-- load the view from the application if it exists, otherwise load the one in the package --}}
-                  @foreach ($crud->columns as $column)
-                    @if (!isset($column['type']))
-                      @include('crud::columns.text')
-                    @else
-                      @if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
-                        @include('vendor.backpack.crud.columns.'.$column['type'])
-                      @else
-                        @if(view()->exists('crud::columns.'.$column['type']))
-                          @include('crud::columns.'.$column['type'])
-                        @else
-                          @include('crud::columns.text')
-                        @endif
-                      @endif
-                    @endif
-
-                  @endforeach
-
-                  @if ($crud->buttons->where('stack', 'line')->count())
-                    <td>
-                      @include('crud::inc.button_stack', ['stack' => 'line'])
-                    </td>
-                  @endif
-
-                </tr>
-                @endforeach
-              @endif
-
             </tbody>
             <tfoot>
               <tr>
@@ -179,6 +144,7 @@
 
 	  	var table = $("#crudTable").DataTable({
         "pageLength": {{ $crud->getDefaultPageLength() }},
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "{{ trans('backpack::crud.all') }}"]],
         /* Disable initial sort */
         "aaSorting": [],
         "language": {
@@ -212,15 +178,12 @@
                   "colvis": "{{ trans('backpack::crud.export.column_visibility') }}"
               },
           },
-
-          @if ($crud->ajaxTable())
           "processing": true,
           "serverSide": true,
           "ajax": {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
               "type": "POST"
           },
-          @endif
 
           @if ($crud->exportButtons())
           // show the export datatable buttons

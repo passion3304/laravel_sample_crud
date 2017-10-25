@@ -11,6 +11,7 @@ use Backpack\CRUD\PanelTraits\Create;
 use Backpack\CRUD\PanelTraits\Delete;
 use Backpack\CRUD\PanelTraits\Errors;
 use Backpack\CRUD\PanelTraits\Fields;
+use Backpack\CRUD\PanelTraits\Search;
 use Backpack\CRUD\PanelTraits\Update;
 use Backpack\CRUD\PanelTraits\AutoSet;
 use Backpack\CRUD\PanelTraits\Buttons;
@@ -25,7 +26,7 @@ use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel
 {
-    use Create, Read, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views;
+    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views;
 
     // --------------
     // CRUD variables
@@ -49,7 +50,6 @@ class CrudPanel
     public $reorder_max_level = 3;
 
     public $details_row = false;
-    public $ajax_table = false;
     public $export_buttons = false;
 
     public $columns = []; // Define the columns for the table view as an array;
@@ -81,7 +81,9 @@ class CrudPanel
      * This function binds the CRUD to its corresponding Model (which extends Eloquent).
      * All Create-Read-Update-Delete operations are done using that Eloquent Collection.
      *
-     * @param [string] Full model namespace. Ex: App\Models\Article
+     * @param string $model_namespace Full model namespace. Ex: App\Models\Article]
+     *
+     * @throws \Exception in case the model does not exist
      */
     public function setModel($model_namespace)
     {
@@ -91,6 +93,7 @@ class CrudPanel
 
         $this->model = new $model_namespace();
         $this->query = $this->model->select('*');
+        $this->entry = null;
     }
 
     /**
@@ -204,11 +207,17 @@ class CrudPanel
         }
     }
 
+    /**
+     * @deprecated No longer used by internal code and not recommended.
+     */
     public function setSort($items, $order)
     {
         $this->sort[$items] = $order;
     }
 
+    /**
+     * @deprecated No longer used by internal code and not recommended.
+     */
     public function sort($items)
     {
         if (array_key_exists($items, $this->sort)) {

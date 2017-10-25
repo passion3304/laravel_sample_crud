@@ -54,13 +54,13 @@
             $('#filter_{{ $filter->name }}').select2({
 			    minimumInputLength: 2,
             	allowClear: true,
-        	    placeholder: "{{ $filter->placeholder?$filter->placeholder:' ' }}",
+        	    placeholder: '{{ $filter->placeholder ? $filter->placeholder : ' ' }}',
 				closeOnSelect: false,
 			    // tags: [],
 			    ajax: {
-			        url: "{{ $filter->values }}",
+			        url: '{{ $filter->values }}',
 			        dataType: 'json',
-			        type: "GET",
+			        type: 'GET',
 			        quietMillis: 50,
 			        data: function (term) {
 			            return {
@@ -95,52 +95,37 @@
 				var val_text = $(this).select2('data')?$(this).select2('data').text:null;
 				var parameter = '{{ $filter->name }}';
 
-				@if (!$crud->ajaxTable())
-					// behaviour for normal table
-					var current_url = normalizeAmpersand('{{ Request::fullUrl() }}');
-					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					if (val_text) {
-						new_url = addOrUpdateUriParameter(new_url, parameter+"_text", val_text);
-					}
-
-					// refresh the page to the new_url
-			    	new_url = normalizeAmpersand(new_url.toString());
-			    	window.location.href = new_url;
-			    @else
-			    	// behaviour for ajax table
-					var ajax_table = $("#crudTable").DataTable();
-					var current_url = ajax_table.ajax.url();
-					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					if (val_text) {
-						new_url = addOrUpdateUriParameter(new_url, parameter+"_text", val_text);
-					}
-					new_url = normalizeAmpersand(new_url.toString());
+		    	// behaviour for ajax table
+				var ajax_table = $('#crudTable').DataTable();
+				var current_url = ajax_table.ajax.url();
+				var new_url = addOrUpdateUriParameter(current_url, parameter, val);
+				if (val_text) {
+                    new_url = addOrUpdateUriParameter(new_url, parameter + '_text', val_text);
+				}
+				new_url = normalizeAmpersand(new_url.toString());
 
 
-					// replace the datatables ajax url with new_url and reload it
-					ajax_table.ajax.url(new_url).load();
+				// replace the datatables ajax url with new_url and reload it
+				ajax_table.ajax.url(new_url).load();
 
-					// mark this filter as active in the navbar-filters
-					if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-						$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
-					}
-					else
-					{
-						$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
-					}
-			    @endif
+				// mark this filter as active in the navbar-filters
+				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
+					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
+				} else {
+					$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
+				}
 			});
 
 			// when the dropdown is opened, autofocus on the select2
-			$("li[filter-name={{ $filter->name }}]").on('shown.bs.dropdown', function () {
+			$('li[filter-name={{ $filter->name }}]').on('shown.bs.dropdown', function () {
 				$('#filter_{{ $filter->name }}').select2('open');
 			});
 
 			// clear filter event (used here and by the Remove all filters button)
-			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
+			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
 				// console.log('select2 filter cleared');
-				$("li[filter-name={{ $filter->name }}]").removeClass('active');
-				$("li[filter-name={{ $filter->name }}] .select2").select2("val", "");
+				$('li[filter-name={{ $filter->name }}]').removeClass('active');
+                $('#filter_{{ $filter->name }}').select2('val', '');
 			});
         });
     </script>

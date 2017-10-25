@@ -45,43 +45,28 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 
 				var parameter = $(this).attr('parameter');
 
-				@if (!$crud->ajaxTable())
-					// behaviour for normal table
-					var current_url = normalizeAmpersand("{{ Request::fullUrl() }}");
+		    	// behaviour for ajax table
+				var ajax_table = $("#crudTable").DataTable();
+				var current_url = ajax_table.ajax.url();
 
-					if (URI(current_url).hasQuery(parameter)) {
-						var new_url = URI(current_url).removeQuery(parameter, true);
-					} else {
-						var new_url = URI(current_url).addQuery(parameter, true);
-					}
+				if (URI(current_url).hasQuery(parameter)) {
+					var new_url = URI(current_url).removeQuery(parameter, true);
+				} else {
+					var new_url = URI(current_url).addQuery(parameter, true);
+				}
 
-					// refresh the page to the new_url
-			    	new_url = normalizeAmpersand(new_url.toString());
-			    	window.location.href = new_url.toString();
-			    @else
-			    	// behaviour for ajax table
-					var ajax_table = $("#crudTable").DataTable();
-					var current_url = ajax_table.ajax.url();
+				// replace the datatables ajax url with new_url and reload it
+				new_url = normalizeAmpersand(new_url.toString());
+				ajax_table.ajax.url(new_url).load();
 
-					if (URI(current_url).hasQuery(parameter)) {
-						var new_url = URI(current_url).removeQuery(parameter, true);
-					} else {
-						var new_url = URI(current_url).addQuery(parameter, true);
-					}
-
-					// replace the datatables ajax url with new_url and reload it
-					new_url = normalizeAmpersand(new_url.toString());
-					ajax_table.ajax.url(new_url).load();
-
-					// mark this filter as active in the navbar-filters
-					if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-						$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
-					}
-					else
-					{
-						$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
-					}
-			    @endif
+				// mark this filter as active in the navbar-filters
+				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
+					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
+				}
+				else
+				{
+					$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
+				}
 			});
 
 			// clear filter event (used here and by the Remove all filters button)
