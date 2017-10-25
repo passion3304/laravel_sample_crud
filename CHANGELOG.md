@@ -28,12 +28,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## Fixed
 - in create/update, fields without a tab are displayed before all tabs;
 - unit tests now use PHPUnit 6;
+- completely rewritten AjaxTables functionality;
 - fixed all AjaxTables issues - merged #710;
 
 ### Deprecated
 - ```$this->crud->enableAjaxTable();``` still exists for backwards-compatibility, but has been deprecated and does nothing;
 
 ### Removed
+- DataTables PHP dependency;
 - all tables now use AjaxTables; there is no classic tables anymore; 
 - removed all classic table filter fallbacks;
 
