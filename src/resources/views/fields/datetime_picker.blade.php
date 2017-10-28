@@ -62,17 +62,18 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
         jQuery(document).ready(function($){
             $('[data-bs-datetimepicker]').each(function(){
 
-                $(this).parent('.input-group.date').find('.null').on('click', function () {
-                    $(this).parent('.input-group.date').find('[data-bs-datetimepicker]').val(null);
-                });
-
                 var $fake = $(this),
                 $field = $fake.parents('.form-group').find('input[type="hidden"]'),
                 $customConfig = $.extend({
                     format: 'DD/MM/YYYY HH:mm',
                     defaultDate: $field.val()
                 }, $fake.data('bs-datetimepicker'));
-
+                
+                $(this).parent('.input-group.date').find('.null').on('click', function () {
+                    $field.val(null);
+                    $(this).parent('.input-group.date').find('[data-bs-datetimepicker]').val(null);
+                });
+                
                 $customConfig.locale = $customConfig['language'];
                 delete($customConfig['language']);
                 $picker = $fake.datetimepicker($customConfig);
