@@ -21,13 +21,13 @@ trait SaveActions
         ];
 
         $saveOptions = collect($permissions)
-            // Generate list of possible actions.
-            ->map(function ($action, $permission) {
-                return [$action => $this->getSaveActionButtonName($action)];
-            })
             // Restrict list to allowed actions.
             ->filter(function ($action, $permission) {
-                return $this->crud->hasAccess($action);
+                return $this->crud->hasAccess($permission);
+            })
+            // Generate list of possible actions.
+            ->mapWithKeys(function ($action, $permission) {
+                return [$action => $this->getSaveActionButtonName($action)];
             })
             ->toArray();
 
