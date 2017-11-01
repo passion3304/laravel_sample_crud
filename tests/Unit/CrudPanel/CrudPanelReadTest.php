@@ -335,7 +335,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     {
         $ajaxTable = $this->crudPanel->ajaxTable();
 
-        $this->assertFalse($ajaxTable);
+        $this->assertTrue($ajaxTable);
     }
 
     public function testEnableExportButtons()
