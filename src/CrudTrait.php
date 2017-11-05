@@ -20,22 +20,6 @@ trait CrudTrait
         $table_prefix = Config::get('database.connections.'.$default_connection.'.prefix');
 
         $instance = new static(); // create an instance of the model to be able to get the table name
-
-        if(DB::connection()->getPdo()->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'pgsql'){
-            $types = DB::select(DB::raw("
-                SELECT MATCHES[1]
-                FROM pg_constraint,REGEXP_MATCHES(consrc, '''(.+?)''', 'g') MATCHES
-                WHERE contype = 'c'
-                AND conname = '".$table_prefix.$instance->getTable()."_".$field_name."_check'
-                AND conrelid = '".$table_prefix.$instance->getTable()."'::regclass;
-            "));
-            $enum = [];
-            foreach($types as $type){
-                $enum[] = $type->matches;
-            }
-            return $enum;
-        }
-
         $type = DB::select(DB::raw('SHOW COLUMNS FROM `'.$table_prefix.$instance->getTable().'` WHERE Field = "'.$field_name.'"'))[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
         $enum = [];
