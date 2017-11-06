@@ -21,9 +21,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
-## [3.3.0] - 2017-09-xx
+## [3.3.0] - 2017-11-06
 
 ## Added
+- you can now define a "key" for a column, if you need multiple columns with the same name;
 
 ## Fixed
 - in create/update, fields without a tab are displayed before all tabs;
