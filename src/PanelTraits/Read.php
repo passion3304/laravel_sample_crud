@@ -148,67 +148,6 @@ trait Read
 
     /*
     |--------------------------------------------------------------------------
-    |                                AJAX TABLE
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Tell the list view to use AJAX for loading multiple rows.
-     */
-    public function enableAjaxTable()
-    {
-        $this->ajax_table = true;
-    }
-
-    /**
-     * Check if ajax is enabled for the table view.
-     * @return bool
-     */
-    public function ajaxTable()
-    {
-        return $this->ajax_table;
-    }
-
-    /**
-     * Get the HTML of the cells in a table row, for a certain DB entry.
-     * @param  Entity $entry A db entry of the current entity;
-     * @return array         Array of HTML cell contents.
-     */
-    public function getRowViews($entry)
-    {
-        $response = [];
-        foreach ($this->columns as $key => $column) {
-            $response[] = $this->getCellView($column, $entry);
-        }
-
-        return $response;
-    }
-
-    /**
-     * Get the HTML of a cell, using the column types.
-     * @param  array $column
-     * @param  Entity $entry   A db entry of the current entity;
-     * @return HTML
-     */
-    public function getCellView($column, $entry)
-    {
-        if (! isset($column['type'])) {
-            return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
-        } else {
-            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
-                return \View::make('vendor.backpack.crud.columns.'.$column['type'])->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
-            } else {
-                if (view()->exists('crud::columns.'.$column['type'])) {
-                    return \View::make('crud::columns.'.$column['type'])->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
-                } else {
-                    return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry', $entry)->render();
-                }
-            }
-        }
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     |                                EXPORT BUTTONS
     |--------------------------------------------------------------------------
     */

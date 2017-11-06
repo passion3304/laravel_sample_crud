@@ -105,7 +105,7 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 
     public function testHasAccessOrFailDenied()
     {
-        $this->setExpectedException(AccessDeniedException::class);
+        $this->expectException(AccessDeniedException::class);
 
         $this->crudPanel->hasAccessOrFail($this->unknownPermission);
     }

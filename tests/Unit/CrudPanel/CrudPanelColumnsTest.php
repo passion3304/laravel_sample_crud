@@ -2,11 +2,22 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-class CrudPanelColumnsTest extends BaseCrudPanelTest
+class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 {
     private $oneColumnArray = [
         'name' => 'column1',
         'label' => 'Column1',
+    ];
+
+    private $expectedOneColumnArray = [
+        'column1' => [
+            'label' => 'Column1',
+            'name' => 'column1',
+            'type' => 'text',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+        ],
     ];
 
     private $otherOneColumnArray = [
@@ -29,10 +40,19 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         'column1' => [
             'name' => 'column1',
             'label' => 'Column1',
+            'type' => 'text',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+
         ],
         'column2' => [
             'name' => 'column2',
             'label' => 'Column2',
+            'type' => 'text',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
         ],
     ];
 
@@ -55,14 +75,26 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
         'column1' => [
             'name' => 'column1',
             'label' => 'Column1',
+            'type' => 'text',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
         ],
         'column2' => [
             'name' => 'column2',
             'label' => 'Column2',
+            'type' => 'text',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
         ],
         'column3' => [
             'name' => 'column3',
             'label' => 'Column3',
+            'type' => 'text',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
         ],
     ];
 
@@ -70,8 +102,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
     {
         $this->crudPanel->addColumn('column1');
 
-        $this->assertEquals(1, count($this->crudPanel->columns));
-        $this->assertContains($this->oneColumnArray, $this->crudPanel->columns);
+        $this->assertEquals($this->expectedOneColumnArray, $this->crudPanel->columns);
     }
 
     public function testAddColumnsByName()
@@ -86,8 +117,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
     {
         $this->crudPanel->addColumn($this->oneColumnArray);
 
-        $this->assertEquals(1, count($this->crudPanel->columns));
-        $this->assertContains($this->oneColumnArray, $this->crudPanel->columns);
+        $this->assertEquals($this->expectedOneColumnArray, $this->crudPanel->columns);
     }
 
     public function testAddColumnsAsArray()
@@ -100,7 +130,7 @@ class CrudPanelColumnsTest extends BaseCrudPanelTest
 
     public function testAddColumnNotArray()
     {
-        $this->setExpectedException(\ErrorException::class);
+        $this->expectException(\ErrorException::class);
 
         $this->crudPanel->addColumns('column1');
     }

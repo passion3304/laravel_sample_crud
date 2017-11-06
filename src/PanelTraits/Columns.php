@@ -76,7 +76,26 @@ trait Columns
             $column_with_details['name'] = 'anonymous_column_'.str_random(5);
         }
 
-        array_filter($this->columns[$column_with_details['name']] = $column_with_details);
+        // make sure the column has a type
+        if (! array_key_exists('type', $column_with_details)) {
+            $column_with_details['type'] = 'text';
+        }
+
+        // make sure the column has a key
+        if (! array_key_exists('key', $column_with_details)) {
+            $column_with_details['key'] = $column_with_details['name'];
+        }
+
+        // check if the column exists in the DB table
+        if (\Schema::hasColumn($this->model->getTable(), $column_with_details['name'])) {
+            $column_with_details['tableColumn'] = true;
+        } else {
+            $column_with_details['tableColumn'] = false;
+            $column_with_details['orderable'] = false;
+            $column_with_details['searchLogic'] = false;
+        }
+
+        array_filter($this->columns[$column_with_details['key']] = $column_with_details);
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
@@ -314,5 +333,17 @@ trait Columns
     public function setColumnsOrder($columns)
     {
         $this->setColumnOrder($columns);
+    }
+
+    /**
+     * Get a column by the id, from the associative array.
+     * @param  [integer] $column_number Placement inside the columns array.
+     * @return [array] Column details.
+     */
+    public function findColumnById($column_number)
+    {
+        $result = array_slice($this->getColumns(), $column_number, 1);
+
+        return reset($result);
     }
 }

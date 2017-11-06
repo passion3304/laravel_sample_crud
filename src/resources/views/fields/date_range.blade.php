@@ -17,8 +17,7 @@
         return $formattedDate;
     }
 
-    if (isset($entry))
-    {
+    if (isset($entry)) {
         $start_name = formatDate($entry, $field['start_name']);
         $end_name = formatDate($entry, $field['end_name']);
     }

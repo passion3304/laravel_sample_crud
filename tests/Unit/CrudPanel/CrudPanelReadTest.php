@@ -151,7 +151,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testGetEntryUnknownId()
     {
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(User::class);
 
@@ -229,7 +229,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testGetFieldsUpdateFormUnknownId()
     {
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(Article::class);
 
@@ -244,7 +244,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     {
         $this->markTestIncomplete('Not correctly implemented');
 
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->crudPanel->addFields($this->articleFieldsArray);
 
@@ -286,7 +286,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testHasUploadFieldsUpdateFormUnknownId()
     {
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         $this->crudPanel->setModel(Article::class);
         $this->crudPanel->addField($this->uploadField, 'update');
@@ -335,7 +335,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     {
         $ajaxTable = $this->crudPanel->ajaxTable();
 
-        $this->assertFalse($ajaxTable);
+        $this->assertTrue($ajaxTable);
     }
 
     public function testEnableExportButtons()
