@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "backpack/base": "^0.7.15",
+        "backpack/base": "^0.8.0",
         "laravelcollective/html": "~5.0",
         "barryvdh/laravel-elfinder": "^0.3.10",
         "doctrine/dbal": "^2.5",
