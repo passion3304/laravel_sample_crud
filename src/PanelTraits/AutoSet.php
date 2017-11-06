@@ -38,12 +38,12 @@ trait AutoSet
             }
 
             if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
-                $this->columns[$field] = [
+                $this->addColumn([
                     'name'  => $field,
                     'label' => ucfirst($field),
                     'type'  => $this->getFieldTypeFromDbColumnType($field),
                     'autoset' => true,
-                ];
+                ]);
             }
         }, $this->getDbColumnsNames());
     }
