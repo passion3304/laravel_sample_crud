@@ -21,6 +21,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+## [3.3.1] - 2017-11-06
+
+## Fixed
+- unit tests for column key functionality;
+
+
 ## [3.3.0] - 2017-11-06
 
 ## Added

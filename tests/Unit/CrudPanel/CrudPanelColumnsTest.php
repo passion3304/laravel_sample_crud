@@ -13,6 +13,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         'column1' => [
             'label' => 'Column1',
             'name' => 'column1',
+            'key' => 'column1',
             'type' => 'text',
             'tableColumn' => false,
             'orderable' => false,
@@ -39,6 +40,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
     private $expectedTwoColumnsArray = [
         'column1' => [
             'name' => 'column1',
+            'key' => 'column1',
             'label' => 'Column1',
             'type' => 'text',
             'tableColumn' => false,
@@ -48,6 +50,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         ],
         'column2' => [
             'name' => 'column2',
+            'key' => 'column2',
             'label' => 'Column2',
             'type' => 'text',
             'tableColumn' => false,
@@ -74,6 +77,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
     private $expectedThreeColumnsArray = [
         'column1' => [
             'name' => 'column1',
+            'key' => 'column1',
             'label' => 'Column1',
             'type' => 'text',
             'tableColumn' => false,
@@ -82,6 +86,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         ],
         'column2' => [
             'name' => 'column2',
+            'key' => 'column2',
             'label' => 'Column2',
             'type' => 'text',
             'tableColumn' => false,
@@ -90,6 +95,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         ],
         'column3' => [
             'name' => 'column3',
+            'key' => 'column3',
             'label' => 'Column3',
             'type' => 'text',
             'tableColumn' => false,
