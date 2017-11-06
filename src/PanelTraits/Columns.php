@@ -81,6 +81,11 @@ trait Columns
             $column_with_details['type'] = 'text';
         }
 
+        // make sure the column has a key
+        if (! array_key_exists('key', $column_with_details)) {
+            $column_with_details['key'] = $column_with_details['name'];
+        }
+
         // check if the column exists in the DB table
         if (\Schema::hasColumn($this->model->getTable(), $column_with_details['name'])) {
             $column_with_details['tableColumn'] = true;
@@ -90,7 +95,7 @@ trait Columns
             $column_with_details['searchLogic'] = false;
         }
 
-        array_filter($this->columns[$column_with_details['name']] = $column_with_details);
+        array_filter($this->columns[$column_with_details['key']] = $column_with_details);
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
