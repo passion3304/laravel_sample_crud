@@ -49,7 +49,7 @@ trait Search
         }
 
         // sensible fallback search logic, if none was explicitly given
-        if ($column['table_column']) {
+        if ($column['tableColumn']) {
             switch ($column['type']) {
                 case 'email':
                 case 'date':

@@ -83,9 +83,9 @@ trait Columns
 
         // check if the column exists in the DB table
         if (\Schema::hasColumn($this->model->getTable(), $column_with_details['name'])) {
-            $column_with_details['table_column'] = true;
+            $column_with_details['tableColumn'] = true;
         } else {
-            $column_with_details['table_column'] = false;
+            $column_with_details['tableColumn'] = false;
             $column_with_details['orderable'] = false;
             $column_with_details['searchLogic'] = false;
         }
