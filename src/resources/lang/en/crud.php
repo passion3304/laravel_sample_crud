@@ -65,6 +65,9 @@ return [
         'delete_confirmation_not_deleted_title'       => 'Not deleted',
         'delete_confirmation_not_deleted_message'     => 'Nothing happened. Your item is safe.',
 
+        'ajax_error_title' => 'Error',
+        'ajax_error_text'  => 'Error loading page. Please refresh the page.',
+
         // DataTables translation
         'emptyTable'     => 'No data available in table',
         'info'           => 'Showing _START_ to _END_ of _TOTAL_ entries',

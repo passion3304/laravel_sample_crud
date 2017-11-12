@@ -199,6 +199,16 @@
           @endif
       });
 
+      // override ajax error message
+      $.fn.dataTable.ext.errMode = 'none';
+      $('#crudTable').on('error.dt', function(e, settings, techNote, message) {
+          new PNotify({
+              type: "error",
+              title: "{{ trans('backpack::crud.ajax_error_title') }}",
+              text: "{{ trans('backpack::crud.ajax_error_text') }}"
+          });
+      });
+
       @if ($crud->exportButtons())
       // move the datatable buttons in the top-right corner and make them smaller
       table.buttons().each(function(button) {
