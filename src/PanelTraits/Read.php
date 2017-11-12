@@ -133,7 +133,7 @@ trait Read
      */
     public function getDefaultPageLength()
     {
-        // return the custom value for this crud panel, if set using setPageLength()
+        // return the custom value for this crud panel, if set using setDefaultPageLength()
         if ($this->default_page_length) {
             return $this->default_page_length;
         }
@@ -144,6 +144,34 @@ trait Read
         }
 
         return 25;
+    }
+
+    /**
+     * Specify array of available page lengths on the table page (list view).
+     *
+     * @param array $array 1d array of page length values,
+     *                     or 2d array (first array: page length values, second array: page length labels)
+     *                     More at: https://datatables.net/reference/option/lengthMenu
+     */
+    public function setPageLengthMenu($array)
+    {
+        $this->page_length_menu = $array;
+    }
+
+    /**
+     * Get page length menu for the table page (list view).
+     *
+     * @return array
+     */
+    public function getPageLengthMenu()
+    {
+        // return the custom value for this crud panel, if set using setPageLengthMenu()
+        if ($this->page_length_menu) {
+            return $this->page_length_menu;
+        }
+
+        // otherwise return default value
+        return [[10, 25, 50, 100, -1], [10, 25, 50, 100, trans('backpack::crud.all')]];
     }
 
     /*
