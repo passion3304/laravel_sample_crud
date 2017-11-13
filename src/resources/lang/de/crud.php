@@ -138,4 +138,3 @@ return [
     // File manager
     'file_manager' => 'Datei Manager',
 ];
-
