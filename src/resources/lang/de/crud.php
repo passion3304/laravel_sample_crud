@@ -39,6 +39,11 @@ return [
     'to'                   => 'bis',
     'undo'                 => 'Rückgängig',
     'revision_restored'    => 'Revision erfolgreich wiederhergestellt',
+    'guest_user'           => 'Gast',
+
+    // Translatable models
+    'edit_translations'    => 'ÜBERSETZUNG BEARBEITEN',
+    'language'             => 'Sprache',
 
     // CRUD table view
     'all'                       => 'Alle ',
@@ -82,6 +87,14 @@ return [
         'sortAscending'  => ': aktivieren um aufsteigend zu Sortieren',
         'sortDescending' => ': aktivieren um absteigend zu Sortieren',
     ],
+    'export' => [
+        'copy' => 'Kopieren',
+        'excel' => 'Excel',
+        'csv' => 'CSV',
+        'pdf' => 'PDF',
+        'print' => 'Drucken',
+        'column_visibility' => 'Sichtbarkeit der Spalte',
+    ],
 
     // global crud - errors
     'unauthorized_access' => 'Unbefugter Zugriff - Sie haben nicht die notwendigen Rechte um diese Seite anzuzeigen.',
@@ -103,6 +116,11 @@ return [
     'yes' => 'Ja',
     'no' => 'Nein',
 
+    // CRUD filters navbar view
+    'filters' => 'Filter',
+    'toggle_filters' => 'Filter umschalten',
+    'remove_filters' => 'Filter entfernen',
+
     // Fields
     'browse_uploads' => 'Uploads durchsuchen',
     'clear' => 'Löschen',
@@ -120,3 +138,4 @@ return [
     // File manager
     'file_manager' => 'Datei Manager',
 ];
+
