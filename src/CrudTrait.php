@@ -80,7 +80,7 @@ trait CrudTrait
                 $column_contents = json_decode($this->{$column});
             }
 
-            if ((is_array($column_contents) || $column_contents instanceof Traversable) && count($column_contents)) {
+            if ((is_array($column_contents) || is_object($column_contents) || $column_contents instanceof Traversable) && count($column_contents)) {
                 foreach ($column_contents as $fake_field_name => $fake_field_value) {
                     $this->setAttribute($fake_field_name, $fake_field_value);
                 }
