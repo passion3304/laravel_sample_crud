@@ -5,6 +5,7 @@ namespace Backpack\CRUD;
 use DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
+use Traversable;
 
 trait CrudTrait
 {
