@@ -14,8 +14,9 @@ class Article extends Model
     protected $casts = [
         'cast_metas' => 'object',
         'cast_tags' => 'object',
-        'cast_extras' => 'object'
+        'cast_extras' => 'object',
     ];
+
     /**
      * Get the author for the article.
      */

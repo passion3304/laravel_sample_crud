@@ -70,7 +70,7 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
             'name' => 'cast_extra_details',
             'label' => 'Extra Details',
             'fake' => true,
-            'store_in' => 'cast_extras'
+            'store_in' => 'cast_extras',
         ],
     ];
 
@@ -103,14 +103,14 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
         'extras' => '{"extra_details":["detail1","detail2","detail3"]}',
         'cast_metas'  => [
             'cast_meta_title'       => 'Meta Title Value',
-            'cast_meta_description' => "Meta Description Value"
+            'cast_meta_description' => 'Meta Description Value',
         ],
         'cast_tags'   => [
-            'cast_tags' => ["tag1", "tag2", "tag3"]
+            'cast_tags' => ['tag1', 'tag2', 'tag3'],
         ],
         'cast_extras' => [
-            'cast_extra_details' => ["detail1", "detail2", "detail3"]
-        ]
+            'cast_extra_details' => ['detail1', 'detail2', 'detail3'],
+        ],
     ];
 
     public function testCompactFakeFieldsFromCreateForm()
