@@ -109,7 +109,7 @@ trait CrudTrait
     }
 
     /**
-     * Determine if this fake column should get json_encoded or not
+     * Determine if this fake column should get json_encoded or not.
      *
      * @param $column string fake column name
      * @return bool
