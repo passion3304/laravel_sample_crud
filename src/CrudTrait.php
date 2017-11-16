@@ -108,6 +108,11 @@ trait CrudTrait
         return $this;
     }
 
+    public function shouldEncodeFake($column)
+    {
+        return ! in_array($column, array_keys($this->casts));
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Methods for storing uploaded files (used in CRUD).
