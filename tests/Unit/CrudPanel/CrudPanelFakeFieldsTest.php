@@ -116,11 +116,10 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
     public function testCompactFakeFieldsFromCreateForm()
     {
         $this->crudPanel->addFields($this->fakeFieldsArray);
-
         $this->crudPanel->setModel(Article::class);
 
         $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'create');
-        dump($compactedFakeFields);
+
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }
 
