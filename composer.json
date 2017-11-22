@@ -14,7 +14,7 @@
         "content management framework"
     ],
     "homepage": "https://github.com/laravel-backpack/CRUD",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Cristian Tabacitu",
