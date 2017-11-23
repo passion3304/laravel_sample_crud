@@ -13,8 +13,8 @@ use Backpack\CRUD\app\Http\Controllers\CrudFeatures\AjaxTable;
 // CRUD Traits for non-core features
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Revisions;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\SaveActions;
-use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
-use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
+use Illuminate\Http\Request as StoreRequest;
+use Illuminate\Http\Request as UpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\ShowDetailsRow;
 
 class CrudController extends BaseController
