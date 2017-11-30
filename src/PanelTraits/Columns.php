@@ -87,7 +87,7 @@ trait Columns
         }
 
         // check if the column exists in the DB table
-        if (\Schema::hasColumn($this->model->getTable(), $column_with_details['name'])) {
+        if (\Schema::setConnection($this->model->getConnection())->hasColumn($this->model->getTable(), $column_with_details['name'])) {
             $column_with_details['tableColumn'] = true;
         } else {
             $column_with_details['tableColumn'] = false;
