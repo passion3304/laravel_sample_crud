@@ -346,18 +346,17 @@ trait Columns
 
         return reset($result);
     }
-    
+
     protected function hasColumn($table, $name)
-	{
-		static $cache = [];
-		
-		if(isset($cache[$table])){
-			$columns = $cache[$table];
-		}else{
-			$columns = $cache[$table] = \Schema::getColumnListing($table);
-		}
+    {
+        static $cache = [];
 
-		return in_array($name, $columns);
-	}
+        if (isset($cache[$table])) {
+            $columns = $cache[$table];
+        } else {
+            $columns = $cache[$table] = \Schema::getColumnListing($table);
+        }
 
+        return in_array($name, $columns);
+    }
 }
