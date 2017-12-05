@@ -87,7 +87,7 @@ trait Columns
         }
 
         // check if the column exists in the DB table
-        if (\Schema::hasColumn($this->model->getTable(), $column_with_details['name'])) {
+        if ($this->hasColumn($this->model->getTable(), $column_with_details['name'])) {
             $column_with_details['tableColumn'] = true;
         } else {
             $column_with_details['tableColumn'] = false;
@@ -346,4 +346,18 @@ trait Columns
 
         return reset($result);
     }
+    
+    protected function hasColumn($table, $name)
+	{
+		static $cache = [];
+		
+		if(isset($cache[$table])){
+			$columns = $cache[$table];
+		}else{
+			$columns = $cache[$table] = \Schema::getColumnListing($table);
+		}
+
+		return in_array($name, $columns);
+	}
+
 }
