@@ -21,6 +21,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+
+## [3.3.2] - 2017-12-xx
+
+## Added
+- loading image on ajax datatables, with fallback to old "Processing" text;
+
+
 ## [3.3.1] - 2017-11-06
 
 ## Fixed
