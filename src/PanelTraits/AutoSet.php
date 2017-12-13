@@ -61,8 +61,8 @@ trait AutoSet
 
         foreach ($table_columns as $key => $column) {
             $column_type = $column->getType()->getName();
-            $this->db_column_types[ $column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
-            $this->db_column_types[ $column->getName()]['default'] = $column->getDefault();
+            $this->db_column_types[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
+            $this->db_column_types[$column->getName()]['default'] = $column->getDefault();
         }
 
         return $this->db_column_types;
