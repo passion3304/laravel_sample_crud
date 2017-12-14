@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Fixed
 - Chinese translation;
+- datetimepicker icon now triggers datetimepicker js - merged #1097;
 
 
 ## [3.3.2] - 2017-12-12
