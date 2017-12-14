@@ -21,6 +21,17 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+
+## [3.3.2] - 2017-12-12
+
+## Added
+- loading image on ajax datatables, with fallback to old "Processing" text;
+
+## Fixed
+- answers to hasColumns() are now cached, to minimize number of db queries on list view - merged #1122;
+- German translation;
+
+
 ## [3.3.1] - 2017-11-06
 
 ## Fixed
