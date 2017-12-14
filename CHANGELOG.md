@@ -21,6 +21,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+## [3.3.3] - 2017-12-xx
+
+## Fixed
+- Chinese translation;
+
 
 ## [3.3.2] - 2017-12-12
 
