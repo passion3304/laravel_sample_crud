@@ -354,7 +354,7 @@ trait Columns
         if (isset($cache[$table])) {
             $columns = $cache[$table];
         } else {
-            $columns = $cache[$table] = \Schema::setConnection($this->model->getConnection())->getColumnListing($table);
+            $columns = $cache[$table] = $this->getSchema()->getColumnListing($table);
         }
 
         return in_array($name, $columns);
