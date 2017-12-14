@@ -106,6 +106,14 @@ class CrudPanel
     }
 
     /**
+     * Get the database connection, as specified in the .env file or overwritten by the property on the model.
+     */
+    private function getSchema()
+    {
+        return \Schema::setConnection($this->getModel()->getConnection());
+    }
+
+    /**
      * Set the route for this CRUD.
      * Ex: admin/article.
      *
