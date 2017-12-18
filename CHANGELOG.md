@@ -21,6 +21,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+## [3.3.4] - 2017-12-xx
+
+## Fixed
+- ENUM field - Updated ```getPossibleEnumValues``` to use ```$instance->getConnectionName()``` so that enum values are correctly queried when the Model uses a non-default database connection - merged #650;
+
 ## [3.3.3] - 2017-12-14
 
 ## Fixed
