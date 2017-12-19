@@ -57,12 +57,12 @@ trait AutoSet
     {
         $table = $this->model->getTable();
         $conn = $this->model->getConnection();
-        $table_columns = $conn->getSchemaBuilder()->getColumnListing($table);
+        $table_columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
 
         foreach ($table_columns as $key => $column) {
-            $column_type = $conn->getSchemaBuilder()->getColumnType($table, $column);
-            $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
-            $this->db_column_types[$column]['default'] = $conn->getDoctrineSchemaManager()->listTableDetails($table)->getColumn($column)->getDefault();
+            $column_type = $column->getType()->getName();
+            $this->db_column_types[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
+            $this->db_column_types[$column->getName()]['default'] = $column->getDefault();
         }
 
         return $this->db_column_types;
