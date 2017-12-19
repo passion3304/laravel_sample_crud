@@ -27,6 +27,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - ENUM field - Updated ```getPossibleEnumValues``` to use ```$instance->getConnectionName()``` so that enum values are correctly queried when the Model uses a non-default database connection - merged #650;
 - addColumn will not overwrite the searchLogic, orderable and tableColumn attributes if otherwise specified;
 - Better sorting effect on "table" fields - merged #466;
+- When using the Autoset trait, the getDbColumnTypes() method used many separate queries to get the column type and column default; improved performance by merging #1159;
+
 
 ## [3.3.3] - 2017-12-14
 
