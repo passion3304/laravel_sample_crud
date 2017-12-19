@@ -91,17 +91,17 @@ trait Columns
 
         // make sure the column has a tableColumn boolean
         if (! array_key_exists('tableColumn', $column_with_details)) {
-            $column_with_details['tableColumn'] = $columnExistsInDb?true:false;
+            $column_with_details['tableColumn'] = $columnExistsInDb ? true : false;
         }
 
         // make sure the column has a orderable boolean
         if (! array_key_exists('orderable', $column_with_details)) {
-            $column_with_details['orderable'] = $columnExistsInDb?true:false;
+            $column_with_details['orderable'] = $columnExistsInDb ? true : false;
         }
 
         // make sure the column has a searchLogic
         if (! array_key_exists('searchLogic', $column_with_details)) {
-            $column_with_details['searchLogic'] = $columnExistsInDb?true:false;
+            $column_with_details['searchLogic'] = $columnExistsInDb ? true : false;
         }
 
         array_filter($this->columns[$column_with_details['key']] = $column_with_details);
