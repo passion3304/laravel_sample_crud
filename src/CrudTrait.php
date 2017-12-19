@@ -3,6 +3,7 @@
 namespace Backpack\CRUD;
 
 use DB;
+use Traversable;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
 
