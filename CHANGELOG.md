@@ -28,6 +28,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - addColumn will not overwrite the searchLogic, orderable and tableColumn attributes if otherwise specified;
 - Better sorting effect on "table" fields - merged #466;
 - When using the Autoset trait, the getDbColumnTypes() method used many separate queries to get the column type and column default; improved performance by merging #1159;
+- fakeFields use array_keys_exists instead of isset - merged #734;
+- CrudTrait::addFakes now supports objects - merged #1109;
 
 
 ## [3.3.3] - 2017-12-14
