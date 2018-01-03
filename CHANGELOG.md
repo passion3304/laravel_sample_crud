@@ -21,6 +21,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+
+## [3.3.5] - 2018-01-xx
+
+## Added
+- custom error message for AJAX datatable errors - merged #1100; 
+
+
 ## [3.3.4] - 2017-12-19
 
 ## Fixed
