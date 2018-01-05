@@ -5,51 +5,50 @@ namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
 trait AjaxTable
 {
     /**
-     * Respond with the JSON of one or more rows, depending on the POST parameters.
-     * @return JSON Array of cells in HTML form.
+     * The search function that is called by the data table.
+     *
+     * @return  JSON Array of cells in HTML form.
      */
     public function search()
     {
         $this->crud->hasAccessOrFail('list');
 
-        // create an array with the names of the searchable columns
-        $columns = collect($this->crud->columns)
-                    ->reject(function ($column, $key) {
-                        // the select_multiple, model_function and model_function_attribute columns are not searchable
-            return isset($column['type']) && ($column['type'] == 'select_multiple' || $column['type'] == 'model_function' || $column['type'] == 'model_function_attribute');
-                    })
-                    ->pluck('name')
-                    // add the primary key, otherwise the buttons won't work
-                    ->merge($this->crud->model->getKeyName())
-                    ->toArray();
+        $totalRows = $filteredRows = $this->crud->count();
 
-        // structure the response in a DataTable-friendly way
-        $dataTable = new \LiveControl\EloquentDataTable\DataTable($this->crud->query, $columns);
+        // if a search term was present
+        if ($this->request->input('search') && $this->request->input('search')['value']) {
+            // filter the results accordingly
+            $this->crud->applySearchTerm($this->request->input('search')['value']);
+            // recalculate the number of filtered rows
+            $filteredRows = $this->crud->count();
+        }
 
-        // make the datatable use the column types instead of just echoing the text
-        $dataTable->setFormatRowFunction(function ($entry) {
-            // get the actual HTML for each row's cell
-            $row_items = $this->crud->getRowViews($entry, $this->crud);
+        // start the results according to the datatables pagination
+        if ($this->request->input('start')) {
+            $this->crud->skip($this->request->input('start'));
+        }
 
-            // add the buttons as the last column
-            if ($this->crud->buttons->where('stack', 'line')->count()) {
-                $row_items[] = \View::make('crud::inc.button_stack', ['stack' => 'line'])
-                                ->with('crud', $this->crud)
-                                ->with('entry', $entry)
-                                ->render();
-            }
+        // limit the number of results according to the datatables pagination
+        if ($this->request->input('length')) {
+            $this->crud->take($this->request->input('length'));
+        }
 
-            // add the details_row buttons as the first column
+        // overwrite any order set in the setup() method with the datatables order
+        if ($this->request->input('order')) {
+            $column_number = $this->request->input('order')[0]['column'];
             if ($this->crud->details_row) {
-                array_unshift($row_items, \View::make('crud::columns.details_row_button')
-                                ->with('crud', $this->crud)
-                                ->with('entry', $entry)
-                                ->render());
+                $column_number = $column_number - 1;
             }
+            $column_direction = $this->request->input('order')[0]['dir'];
+            $column = $this->crud->findColumnById($column_number);
 
-            return $row_items;
-        });
+            if ($column['tableColumn']) {
+                $this->crud->orderBy($column['name'], $column_direction);
+            }
+        }
 
-        return $dataTable->make();
+        $entries = $this->crud->getEntries();
+
+        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows);
     }
 }

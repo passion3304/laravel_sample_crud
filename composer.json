@@ -9,30 +9,33 @@
         "read",
         "admin panel",
         "admin interface",
-        "CMS"
+        "CMS",
+        "content management system",
+        "content management framework"
     ],
     "homepage": "https://github.com/laravel-backpack/CRUD",
     "license": "MIT",
     "authors": [
         {
-            "name": "Cristian tabacitu",
+            "name": "Cristian Tabacitu",
             "email": "hello@tabacitu.ro",
             "homepage": "http://www.tabacitu.ro",
             "role": "Chief Architect & Lead Developer"
         }
     ],
     "require": {
-        "backpack/base": "^0.7.15",
+        "backpack/base": "^0.8.0",
         "laravelcollective/html": "~5.0",
         "barryvdh/laravel-elfinder": "^0.3.10",
-        "livecontrol/eloquent-datatable": "^0.1.5",
         "doctrine/dbal": "^2.5",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "^2.3"
     },
     "require-dev": {
-        "phpunit/phpunit" : "4.*",
-        "scrutinizer/ocular": "~1.1"
+        "phpunit/phpunit": "~6.0",
+        "scrutinizer/ocular": "~1.1",
+        "orchestra/testbench": "~3.0",
+        "orchestra/database": "~3.4"
     },
     "autoload": {
         "psr-4": {
@@ -41,8 +44,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Backpack\\CRUD\\Test\\": "tests"
-        }
+            "Backpack\\CRUD\\Tests\\": "tests"
+        },
+        "exclude-from-classmap": [
+            "**/config"
+        ]
     },
     "scripts": {
         "test": "phpunit"
@@ -50,6 +56,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Backpack\\CRUD\\CrudServiceProvider"
+            ]
         }
     }
 }

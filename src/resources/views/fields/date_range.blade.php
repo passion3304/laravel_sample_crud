@@ -3,20 +3,28 @@
 <?php
     // if the column has been cast to Carbon or Date (using attribute casting)
     // get the value as a date string
-    if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $field['value'] instanceof \Jenssegers\Date\Date )) {
-        $field['value'] = $field['value']->format( 'Y-m-d H:i:s' );
+    function formatDate($entry, $dateFieldName)
+    {
+        $formattedDate = null;
+        if (isset($entry) && !empty($entry->{$dateFieldName})) {
+            $dateField = $entry->{$dateFieldName};
+            if ($dateField instanceof \Carbon\Carbon || $dateField instanceof \Jenssegers\Date\Date) {
+                $formattedDate = $dateField->format('Y-m-d H:i:s');
+            } else {
+                $formattedDate = date('Y-m-d H:i:s', strtotime($entry->{$dateFieldName}));
+            }
+        }
+        return $formattedDate;
     }
 
-    //Do the same as the above but for the range end field
-    if ( isset($entry) && ($entry->{$field['end_name']} instanceof \Carbon\Carbon || $entry->{$field['end_name']} instanceof \Jenssegers\Date\Date) ) {
-        $end_name = $entry->{$field['end_name']}->format( 'Y-m-d H:i:s' );
-    } else {
-        $end_name = null;
+    if (isset($entry)) {
+        $start_name = formatDate($entry, $field['start_name']);
+        $end_name = formatDate($entry, $field['end_name']);
     }
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
-    <input class="datepicker-range-start" type="hidden" name="{{ $field['start_name'] }}" value="{{ old($field['start_name']) ? old($field['start_name']) : (isset($field['value']) ? $field['value'] : (isset($field['start_default']) ? $field['start_default'] : '' )) }}">
+    <input class="datepicker-range-start" type="hidden" name="{{ $field['start_name'] }}" value="{{ old($field['start_name']) ? old($field['start_name']) : (isset($start_name) ? $start_name : (isset($field['start_default']) ? $field['start_default'] : '' )) }}">
     <input class="datepicker-range-end" type="hidden" name="{{ $field['end_name'] }}" value="{{ old($field['end_name']) ? old($field['end_name']) : (!empty($end_name) ? $end_name : (isset($field['end_default']) ? $field['end_default'] : '' )) }}">
     <label>{!! $field['label'] !!}</label>
     <div class="input-group date">
@@ -84,3 +92,4 @@
 
 @endif
 {{-- End of Extra CSS and JS --}}
+

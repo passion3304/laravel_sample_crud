@@ -42,7 +42,7 @@ return [
 
     // CRUD table view
     'all'                       => 'Tous les ',
-    'in_the_database'           => 'en base de donnée',
+    'in_the_database'           => 'en base de données',
     'list'                      => 'Liste',
     'actions'                   => 'Actions',
     'preview'                   => 'Aperçu',

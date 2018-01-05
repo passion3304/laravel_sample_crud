@@ -3,7 +3,8 @@
 @section('header')
 	<section class="content-header">
 	  <h1>
-	    {{ trans('backpack::crud.edit') }} <span class="text-lowercase">{{ $crud->entity_name }}</span>
+        <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
+        <small>{{ trans('backpack::crud.edit').' '.$crud->entity_name }}.</small>
 	  </h1>
 	  <ol class="breadcrumb">
 	    <li><a href="{{ url(config('backpack.base.route_prefix'),'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
@@ -18,7 +19,7 @@
 	<div class="col-md-8 col-md-offset-2">
 		<!-- Default box -->
 		@if ($crud->hasAccess('list'))
-			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
+			<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 
 		@include('crud::inc.grouped_errors')
@@ -30,7 +31,7 @@
 			    	<!-- Single button -->
 					<div class="btn-group pull-right">
 					  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					    Language: {{ $crud->model->getAvailableLocales()[$crud->request->input('locale')?$crud->request->input('locale'):App::getLocale()] }} <span class="caret"></span>
+					    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[$crud->request->input('locale')?$crud->request->input('locale'):App::getLocale()] }} <span class="caret"></span>
 					  </button>
 					  <ul class="dropdown-menu">
 					  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)

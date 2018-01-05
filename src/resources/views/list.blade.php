@@ -35,7 +35,7 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="table table-bordered table-striped display">
+        <table id="crudTable" class="table table-striped table-hover display">
             <thead>
               <tr>
                 @if ($crud->details_row)
@@ -44,52 +44,17 @@
 
                 {{-- Table columns --}}
                 @foreach ($crud->columns as $column)
-                  <th>{{ $column['label'] }}</th>
+                  <th {{ isset($column['orderable']) ? 'data-orderable=' .var_export($column['orderable'], true) : '' }}>
+                    {{ $column['label'] }}
+                  </th>
                 @endforeach
 
                 @if ( $crud->buttons->where('stack', 'line')->count() )
-                  <th>{{ trans('backpack::crud.actions') }}</th>
+                  <th data-orderable="false">{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>
             </thead>
             <tbody>
-
-              @if (!$crud->ajaxTable())
-                @foreach ($entries as $k => $entry)
-                <tr data-entry-id="{{ $entry->getKey() }}">
-
-                  @if ($crud->details_row)
-                    @include('crud::columns.details_row_button')
-                  @endif
-
-                  {{-- load the view from the application if it exists, otherwise load the one in the package --}}
-                  @foreach ($crud->columns as $column)
-                    @if (!isset($column['type']))
-                      @include('crud::columns.text')
-                    @else
-                      @if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
-                        @include('vendor.backpack.crud.columns.'.$column['type'])
-                      @else
-                        @if(view()->exists('crud::columns.'.$column['type']))
-                          @include('crud::columns.'.$column['type'])
-                        @else
-                          @include('crud::columns.text')
-                        @endif
-                      @endif
-                    @endif
-
-                  @endforeach
-
-                  @if ($crud->buttons->where('stack', 'line')->count())
-                    <td>
-                      @include('crud::inc.button_stack', ['stack' => 'line'])
-                    </td>
-                  @endif
-
-                </tr>
-                @endforeach
-              @endif
-
             </tbody>
             <tfoot>
               <tr>
@@ -178,7 +143,8 @@
       @endif
 
 	  	var table = $("#crudTable").DataTable({
-        "pageLength": "{{ $crud->getDefaultPageLength() }}",
+        "pageLength": {{ $crud->getDefaultPageLength() }},
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "{{ trans('backpack::crud.all') }}"]],
         /* Disable initial sort */
         "aaSorting": [],
         "language": {
@@ -190,7 +156,7 @@
               "thousands":      "{{ trans('backpack::crud.thousands') }}",
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
-              "processing":     "{{ trans('backpack::crud.processing') }}",
+              "processing":     "<img src='{{ asset('vendor/backpack/crud/img/ajax-loader.gif') }}' alt='{{ trans('backpack::crud.processing') }}'>",
               "search":         "{{ trans('backpack::crud.search') }}",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
               "paginate": {
@@ -202,17 +168,22 @@
               "aria": {
                   "sortAscending":  "{{ trans('backpack::crud.aria.sortAscending') }}",
                   "sortDescending": "{{ trans('backpack::crud.aria.sortDescending') }}"
-              }
+              },
+              "buttons": {
+                  "copy":   "{{ trans('backpack::crud.export.copy') }}",
+                  "excel":  "{{ trans('backpack::crud.export.excel') }}",
+                  "csv":    "{{ trans('backpack::crud.export.csv') }}",
+                  "pdf":    "{{ trans('backpack::crud.export.pdf') }}",
+                  "print":  "{{ trans('backpack::crud.export.print') }}",
+                  "colvis": "{{ trans('backpack::crud.export.column_visibility') }}"
+              },
           },
-
-          @if ($crud->ajaxTable())
           "processing": true,
           "serverSide": true,
           "ajax": {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
               "type": "POST"
           },
-          @endif
 
           @if ($crud->exportButtons())
           // show the export datatable buttons
@@ -226,6 +197,16 @@
             'colvis'
           ]),
           @endif
+      });
+
+      // override ajax error message
+      $.fn.dataTable.ext.errMode = 'none';
+      $('#crudTable').on('error.dt', function(e, settings, techNote, message) {
+          new PNotify({
+              type: "error",
+              title: "{{ trans('backpack::crud.ajax_error_title') }}",
+              text: "{{ trans('backpack::crud.ajax_error_text') }}"
+          });
       });
 
       @if ($crud->exportButtons())

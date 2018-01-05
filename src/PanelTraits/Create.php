@@ -103,20 +103,16 @@ trait Create
 
                 if (isset($field['pivotFields'])) {
                     foreach ($field['pivotFields'] as $pivotField) {
-                        foreach ($data[$pivotField] as $pivot_id => $field) {
-                            $model->{$field['name']}()->updateExistingPivot($pivot_id, [$pivotField => $field]);
+                        foreach ($data[$pivotField] as $pivot_id => $pivot_field) {
+                            $model->{$field['name']}()->updateExistingPivot($pivot_id, [$pivotField => $pivot_field]);
                         }
                     }
                 }
             }
 
-            if (isset($field['morph']) && $field['morph']) {
-                $values = isset($data[$field['name']]) ? $data[$field['name']] : [];
-                if ($model->{$field['name']}) {
-                    $model->{$field['name']}()->update($values);
-                } else {
-                    $model->{$field['name']}()->create($values);
-                }
+            if (isset($field['morph']) && $field['morph'] && isset($data[$field['name']])) {
+                $values = $data[$field['name']];
+                $model->{$field['name']}()->sync($values);
             }
         }
     }

@@ -57,7 +57,6 @@ trait Query
      * Group the results of the query in a certain way.
      *
      * @param  [type]
-     *
      * @return [type]
      */
     public function groupBy($field)
@@ -69,11 +68,40 @@ trait Query
      * Limit the number of results in the query.
      *
      * @param  [number]
-     *
      * @return [type]
      */
     public function limit($number)
     {
         return $this->query->limit($number);
+    }
+
+    /**
+     * Take a certain number of results from the query.
+     *
+     * @param  [number]
+     * @return [type]
+     */
+    public function take($number)
+    {
+        return $this->query->take($number);
+    }
+
+    /**
+     * Start the result set from a certain number.
+     *
+     * @param  int $number [description]
+     * @return [type]         [description]
+     */
+    public function skip($number)
+    {
+        return $this->query->skip($number);
+    }
+
+    /**
+     * Count the number of results.
+     */
+    public function count()
+    {
+        return $this->query->count();
     }
 }
