@@ -45,6 +45,11 @@ trait AjaxTable
             if ($column['tableColumn']) {
                 $this->crud->orderBy($column['name'], $column_direction);
             }
+
+            // check for custom order logic in the column definition
+            if (isset($column['orderLogic'])) {
+                $this->crud->customOrderBy($column, $column_direction);
+            }
         }
 
         $entries = $this->crud->getEntries();

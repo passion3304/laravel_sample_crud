@@ -54,6 +54,23 @@ trait Query
     }
 
     /**
+     * Order the results of the query in a custom way.
+     */
+    public function customOrderBy($column, $column_direction)
+    {
+        if (isset($column['orderLogic'])) {
+            $this->query->getQuery()->orders = null;
+        
+            $orderLogic = $column['orderLogic'];
+
+            if (is_callable($orderLogic)) {
+                return $orderLogic($this->query, $column, $column_direction);
+            }
+        }
+        return $this->query;
+    }
+
+    /**
      * Group the results of the query in a certain way.
      *
      * @param  [type]
