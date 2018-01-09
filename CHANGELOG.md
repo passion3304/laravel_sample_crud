@@ -26,6 +26,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - custom error message for AJAX datatable errors - merged #1100; 
+- 403 error on AccessDeniedException;
 
 ### Fixed
 - CRUD alias is now loaded using package-autodiscovery instead of manually in CrudServiceProvider;
