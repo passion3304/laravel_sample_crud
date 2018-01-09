@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\Exception;
 
-class AccessDeniedException extends \UnexpectedValueException
+use Exception;
+
+class AccessDeniedException extends Exception
 {
     /**
      * Render the exception into an HTTP response.
