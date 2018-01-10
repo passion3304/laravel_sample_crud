@@ -187,7 +187,10 @@
 
           @if ($crud->exportButtons())
           // show the export datatable buttons
-          dom: '<"p-l-0 col-md-6"l>B<"p-r-0 col-md-6"f>rt<"col-md-6 p-l-0"i><"col-md-6 p-r-0"p>',
+          dom:
+            "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-4'i><'col-sm-4'B><'col-sm-4'p>>",
           buttons: dtButtons([
             'copyHtml5',
             'excelHtml5',
