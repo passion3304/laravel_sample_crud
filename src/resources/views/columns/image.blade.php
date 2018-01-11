@@ -1,4 +1,4 @@
-<td>
+<span>
   @if( !empty($entry->{$column['name']}) )
     <a
       href="{{ asset($entry->{$column['name']}) }}"
@@ -15,4 +15,4 @@
   @else
     -
   @endif
-</td>
+</span>

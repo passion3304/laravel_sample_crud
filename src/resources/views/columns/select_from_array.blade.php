@@ -1,5 +1,5 @@
 {{-- select_from_array column --}}
-<td>
+<span>
 	<?php
 		if ($entry->{$column['name']} !== null) {
 	    	echo $column['options'][$entry->{$column['name']}];
@@ -7,4 +7,4 @@
 	    	echo "-";
 	    }
 	?>
-</td>
+</span>

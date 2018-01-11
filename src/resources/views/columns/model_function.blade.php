@@ -1,6 +1,6 @@
 {{-- custom return value --}}
-<td>
+<span>
 	<?php
         echo $entry->{$column['function_name']}();
     ?>
-</td>
+</span>

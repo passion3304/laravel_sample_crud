@@ -25,17 +25,17 @@
 
           @include('crud::inc.button_stack', ['stack' => 'top'])
 
-          <div id="datatable_button_stack" class="pull-right text-right"></div>
+          <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
         </div>
 
-        <div class="box-body table-responsive">
+        <div class="box-body overflow-hidden">
 
         {{-- Backpack List Filters --}}
         @if ($crud->filtersEnabled())
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="table table-striped table-hover display">
+        <table id="crudTable" class="table table-striped table-hover display responsive nowrap" cellspacing="0">
             <thead>
               <tr>
                 @if ($crud->details_row)
@@ -87,7 +87,9 @@
 
 @section('after_styles')
   <!-- DATA TABLES -->
-  <link href="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css">
+
   <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
   <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/form.css') }}">
   <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/list.css') }}">
@@ -98,7 +100,7 @@
 
 @section('after_scripts')
   	<!-- DATA TABLES SCRIPT -->
-    <script src="{{ asset('vendor/adminlte/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
     <script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
     <script src="{{ asset('vendor/backpack/crud/js/form.js') }}"></script>
@@ -116,7 +118,10 @@
     <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js" type="text/javascript"></script>
     @endif
 
-    <script src="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+
 
 	<script type="text/javascript">
 	  jQuery(document).ready(function($) {
@@ -143,6 +148,33 @@
       @endif
 
 	  	var table = $("#crudTable").DataTable({
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return data[0];
+                    }
+                } ),
+                // renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                //     tableClass: 'table table-striped table-condensed'
+                // } ),
+                renderer: function ( api, rowIdx, columns ) {
+                  var data = $.map( columns, function ( col, i ) {
+                      console.log(col);
+                      return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td><strong>'+col.title.trim()+':'+'<strong></td> '+
+                                '<td>'+col.data+'</td>'+
+                              '</tr>';
+                  } ).join('');
+
+                  return data ?
+                      $('<table class="table table-striped table-condensed m-b-0">').append( data ) :
+                      false;
+                },
+            }
+        },
+        autoWidth: false,
         "pageLength": {{ $crud->getDefaultPageLength() }},
         "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "{{ trans('backpack::crud.all') }}"]],
         /* Disable initial sort */
