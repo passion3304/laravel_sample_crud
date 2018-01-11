@@ -156,12 +156,8 @@
                         return data[0];
                     }
                 } ),
-                // renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
-                //     tableClass: 'table table-striped table-condensed'
-                // } ),
                 renderer: function ( api, rowIdx, columns ) {
                   var data = $.map( columns, function ( col, i ) {
-                      console.log(col);
                       return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
                                 '<td><strong>'+col.title.trim()+':'+'<strong></td> '+
                                 '<td>'+col.data+'</td>'+
