@@ -190,8 +190,8 @@
               "paginate": {
                   "first":      "{{ trans('backpack::crud.paginate.first') }}",
                   "last":       "{{ trans('backpack::crud.paginate.last') }}",
-                  "next":       "{{ trans('backpack::crud.paginate.next') }}",
-                  "previous":   "{{ trans('backpack::crud.paginate.previous') }}"
+                  "next":       "<span class='hidden-xs hidden-sm'>{{ trans('backpack::crud.paginate.next') }}</span><span class='hidden-md hidden-lg'>></span>",
+                  "previous":   "<span class='hidden-xs hidden-sm'>{{ trans('backpack::crud.paginate.previous') }}</span><span class='hidden-md hidden-lg'><</span>"
               },
               "aria": {
                   "sortAscending":  "{{ trans('backpack::crud.aria.sortAscending') }}",
@@ -216,9 +216,9 @@
           @if ($crud->exportButtons())
           // show the export datatable buttons
           dom:
-            "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+            "<'row'<'col-sm-6 hidden-xs'l><'col-sm-6'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-4'i><'col-sm-4'B><'col-sm-4'p>>",
+            "<'row'<'col-sm-5'i><'col-sm-2'B><'col-sm-5'p>>",
           buttons: dtButtons([
             'copyHtml5',
             'excelHtml5',
@@ -227,6 +227,11 @@
             'print',
             'colvis'
           ]),
+          @else
+          dom:
+            "<'row'<'col-sm-6 hidden-xs'l><'col-sm-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-2'B><'col-sm-5'p>>",
           @endif
       });
 
