@@ -46,3 +46,7 @@
 		font-weight: 100;
 		margin-top: 5px;
 	}
+
+	.dt-buttons {
+		display: none;
+	}

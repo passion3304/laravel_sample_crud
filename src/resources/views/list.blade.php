@@ -99,55 +99,49 @@
 @endsection
 
 @section('after_scripts')
-  	<!-- DATA TABLES SCRIPT -->
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<!-- DATA TABLES SCRIPT -->
+  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
-    <script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
-    <script src="{{ asset('vendor/backpack/crud/js/form.js') }}"></script>
-    <script src="{{ asset('vendor/backpack/crud/js/list.js') }}"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
 
-    @if ($crud->exportButtons())
-    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
-    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js" type="text/javascript"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" type="text/javascript"></script>
-    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" type="text/javascript"></script>
-    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" type="text/javascript"></script>
-    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js" type="text/javascript"></script>
-    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js" type="text/javascript"></script>
-    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js" type="text/javascript"></script>
-    @endif
+  <script>
+    var crud = {
+      exportButtons: JSON.parse('{!! json_encode($crud->export_buttons) !!}'),
+      functionsToRunOnDataTablesDrawEvent: [],
+      addFunctionToDataTablesDrawEventQueue: function (functionName) {
+          if (this.functionsToRunOnDataTablesDrawEvent.indexOf(functionName) == -1) {
+          this.functionsToRunOnDataTablesDrawEvent.push(functionName);
+        }
+      },
+      executeFunctionByName: function(str, args) {
+        var arr = str.split('.');
+        var fn = window[ arr[0] ];
 
-    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
-
-
-	<script type="text/javascript">
-	  jQuery(document).ready(function($) {
-
-      @if ($crud->exportButtons())
-      var dtButtons = function(buttons){
-          var extended = [];
-          for(var i = 0; i < buttons.length; i++){
-          var item = {
-              extend: buttons[i],
-              exportOptions: {
-              columns: [':visible']
-              }
-          };
-          switch(buttons[i]){
-              case 'pdfHtml5':
-              item.orientation = 'landscape';
-              break;
-          }
-          extended.push(item);
-          }
-          return extended;
-      }
-      @endif
-
-	  	var table = $("#crudTable").DataTable({
+        for (var i = 1; i < arr.length; i++)
+        { fn = fn[ arr[i] ]; }
+        fn.apply(window, args);
+      },
+      createDataTablesButtonArray: function(buttons) {
+        var extended = [];
+        for(var i = 0; i < buttons.length; i++){
+        var item = {
+            extend: buttons[i],
+            exportOptions: {
+            columns: [':visible']
+            }
+        };
+        switch(buttons[i]){
+            case 'pdfHtml5':
+            item.orientation = 'landscape';
+            break;
+        }
+        extended.push(item);
+        }
+        return extended;
+      },
+      dataTableConfiguration: {
         responsive: {
             details: {
                 display: $.fn.dataTable.Responsive.display.modal( {
@@ -171,11 +165,11 @@
             }
         },
         autoWidth: false,
-        "pageLength": {{ $crud->getDefaultPageLength() }},
-        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "{{ trans('backpack::crud.all') }}"]],
+        pageLength: {{ $crud->getDefaultPageLength() }},
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "{{ trans('backpack::crud.all') }}"]],
         /* Disable initial sort */
-        "aaSorting": [],
-        "language": {
+        aaSorting: [],
+        language: {
               "emptyTable":     "{{ trans('backpack::crud.emptyTable') }}",
               "info":           "{{ trans('backpack::crud.info') }}",
               "infoEmpty":      "{{ trans('backpack::crud.infoEmpty') }}",
@@ -206,34 +200,30 @@
                   "colvis": "{{ trans('backpack::crud.export.column_visibility') }}"
               },
           },
-          "processing": true,
-          "serverSide": true,
-          "ajax": {
+          processing: true,
+          serverSide: true,
+          ajax: {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
               "type": "POST"
           },
+          dom:
+            "<'row'<'col-sm-6 hidden-xs'l><'col-sm-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-2'B><'col-sm-5'p>>",
+      }
+  }
+  </script>
 
-          @if ($crud->exportButtons())
-          // show the export datatable buttons
-          dom:
-            "<'row'<'col-sm-6 hidden-xs'l><'col-sm-6'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-2'B><'col-sm-5'p>>",
-          buttons: dtButtons([
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5',
-            'print',
-            'colvis'
-          ]),
-          @else
-          dom:
-            "<'row'<'col-sm-6 hidden-xs'l><'col-sm-6'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-2'B><'col-sm-5'p>>",
-          @endif
-      });
+  <script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
+  <script src="{{ asset('vendor/backpack/crud/js/form.js') }}"></script>
+  <script src="{{ asset('vendor/backpack/crud/js/list.js') }}"></script>
+
+  @include('crud::inc.export_buttons')
+
+	<script type="text/javascript">
+	  jQuery(document).ready(function($) {
+
+	  	crud.table = $("#crudTable").DataTable(crud.dataTableConfiguration);
 
       // override ajax error message
       $.fn.dataTable.ext.errMode = 'none';
@@ -245,17 +235,7 @@
           });
       });
 
-      @if ($crud->exportButtons())
-      // move the datatable buttons in the top-right corner and make them smaller
-      table.buttons().each(function(button) {
-        if (button.node.className.indexOf('buttons-columnVisibility') == -1)
-        {
-          button.node.className = button.node.className + " btn-sm";
-        }
-      })
-      $(".dt-buttons").appendTo($('#datatable_button_stack' ));
-      @endif
-
+      // make sure AJAX requests include XSRF token
       $.ajaxPrefilter(function(options, originalOptions, xhr) {
           var token = $('meta[name="csrf_token"]').attr('content');
 
@@ -264,120 +244,14 @@
           }
       });
 
-      // make the delete button work in the first result page
-      register_delete_button_action();
-
-      // make the delete button work on subsequent result pages
+      // on DataTable draw event run all functions in the queue
+      // (eg. delete and details_row buttons add functions to this queue)
       $('#crudTable').on( 'draw.dt',   function () {
-         register_delete_button_action();
-
-         @if ($crud->details_row)
-          register_details_row_button_action();
-         @endif
+         crud.functionsToRunOnDataTablesDrawEvent.forEach(function(functionName) {
+            // console.log(functionName);
+            crud.executeFunctionByName(functionName);
+         });
       } ).dataTable();
-
-      function register_delete_button_action() {
-        $("[data-button-type=delete]").unbind('click');
-        // CRUD Delete
-        // ask for confirmation before deleting an item
-        $("[data-button-type=delete]").click(function(e) {
-          e.preventDefault();
-          var delete_button = $(this);
-          var delete_url = $(this).attr('href');
-
-          if (confirm("{{ trans('backpack::crud.delete_confirm') }}") == true) {
-              $.ajax({
-                  url: delete_url,
-                  type: 'DELETE',
-                  success: function(result) {
-                      // Show an alert with the result
-                      new PNotify({
-                          title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
-                          text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
-                          type: "success"
-                      });
-                      // delete the row from the table
-                      delete_button.parentsUntil('tr').parent().remove();
-                  },
-                  error: function(result) {
-                      // Show an alert with the result
-                      new PNotify({
-                          title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
-                          text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
-                          type: "warning"
-                      });
-                  }
-              });
-          } else {
-              new PNotify({
-                  title: "{{ trans('backpack::crud.delete_confirmation_not_deleted_title') }}",
-                  text: "{{ trans('backpack::crud.delete_confirmation_not_deleted_message') }}",
-                  type: "info"
-              });
-          }
-        });
-      }
-
-
-      @if ($crud->details_row)
-      function register_details_row_button_action() {
-        // var crudTable = $('#crudTable tbody');
-        // Remove any previously registered event handlers from draw.dt event callback
-        $('#crudTable tbody').off('click', 'td .details-row-button');
-
-        // Make sure the ajaxDatatables rows also have the correct classes
-        $('#crudTable tbody td .details-row-button').parent('td')
-          .removeClass('details-control').addClass('details-control')
-          .removeClass('text-center').addClass('text-center')
-          .removeClass('cursor-pointer').addClass('cursor-pointer');
-
-        // Add event listener for opening and closing details
-        $('#crudTable tbody td.details-control').on('click', function () {
-            var tr = $(this).closest('tr');
-            var btn = $(this).find('.details-row-button');
-            var row = table.row( tr );
-
-            if ( row.child.isShown() ) {
-                // This row is already open - close it
-                btn.removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
-                $('div.table_row_slider', row.child()).slideUp( function () {
-                    row.child.hide();
-                    tr.removeClass('shown');
-                } );
-            }
-            else {
-                // Open this row
-                btn.removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
-                // Get the details with ajax
-                $.ajax({
-                  url: '{{ url($crud->route) }}/'+btn.data('entry-id')+'/details',
-                  type: 'GET',
-                  // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-                  // data: {param1: 'value1'},
-                })
-                .done(function(data) {
-                  // console.log("-- success getting table extra details row with AJAX");
-                  row.child("<div class='table_row_slider'>" + data + "</div>", 'no-padding').show();
-                  tr.addClass('shown');
-                  $('div.table_row_slider', row.child()).slideDown();
-                  register_delete_button_action();
-                })
-                .fail(function(data) {
-                  // console.log("-- error getting table extra details row with AJAX");
-                  row.child("<div class='table_row_slider'>{{ trans('backpack::crud.details_row_loading_error') }}</div>").show();
-                  tr.addClass('shown');
-                  $('div.table_row_slider', row.child()).slideDown();
-                })
-                .always(function(data) {
-                  // console.log("-- complete getting table extra details row with AJAX");
-                });
-            }
-        } );
-      }
-
-      register_details_row_button_action();
-      @endif
-
 
 	  });
 	</script>
