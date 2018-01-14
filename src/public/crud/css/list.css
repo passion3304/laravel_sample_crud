@@ -50,3 +50,19 @@
 	.dt-buttons {
 		display: none;
 	}
+
+	.modal .details-control {
+		display: none;
+	}
+
+	#crudTable td {
+		outline: none;
+	}
+
+	#crudTable.has-hidden-columns .details-control {
+		display: none;
+	}
+
+	div.dataTables_wrapper div.dataTables_length select {
+		width: auto;
+	}
