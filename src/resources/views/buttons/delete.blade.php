@@ -25,10 +25,10 @@
 	                      type: "success"
 	                  });
 
-	                  // close the modal, if any
+	                  // Hide the modal, if any
 	                  $('.modal').modal('hide');
 
-	                  // delete the row from the table
+	                  // Remove the row from the datatable
 	                  row.remove();
 	              },
 	              error: function(result) {
@@ -41,6 +41,7 @@
 	              }
 	          });
 	      } else {
+	      	  // Show an alert telling the user we don't know what went wrong
 	          new PNotify({
 	              title: "{{ trans('backpack::crud.delete_confirmation_not_deleted_title') }}",
 	              text: "{{ trans('backpack::crud.delete_confirmation_not_deleted_message') }}",

@@ -4,4 +4,6 @@
 	$displayValue = isset($column['options'][$entryValue]) ? $column['options'][$entryValue] : '';
 @endphp
 
-<span>{{ $displayValue }}</span>
+<span>
+	{{ $displayValue }}
+</span>

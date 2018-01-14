@@ -6,7 +6,6 @@
 <script>
 	if (typeof registerDetailsRowButtonAction != 'function') {
 		function registerDetailsRowButtonAction() {
-	        // var crudTable = $('#crudTable tbody');
 	        // Remove any previously registered event handlers from draw.dt event callback
 	        $('#crudTable tbody').off('click', 'td .details-row-button');
 
@@ -24,39 +23,30 @@
 	            var btn = $(this).find('.details-row-button');
 	            var row = crud.table.row( tr );
 
-	            if ( row.child.isShown() ) {
+	            if (row.child.isShown()) {
 	                // This row is already open - close it
 	                btn.removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
 	                $('div.table_row_slider', row.child()).slideUp( function () {
 	                    row.child.hide();
 	                    tr.removeClass('shown');
 	                } );
-	            }
-	            else {
+	            } else {
 	                // Open this row
 	                btn.removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
 	                // Get the details with ajax
 	                $.ajax({
 	                  url: '{{ url($crud->route) }}/'+btn.data('entry-id')+'/details',
 	                  type: 'GET',
-	                  // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-	                  // data: {param1: 'value1'},
 	                })
 	                .done(function(data) {
-	                  // console.log("-- success getting table extra details row with AJAX");
 	                  row.child("<div class='table_row_slider'>" + data + "</div>", 'no-padding').show();
 	                  tr.addClass('shown');
 	                  $('div.table_row_slider', row.child()).slideDown();
-	                  // register_delete_button_action();
 	                })
 	                .fail(function(data) {
-	                  // console.log("-- error getting table extra details row with AJAX");
 	                  row.child("<div class='table_row_slider'>{{ trans('backpack::crud.details_row_loading_error') }}</div>").show();
 	                  tr.addClass('shown');
 	                  $('div.table_row_slider', row.child()).slideDown();
-	                })
-	                .always(function(data) {
-	                  // console.log("-- complete getting table extra details row with AJAX");
 	                });
 	            }
 	        } );
@@ -64,5 +54,6 @@
 	  }
 
 	// make it so that the function above is run after each DataTable draw event
+	// otherwise details_row buttons wouldn't work on subsequent pages (page 2, page 17, etc)
 	crud.addFunctionToDataTablesDrawEventQueue('registerDetailsRowButtonAction');
 </script>
