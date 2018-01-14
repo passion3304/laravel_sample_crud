@@ -38,10 +38,6 @@
         <table id="crudTable" class="table table-striped table-hover display responsive nowrap" cellspacing="0">
             <thead>
               <tr>
-                @if ($crud->details_row)
-                  <th data-orderable="false"></th> <!-- expand/minimize button column -->
-                @endif
-
                 {{-- Table columns --}}
                 @foreach ($crud->columns as $column)
                   <th {{ isset($column['orderable']) ? 'data-orderable=' .var_export($column['orderable'], true) : '' }}>
@@ -58,10 +54,6 @@
             </tbody>
             <tfoot>
               <tr>
-                @if ($crud->details_row)
-                  <th></th> <!-- expand/minimize button column -->
-                @endif
-
                 {{-- Table columns --}}
                 @foreach ($crud->columns as $column)
                   <th>{{ $column['label'] }}</th>
@@ -252,6 +244,16 @@
             crud.executeFunctionByName(functionName);
          });
       } ).dataTable();
+
+      // when columns are hidden by reponsive plugin,
+      // the table should have the has-hidden-columns class
+      crud.table.on( 'responsive-resize', function ( e, datatable, columns ) {
+          if (crud.table.responsive.hasHidden()) {
+            $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
+           } else {
+            $("#crudTable").removeClass('has-hidden-columns');
+           }
+      } );
 
 	  });
 	</script>
