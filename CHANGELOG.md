@@ -21,6 +21,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+## [3.3.6] - 2018-01-16
+
+## Fixed
+- base64_image field triggered an error when using the src parameter - merged #1192;
+
 
 ## [3.3.5] - 2018-01-10
 
