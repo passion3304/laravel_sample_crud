@@ -8,7 +8,7 @@
         <div class="col-sm-6" style="margin-bottom: 20px;">
             @if(!is_null(old($field['name'])))
                 <img id="mainImage" src="{{ old($field['name']) }}">
-            @elseif(isset($field['src']))
+            @elseif(isset($field['src']) && isset($entry))
                 <img id="mainImage" src="{{ $entry->find($entry->id)->{$field['src']}() }}">
             @elseif(isset($field['value']))
                 <img id="mainImage" src="{{ $field['value'] }}">
