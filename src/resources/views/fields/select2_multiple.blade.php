@@ -23,8 +23,8 @@
         @endif
     </select>
     @if(isset($field['allow_clear']) && $field['allow_clear'])
-        <a class="btn btn-xs btn-default clear"><i class="fa fa-eye"></i> {{ trans('backpack::crud.clear') }}</a>
-        <a class="btn btn-xs btn-default select_all"><i class="fa fa-eye"></i> {{ trans('backpack::crud.select_all') }}</a>
+        <a class="btn btn-xs btn-primary clear" style="margin-top: 5px;"><i class="fa fa-times"></i> {{ trans('backpack::crud.clear') }}</a>
+        <a class="btn btn-xs btn-primary select_all" style="margin-top: 5px;"><i class="fa fa-check-square-o"></i> {{ trans('backpack::crud.select_all') }}</a>
     @endif
 
     {{-- HINT --}}
