@@ -22,6 +22,10 @@
             @endforeach
         @endif
     </select>
+    @if(isset($field['allow_clear']) && $field['allow_clear'])
+        <a class="btn btn-xs btn-default clear"><i class="fa fa-eye"></i> {{ trans('backpack::crud.clear') }}</a>
+        <a class="btn btn-xs btn-default select_all"><i class="fa fa-eye"></i> {{ trans('backpack::crud.select_all') }}</a>
+    @endif
 
     {{-- HINT --}}
     @if (isset($field['hint']))
@@ -52,9 +56,25 @@
                 $('.select2_multiple').each(function (i, obj) {
                     if (!$(obj).hasClass("select2-hidden-accessible"))
                     {
-                        $(obj).select2({
+                        var $obj = $(obj).select2({
                             theme: "bootstrap"
                         });
+
+                        var options = [];
+                        @if (isset($field['model']))
+                            @foreach ($field['model']::all() as $connected_entity_entry)
+                                options.push({{ $connected_entity_entry->getKey() }});
+                            @endforeach
+                        @endif
+
+                        @if(isset($field['allow_clear']) && $field['allow_clear'])
+                            $(obj).parent().find('.clear').on("click", function () {
+                                $obj.val([]).trigger("change");
+                            });
+                            $(obj).parent().find('.select_all').on("click", function () {
+                                $obj.val(options).trigger("change");
+                            });
+                        @endif
                     }
                 });
             });
