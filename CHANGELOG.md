@@ -21,6 +21,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+## [3.3.7] - 2018-02-08
+
+## Removed
+- laravelcollective/html dependecy;
+
+
 ## [3.3.6] - 2018-01-16
 
 ## Fixed
