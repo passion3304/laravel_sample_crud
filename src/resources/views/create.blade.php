@@ -24,7 +24,13 @@
 
 		@include('crud::inc.grouped_errors')
 
-		  {!! Form::open(array('url' => $crud->route, 'method' => 'post', 'files'=>$crud->hasUploadFields('create'))) !!}
+		  <form method="post"
+		  		action="{{ url($crud->route) }}"
+				@if ($crud->hasUploadFields('create'))
+				enctype="multipart/form-data"
+				@endif
+		  		>
+		  {!! csrf_field() !!}
 		  <div class="box">
 
 		    <div class="box-header with-border">
@@ -45,7 +51,7 @@
 		    </div><!-- /.box-footer-->
 
 		  </div><!-- /.box -->
-		  {!! Form::close() !!}
+		  </form>
 	</div>
 </div>
 
