@@ -21,6 +21,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
+
+## [3.3.9] - 2018-02-12
+
+## Fixed
+- double-click on create form created two entries; fixes #1229;
+
+
+
 ## [3.3.8] - 2018-02-08
 
 ## Removed
