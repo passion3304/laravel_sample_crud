@@ -24,7 +24,14 @@
 
 		@include('crud::inc.grouped_errors')
 
-		  {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey(), 'method' => 'put', 'files'=>$crud->hasUploadFields('update', $entry->getKey()))) !!}
+		  <form method="post"
+		  		action="{{ url($crud->route.'/'.$entry->getKey()) }}"
+				@if ($crud->hasUploadFields('update', $entry->getKey()))
+				enctype="multipart/form-data"
+				@endif
+		  		>
+		  {!! csrf_field() !!}
+		  {!! method_field('PUT') !!}
 		  <div class="box">
 		    <div class="box-header with-border">
 		    	@if ($crud->model->translationEnabled())
@@ -59,7 +66,7 @@
 
 		    </div><!-- /.box-footer-->
 		  </div><!-- /.box -->
-		  {!! Form::close() !!}
+		  </form>
 	</div>
 </div>
 @endsection
