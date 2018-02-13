@@ -11,18 +11,26 @@ trait AutoSet
     /**
      * For a simple CRUD Panel, there should be no need to add/define the fields.
      * The public columns in the database will be converted to be fields.
+     *
+     * @param [Callable]  $labeller If present, a function that should return a
+     *                              formatted label to be displayed.
+     * @return [void]
      */
-    public function setFromDb()
+    public function setFromDb($labeller = null)
     {
         $this->setDoctrineTypesMapping();
         $this->getDbColumnTypes();
 
-        array_map(function ($field) {
-            // $this->labels[$field] = $this->makeLabel($field);
+        array_map(function ($field) use ($labeller) {
+            if (isset($labeller) && is_callable($labeller)) {
+                $label = $labeller($field);
+            } else {
+                $label = $this->makeLabel($field);
+            }
 
             $new_field = [
                 'name'       => $field,
-                'label'      => ucfirst($field),
+                'label'      => $label,
                 'value'      => null,
                 'default'    => isset($this->db_column_types[$field]['default']) ? $this->db_column_types[$field]['default'] : null,
                 'type'       => $this->getFieldTypeFromDbColumnType($field),
@@ -40,7 +48,7 @@ trait AutoSet
             if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
                 $this->addColumn([
                     'name'  => $field,
-                    'label' => ucfirst($field),
+                    'label' => $label,
                     'type'  => $this->getFieldTypeFromDbColumnType($field),
                     'autoset' => true,
                 ]);
@@ -153,13 +161,18 @@ trait AutoSet
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
      *
-     * @param  [string]
+     * @note A value **should** be passed; however if one is not passed a
+     *       simple empty string is returned.
      *
-     * @return [string]
+     * @param  [string] The value.
+     *
+     * @return [string] The transformed value.
      */
-    public function makeLabel($value)
+    public function makeLabel($value = null)
     {
-        return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
+        $value = isset($value) ? $value : '';
+
+        return ucfirst($value);
     }
 
     /**

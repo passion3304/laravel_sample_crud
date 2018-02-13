@@ -18,7 +18,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Security
 - Nothing
-
 -----------
 
 
