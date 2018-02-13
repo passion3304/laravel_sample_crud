@@ -7,6 +7,7 @@ trait AutoSet
     // ------------------------------------------------------
     // AUTO-SET-FIELDS-AND-COLUMNS FUNCTIONALITY
     // ------------------------------------------------------
+    public $labeller = false;
 
     /**
      * For a simple CRUD Panel, there should be no need to add/define the fields.
@@ -16,21 +17,15 @@ trait AutoSet
      *                              formatted label to be displayed.
      * @return [void]
      */
-    public function setFromDb($labeller = null)
+    public function setFromDb()
     {
         $this->setDoctrineTypesMapping();
         $this->getDbColumnTypes();
 
-        array_map(function ($field) use ($labeller) {
-            if (isset($labeller) && is_callable($labeller)) {
-                $label = $labeller($field);
-            } else {
-                $label = $this->makeLabel($field);
-            }
-
+        array_map(function ($field) {
             $new_field = [
                 'name'       => $field,
-                'label'      => $label,
+                'label'      => $this->makeLabel($field),
                 'value'      => null,
                 'default'    => isset($this->db_column_types[$field]['default']) ? $this->db_column_types[$field]['default'] : null,
                 'type'       => $this->getFieldTypeFromDbColumnType($field),
@@ -48,7 +43,7 @@ trait AutoSet
             if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
                 $this->addColumn([
                     'name'  => $field,
-                    'label' => $label,
+                    'label' => $this->makeLabel($field),
                     'type'  => $this->getFieldTypeFromDbColumnType($field),
                     'autoset' => true,
                 ]);
@@ -168,11 +163,30 @@ trait AutoSet
      *
      * @return [string] The transformed value.
      */
-    public function makeLabel($value = null)
+    public function makeLabel($value)
     {
-        $value = isset($value) ? $value : '';
+        if ($this->labeller) {
+            return ($this->labeller)($value);
+        }
 
-        return ucfirst($value);
+        return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
+    }
+
+    /**
+     * Alias to the makeLabel method.
+     */
+    public function getLabel($value) {
+        return $this->makeLabel($value);
+    }
+
+    /**
+     * Change the way labels are made.
+     * @param callable $labeller A function that receives a string and returns the formatted string, after stripping down useless characters.
+     */
+    public function setLabeller(callable $labeller) {
+        $this->labeller = $labeller;
+
+        return $this;
     }
 
     /**
