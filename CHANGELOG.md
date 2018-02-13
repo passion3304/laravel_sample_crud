@@ -24,6 +24,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.3.9] - 2018-02-xx
 
+### Added
+- (Github only) probot auto-replies for first issue, first PR and first PR merged;
+
+
 ## Fixed
 - double-click on create form created two entries; fixes #1229;
 
