@@ -62,3 +62,50 @@ firstPRMergeComment: >
   P.S. **Help in the Backpack community is rewarded with free Backpack commercial licenses**. It's the least we can do. If you feel you've helped the community with PRs, help & other stuff, please [shoot Tabacitu an email](mailto:hello@tabacitu.ro) and ask him if you qualify for free licenses. You scratch my back, I scratch your back. Thank you!
 
 # It is recommend to include as many gifs and emojis as possible
+#
+# ---------------------------------------------------------------------------------------------
+#
+# Configuration for request-info - https://github.com/behaviorbot/request-info
+
+# *OPTIONAL* Comment to reply with
+# Can be either a string :
+requestInfoReplyComment: >
+  Hi there!
+
+  Could you please provide us with more info about this? Looks like you skipped the title/body.
+
+  Thank you!
+
+  --
+  Justin Case
+  The Backpack Robot
+
+# Or an array:
+# requestInfoReplyComment:
+#  - Ah no! young blade! That was a trifle short!
+#  - Tell me more !
+#  - I am sure you can be more effusive
+
+
+# *OPTIONAL* default titles to check against for lack of descriptiveness
+# MUST BE ALL LOWERCASE
+requestInfoDefaultTitles:
+  # - update readme.md
+  - updates
+
+# *OPTIONAL* Label to be added to Issues and Pull Requests with insufficient information given
+requestInfoLabelToAdd: needs-more-info
+
+# *OPTIONAL* Only warn about insufficient information on these events type
+# Keys must be lowercase. Valid values are 'issue' and 'pullRequest'
+requestInfoOn:
+  pullRequest: true
+  issue: true
+
+# *OPTIONAL* Add a list of people whose Issues/PRs will not be commented on
+# keys must be GitHub usernames
+requestInfoUserstoExclude:
+  - tabacitu
+
+# ---------------------------------------------------------------------------------------------
+#
