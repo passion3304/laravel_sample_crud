@@ -170,7 +170,8 @@ trait AutoSet
     /**
      * Alias to the makeLabel method.
      */
-    public function getLabel($value) {
+    public function getLabel($value)
+    {
         return $this->makeLabel($value);
     }
 
@@ -178,7 +179,8 @@ trait AutoSet
      * Change the way labels are made.
      * @param callable $labeller A function that receives a string and returns the formatted string, after stripping down useless characters.
      */
-    public function setLabeller(callable $labeller) {
+    public function setLabeller(callable $labeller)
+    {
         $this->labeller = $labeller;
 
         return $this;
