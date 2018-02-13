@@ -13,8 +13,6 @@ trait AutoSet
      * For a simple CRUD Panel, there should be no need to add/define the fields.
      * The public columns in the database will be converted to be fields.
      *
-     * @param [Callable]  $labeller If present, a function that should return a
-     *                              formatted label to be displayed.
      * @return [void]
      */
     public function setFromDb()
@@ -155,9 +153,6 @@ trait AutoSet
 
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
-     *
-     * @note A value **should** be passed; however if one is not passed a
-     *       simple empty string is returned.
      *
      * @param  [string] The value.
      *
