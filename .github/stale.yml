@@ -37,4 +37,4 @@ markComment: >
   The Backpack Robot
 
 # Comment to post when closing a stale issue. Set to `false` to disable
-closeComment: false
+closeComment: true
