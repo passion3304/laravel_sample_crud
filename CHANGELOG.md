@@ -22,7 +22,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
-## [3.3.9] - 2018-02-xx
+## [3.3.9] - 2018-02-14
 
 ### Added
 - (Github only) probot auto-replies for first issue, first PR and first PR merged;
