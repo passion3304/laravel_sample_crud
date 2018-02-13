@@ -3,6 +3,7 @@
 namespace Backpack\CRUD;
 
 use DB;
+use Traversable;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +21,8 @@ trait CrudTrait
         $table_prefix = Config::get('database.connections.'.$default_connection.'.prefix');
 
         $instance = new static(); // create an instance of the model to be able to get the table name
-        $type = DB::select(DB::raw('SHOW COLUMNS FROM `'.$table_prefix.$instance->getTable().'` WHERE Field = "'.$field_name.'"'))[0]->Type;
+        $connectionName = $instance->getConnectionName();
+        $type = DB::connection($connectionName)->select(DB::raw('SHOW COLUMNS FROM `'.$table_prefix.$instance->getTable().'` WHERE Field = "'.$field_name.'"'))[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
         $enum = [];
         foreach (explode(',', $matches[1]) as $value) {
@@ -80,7 +82,7 @@ trait CrudTrait
                 $column_contents = json_decode($this->{$column});
             }
 
-            if ((is_array($column_contents) || $column_contents instanceof Traversable) && count($column_contents)) {
+            if ((is_array($column_contents) || is_object($column_contents) || $column_contents instanceof Traversable)) {
                 foreach ($column_contents as $fake_field_name => $fake_field_value) {
                     $this->setAttribute($fake_field_name, $fake_field_value);
                 }

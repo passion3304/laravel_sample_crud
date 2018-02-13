@@ -95,7 +95,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
         <script>
-
+          
             window.angularApp = window.angularApp || angular.module('backPackTableApp', ['ui.sortable'], function($interpolateProvider){
                 $interpolateProvider.startSymbol('<%');
                 $interpolateProvider.endSymbol('%>');
@@ -104,7 +104,14 @@
             window.angularApp.controller('tableController', function($scope){
 
                 $scope.sortableOptions = {
-                    handle: '.sort-handle'
+                    handle: '.sort-handle',
+                    axis: 'y',
+                    helper: function(e, ui) {
+                        ui.children().each(function() {
+                            $(this).width($(this).width());
+                        });
+                        return ui;
+                    },
                 };
 
                 $scope.addItem = function(){

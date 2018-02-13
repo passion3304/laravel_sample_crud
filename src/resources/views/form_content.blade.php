@@ -54,6 +54,11 @@
           return true;
       });
 
+      // prevent duplicate entries on double-clicking the submit form
+      crudForm.submit(function (event) {
+        $("button[type=submit]").prop('disabled', true);
+      });
+
       // Place the focus on the first element in the form
       @if( $crud->autoFocusOnFirstField )
         @php
