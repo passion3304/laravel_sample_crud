@@ -27,9 +27,6 @@ return [
     'show_grouped_errors' => true,
     'show_inline_errors' => true,
 
-    // Would you like to force equal height rows?
-    'equal_height_rows' => false,
-
     /*
     |------------
     | READ
