@@ -24,6 +24,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.3.10] - 2018-02-xx
 
+
+## Added
+- ```number``` column type, with prefix, suffix and decimals options;
+- prefix, suffix and limit to ```text``` column type;
+
 ## Fixed
 - #638 and #1207 - using flexbox for equal height rows for prettier inline errors;
 
