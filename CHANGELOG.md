@@ -22,6 +22,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
+## [3.3.10] - 2018-02-xx
+
+## Fixed
+- #638 and #1207 - using flexbox for equal height rows for prettier inline errors;
+
+
 ## [3.3.9] - 2018-02-14
 
 ### Added
