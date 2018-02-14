@@ -27,6 +27,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## Added
 - ```number``` column type, with prefix, suffix and decimals options;
 - prefix, suffix and limit to ```text``` column type;
+- setLabeller($callable) method to change how labels are made; merges #688;
 
 ## Fixed
 - #638 and #1207 - using flexbox for equal height rows for prettier inline errors;
@@ -36,9 +37,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - (Github only) probot auto-replies for first issue, first PR and first PR merged;
-
-### Added
-- setLabeller() method to change how labels are made; merges #688;
 
 ## Fixed
 - double-click on create form created two entries; fixes #1229;
