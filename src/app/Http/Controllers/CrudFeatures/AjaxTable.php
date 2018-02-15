@@ -43,6 +43,8 @@ trait AjaxTable
             $column = $this->crud->findColumnById($column_number);
 
             if ($column['tableColumn']) {
+                // clear any past orderBy setting
+                $this->crud->query->getQuery()->orders = null;
                 $this->crud->orderBy($column['name'], $column_direction);
             }
         }
