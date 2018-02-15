@@ -66,17 +66,9 @@ trait SaveActions
      */
     public function performSaveAction($itemId = null)
     {
+        $saveAction = \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
         $itemId = $itemId ? $itemId : \Request::input('id');
 
-        if($this->request->acceptsJson()){
-            return [
-                "success" => true,
-                "data" => $this->crud->entry
-            ];
-        }
-
-        $saveAction = \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
-        
         switch ($saveAction) {
             case 'save_and_new':
                 $redirectUrl = $this->crud->route.'/create';
@@ -91,6 +83,15 @@ trait SaveActions
             default:
                 $redirectUrl = $this->crud->route;
                 break;
+        }
+
+        // if the request is AJAX, return a JSON response
+        if ($this->request->ajax()) {
+            return [
+                "success" => true,
+                "data" => $this->crud->entry,
+                "redirect_url" => $redirectUrl
+            ];
         }
 
         return \Redirect::to($redirectUrl);
