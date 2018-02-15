@@ -21,13 +21,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
-## [3.3.10] - 2018-02-xx
+## [3.3.10] - 2018-02-21
 
 
 ## Added
 - ```number``` column type, with prefix, suffix and decimals options;
 - prefix, suffix and limit to ```text``` column type;
 - setLabeller($callable) method to change how labels are made; merges #688;
+- support Github probot that automatically closes issues tagged ```Ask-It-On-Stack-Overflow```, writes a nice redirect message and gives them the proper link;
 
 ## Fixed
 - #638 and #1207 - using flexbox for equal height rows for prettier inline errors;
