@@ -39,6 +39,7 @@ return [
         // This value can be overwritten on a specific CRUD by calling
         // $this->crud->setDefaultPageLength(50);
         'default_page_length' => 25,
+        'page_length_menu' => [[10, 25, 50, 100, -1], [10, 25, 50, 100, trans('backpack::crud.all')]],
 
     // PREVIEW
 

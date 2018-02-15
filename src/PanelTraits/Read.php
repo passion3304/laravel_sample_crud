@@ -170,6 +170,9 @@ trait Read
         }
 
         // otherwise return default value
+        return config('backpack.crud.page_length_menu');
+
+        // worst case secenarion, return a sensible default
         return [[10, 25, 50, 100, -1], [10, 25, 50, 100, trans('backpack::crud.all')]];
     }
 
