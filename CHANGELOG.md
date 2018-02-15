@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1099 - added ```$this->crud->setPageLengthMenu();``` API call;
 - added ```config('backpack.crud.page_length_menu')``` config variable;
 - ```summernote``` field ```options``` parameter, for easy customization;
+- probot to automatically invite contributors to the ```Community Members``` team, after their first PR gets merged;
 
 ## Fixed
 - click on a column header now ignores the previous ```orderBy``` rules; fixes #1181; merges #1246;
