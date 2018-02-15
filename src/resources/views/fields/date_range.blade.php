@@ -3,18 +3,20 @@
 <?php
     // if the column has been cast to Carbon or Date (using attribute casting)
     // get the value as a date string
-    function formatDate($entry, $dateFieldName)
-    {
-        $formattedDate = null;
-        if (isset($entry) && !empty($entry->{$dateFieldName})) {
-            $dateField = $entry->{$dateFieldName};
-            if ($dateField instanceof \Carbon\Carbon || $dateField instanceof \Jenssegers\Date\Date) {
-                $formattedDate = $dateField->format('Y-m-d H:i:s');
-            } else {
-                $formattedDate = date('Y-m-d H:i:s', strtotime($entry->{$dateFieldName}));
+    if (!function_exists('formatDate')) {
+        function formatDate($entry, $dateFieldName)
+        {
+            $formattedDate = null;
+            if (isset($entry) && !empty($entry->{$dateFieldName})) {
+                $dateField = $entry->{$dateFieldName};
+                if ($dateField instanceof \Carbon\Carbon || $dateField instanceof \Jenssegers\Date\Date) {
+                    $formattedDate = $dateField->format('Y-m-d H:i:s');
+                } else {
+                    $formattedDate = date('Y-m-d H:i:s', strtotime($entry->{$dateFieldName}));
+                }
             }
+            return $formattedDate;
         }
-        return $formattedDate;
     }
 
     if (isset($entry)) {
