@@ -25,6 +25,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - ```allows_null``` option to ```datetime_picker``` field type;
+- #1099 - added ```$this->crud->setPageLengthMenu();``` API call;
+- added ```config('backpack.crud.page_length_menu')``` config variable;
 
 ## Fixed
 - click on a column header now ignores the previous ```orderBy``` rules; fixes #1181; merges #1246;
