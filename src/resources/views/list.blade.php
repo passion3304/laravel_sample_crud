@@ -144,7 +144,7 @@
 
 	  	var table = $("#crudTable").DataTable({
         "pageLength": {{ $crud->getDefaultPageLength() }},
-        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "{{ trans('backpack::crud.all') }}"]],
+        "lengthMenu": @json($crud->getPageLengthMenu()),
         /* Disable initial sort */
         "aaSorting": [],
         "language": {
