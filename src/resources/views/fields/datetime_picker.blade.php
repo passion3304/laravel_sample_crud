@@ -19,11 +19,6 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
             type="text"
             @include('crud::inc.field_attributes')
             >
-        @if(isset($field['allows_null']) && $field['allows_null'])
-            <div class="input-group-addon null">
-                <span class="fa fa-times-circle"></span>
-            </div>
-        @endif
         <div class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
         </div>
@@ -65,14 +60,12 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
                 $field = $fake.parents('.form-group').find('input[type="hidden"]'),
                 $customConfig = $.extend({
                     format: 'DD/MM/YYYY HH:mm',
-                    defaultDate: $field.val()
+                    defaultDate: $field.val(),
+                    @if(isset($field['allows_null']) && $field['allows_null'])
+                    showClear: true,
+                    @endif
                 }, $fake.data('bs-datetimepicker'));
-                
-                $(this).parent('.input-group.date').find('.null').on('click', function () {
-                    $field.val(null);
-                    $(this).parent('.input-group.date').find('[data-bs-datetimepicker]').val(null);
-                });
-                
+
                 $customConfig.locale = $customConfig['language'];
                 delete($customConfig['language']);
                 $picker = $fake.datetimepicker($customConfig);
