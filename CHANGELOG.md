@@ -18,7 +18,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Security
 - Nothing
-
 -----------
 
 
@@ -38,12 +37,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - (Github only) probot auto-replies for first issue, first PR and first PR merged;
 
+### Added
+- setLabeller() method to change how labels are made; merges #688;
+
 ## Fixed
 - double-click on create form created two entries; fixes #1229;
 
 ### Deprecated
 - CrudRequest; Since it does nothing, CrudController now extends Illuminate\Http\Request instead; merged #1129; fixes #1119;
-
 
 ## [3.3.8] - 2018-02-08
 
