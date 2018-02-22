@@ -88,9 +88,9 @@ trait SaveActions
         // if the request is AJAX, return a JSON response
         if ($this->request->ajax()) {
             return [
-                "success" => true,
-                "data" => $this->crud->entry,
-                "redirect_url" => $redirectUrl
+                'success' => true,
+                'data' => $this->crud->entry,
+                'redirect_url' => $redirectUrl,
             ];
         }
 
