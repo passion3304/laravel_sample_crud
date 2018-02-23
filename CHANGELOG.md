@@ -21,7 +21,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
-## [3.3.11] - 2018-02-xx
+## [3.3.11] - 2018-02-23
 
 ## Added
 - ```allows_null``` option to ```datetime_picker``` field type;
