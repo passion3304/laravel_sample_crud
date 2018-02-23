@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - added ```config('backpack.crud.page_length_menu')``` config variable;
 - ```summernote``` field ```options``` parameter, for easy customization;
 - probot to automatically invite contributors to the ```Community Members``` team, after their first PR gets merged;
+- ```default``` option to ```select_from_array``` and ```select2_from_array``` field types; merges #1168;
 
 ## Fixed
 - click on a column header now ignores the previous ```orderBy``` rules; fixes #1181; merges #1246;
