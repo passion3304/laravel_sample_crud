@@ -60,6 +60,7 @@ class CrudPanel
     public $buttons;
     public $db_column_types = [];
     public $default_page_length = false;
+    public $page_length_menu = false;
 
     // TONE FIELDS - TODO: find out what he did with them, replicate or delete
     public $sort = [];

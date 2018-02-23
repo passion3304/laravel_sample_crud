@@ -121,7 +121,7 @@ trait Read
     }
 
     /**
-     * Set the number of rows that should be show on the table page (list view).
+     * Set the number of rows that should be show on the list view.
      */
     public function setDefaultPageLength($value)
     {
@@ -129,11 +129,11 @@ trait Read
     }
 
     /**
-     * Get the number of rows that should be show on the table page (list view).
+     * Get the number of rows that should be show on the list view.
      */
     public function getDefaultPageLength()
     {
-        // return the custom value for this crud panel, if set using setPageLength()
+        // return the custom value for this crud panel, if set using setDefaultPageLength()
         if ($this->default_page_length) {
             return $this->default_page_length;
         }
@@ -144,6 +144,36 @@ trait Read
         }
 
         return 25;
+    }
+
+    /**
+     * Specify array of available page lengths on the list view.
+     *
+     * @param array $menu 1d array of page length values,
+     *                     or 2d array (first array: page length values, second array: page length labels)
+     *                     More at: https://datatables.net/reference/option/lengthMenu
+     */
+    public function setPageLengthMenu($menu)
+    {
+        $this->page_length_menu = $menu;
+    }
+
+    /**
+     * Get page length menu for the list view.
+     *
+     * @return array
+     */
+    public function getPageLengthMenu()
+    {
+        if ($this->page_length_menu) {
+            return $this->page_length_menu;
+        }
+
+        // otherwise return default value
+        return config('backpack.crud.page_length_menu');
+
+        // worst case secenarion, return a sensible default
+        return [[10, 25, 50, 100, -1], [10, 25, 50, 100, trans('backpack::crud.all')]];
     }
 
     /*

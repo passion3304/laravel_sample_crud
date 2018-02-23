@@ -60,7 +60,10 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
                 $field = $fake.parents('.form-group').find('input[type="hidden"]'),
                 $customConfig = $.extend({
                     format: 'DD/MM/YYYY HH:mm',
-                    defaultDate: $field.val()
+                    defaultDate: $field.val(),
+                    @if(isset($field['allows_null']) && $field['allows_null'])
+                    showClear: true,
+                    @endif
                 }, $fake.data('bs-datetimepicker'));
 
                 $customConfig.locale = $customConfig['language'];

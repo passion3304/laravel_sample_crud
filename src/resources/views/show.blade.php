@@ -16,7 +16,7 @@
 
 @section('content')
 	@if ($crud->hasAccess('list'))
-		<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span></a><br><br>
+		<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
 	@endif
 
 	<!-- Default box -->
@@ -24,7 +24,7 @@
 	    <div class="box-header with-border">
 	      <h3 class="box-title">
             {{ trans('backpack::crud.preview') }}
-            <span class="text-lowercase">{{ $crud->entity_name }}</span>
+            <span>{{ $crud->entity_name }}</span>
           </h3>
 	    </div>
 	    <div class="box-body">
@@ -52,7 +52,7 @@
 		        @endforeach
 				@if ($crud->buttons->where('stack', 'line')->count())
 					<tr>
-						<td><strong>{{ trans('backpack::crud.actions') }}</td>
+						<td><strong>{{ trans('backpack::crud.actions') }}</strong></td>
 						<td>
 							@include('crud::inc.button_stack', ['stack' => 'line'])
 						</td>
