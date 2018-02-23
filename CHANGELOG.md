@@ -33,6 +33,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## Fixed
 - click on a column header now ignores the previous ```orderBy``` rules; fixes #1181; merges #1246;
 - ```date_range``` field bug, whereby it threw a ```Cannot redeclare formatDate()``` exception when two fields of this type were present in one form; merges #1240;
+- ```image``` column type didn't use the prefix for the image link; merges #1174;
 
 ## [3.3.10] - 2018-02-21
 
