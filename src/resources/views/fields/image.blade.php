@@ -6,6 +6,7 @@
 
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
     $value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '') );
+    $image_url = $value?(isset($field['disk']) ? Storage::disk($field['disk'])->url($prefix.$value) : url($prefix.$value)):'';
 @endphp
 
   <div data-preview="#{{ $field['name'] }}"
@@ -19,7 +20,7 @@
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
         <div class="col-sm-6" style="margin-bottom: 20px;">
-            <img id="mainImage" src="{{ $value?url($prefix.$value):'' }}">
+            <img id="mainImage" src="{{ $image_url }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
         <div class="col-sm-3">
