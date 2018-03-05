@@ -52,7 +52,7 @@ trait CrudTrait
         $instance = new static();
 
         $conn = DB::connection($instance->getConnectionName());
-        $table = Config::get('database.connections.'.env('DB_CONNECTION').'.prefix').$instance->getTable();
+        $table = Config::get('database.connections.'.Config::get('database.default').'.prefix').$instance->getTable();
 
         // register the enum, json and jsonb column type, because Doctrine doesn't support it
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
