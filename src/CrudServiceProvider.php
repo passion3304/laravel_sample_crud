@@ -76,15 +76,6 @@ class CrudServiceProvider extends ServiceProvider
             return new CRUD($app);
         });
 
-        // register its dependencies
-        $this->app->register(\Backpack\Base\BaseServiceProvider::class);
-        $this->app->register(\Barryvdh\Elfinder\ElfinderServiceProvider::class);
-        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
-
-        // register their aliases
-        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        $loader->alias('Image', \Intervention\Image\Facades\Image::class);
-
         // map the elfinder prefix
         if (! \Config::get('elfinder.route.prefix')) {
             \Config::set('elfinder.route.prefix', \Config::get('backpack.base.route_prefix').'/elfinder');
