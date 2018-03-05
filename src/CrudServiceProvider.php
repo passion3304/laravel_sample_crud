@@ -7,6 +7,10 @@ use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
 {
+    protected $commands = [
+        \Backpack\CRUD\app\Console\Commands\Install::class,
+    ];
+
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -78,12 +82,13 @@ class CrudServiceProvider extends ServiceProvider
 
         // register its dependencies
         $this->app->register(\Backpack\Base\BaseServiceProvider::class);
-        $this->app->register(\Barryvdh\Elfinder\ElfinderServiceProvider::class);
-        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
 
         // register their aliases
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('Image', \Intervention\Image\Facades\Image::class);
+
+        // register the artisan commands
+        $this->commands($this->commands);
 
         // map the elfinder prefix
         if (! \Config::get('elfinder.route.prefix')) {
