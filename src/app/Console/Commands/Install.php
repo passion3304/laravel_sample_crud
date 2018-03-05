@@ -34,16 +34,33 @@ class Install extends BaseInstall
      */
     public function handle()
     {
-        $this->progressBar = $this->output->createProgressBar(8);
+        $install_elfinder = $this->confirm("Install & set up the File Manager (elFinder)? The admin will be able to browse the 'uploads' folder and create/read/modify files and folders there.", 'yes');
+
+        $steps = $install_elfinder?9:4;
+
+        $this->progressBar = $this->output->createProgressBar($steps);
         $this->progressBar->start();
         $this->info(" Backpack\CRUD installation started. Please wait...");
         $this->progressBar->advance();
 
-        $this->line(' Creating uploads directory');
-        $this->executeProcess('mkdir -p public/uploads');
+        // elFinder steps
+        if ($install_elfinder) {
+            $this->line(' Installing barryvdh/laravel-elfinder');
+            $this->executeProcess('composer require barryvdh/laravel-elfinder');
 
-        $this->line(' Publishing elFinder assets');
-        $this->executeProcess('php artisan elfinder:publish');
+            $this->line(' Creating uploads directory');
+            $this->executeProcess('mkdir -p public/uploads');
+
+            $this->line(' Publishing elFinder assets');
+            $this->executeProcess('php artisan elfinder:publish');
+
+            $this->line(' Publishing custom elfinder views');
+            $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder"');
+
+            $this->line(' Adding sidebar menu item for File Manager');
+            $this->executeProcess("php artisan backpack:base:add-sidebar-content '<li><a href=\"{{  backpack_url(\"elfinder\") }}\"><i class=\"fa fa-files-o\"></i> <span>File manager</span></a></li>'");
+        }
+        // end of elFinder steps
 
         $this->line(' Publishing CRUD assets');
         $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="public"');
@@ -53,12 +70,6 @@ class Install extends BaseInstall
 
         $this->line(' Publishing CRUD config file and custom elFinder config file');
         $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="config"');
-
-        $this->line(' Publishing custom elfinder views');
-        $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder"');
-
-        $this->line(' Adding sidebar menu item');
-        $this->executeProcess("php artisan backpack:base:add-sidebar-content '<li><a href=\"{{  backpack_url(\"elfinder\") }}\"><i class=\"fa fa-files-o\"></i> <span>File manager</span></a></li>'");
 
         $this->progressBar->finish();
         $this->info(" Backpack\CRUD installation finished.");
