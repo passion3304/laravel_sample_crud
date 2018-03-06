@@ -25,7 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Fixed
 - ```date_range``` filter methods now have custom names, so that more than one ```date_range``` filter can be included in one CRUD list;
-
+- Romanian translation;
 
 ## [3.3.13] - 2018-03-15
 
