@@ -126,6 +126,7 @@ return [
 
     // Fields
         'browse_uploads' => 'Browse uploads',
+        'select_all' => 'Select All',
         'clear' => 'Clear',
         'page_link' => 'Page link',
         'page_link_placeholder' => 'http://example.com/your-desired-page',
