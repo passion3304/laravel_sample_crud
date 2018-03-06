@@ -14,7 +14,7 @@
         "content management framework"
     ],
     "homepage": "https://github.com/laravel-backpack/CRUD",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Cristian Tabacitu",
@@ -25,7 +25,6 @@
     ],
     "require": {
         "backpack/base": "^0.8.0",
-        "laravelcollective/html": "~5.0",
         "barryvdh/laravel-elfinder": "^0.3.10",
         "doctrine/dbal": "^2.5",
         "venturecraft/revisionable": "1.*",
@@ -60,7 +59,10 @@
         "laravel": {
             "providers": [
                 "Backpack\\CRUD\\CrudServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "CRUD": "Backpack\\CRUD\\CrudServiceProvider"
+            }
         }
     }
 }

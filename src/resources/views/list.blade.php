@@ -4,7 +4,7 @@
 	<section class="content-header">
 	  <h1>
 	    <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
-	    <small>{{ trans('backpack::crud.all') }} <span class="text-lowercase">{{ $crud->entity_name_plural }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
+	    <small>{{ trans('backpack::crud.all') }} <span>{{ $crud->entity_name_plural }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
 	  </h1>
 	  <ol class="breadcrumb">
 	    <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
@@ -144,7 +144,7 @@
 
 	  	var table = $("#crudTable").DataTable({
         "pageLength": {{ $crud->getDefaultPageLength() }},
-        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "{{ trans('backpack::crud.all') }}"]],
+        "lengthMenu": @json($crud->getPageLengthMenu()),
         /* Disable initial sort */
         "aaSorting": [],
         "language": {
@@ -156,7 +156,7 @@
               "thousands":      "{{ trans('backpack::crud.thousands') }}",
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
-              "processing":     "{{ trans('backpack::crud.processing') }}",
+              "processing":     "<img src='{{ asset('vendor/backpack/crud/img/ajax-loader.gif') }}' alt='{{ trans('backpack::crud.processing') }}'>",
               "search":         "{{ trans('backpack::crud.search') }}",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
               "paginate": {
@@ -187,7 +187,10 @@
 
           @if ($crud->exportButtons())
           // show the export datatable buttons
-          dom: '<"p-l-0 col-md-6"l>B<"p-r-0 col-md-6"f>rt<"col-md-6 p-l-0"i><"col-md-6 p-r-0"p>',
+          dom:
+            "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-4'i><'col-sm-4'B><'col-sm-4'p>>",
           buttons: dtButtons([
             'copyHtml5',
             'excelHtml5',
@@ -197,6 +200,16 @@
             'colvis'
           ]),
           @endif
+      });
+
+      // override ajax error message
+      $.fn.dataTable.ext.errMode = 'none';
+      $('#crudTable').on('error.dt', function(e, settings, techNote, message) {
+          new PNotify({
+              type: "error",
+              title: "{{ trans('backpack::crud.ajax_error_title') }}",
+              text: "{{ trans('backpack::crud.ajax_error_text') }}"
+          });
       });
 
       @if ($crud->exportButtons())

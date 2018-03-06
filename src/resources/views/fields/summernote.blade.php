@@ -31,7 +31,7 @@
         <script src="{{ asset('vendor/backpack/summernote/summernote.min.js') }}"></script>
         <script>
             jQuery(document).ready(function($) {
-                $('.summernote').summernote();
+                $('.summernote').summernote(@json($field['options'] ?? []));
             });
         </script>
     @endpush

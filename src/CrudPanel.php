@@ -60,6 +60,7 @@ class CrudPanel
     public $buttons;
     public $db_column_types = [];
     public $default_page_length = false;
+    public $page_length_menu = false;
 
     // TONE FIELDS - TODO: find out what he did with them, replicate or delete
     public $sort = [];
@@ -103,6 +104,14 @@ class CrudPanel
     public function getModel()
     {
         return $this->model;
+    }
+
+    /**
+     * Get the database connection, as specified in the .env file or overwritten by the property on the model.
+     */
+    private function getSchema()
+    {
+        return \Schema::setConnection($this->getModel()->getConnection());
     }
 
     /**

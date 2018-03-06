@@ -26,10 +26,11 @@
           </div>
         </div>
         <div class="timeline-footer p-t-0">
-          {!! Form::open(array('url' => \Request::url().'/'.$history->id.'/restore', 'method' => 'post')) !!}
+          <form method="post" action="{{ url(\Request::url().'/'.$history->id.'/restore') }}">
+          {!! csrf_field() !!}
           <button type="submit" class="btn btn-primary btn-sm restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
             <i class="fa fa-undo"></i> {{ trans('backpack::crud.undo') }}</button>
-          {!! Form::close() !!}
+          </form>
         </div>
       @endif
     </div>
