@@ -23,7 +23,7 @@ return [
     'add'                 => 'Adaugă',
     'back_to_all'         => 'Înapoi la ',
     'cancel'              => 'Anulează',
-    'add_a_new'           => 'Adaugă o nouă ',
+    'add_a_new'           => 'Adaugă ',
 
     // Edit form
     'edit'                 => 'Editează',
@@ -45,7 +45,7 @@ return [
     'in_the_database'      => 'din baza de date',
     'list'                 => 'Listă',
     'actions'              => 'Operațiuni',
-    'preview'              => 'Previzualizare',
+    'preview'              => 'Previzualizează',
     'delete'               => 'Șterge',
 
     // Confirmation messages and bubbles
