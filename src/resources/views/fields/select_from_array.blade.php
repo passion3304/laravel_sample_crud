@@ -12,16 +12,33 @@
             <option value="">-</option>
         @endif
 
-            @if (count($field['options']))
-                @foreach ($field['options'] as $key => $value)
-                    <option value="{{ $key }}"
-                        @if (isset($field['value']) && ($key==$field['value'] || (is_array($field['value']) && in_array($key, $field['value'])))
-                            || ( ! is_null( old($field['name']) ) && old($field['name']) == $key))
-                             selected
-                        @endif
-                    >{{ $value }}</option>
-                @endforeach
-            @endif
+        @if (count($field['options']))
+            @foreach ($field['options'] as $key => $value)
+                @if((old($field['name']) && (
+                        $key == old($field['name']) ||
+                        (is_array(old($field['name'])) &&
+                        in_array($key, old($field['name']))))) ||
+                        (null === old($field['name']) &&
+                            ((isset($field['value']) && (
+                                        $key == $field['value'] || (
+                                                is_array($field['value']) &&
+                                                in_array($key, $field['value'])
+                                                )
+                                        )) ||
+                                (isset($field['default']) &&
+                                ($key == $field['default'] || (
+                                                is_array($field['default']) &&
+                                                in_array($key, $field['default'])
+                                            )
+                                        )
+                                ))
+                        ))
+                    <option value="{{ $key }}" selected>{{ $value }}</option>
+                @else
+                    <option value="{{ $key }}">{{ $value }}</option>
+                @endif
+            @endforeach
+        @endif
     </select>
 
     {{-- HINT --}}

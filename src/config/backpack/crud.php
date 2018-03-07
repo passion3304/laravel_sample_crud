@@ -16,6 +16,10 @@ return [
     // Where do you want to redirect the user by default, after a CRUD entry is saved in the Add or Edit forms?
     'default_save_action' => 'save_and_back', //options: save_and_back, save_and_edit, save_and_new
 
+    // When the user chooses "save and back" or "save and new", show a bubble
+    // for the fact that the default save action has been changed?
+    'show_save_action_change' => true, //options: true, false
+
     // When using tabbed forms (create & update), what kind of tabs would you like?
     'tabs_type' => 'horizontal', //options: horizontal, vertical
 
@@ -35,6 +39,7 @@ return [
         // This value can be overwritten on a specific CRUD by calling
         // $this->crud->setDefaultPageLength(50);
         'default_page_length' => 25,
+        'page_length_menu' => [[10, 25, 50, 100, -1], [10, 25, 50, 100, trans('backpack::crud.all')]],
 
     // PREVIEW
 

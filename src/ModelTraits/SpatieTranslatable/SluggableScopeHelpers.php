@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
 
+use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers as OriginalSluggableScopeHelpers;
 
 trait SluggableScopeHelpers
@@ -15,7 +16,7 @@ trait SluggableScopeHelpers
      * @param string $slug
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWhereSlug($scope, $slug)
+    public function scopeWhereSlug(Builder $scope, $slug)
     {
         return $scope->where($this->getSlugKeyName().'->'.$this->getLocale(), $slug);
     }

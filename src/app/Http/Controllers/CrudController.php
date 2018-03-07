@@ -4,17 +4,16 @@ namespace Backpack\CRUD\app\Http\Controllers;
 
 use Backpack\CRUD\CrudPanel;
 use Illuminate\Http\Request;
+use Illuminate\Http\Request as StoreRequest;
 use Illuminate\Support\Facades\Form as Form;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Http\Request as UpdateRequest;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Reorder;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\AjaxTable;
-// CRUD Traits for non-core features
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Revisions;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\SaveActions;
-use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
-use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\ShowDetailsRow;
 
 class CrudController extends BaseController
@@ -23,7 +22,12 @@ class CrudController extends BaseController
     use AjaxTable, Reorder, Revisions, ShowDetailsRow, SaveActions;
 
     public $data = [];
+
+    /**
+     * @var CrudPanel
+     */
     public $crud;
+
     public $request;
 
     public function __construct()
@@ -61,11 +65,6 @@ class CrudController extends BaseController
 
         $this->data['crud'] = $this->crud;
         $this->data['title'] = ucfirst($this->crud->entity_name_plural);
-
-        // get all entries if AJAX is not enabled
-        if (! $this->data['crud']->ajaxTable()) {
-            $this->data['entries'] = $this->data['crud']->getEntries();
-        }
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getListView(), $this->data);
@@ -198,10 +197,25 @@ class CrudController extends BaseController
     {
         $this->crud->hasAccessOrFail('show');
 
+        // set columns from db
+        $this->crud->setFromDb();
+
+        // cycle through columns
+        foreach ($this->crud->columns as $key => $column) {
+            // remove any autoset relationship columns
+            if (array_key_exists('model', $column) && array_key_exists('autoset', $column) && $column['autoset']) {
+                $this->crud->removeColumn($column['name']);
+            }
+        }
+
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
         $this->data['title'] = trans('backpack::crud.preview').' '.$this->crud->entity_name;
+
+        // remove preview button from stack:line
+        $this->crud->removeButton('preview');
+        $this->crud->removeButton('delete');
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getShowView(), $this->data);

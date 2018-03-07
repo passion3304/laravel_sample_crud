@@ -22,7 +22,6 @@
         <!-- elFinder translation (OPTIONAL) -->
         <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
     <?php
-
 } ?>
 
     <!-- elFinder initialization (REQUIRED) -->
@@ -45,11 +44,10 @@
                 // set your elFinder options here
                 resizable: false,
                 <?php if ($locale) {
-    ?>
+        ?>
                     lang: '<?= $locale ?>', // locale
                 <?php
-
-} ?>
+    } ?>
                 customData: {
                     _token: '<?= csrf_token() ?>'
                 },

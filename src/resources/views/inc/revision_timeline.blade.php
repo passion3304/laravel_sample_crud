@@ -12,9 +12,9 @@
     <div class="timeline-item">
       <span class="time"><i class="fa fa-clock-o"></i> {{ date('h:ia', strtotime($history->created_at)) }}</span>
       @if($history->key == 'created_at' && !$history->old_value)
-        <h3 class="timeline-header">{{ $history->userResponsible()->name }} {{ trans('backpack::crud.created_this') }} {{ $crud->entity_name }}</h3>
+        <h3 class="timeline-header">{{ $history->userResponsible()?$history->userResponsible()->name:trans('backpack::crud.guest_user') }} {{ trans('backpack::crud.created_this') }} {{ $crud->entity_name }}</h3>
       @else
-        <h3 class="timeline-header">{{ $history->userResponsible()->name }} {{ trans('backpack::crud.changed_the') }} {{ $history->fieldName() }}</h3>
+        <h3 class="timeline-header">{{ $history->userResponsible()?$history->userResponsible()->name:trans('backpack::crud.guest_user') }} {{ trans('backpack::crud.changed_the') }} {{ $history->fieldName() }}</h3>
         <div class="timeline-body p-b-0">
           <div class="row">
             <div class="col-md-6">{{ ucfirst(trans('backpack::crud.from')) }}:</div>
@@ -26,10 +26,11 @@
           </div>
         </div>
         <div class="timeline-footer p-t-0">
-          {!! Form::open(array('url' => \Request::url().'/'.$history->id.'/restore', 'method' => 'post')) !!}
+          <form method="post" action="{{ url(\Request::url().'/'.$history->id.'/restore') }}">
+          {!! csrf_field() !!}
           <button type="submit" class="btn btn-primary btn-sm restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
             <i class="fa fa-undo"></i> {{ trans('backpack::crud.undo') }}</button>
-          {!! Form::close() !!}
+          </form>
         </div>
       @endif
     </div>

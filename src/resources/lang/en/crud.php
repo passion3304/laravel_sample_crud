@@ -32,13 +32,18 @@ return [
     // Revisions
     'revisions'            => 'Revisions',
     'no_revisions'         => 'No revisions found',
-    'created_this'          => 'created this',
+    'created_this'         => 'created this',
     'changed_the'          => 'changed the',
     'restore_this_value'   => 'Restore this value',
     'from'                 => 'from',
     'to'                   => 'to',
     'undo'                 => 'Undo',
     'revision_restored'    => 'Revision successfully restored',
+    'guest_user'           => 'Guest User',
+
+    // Translatable models
+    'edit_translations' => 'EDIT TRANSLATIONS',
+    'language'          => 'Language',
 
     // CRUD table view
     'all'                       => 'All ',
@@ -59,6 +64,9 @@ return [
         'delete_confirmation_not_message'             => "There's been an error. Your item might not have been deleted.",
         'delete_confirmation_not_deleted_title'       => 'Not deleted',
         'delete_confirmation_not_deleted_message'     => 'Nothing happened. Your item is safe.',
+
+        'ajax_error_title' => 'Error',
+        'ajax_error_text'  => 'Error loading page. Please refresh the page.',
 
         // DataTables translation
         'emptyTable'     => 'No data available in table',
@@ -82,6 +90,14 @@ return [
             'sortAscending'  => ': activate to sort column ascending',
             'sortDescending' => ': activate to sort column descending',
         ],
+        'export' => [
+            'copy'              => 'Copy',
+            'excel'             => 'Excel',
+            'csv'               => 'CSV',
+            'pdf'               => 'PDF',
+            'print'             => 'Print',
+            'column_visibility' => 'Column visibility',
+        ],
 
     // global crud - errors
         'unauthorized_access' => 'Unauthorized access - you do not have the necessary permissions to see this page.',
@@ -102,6 +118,11 @@ return [
     // CRUD yes/no
         'yes' => 'Yes',
         'no' => 'No',
+
+    // CRUD filters navbar view
+        'filters' => 'Filters',
+        'toggle_filters' => 'Toggle filters',
+        'remove_filters' => 'Remove filters',
 
     // Fields
         'browse_uploads' => 'Browse uploads',
