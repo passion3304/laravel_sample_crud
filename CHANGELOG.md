@@ -20,6 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## Unpublished
+
+## Fixed
+- Romanian translation;
 
 ## [3.3.15] - 2018-03-21
 
