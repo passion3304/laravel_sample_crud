@@ -160,3 +160,5 @@
 
     });
   </script>
+
+  @include('crud::inc.details_row_logic')
