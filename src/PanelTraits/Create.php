@@ -161,7 +161,7 @@ trait Create
      */
     private function createRelationsForItem($item, $formattedData)
     {
-        if (!isset($formattedData['relations'])) {
+        if (! isset($formattedData['relations'])) {
             return false;
         }
 
