@@ -21,7 +21,7 @@
 
 @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
 
-<div class="tab-container {{ $horizontalTabs ? 'col-md-12' : 'col-md-3 m-t-10' }}">
+<div class="tab-container {{ $horizontalTabs ? 'col-xs-12' : 'col-xs-3 m-t-10' }}">
 
     <div class="nav-tabs-custom" id="form_tabs">
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'nav-stacked nav-pills'}}" role="tablist">
