@@ -161,6 +161,10 @@ trait Create
      */
     private function createRelationsForItem($item, $formattedData)
     {
+        if (!isset($formattedData['relations'])) {
+            return false;
+        }
+
         foreach ($formattedData['relations'] as $relationMethod => $relationData) {
             $model = $relationData['model'];
             $relation = $item->{$relationMethod}();

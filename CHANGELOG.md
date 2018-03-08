@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.1] - 2018-03-22
+
+## Fixed
+- HUGE ERROR whereby entities could not be created if they had zero relationships;
+
+
 ## [3.4.0] - 2018-03-22
 
 ## Added
