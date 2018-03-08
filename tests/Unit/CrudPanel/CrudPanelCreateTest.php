@@ -135,9 +135,10 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $entry = $this->crudPanel->create($inputData);
         $userEntry = User::find(1);
+        $article = Article::where('user_id', 1)->with('user')->get()->last();
 
         $this->assertEntryEquals($inputData, $entry);
-        $this->assertEquals($userEntry->articles->last()->toArray(), $entry->toArray());
+        $this->assertEquals($article->toArray(), $entry->toArray());
     }
 
     public function testCreateWithManyToManyRelationship()
