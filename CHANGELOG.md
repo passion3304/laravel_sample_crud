@@ -21,10 +21,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
-## Unpublished
+## [3.3.15] - 2018-03-21
 
 ## Fixed
 - ```select2_multiple``` filter triggered an error when the entire selection was removed - merges #824;
+- fr translation;
+- zh-hant translation;
 
 
 ## [3.3.14] - 2018-03-16
