@@ -165,15 +165,22 @@ trait Read
      */
     public function getPageLengthMenu()
     {
-        if ($this->page_length_menu) {
-            return $this->page_length_menu;
+        // if already set, use that
+        if (! $this->page_length_menu) {
+            // try to get the menu settings from the config file
+            if (! $this->page_length_menu = config('backpack.crud.page_length_menu')) {
+                // otherwise set a sensible default
+                $this->page_length_menu = [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']];
+            }
+            // if we have a 2D array, update all the values in the right hand array to their translated values
+            if (isset($this->page_length_menu[1]) && is_array($this->page_length_menu[1])) {
+                foreach ($this->page_length_menu[1] as $key => $val) {
+                    $this->page_length_menu[1][$key] = trans($val);
+                }
+            }
         }
 
-        // otherwise return default value
-        return config('backpack.crud.page_length_menu');
-
-        // worst case secenarion, return a sensible default
-        return [[10, 25, 50, 100, -1], [10, 25, 50, 100, trans('backpack::crud.all')]];
+        return $this->page_length_menu;
     }
 
     /*
