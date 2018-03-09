@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## Unreleased
+
+## Fixed
+- ```text``` column had a broken ```suffix``` attribute; fixed by merging #1261;
+
 
 ## [3.3.11] - 2018-02-23
 
