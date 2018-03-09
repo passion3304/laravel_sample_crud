@@ -14,99 +14,101 @@ return [
     */
 
     // Forms
-    'save_action_save_and_new' => 'Salvează și adaugă o nouă intrare',
-    'save_action_save_and_edit' => 'Salvează și editează intrarea',
-    'save_action_save_and_back' => 'Salvează și mergi înapoi',
-    'save_action_changed_notification' => 'A fost salvată preferința redirectării după salvare.',
+    'save_action_save_and_new'         => 'Salvează și adaugă o nouă intrare',
+    'save_action_save_and_edit'        => 'Salvează și editează intrarea',
+    'save_action_save_and_back'        => 'Salvează și mergi la listă',
+    'save_action_changed_notification' => 'A fost salvată preferința redirecționării după salvare.',
 
     // Create form
     'add'                 => 'Adaugă',
-    'back_to_all'         => 'Înapoi la toate ',
+    'back_to_all'         => 'Înapoi la ',
     'cancel'              => 'Anulează',
-    'add_a_new'           => 'Adaugă un nou ',
+    'add_a_new'           => 'Adaugă o nouă ',
 
     // Edit form
     'edit'                 => 'Editează',
     'save'                 => 'Salvează',
 
     // Revisions
-    'revisions'            => 'Reviziile',
-    'no_revisions'         => 'Reviziile Determinat',
-    'created_this'          => 'creatd acest lucru',
-    'changed_the'          => 'schimbat',
-    'restore_this_value'   => 'a restabili această valoare',
-    'from'                 => 'din',
-    'to'                   => 'la',
-    'undo'                 => 'Anula',
-    'revision_restored'    => 'Revizia restaurat cu succes',
+    'revisions'          => 'Revizii',
+    'no_revisions'       => 'Nici o revizie',
+    'created_this'       => 'a generat înregistrarea',
+    'changed_the'        => 'a schimbat câmpul',
+    'restore_this_value' => 'restabilește valoare',
+    'from'               => 'valoare veche',
+    'to'                 => 'valoare nouă',
+    'undo'               => 'Restabilește valoare anterioară',
+    'revision_restored'  => 'Revizie restaurată cu succes',
 
     // CRUD table view
     'all'                  => 'Toate ',
     'in_the_database'      => 'din baza de date',
     'list'                 => 'Listă',
     'actions'              => 'Operațiuni',
-    'preview'              => 'Previzualizează',
+    'preview'              => 'Previzualizare',
     'delete'               => 'Șterge',
 
-        // Confirmation messages and bubbles
-        'delete_confirm'                              => 'Ești sigur că vrei să ștergi această intrare?',
-        'delete_confirmation_title'                   => 'Intrare ștearsă',
-        'delete_confirmation_message'                 => 'Intrarea a fost ștearsă cu succes.',
-        'delete_confirmation_not_title'               => 'Eroare',
-        'delete_confirmation_not_message'             => 'A avut loc o eroare. E posibil ca intrarea să nu fi fost ștearsă.',
-        'delete_confirmation_not_deleted_title'       => 'Intrarea nu a fost ștearsă',
-        'delete_confirmation_not_deleted_message'     => 'Nu am șters intrarea din baza de date.',
+    // Confirmation messages and bubbles
+    'delete_confirm'                              => 'Ești sigur că vrei să ștergi această intrare?',
+    'delete_confirmation_title'                   => 'Intrare ștearsă',
+    'delete_confirmation_message'                 => 'Intrarea a fost ștearsă cu succes.',
+    'delete_confirmation_not_title'               => 'Eroare',
+    'delete_confirmation_not_message'             => 'A avut loc o eroare. E posibil ca intrarea să nu fi fost ștearsă.',
+    'delete_confirmation_not_deleted_title'       => 'Intrarea nu a fost ștearsă',
+    'delete_confirmation_not_deleted_message'     => 'Nu am șters intrarea din baza de date.',
 
-        // DataTables translation
-        'emptyTable'     => 'Nu există intrări în baza de date',
-        'info'           => 'Sunt afișate intrările _START_-_END_ din _TOTAL_',
-        'infoEmpty'      => 'Sunt afișate toate intrarile. Adică niciuna.',
-        'infoFiltered'   => '(filtrate din _MAX_ intrări în total)',
-        'infoPostFix'    => '',
-        'thousands'      => ',',
-        'lengthMenu'     => '_MENU_ intrări pe pagină',
-        'loadingRecords' => 'Se încarcă...',
-        'processing'     => 'Se procesează...',
-        'search'         => 'Caută: ',
-        'zeroRecords'    => 'Nu au fost găsite intrări care să se potrivească',
-        'paginate'       => [
-            'first'    => 'Prima pagină',
-            'last'     => 'Ultima pagină',
-            'next'     => 'Pagina următoare',
-            'previous' => 'Pagina anterioară',
-        ],
-        'aria' => [
-            'sortAscending'  => ': activează pentru a ordona ascendent coloana',
-            'sortDescending' => ': activează petnru a ordona descendent coloana',
-        ],
+    // DataTables translation
+    'emptyTable'     => 'Nu există intrări în baza de date',
+    'info'           => 'Sunt afișate intrările _START_-_END_ din _TOTAL_',
+    'infoEmpty'      => 'Sunt afișate toate intrarile. Adică niciuna.',
+    'filters'        => 'Filtre',
+    'remove_filters' => 'Anulează filtre',
+    'infoFiltered'   => '(filtrate din totalul de _MAX_ )',
+    'infoPostFix'    => '',
+    'thousands'      => ',',
+    'lengthMenu'     => '_MENU_ pe pagină',
+    'loadingRecords' => 'Se încarcă...',
+    'processing'     => 'Se procesează...',
+    'search'         => 'Caută: ',
+    'zeroRecords'    => 'Nu au fost găsite intrări care să se potrivească',
+    'paginate'       => [
+        'first'    => 'Prima pagină',
+        'last'     => 'Ultima pagină',
+        'next'     => 'Pagina următoare',
+        'previous' => 'Pagina anterioară',
+    ],
+    'aria'           => [
+        'sortAscending'  => ': activează pentru a ordona ascendent coloana',
+        'sortDescending' => ': activează pentru a ordona descendent coloana',
+    ],
 
     // global crud - errors
-        'unauthorized_access' => 'Acces neautorizat - Nu ai permisiunea necesară pentru a accesa pagina.',
-        'please_fix' => 'Va rugăm să reparați următoarele erori:',
+    'unauthorized_access' => 'Acces neautorizat - Nu ai permisiunea necesară pentru a accesa pagina.',
+    'please_fix'          => 'Vă rugăm să reparați următoarele erori:',
 
     // global crud - success / error notification bubbles
-        'insert_success' => 'Intrarea a fost adăugată cu succes.',
-        'update_success' => 'Intrarea a fost modificată cu succes.',
+    'insert_success' => 'Intrarea a fost adăugată cu succes.',
+    'update_success' => 'Intrarea a fost modificată cu succes.',
 
     // CRUD reorder view
-        'reorder'                      => 'Reordonare',
-        'reorder_text'                 => 'Folosește drag&drop pentru a reordona.',
-        'reorder_success_title'        => 'Terminat',
-        'reorder_success_message'      => 'Ordinea a fost salvată.',
-        'reorder_error_title'          => 'Eroare',
-        'reorder_error_message'        => 'Ordinea nu a fost salvată.',
+    'reorder'                      => 'Reordonare',
+    'reorder_text'                 => 'Folosește drag&drop pentru a reordona.',
+    'reorder_success_title'        => 'Terminat',
+    'reorder_success_message'      => 'Ordinea a fost salvată.',
+    'reorder_error_title'          => 'Eroare',
+    'reorder_error_message'        => 'Ordinea nu a fost salvată.',
 
     // CRUD yes/no
-        'yes' => 'Da',
-        'no' => 'Nu',
+    'yes' => 'Da',
+    'no'  => 'Nu',
 
     // Fields
-        'browse_uploads' => 'Alege din fișierele urcate',
-        'clear' => 'Curăță',
-        'page_link' => 'Link către pagină',
-        'page_link_placeholder' => 'http://example.com/pagina-dorita-de-tine',
-        'internal_link' => 'Link intern',
-        'internal_link_placeholder' => 'Rută internă. De ex: \'admin/page\' (fără ghilimele) pentru \':url\'',
-        'external_link' => 'Link extern',
-        'choose_file' => 'Alege fișier',
+    'browse_uploads'            => 'Alege din fișierele urcate',
+    'clear'                     => 'Curăță',
+    'page_link'                 => 'Link către pagină',
+    'page_link_placeholder'     => 'http://example.com/pagina-dorita-de-tine',
+    'internal_link'             => 'Link intern',
+    'internal_link_placeholder' => 'Rută internă. De ex: \'admin/page\' (fără ghilimele) pentru \':url\'',
+    'external_link'             => 'Link extern',
+    'choose_file'               => 'Alege fișier',
 ];
