@@ -173,7 +173,7 @@ trait Read
                 $this->page_length_menu = [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']];
             }
             // if we have a 2D array, update all the values in the right hand array to their translated values
-            if (count($this->page_length_menu) === 2 && is_array($this->page_length_menu[1])) {
+            if (isset($this->page_length_menu[1]) && is_array($this->page_length_menu[1])) {
                 foreach ($this->page_length_menu[1] as $key => $val) {
                     $this->page_length_menu[1][$key] = trans($val);
                 }
