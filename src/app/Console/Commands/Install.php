@@ -35,7 +35,7 @@ class Install extends BaseInstall
     {
         $install_elfinder = $this->confirm("Install & set up the File Manager (elFinder)? The admin will be able to browse the 'uploads' folder and create/read/modify files and folders there.", 'yes');
 
-        $steps = $install_elfinder?9:4;
+        $steps = $install_elfinder ? 9 : 4;
 
         $this->progressBar = $this->output->createProgressBar($steps);
         $this->progressBar->start();
