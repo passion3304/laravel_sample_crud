@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - ```select_all``` option to the ```select2_multiple``` field - merged #1206;
+- ```browse_multiple``` field type, thanks to [chancezeus](https://github.com/chancezeus) - merged #1034;
 
 ## Fixed
 - ```date_range``` filter methods now have custom names, so that more than one ```date_range``` filter can be included in one CRUD list;
