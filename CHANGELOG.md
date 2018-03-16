@@ -21,7 +21,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
-## Unreleased
+## [3.3.14] - 2018-03-16
 
 ## Added
 - ```select_all``` option to the ```select2_multiple``` field - merged #1206;
