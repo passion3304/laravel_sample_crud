@@ -142,5 +142,5 @@ return [
     'table_max_reached' => '已達到 :max 項紀錄的上限',
 
     // File manager
-    'file_manager' => '檔案管理員',
+    'file_manager' => '檔案管理',
 ];
