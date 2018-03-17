@@ -39,7 +39,7 @@ return [
     'to'                   => '到',
     'undo'                 => '回復',
     'revision_restored'    => '成功回復修訂版本',
-    'guest_user'           => 'Guest User',
+    'guest_user'           => '遊客',
 
     // Translatable models
     'edit_translations' => 'EDIT TRANSLATIONS',
