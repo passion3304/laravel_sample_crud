@@ -62,7 +62,7 @@
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
   <script>
 
-  		function applyDateRangeFilter(start, end) {
+  		function applyDateRangeFilter{{camel_case($filter->name)}}(start, end) {
   			if (start && end) {
   				var dates = {
 					'from': start.format('YYYY-MM-DD'),
@@ -113,7 +113,7 @@
 				autoUpdateInput: true
 			},
 			function (start, end) {
-				applyDateRangeFilter(start, end);
+				applyDateRangeFilter{{camel_case($filter->name)}}(start, end);
 			});
 
 			$('li[filter-name={{ $filter->name }}]').on('hide.bs.dropdown', function () {
@@ -130,7 +130,7 @@
 			// datepicker clear button
 			$(".daterangepicker-{{ str_slug($filter->name) }}-clear-button").click(function(e) {
 				e.preventDefault();
-				applyDateRangeFilter(null, null);
+				applyDateRangeFilter{{camel_case($filter->name)}}(null, null);
 			})
 		});
   </script>

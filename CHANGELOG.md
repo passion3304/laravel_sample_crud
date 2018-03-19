@@ -20,10 +20,30 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## Unreleased
+
+## Unpublished
+
+## Fixed
+- ```select2_multiple``` filter triggered an error when the entire selection was removed - merges #824;
+
+
+## [3.3.14] - 2018-03-16
+
+## Added
+- ```select_all``` option to the ```select2_multiple``` field - merged #1206;
+- ```browse_multiple``` field type, thanks to [chancezeus](https://github.com/chancezeus) - merged #1034;
+
+## Fixed
+- ```date_range``` filter methods now have custom names, so that more than one ```date_range``` filter can be included in one CRUD list;
+- Romanian translation;
+- Create/Update form will not show certain buttons, if that operation is disabled - merged #679;
+
+## [3.3.13] - 2018-03-15
 
 ## Fixed
 - ```checkbox``` field was using the default value over the DB value on edit; merges #1239;
+- CrudTrait uses ```Config``` facade to get DB_CONNECTION instead of ```env()``` helper;
+- Fake fields can now be casted, as well as 'extras' - merged #1116;
 
 ## [3.3.12] - 2018-03-09
 

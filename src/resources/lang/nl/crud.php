@@ -105,6 +105,8 @@ return [
 
     // Fields
         'browse_uploads' => 'Blader uploads',
+        'select_files' => 'Selecteer bestanden',
+        'select_file' => 'Selecteer bestand',
         'clear' => 'Wissen',
         'page_link' => 'Pagina link',
         'page_link_placeholder' => 'http://example.com/your-desired-page',

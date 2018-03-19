@@ -128,6 +128,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'user_id' => 1,
             'metas' => null,
             'extras' => null,
+            'cast_metas' => null,
+            'cast_tags' => null,
+            'cast_extras' => null,
         ];
 
         $entry = $this->crudPanel->create($inputData);
