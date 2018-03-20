@@ -42,7 +42,7 @@ return [
     'guest_user'           => '遊客',
 
     // Translatable models
-    'edit_translations' => 'EDIT TRANSLATIONS',
+    'edit_translations' => '編輯譯文',
     'language'          => '語言',
 
     // CRUD table view
