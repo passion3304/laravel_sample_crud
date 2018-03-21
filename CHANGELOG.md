@@ -20,8 +20,18 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## Unreleased
 
-## [3.3.11] - 2018-02-xx
+## Fixed
+- ```checkbox``` field was using the default value over the DB value on edit; merges #1239;
+
+## [3.3.12] - 2018-03-09
+
+## Fixed
+- ```text``` column had a broken ```suffix``` attribute; fixed by merging #1261;
+- not calling trans() in the config file; merges #1270;
+
+## [3.3.11] - 2018-02-23
 
 ## Added
 - ```allows_null``` option to ```datetime_picker``` field type;
@@ -29,10 +39,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - added ```config('backpack.crud.page_length_menu')``` config variable;
 - ```summernote``` field ```options``` parameter, for easy customization;
 - probot to automatically invite contributors to the ```Community Members``` team, after their first PR gets merged;
+- ```default``` option to ```select_from_array``` and ```select2_from_array``` field types; merges #1168;
+- ```disk``` option to ```image``` field type;
 
 ## Fixed
 - click on a column header now ignores the previous ```orderBy``` rules; fixes #1181; merges #1246;
 - ```date_range``` field bug, whereby it threw a ```Cannot redeclare formatDate()``` exception when two fields of this type were present in one form; merges #1240;
+- ```image``` column type didn't use the prefix for the image link; merges #1174;
+- no broken image on ```image``` field type, when no image is present; merges #444;
 
 ## [3.3.10] - 2018-02-21
 
