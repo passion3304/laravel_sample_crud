@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## Unpublished
+## [3.3.16] - 2018-03-21
 
 ## Added
 - JSON response if the create/update action is triggered through AJAX; merges #1249;
