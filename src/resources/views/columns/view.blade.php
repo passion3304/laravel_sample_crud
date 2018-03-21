@@ -1,1 +1,1 @@
-@include($column['path'])
+@include($column['view'])

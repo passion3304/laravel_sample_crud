@@ -1,1 +1,1 @@
-@include($filter->path)
+@include($filter->options['view'])
