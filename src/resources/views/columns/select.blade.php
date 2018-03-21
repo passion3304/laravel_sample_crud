@@ -1,8 +1,11 @@
 {{-- single relationships (1-1, 1-n) --}}
 <span>
-	<?php
-		if ($entry->{$column['entity']}) {
-	    	echo $entry->{$column['entity']}->{$column['attribute']};
-	    }
-	?>
+    <?php
+        $attributes = $crud->getModelAttributeFromRelation($entry, $column['entity'], $column['attribute']);
+        if (count($attributes)) {
+            echo implode(', ', $attributes);
+        } else {
+            echo '-';
+        }
+    ?>
 </span>

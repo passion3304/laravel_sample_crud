@@ -99,6 +99,15 @@ trait SaveActions
                 break;
         }
 
+        // if the request is AJAX, return a JSON response
+        if ($this->request->ajax()) {
+            return [
+                'success' => true,
+                'data' => $this->crud->entry,
+                'redirect_url' => $redirectUrl,
+            ];
+        }
+
         return \Redirect::to($redirectUrl);
     }
 
