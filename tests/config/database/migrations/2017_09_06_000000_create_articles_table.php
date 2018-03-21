@@ -19,6 +19,9 @@ class CreateArticlesTable extends Migration
             $table->string('metas')->nullable();
             $table->string('tags')->nullable();
             $table->string('extras')->nullable();
+            $table->string('cast_metas')->nullable();
+            $table->string('cast_tags')->nullable();
+            $table->string('cast_extras')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

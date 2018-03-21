@@ -2,57 +2,70 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
 
-//save_and_back save_and_edit save_and_new
 trait SaveActions
 {
     /**
-     * Get the save configured save action or the one stored in a session variable.
-     * @return [type] [description]
+     * Get save actions, with pre-selected action from stored session variable or config fallback.
+     *
+     * @return array
      */
     public function getSaveAction()
     {
         $saveAction = session('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
-        $saveOptions = [];
-        $saveCurrent = [
-            'value' => $saveAction,
-            'label' => $this->getSaveActionButtonName($saveAction),
+
+        // Permissions and their related actions.
+        $permissions = [
+            'list'   => 'save_and_back',
+            'update' => 'save_and_edit',
+            'create' => 'save_and_new',
         ];
 
-        switch ($saveAction) {
-            case 'save_and_edit':
-                $saveOptions['save_and_back'] = $this->getSaveActionButtonName('save_and_back');
-                $saveOptions['save_and_new'] = $this->getSaveActionButtonName('save_and_new');
-                break;
-            case 'save_and_new':
-                $saveOptions['save_and_back'] = $this->getSaveActionButtonName('save_and_back');
-                $saveOptions['save_and_edit'] = $this->getSaveActionButtonName('save_and_edit');
-                break;
-            case 'save_and_back':
-            default:
-                $saveOptions['save_and_edit'] = $this->getSaveActionButtonName('save_and_edit');
-                $saveOptions['save_and_new'] = $this->getSaveActionButtonName('save_and_new');
-                break;
+        $saveOptions = collect($permissions)
+            // Restrict list to allowed actions.
+            ->filter(function ($action, $permission) {
+                return $this->crud->hasAccess($permission);
+            })
+            // Generate list of possible actions.
+            ->mapWithKeys(function ($action, $permission) {
+                return [$action => $this->getSaveActionButtonName($action)];
+            })
+            ->all();
+
+        // Set current action if it exist, or first available option.
+        if (isset($saveOptions[$saveAction])) {
+            $saveCurrent = [
+                'value' => $saveAction,
+                'label' => $saveOptions[$saveAction],
+            ];
+        } else {
+            $saveCurrent = [
+                'value' => key($saveOptions),
+                'label' => reset($saveOptions),
+            ];
         }
 
+        // Remove active action from options.
+        unset($saveOptions[$saveCurrent['value']]);
+
         return [
-            'active' => $saveCurrent,
+            'active'  => $saveCurrent,
             'options' => $saveOptions,
         ];
     }
 
     /**
      * Change the session variable that remembers what to do after the "Save" action.
-     * @param [type] $forceSaveAction [description]
+     *
+     * @param  string|null  $forceSaveAction
+     * @return void
      */
     public function setSaveAction($forceSaveAction = null)
     {
-        if ($forceSaveAction) {
-            $saveAction = $forceSaveAction;
-        } else {
-            $saveAction = \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
-        }
+        $saveAction = $forceSaveAction ?:
+            \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
 
-        if (session('save_action', 'save_and_back') !== $saveAction && config('backpack.crud.show_save_action_change', true)) {
+        if (config('backpack.crud.show_save_action_change', true) &&
+            session('save_action', 'save_and_back') !== $saveAction) {
             \Alert::info(trans('backpack::crud.save_action_changed_notification'))->flash();
         }
 
@@ -61,13 +74,14 @@ trait SaveActions
 
     /**
      * Redirect to the correct URL, depending on which save action has been selected.
-     * @param  [type] $itemId [description]
-     * @return [type]         [description]
+     *
+     * @param  string  $itemId
+     * @return \Illuminate\Http\Response
      */
     public function performSaveAction($itemId = null)
     {
         $saveAction = \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
-        $itemId = $itemId ? $itemId : \Request::input('id');
+        $itemId = $itemId ?: \Request::input('id');
 
         switch ($saveAction) {
             case 'save_and_new':
@@ -99,8 +113,9 @@ trait SaveActions
 
     /**
      * Get the translated text for the Save button.
-     * @param  string $actionValue [description]
-     * @return [type]              [description]
+     *
+     * @param  string  $actionValue
+     * @return string
      */
     private function getSaveActionButtonName($actionValue = 'save_and_back')
     {

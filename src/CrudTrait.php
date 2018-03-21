@@ -52,7 +52,7 @@ trait CrudTrait
         $instance = new static();
 
         $conn = DB::connection($instance->getConnectionName());
-        $table = Config::get('database.connections.'.env('DB_CONNECTION').'.prefix').$instance->getTable();
+        $table = Config::get('database.connections.'.Config::get('database.default').'.prefix').$instance->getTable();
 
         // register the enum, json and jsonb column type, because Doctrine doesn't support it
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
@@ -108,6 +108,17 @@ trait CrudTrait
         $this->addFakes($columns);
 
         return $this;
+    }
+
+    /**
+     * Determine if this fake column should get json_encoded or not.
+     *
+     * @param $column string fake column name
+     * @return bool
+     */
+    public function shouldEncodeFake($column)
+    {
+        return ! in_array($column, array_keys($this->casts));
     }
 
     /*
