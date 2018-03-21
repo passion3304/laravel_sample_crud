@@ -6,7 +6,14 @@
 
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
     $value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '') );
-    $image_url = $value?(isset($field['disk']) ? Storage::disk($field['disk'])->url($prefix.$value) : url($prefix.$value)):'';
+    $image_url = $value
+        ? preg_match('/^data\:image\//', $value)
+            ? $value
+            : (isset($field['disk'])
+                ? Storage::disk($field['disk'])->url($prefix.$value)
+                : url($prefix.$value))
+        :''; // if validation failed, tha value will be base64, so no need to create a URL for it
+
 @endphp
 
   <div data-preview="#{{ $field['name'] }}"

@@ -25,7 +25,7 @@ trait Sluggable
      * @param  array|null $except
      * @return Model
      */
-    public function replicate(array $except = null)
+    public function replicate(array $except = null): Model
     {
         $instance = parent::replicate($except);
         (new SlugService())->slug($instance, true);
@@ -43,7 +43,7 @@ trait Sluggable
      * @param string $slug
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFindSimilarSlugs(Builder $query, Model $model, $attribute, $config, $slug)
+    public function scopeFindSimilarSlugs(Builder $query, string $attribute, array $config, string $slug): Builder
     {
         $separator = $config['separator'];
         $attribute = $attribute.'->'.$this->getLocale();

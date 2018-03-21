@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - one-line installation command ```php artisan backpack:crud:install```;
+- 1-1 relatiosnhips; merges #865;
 
 ## Fixed
 - ```checkbox``` field was using the default value over the DB value on edit; merges #1239;
@@ -34,10 +35,21 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 -----------
 
-## Unpublished
+## [3.3.17] - 2018-03-21
+
+## Fixed
+- changed Sluggable traits declarations to PHP 7+; merges #1084;
+
+
+## [3.3.16] - 2018-03-21
+
+## Added
+- JSON response if the create/update action is triggered through AJAX; merges #1249;
+- ```view``` filter type and ```view``` column type;
 
 ## Fixed
 - Romanian translation;
+- image field did not show proper image if validation failed; merges #1294;
 
 ## [3.3.15] - 2018-03-21
 
