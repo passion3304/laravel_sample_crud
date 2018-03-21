@@ -19,6 +19,6 @@ if (is_array($array) && count($array)) {
     $displayValue = implode(', ', $list);
 }
 ?>
-<td>
+<span>
     {{ $displayValue or '-' }}
-</td>
+</span>

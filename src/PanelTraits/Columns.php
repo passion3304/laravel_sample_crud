@@ -76,21 +76,35 @@ trait Columns
             $column_with_details['name'] = 'anonymous_column_'.str_random(5);
         }
 
+        // check if the column exists in the database table
+        $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column_with_details['name']);
+
         // make sure the column has a type
         if (! array_key_exists('type', $column_with_details)) {
             $column_with_details['type'] = 'text';
         }
 
-        // check if the column exists in the DB table
-        if (\Schema::hasColumn($this->model->getTable(), $column_with_details['name'])) {
-            $column_with_details['table_column'] = true;
-        } else {
-            $column_with_details['table_column'] = false;
-            $column_with_details['orderable'] = false;
-            $column_with_details['searchLogic'] = false;
+        // make sure the column has a key
+        if (! array_key_exists('key', $column_with_details)) {
+            $column_with_details['key'] = $column_with_details['name'];
         }
 
-        array_filter($this->columns[$column_with_details['name']] = $column_with_details);
+        // make sure the column has a tableColumn boolean
+        if (! array_key_exists('tableColumn', $column_with_details)) {
+            $column_with_details['tableColumn'] = $columnExistsInDb ? true : false;
+        }
+
+        // make sure the column has a orderable boolean
+        if (! array_key_exists('orderable', $column_with_details)) {
+            $column_with_details['orderable'] = $columnExistsInDb ? true : false;
+        }
+
+        // make sure the column has a searchLogic
+        if (! array_key_exists('searchLogic', $column_with_details)) {
+            $column_with_details['searchLogic'] = $columnExistsInDb ? true : false;
+        }
+
+        array_filter($this->columns[$column_with_details['key']] = $column_with_details);
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
@@ -340,5 +354,18 @@ trait Columns
         $result = array_slice($this->getColumns(), $column_number, 1);
 
         return reset($result);
+    }
+
+    protected function hasColumn($table, $name)
+    {
+        static $cache = [];
+
+        if (isset($cache[$table])) {
+            $columns = $cache[$table];
+        } else {
+            $columns = $cache[$table] = $this->getSchema()->getColumnListing($table);
+        }
+
+        return in_array($name, $columns);
     }
 }

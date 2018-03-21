@@ -1,5 +1,5 @@
 {{-- single relationships (1-1, 1-n) --}}
-<td>
+<span>
     <?php
         $attributes = $crud->getModelAttributeFromRelation($entry, $column['entity'], $column['attribute']);
         if (count($attributes)) {
@@ -8,4 +8,4 @@
             echo '-';
         }
     ?>
-</td>
+</span>

@@ -42,7 +42,10 @@ trait AjaxTable
             $column_direction = $this->request->input('order')[0]['dir'];
             $column = $this->crud->findColumnById($column_number);
 
-            if ($column['table_column']) {
+            if ($column['tableColumn']) {
+                // clear any past orderBy rules
+                $this->crud->query->getQuery()->orders = null;
+                // apply the current orderBy rules
                 $this->crud->orderBy($column['name'], $column_direction);
             }
         }

@@ -7,6 +7,6 @@ if (strip_tags($entry->{$column['name']}) == false) {
 }
 ?>
 
-<td>
+<span>
     <i class="fa {{ $icon }}"></i>
-</td>
+</span>

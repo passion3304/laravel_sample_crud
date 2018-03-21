@@ -62,7 +62,7 @@
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
   <script>
 
-  		function applyDateRangeFilter(start, end) {
+  		function applyDateRangeFilter{{camel_case($filter->name)}}(start, end) {
   			if (start && end) {
   				var dates = {
 					'from': start.format('YYYY-MM-DD'),
@@ -70,7 +70,8 @@
 				};
 				var value = JSON.stringify(dates);
   			} else {
-  				var value = null;
+  				//this change to empty string,because addOrUpdateUriParameter method just judgment string
+  				var value = '';
   			}
 			var parameter = '{{ $filter->name }}';
 
@@ -112,7 +113,7 @@
 				autoUpdateInput: true
 			},
 			function (start, end) {
-				applyDateRangeFilter(start, end);
+				applyDateRangeFilter{{camel_case($filter->name)}}(start, end);
 			});
 
 			$('li[filter-name={{ $filter->name }}]').on('hide.bs.dropdown', function () {
@@ -122,15 +123,14 @@
 
 			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
 				// console.log('daterangepicker filter cleared');
+				//if triggered by remove filters click just remove active class,no need to send ajax
 				$('li[filter-name={{ $filter->name }}]').removeClass('active');
-				applyDateRangeFilter(null, null);
 			});
 
 			// datepicker clear button
 			$(".daterangepicker-{{ str_slug($filter->name) }}-clear-button").click(function(e) {
 				e.preventDefault();
-
-				$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
+				applyDateRangeFilter{{camel_case($filter->name)}}(null, null);
 			})
 		});
   </script>

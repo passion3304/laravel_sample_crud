@@ -1,2 +1,2 @@
 {{-- regular object attribute --}}
-<td>{!! $entry->{$column['name']} !!}</td>
+<span>{!! $entry->{$column['name']} !!}</span>

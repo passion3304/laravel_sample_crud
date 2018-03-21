@@ -49,7 +49,7 @@ trait Search
         }
 
         // sensible fallback search logic, if none was explicitly given
-        if ($column['table_column']) {
+        if ($column['tableColumn']) {
             switch ($column['type']) {
                 case 'email':
                 case 'date':
@@ -113,12 +113,13 @@ trait Search
                                 ->render();
         }
 
-        // add the details_row buttons as the first column
+        // add the details_row button to the first column
         if ($this->details_row) {
-            array_unshift($row_items, \View::make('crud::columns.details_row_button')
+            $details_row_button = \View::make('crud::columns.details_row_button')
                                            ->with('crud', $this)
                                            ->with('entry', $entry)
-                                           ->render());
+                                           ->render();
+            $row_items[0] = $details_row_button.$row_items[0];
         }
 
         return $row_items;

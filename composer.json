@@ -24,9 +24,7 @@
         }
     ],
     "require": {
-        "backpack/base": "^0.7.15",
-        "laravelcollective/html": "~5.0",
-        "barryvdh/laravel-elfinder": "^0.3.10",
+        "backpack/base": "^0.8.0",
         "doctrine/dbal": "^2.5",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "^2.3"
@@ -60,7 +58,10 @@
         "laravel": {
             "providers": [
                 "Backpack\\CRUD\\CrudServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "CRUD": "Backpack\\CRUD\\CrudServiceProvider"
+            }
         }
     }
 }

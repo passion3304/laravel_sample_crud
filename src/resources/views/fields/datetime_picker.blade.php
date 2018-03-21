@@ -14,9 +14,8 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
     <input type="hidden" name="{{ $field['name'] }}" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-    <div class="input-group date">
+    <div class="input-group date" data-bs-datetimepicker="{{ isset($field['datetime_picker_options']) ? json_encode($field['datetime_picker_options']) : '{}'}}">
         <input
-            data-bs-datetimepicker="{{ isset($field['datetime_picker_options']) ? json_encode($field['datetime_picker_options']) : '{}'}}"
             type="text"
             @include('crud::inc.field_attributes')
             >
@@ -61,7 +60,10 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
                 $field = $fake.parents('.form-group').find('input[type="hidden"]'),
                 $customConfig = $.extend({
                     format: 'DD/MM/YYYY HH:mm',
-                    defaultDate: $field.val()
+                    defaultDate: $field.val(),
+                    @if(isset($field['allows_null']) && $field['allows_null'])
+                    showClear: true,
+                    @endif
                 }, $fake.data('bs-datetimepicker'));
 
                 $customConfig.locale = $customConfig['language'];
