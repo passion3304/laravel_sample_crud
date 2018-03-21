@@ -23,7 +23,7 @@ return [
     'add'                                     => 'Adaugă',
     'back_to_all'                             => 'Înapoi la ',
     'cancel'                                  => 'Anulează',
-    'add_a_new'                               => 'Adaugă o nouă ',
+    'add_a_new'                               => 'Adaugă ',
 
     // Edit form
     'edit'                                    => 'Editează',
