@@ -23,6 +23,11 @@
         @endif
     </select>
 
+    @if(isset($field['select_all']) && $field['select_all'])
+        <a class="btn btn-xs btn-default select_all" style="margin-top: 5px;"><i class="fa fa-check-square-o"></i> {{ trans('backpack::crud.select_all') }}</a>
+        <a class="btn btn-xs btn-default clear" style="margin-top: 5px;"><i class="fa fa-times"></i> {{ trans('backpack::crud.clear') }}</a>
+    @endif
+
     {{-- HINT --}}
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
@@ -52,9 +57,25 @@
                 $('.select2_multiple').each(function (i, obj) {
                     if (!$(obj).hasClass("select2-hidden-accessible"))
                     {
-                        $(obj).select2({
+                        var $obj = $(obj).select2({
                             theme: "bootstrap"
                         });
+
+                        var options = [];
+                        @if (isset($field['model']))
+                            @foreach ($field['model']::all() as $connected_entity_entry)
+                                options.push({{ $connected_entity_entry->getKey() }});
+                            @endforeach
+                        @endif
+
+                        @if(isset($field['select_all']) && $field['select_all'])
+                            $(obj).parent().find('.clear').on("click", function () {
+                                $obj.val([]).trigger("change");
+                            });
+                            $(obj).parent().find('.select_all').on("click", function () {
+                                $obj.val(options).trigger("change");
+                            });
+                        @endif
                     }
                 });
             });

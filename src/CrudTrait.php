@@ -110,6 +110,17 @@ trait CrudTrait
         return $this;
     }
 
+    /**
+     * Determine if this fake column should get json_encoded or not.
+     *
+     * @param $column string fake column name
+     * @return bool
+     */
+    public function shouldEncodeFake($column)
+    {
+        return ! in_array($column, array_keys($this->casts));
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Methods for storing uploaded files (used in CRUD).
