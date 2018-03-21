@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Added
 - JSON response if the create/update action is triggered through AJAX; merges #1249;
+- ```view``` filter type and ```view``` column type;
 
 ## Fixed
 - Romanian translation;
