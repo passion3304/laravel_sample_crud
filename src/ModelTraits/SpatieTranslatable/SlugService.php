@@ -13,7 +13,7 @@ class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
      * @param bool $force
      * @return bool
      */
-    public function slug(Model $model, $force = false)
+    public function slug(Model $model, bool $force = false): bool
     {
         $this->setModel($model);
 
@@ -47,7 +47,7 @@ class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
      * @param string $attribute
      * @return string
      */
-    protected function makeSlugUnique($slug, array $config, $attribute)
+    protected function makeSlugUnique(string $slug, array $config, string $attribute): string
     {
         if (! $config['unique']) {
             return $slug;
