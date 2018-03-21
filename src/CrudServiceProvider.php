@@ -7,6 +7,10 @@ use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
 {
+    protected $commands = [
+        \Backpack\CRUD\app\Console\Commands\Install::class,
+    ];
+
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -75,6 +79,9 @@ class CrudServiceProvider extends ServiceProvider
         $this->app->bind('CRUD', function ($app) {
             return new CRUD($app);
         });
+
+        // register the artisan commands
+        $this->commands($this->commands);
 
         // map the elfinder prefix
         if (! \Config::get('elfinder.route.prefix')) {

@@ -22,9 +22,16 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Unreleased
 
+## Added
+- one-line installation command ```php artisan backpack:crud:install```;
+
 ## Fixed
 - ```checkbox``` field was using the default value over the DB value on edit; merges #1239;
 - no longer registering Base, Elfinder and Image service providers and aliases, since they all now use auto-load; merges #1279;
+
+### Removed
+- elFinder is no longer a dependency; users should require it themselves, if they need it;
+
 
 ## [3.3.12] - 2018-03-09
 
