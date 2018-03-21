@@ -12,7 +12,7 @@
             : (isset($field['disk'])
                 ? Storage::disk($field['disk'])->url($prefix.$value)
                 : url($prefix.$value))
-        :'';
+        :''; // if validation failed, tha value will be base64, so no need to create a URL for it
 
 @endphp
 
