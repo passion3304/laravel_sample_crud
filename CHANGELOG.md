@@ -27,6 +27,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Fixed
 - Romanian translation;
+- image field did not show proper image if validation failed; merges #1294;
 
 ## [3.3.15] - 2018-03-21
 
