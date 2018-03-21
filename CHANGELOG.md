@@ -22,6 +22,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Unpublished
 
+## Added
+- JSON response if the create/update action is triggered through AJAX; merges #1249;
+
 ## Fixed
 - Romanian translation;
 
