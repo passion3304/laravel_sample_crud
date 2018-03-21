@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## Unreleased
+
+## Fixed
+- changed Sluggable traits declarations to PHP 7+; merges #1084;
+
+
 ## [3.3.16] - 2018-03-21
 
 ## Added
