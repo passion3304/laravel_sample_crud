@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## Unreleased
+## [3.4.0] - 2018-03-22
 
 ## Added
 - one-line installation command ```php artisan backpack:crud:install```;
