@@ -60,7 +60,7 @@
 	}
 
 	#crudTable.has-hidden-columns .details-control {
-		display: none;
+		/*display: none;*/
 	}
 
 	div.dataTables_wrapper div.dataTables_length select {
