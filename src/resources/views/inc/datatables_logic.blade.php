@@ -13,6 +13,11 @@
           this.functionsToRunOnDataTablesDrawEvent.push(functionName);
         }
       },
+      responsiveToggle(dt) {
+          $(dt.table().header()).find('th').toggleClass('all');
+          dt.responsive.rebuild();
+          dt.responsive.recalc();
+      },
       executeFunctionByName: function(str, args) {
         var arr = str.split('.');
         var fn = window[ arr[0] ];
@@ -20,24 +25,6 @@
         for (var i = 1; i < arr.length; i++)
         { fn = fn[ arr[i] ]; }
         fn.apply(window, args);
-      },
-      createDataTablesButtonArray: function(buttons) {
-        var extended = [];
-        for(var i = 0; i < buttons.length; i++){
-        var item = {
-            extend: buttons[i],
-            exportOptions: {
-              columns: [':visible']
-            }
-        };
-        switch(buttons[i]){
-            case 'pdfHtml5':
-            item.orientation = 'landscape';
-            break;
-        }
-        extended.push(item);
-        }
-        return extended;
       },
       dataTableConfiguration: {
         responsive: {
