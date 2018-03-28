@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.3] - 2018-03-28
+
+## Fixed
+- model_function column HTML was escaped;
+
+
 ## [3.4.2] - 2018-03-23
 
 ## Fixed
