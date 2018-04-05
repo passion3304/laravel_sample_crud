@@ -1,4 +1,4 @@
 {{-- closure function --}}
 <span>
-	{!! $column['function']($entry) !!}
+    {!! $column['function']($entry) !!}
 </span>
