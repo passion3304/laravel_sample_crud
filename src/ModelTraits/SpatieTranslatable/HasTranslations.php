@@ -177,7 +177,11 @@ trait HasTranslations
                 if ($translation_locale) {
                     $item = parent::__call($method, $parameters);
 
-                    if ($item) {
+                    if ($item instanceof \Traversable) {
+                        foreach ($item as $instance) {
+                            $instance->setLocale($translation_locale);
+                        }
+                    } else if ($item) {
                         $item->setLocale($translation_locale);
                     }
 
