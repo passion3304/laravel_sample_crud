@@ -181,7 +181,7 @@ trait HasTranslations
                         foreach ($item as $instance) {
                             $instance->setLocale($translation_locale);
                         }
-                    } else if ($item) {
+                    } elseif ($item) {
                         $item->setLocale($translation_locale);
                     }
 
