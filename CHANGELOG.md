@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.5] - 2018-04-xx
+## [3.4.5] - 2018-04-17
 
 ## Fixed
 - getting the correct current id for nested resources; fixes #1323; fixes #252; merges #1339;
