@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Fixed
 - getting the correct current id for nested resources; fixes #1323; fixes #252; merges #1339;
+- #1321 - setting locale for traversable items; merges #1330;
 
 
 ## [3.4.4] - 2018-03-29
