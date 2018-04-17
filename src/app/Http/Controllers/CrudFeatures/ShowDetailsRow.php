@@ -17,6 +17,9 @@ trait ShowDetailsRow
     {
         $this->crud->hasAccessOrFail('details_row');
 
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
 

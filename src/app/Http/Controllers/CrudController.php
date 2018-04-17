@@ -136,6 +136,9 @@ class CrudController extends BaseController
     {
         $this->crud->hasAccessOrFail('update');
 
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
@@ -197,6 +200,9 @@ class CrudController extends BaseController
     {
         $this->crud->hasAccessOrFail('show');
 
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
         // set columns from db
         $this->crud->setFromDb();
 
@@ -231,6 +237,9 @@ class CrudController extends BaseController
     public function destroy($id)
     {
         $this->crud->hasAccessOrFail('delete');
+
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
 
         return $this->crud->delete($id);
     }
