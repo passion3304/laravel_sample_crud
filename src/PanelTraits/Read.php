@@ -10,7 +10,7 @@ trait Read
     |--------------------------------------------------------------------------
     */
 
-   /**
+    /**
      * Find and retrieve the id of the current entry.
      *
      * @return [Number] The id in the db or false.
@@ -27,7 +27,7 @@ trait Read
                 // this makes sure the ID is corrent even for nested resources
                 $this->request->{$this->entity_name} ??
                 // otherwise use the next to last parameter
-                array_values($params)[count($params)-1] ??
+                array_values($params)[count($params) - 1] ??
                 // otherwise return false
                 false;
     }
@@ -41,7 +41,7 @@ trait Read
     {
         $id = $this->getCurrentEntryId();
 
-        if (!$id) {
+        if (! $id) {
             return false;
         }
 
