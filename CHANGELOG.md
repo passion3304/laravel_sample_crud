@@ -24,7 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Fixed
 - added TD around columns in preview, to fix it; merges #1344;
-
+- not showing "Remove filters" button when no filter is applied; merges #1343;
 
 ## [3.4.5] - 2018-04-17
 
