@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.6] - 2018-04-xx
+## [3.4.6] - 2018-04-23
 
 ## Fixed
 - added TD around columns in preview, to fix it; merges #1344;
