@@ -18,7 +18,7 @@
 			@foreach ($crud->filters as $filter)
 				@include($filter->view)
 			@endforeach
-          <li><a href="#" id="remove_filters_button"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
+          <li ><a href="#" id="remove_filters_button" class="hidden"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -90,7 +90,10 @@
               new_url = new_url.addQuery(parameter, value);
             }
 
+            $('#remove_filters_button').removeClass('hidden');
+
         return new_url.toString();
+
       }
 
       function normalizeAmpersand(string) {
@@ -111,6 +114,7 @@
 
   				// clear all filters
   				$(".navbar-filters li[filter-name]").trigger('filter:clear');
+          $('#remove_filters_button').addClass('hidden');
       	})
       });
     </script>
