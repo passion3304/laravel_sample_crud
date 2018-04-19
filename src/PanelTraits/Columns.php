@@ -272,6 +272,18 @@ trait Columns
     }
 
     /**
+     * Alias for setColumnDetails().
+     * Provides a consistent syntax with Fields, Buttons, Filters modify functionality.
+     *
+     * @param [string] Column name.
+     * @param [attributes and values array]
+     */
+    public function modifyColumn($column, $attributes)
+    {
+        $this->setColumnDetails($column, $attributes);
+    }
+
+    /**
      * Set label for a specific column.
      *
      * @param string $column
