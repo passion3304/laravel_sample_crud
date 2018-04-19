@@ -155,7 +155,7 @@ trait Fields
             }
         }
     }
-    
+
     /**
      * Update value of a given key for a current field.
      *
@@ -165,8 +165,8 @@ trait Fields
      */
     public function modifyField($field, $modifications, $form = 'both')
     {
-      foreach($modifications as $key => $newValue) {
-        switch (strtolower($form)) {
+        foreach ($modifications as $key => $newValue) {
+            switch (strtolower($form)) {
           case 'create':
               $this->create_fields[$field][$key] = $newValue;
               break;
@@ -180,7 +180,7 @@ trait Fields
               $this->update_fields[$field][$key] = $newValue;
               break;
         }
-      }
+        }
     }
 
     /**
