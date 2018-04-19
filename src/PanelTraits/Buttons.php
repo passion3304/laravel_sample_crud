@@ -87,6 +87,30 @@ trait Buttons
     }
 
     /**
+     * Modify the attributes of a button.
+     *
+     * @param  string $name          The button name.
+     * @param  array $modifications  The attributes and their new values.
+     * @return button                The button that has suffered the changes, for daisychaining methods.
+     */
+    public function modifyButton($name, $modifications = null)
+    {
+        $button = $this->buttons()->firstWhere('name', $name);
+
+        if (! $button) {
+            abort(500, 'CRUD Button "'.$name.'" not found. Please check the button exists before you modify it.');
+        }
+
+        if (is_array($modifications)) {
+            foreach ($modifications as $key => $value) {
+                $button->{$key} = $value;
+            }
+        }
+
+        return $button;
+    }
+
+    /**
      * Remove a button from the CRUD panel.
      *
      * @param string $name Button name.
