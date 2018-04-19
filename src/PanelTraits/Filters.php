@@ -135,6 +135,13 @@ trait Filters
         return $this->filters;
     }
 
+    /**
+     * Modify the attributes of a filter.
+     *
+     * @param  string $name          The filter name.
+     * @param  array $modifications  An array of changes to be made.
+     * @return filter                The filter that has suffered modifications, for daisychaining methods.
+     */
     public function modifyFilter($name, $modifications)
     {
         $filter = $this->filters->firstWhere('name', $name);
