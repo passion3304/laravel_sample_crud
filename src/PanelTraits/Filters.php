@@ -135,6 +135,23 @@ trait Filters
         return $this->filters;
     }
 
+    public function modifyFilter($name, $modifications)
+    {
+        $filter = $this->filters->firstWhere('name', $name);
+
+        if (!$filter) {
+            abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.');
+        }
+
+        if (is_array($modifications)) {
+            foreach ($modifications as $key => $value) {
+                $filter->{$key} = $value;
+            }
+        }
+
+        return $filter;
+    }
+
     public function removeFilter($name)
     {
         $this->filters = $this->filters->reject(function ($filter) use ($name) {
