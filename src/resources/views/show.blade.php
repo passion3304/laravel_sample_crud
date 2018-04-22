@@ -35,6 +35,7 @@
 		                <td>
 		                    <strong>{{ $column['label'] }}</strong>
 		                </td>
+                        <td>
 							@if (!isset($column['type']))
 		                      @include('crud::columns.text')
 		                    @else
@@ -48,6 +49,7 @@
 		                        @endif
 		                      @endif
 		                    @endif
+                        </td>
 		            </tr>
 		        @endforeach
 				@if ($crud->buttons->where('stack', 'line')->count())
