@@ -15,7 +15,7 @@
 					<li class="{{ ($filter->isActive() && $filter->currentValue == $key)?'active':'' }}">
 						<a  parameter="{{ $filter->name }}"
 							href=""
-							key="{{ $key }}"
+							dropdownkey="{{ $key }}"
 							>{{ $value }}</a>
 					</li>
 				@endif
@@ -45,7 +45,7 @@
 			$("li.dropdown[filter-name={{ $filter->name }}] .dropdown-menu li a").click(function(e) {
 				e.preventDefault();
 
-				var value = $(this).attr('key');
+				var value = $(this).attr('dropdownkey');
 				var parameter = $(this).attr('parameter');
 
 				@if (!$crud->ajaxTable())
