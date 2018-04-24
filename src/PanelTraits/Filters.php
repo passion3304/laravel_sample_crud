@@ -139,7 +139,7 @@ trait Filters
     {
         $filter = $this->filters->firstWhere('name', $name);
 
-        if (!$filter) {
+        if (! $filter) {
             abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.');
         }
 
