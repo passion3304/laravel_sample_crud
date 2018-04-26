@@ -79,7 +79,7 @@ trait CrudTrait
             $column_contents = $this->{$column};
 
             if (! is_object($this->{$column})) {
-                $column_contents = json_decode($this->{$column});
+                $column_contents = json_decode($this->attributes[$column]);
             }
 
             if ((is_array($column_contents) || is_object($column_contents) || $column_contents instanceof Traversable)) {
