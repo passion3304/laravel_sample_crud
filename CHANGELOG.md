@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.5] - 2018-05-01
+
+## Fixed
+- LV translation, thanks to @tomsb; merges #1358;
+
+
 ## [3.4.6] - 2018-04-23
 
 ## Fixed
