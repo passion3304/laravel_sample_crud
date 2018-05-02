@@ -78,7 +78,7 @@ trait CrudTrait
         foreach ($columns as $key => $column) {
             $column_contents = $this->{$column};
 
-            if (! is_object($this->{$column})) {
+            if (isset($this->attributes[$column]) && !is_object($this->attributes[$column])) {
                 $column_contents = json_decode($this->attributes[$column]);
             }
 
