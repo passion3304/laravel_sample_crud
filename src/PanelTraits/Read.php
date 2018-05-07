@@ -192,14 +192,14 @@ trait Read
     {
         // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
         // assume both array are the same lenght.
-        if (!in_array($this->getDefaultPageLength(), $this->page_length_menu[0])) {
-          // Loop through 2 arrays of prop. page_length_menu
-          foreach ($this->page_length_menu as $key => &$page_length_choices) {
-            // This is a condition that should be always true.
-            if (is_array($page_length_choices)) {
-               array_unshift($page_length_choices, $this->getDefaultPageLength());
+        if (! in_array($this->getDefaultPageLength(), $this->page_length_menu[0])) {
+            // Loop through 2 arrays of prop. page_length_menu
+            foreach ($this->page_length_menu as $key => &$page_length_choices) {
+                // This is a condition that should be always true.
+                if (is_array($page_length_choices)) {
+                    array_unshift($page_length_choices, $this->getDefaultPageLength());
+                }
             }
-          }
         }
     }
 
