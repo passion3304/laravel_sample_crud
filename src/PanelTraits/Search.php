@@ -11,6 +11,7 @@ trait Search
     */
 
     public $ajax_table = true;
+    public $table_responsive = true;
 
     /**
      * Add conditions to the CRUD query for a particular search term.
@@ -91,6 +92,25 @@ trait Search
     public function ajaxTable()
     {
         return $this->ajax_table;
+    }
+
+    /**
+     * Tell the list view to NOT show a reponsive DataTable.
+     * @param  Bool $value
+     */
+    public function setTableResponsive($value = true)
+    {
+        $this->table_responsive = $value;
+    }
+
+    /**
+     * Check if responsiveness is enabled for the table view.
+     *
+     * @return bool
+     */
+    public function getTableResponsive()
+    {
+        return $this->table_responsive;
     }
 
     /**

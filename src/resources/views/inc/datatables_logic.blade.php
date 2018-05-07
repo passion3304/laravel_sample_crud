@@ -27,6 +27,8 @@
         fn.apply(window, args);
       },
       dataTableConfiguration: {
+
+        @if ($crud->getTableResponsive())
         responsive: {
             details: {
                 display: $.fn.dataTable.Responsive.display.modal( {
@@ -49,6 +51,11 @@
                 },
             }
         },
+        @else
+        responsive: false,
+        scrollX: true,
+        @endif
+
         autoWidth: false,
         pageLength: {{ $crud->getDefaultPageLength() }},
         lengthMenu: @json($crud->getPageLengthMenu()),
