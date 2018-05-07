@@ -57,7 +57,7 @@ class Install extends BaseInstall
             $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder"');
 
             $this->line(' Adding sidebar menu item for File Manager');
-            $this->executeProcess("php artisan backpack:base:add-sidebar-content '<li><a href=\"{{  backpack_url(\"elfinder\") }}\"><i class=\"fa fa-files-o\"></i> <span>File manager</span></a></li>'");
+            $this->executeProcess('php artisan backpack:base:add-sidebar-content "<li><a href=\"{{ backpack_url(\'elfinder\') }}\"><i class=\"fa fa-files-o\"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
         }
         // end of elFinder steps
 
