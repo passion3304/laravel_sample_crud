@@ -96,7 +96,7 @@ trait Search
 
     /**
      * Tell the list view to NOT show a reponsive DataTable.
-     * @param  Bool $value
+     * @param  bool $value
      */
     public function setTableResponsive($value = true)
     {
