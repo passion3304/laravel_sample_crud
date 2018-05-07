@@ -184,6 +184,10 @@ trait Read
         return 25;
     }
 
+    /**
+     * If a custom page length was specified as default, make sure it
+     * also show up in the page length menu.
+     */
     public function addCustomPageLengthToPageLengthMenu()
     {
         // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
