@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.8] - 2018-05-07
+
+## Fixed
+- better pt_br translation; merged #1368;
+- translated name for File Manager sidebar item; merged #1369;
+
+
 ## [3.4.7] - 2018-05-07
 
 ## Fixed
