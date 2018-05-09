@@ -215,10 +215,19 @@ class CrudFilter
 
         $this->values = $values;
         $this->options = $options;
-        $this->view = 'crud::filters.'.$this->type;
+        $this->setView();
 
         if (\Request::has($this->name)) {
             $this->currentValue = \Request::input($this->name);
+        }
+    }
+
+    public function setView()
+    {
+        if (isset($this->options['view'])) {
+            $this->view = $this->options['view'] . '.' . $this->type;
+        } else {
+            $this->view = 'crud::filters.' . $this->type;
         }
     }
 
