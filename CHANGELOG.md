@@ -28,6 +28,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - #1326 - sorting in datatables when details_row is enabled;
 - #1392 - check column type is now exportable;
+- #756 - ```CKEDITOR.style.addCustomHandler is not a function``` by updating ckeditor to 4.9.2;
+
 
 ## [3.4.9] - 2018-05-10
 
