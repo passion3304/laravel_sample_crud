@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## Fixed
 - #1378 - when a custom default page length is specified, it should show up in the page length menu;
+- #1297 - possible XSS vulnerability in ```select``` field type; now using ```e()``` to escape the attribute;
 
 
 ## [3.4.8] - 2018-05-07
