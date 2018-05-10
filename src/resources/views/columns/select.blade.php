@@ -3,7 +3,7 @@
     <?php
         $attributes = $crud->getModelAttributeFromRelation($entry, $column['entity'], $column['attribute']);
         if (count($attributes)) {
-            echo implode(', ', $attributes);
+            echo e(implode(', ', $attributes));
         } else {
             echo '-';
         }
