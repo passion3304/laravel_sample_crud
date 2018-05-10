@@ -22,8 +22,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.4.10] - 2018-05-xx
 
-## Added
+### Added
 - #1382 - Arabic translation;
+
+### Fixed
+- #1326 - sorting in datatables when details_row is enabled;
 
 
 ## [3.4.9] - 2018-05-10
