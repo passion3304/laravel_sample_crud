@@ -27,7 +27,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - #1326 - sorting in datatables when details_row is enabled;
-
+- #1392 - check column type is now exportable;
 
 ## [3.4.9] - 2018-05-10
 
