@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1326 - sorting in datatables when details_row is enabled;
 - #1392 - check column type is now exportable;
 - #756 - ```CKEDITOR.style.addCustomHandler is not a function``` by updating ckeditor to 4.9.2;
+- #1318 - summernote field type can have separate configuration arrays if multiple summernotes in one form;
 
 
 ## [3.4.9] - 2018-05-10
