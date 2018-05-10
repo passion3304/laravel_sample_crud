@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.9] - 2018-05-xx
+## [3.4.9] - 2018-05-10
 
 ## Fixed
 - #1378 - when a custom default page length is specified, it should show up in the page length menu;
