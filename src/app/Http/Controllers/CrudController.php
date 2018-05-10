@@ -64,7 +64,7 @@ class CrudController extends BaseController
         $this->crud->hasAccessOrFail('list');
 
         $this->data['crud'] = $this->crud;
-        $this->data['title'] = mb_convert_case($this->crud->entity_name_plural, MB_CASE_TITLE);
+        $this->data['title'] = mb_ucfirst($this->crud->entity_name_plural);
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getListView(), $this->data);
