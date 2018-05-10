@@ -17,8 +17,8 @@
         <h3 class="timeline-header">{{ $history->userResponsible()?$history->userResponsible()->name:trans('backpack::crud.guest_user') }} {{ trans('backpack::crud.changed_the') }} {{ $history->fieldName() }}</h3>
         <div class="timeline-body p-b-0">
           <div class="row">
-            <div class="col-md-6">{{ ucfirst(trans('backpack::crud.from')) }}:</div>
-            <div class="col-md-6">{{ ucfirst(trans('backpack::crud.to')) }}:</div>
+            <div class="col-md-6">{{ mb_ucfirst(trans('backpack::crud.from')) }}:</div>
+            <div class="col-md-6">{{ mb_ucfirst(trans('backpack::crud.to')) }}:</div>
           </div>
           <div class="row">
             <div class="col-md-6"><div class="well well-sm" style="overflow: hidden;">{{ $history->oldValue() }}</div></div>

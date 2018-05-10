@@ -164,7 +164,7 @@ trait AutoSet
             return ($this->labeller)($value);
         }
 
-        return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
+        return trim(preg_replace('/(id|at|\[\])$/i', '', mb_ucfirst(str_replace('_', ' ', $value))));
     }
 
     /**

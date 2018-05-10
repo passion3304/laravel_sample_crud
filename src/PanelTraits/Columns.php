@@ -37,7 +37,7 @@ trait Columns
                 } else {
                     $this->addColumn([
                                     'name'  => $column,
-                                    'label' => ucfirst($column),
+                                    'label' => mb_ucfirst($column),
                                     'type'  => 'text',
                                 ]);
                 }
@@ -47,7 +47,7 @@ trait Columns
         if (is_string($columns)) {
             $this->addColumn([
                                 'name'  => $columns,
-                                'label' => ucfirst($columns),
+                                'label' => mb_ucfirst($columns),
                                 'type'  => 'text',
                                 ]);
         }
@@ -198,7 +198,7 @@ trait Columns
     public function addDefaultLabel($array)
     {
         if (! array_key_exists('label', (array) $array) && array_key_exists('name', (array) $array)) {
-            $array = array_merge(['label' => ucfirst($this->makeLabel($array['name']))], $array);
+            $array = array_merge(['label' => mb_ucfirst($this->makeLabel($array['name']))], $array);
 
             return $array;
         }

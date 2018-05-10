@@ -21,7 +21,7 @@ trait Revisions
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
-        $this->data['title'] = ucfirst($this->crud->entity_name).' '.trans('backpack::crud.revisions');
+        $this->data['title'] = mb_ucfirst($this->crud->entity_name).' '.trans('backpack::crud.revisions');
         $this->data['id'] = $id;
         $this->data['revisions'] = $this->crud->listRevisions($id);
 
