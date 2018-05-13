@@ -47,7 +47,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
     <script type="text/javascript" src="{{ asset('vendor/adminlte/bower_components/moment/moment.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.datetimepicker/4.17.42/js/bootstrap-datetimepicker.min.js"></script>
     @if ($field_language !== 'en')
-        <script charset="UTF-8" src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.js') }}"></script>
+        <script charset="UTF-8" src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js') }}"></script>
         <script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/locale/{{$field_language}}.js"></script>
     @endif
     <script>
