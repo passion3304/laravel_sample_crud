@@ -23,6 +23,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.4.11] - 2018-05-xx
 
+### Added
+- #1319 - format parameter for ```date``` and ```datetime``` column types;
+
 ### Fixed
 - #1407 - AccessDeniedException did not show custom error message at all;
 - #1346 - AccessDeniedException error message should show permission that is missing;
