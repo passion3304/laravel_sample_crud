@@ -20,6 +20,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+
+## [3.4.11] - 2018-05-xx
+
+### Fixed
+- #1407 - AccessDeniedException did not show custom error message at all;
+- #1346 - AccessDeniedException error message should show permission that is missing;
+
+
 ## [3.4.10] - 2018-05-14
 
 ### Added
@@ -31,8 +39,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #756 - ```CKEDITOR.style.addCustomHandler is not a function``` by updating ckeditor to 4.9.2;
 - #1318 - summernote field type can have separate configuration arrays if multiple summernotes in one form;
 - #1398, PR #1399 - datepicker and daterangepicker did not load correct language files;
-- #1407 - AccessDeniedException did not show custom error message at all;
-- #1346 - AccessDeniedException error message should show permission that is missing;
 
 ## [3.4.9] - 2018-05-10
 
