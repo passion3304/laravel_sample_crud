@@ -45,7 +45,7 @@
     @push('crud_fields_scripts')
     <script src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     @if ($field_language !== 'en')
-        <script charset="UTF-8" src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.js') }}"></script>
+        <script charset="UTF-8" src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js') }}"></script>
     @endif
     <script>
         if (jQuery.ui) {
