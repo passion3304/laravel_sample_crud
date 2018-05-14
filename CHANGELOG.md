@@ -32,7 +32,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1318 - summernote field type can have separate configuration arrays if multiple summernotes in one form;
 - #1398, PR #1399 - datepicker and daterangepicker did not load correct language files;
 - #1407 - AccessDeniedException did not show custom error message at all;
-
+- #1346 - AccessDeniedException error message should show permission that is missing;
 
 ## [3.4.9] - 2018-05-10
 
