@@ -21,7 +21,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
-## [3.4.11] - 2018-05-xx
+## [3.4.11] - 2018-05-16
 
 ### Added
 - #1319 - format parameter for ```date``` and ```datetime``` column types;
