@@ -198,6 +198,7 @@ class CrudFilter
     public $options;
     public $currentValue;
     public $view;
+    public $viewNamespace = 'crud::filters';
 
     public function __construct($options, $values, $filter_logic)
     {
@@ -206,6 +207,8 @@ class CrudFilter
         $this->name = $options['name'];
         $this->type = $options['type'];
         $this->label = $options['label'];
+        $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
+        $this->view = $this->viewNamespace.'.'.$this->type;
 
         if (! isset($options['placeholder'])) {
             $this->placeholder = '';
@@ -215,7 +218,6 @@ class CrudFilter
 
         $this->values = $values;
         $this->options = $options;
-        $this->view = 'crud::filters.'.$this->type;
 
         if (\Request::has($this->name)) {
             $this->currentValue = \Request::input($this->name);
