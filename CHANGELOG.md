@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1316 - ```closure``` column type;
 - #1401 - ```default``` attribute for ```select2``` field type;
 - #1388 - ```view_namespace``` attribute for columns;
+- #1389 - ```view_namespace``` attribute for filters;
 
 ### Fixed
 - #1407 - AccessDeniedException did not show custom error message at all;
