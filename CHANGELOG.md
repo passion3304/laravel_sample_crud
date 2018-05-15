@@ -35,6 +35,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1407 - AccessDeniedException did not show custom error message at all;
 - #1346 - AccessDeniedException error message should show permission that is missing;
 - #1076, merged #1355 - ```dropdown``` filter no longer has conflicts with VueJS because of key attribute;
+- using null coalesce operator to simplify filters code;
 
 
 ## [3.4.10] - 2018-05-14

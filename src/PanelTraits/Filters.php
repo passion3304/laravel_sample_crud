@@ -209,12 +209,7 @@ class CrudFilter
         $this->label = $options['label'];
         $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
         $this->view = $this->viewNamespace.'.'.$this->type;
-
-        if (! isset($options['placeholder'])) {
-            $this->placeholder = '';
-        } else {
-            $this->placeholder = $options['placeholder'];
-        }
+        $this->placeholder = $options['placeholder'] ?? '';
 
         $this->values = $values;
         $this->options = $options;
