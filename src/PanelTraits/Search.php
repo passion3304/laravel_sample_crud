@@ -143,7 +143,7 @@ trait Search
      */
     private function getCellViewName($column)
     {
-        // return custom column from view attribute
+        // return custom column if view_namespace attribute is set
         if (isset($column['view_namespace']) && isset($column['type'])) {
             return $column['view_namespace'] . '.' . $column['type'];
         }
