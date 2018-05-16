@@ -137,7 +137,7 @@ trait Search
     }
 
     /**
-     * Get the name of the view to load for the cell
+     * Get the name of the view to load for the cell.
      * @param $column
      * @return string
      */
@@ -145,17 +145,17 @@ trait Search
     {
         // return custom column if view_namespace attribute is set
         if (isset($column['view_namespace']) && isset($column['type'])) {
-            return $column['view_namespace'] . '.' . $column['type'];
+            return $column['view_namespace'].'.'.$column['type'];
         }
 
         if (isset($column['type'])) {
             // if the column has been overwritten return that one
-            if (view()->exists('vendor.backpack.crud.columns.' . $column['type'])) {
-                return 'vendor.backpack.crud.columns.' . $column['type'];
+            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
+                return 'vendor.backpack.crud.columns.'.$column['type'];
             }
 
             // return the column from the package
-            return 'crud::columns.' . $column['type'];
+            return 'crud::columns.'.$column['type'];
         }
 
         // fallback to text column
@@ -163,7 +163,7 @@ trait Search
     }
 
     /**
-     * Render the given view
+     * Render the given view.
      * @param $view
      * @param $column
      * @param $entry
@@ -171,7 +171,7 @@ trait Search
      */
     private function renderCellView($view, $column, $entry)
     {
-        if (!view()->exists($view)) {
+        if (! view()->exists($view)) {
             $view = 'crud::columns.text'; // fallback to text column
         }
 
