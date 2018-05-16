@@ -224,8 +224,8 @@ class CrudFilter
 
     public function setView()
     {
-        if (isset($this->options['view'])) {
-            $this->view = $this->options['view'] . '.' . $this->type;
+        if (isset($this->options['view_namespace'])) {
+            $this->view = $this->options['view_namespace'] . '.' . $this->type;
         } else {
             $this->view = 'crud::filters.' . $this->type;
         }
