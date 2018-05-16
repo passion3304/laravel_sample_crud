@@ -144,8 +144,8 @@ trait Search
     private function getCellViewName($column)
     {
         // return custom column from view attribute
-        if (isset($column['view']) && isset($column['type'])) {
-            return $column['view'] . '.' . $column['type'];
+        if (isset($column['view_namespace']) && isset($column['type'])) {
+            return $column['view_namespace'] . '.' . $column['type'];
         }
 
         if (isset($column['type'])) {
