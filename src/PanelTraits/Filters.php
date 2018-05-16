@@ -202,6 +202,7 @@ class CrudFilter
     public function __construct($options, $values, $filter_logic)
     {
         $this->checkOptionsIntegrity($options);
+        $this->setView($options);
 
         $this->name = $options['name'];
         $this->type = $options['type'];
@@ -215,17 +216,16 @@ class CrudFilter
 
         $this->values = $values;
         $this->options = $options;
-        $this->setView();
 
         if (\Request::has($this->name)) {
             $this->currentValue = \Request::input($this->name);
         }
     }
 
-    public function setView()
+    public function setView($options)
     {
-        if (isset($this->options['view_namespace'])) {
-            $this->view = $this->options['view_namespace'] . '.' . $this->type;
+        if (isset($options['view_namespace'])) {
+            $this->view = $options['view_namespace'] . '.' . $this->type;
         } else {
             $this->view = 'crud::filters.' . $this->type;
         }
