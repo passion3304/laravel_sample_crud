@@ -82,15 +82,13 @@
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
 				}
-				else
-				{
-					$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
-				}
 			});
+
 			$('li[filter-name={{ str_slug($filter->name) }}]').on('filter:clear', function(e) {
 				// console.log('date filter cleared');
 				$('li[filter-name={{ $filter->name }}]').removeClass('active');
-				$('#datepicker-{{ str_slug($filter->name) }}').datepicker('clearDates');
+				$('#datepicker-{{ str_slug($filter->name) }}').datepicker('update', '');
+				$('#datepicker-{{ str_slug($filter->name) }}').trigger('changeDate');
 			});
 
 			// datepicker clear button
@@ -98,7 +96,6 @@
 				e.preventDefault();
 
 				$('li[filter-name={{ str_slug($filter->name) }}]').trigger('filter:clear');
-				$('#datepicker-{{ str_slug($filter->name) }}').trigger('changeDate');
 			})
 		});
   </script>
