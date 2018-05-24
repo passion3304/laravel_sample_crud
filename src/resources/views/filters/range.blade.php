@@ -38,8 +38,8 @@
 										placeholder = "max value"
 									@endif
 				        		>
-				        <div class="input-group-addon">
-				          <a class="text-filter-{{ str_slug($filter->name) }}-clear-button" href=""><i class="fa fa-check"></i></a>
+				        <div class="input-group-addon range-filter-{{ str_slug($filter->name) }}-clear-button">
+				          <a class="" href=""><i class="fa fa-times"></i></a>
 				        </div>
 				    </div>
 			</div>
@@ -74,7 +74,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 @push('crud_list_scripts')
 	<script>
 		jQuery(document).ready(function($) {
-			$("li[filter-name={{ $filter->name }}] .input-group-addon").click(function(e) {
+			$("li[filter-name={{ $filter->name }}] .from, li[filter-name={{ $filter->name }}] .to").change(function(e) {
 				e.preventDefault();
 				var from = $("li[filter-name={{ $filter->name }}] .from").val();
 				var to = $("li[filter-name={{ $filter->name }}] .to").val();
@@ -90,16 +90,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 				}
 				var parameter = '{{ $filter->name }}';
 
-			@if (!$crud->ajaxTable())
-				// behaviour for normal table
-				var current_url = normalizeAmpersand('{{ Request::fullUrl() }}');
-				var new_url = addOrUpdateUriParameter(current_url, parameter, value);
-
-				// refresh the page to the new_url
-				new_url = normalizeAmpersand(new_url.toString());
-					window.location.href = new_url;
-			@else
-					// behaviour for ajax table
+				// behaviour for ajax table
 				var ajax_table = $('#crudTable').DataTable();
 				var current_url = ajax_table.ajax.url();
 				var new_url = addOrUpdateUriParameter(current_url, parameter, value);
@@ -112,18 +103,21 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
 				}
-				else
-				{
-					$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
-				}
-			@endif
 			});
 
 			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
 				$('li[filter-name={{ $filter->name }}]').removeClass('active');
 				$("li[filter-name={{ $filter->name }}] .from").val("");
 				$("li[filter-name={{ $filter->name }}] .to").val("");
+				$("li[filter-name={{ $filter->name }}] .to").trigger('change');
 			});
+
+			// range clear button
+			$(".range-filter-{{ str_slug($filter->name) }}-clear-button").click(function(e) {
+				e.preventDefault();
+
+				$('li[filter-name={{ str_slug($filter->name) }}]').trigger('filter:clear');
+			})
 
 		});
 	</script>
