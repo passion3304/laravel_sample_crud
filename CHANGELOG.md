@@ -21,6 +21,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
+## [3.4.12] - 2018-05-30
+
+### Added
+- ```range``` filter type;
+
+### Fixed
+- all filter clear buttons;
+- date_range filter endless loop issue;
+
 ## [3.4.11] - 2018-05-16
 
 ### Added
