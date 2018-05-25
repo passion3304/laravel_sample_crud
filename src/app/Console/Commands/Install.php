@@ -16,8 +16,9 @@ class Install extends BaseInstall
      * @var string
      */
     protected $signature = 'backpack:crud:install
-                                {--timeout=300} : How many seconds to allow each process to run.
-                                {--debug} : Show process output or not. Useful for debugging.';
+                                {--elfinder=ask : ¿Should install File Manager? }
+                                {--timeout=300 : How many seconds to allow each process to run.}
+                                {--debug : Show process output or not. Useful for debugging. }';
 
     /**
      * The console command description.
@@ -32,8 +33,25 @@ class Install extends BaseInstall
      * @return mixed
      */
     public function handle()
-    {
-        $install_elfinder = $this->confirm("Install & set up the File Manager (elFinder)? The admin will be able to browse the 'uploads' folder and create/read/modify files and folders there.", 'yes');
+    {        
+        /*
+        * "ask" comes by default, when no option provided, like: "backpack:crud:install"
+        * https://laravel.com/docs/5.6/artisan#options
+        */
+        $install_elfinder=null;
+        if($this->option("elfinder")=="ask"){
+            $install_elfinder = $this->confirm("Install & set up the File Manager (elFinder)? The admin will be able to browse the 'uploads' folder and create/read/modify files and folders there.", 'yes');
+        }            
+        elseif($this->option("elfinder")=="no"){
+            $install_elfinder=false;
+        }
+        elseif($this->option("elfinder")=="yes"){
+            $install_elfinder=true;            
+        }
+        else{
+            $this->error("Option not recognized: ".$elfinderOption);
+            return false;
+        }
 
         $steps = $install_elfinder ? 9 : 4;
 
