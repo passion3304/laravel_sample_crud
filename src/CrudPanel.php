@@ -51,6 +51,7 @@ class CrudPanel
 
     public $details_row = false;
     public $export_buttons = false;
+    public $index_column = false;
 
     public $columns = []; // Define the columns for the table view as an array;
     public $create_fields = []; // Define the fields for the "Add new entry" view as an array;
