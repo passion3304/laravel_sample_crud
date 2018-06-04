@@ -53,7 +53,7 @@ class Install extends BaseInstall
                     $this->executeProcess('mkdir -p public/uploads');
                     break;
                 case '\\': // windows
-                    if(!file_exists('public\uploads')) {
+                    if (! file_exists('public\uploads')) {
                         $this->executeProcess('mkdir public\uploads');
                     }
                     break;
