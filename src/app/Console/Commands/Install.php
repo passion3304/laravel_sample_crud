@@ -48,7 +48,16 @@ class Install extends BaseInstall
             $this->executeProcess('composer require barryvdh/laravel-elfinder');
 
             $this->line(' Creating uploads directory');
-            $this->executeProcess('mkdir -p public/uploads');
+            switch (DIRECTORY_SEPARATOR) {
+                case '/': // unix
+                    $this->executeProcess('mkdir -p public/uploads');
+                    break;
+                case '\\': // windows
+                    if(!file_exists('public\uploads')) {
+                        $this->executeProcess('mkdir public\uploads');
+                    }
+                    break;
+            }
 
             $this->line(' Publishing elFinder assets');
             $this->executeProcess('php artisan elfinder:publish');
@@ -57,7 +66,14 @@ class Install extends BaseInstall
             $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder"');
 
             $this->line(' Adding sidebar menu item for File Manager');
-            $this->executeProcess('php artisan backpack:base:add-sidebar-content "<li><a href=\"{{ backpack_url(\'elfinder\') }}\"><i class=\"fa fa-files-o\"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
+            switch (DIRECTORY_SEPARATOR) {
+                case '/': // unix
+                    $this->executeProcess('php artisan backpack:base:add-sidebar-content "<li><a href=\"{{ backpack_url(\'elfinder\') }}\"><i class=\"fa fa-files-o\"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
+                    break;
+                case '\\': // windows
+                    $this->executeProcess('php artisan backpack:base:add-sidebar-content "<li><a href=""{{ backpack_url(\'elfinder\') }}""><i class=""fa fa-files-o""></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
+                    break;
+            }
         }
         // end of elFinder steps
 

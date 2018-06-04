@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.13] - 2018-06-04
+
+### Fixed
+- #1299 - installer now works on Windows too, thanks to [Toni Almeida](https://github.com/promatik);
+
 
 ## [3.4.12] - 2018-05-30
 
