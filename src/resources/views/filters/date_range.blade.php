@@ -111,10 +111,11 @@
 				@endif
 				alwaysShowCalendars: true,
 				autoUpdateInput: true
-			},
-			function (start, end) {
-				applyDateRangeFilter{{camel_case($filter->name)}}(start, end);
 			});
+
+			dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
+        applyDateRangeFilter{{camel_case($filter->name)}}(picker.startDate, picker.endDate);
+      });
 
 			$('li[filter-name={{ $filter->name }}]').on('hide.bs.dropdown', function () {
 				if($('.daterangepicker').is(':visible'))
