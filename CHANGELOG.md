@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - #1462 - date_range filter did not get triggered upon Today click;
+- #1459 - select2_ajax filter did not load CSS and JS correctly;
 
 
 ## [3.4.13] - 2018-06-04
