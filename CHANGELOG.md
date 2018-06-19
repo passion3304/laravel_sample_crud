@@ -22,6 +22,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.4.14] - 2018-06-xx
 
+### Added
+- #1443 - ```$this->crud->removeAllFields()``` API call;
+
 ### Fixed
 - #1462 - date_range filter did not get triggered upon Today click;
 - #1459 - select2_ajax filter did not load CSS and JS correctly;
