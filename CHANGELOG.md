@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.14] - 2018-06-xx
+
+### Fixed
+- #1462 - date_range filter did not get triggered upon Today click;
+
+
 ## [3.4.13] - 2018-06-04
 
 ### Fixed
