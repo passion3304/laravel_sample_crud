@@ -143,7 +143,7 @@ trait Fields
 
     /**
      * Remove many fields from the create/update/both forms by their name.
-     *
+     * 
      * @param array  $array_of_names A simple array of the names of the fields to be removed.
      * @param string $form           update/create/both
      */
@@ -152,6 +152,21 @@ trait Fields
         if (! empty($array_of_names)) {
             foreach ($array_of_names as $name) {
                 $this->removeField($name, $form);
+            }
+        }
+    }
+    
+    /**
+     * Remove all fields from the create/update/both forms.
+     * 
+     * @param string $form           update/create/both
+     */
+    public function removeAllFields($form = 'both')
+    {
+        $current_fields = $this->getCurrentFields();
+        if (! empty($current_fields)) {
+            foreach ($current_fields as $field) {
+                $this->removeField($field['name'], $form);
             }
         }
     }
