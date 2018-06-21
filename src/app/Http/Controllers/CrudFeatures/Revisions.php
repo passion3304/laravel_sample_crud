@@ -43,9 +43,6 @@ trait Revisions
     {
         $this->crud->hasAccessOrFail('revisions');
 
-        // get entry ID from Request (makes sure its the last ID for nested resources)
-        $id = $this->crud->getCurrentEntryId() ?? $id;
-
         $revisionId = \Request::input('revision_id', false);
         if (! $revisionId) {
             abort(500, 'Can\'t restore revision without revision_id');
