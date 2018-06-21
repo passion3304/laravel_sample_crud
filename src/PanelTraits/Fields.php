@@ -143,7 +143,7 @@ trait Fields
 
     /**
      * Remove many fields from the create/update/both forms by their name.
-     * 
+     *
      * @param array  $array_of_names A simple array of the names of the fields to be removed.
      * @param string $form           update/create/both
      */
@@ -155,10 +155,10 @@ trait Fields
             }
         }
     }
-    
+
     /**
      * Remove all fields from the create/update/both forms.
-     * 
+     *
      * @param string $form           update/create/both
      */
     public function removeAllFields($form = 'both')
