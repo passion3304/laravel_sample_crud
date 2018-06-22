@@ -30,6 +30,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1459 - select2_ajax filter did not load CSS and JS correctly;
 - #1449 merged - fixes #1425 - "Undo revision" triggered 404 error;
 - #1447 merged - create/edit's Cancel button now leads to previous page if no list access;
+- #1417 merged - autofocus on iterable fields;
 
 ## [3.4.13] - 2018-06-04
 
