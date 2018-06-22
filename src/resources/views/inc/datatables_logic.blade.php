@@ -13,7 +13,7 @@
           this.functionsToRunOnDataTablesDrawEvent.push(functionName);
         }
       },
-      responsiveToggle(dt) {
+      responsiveToggle: function(dt) {
           $(dt.table().header()).find('th').toggleClass('all');
           dt.responsive.rebuild();
           dt.responsive.recalc();

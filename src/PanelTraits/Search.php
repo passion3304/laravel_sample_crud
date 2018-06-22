@@ -133,38 +133,53 @@ trait Search
      */
     public function getCellView($column, $entry)
     {
-        // if column type not set, show as text
-        if (! isset($column['type'])) {
-            return \View::make('crud::columns.text')
-                            ->with('crud', $this)
-                            ->with('column', $column)
-                            ->with('entry', $entry)
-                            ->render();
-        } else {
-            // if the column has been overwritten show that one
-            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
-                return \View::make('vendor.backpack.crud.columns.'.$column['type'])
-                                ->with('crud', $this)
-                                ->with('column', $column)
-                                ->with('entry', $entry)
-                                ->render();
-            } else {
-                // show the column from the package
-                if (view()->exists('crud::columns.'.$column['type'])) {
-                    return \View::make('crud::columns.'.$column['type'])
-                                    ->with('crud', $this)
-                                    ->with('column', $column)
-                                    ->with('entry', $entry)
-                                    ->render();
-                } else {
-                    return \View::make('crud::columns.text')
-                                    ->with('crud', $this)
-                                    ->with('column', $column)
-                                    ->with('entry', $entry)
-                                    ->render();
-                }
-            }
+        return $this->renderCellView($this->getCellViewName($column), $column, $entry);
+    }
+
+    /**
+     * Get the name of the view to load for the cell.
+     * @param $column
+     * @return string
+     */
+    private function getCellViewName($column)
+    {
+        // return custom column if view_namespace attribute is set
+        if (isset($column['view_namespace']) && isset($column['type'])) {
+            return $column['view_namespace'].'.'.$column['type'];
         }
+
+        if (isset($column['type'])) {
+            // if the column has been overwritten return that one
+            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
+                return 'vendor.backpack.crud.columns.'.$column['type'];
+            }
+
+            // return the column from the package
+            return 'crud::columns.'.$column['type'];
+        }
+
+        // fallback to text column
+        return 'crud::columns.text';
+    }
+
+    /**
+     * Render the given view.
+     * @param $view
+     * @param $column
+     * @param $entry
+     * @return mixed
+     */
+    private function renderCellView($view, $column, $entry)
+    {
+        if (! view()->exists($view)) {
+            $view = 'crud::columns.text'; // fallback to text column
+        }
+
+        return \View::make($view)
+            ->with('crud', $this)
+            ->with('column', $column)
+            ->with('entry', $entry)
+            ->render();
     }
 
     /**

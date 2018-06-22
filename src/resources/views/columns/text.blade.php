@@ -1,6 +1,6 @@
 {{-- regular object attribute --}}
 @php
-	$value = $entry->{$column['name']};
+	$value = data_get($entry, $column['name']);
 @endphp
 
 <span>

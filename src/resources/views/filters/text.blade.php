@@ -14,8 +14,8 @@
 							value="{{ $filter->currentValue }}"
 						@endif
 		        		>
-		        <div class="input-group-addon">
-		          <a class="text-filter-{{ str_slug($filter->name) }}-clear-button" href=""><i class="fa fa-times"></i></a>
+		        <div class="input-group-addon text-filter-{{ str_slug($filter->name) }}-clear-button">
+		          <a class="" href=""><i class="fa fa-times"></i></a>
 		        </div>
 		    </div>
 		</div>
