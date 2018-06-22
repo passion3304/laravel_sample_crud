@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.15] - 2018-06-xx
+
+### Fixed
+- #1446 merged, fixes #1430 - return to current tab on save and edit;
+
 ## [3.4.14] - 2018-06-22
 
 ### Added
