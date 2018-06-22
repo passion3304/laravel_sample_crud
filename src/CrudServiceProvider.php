@@ -9,7 +9,7 @@ class CrudServiceProvider extends ServiceProvider
 {
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
-        \Backpack\CRUD\app\Console\Commands\Overwrite::class,
+        \Backpack\CRUD\app\Console\Commands\Publish::class,
     ];
 
     /**

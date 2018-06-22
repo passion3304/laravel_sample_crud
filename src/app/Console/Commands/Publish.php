@@ -4,22 +4,22 @@ namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class Overwrite extends Command
+class Publish extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'backpack:crud:overwrite';
+    protected $name = 'backpack:crud:publish';
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'backpack:crud:overwrite
-                            {type : what are you overwriting? field/column/filter/button}
+    protected $signature = 'backpack:crud:publish
+                            {type : what are you publishing? field/column/filter/button}
                             {name : name of the field/column/filter/button}';
 
     /**
