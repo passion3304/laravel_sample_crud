@@ -25,9 +25,6 @@
 	  .form-inline .select2-container {
 	    display: inline-block;
 	  }
-	  li[filter-type="{{ $filter->type }}"] .select2-container {
-	  	display: block;
-	  }
 	  .select2-drop-active {
 	  	border:none;
 	  }
