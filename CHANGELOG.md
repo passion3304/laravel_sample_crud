@@ -22,6 +22,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.4.15] - 2018-06-xx
 
+### Added
+- ```php artisan backpack:crud:overwrite [field/column/filter/button] [name]``` command, thank to [Owen Melbourne's PR in Generators](https://github.com/Laravel-Backpack/Generators/pull/15);
+
 ### Fixed
 - #1446 merged, fixes #1430 - return to current tab on save and edit;
 
