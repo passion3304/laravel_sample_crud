@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.14] - 2018-06-xx
+## [3.4.14] - 2018-06-22
 
 ### Added
 - #1443 - ```$this->crud->removeAllFields()``` API call;
