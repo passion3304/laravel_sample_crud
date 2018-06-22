@@ -68,7 +68,10 @@
         @endphp
 
         @if ($focusField)
-          window.focusField = $('[name="{{ $focusField['name'] }}"]').eq(0),
+        @php
+        $focusFieldName = !is_iterable($focusField['value']) ? $focusField['name'] : ($focusField['name'] . '[]');
+        @endphp
+          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0),
         @else
           var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
         @endif
