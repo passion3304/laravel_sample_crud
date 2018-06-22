@@ -5,6 +5,7 @@
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled())
     @include('crud::inc.show_tabbed_fields')
+    <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
     @include('crud::inc.show_fields', ['fields' => $fields])
 @endif
@@ -119,6 +120,11 @@
         });
 
       @endif
+
+      $("a[data-toggle='tab']").click(function(){
+          currentTabName = $(this).attr('tab_name');
+          $("input[name='current_tab']").val(currentTabName);
+      });
 
       });
     </script>
