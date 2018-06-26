@@ -154,7 +154,7 @@ trait Columns
      */
     public function makeFirstColumn()
     {
-        if (!$this->columns) {
+        if (! $this->columns) {
             return false;
         }
 

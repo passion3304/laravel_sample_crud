@@ -96,7 +96,7 @@ trait Search
     /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
      * @param  Entity $entry A db entry of the current entity;
-     * @param  integer The number shown to the user as row number (index);
+     * @param  int The number shown to the user as row number (index);
      * @return array         Array of HTML cell contents.
      */
     public function getRowViews($entry, $rowNumber = false)
@@ -133,7 +133,7 @@ trait Search
      * Get the HTML of a cell, using the column types.
      * @param  array $column
      * @param  Entity $entry A db entry of the current entity;
-     * @param  integer The number shown to the user as row number (index);
+     * @param  int The number shown to the user as row number (index);
      * @return HTML
      */
     public function getCellView($column, $entry, $rowNumber = false)
@@ -172,7 +172,7 @@ trait Search
      * @param $view
      * @param $column
      * @param $entry
-     * @param  integer The number shown to the user as row number (index);
+     * @param  int The number shown to the user as row number (index);
      * @return mixed
      */
     private function renderCellView($view, $column, $entry, $rowNumber = false)
@@ -200,7 +200,7 @@ trait Search
         $rows = [];
 
         foreach ($entries as $row) {
-            $rows[] = $this->getRowViews($row, $startIndex === false? false : ++$startIndex);
+            $rows[] = $this->getRowViews($row, $startIndex === false ? false : ++$startIndex);
         }
 
         return [
