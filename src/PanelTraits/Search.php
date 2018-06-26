@@ -102,8 +102,9 @@ trait Search
     {
         $row_items = [];
 
-        if($this->index_column)
+        if ($this->index_column) {
             $row_items[] = $index;
+        }
 
         foreach ($this->columns as $key => $column) {
             $row_items[] = $this->getCellView($column, $entry);
