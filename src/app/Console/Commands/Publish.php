@@ -19,18 +19,26 @@ class Publish extends Command
      * @var string
      */
     protected $signature = 'backpack:crud:publish
-                            {type : what are you publishing? field/column/filter/button}
-                            {name : name of the field/column/filter/button}';
+                            {subpath : short path to the view file (ex: fields/text)}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Publishes a built in field/column/filter/button so you can make changes in your project. Please note you won\'t be getting any updates for these files after you publish them.';
+    protected $description = 'Publishes a Backpack view so you can make changes in your project. Please note you won\'t be getting any updates for these files after you publish them - Backpack will be using YOUR file, instead of the one in vendor.';
 
-    public $packageDir = 'vendor/backpack/crud/src/resources/views/';
-    public $appDir = 'resources/views/vendor/backpack/crud/';
+    /**
+     * The directory where the views will be published FROM.
+     * @var string
+     */
+    public $sourcePath = 'vendor/backpack/crud/src/resources/views/';
+
+    /**
+     * The directory where the views will pe published TO.
+     * @var string
+     */
+    public $destinationPath = 'resources/views/vendor/backpack/crud/';
 
     /**
      * Create a new command instance.
@@ -49,42 +57,27 @@ class Publish extends Command
      */
     public function handle()
     {
-        $this->type = strtolower($this->argument('type'));
-        $this->name = strtolower($this->argument('name'));
+        $this->file = strtolower($this->argument('subpath'));
 
-        switch ($this->type) {
-            case 'field':
-            case 'fields':
-                return $this->publishField();
-            break;
-            case 'button':
-            case 'buttons':
-                return $this->publishButton();
-            break;
-            case 'column':
-            case 'columns':
-                return $this->publishColumn();
-            break;
-            case 'filter':
-            case 'filters':
-                return $this->publishFilter();
-            break;
-            default:
-                return $this->error('Please pick from field, column, filter or button');
-            break;
-        }
+        return $this->publishFile($this->file);
     }
 
-    protected function processPublish($file, $label)
+    /**
+     * Take a blade file from the vendor folder and publish it to the resources folder.
+     *
+     * @param  string $file     The filename without extension
+     * @return void
+     */
+    protected function publishFile($file)
     {
-        $sourceFile = $this->packageDir.$file.'.blade.php';
-        $copiedFile = $this->appDir.$file.'.blade.php';
+        $sourceFile = $this->sourcePath.$file.'.blade.php';
+        $copiedFile = $this->destinationPath.$file.'.blade.php';
 
         if (! file_exists($sourceFile)) {
             return $this->error(
-                'Cannot find source '.$label.' at '
+                'Cannot find source view file at '
                 .$sourceFile.
-                ' - make sure you\'ve picked a real '.$label.' type'
+                ' - make sure you\'ve picked an existing view file'
             );
         } else {
             $canCopy = true;
@@ -117,25 +110,5 @@ class Publish extends Command
                 }
             }
         }
-    }
-
-    protected function publishField()
-    {
-        return $this->processPublish('fields/'.$this->name, 'field');
-    }
-
-    protected function publishColumn()
-    {
-        return $this->processPublish('columns/'.$this->name, 'column');
-    }
-
-    protected function publishButton()
-    {
-        return $this->processPublish('buttons/'.$this->name, 'button');
-    }
-
-    protected function publishFilter()
-    {
-        return $this->processPublish('filters/'.$this->name, 'filter');
     }
 }

@@ -23,10 +23,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## [3.4.15] - 2018-06-xx
 
 ### Added
-- ```php artisan backpack:crud:publish [field/column/filter/button] [name]``` command, thank to [Owen Melbourne's PR in Generators](https://github.com/Laravel-Backpack/Generators/pull/15);
+- ```php artisan backpack:crud:publish [folder.file]``` command, thank to [Owen Melbourne's PR in Generators](https://github.com/Laravel-Backpack/Generators/pull/15);
 
 ### Fixed
 - #1446 merged, fixes #1430 - return to current tab on save and edit;
+- changed syntax for ```php artisan backpack:crud:publish``` command, from ```php artisan backpack:crud:publish field select2``` to ```php artisan backpack:crud:publish fields/select2```; this allows developers to also publish other view files, in other folders, using the same syntax;
 
 ## [3.4.14] - 2018-06-22
 
