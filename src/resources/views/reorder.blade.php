@@ -23,9 +23,20 @@ function tree_element($entry, $key, $all_entries, $crud)
         $all_entries[$key]->tree_element_shown = true;
         $entry->tree_element_shown = true;
 
+        $name = '';
+        if(is_string($crud->reorder_label)) {
+            $name = object_get($entry, $crud->reorder_label);
+        } else
+        if(is_array($crud->reorder_label)) {
+            $items = array();
+            foreach ($crud->reorder_label as $label)
+                array_push($items, object_get($entry, $label));
+            $name = join(' - ', $items);
+        }
+
         // show the tree element
         echo '<li id="list_'.$entry->getKey().'">';
-        echo '<div><span class="disclose"><span></span></span>'.object_get($entry, $crud->reorder_label).'</div>';
+        echo '<div><span class="disclose"><span></span></span>'.$name.'</div>';
 
         // see if this element has any children
         $children = [];

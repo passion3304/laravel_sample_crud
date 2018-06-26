@@ -98,9 +98,13 @@ trait Search
      * @param  Entity $entry A db entry of the current entity;
      * @return array         Array of HTML cell contents.
      */
-    public function getRowViews($entry)
+    public function getRowViews($entry, $index)
     {
         $row_items = [];
+
+        if($this->index_column)
+            $row_items[] = $index;
+
         foreach ($this->columns as $key => $column) {
             $row_items[] = $this->getCellView($column, $entry);
         }
@@ -188,12 +192,12 @@ trait Search
      * @param $entries Eloquent results.
      * @return array
      */
-    public function getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows)
+    public function getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex)
     {
         $rows = [];
 
         foreach ($entries as $row) {
-            $rows[] = $this->getRowViews($row);
+            $rows[] = $this->getRowViews($row, ++$startIndex);
         }
 
         return [

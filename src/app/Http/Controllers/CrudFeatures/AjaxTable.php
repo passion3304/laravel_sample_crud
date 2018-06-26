@@ -48,7 +48,8 @@ trait AjaxTable
         }
 
         $entries = $this->crud->getEntries();
+        $startIndex = $this->request->input('start') ?: 0 * ($this->request->input('length') ?: 0);
 
-        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows);
+        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
     }
 }
