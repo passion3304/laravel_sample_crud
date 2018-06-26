@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.15] - 2018-06-xx
+## [3.4.15] - 2018-06-26
 
 ### Added
 - ```php artisan backpack:crud:publish [folder.file]``` command, thank to [Owen Melbourne's PR in Generators](https://github.com/Laravel-Backpack/Generators/pull/15);
