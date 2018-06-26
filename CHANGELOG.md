@@ -24,6 +24,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - ```php artisan backpack:crud:publish [folder.file]``` command, thank to [Owen Melbourne's PR in Generators](https://github.com/Laravel-Backpack/Generators/pull/15);
+- merged #1471 - ```row_number``` column type;
+- merged #1471 - ```makeFirstColumn()``` method for columns;
 
 ### Fixed
 - #1446 merged, fixes #1430 - return to current tab on save and edit;
