@@ -96,17 +96,15 @@ trait Search
     /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
      * @param  Entity $entry A db entry of the current entity;
+     * @param  integer The number shown to the user as row number (index);
      * @return array         Array of HTML cell contents.
      */
-    public function getRowViews($entry, $index)
+    public function getRowViews($entry, $rowNumber = false)
     {
         $row_items = [];
 
-        if($this->index_column)
-            $row_items[] = $index;
-
         foreach ($this->columns as $key => $column) {
-            $row_items[] = $this->getCellView($column, $entry);
+            $row_items[] = $this->getCellView($column, $entry, $rowNumber);
         }
 
         // add the buttons as the last column
@@ -114,6 +112,7 @@ trait Search
             $row_items[] = \View::make('crud::inc.button_stack', ['stack' => 'line'])
                                 ->with('crud', $this)
                                 ->with('entry', $entry)
+                                ->with('row_number', $rowNumber)
                                 ->render();
         }
 
@@ -122,6 +121,7 @@ trait Search
             $details_row_button = \View::make('crud::columns.details_row_button')
                                            ->with('crud', $this)
                                            ->with('entry', $entry)
+                                           ->with('row_number', $rowNumber)
                                            ->render();
             $row_items[0] = $details_row_button.$row_items[0];
         }
@@ -133,11 +133,12 @@ trait Search
      * Get the HTML of a cell, using the column types.
      * @param  array $column
      * @param  Entity $entry A db entry of the current entity;
+     * @param  integer The number shown to the user as row number (index);
      * @return HTML
      */
-    public function getCellView($column, $entry)
+    public function getCellView($column, $entry, $rowNumber = false)
     {
-        return $this->renderCellView($this->getCellViewName($column), $column, $entry);
+        return $this->renderCellView($this->getCellViewName($column), $column, $entry, $rowNumber);
     }
 
     /**
@@ -171,9 +172,10 @@ trait Search
      * @param $view
      * @param $column
      * @param $entry
+     * @param  integer The number shown to the user as row number (index);
      * @return mixed
      */
-    private function renderCellView($view, $column, $entry)
+    private function renderCellView($view, $column, $entry, $rowNumber = false)
     {
         if (! view()->exists($view)) {
             $view = 'crud::columns.text'; // fallback to text column
@@ -183,6 +185,7 @@ trait Search
             ->with('crud', $this)
             ->with('column', $column)
             ->with('entry', $entry)
+            ->with('rowNumber', $rowNumber)
             ->render();
     }
 
@@ -192,12 +195,12 @@ trait Search
      * @param $entries Eloquent results.
      * @return array
      */
-    public function getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex)
+    public function getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex = false)
     {
         $rows = [];
 
         foreach ($entries as $row) {
-            $rows[] = $this->getRowViews($row, ++$startIndex);
+            $rows[] = $this->getRowViews($row, $startIndex === false? false : ++$startIndex);
         }
 
         return [

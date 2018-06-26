@@ -14,6 +14,7 @@ trait AjaxTable
         $this->crud->hasAccessOrFail('list');
 
         $totalRows = $filteredRows = $this->crud->count();
+        $startIndex = $this->request->input('start') ?: 0;
 
         // if a search term was present
         if ($this->request->input('search') && $this->request->input('search')['value']) {
@@ -48,7 +49,6 @@ trait AjaxTable
         }
 
         $entries = $this->crud->getEntries();
-        $startIndex = $this->request->input('start') ?: 0 * ($this->request->input('length') ?: 0);
 
         return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
     }

@@ -38,9 +38,6 @@
         <table id="crudTable" class="table table-striped table-hover display responsive nowrap" cellspacing="0">
             <thead>
               <tr>
-                @if ($crud->index_column)
-                  <th data-orderable="false" style="width: 12px;">#</th>
-                @endif
                 {{-- Table columns --}}
                 @foreach ($crud->columns as $column)
                   <th {{ isset($column['orderable']) ? 'data-orderable=' .var_export($column['orderable'], true) : '' }}>
@@ -57,9 +54,6 @@
             </tbody>
             <tfoot>
               <tr>
-                @if ($crud->index_column)
-                  <th>#</th>
-                @endif
                 {{-- Table columns --}}
                 @foreach ($crud->columns as $column)
                   <th>{{ $column['label'] }}</th>

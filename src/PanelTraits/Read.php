@@ -159,24 +159,6 @@ trait Read
     }
 
     /**
-     * Enable the INDEX COLUMN functionality.
-     *
-     * In the table view, show a column in the first position of the table with the index of each item.
-     */
-    public function enableIndexColumn()
-    {
-        $this->index_column = true;
-    }
-
-    /**
-     * Disable the INDEX COLUMN functionality.
-     */
-    public function disableIndexColumn()
-    {
-        $this->index_column = false;
-    }
-
-    /**
      * Set the number of rows that should be show on the list view.
      */
     public function setDefaultPageLength($value)
