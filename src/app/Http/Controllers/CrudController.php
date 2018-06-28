@@ -212,6 +212,11 @@ class CrudController extends BaseController
             if (array_key_exists('model', $column) && array_key_exists('autoset', $column) && $column['autoset']) {
                 $this->crud->removeColumn($column['name']);
             }
+
+            // remove the row_number column, since it doesn't make sense in this context
+            if ($column['type'] == 'row_number') {
+                $this->crud->removeColumn($column['name']);
+            }
         }
 
         // get the info for that entry

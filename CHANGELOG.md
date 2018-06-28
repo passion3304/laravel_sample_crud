@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.16] - 2018-06-xx
+
+### Fixed
+- automatically remove ```row_number```` columns from the Preview screen, since it doesn't make sense there and it would break the functionality;
+
 ## [3.4.15] - 2018-06-26
 
 ### Added
