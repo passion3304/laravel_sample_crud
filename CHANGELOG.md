@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - automatically remove ```row_number```` columns from the Preview screen, since it doesn't make sense there and it would break the functionality;
+- return to current_tab functionality broke when used with autoSet();
 
 ## [3.4.15] - 2018-06-26
 
