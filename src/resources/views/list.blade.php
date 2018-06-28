@@ -21,7 +21,7 @@
     <!-- THE ACTUAL CONTENT -->
     <div class="col-md-12">
       <div class="box">
-        <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
+        <div class="box-header hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
           @include('crud::inc.button_stack', ['stack' => 'top'])
 
