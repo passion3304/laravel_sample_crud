@@ -22,6 +22,7 @@
 	<!-- Default box -->
 	  <div class="box">
 	    <div class="box-header with-border">
+	    	<span class="pull-right"><a href="javascript: window.print();"><i class="fa fa-print"></i></a></span>
 	      <h3 class="box-title">
             {{ trans('backpack::crud.preview') }}
             <span>{{ $crud->entity_name }}</span>
