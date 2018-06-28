@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - merges #1479 - added print button on show view;
+- merges #1424 - added --elfinder option to install command;
 
 ### Fixed
 - merges #1480 - hide back buttons and unnecessary features from print previews;
