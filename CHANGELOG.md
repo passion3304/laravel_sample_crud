@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.17] - 2018-06-xx
+## [3.4.17] - 2018-06-28
 
 ### Added
 - merges #1479 - added print button on show view;
