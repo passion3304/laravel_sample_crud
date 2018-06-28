@@ -40,21 +40,15 @@ class Install extends BaseInstall
         */
         $install_elfinder = null;
 
-        if($this->option("elfinder")=="ask")
-        {
+        if ($this->option('elfinder') == 'ask') {
             $install_elfinder = $this->confirm("Install & set up the File Manager (elFinder)? The admin will be able to browse the 'uploads' folder and create/read/modify files and folders there.", 'yes');
-        }
-        elseif($this->option("elfinder")=="no")
-        {
-            $install_elfinder=false;
-        }
-        elseif($this->option("elfinder")=="yes")
-        {
-            $install_elfinder=true;
-        }
-        else
-        {
-            $this->error("Option not recognized: ".$elfinderOption);
+        } elseif ($this->option('elfinder') == 'no') {
+            $install_elfinder = false;
+        } elseif ($this->option('elfinder') == 'yes') {
+            $install_elfinder = true;
+        } else {
+            $this->error('Option not recognized: '.$elfinderOption);
+
             return false;
         }
 
