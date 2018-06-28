@@ -13,8 +13,8 @@ Quickly build an admin interface for your Eloquent models, using Laravel 5. Erec
 
 Features:
 - 49+ field types
-- 1-n relationships
-- n-n relationships
+- 23+ column types
+- 1-1, 1-n and n-n relationships
 - Table view with search, pagination, click column to sort by it
 - Reordering (nested sortable)
 - Back-end validation using Requests
@@ -40,7 +40,7 @@ Installation guides:
 - [Install Backpack on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
 - [Install Backpack on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
 - [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - last feature update was 27 Sep 2017;
-- [Install Backpack on Laravel 5.5](https://laravel-backpack.readme.io/docs/install-on-laravel-55) - recommended;
+- [Install Backpack on Laravel 5.5 or 5.6](https://laravel-backpack.readme.io/v3.4/docs/install-on-laravel-56) - recommended;
 
 
 ## Features
