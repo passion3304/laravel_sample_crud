@@ -38,7 +38,7 @@ class Install extends BaseInstall
         * "ask" comes by default, when no option provided, like: "backpack:crud:install"
         * https://laravel.com/docs/5.6/artisan#options
         */
-        $install_elfinder=null;
+        $install_elfinder = null;
 
         if($this->option("elfinder")=="ask")
         {
