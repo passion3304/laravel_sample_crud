@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - merges #1480 - hide back buttons and unnecessary features from print previews;
+- merges #1416 - enables responsive mode on the table;
 
 
 ## [3.4.16] - 2018-06-28
