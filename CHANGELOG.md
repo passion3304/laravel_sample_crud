@@ -20,6 +20,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.17] - 2018-06-xx
+
+### Added
+- merges #1479 - added print button on show view;
+
+### Fixed
+- merges #1480 - hide back buttons and unnecessary features from print previews;
+
+
 ## [3.4.16] - 2018-06-28
 
 ### Fixed
