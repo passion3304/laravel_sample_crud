@@ -150,6 +150,19 @@ trait Columns
     }
 
     /**
+     * Move this column to be first in the columns list.
+     */
+    public function makeFirstColumn()
+    {
+        if (! $this->columns) {
+            return false;
+        }
+
+        $firstColumn = array_keys(array_slice($this->columns, 0, 1))[0];
+        $this->beforeColumn($firstColumn);
+    }
+
+    /**
      * Move the most recently added column before or after the given target column. Default is before.
      *
      * @param string|array $targetColumn The target column name or array.

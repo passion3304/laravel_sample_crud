@@ -113,7 +113,7 @@ class CrudController extends BaseController
         }
 
         // insert item in the db
-        $item = $this->crud->create($request->except(['save_action', '_token', '_method']));
+        $item = $this->crud->create($request->except(['save_action', '_token', '_method', 'current_tab']));
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
@@ -177,7 +177,7 @@ class CrudController extends BaseController
 
         // update the row in the db
         $item = $this->crud->update($request->get($this->crud->model->getKeyName()),
-                            $request->except('save_action', '_token', '_method'));
+                            $request->except('save_action', '_token', '_method', 'current_tab'));
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
@@ -210,6 +210,11 @@ class CrudController extends BaseController
         foreach ($this->crud->columns as $key => $column) {
             // remove any autoset relationship columns
             if (array_key_exists('model', $column) && array_key_exists('autoset', $column) && $column['autoset']) {
+                $this->crud->removeColumn($column['name']);
+            }
+
+            // remove the row_number column, since it doesn't make sense in this context
+            if ($column['type'] == 'row_number') {
                 $this->crud->removeColumn($column['name']);
             }
         }

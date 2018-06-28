@@ -16,12 +16,13 @@
 
 @section('content')
 	@if ($crud->hasAccess('list'))
-		<a href="{{ url($crud->route) }}"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
+		<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
 	@endif
 
 	<!-- Default box -->
 	  <div class="box">
 	    <div class="box-header with-border">
+	    	<span class="pull-right"><a href="javascript: window.print();"><i class="fa fa-print"></i></a></span>
 	      <h3 class="box-title">
             {{ trans('backpack::crud.preview') }}
             <span>{{ $crud->entity_name }}</span>

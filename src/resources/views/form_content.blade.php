@@ -5,6 +5,7 @@
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled())
     @include('crud::inc.show_tabbed_fields')
+    <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
     @include('crud::inc.show_fields', ['fields' => $fields])
 @endif
@@ -68,7 +69,10 @@
         @endphp
 
         @if ($focusField)
-          window.focusField = $('[name="{{ $focusField['name'] }}"]').eq(0),
+        @php
+        $focusFieldName = !is_iterable($focusField['value']) ? $focusField['name'] : ($focusField['name'] . '[]');
+        @endphp
+          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0),
         @else
           var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
         @endif
@@ -116,6 +120,11 @@
         });
 
       @endif
+
+      $("a[data-toggle='tab']").click(function(){
+          currentTabName = $(this).attr('tab_name');
+          $("input[name='current_tab']").val(currentTabName);
+      });
 
       });
     </script>
