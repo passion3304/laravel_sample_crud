@@ -113,7 +113,7 @@ class CrudController extends BaseController
         }
 
         // insert item in the db
-        $item = $this->crud->create($request->except(['save_action', '_token', '_method']));
+        $item = $this->crud->create($request->except(['save_action', '_token', '_method', 'current_tab']));
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
@@ -177,7 +177,7 @@ class CrudController extends BaseController
 
         // update the row in the db
         $item = $this->crud->update($request->get($this->crud->model->getKeyName()),
-                            $request->except('save_action', '_token', '_method'));
+                            $request->except('save_action', '_token', '_method', 'current_tab'));
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
