@@ -76,9 +76,10 @@
     jQuery(document).ready(function($) {
         // trigger select2 for each untriggered select2 box
         $("#select2_ajax_{{ $field['name'] }}").each(function (i, obj) {
+            var form = $(obj).closest('form');
+
             if (!$(obj).hasClass("select2-hidden-accessible"))
             {
-
                 $(obj).select2({
                     theme: 'bootstrap',
                     multiple: false,
@@ -96,7 +97,8 @@
                         data: function (params) {
                             return {
                                 q: params.term, // search term
-                                page: params.page
+                                page: params.page, // pagination
+                                form: form.serializeArray()  // all other form inputs
                             };
                         },
                         processResults: function (data, params) {
