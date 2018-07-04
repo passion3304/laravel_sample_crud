@@ -28,7 +28,7 @@ trait RequiredFields
 
     public function isRequired($inputName, $operation)
     {
-        if (!isset($this->requiredFields[$operation])) {
+        if (! isset($this->requiredFields[$operation])) {
             return false;
         }
 
