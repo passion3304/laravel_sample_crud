@@ -38,7 +38,7 @@ trait RequiredFields
      * for the given operation.
      * @param  [type]  $inputName Field or input name.
      * @param  [type]  $operation create / update
-     * @return boolean
+     * @return bool
      */
     public function isRequired($inputName, $operation)
     {
