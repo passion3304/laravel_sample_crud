@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.18] - 2018-07-04
+
+### Removed
+- what PR #1416 did;
+
+
 ## [3.4.17] - 2018-06-28
 
 ### Added

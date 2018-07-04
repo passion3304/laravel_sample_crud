@@ -27,11 +27,11 @@
         fn.apply(window, args);
       },
       dataTableConfiguration: {
-        initComplete: function () {
-            crud.responsiveToggle(
-                jQuery('#crudTable').DataTable()
-            );
-        },
+        // initComplete: function () {
+        //     crud.responsiveToggle(
+        //         jQuery('#crudTable').DataTable()
+        //     );
+        // },
         responsive: {
             details: {
                 display: $.fn.dataTable.Responsive.display.modal( {
