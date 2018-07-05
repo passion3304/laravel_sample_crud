@@ -41,7 +41,7 @@
                 {{-- Table columns --}}
                 @foreach ($crud->columns as $column)
                   <th
-                    data-orderable=" {{ var_export($column['orderable'], true) }}"
+                    data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
                     >
                     {{ $column['label'] }}
