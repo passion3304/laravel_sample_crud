@@ -50,7 +50,8 @@ trait Sluggable
 
         return $query->where(function (Builder $q) use ($attribute, $slug, $separator) {
             $q->where($attribute, '=', $slug)
-                ->orWhere($attribute, 'LIKE', $slug.$separator.'%');
+                ->orWhere($attribute, 'LIKE', $slug.$separator.'%')
+                ->orWhere($attribute, 'LIKE', '"'.$slug.$separator.'%');
         });
     }
 }
