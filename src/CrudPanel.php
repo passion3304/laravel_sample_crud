@@ -184,7 +184,7 @@ class CrudPanel
      * including middleware names, route name, method name,
      * namespace, prefix, etc.
      *
-     * @return string The EntityCrudController method name.
+     * @return string The EntityCrudController route action array.
      */
     public function getAction()
     {
@@ -196,7 +196,7 @@ class CrudPanel
      * Get the full name of the controller method
      * currently being called (including namespace).
      *
-     * @return string The EntityCrudController method name.
+     * @return string The EntityCrudController full method name with namespace.
      */
     public function getActionName()
     {
