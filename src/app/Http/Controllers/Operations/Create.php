@@ -58,5 +58,4 @@ trait Create
 
         return $this->performSaveAction($item->getKey());
     }
-
 }

@@ -67,5 +67,4 @@ trait Update
 
         return $this->performSaveAction($item->getKey());
     }
-
 }
