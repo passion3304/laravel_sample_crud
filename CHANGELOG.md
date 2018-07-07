@@ -27,7 +27,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - #1489, #1416 merged #1499 - datatables colvis and responsive incompatibility;
-
+- #1502 - range filter type can now work only with one value - min/max;
 
 ## [3.4.18] - 2018-07-04
 
