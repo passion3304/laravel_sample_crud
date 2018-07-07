@@ -8,6 +8,8 @@ trait Columns
     // COLUMNS
     // ------------
 
+    public $actions_column_priority = 1;
+
     /**
      * Get the CRUD columns.
      *
@@ -105,6 +107,13 @@ trait Columns
         }
 
         array_filter($this->columns[$column_with_details['key']] = $column_with_details);
+
+        // make sure the column has a priority in terms of visibility
+        // if no priority has been defined, use the order in the array plus one
+        if (! array_key_exists('priority', $column_with_details)) {
+            $position_in_columns_array = (int) array_search($column_with_details['key'], array_keys($this->columns));
+            $this->columns[$column_with_details['key']]['priority'] = $position_in_columns_array + 1;
+        }
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
@@ -380,5 +389,29 @@ trait Columns
         }
 
         return in_array($name, $columns);
+    }
+
+    /**
+     * Get the visibility priority for the actions column
+     * in the CRUD table view.
+     *
+     * @return int The priority, from 1 to infinity. Lower is better.
+     */
+    public function getActionsColumnPriority()
+    {
+        return (int) $this->actions_column_priority;
+    }
+
+    /**
+     * Set a certain priority for the actions column
+     * in the CRUD table view. Usually set to 10000 in order to hide it.
+     *
+     * @param int $number The priority, from 1 to infinity. Lower is better.
+     */
+    public function setActionsColumnPriority($number)
+    {
+        $this->actions_column_priority = (int) $number;
+
+        return $this;
     }
 }
