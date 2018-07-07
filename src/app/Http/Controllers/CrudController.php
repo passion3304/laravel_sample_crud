@@ -4,10 +4,7 @@ namespace Backpack\CRUD\app\Http\Controllers;
 
 use Backpack\CRUD\CrudPanel;
 use Illuminate\Http\Request;
-use Illuminate\Http\Request as StoreRequest;
-use Illuminate\Support\Facades\Form as Form;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Http\Request as UpdateRequest;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Backpack\CRUD\app\Http\Controllers\Operations\Create;
@@ -22,7 +19,7 @@ use Backpack\CRUD\app\Http\Controllers\Operations\Update;
 class CrudController extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
-    use Create, Update, ListEntries, Delete, Show, Reorder, Revisions, SaveActions;
+    use Create, Delete, ListEntries, Reorder, Revisions, SaveActions, Show, Update;
 
     public $data = [];
     public $request;
