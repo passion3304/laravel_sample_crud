@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.19] - 2018-07-xx
+
+### Fixed
+- #1489, #1416 merged #1499 - datatables colvis and responsive incompatibility;
+
+
 ## [3.4.18] - 2018-07-04
 
 ### Removed
