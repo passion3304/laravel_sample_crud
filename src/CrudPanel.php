@@ -174,6 +174,33 @@ class CrudPanel
         $this->entity_name_plural = $plural;
     }
 
+    // -----------------------------------------------
+    // ACTIONS - the current operation being processed
+    // -----------------------------------------------
+
+    /**
+     * Get the name of the controller method
+     * currently being called.
+     *
+     * @return string The EntityCrudController method name.
+     */
+    public function getActionMethod()
+    {
+        return $this->request->route()->getActionMethod();
+    }
+
+    /**
+     * Check if the controller method being called
+     * matches a given string.
+     *
+     * @param  string $name Name of the method (ex: index, create, update)
+     * @return bool         Whether the condition is met or not.
+     */
+    public function actionIs($name)
+    {
+        return $name === $this->getActionMethod();
+    }
+
     // ----------------------------------
     // Miscellaneous functions or methods
     // ----------------------------------
