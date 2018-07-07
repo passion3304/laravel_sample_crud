@@ -178,7 +178,6 @@ class CrudPanel
     // ACTIONS - the current operation being processed
     // -----------------------------------------------
 
-
     /**
      * Get the action being performed by the controller,
      * including middleware names, route name, method name,
@@ -190,7 +189,6 @@ class CrudPanel
     {
         return $this->request->route()->getAction();
     }
-
 
     /**
      * Get the full name of the controller method
