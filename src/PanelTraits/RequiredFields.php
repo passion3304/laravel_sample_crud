@@ -18,7 +18,7 @@ trait RequiredFields
      * @param [type] $class     Class that extends FormRequest
      * @param [type] $operation create / update
      */
-    public function setRequired($class, $operation)
+    public function setRequiredFields($class, $operation)
     {
         $formRequest = new $class;
 
