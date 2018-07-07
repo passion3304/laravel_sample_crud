@@ -22,6 +22,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.4.19] - 2018-07-xx
 
+### Added
+- #1501 - priority attribute to addColumn statement and ```$this->crud->setActionsColumnPriority(10000);``` method; first and last column now take priority by default;
+
 ### Fixed
 - #1489, #1416 merged #1499 - datatables colvis and responsive incompatibility;
 
