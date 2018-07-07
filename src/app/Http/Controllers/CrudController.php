@@ -11,6 +11,7 @@ use Illuminate\Http\Request as UpdateRequest;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Backpack\CRUD\app\Http\Controllers\Operations\Create;
+use Backpack\CRUD\app\Http\Controllers\Operations\Delete;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListEntries;
 use Backpack\CRUD\app\Http\Controllers\Operations\Reorder;
 use Backpack\CRUD\app\Http\Controllers\Operations\Revisions;
@@ -21,16 +22,15 @@ use Backpack\CRUD\app\Http\Controllers\Operations\Update;
 class CrudController extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
-    use Create, Update, ListEntries, Show, Reorder, Revisions, SaveActions;
+    use Create, Update, ListEntries, Delete, Show, Reorder, Revisions, SaveActions;
 
     public $data = [];
+    public $request;
 
     /**
      * @var CrudPanel
      */
     public $crud;
-
-    public $request;
 
     public function __construct()
     {
@@ -56,21 +56,4 @@ class CrudController extends BaseController
     {
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     *
-     * @return string
-     */
-    public function destroy($id)
-    {
-        $this->crud->hasAccessOrFail('delete');
-
-        // get entry ID from Request (makes sure its the last ID for nested resources)
-        $id = $this->crud->getCurrentEntryId() ?? $id;
-
-        return $this->crud->delete($id);
-    }
 }
