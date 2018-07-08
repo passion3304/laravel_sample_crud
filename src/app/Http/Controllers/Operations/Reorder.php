@@ -14,6 +14,7 @@ trait Reorder
     public function reorder()
     {
         $this->crud->hasAccessOrFail('reorder');
+        $this->crud->setOperation('reorder');
 
         if (! $this->crud->isReorderEnabled()) {
             abort(403, 'Reorder is disabled.');
@@ -38,6 +39,7 @@ trait Reorder
     public function saveReorder()
     {
         $this->crud->hasAccessOrFail('reorder');
+        $this->crud->setOperation('reorder');
 
         $all_entries = \Request::input('tree');
 

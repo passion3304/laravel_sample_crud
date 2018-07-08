@@ -14,6 +14,7 @@ trait Show
     public function show($id)
     {
         $this->crud->hasAccessOrFail('show');
+        $this->crud->setOperation('show');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
