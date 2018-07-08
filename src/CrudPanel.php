@@ -21,13 +21,18 @@ use Backpack\CRUD\PanelTraits\Reorder;
 use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\FakeColumns;
-use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\PanelTraits\RequiredFields;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Traits\Macroable;
 
 class CrudPanel
 {
+    // load all the default CrudPanel features
     use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields;
+
+    // allow developers to add their own closures to this object
+    use Macroable;
 
     // --------------
     // CRUD variables
