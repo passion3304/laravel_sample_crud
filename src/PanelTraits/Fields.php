@@ -157,6 +157,21 @@ trait Fields
     }
 
     /**
+     * Remove all fields from the create/update/both forms.
+     *
+     * @param string $form           update/create/both
+     */
+    public function removeAllFields($form = 'both')
+    {
+        $current_fields = $this->getCurrentFields();
+        if (! empty($current_fields)) {
+            foreach ($current_fields as $field) {
+                $this->removeField($field['name'], $form);
+            }
+        }
+    }
+
+    /**
      * Set label for a specific field.
      *
      * @param string $field

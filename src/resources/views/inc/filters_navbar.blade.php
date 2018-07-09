@@ -15,9 +15,9 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <!-- THE ACTUAL FILTERS -->
-			@foreach ($crud->filters as $filter)
-				@include($filter->view)
-			@endforeach
+    			@foreach ($crud->filters as $filter)
+    				@include($filter->view)
+    			@endforeach
           <li ><a href="#" id="remove_filters_button" class="hidden"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->

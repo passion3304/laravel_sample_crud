@@ -27,7 +27,7 @@
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'nav-stacked nav-pills'}}" role="tablist">
             @foreach ($crud->getTabs() as $k => $tab)
                 <li role="presentation" class="{{$k == 0 ? 'active' : ''}}">
-                    <a href="#tab_{{ str_slug($tab, "") }}" aria-controls="tab_{{ str_slug($tab, "") }}" role="tab" data-toggle="tab">{{ $tab }}</a>
+                    <a href="#tab_{{ str_slug($tab, "") }}" aria-controls="tab_{{ str_slug($tab, "") }}" role="tab" tab_name="{{ str_slug($tab, "") }}" data-toggle="tab" class="tab_toggler">{{ $tab }}</a>
                 </li>
             @endforeach
         </ul>
