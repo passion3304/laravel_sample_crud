@@ -134,7 +134,6 @@ trait Search
         $this->setResponsiveTable(true);
     }
 
-
     /**
      * Remember to show a table with horizontal scrolling.
      */
@@ -142,7 +141,6 @@ trait Search
     {
         $this->setResponsiveTable(false);
     }
-
 
     /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
