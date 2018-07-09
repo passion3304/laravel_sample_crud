@@ -35,14 +35,23 @@ trait Search
      */
     public function applySearchLogicForColumn($query, $column, $searchTerm)
     {
+        $columnType = $column['type'];
+
         // if there's a particular search logic defined, apply that one
         if (isset($column['searchLogic'])) {
             $searchLogic = $column['searchLogic'];
 
+            // if a closure was passed, execute it
             if (is_callable($searchLogic)) {
                 return $searchLogic($query, $column, $searchTerm);
             }
 
+            // if a string was passed, search like it was that column type
+            if (is_string($searchLogic)) {
+                $columnType = $searchLogic;
+            }
+
+            // if false was passed, don't search this column
             if ($searchLogic == false) {
                 return;
             }
@@ -50,7 +59,7 @@ trait Search
 
         // sensible fallback search logic, if none was explicitly given
         if ($column['tableColumn']) {
-            switch ($column['type']) {
+            switch ($columnType) {
                 case 'email':
                 case 'date':
                 case 'datetime':
