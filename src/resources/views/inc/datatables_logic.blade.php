@@ -28,7 +28,7 @@
       },
       dataTableConfiguration: {
 
-        @if ($crud->getTableResponsive())
+        @if ($crud->getResponsiveTable())
         responsive: {
             details: {
                 display: $.fn.dataTable.Responsive.display.modal( {

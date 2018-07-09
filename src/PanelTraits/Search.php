@@ -11,7 +11,7 @@ trait Search
     */
 
     public $ajax_table = true;
-    public $table_responsive = true;
+    public $responsive_table;
 
     /**
      * Add conditions to the CRUD query for a particular search term.
@@ -107,9 +107,9 @@ trait Search
      * Tell the list view to NOT show a reponsive DataTable.
      * @param  bool $value
      */
-    public function setTableResponsive($value = true)
+    public function setResponsiveTable($value = true)
     {
-        $this->table_responsive = $value;
+        $this->responsive_table = $value;
     }
 
     /**
@@ -117,10 +117,32 @@ trait Search
      *
      * @return bool
      */
-    public function getTableResponsive()
+    public function getResponsiveTable()
     {
-        return $this->table_responsive;
+        if ($this->responsive_table !== null) {
+            return $this->responsive_table;
+        }
+
+        return config('backpack.crud.responsive_table');
     }
+
+    /**
+     * Remember to show a responsive table.
+     */
+    public function enableResponsiveTable()
+    {
+        $this->setResponsiveTable(true);
+    }
+
+
+    /**
+     * Remember to show a table with horizontal scrolling.
+     */
+    public function disableResponsiveTable()
+    {
+        $this->setResponsiveTable(false);
+    }
+
 
     /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
