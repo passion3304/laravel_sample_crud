@@ -20,6 +20,140 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.21] - 2018-07-xx
+
+### Added
+- #1524 - columns ```searchLogic``` attribute can now receive a string; this will make that column search like it was that column type; so if you pass ```'searchLogic'=> 'text'``` it will search like a text column;
+- #1380 - ```$this->crud->disableResponsiveTable()```, ```$this->crud->enableResponsiveTable()``` and a config option to set the default behaviour;
+
+## [3.4.20] - 2018-07-08
+
+### Fixed
+- default UpdateRequest and CreateRequest were missing from both CrudController and Operations/Create and Operations/Update, because StyleCI removed them;
+
+## [3.4.19] - 2018-07-07
+
+### Added
+- #1501 - priority attribute to addColumn statement and ```$this->crud->setActionsColumnPriority(10000);``` method; first and last column now take priority by default;
+- #1507 - actions; the ability to determine what controller method is currently being called by the route using ```$this->crud->getActionMethod()``` and the ```$this->crud->actionIs('create')``` conditional;
+- #1495 - asterisk for required fields are added automatically for create&update operations, if ```$this->crud->setRequiredFields(StoreRequest::class, 'create');``` and ```$this->crud->setRequiredFields(UpdateRequest::class, 'edit');``` are defined in the setup() method;
+
+### Fixed
+- #1489, #1416 merged #1499 - datatables colvis and responsive incompatibility;
+- #1502 - range filter type can now work only with one value - min/max;
+- #1510 - renamed CrudFeatures into Operations (simple refactoring);
+
+## [3.4.18] - 2018-07-04
+
+### Removed
+- what PR #1416 did;
+
+
+## [3.4.17] - 2018-06-28
+
+### Added
+- merges #1479 - added print button on show view;
+- merges #1424 - added --elfinder option to install command;
+
+### Fixed
+- merges #1480 - hide back buttons and unnecessary features from print previews;
+- merges #1416 - enables responsive mode on the table;
+
+
+## [3.4.16] - 2018-06-28
+
+### Fixed
+- automatically remove ```row_number```` columns from the Preview screen, since it doesn't make sense there and it would break the functionality;
+- return to current_tab functionality broke when used with autoSet();
+
+## [3.4.15] - 2018-06-26
+
+### Added
+- ```php artisan backpack:crud:publish [folder.file]``` command, thank to [Owen Melbourne's PR in Generators](https://github.com/Laravel-Backpack/Generators/pull/15);
+- merged #1471 - ```row_number``` column type;
+- merged #1471 - ```makeFirstColumn()``` method for columns;
+
+### Fixed
+- #1446 merged, fixes #1430 - return to current tab on save and edit;
+- changed syntax for ```php artisan backpack:crud:publish``` command, from ```php artisan backpack:crud:publish field select2``` to ```php artisan backpack:crud:publish fields/select2```; this allows developers to also publish other view files, in other folders, using the same syntax;
+
+## [3.4.14] - 2018-06-22
+
+### Added
+- #1443 - ```$this->crud->removeAllFields()``` API call;
+
+### Fixed
+- #1462 - date_range filter did not get triggered upon Today click;
+- #1459 - select2_ajax filter did not load CSS and JS correctly;
+- #1449 merged - fixes #1425 - "Undo revision" triggered 404 error;
+- #1447 merged - create/edit's Cancel button now leads to previous page if no list access;
+- #1417 merged - autofocus on iterable fields;
+
+## [3.4.13] - 2018-06-04
+
+### Fixed
+- #1299 - installer now works on Windows too, thanks to [Toni Almeida](https://github.com/promatik);
+
+
+## [3.4.12] - 2018-05-30
+
+### Added
+- ```range``` filter type;
+
+### Fixed
+- all filter clear buttons;
+- date_range filter endless loop issue;
+
+## [3.4.11] - 2018-05-16
+
+### Added
+- #1319 - format parameter for ```date``` and ```datetime``` column types;
+- #1316 - ```closure``` column type;
+- #1401 - ```default``` attribute for ```select2``` field type;
+- #1388 - ```view_namespace``` attribute for columns;
+- #1389 - ```view_namespace``` attribute for filters;
+- #1387 - ```view_namespace``` attribute for fields;
+
+### Fixed
+- #1407 - AccessDeniedException did not show custom error message at all;
+- #1346 - AccessDeniedException error message should show permission that is missing;
+- #1076, merged #1355 - ```dropdown``` filter no longer has conflicts with VueJS because of key attribute;
+- using null coalesce operator to simplify filters code;
+
+
+## [3.4.10] - 2018-05-14
+
+### Added
+- #1382 - Arabic translation;
+
+### Fixed
+- #1326 - sorting in datatables when details_row is enabled;
+- #1392 - check column type is now exportable;
+- #756 - ```CKEDITOR.style.addCustomHandler is not a function``` by updating ckeditor to 4.9.2;
+- #1318 - summernote field type can have separate configuration arrays if multiple summernotes in one form;
+- #1398, PR #1399 - datepicker and daterangepicker did not load correct language files;
+
+## [3.4.9] - 2018-05-10
+
+## Fixed
+- #1378 - when a custom default page length is specified, it should show up in the page length menu;
+- #1297 - possible XSS vulnerability in ```select``` field type; now using ```e()``` to escape the attribute;
+- #1383 - ability to display relationship information using dot notation in the ```text``` column type;
+
+
+## [3.4.8] - 2018-05-07
+
+## Fixed
+- better pt_br translation; merged #1368;
+- translated name for File Manager sidebar item; merged #1369;
+
+
+## [3.4.7] - 2018-05-07
+
+## Fixed
+- fixed #1364 merged #1306 - datatables javascript issue in IE11;
+
+
 ## [3.4.6] - 2018-04-23
 
 ## Fixed
@@ -31,7 +165,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## Fixed
 - getting the correct current id for nested resources; fixes #1323; fixes #252; merges #1339;
 - #1321 - setting locale for traversable items; merges #1330;
-
+- LV translation, thanks to @tomsb; merges #1358;
 
 ## [3.4.4] - 2018-03-29
 

@@ -35,6 +35,10 @@ return [
 
     // LIST VIEW (table view)
 
+    // enable the datatables-responsive plugin, which hides columns if they don't fit?
+    // if not, a horizontal scrollbar will be shown instead
+    'responsive_table' => true,
+
         // How many items should be shown by default by the Datatable?
         // This value can be overwritten on a specific CRUD by calling
         // $this->crud->setDefaultPageLength(50);

@@ -87,7 +87,7 @@ trait Access
     public function hasAccessOrFail($permission)
     {
         if (! in_array($permission, $this->access)) {
-            throw new AccessDeniedException(trans('backpack::crud.unauthorized_access'));
+            throw new AccessDeniedException(trans('backpack::crud.unauthorized_access', ['access' => $permission]));
         }
 
         return true;
