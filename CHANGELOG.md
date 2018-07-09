@@ -25,6 +25,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - #1524 - columns ```searchLogic``` attribute can now receive a string; this will make that column search like it was that column type; so if you pass ```'searchLogic'=> 'text'``` it will search like a text column;
 - #1380 - ```$this->crud->disableResponsiveTable()```, ```$this->crud->enableResponsiveTable()``` and a config option to set the default behaviour;
+- #1353 - ```$this->crud->modifyColumn($name, $modifs_array)```;
+- #1353 - ```$this->crud->modifyField($name, $modifs_array, $form)```;
+- #1353 - ```$this->crud->modifyFilter($name, $modifs_array)```;
+- #1353 - ```$this->crud->modifyButton($name, $modifs_array)```;
 
 ## [3.4.20] - 2018-07-08
 
