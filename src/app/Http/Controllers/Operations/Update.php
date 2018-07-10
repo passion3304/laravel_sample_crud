@@ -25,7 +25,7 @@ trait Update
         $this->data['crud'] = $this->crud;
         $this->data['saveAction'] = $this->getSaveAction();
         $this->data['fields'] = $this->crud->getUpdateFields($id);
-        $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['title'] = $this->crud->getTitle(trans('backpack::crud.edit').' '.$this->crud->entity_name);
 
         $this->data['id'] = $id;
 
