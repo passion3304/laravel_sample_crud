@@ -17,11 +17,10 @@ trait HeadingsAndTitle
     /**
      * Get the title string for the current controller method (action).
      *
-     * @param  boolean $fallback String to return if there is no custom title stored.
      * @param  boolean $action   create / edit / reorder / etc
      * @return string
      */
-    public function getTitle($fallback = false, $action = false)
+    public function getTitle($action = false)
     {
         if (!$action) {
             $action = $this->getActionMethod();
@@ -29,10 +28,6 @@ trait HeadingsAndTitle
 
         if (isset($this->titles[$action])) {
             return $this->titles[$action];
-        }
-
-        if (is_string($fallback)) {
-            return $fallback;
         }
     }
 
@@ -60,11 +55,10 @@ trait HeadingsAndTitle
     /**
      * Get the heading string for the current controller method (action).
      *
-     * @param  boolean $fallback String to return if there is no custom heading stored.
      * @param  boolean $action   create / edit / reorder / etc
      * @return string
      */
-    public function getHeading($fallback = false, $action = false)
+    public function getHeading($action = false)
     {
         if (!$action) {
             $action = $this->getActionMethod();
@@ -72,10 +66,6 @@ trait HeadingsAndTitle
 
         if (isset($this->headings[$action])) {
             return $this->headings[$action];
-        }
-
-        if (is_string($fallback)) {
-            return $fallback;
         }
     }
 
@@ -103,11 +93,10 @@ trait HeadingsAndTitle
     /**
      * Get the subheading for a certain controller method (action).
      *
-     * @param  boolean $fallback String to return if no custom subheading is present.
      * @param  boolean $action   create / edit / reorder / etc
      * @return string
      */
-    public function getSubheading($fallback = false, $action = false)
+    public function getSubheading($action = false)
     {
         if (!$action) {
             $action = $this->getActionMethod();
@@ -115,10 +104,6 @@ trait HeadingsAndTitle
 
         if (isset($this->subheadings[$action])) {
             return $this->subheadings[$action];
-        }
-
-        if (is_string($fallback)) {
-            return $fallback;
         }
     }
 
