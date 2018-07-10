@@ -8,7 +8,6 @@ use Backpack\CRUD\PanelTraits\Query;
 use Backpack\CRUD\PanelTraits\Views;
 use Backpack\CRUD\PanelTraits\Access;
 use Backpack\CRUD\PanelTraits\Create;
-use Backpack\CRUD\PanelTraits\HeadingsAndTitle;
 use Backpack\CRUD\PanelTraits\Delete;
 use Backpack\CRUD\PanelTraits\Errors;
 use Backpack\CRUD\PanelTraits\Fields;
@@ -24,6 +23,7 @@ use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\FakeColumns;
 use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\PanelTraits\RequiredFields;
+use Backpack\CRUD\PanelTraits\HeadingsAndTitle;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel

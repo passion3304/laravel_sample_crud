@@ -8,7 +8,6 @@ trait HeadingsAndTitle
     public $headings = [];
     public $subheadings = [];
 
-
     // -----
     // TITLE
     // -----
@@ -17,13 +16,13 @@ trait HeadingsAndTitle
     /**
      * Get the title string for the current controller method (action).
      *
-     * @param  boolean $fallback String to return if there is no custom title stored.
-     * @param  boolean $action   create / edit / reorder / etc
+     * @param  bool $fallback String to return if there is no custom title stored.
+     * @param  bool $action   create / edit / reorder / etc
      * @return string
      */
     public function getTitle($fallback = false, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
@@ -44,13 +43,12 @@ trait HeadingsAndTitle
      */
     public function setTitle($string, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
         $this->titles[$action] = $string;
     }
-
 
     // -------
     // HEADING
@@ -60,13 +58,13 @@ trait HeadingsAndTitle
     /**
      * Get the heading string for the current controller method (action).
      *
-     * @param  boolean $fallback String to return if there is no custom heading stored.
-     * @param  boolean $action   create / edit / reorder / etc
+     * @param  bool $fallback String to return if there is no custom heading stored.
+     * @param  bool $action   create / edit / reorder / etc
      * @return string
      */
     public function getHeading($fallback = false, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
@@ -87,13 +85,12 @@ trait HeadingsAndTitle
      */
     public function setHeading($string, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
         $this->headings[$action] = $string;
     }
-
 
     // ----------
     // SUBHEADING
@@ -103,13 +100,13 @@ trait HeadingsAndTitle
     /**
      * Get the subheading for a certain controller method (action).
      *
-     * @param  boolean $fallback String to return if no custom subheading is present.
-     * @param  boolean $action   create / edit / reorder / etc
+     * @param  bool $fallback String to return if no custom subheading is present.
+     * @param  bool $action   create / edit / reorder / etc
      * @return string
      */
     public function getSubheading($fallback = false, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
@@ -130,7 +127,7 @@ trait HeadingsAndTitle
      */
     public function setSubheading($string, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
