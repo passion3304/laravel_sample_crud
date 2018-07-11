@@ -76,7 +76,7 @@ trait CrudTrait
     public function addFakes($columns = ['extras'])
     {
         foreach ($columns as $key => $column) {
-            if (!isset($this->attributes[$column])) {
+            if (! isset($this->attributes[$column])) {
                 continue;
             }
 
