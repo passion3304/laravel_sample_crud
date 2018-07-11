@@ -21,7 +21,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 -----------
 
 
-## [3.4.23] - 2018-07-xx
+## [3.4.23] - 2018-07-11
 
 ### Added
 - composer.lock to gitignore;
