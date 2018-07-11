@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+
+## [3.4.23] - 2018-07-xx
+
+### Fixed
+- #1533 - fixed casts with fakes;
+
+
 ## [3.4.22] - 2018-07-10
 
 ### Fixed
