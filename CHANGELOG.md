@@ -23,6 +23,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.4.23] - 2018-07-xx
 
+### Added
+- composer.lock to gitignore;
+
 ### Fixed
 - #1533 - fixed casts with fakes;
 
