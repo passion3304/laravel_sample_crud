@@ -97,10 +97,16 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
 
                         for (var i = 0; i < place.address_components.length; i++) {
                             var addressType = place.address_components[i].types[0];
-                                data[addressType] = place.address_components[i]['long_name'];
+                            data[addressType] = place.address_components[i]['long_name'];
                         }
                         $field.val(JSON.stringify(data));
 
+                    });
+
+                    $this.change(function(){
+                        if (!$this.val().length) {
+                            $field.val("");
+                        }
                     });
 
 
@@ -109,7 +115,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             }
 
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_PLACES_API_KEY')}}&libraries=places&callback=initAutocomplete"
+        <script src="https://maps.googleapis.com/maps/api/js?key={{config('backpack.crud.google_places_api_key')}}&libraries=places&callback=initAutocomplete"
                 async defer></script>
 
     @endpush
