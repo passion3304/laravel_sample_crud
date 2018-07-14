@@ -27,8 +27,8 @@ trait RequiredFields
         if (count($rules)) {
             foreach ($rules as $key => $rule) {
                 if (
-                    is_string($rule) && strpos($rule, 'required')       !== false ||
-                    is_array($rule)  && array_search('required', $rule) !== false
+                    is_string($rule) && strpos($rule, 'required') !== false ||
+                    is_array($rule) && array_search('required', $rule) !== false
                 ) {
                     $this->requiredFields[$operation][] = $key;
                 }
