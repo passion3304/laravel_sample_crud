@@ -115,7 +115,7 @@ trait CrudTrait
     }
 
     /**
-     * Determine if this fake column should be json_decoded
+     * Determine if this fake column should be json_decoded.
      *
      * @param $column string fake column name
      * @return bool
