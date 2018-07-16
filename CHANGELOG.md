@@ -20,6 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.24] - 2018-07-16
+
+### Fixed
+- #1542 by merging #1543 - validation rules defined as arrays;
 
 ## [3.4.23] - 2018-07-11
 
