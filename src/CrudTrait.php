@@ -80,9 +80,9 @@ trait CrudTrait
                 continue;
             }
 
-            $column_contents = $this->attributes[$column];
+            $column_contents = $this->{$column};
 
-            if (! is_object($column_contents)) {
+            if ($this->shouldDecodeFake($column)) {
                 $column_contents = json_decode($column_contents);
             }
 
@@ -112,6 +112,17 @@ trait CrudTrait
         $this->addFakes($columns);
 
         return $this;
+    }
+
+    /**
+     * Determine if this fake column should be json_decoded
+     *
+     * @param $column string fake column name
+     * @return bool
+     */
+    public function shouldDecodeFake($column)
+    {
+        return ! in_array($column, array_keys($this->casts));
     }
 
     /**
