@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+
+## [3.4.25] - 2018-07-16
+
+### Fixed
+- #1546 by merging #1548 - fake translatable fields when cast as array/object;
+
+
 ## [3.4.24] - 2018-07-16
 
 ### Fixed
