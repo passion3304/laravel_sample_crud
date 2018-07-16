@@ -5,13 +5,12 @@ namespace Backpack\CRUD\Tests\Unit\CrudTrait;
 use Unit\CrudPanel\Models\FakeColumnsModel;
 
 /**
- * Class CrudTraitFakeFieldsTest
+ * Class CrudTraitFakeFieldsTest.
  *
  * @group CrudTraitFakeFields
  */
 class CrudTraitFakeFieldsTest extends BaseCrudTraitTest
 {
-
     private $locale;
     /**
      * @var FakeColumnsModel
@@ -22,33 +21,33 @@ class CrudTraitFakeFieldsTest extends BaseCrudTraitTest
 
     private $extras = [
         'extras_first'  => 'Extras first',
-        'extras_second' => 'Extras second'
+        'extras_second' => 'Extras second',
     ];
 
     private $extras_translatable = [
         'en' => [
             'extras_translatable_first'  => 'extras_translatable first en',
-            'extras_translatable_second' => 'extras_translatable second en'
+            'extras_translatable_second' => 'extras_translatable second en',
         ],
         'ro' => [
             'extras_translatable_first'  => 'extras_translatable first ro',
-            'extras_translatable_second' => 'extras_translatable second ro'
-        ]
+            'extras_translatable_second' => 'extras_translatable second ro',
+        ],
 
     ];
 
     private $fake_object = [
         'fake_object_first'  => 'fake_object first',
-        'fake_object_second' => 'fake_object second'
+        'fake_object_second' => 'fake_object second',
     ];
 
     private $fake_assoc_array = [
         'fake_assoc_array_first'  => 'fake_assoc_array first',
-        'fake_assoc_array_second' => 'fake_assoc_array second'
+        'fake_assoc_array_second' => 'fake_assoc_array second',
     ];
 
     /**
-     * Setup function for each test
+     * Setup function for each test.
      */
     protected function setUp()
     {
@@ -73,7 +72,6 @@ class CrudTraitFakeFieldsTest extends BaseCrudTraitTest
 
     public function testExtrasGetFaked()
     {
-
         $this->assertEquals($this->extras, json_decode($this->model->extras, true));
 
         $this->assertEquals($this->extras['extras_first'], $this->model->extras_first);
@@ -108,6 +106,5 @@ class CrudTraitFakeFieldsTest extends BaseCrudTraitTest
 
         $this->assertEquals($this->fake_assoc_array['fake_assoc_array_second'], $this->model->fake_assoc_array['fake_assoc_array_second']);
         $this->assertEquals($this->fake_assoc_array['fake_assoc_array_second'], $this->model->fake_assoc_array_second);
-
     }
 }

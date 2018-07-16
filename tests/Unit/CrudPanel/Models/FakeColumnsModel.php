@@ -1,18 +1,16 @@
 <?php
 
-
 namespace Unit\CrudPanel\Models;
 
 use Backpack\CRUD\CrudTrait;
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\Sluggable;
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\ModelTraits\SpatieTranslatable\Sluggable;
+use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
+use Backpack\CRUD\ModelTraits\SpatieTranslatable\SluggableScopeHelpers;
 
 class FakeColumnsModel extends Model
 {
     use CrudTrait;
-
     use HasTranslations;
 
     // TODO: also use sluggable and translated slugs to unit test
@@ -56,5 +54,4 @@ class FakeColumnsModel extends Model
         'fake_assoc_array' => 'array',
         'fake_assoc_array_translatable' => 'array',
     ];
-
 }
