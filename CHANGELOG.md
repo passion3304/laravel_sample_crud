@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - #1554 - translatable Edit button wasn't entirely visible;
+- number column still used TD instead of SPAN;
 
 
 ## [3.4.25] - 2018-07-16
