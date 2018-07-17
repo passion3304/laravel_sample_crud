@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.26] - 2018-07-17
+
+### Fixed
+- #1554 - translatable Edit button wasn't entirely visible;
+
 
 ## [3.4.25] - 2018-07-16
 
