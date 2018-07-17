@@ -51,7 +51,8 @@ trait Sluggable
         return $query->where(function (Builder $q) use ($attribute, $slug, $separator) {
             $q->where($attribute, '=', $slug)
                 ->orWhere($attribute, 'LIKE', $slug.$separator.'%')
-                ->orWhere($attribute, 'LIKE', '"'.$slug.$separator.'%');
+                // Fixes issues with Json data types in MySQL where data is sourrounded by "
+                ->orWhere($attribute, 'LIKE', '"'.$slug.$separator.'%'); 
         });
     }
 }
