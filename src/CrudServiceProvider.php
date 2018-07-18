@@ -181,7 +181,7 @@ class CrudServiceProvider extends ServiceProvider
         $client = new \GuzzleHttp\Client();
         $res = $client->request('PUT', 'https://backpackforlaravel.com/api/stats', [
             'form_params' => $stats,
-            'http_errors' => false
+            'http_errors' => false,
         ]);
     }
 }
