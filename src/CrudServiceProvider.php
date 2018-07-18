@@ -74,7 +74,10 @@ class CrudServiceProvider extends ServiceProvider
             'backpack.crud'
         );
 
-        $this->sendUsageStats();
+        // in production, send usage stats every ~100 pageloads
+        if ($this->runningInProduction() && rand(1, 100) == 1) {
+            $this->sendUsageStats();
+        }
     }
 
     /**
@@ -138,6 +141,8 @@ class CrudServiceProvider extends ServiceProvider
         if ($this->app->runningUnitTests()) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -150,16 +155,6 @@ class CrudServiceProvider extends ServiceProvider
      */
     private function sendUsageStats()
     {
-        // only do this in production
-        if (! $this->runningInProduction()) {
-            return;
-        }
-
-        // only send the stats with a 1/100 probability
-        if (rand(1, 100) != 1) {
-            return;
-        }
-
         $stats = [];
         $stats['HTTP_HOST'] = $_SERVER['HTTP_HOST'] ?? false;
         $stats['APP_URL'] = $_SERVER['APP_URL'] ?? false;
