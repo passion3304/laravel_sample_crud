@@ -162,11 +162,10 @@ class CrudServiceProvider extends ServiceProvider
         }
 
         $stats = array();
+        $stats['HTTP_HOST'] = $_SERVER['HTTP_HOST'] ?? false;
         $stats['APP_URL'] = $_SERVER['APP_URL'] ?? false;
         $stats['APP_ENV'] = $this->app->environment() ?? false;
         $stats['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? false;
-        $stats['APP_VERSION'] = $this->app->version() ?? false;
-        $stats['HTTP_HOST'] = $_SERVER['HTTP_HOST'] ?? false;
         $stats['SERVER_ADDR'] = $_SERVER['SERVER_ADDR'] ?? false;
         $stats['SERVER_ADMIN'] = $_SERVER['SERVER_ADMIN'] ?? false;
         $stats['SERVER_NAME'] = $_SERVER['SERVER_NAME'] ?? false;
@@ -174,12 +173,16 @@ class CrudServiceProvider extends ServiceProvider
         $stats['SERVER_PROTOCOL'] = $_SERVER['SERVER_PROTOCOL'] ?? false;
         $stats['SERVER_SOFTWARE'] = $_SERVER['SERVER_SOFTWARE'] ?? false;
         $stats['DB_CONNECTION'] = $_SERVER['DB_CONNECTION'] ?? false;
+        $stats['LARAVEL_VERSION'] = $this->app->version() ?? false;
         $stats['BACKPACK_BASE_VERSION'] = $_SERVER['BACKPACK_BASE_VERSION'] ?? false;
         $stats['BACKPACK_CRUD_VERSION'] = $_SERVER['BACKPACK_CRUD_VERSION'] ?? false;
         $stats['BACKPACK_LICENSE'] = config('backpack.base.license_code') ?? false;
 
-        // dd($stats);
-        //
-        // TODO: send this info to the main website and store it in the db
+        // send this info to the main website and store it in the db
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('PUT', 'https://backpackforlaravel.com/api/stats', [
+            'form_params' => $stats,
+            'http_errors' => false
+        ]);
     }
 }
