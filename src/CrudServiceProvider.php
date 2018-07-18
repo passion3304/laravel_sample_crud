@@ -4,7 +4,6 @@ namespace Backpack\CRUD;
 
 use Route;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
@@ -152,8 +151,8 @@ class CrudServiceProvider extends ServiceProvider
     private function sendUsageStats()
     {
         // only do this in production
-        if (!$this->runningInProduction()) {
-            return ;
+        if (! $this->runningInProduction()) {
+            return;
         }
 
         // only send the stats with a 1/100 probability
@@ -161,7 +160,7 @@ class CrudServiceProvider extends ServiceProvider
             return;
         }
 
-        $stats = array();
+        $stats = [];
         $stats['APP_URL'] = $_SERVER['APP_URL'] ?? false;
         $stats['APP_ENV'] = $this->app->environment() ?? false;
         $stats['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? false;
