@@ -3,10 +3,14 @@
 namespace Backpack\CRUD;
 
 use Route;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
 {
+    const VERSION = '3.4.26';
+
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
         \Backpack\CRUD\app\Console\Commands\Publish::class,
@@ -26,6 +30,8 @@ class CrudServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $_SERVER['BACKPACK_CRUD_VERSION'] = $this::VERSION;
+
         // LOAD THE VIEWS
 
         // - first the published/overwritten views (in case they have any changes)
@@ -68,6 +74,8 @@ class CrudServiceProvider extends ServiceProvider
             __DIR__.'/config/backpack/crud.php',
             'backpack.crud'
         );
+
+        $this->sendUsageStats();
     }
 
     /**
@@ -110,5 +118,68 @@ class CrudServiceProvider extends ServiceProvider
         }
 
         return false;
+    }
+
+    /**
+     * Check if the application is running in normal conditions
+     * (production env, not in console, not in unit tests).
+     *
+     * @return void
+     */
+    private function runningInProduction()
+    {
+        if ($this->app->environment('local')) {
+            return false;
+        }
+
+        if ($this->app->runningInConsole()) {
+            return false;
+        }
+
+        if ($this->app->runningUnitTests()) {
+            return false;
+        }
+    }
+
+    /**
+     * Send usage statistics to the BackpackForLaravel.com website.
+     * Used to track unlicensed usage and general usage statistics.
+     *
+     * No GDPR implications, since no client info is send, only server info.
+     *
+     * @return void
+     */
+    private function sendUsageStats()
+    {
+        // only do this in production
+        if (!$this->runningInProduction()) {
+            return ;
+        }
+
+        // only send the stats with a 1/100 probability
+        if (rand(1, 100) != 1) {
+            return;
+        }
+
+        $stats = array();
+        $stats['APP_URL'] = $_SERVER['APP_URL'] ?? false;
+        $stats['APP_ENV'] = $this->app->environment() ?? false;
+        $stats['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? false;
+        $stats['APP_VERSION'] = $this->app->version() ?? false;
+        $stats['HTTP_HOST'] = $_SERVER['HTTP_HOST'] ?? false;
+        $stats['SERVER_ADDR'] = $_SERVER['SERVER_ADDR'] ?? false;
+        $stats['SERVER_ADMIN'] = $_SERVER['SERVER_ADMIN'] ?? false;
+        $stats['SERVER_NAME'] = $_SERVER['SERVER_NAME'] ?? false;
+        $stats['SERVER_PORT'] = $_SERVER['SERVER_PORT'] ?? false;
+        $stats['SERVER_PROTOCOL'] = $_SERVER['SERVER_PROTOCOL'] ?? false;
+        $stats['SERVER_SOFTWARE'] = $_SERVER['SERVER_SOFTWARE'] ?? false;
+        $stats['DB_CONNECTION'] = $_SERVER['DB_CONNECTION'] ?? false;
+        $stats['BACKPACK_BASE_VERSION'] = $_SERVER['BACKPACK_BASE_VERSION'] ?? false;
+        $stats['BACKPACK_CRUD_VERSION'] = $_SERVER['BACKPACK_CRUD_VERSION'] ?? false;
+        $stats['BACKPACK_LICENSE'] = config('backpack.base.license_code') ?? false;
+
+        // dd($stats);
+        //
+        // TODO: send this info to the main website and store it in the db
     }
 }
