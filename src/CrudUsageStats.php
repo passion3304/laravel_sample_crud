@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD;
 
-use GuzzleHttp\Exception\GuzzleException;
-
 trait CrudUsageStats
 {
     /**
@@ -39,34 +37,34 @@ trait CrudUsageStats
      */
     private function sendUsageStats()
     {
-    	// only send usage stats in production
-	    if (!$this->runningInProduction()) {
-	    	return ;
-	    }
+        // only send usage stats in production
+        if (! $this->runningInProduction()) {
+            return;
+        }
 
-    	// only send stats every ~100 pageloads
-	    if (rand(1, 100) != 1) {
-	    	return ;
-	    }
+        // only send stats every ~100 pageloads
+        if (rand(1, 100) != 1) {
+            return;
+        }
 
-        $url = "https://backpackforlaravel.com/api/stats";
-        $method = "PUT";
+        $url = 'https://backpackforlaravel.com/api/stats';
+        $method = 'PUT';
         $stats = [
-        	'HTTP_HOST' => $_SERVER['HTTP_HOST'] ?? false,
-	        'APP_URL' => $_SERVER['APP_URL'] ?? false,
-	        'APP_ENV' => $this->app->environment() ?? false,
-	        'APP_DEBUG' => $_SERVER['APP_DEBUG'] ?? false,
-	        'SERVER_ADDR' => $_SERVER['SERVER_ADDR'] ?? false,
-	        'SERVER_ADMIN' => $_SERVER['SERVER_ADMIN'] ?? false,
-	        'SERVER_NAME' => $_SERVER['SERVER_NAME'] ?? false,
-	        'SERVER_PORT' => $_SERVER['SERVER_PORT'] ?? false,
-	        'SERVER_PROTOCOL' => $_SERVER['SERVER_PROTOCOL'] ?? false,
-	        'SERVER_SOFTWARE' => $_SERVER['SERVER_SOFTWARE'] ?? false,
-	        'DB_CONNECTION' => $_SERVER['DB_CONNECTION'] ?? false,
-	        'LARAVEL_VERSION' => $this->app->version() ?? false,
-	        'BACKPACK_BASE_VERSION' => $_SERVER['BACKPACK_BASE_VERSION'] ?? false,
-	        'BACKPACK_CRUD_VERSION' => $_SERVER['BACKPACK_CRUD_VERSION'] ?? false,
-	        'BACKPACK_LICENSE' => config('backpack.base.license_code') ?? false,
+            'HTTP_HOST' => $_SERVER['HTTP_HOST'] ?? false,
+            'APP_URL' => $_SERVER['APP_URL'] ?? false,
+            'APP_ENV' => $this->app->environment() ?? false,
+            'APP_DEBUG' => $_SERVER['APP_DEBUG'] ?? false,
+            'SERVER_ADDR' => $_SERVER['SERVER_ADDR'] ?? false,
+            'SERVER_ADMIN' => $_SERVER['SERVER_ADMIN'] ?? false,
+            'SERVER_NAME' => $_SERVER['SERVER_NAME'] ?? false,
+            'SERVER_PORT' => $_SERVER['SERVER_PORT'] ?? false,
+            'SERVER_PROTOCOL' => $_SERVER['SERVER_PROTOCOL'] ?? false,
+            'SERVER_SOFTWARE' => $_SERVER['SERVER_SOFTWARE'] ?? false,
+            'DB_CONNECTION' => $_SERVER['DB_CONNECTION'] ?? false,
+            'LARAVEL_VERSION' => $this->app->version() ?? false,
+            'BACKPACK_BASE_VERSION' => $_SERVER['BACKPACK_BASE_VERSION'] ?? false,
+            'BACKPACK_CRUD_VERSION' => $_SERVER['BACKPACK_CRUD_VERSION'] ?? false,
+            'BACKPACK_LICENSE' => config('backpack.base.license_code') ?? false,
         ];
 
         // send this info to the main website to store it in the db
@@ -90,9 +88,9 @@ trait CrudUsageStats
      */
     private function makeCurlRequest($method, $url, $payload)
     {
-        $cmd = "curl -X ".$method." -H 'Content-Type: application/json'";
-        $cmd.= " -d '" . json_encode($payload) . "' " . "'" . $url . "'";
-        $cmd .= " > /dev/null 2>&1 &";
+        $cmd = 'curl -X '.$method." -H 'Content-Type: application/json'";
+        $cmd .= " -d '".json_encode($payload)."' "."'".$url."'";
+        $cmd .= ' > /dev/null 2>&1 &';
 
         exec($cmd, $output, $exit);
 
@@ -120,7 +118,7 @@ trait CrudUsageStats
                 'form_params' => $payload,
                 'http_errors' => false,
                 'connect_timeout'     => 0.5,
-                'timeout'     => 0.5
+                'timeout'     => 0.5,
             ]);
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
             // do nothing

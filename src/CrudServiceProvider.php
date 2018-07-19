@@ -3,9 +3,7 @@
 namespace Backpack\CRUD;
 
 use Route;
-use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
-use Backpack\CRUD\CrudUsageStats;
 
 class CrudServiceProvider extends ServiceProvider
 {
