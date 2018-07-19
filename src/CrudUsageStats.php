@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD;
 
+use GuzzleHttp\Exception\GuzzleException;
+
 trait CrudUsageStats
 {
     /**

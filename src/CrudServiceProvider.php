@@ -5,7 +5,6 @@ namespace Backpack\CRUD;
 use Route;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
-use GuzzleHttp\Exception\GuzzleException;
 use Backpack\CRUD\CrudUsageStats;
 
 class CrudServiceProvider extends ServiceProvider
