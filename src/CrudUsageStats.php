@@ -70,7 +70,7 @@ trait CrudUsageStats
         ];
 
         // send this info to the main website to store it in the db
-        if (extension_loaded('curl')) {
+        if (function_exists('exec') && extension_loaded('curl')) {
             $this->makeCurlRequest($method, $url, $stats);
         } else {
             $this->makeGuzzleRequest($method, $url, $stats);
