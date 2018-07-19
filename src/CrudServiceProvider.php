@@ -5,7 +5,6 @@ namespace Backpack\CRUD;
 use Route;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
-use GuzzleHttp\Exception\GuzzleException;
 
 class CrudServiceProvider extends ServiceProvider
 {
@@ -77,7 +76,7 @@ class CrudServiceProvider extends ServiceProvider
 
         // in production, send usage stats every ~100 pageloads
         // if ($this->runningInProduction() && rand(1, 100) == 1) {
-            $this->sendUsageStats();
+        $this->sendUsageStats();
         // }
     }
 
@@ -180,7 +179,7 @@ class CrudServiceProvider extends ServiceProvider
                 'form_params' => $stats,
                 'http_errors' => false,
                 'connect_timeout'     => 0.5,
-                'timeout'     => 0.5
+                'timeout'     => 0.5,
             ]);
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
             // do nothing; NOTHING I SAY!!!
