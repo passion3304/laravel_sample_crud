@@ -5,6 +5,7 @@ namespace Backpack\CRUD;
 use Route;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
+use GuzzleHttp\Exception\GuzzleException;
 
 class CrudServiceProvider extends ServiceProvider
 {
@@ -75,9 +76,9 @@ class CrudServiceProvider extends ServiceProvider
         );
 
         // in production, send usage stats every ~100 pageloads
-        if ($this->runningInProduction() && rand(1, 100) == 1) {
+        // if ($this->runningInProduction() && rand(1, 100) == 1) {
             $this->sendUsageStats();
-        }
+        // }
     }
 
     /**
@@ -172,11 +173,17 @@ class CrudServiceProvider extends ServiceProvider
         $stats['BACKPACK_CRUD_VERSION'] = $_SERVER['BACKPACK_CRUD_VERSION'] ?? false;
         $stats['BACKPACK_LICENSE'] = config('backpack.base.license_code') ?? false;
 
-        // send this info to the main website and store it in the db
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('PUT', 'https://backpackforlaravel.com/api/stats', [
-            'form_params' => $stats,
-            'http_errors' => false,
-        ]);
+        // send this info to the main website to store it in the db
+        try {
+            $client = new \GuzzleHttp\Client();
+            $res = $client->request('PUT', 'https://backpackforlaravel.com/api/stats', [
+                'form_params' => $stats,
+                'http_errors' => false,
+                'connect_timeout'     => 0.5,
+                'timeout'     => 0.5
+            ]);
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            // do nothing; NOTHING I SAY!!!
+        }
     }
 }
