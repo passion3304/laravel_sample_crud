@@ -6,9 +6,12 @@ use Route;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Exception\GuzzleException;
+use Backpack\CRUD\CrudUsageStats;
 
 class CrudServiceProvider extends ServiceProvider
 {
+    use CrudUsageStats;
+
     const VERSION = '3.4.26';
 
     protected $commands = [
@@ -75,10 +78,7 @@ class CrudServiceProvider extends ServiceProvider
             'backpack.crud'
         );
 
-        // in production, send usage stats every ~100 pageloads
-        // if ($this->runningInProduction() && rand(1, 100) == 1) {
-            $this->sendUsageStats();
-        // }
+        $this->sendUsageStats();
     }
 
     /**
@@ -121,69 +121,5 @@ class CrudServiceProvider extends ServiceProvider
         }
 
         return false;
-    }
-
-    /**
-     * Check if the application is running in normal conditions
-     * (production env, not in console, not in unit tests).
-     *
-     * @return void
-     */
-    private function runningInProduction()
-    {
-        if ($this->app->environment('local')) {
-            return false;
-        }
-
-        if ($this->app->runningInConsole()) {
-            return false;
-        }
-
-        if ($this->app->runningUnitTests()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Send usage statistics to the BackpackForLaravel.com website.
-     * Used to track unlicensed usage and general usage statistics.
-     *
-     * No GDPR implications, since no client info is send, only server info.
-     *
-     * @return void
-     */
-    private function sendUsageStats()
-    {
-        $stats = [];
-        $stats['HTTP_HOST'] = $_SERVER['HTTP_HOST'] ?? false;
-        $stats['APP_URL'] = $_SERVER['APP_URL'] ?? false;
-        $stats['APP_ENV'] = $this->app->environment() ?? false;
-        $stats['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? false;
-        $stats['SERVER_ADDR'] = $_SERVER['SERVER_ADDR'] ?? false;
-        $stats['SERVER_ADMIN'] = $_SERVER['SERVER_ADMIN'] ?? false;
-        $stats['SERVER_NAME'] = $_SERVER['SERVER_NAME'] ?? false;
-        $stats['SERVER_PORT'] = $_SERVER['SERVER_PORT'] ?? false;
-        $stats['SERVER_PROTOCOL'] = $_SERVER['SERVER_PROTOCOL'] ?? false;
-        $stats['SERVER_SOFTWARE'] = $_SERVER['SERVER_SOFTWARE'] ?? false;
-        $stats['DB_CONNECTION'] = $_SERVER['DB_CONNECTION'] ?? false;
-        $stats['LARAVEL_VERSION'] = $this->app->version() ?? false;
-        $stats['BACKPACK_BASE_VERSION'] = $_SERVER['BACKPACK_BASE_VERSION'] ?? false;
-        $stats['BACKPACK_CRUD_VERSION'] = $_SERVER['BACKPACK_CRUD_VERSION'] ?? false;
-        $stats['BACKPACK_LICENSE'] = config('backpack.base.license_code') ?? false;
-
-        // send this info to the main website to store it in the db
-        try {
-            $client = new \GuzzleHttp\Client();
-            $res = $client->request('PUT', 'https://backpackforlaravel.com/api/stats', [
-                'form_params' => $stats,
-                'http_errors' => false,
-                'connect_timeout'     => 0.5,
-                'timeout'     => 0.5
-            ]);
-        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-            // do nothing; NOTHING I SAY!!!
-        }
     }
 }
