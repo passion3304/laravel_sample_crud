@@ -56,8 +56,8 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $table = $this->model->getTable();
         $conn = $this->model->getConnection();
+        $table = $conn->getTablePrefix() . $this->model->getTable();
         $table_columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
 
         foreach ($table_columns as $key => $column) {
