@@ -29,8 +29,9 @@
 	                  $('.modal').modal('hide');
 
 	                  // Remove the details row, if it is open
-	                  if(row.hasClass("shown"))
+	                  if (row.hasClass("shown")) {
 	                      row.next().remove();
+	                  }
 
 	                  // Remove the row from the datatable
 	                  row.remove();
