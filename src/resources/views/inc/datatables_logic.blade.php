@@ -43,7 +43,7 @@
                   var data = $.map( columns, function ( col, i ) {
                       return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
                                 '<td><strong>'+col.title.trim()+':'+'<strong></td> '+
-                                '<td>'+col.data+'</td>'+
+                                '<td style="padding-left:10px;padding-bottom:10px;">'+col.data+'</td>'+
                               '</tr>';
                   } ).join('');
 
