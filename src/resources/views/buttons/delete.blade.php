@@ -11,7 +11,7 @@
 	      // e.preventDefault();
 	      var button = $(button);
 	      var route = button.attr('data-route');
-	      var row = $("#crudTable a[data-route='"+route+"']").parentsUntil('tr').parent();
+	      var row = $("#crudTable a[data-route='"+route+"']").closest('tr');
 
 	      if (confirm("{{ trans('backpack::crud.delete_confirm') }}") == true) {
 	          $.ajax({
@@ -27,6 +27,11 @@
 
 	                  // Hide the modal, if any
 	                  $('.modal').modal('hide');
+
+	                  // Remove the details row, if it is open
+	                  if (row.hasClass("shown")) {
+	                      row.next().remove();
+	                  }
 
 	                  // Remove the row from the datatable
 	                  row.remove();
