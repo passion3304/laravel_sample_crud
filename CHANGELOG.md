@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - text column now json_encodes value if array, so that it does not trigger error;
+- merged #1572 - addded padding and alignment to list modal when responsive;
 
 ## [3.4.27] - 2018-07-19
 
