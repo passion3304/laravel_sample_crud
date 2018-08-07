@@ -31,6 +31,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - text column now json_encodes value if array, so that it does not trigger error;
 - merged #1572 - added padding and alignment to list modal when responsive;
 - merged #1505 - spatie sluggable inconsistency when querying slugs prepended by quotes;
+- merged #1566 - details row is now removed when deleting an entry, thanks to @promatik;
 
 ## [3.4.27] - 2018-07-19
 
