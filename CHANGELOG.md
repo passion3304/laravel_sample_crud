@@ -33,6 +33,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - merged #1505 - spatie sluggable inconsistency when querying slugs prepended by quotes;
 - merged #1566 - details row is now removed when deleting an entry, thanks to @promatik;
 - merged #1576 - removed length from array_slice in addClause;
+- merged #1580 - show functionality is now prettier, multi-language and official;
 
 ## [3.4.27] - 2018-07-19
 
