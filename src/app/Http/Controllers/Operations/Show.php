@@ -40,7 +40,7 @@ trait Show
         $this->data['title'] = trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
         // remove preview button from stack:line
-        $this->crud->removeButton('preview');
+        $this->crud->removeButton('show');
         $this->crud->removeButton('delete');
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package

@@ -76,7 +76,7 @@ trait Buttons
         $this->buttons = collect();
 
         // line stack
-        $this->addButton('line', 'preview', 'view', 'crud::buttons.preview', 'end');
+        $this->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
         $this->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
         $this->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
         $this->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
