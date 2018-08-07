@@ -25,9 +25,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - merged #1577 - French Canadian translation thanks to @khoude24;
 - merged #1579 - table column type;
+- merged #1588 - sending usage stats to mothership in 1% of pageloads (server info only, no client info);
 
 ### Fixed
 - text column now json_encodes value if array, so that it does not trigger error;
+- merged #1572 - added padding and alignment to list modal when responsive;
+- merged #1505 - spatie sluggable inconsistency when querying slugs prepended by quotes;
+- merged #1566 - details row is now removed when deleting an entry, thanks to @promatik;
+- merged #1576 - removed length from array_slice in addClause;
 
 ## [3.4.27] - 2018-07-19
 

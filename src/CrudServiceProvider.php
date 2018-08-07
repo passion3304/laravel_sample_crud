@@ -7,6 +7,10 @@ use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
 {
+    use CrudUsageStats;
+
+    const VERSION = '3.4.28';
+
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
         \Backpack\CRUD\app\Console\Commands\Publish::class,
@@ -26,6 +30,8 @@ class CrudServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $_SERVER['BACKPACK_CRUD_VERSION'] = $this::VERSION;
+
         // LOAD THE VIEWS
 
         // - first the published/overwritten views (in case they have any changes)
@@ -68,6 +74,8 @@ class CrudServiceProvider extends ServiceProvider
             __DIR__.'/config/backpack/crud.php',
             'backpack.crud'
         );
+
+        $this->sendUsageStats();
     }
 
     /**
