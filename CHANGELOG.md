@@ -25,6 +25,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - merged #1577 - French Canadian translation thanks to @khoude24;
 
+### Fixed
+- text column now json_encodes value if array, so that it does not trigger error;
 
 ## [3.4.27] - 2018-07-19
 
