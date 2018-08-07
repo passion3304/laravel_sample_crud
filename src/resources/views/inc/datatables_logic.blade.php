@@ -42,7 +42,7 @@
                 renderer: function ( api, rowIdx, columns ) {
                   var data = $.map( columns, function ( col, i ) {
                       return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
-                                '<td><strong>'+col.title.trim()+':'+'<strong></td> '+
+                                '<td style="vertical-align:top;"><strong>'+col.title.trim()+':'+'<strong></td> '+
                                 '<td style="padding-left:10px;padding-bottom:10px;">'+col.data+'</td>'+
                               '</tr>';
                   } ).join('');
