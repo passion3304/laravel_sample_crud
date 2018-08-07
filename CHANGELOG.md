@@ -20,6 +20,22 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.28] - 2018-08-xx
+
+### Added
+- merged #1577 - French Canadian translation thanks to @khoude24;
+- merged #1579 - table column type;
+
+### Fixed
+- text column now json_encodes value if array, so that it does not trigger error;
+- merged #1572 - addded padding and alignment to list modal when responsive;
+
+## [3.4.27] - 2018-07-19
+
+### Fixed
+- merged #1564 - buttons did not have the ```$button``` variable available inside their blade file;
+
+
 ## [3.4.26] - 2018-07-17
 
 ### Fixed
