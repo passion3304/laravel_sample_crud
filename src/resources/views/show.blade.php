@@ -22,11 +22,24 @@
 	<!-- Default box -->
 	  <div class="box">
 	    <div class="box-header with-border">
-	    	<span class="pull-right"><a href="javascript: window.print();"><i class="fa fa-print"></i></a></span>
-	      <h3 class="box-title">
-            {{ trans('backpack::crud.preview') }}
-            <span>{{ $crud->entity_name }}</span>
-          </h3>
+	    	<span class="pull-right m-l-20 m-r-20 m-t-5"><a href="javascript: window.print();"><i class="fa fa-print"></i></a></span>
+
+          @if ($crud->model->translationEnabled())
+			    	<!-- Single button -->
+					<div class="btn-group pull-right">
+					  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[$crud->request->input('locale')?$crud->request->input('locale'):App::getLocale()] }} <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu">
+					  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
+						  	<li><a href="{{ url($crud->route.'/'.$entry->getKey()) }}?locale={{ $key }}">{{ $locale }}</a></li>
+					  	@endforeach
+					  </ul>
+					</div>
+					<h3 class="box-title" style="line-height: 30px;">{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
+				@else
+					<h3 class="box-title">{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
+				@endif
 	    </div>
 	    <div class="box-body">
 			<table class="table table-striped table-bordered">
