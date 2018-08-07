@@ -41,7 +41,7 @@
 					<h3 class="box-title">{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
 				@endif
 	    </div>
-	    <div class="box-body">
+	    <div class="box-body no-padding">
 			<table class="table table-striped table-bordered">
 		        <tbody>
 		        @foreach ($crud->columns as $column)
