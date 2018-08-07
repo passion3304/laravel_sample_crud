@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.28] - 2018-08-xx
+## [3.4.28] - 2018-08-07
 
 ### Added
 - merged #1577 - French Canadian translation thanks to @khoude24;
