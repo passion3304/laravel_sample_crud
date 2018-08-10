@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - #1589 - ```upload_multiple``` column type;
+- ```suffix``` option to ```array_count``` column type;
 
 
 ## [3.4.29] - 2018-08-10
