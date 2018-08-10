@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.29] - 2018-08-10
+
+### Fixed
+- #1588 - show button had a typo and required the update permission instead of show;
+
 ## [3.4.28] - 2018-08-07
 
 ### Added
