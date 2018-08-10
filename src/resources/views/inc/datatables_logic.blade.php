@@ -27,15 +27,14 @@
         fn.apply(window, args);
       },
       dataTableConfiguration: {
-        initComplete: function () {
-            crud.responsiveToggle(
-                jQuery('#crudTable').DataTable()
-            );
-        },
+
+        @if ($crud->getResponsiveTable())
         responsive: {
             details: {
                 display: $.fn.dataTable.Responsive.display.modal( {
                     header: function ( row ) {
+                        // show the content of the first column
+                        // as the modal header
                         var data = row.data();
                         return data[0];
                     }
@@ -43,8 +42,8 @@
                 renderer: function ( api, rowIdx, columns ) {
                   var data = $.map( columns, function ( col, i ) {
                       return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
-                                '<td><strong>'+col.title.trim()+':'+'<strong></td> '+
-                                '<td>'+col.data+'</td>'+
+                                '<td style="vertical-align:top;"><strong>'+col.title.trim()+':'+'<strong></td> '+
+                                '<td style="padding-left:10px;padding-bottom:10px;">'+col.data+'</td>'+
                               '</tr>';
                   } ).join('');
 
@@ -54,6 +53,11 @@
                 },
             }
         },
+        @else
+        responsive: false,
+        scrollX: true,
+        @endif
+
         autoWidth: false,
         pageLength: {{ $crud->getDefaultPageLength() }},
         lengthMenu: @json($crud->getPageLengthMenu()),
@@ -134,9 +138,14 @@
       // (eg. delete and details_row buttons add functions to this queue)
       $('#crudTable').on( 'draw.dt',   function () {
          crud.functionsToRunOnDataTablesDrawEvent.forEach(function(functionName) {
-            // console.log(functionName);
             crud.executeFunctionByName(functionName);
          });
+      } ).dataTable();
+
+      // when datatables-colvis (column visibility) is toggled
+      // rebuild the datatable using the datatable-responsive plugin
+      $('#crudTable').on( 'column-visibility.dt',   function (event) {
+         crud.table.responsive.rebuild();
       } ).dataTable();
 
       // when columns are hidden by reponsive plugin,

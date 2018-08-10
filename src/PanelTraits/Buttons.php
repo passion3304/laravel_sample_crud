@@ -76,7 +76,7 @@ trait Buttons
         $this->buttons = collect();
 
         // line stack
-        $this->addButton('line', 'preview', 'view', 'crud::buttons.preview', 'end');
+        $this->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
         $this->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
         $this->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
         $this->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
@@ -84,6 +84,30 @@ trait Buttons
         // top stack
         $this->addButton('top', 'create', 'view', 'crud::buttons.create');
         $this->addButton('top', 'reorder', 'view', 'crud::buttons.reorder');
+    }
+
+    /**
+     * Modify the attributes of a button.
+     *
+     * @param  string $name          The button name.
+     * @param  array $modifications  The attributes and their new values.
+     * @return button                The button that has suffered the changes, for daisychaining methods.
+     */
+    public function modifyButton($name, $modifications = null)
+    {
+        $button = $this->buttons()->firstWhere('name', $name);
+
+        if (! $button) {
+            abort(500, 'CRUD Button "'.$name.'" not found. Please check the button exists before you modify it.');
+        }
+
+        if (is_array($modifications)) {
+            foreach ($modifications as $key => $value) {
+                $button->{$key} = $value;
+            }
+        }
+
+        return $button;
     }
 
     /**

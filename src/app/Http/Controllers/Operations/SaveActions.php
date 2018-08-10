@@ -1,11 +1,13 @@
 <?php
 
-namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
+namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 trait SaveActions
 {
     /**
      * Get save actions, with pre-selected action from stored session variable or config fallback.
+     *
+     * TODO: move this to the CrudPanel object; They don't belong in controllers;
      *
      * @return array
      */

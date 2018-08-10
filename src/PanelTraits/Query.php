@@ -12,19 +12,19 @@ trait Query
      * Add another clause to the query (for ex, a WHERE clause).
      *
      * Examples:
-     * // $this->crud->addClause('active');
+     * $this->crud->addClause('active');
      * $this->crud->addClause('type', 'car');
      * $this->crud->addClause('where', 'name', '==', 'car');
      * $this->crud->addClause('whereName', 'car');
      * $this->crud->addClause('whereHas', 'posts', function($query) {
      *     $query->activePosts();
-     *     });
+     * });
      *
      * @param [type]
      */
     public function addClause($function)
     {
-        return call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1, 3));
+        return call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
     }
 
     /**

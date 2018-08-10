@@ -78,7 +78,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 				e.preventDefault();
 				var from = $("li[filter-name={{ $filter->name }}] .from").val();
 				var to = $("li[filter-name={{ $filter->name }}] .to").val();
-				if (from && to) {
+				if (from || to) {
 					var range = {
 						'from': from,
 						'to': to

@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
+namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 trait Revisions
 {

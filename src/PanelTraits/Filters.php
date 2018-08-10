@@ -135,6 +135,30 @@ trait Filters
         return $this->filters;
     }
 
+    /**
+     * Modify the attributes of a filter.
+     *
+     * @param  string $name          The filter name.
+     * @param  array $modifications  An array of changes to be made.
+     * @return filter                The filter that has suffered modifications, for daisychaining methods.
+     */
+    public function modifyFilter($name, $modifications)
+    {
+        $filter = $this->filters->firstWhere('name', $name);
+
+        if (! $filter) {
+            abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.');
+        }
+
+        if (is_array($modifications)) {
+            foreach ($modifications as $key => $value) {
+                $filter->{$key} = $value;
+            }
+        }
+
+        return $filter;
+    }
+
     public function removeFilter($name)
     {
         $this->filters = $this->filters->reject(function ($filter) use ($name) {
