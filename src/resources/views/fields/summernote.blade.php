@@ -29,13 +29,17 @@
     @push('crud_fields_scripts')
         <!-- include summernote js-->
         <script src="{{ asset('vendor/backpack/summernote/summernote.min.js') }}"></script>
-        <script>
-            jQuery(document).ready(function($) {
-                $('.summernote').summernote();
-            });
-        </script>
     @endpush
 
 @endif
+
+@push('crud_fields_scripts')
+    <!-- include summernote js with related options for this field -->
+    <script>
+        jQuery(document).ready(function($) {
+            $(".summernote[name='{{ $field['name'] }}']").summernote(@json($field['options'] ?? []));
+        });
+    </script>
+@endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

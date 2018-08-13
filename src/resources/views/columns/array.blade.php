@@ -1,5 +1,5 @@
 {{-- enumerate the values in an array  --}}
-<td>
+<span>
     <?php
     $value = $entry->{$column['name']};
 
@@ -13,4 +13,4 @@
         echo '-';
     }
     ?>
-</td>
+</span>

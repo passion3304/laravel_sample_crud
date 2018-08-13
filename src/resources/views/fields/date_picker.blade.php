@@ -38,18 +38,18 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/datepicker/datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}">
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-    <script src="{{ asset('vendor/adminlte/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     @if ($field_language !== 'en')
-        <script charset="UTF-8" src="{{ asset('vendor/adminlte/plugins/datepicker/locales/bootstrap-datepicker.'.$field_language.'.js') }}"></script>
+        <script charset="UTF-8" src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js') }}"></script>
     @endif
     <script>
         if (jQuery.ui) {
-            var datepicker = $.fn.datepicker.noConflict(); 
+            var datepicker = $.fn.datepicker.noConflict();
             $.fn.bootstrapDP = datepicker;
         } else {
             $.fn.bootstrapDP = $.fn.datepicker;
@@ -70,7 +70,15 @@
                 var $existingVal = $field.val();
 
                 if( $existingVal.length ){
-                    preparedDate = new Date($existingVal).format($customConfig.format);
+                    // Passing an ISO-8601 date string (YYYY-MM-DD) to the Date constructor results in
+                    // varying behavior across browsers. Splitting and passing in parts of the date
+                    // manually gives us more defined behavior.
+                    // See https://stackoverflow.com/questions/2587345/why-does-date-parse-give-incorrect-results
+                    var parts = $existingVal.split('-')
+                    var year = parts[0]
+                    var month = parts[1] - 1 // Date constructor expects a zero-indexed month
+                    var day = parts[2]
+                    preparedDate = new Date(year, month, day).format($customConfig.format);
                     $fake.val(preparedDate);
                     $picker.bootstrapDP('update', preparedDate);
                 }

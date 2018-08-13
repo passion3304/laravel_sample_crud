@@ -17,8 +17,8 @@
 							value="{{ $filter->currentValue }}"
 						@endif
 		        		>
-		        <div class="input-group-addon">
-		          <a class="datepicker-{{ str_slug($filter->name) }}-clear-button" href=""><i class="fa fa-times"></i></a>
+		        <div class="input-group-addon datepicker-{{ str_slug($filter->name) }}-clear-button">
+		          <a class="" href=""><i class="fa fa-times"></i></a>
 		        </div>
 		    </div>
 		</div>
@@ -32,7 +32,7 @@
 {{-- push things in the after_styles section --}}
 
 @push('crud_list_styles')
-    <link href="{{ asset('vendor/adminlte/plugins/datepicker/datepicker3.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}">
 	<style>
 		.input-group.date {
 			width: 320px;
@@ -47,7 +47,7 @@
 
 @push('crud_list_scripts')
 	<!-- include select2 js-->
-	<script type="text/javascript" src="{{ asset('vendor/adminlte/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <script>
 		jQuery(document).ready(function($) {
 			var dateInput = $('#datepicker-{{ str_slug($filter->name) }}').datepicker({
@@ -69,38 +69,26 @@
 
 				var parameter = '{{ $filter->name }}';
 
-				@if (!$crud->ajaxTable())
-					// behaviour for normal table
-					var current_url = normalizeAmpersand('{{ Request::fullUrl() }}');
-					var new_url = addOrUpdateUriParameter(current_url, parameter, value);
+		    	// behaviour for ajax table
+				var ajax_table = $('#crudTable').DataTable();
+				var current_url = ajax_table.ajax.url();
+				var new_url = addOrUpdateUriParameter(current_url, parameter, value);
 
-					// refresh the page to the new_url
-					new_url = normalizeAmpersand(new_url.toString());
-			    	window.location.href = new_url;
-			    @else
-			    	// behaviour for ajax table
-					var ajax_table = $('#crudTable').DataTable();
-					var current_url = ajax_table.ajax.url();
-					var new_url = addOrUpdateUriParameter(current_url, parameter, value);
+				// replace the datatables ajax url with new_url and reload it
+				new_url = normalizeAmpersand(new_url.toString());
+				ajax_table.ajax.url(new_url).load();
 
-					// replace the datatables ajax url with new_url and reload it
-					new_url = normalizeAmpersand(new_url.toString());
-					ajax_table.ajax.url(new_url).load();
-
-					// mark this filter as active in the navbar-filters
-					if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-						$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
-					}
-					else
-					{
-						$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
-					}
-			    @endif
+				// mark this filter as active in the navbar-filters
+				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
+					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
+				}
 			});
+
 			$('li[filter-name={{ str_slug($filter->name) }}]').on('filter:clear', function(e) {
 				// console.log('date filter cleared');
 				$('li[filter-name={{ $filter->name }}]').removeClass('active');
-				$('#datepicker-{{ str_slug($filter->name) }}').datepicker('clearDates');
+				$('#datepicker-{{ str_slug($filter->name) }}').datepicker('update', '');
+				$('#datepicker-{{ str_slug($filter->name) }}').trigger('changeDate');
 			});
 
 			// datepicker clear button
@@ -108,7 +96,6 @@
 				e.preventDefault();
 
 				$('li[filter-name={{ str_slug($filter->name) }}]').trigger('filter:clear');
-				$('#datepicker-{{ str_slug($filter->name) }}').trigger('changeDate');
 			})
 		});
   </script>

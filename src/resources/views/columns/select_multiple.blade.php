@@ -1,5 +1,5 @@
 {{-- relationships with pivot table (n-n) --}}
-<td>
+<span>
     <?php
         $results = $entry->{$column['entity']};
 
@@ -10,4 +10,4 @@
             echo '-';
         }
     ?>
-</td>
+</span>

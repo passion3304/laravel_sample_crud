@@ -7,35 +7,44 @@ trait AutoSet
     // ------------------------------------------------------
     // AUTO-SET-FIELDS-AND-COLUMNS FUNCTIONALITY
     // ------------------------------------------------------
+    public $labeller = false;
 
     /**
      * For a simple CRUD Panel, there should be no need to add/define the fields.
      * The public columns in the database will be converted to be fields.
+     *
+     * @return [void]
      */
     public function setFromDb()
     {
+        $this->setDoctrineTypesMapping();
         $this->getDbColumnTypes();
 
         array_map(function ($field) {
-            // $this->labels[$field] = $this->makeLabel($field);
-
             $new_field = [
                 'name'       => $field,
-                'label'      => ucfirst($field),
+                'label'      => $this->makeLabel($field),
                 'value'      => null,
+                'default'    => isset($this->db_column_types[$field]['default']) ? $this->db_column_types[$field]['default'] : null,
                 'type'       => $this->getFieldTypeFromDbColumnType($field),
                 'values'     => [],
                 'attributes' => [],
+                'autoset'    => true,
             ];
-            $this->create_fields[$field] = $new_field;
-            $this->update_fields[$field] = $new_field;
+            if (! isset($this->create_fields[$field])) {
+                $this->create_fields[$field] = $new_field;
+            }
+            if (! isset($this->update_fields[$field])) {
+                $this->update_fields[$field] = $new_field;
+            }
 
-            if (! in_array($field, $this->model->getHidden())) {
-                $this->columns[$field] = [
+            if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
+                $this->addColumn([
                     'name'  => $field,
-                    'label' => ucfirst($field),
+                    'label' => $this->makeLabel($field),
                     'type'  => $this->getFieldTypeFromDbColumnType($field),
-                ];
+                    'autoset' => true,
+                ]);
             }
         }, $this->getDbColumnsNames());
     }
@@ -47,12 +56,14 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $table_columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
+        $table = $this->model->getTable();
+        $conn = $this->model->getConnection();
+        $table_columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
 
         foreach ($table_columns as $key => $column) {
-            $column_type = $this->model->getConnection()->getSchemaBuilder()->getColumnType($this->model->getTable(), $column);
-            $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
-            $this->db_column_types[$column]['default'] = ''; // no way to do this using DBAL?!
+            $column_type = $column->getType()->getName();
+            $this->db_column_types[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
+            $this->db_column_types[$column->getName()]['default'] = $column->getDefault();
         }
 
         return $this->db_column_types;
@@ -102,6 +113,9 @@ trait AutoSet
             break;
 
             case 'text':
+                return 'textarea';
+            break;
+
             case 'mediumtext':
             case 'longtext':
                 return 'textarea';
@@ -125,16 +139,51 @@ trait AutoSet
         }
     }
 
+    // Fix for DBAL not supporting enum
+    public function setDoctrineTypesMapping()
+    {
+        $types = ['enum' => 'string'];
+        $platform = \DB::getDoctrineConnection()->getDatabasePlatform();
+        foreach ($types as $type_key => $type_value) {
+            if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
+                $platform->registerDoctrineTypeMapping($type_key, $type_value);
+            }
+        }
+    }
+
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
      *
-     * @param  [string]
+     * @param  [string] The value.
      *
-     * @return [string]
+     * @return [string] The transformed value.
      */
     public function makeLabel($value)
     {
+        if ($this->labeller) {
+            return ($this->labeller)($value);
+        }
+
         return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
+    }
+
+    /**
+     * Alias to the makeLabel method.
+     */
+    public function getLabel($value)
+    {
+        return $this->makeLabel($value);
+    }
+
+    /**
+     * Change the way labels are made.
+     * @param callable $labeller A function that receives a string and returns the formatted string, after stripping down useless characters.
+     */
+    public function setLabeller(callable $labeller)
+    {
+        $this->labeller = $labeller;
+
+        return $this;
     }
 
     /**

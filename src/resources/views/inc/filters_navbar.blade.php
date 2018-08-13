@@ -3,22 +3,22 @@
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle filters</span>
+          <span class="sr-only">{{ trans('backpack::crud.toggle_filters') }}</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Filters</a>
+        <a class="navbar-brand" href="#">{{ trans('backpack::crud.filters') }}</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <!-- THE ACTUAL FILTERS -->
-			@foreach ($crud->filters as $filter)
-				@include($filter->view)
-			@endforeach
-          <li><a href="#" id="remove_filters_button"><i class="fa fa-eraser"></i> Remove filters</a></li>
+    			@foreach ($crud->filters as $filter)
+    				@include($filter->view)
+    			@endforeach
+          <li ><a href="#" id="remove_filters_button" class="hidden"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -37,6 +37,9 @@
       min-height: 25px;
       border-radius: 0;
       margin-bottom: 10px;
+      margin-left: -10px;
+      margin-right: -10px;
+      margin-top: -11px;
       background: #f9f9f9;
       border-color: #f4f4f4;
     }
@@ -87,7 +90,10 @@
               new_url = new_url.addQuery(parameter, value);
             }
 
+            $('#remove_filters_button').removeClass('hidden');
+
         return new_url.toString();
+
       }
 
       function normalizeAmpersand(string) {
@@ -99,23 +105,16 @@
       	$("#remove_filters_button").click(function(e) {
       		e.preventDefault();
 
-      		@if (!$crud->ajaxTable())
-				// behaviour for normal table
-				var clean_url = '{{ Request::url() }}';
-
-				// refresh the page to the clean_url
-		    	window.location.href = clean_url;
-		    @else
 		    	// behaviour for ajax table
 		    	var new_url = '{{ url($crud->route.'/search') }}';
 		    	var ajax_table = $("#crudTable").DataTable();
 
-				// replace the datatables ajax url with new_url and reload it
-				ajax_table.ajax.url(new_url).load();
+  				// replace the datatables ajax url with new_url and reload it
+  				ajax_table.ajax.url(new_url).load();
 
-				// clear all filters
-				$(".navbar-filters li[filter-name]").trigger('filter:clear');
-		    @endif
+  				// clear all filters
+  				$(".navbar-filters li[filter-name]").trigger('filter:clear');
+          $('#remove_filters_button').addClass('hidden');
       	})
       });
     </script>

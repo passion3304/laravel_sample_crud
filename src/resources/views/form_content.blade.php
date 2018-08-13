@@ -5,6 +5,7 @@
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled())
     @include('crud::inc.show_tabbed_fields')
+    <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
     @include('crud::inc.show_fields', ['fields' => $fields])
 @endif
@@ -54,6 +55,11 @@
           return true;
       });
 
+      // prevent duplicate entries on double-clicking the submit form
+      crudForm.submit(function (event) {
+        $("button[type=submit]").prop('disabled', true);
+      });
+
       // Place the focus on the first element in the form
       @if( $crud->autoFocusOnFirstField )
         @php
@@ -63,7 +69,10 @@
         @endphp
 
         @if ($focusField)
-          window.focusField = $('[name="{{ $focusField['name'] }}"]').eq(0),
+        @php
+        $focusFieldName = !is_iterable($focusField['value']) ? $focusField['name'] : ($focusField['name'] . '[]');
+        @endphp
+          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0),
         @else
           var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
         @endif
@@ -86,8 +95,14 @@
 
         $.each(errors, function(property, messages){
 
-            var field = $('[name="' + property + '"]'),
-                container = field.parents('.form-group');
+            var normalizedProperty = property.split('.').map(function(item, index){
+                    return index === 0 ? item : '['+item+']';
+                }).join('');
+
+            var field = $('[name="' + normalizedProperty + '[]"]').length ?
+                        $('[name="' + normalizedProperty + '[]"]') :
+                        $('[name="' + normalizedProperty + '"]'),
+                        container = field.parents('.form-group');
 
             container.addClass('has-error');
 
@@ -105,6 +120,11 @@
         });
 
       @endif
+
+      $("a[data-toggle='tab']").click(function(){
+          currentTabName = $(this).attr('tab_name');
+          $("input[name='current_tab']").val(currentTabName);
+      });
 
       });
     </script>

@@ -12,13 +12,17 @@ trait Buttons
 
     /**
      * Add a button to the CRUD table view.
-     * @param string $stack    Where should the button be visible? Options: top, line, bottom
-     * @param string $name     The name of the button. Unique.
-     * @param string $type     Type of button: view or model_function
-     * @param string $content  The HTML for the button
-     * @param string $position Where in the stack it should be placed: beginning or end
+     *
+     * @param string $stack Where should the button be visible? Options: top, line, bottom.
+     * @param string $name The name of the button. Unique.
+     * @param string $type Type of button: view or model_function.
+     * @param string $content The HTML for the button.
+     * @param bool|string $position Position on the stack: beginning or end. If false, the position will be
+     *                                 'beginning' for the line stack or 'end' otherwise.
+     * @param bool $replaceExisting True if a button with the same name on the given stack should be replaced.
+     * @return \Backpack\CRUD\PanelTraits\CrudButton The new CRUD button.
      */
-    public function addButton($stack, $name, $type, $content, $position = false)
+    public function addButton($stack, $name, $type, $content, $position = false, $replaceExisting = true)
     {
         if ($position == false) {
             switch ($stack) {
@@ -32,15 +36,22 @@ trait Buttons
             }
         }
 
+        if ($replaceExisting) {
+            $this->removeButton($name, $stack);
+        }
+
+        $button = new CrudButton($stack, $name, $type, $content);
         switch ($position) {
             case 'beginning':
-                $this->buttons->prepend(new CrudButton($stack, $name, $type, $content));
+                $this->buttons->prepend($button);
                 break;
 
             default:
-                $this->buttons->push(new CrudButton($stack, $name, $type, $content));
+                $this->buttons->push($button);
                 break;
         }
+
+        return $button;
     }
 
     public function addButtonFromModelFunction($stack, $name, $model_function_name, $position = false)
@@ -65,7 +76,7 @@ trait Buttons
         $this->buttons = collect();
 
         // line stack
-        $this->addButton('line', 'preview', 'view', 'crud::buttons.preview', 'end');
+        $this->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
         $this->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
         $this->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
         $this->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
@@ -75,10 +86,40 @@ trait Buttons
         $this->addButton('top', 'reorder', 'view', 'crud::buttons.reorder');
     }
 
-    public function removeButton($name)
+    /**
+     * Modify the attributes of a button.
+     *
+     * @param  string $name          The button name.
+     * @param  array $modifications  The attributes and their new values.
+     * @return button                The button that has suffered the changes, for daisychaining methods.
+     */
+    public function modifyButton($name, $modifications = null)
     {
-        $this->buttons = $this->buttons->reject(function ($button) use ($name) {
-            return $button->name == $name;
+        $button = $this->buttons()->firstWhere('name', $name);
+
+        if (! $button) {
+            abort(500, 'CRUD Button "'.$name.'" not found. Please check the button exists before you modify it.');
+        }
+
+        if (is_array($modifications)) {
+            foreach ($modifications as $key => $value) {
+                $button->{$key} = $value;
+            }
+        }
+
+        return $button;
+    }
+
+    /**
+     * Remove a button from the CRUD panel.
+     *
+     * @param string $name Button name.
+     * @param string $stack Optional stack name.
+     */
+    public function removeButton($name, $stack = null)
+    {
+        $this->buttons = $this->buttons->reject(function ($button) use ($name, $stack) {
+            return $stack == null ? $button->name == $name : ($button->stack == $stack) && ($button->name == $name);
         });
     }
 

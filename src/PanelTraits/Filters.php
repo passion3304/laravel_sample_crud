@@ -38,9 +38,10 @@ trait Filters
      *
      * @param array         $options        Name, type, label, etc.
      * @param array/closure $values         The HTML for the filter.
-     * @param closure       $filter_logic   Query modification (filtering) logic.
+     * @param closure       $filter_logic   Query modification (filtering) logic when filter is active.
+     * @param closure       $fallback_logic  Query modification (filtering) logic when filter is not active.
      */
-    public function addFilter($options, $values = false, $filter_logic = false)
+    public function addFilter($options, $values = false, $filter_logic = false, $fallback_logic = false)
     {
         // if a closure was passed as "values"
         if (is_callable($values)) {
@@ -64,13 +65,20 @@ trait Filters
         $this->filters->push($filter);
 
         // if a closure was passed as "filter_logic"
-        if ($this->doingListOperation() &&
-            $this->request->has($options['name'])) {
-            if (is_callable($filter_logic)) {
-                // apply it
-                $filter_logic($this->request->input($options['name']));
+        if ($this->doingListOperation()) {
+            if ($this->request->has($options['name'])) {
+                if (is_callable($filter_logic)) {
+                    // apply it
+                    $filter_logic($this->request->input($options['name']));
+                } else {
+                    $this->addDefaultFilterLogic($filter->name, $filter_logic);
+                }
             } else {
-                $this->addDefaultFilterLogic($filter->name, $filter_logic);
+                //if the filter is not active, but fallback logic was supplied
+                if (is_callable($fallback_logic)) {
+                    // apply the fallback logic
+                    $fallback_logic();
+                }
             }
         }
     }
@@ -125,6 +133,30 @@ trait Filters
     public function filters()
     {
         return $this->filters;
+    }
+
+    /**
+     * Modify the attributes of a filter.
+     *
+     * @param  string $name          The filter name.
+     * @param  array $modifications  An array of changes to be made.
+     * @return filter                The filter that has suffered modifications, for daisychaining methods.
+     */
+    public function modifyFilter($name, $modifications)
+    {
+        $filter = $this->filters->firstWhere('name', $name);
+
+        if (! $filter) {
+            abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.');
+        }
+
+        if (is_array($modifications)) {
+            foreach ($modifications as $key => $value) {
+                $filter->{$key} = $value;
+            }
+        }
+
+        return $filter;
     }
 
     public function removeFilter($name)
@@ -190,6 +222,7 @@ class CrudFilter
     public $options;
     public $currentValue;
     public $view;
+    public $viewNamespace = 'crud::filters';
 
     public function __construct($options, $values, $filter_logic)
     {
@@ -198,16 +231,12 @@ class CrudFilter
         $this->name = $options['name'];
         $this->type = $options['type'];
         $this->label = $options['label'];
-
-        if (! isset($options['placeholder'])) {
-            $this->placeholder = '';
-        } else {
-            $this->placeholder = $options['placeholder'];
-        }
+        $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
+        $this->view = $this->viewNamespace.'.'.$this->type;
+        $this->placeholder = $options['placeholder'] ?? '';
 
         $this->values = $values;
         $this->options = $options;
-        $this->view = 'crud::filters.'.$this->type;
 
         if (\Request::has($this->name)) {
             $this->currentValue = \Request::input($this->name);
