@@ -21,12 +21,14 @@
     <!-- THE ACTUAL CONTENT -->
     <div class="col-md-12">
       <div class="box">
+        @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
         <div class="box-header hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
           @include('crud::inc.button_stack', ['stack' => 'top'])
 
           <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
         </div>
+        @endif
 
         <div class="box-body overflow-hidden">
 
@@ -71,8 +73,11 @@
 
         </div><!-- /.box-body -->
 
-        @include('crud::inc.button_stack', ['stack' => 'bottom'])
-
+        @if ( $crud->buttons->where('stack', 'bottom')->count() )
+        <div class="box-footer hidden-print">
+          @include('crud::inc.button_stack', ['stack' => 'bottom'])
+        </div>
+        @endif
       </div><!-- /.box -->
     </div>
 
