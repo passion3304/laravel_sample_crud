@@ -55,7 +55,6 @@
 		      $.when.apply(this, ajax_calls).then(function ( ajax_calls ) {
 		      		crud.checkedItems = [];
 		      		crud.table.ajax.reload();
-		      		// crud.table.ajax.rebuild();
 				});
 	      }
       }
