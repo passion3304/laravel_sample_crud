@@ -17,6 +17,7 @@
 
 	      	return;
 	      }
+
 	      var message = "{{ trans('backpack::crud.bulk_delete_are_you_sure') }}";
 	      message = message.replace(":number", crud.checkedItems.length);
 

@@ -25,4 +25,27 @@ trait Delete
     {
         return (string) $this->model->findOrFail($id)->delete();
     }
+
+    public function addBulkDeleteButton()
+    {
+        $this->addColumn([
+            'type' => 'checkbox',
+            'name' => 'checkbox',
+            'label' => ' ',
+            'priority' => 1,
+            'searchLogic' => false,
+            'orderable' => false,
+        ])->makeFirstColumn();
+
+        $this->addColumn([
+            'type' => 'custom_html',
+            'name' => 'blank',
+            'label' => ' ',
+            'priority' => 1,
+            'searchLogic' => false,
+            'orderable' => false,
+        ])->makeFirstColumn();
+
+        $this->addButton('bottom', 'bulk_delete', 'view', 'crud::buttons.bulk_delete');
+    }
 }
