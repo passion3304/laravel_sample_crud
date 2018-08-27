@@ -10,15 +10,15 @@
 	      if (typeof crud.checkedItems === 'undefined' || crud.checkedItems.length == 0)
 	      {
 	      	new PNotify({
-	              title: "No entries selected",
-	              text: "Please check items in order to perform bulk actions on multiple entries.",
+	              title: "{{ trans('backpack::crud.bulk_no_entries_selected_title') }}",
+	              text: "{{ trans('backpack::crud.bulk_no_entries_selected_message') }}",
 	              type: "warning"
-	          }); // TODO: move these texts to language file
+	          });
 
 	      	return;
 	      }
-
-	      var message = "Are you sure you want to delete these "+crud.checkedItems.length+" entries?"; // TODO: move bulk delete message to languge file
+	      var message = "{{ trans('backpack::crud.bulk_delete_are_you_sure') }}";
+	      message = message.replace(":number", crud.checkedItems.length);
 
 	      // show confirm message
 	      if (confirm(message) == true) {

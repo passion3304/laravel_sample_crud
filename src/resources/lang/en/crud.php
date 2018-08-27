@@ -65,6 +65,13 @@ return [
         'delete_confirmation_not_deleted_title'       => 'Not deleted',
         'delete_confirmation_not_deleted_message'     => 'Nothing happened. Your item is safe.',
 
+        // Bulk actions
+        'bulk_no_entries_selected_title' => 'No entries selected',
+        'bulk_no_entries_selected_message' => "Please use the checkbox next to the each element to select one or more items you would like to perform this action on.",
+
+        // Bulk delete confirmation
+        'bulk_delete_are_you_sure' => "Are you sure you want to delete these :number entries?",
+
         'ajax_error_title' => 'Error',
         'ajax_error_text'  => 'Error loading page. Please refresh the page.',
 
