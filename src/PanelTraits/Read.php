@@ -166,6 +166,8 @@ trait Read
      */
     public function enableBulkActions()
     {
+        $this->bulk_actions = true;
+
         $this->addColumn([
             'type' => 'checkbox',
             'name' => 'bulk_actions',
@@ -192,6 +194,8 @@ trait Read
      */
     public function disableBulkActions()
     {
+        $this->bulk_actions = false;
+
         $this->removeColumn('bulk_actions');
         $this->removeColumn('blank_first_column');
     }
