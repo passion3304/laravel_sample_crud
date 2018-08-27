@@ -159,6 +159,44 @@ trait Read
     }
 
     /**
+     * Add two more columns at the beginning of the ListEntrie table:
+     * - one shows the checkboxes needed for bulk actions
+     * - one is blank, in order for evenual details_row or expand buttons
+     * to be in a separate column
+     */
+    public function enableBulkActions()
+    {
+        $this->addColumn([
+            'type' => 'checkbox',
+            'name' => 'bulk_actions',
+            'label' => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" />',
+            'priority' => 1,
+            'searchLogic' => false,
+            'orderable' => false,
+            'visibleInModal' => false,
+        ])->makeFirstColumn();
+
+        $this->addColumn([
+            'type' => 'custom_html',
+            'name' => 'blank_first_column',
+            'label' => ' ',
+            'priority' => 1,
+            'searchLogic' => false,
+            'orderable' => false,
+            'visibleInModal' => false,
+        ])->makeFirstColumn();
+    }
+
+    /**
+     * Remove the two columns needed for bulk actions.
+     */
+    public function disableBulkActions()
+    {
+        $this->removeColumn('bulk_actions');
+        $this->removeColumn('blank_first_column');
+    }
+
+    /**
      * Set the number of rows that should be show on the list view.
      */
     public function setDefaultPageLength($value)

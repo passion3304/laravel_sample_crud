@@ -27,30 +27,10 @@ trait Delete
     }
 
     /**
-     * Add the needed columns and buttons for the bulk delete functionality.
+     * Add the button needed for the bulk delete functionality.
      */
     public function addBulkDeleteButton()
     {
-        $this->addColumn([
-            'type' => 'checkbox',
-            'name' => 'bulk_actions',
-            'label' => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" />',
-            'priority' => 1,
-            'searchLogic' => false,
-            'orderable' => false,
-            'visibleInModal' => false,
-        ])->makeFirstColumn();
-
-        $this->addColumn([
-            'type' => 'custom_html',
-            'name' => 'blank',
-            'label' => ' ',
-            'priority' => 1,
-            'searchLogic' => false,
-            'orderable' => false,
-            'visibleInModal' => false,
-        ])->makeFirstColumn();
-
         $this->addButton('bottom', 'bulk_delete', 'view', 'crud::buttons.bulk_delete');
     }
 }
