@@ -26,6 +26,9 @@ trait Delete
         return (string) $this->model->findOrFail($id)->delete();
     }
 
+    /**
+     * Add the needed columns and buttons for the bulk delete functionality.
+     */
     public function addBulkDeleteButton()
     {
         $this->addColumn([
