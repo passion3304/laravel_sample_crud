@@ -38,6 +38,7 @@ trait Delete
             'priority' => 1,
             'searchLogic' => false,
             'orderable' => false,
+            'visibleInModal' => false,
         ])->makeFirstColumn();
 
         $this->addColumn([
@@ -47,6 +48,7 @@ trait Delete
             'priority' => 1,
             'searchLogic' => false,
             'orderable' => false,
+            'visibleInModal' => false,
         ])->makeFirstColumn();
 
         $this->addButton('bottom', 'bulk_delete', 'view', 'crud::buttons.bulk_delete');
