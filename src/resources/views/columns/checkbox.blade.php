@@ -3,6 +3,7 @@
     <input type="checkbox"
     		class="crud_bulk_actions_row_checkbox"
     		data-primary-key-value="{{ $entry->getKey() }}"
+    		style="width: 16px; height: 16px;"
     		>
 </span>
 
@@ -12,6 +13,8 @@
 	  	crud.lastCheckedItem = false;
 
 	  	$("input.crud_bulk_actions_row_checkbox").click(function (e) {
+	  		e.stopPropagation();
+
 			var checked = this.checked;
 			var primaryKeyValue = $(this).attr('data-primary-key-value');
 			// console.log(this.checked);
