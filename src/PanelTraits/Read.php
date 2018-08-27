@@ -162,7 +162,7 @@ trait Read
      * Add two more columns at the beginning of the ListEntrie table:
      * - one shows the checkboxes needed for bulk actions
      * - one is blank, in order for evenual details_row or expand buttons
-     * to be in a separate column
+     * to be in a separate column.
      */
     public function enableBulkActions()
     {
