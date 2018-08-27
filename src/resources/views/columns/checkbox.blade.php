@@ -1,7 +1,7 @@
 {{-- checkbox with loose false/null/0 checking --}}
 <span>
     <input type="checkbox"
-    		class="dt_row_checkbox"
+    		class="crud_bulk_actions_row_checkbox"
     		data-primary-key-value="{{ $entry->getKey() }}"
     		onClick="addOrRemoveCrudCheckedItem(this)"
     		>
@@ -47,7 +47,28 @@
 	  }
 	}
 
+	if (typeof addBulkActionMainCheckboxesFunctionality != 'function') {
+      function addBulkActionMainCheckboxesFunctionality() {
+      	$(".crud_bulk_actions_main_checkbox").prop('checked', false);
+
+        // when the crud_bulk_actions_main_checkbox is selected, toggle all visible checkboxes
+        $("input.crud_bulk_actions_main_checkbox").click(function(event) {
+          if (this.checked) { // if checked, check all visible checkboxes
+              $("input.crud_bulk_actions_row_checkbox:not(:checked)").trigger('click');
+              // make sure the other checkbox has the same checked status
+              $("input.crud_bulk_actions_main_checkbox").prop('checked', true);
+          } else { // if not checked, uncheck all visible checkboxes
+              $("input.crud_bulk_actions_row_checkbox:checked").trigger('click');
+              // make sure the other checkbox has the same checked status
+              $("input.crud_bulk_actions_main_checkbox").prop('checked', false);
+          }
+        });
+      }
+    }
+
 	// activate checkbox if the page reloaded and the item is remembered as selected
 	// make it so that the function above is run after each DataTable draw event
 	crud.addFunctionToDataTablesDrawEventQueue('markCheckboxAsCheckedIfPreviouslySelected');
+	crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
+	crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
 </script>

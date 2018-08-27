@@ -33,8 +33,8 @@ trait Delete
     {
         $this->addColumn([
             'type' => 'checkbox',
-            'name' => 'checkbox',
-            'label' => ' ',
+            'name' => 'bulk_actions',
+            'label' => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" />',
             'priority' => 1,
             'searchLogic' => false,
             'orderable' => false,
