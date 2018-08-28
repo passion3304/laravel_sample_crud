@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.31] - 2018-08-xx
+## [3.4.31] - 2018-08-28
 
 ### Fixed
 - merged #1606 fixes #1605 - ```upload_multiple``` column type fix disk;
