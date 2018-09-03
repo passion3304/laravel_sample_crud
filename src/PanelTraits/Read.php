@@ -13,7 +13,7 @@ trait Read
     /**
      * Find and retrieve the id of the current entry.
      *
-     * @return [Number] The id in the db or false.
+     * @return int|bool The id in the db or false.
      */
     public function getCurrentEntryId()
     {
@@ -35,7 +35,7 @@ trait Read
     /**
      * Find and retrieve the current entry.
      *
-     * @return [Eloquent Collection] The row in the db or false.
+     * @return \Illuminate\Database\Eloquent\Model|bool The row in the db or false.
      */
     public function getCurrentEntry()
     {
@@ -51,9 +51,9 @@ trait Read
     /**
      * Find and retrieve an entry in the database or fail.
      *
-     * @param  [int] The id of the row in the db to fetch.
+     * @param int The id of the row in the db to fetch.
      *
-     * @return [Eloquent Collection] The row in the db.
+     * @return \Illuminate\Database\Eloquent\Model The row in the db.
      */
     public function getEntry($id)
     {
@@ -81,7 +81,7 @@ trait Read
     /**
      * Get all entries from the database.
      *
-     * @return [Collection of your model]
+     * @return array|\Illuminate\Database\Eloquent\Collection
      */
     public function getEntries()
     {
@@ -100,10 +100,10 @@ trait Read
     /**
      * Get the fields for the create or update forms.
      *
-     * @param  [form] create / update / both - defaults to 'both'
-     * @param  [integer] the ID of the entity to be edited in the Update form
+     * @param  string   $form create/update/both - defaults to 'both'
+     * @param  bool|int $id   the ID of the entity to be edited in the Update form
      *
-     * @return [array] all the fields that need to be shown and their information
+     * @return array all the fields that need to be shown and their information
      */
     public function getFields($form, $id = false)
     {
@@ -125,8 +125,10 @@ trait Read
     /**
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
-     * @param  [form] create / update / both - defaults to 'both'
-     * @param  [id] id of the entity - defaults to false
+     *
+     * @param  string   $form create/update/both - defaults to 'both'
+     * @param  bool|int $id   id of the entity - defaults to false
+     *
      * @return bool
      */
     public function hasUploadFields($form, $id = false)
@@ -168,6 +170,8 @@ trait Read
 
     /**
      * Get the number of rows that should be show on the list view.
+     *
+     * @return int
      */
     public function getDefaultPageLength()
     {
@@ -206,7 +210,7 @@ trait Read
     /**
      * Specify array of available page lengths on the list view.
      *
-     * @param array $menu 1d array of page length values,
+     * @param array $menu  1d array of page length values,
      *                     or 2d array (first array: page length values, second array: page length labels)
      *                     More at: https://datatables.net/reference/option/lengthMenu
      */
