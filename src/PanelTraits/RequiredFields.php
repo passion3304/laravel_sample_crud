@@ -15,8 +15,8 @@ trait RequiredFields
      * Parse a FormRequest class, figure out what inputs are required
      * and store this knowledge in the current object.
      *
-     * @param [type] $class     Class that extends FormRequest
-     * @param [type] $operation create / update
+     * @param string $class     Class that extends FormRequest
+     * @param string $operation create/update
      */
     public function setRequiredFields($class, $operation)
     {
@@ -39,8 +39,10 @@ trait RequiredFields
     /**
      * Check the current object to see if an input is required
      * for the given operation.
-     * @param  [type]  $inputName Field or input name.
-     * @param  [type]  $operation create / update
+     *
+     * @param string $inputName Field or input name.
+     * @param string $operation create / update
+     *
      * @return bool
      */
     public function isRequired($inputName, $operation)
