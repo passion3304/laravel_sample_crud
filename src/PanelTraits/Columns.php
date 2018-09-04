@@ -388,7 +388,7 @@ trait Columns
     /**
      * Get a column by the id, from the associative array.
      *
-     * @param  integer $column_number Placement inside the columns array.
+     * @param  int $column_number Placement inside the columns array.
      *
      * @return array Column details.
      */

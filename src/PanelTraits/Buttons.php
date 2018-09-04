@@ -103,7 +103,7 @@ trait Buttons
     public function modifyButton($name, $modifications = null)
     {
         /**
-         * @var CrudButton|null $button
+         * @var CrudButton|null
          */
         $button = $this->buttons()->firstWhere('name', $name);
 
