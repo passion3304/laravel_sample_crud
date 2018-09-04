@@ -67,7 +67,7 @@ return [
 
         // Bulk actions
         'bulk_no_entries_selected_title' => 'No entries selected',
-        'bulk_no_entries_selected_message' => 'Please use the checkbox next to the each element to select one or more items you would like to perform this action on.',
+        'bulk_no_entries_selected_message' => 'Please use select one or more items to perform a bulk action on them.',
 
         // Bulk delete confirmation
         'bulk_delete_are_you_sure' => 'Are you sure you want to delete these :number entries?',

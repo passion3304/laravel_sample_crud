@@ -140,6 +140,11 @@
           }
       });
 
+      // Bulk actions: if no items are selected, disable all bulk buttons
+      if (typeof crud.checkedItems === 'undefined' || crud.checkedItems.length == 0) {
+        $(".bulk-button").addClass('disabled');
+      }
+
       // on DataTable draw event run all functions in the queue
       // (eg. delete and details_row buttons add functions to this queue)
       $('#crudTable').on( 'draw.dt',   function () {

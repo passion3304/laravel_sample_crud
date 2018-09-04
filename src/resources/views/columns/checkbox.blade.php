@@ -50,6 +50,13 @@
 				  crud.checkedItems.splice(index, 1);
 				}
 			}
+
+			// if no items are selected, disable all bulk buttons
+			if (typeof crud.checkedItems === 'undefined' || crud.checkedItems.length == 0) {
+				$(".bulk-button").addClass('disabled');
+			} else {
+				$(".bulk-button").removeClass('disabled');
+			}
 	  	});
 	  }
 	}
