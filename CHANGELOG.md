@@ -20,6 +20,16 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.32] - 2018-09-04
+
+### Added
+- merged #1609 - bulk actions;
+
+### Fixed
+- Spanish translation;
+- Italian translation;
+
+
 ## [3.4.31] - 2018-08-28
 
 ### Fixed
