@@ -52,11 +52,7 @@
 			}
 
 			// if no items are selected, disable all bulk buttons
-			if (typeof crud.checkedItems === 'undefined' || crud.checkedItems.length == 0) {
-				$(".bulk-button").addClass('disabled');
-			} else {
-				$(".bulk-button").removeClass('disabled');
-			}
+			enableOrDisableBulkButtons();
 	  	});
 	  }
 	}
@@ -97,10 +93,21 @@
       }
     }
 
+    if (typeof enableOrDisableBulkButtons != 'function') {
+      function enableOrDisableBulkButtons() {
+		if (typeof crud.checkedItems === 'undefined' || crud.checkedItems.length == 0) {
+			$(".bulk-button").addClass('disabled');
+		} else {
+			$(".bulk-button").removeClass('disabled');
+		}
+      }
+    }
+
 	// activate checkbox if the page reloaded and the item is remembered as selected
 	// make it so that the function above is run after each DataTable draw event
 	crud.addFunctionToDataTablesDrawEventQueue('addOrRemoveCrudCheckedItem');
 	crud.addFunctionToDataTablesDrawEventQueue('markCheckboxAsCheckedIfPreviouslySelected');
 	crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
 	crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
+	crud.addFunctionToDataTablesDrawEventQueue('enableOrDisableBulkButtons');
 </script>

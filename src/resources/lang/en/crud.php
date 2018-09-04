@@ -67,11 +67,16 @@ return [
 
         // Bulk actions
         'bulk_no_entries_selected_title' => 'No entries selected',
-        'bulk_no_entries_selected_message' => 'Please use select one or more items to perform a bulk action on them.',
+        'bulk_no_entries_selected_message' => 'Please select one or more items to perform a bulk action on them.',
 
-        // Bulk delete confirmation
+        // Bulk confirmation
         'bulk_delete_are_you_sure' => 'Are you sure you want to delete these :number entries?',
+        'bulk_delete_sucess_title' => 'Entries deleted',
+        'bulk_delete_sucess_message' => ' items have been deleted',
+        'bulk_delete_error_title' => 'Delete failed',
+        'bulk_delete_error_message' => 'One or more items could not be deleted',
 
+        // Ajax errors
         'ajax_error_title' => 'Error',
         'ajax_error_text'  => 'Error loading page. Please refresh the page.',
 

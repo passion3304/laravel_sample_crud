@@ -18,45 +18,39 @@
 	      	return;
 	      }
 
-	      var message = "{{ trans('backpack::crud.bulk_delete_are_you_sure') }}";
-	      message = message.replace(":number", crud.checkedItems.length);
+	      var message = ("{{ trans('backpack::crud.bulk_delete_are_you_sure') }}").replace(":number", crud.checkedItems.length);
+	      var button = $(this);
 
 	      // show confirm message
 	      if (confirm(message) == true) {
-	      		var ajax_calls = [];
+	      	  var ajax_calls = [];
+      		  var delete_route = "{{ url($crud->route) }}/bulk-delete";
 
-		        // for each crud.checkedItems
-		        crud.checkedItems.forEach(function(item) {
-	      		  var delete_route = "{{ url($crud->route) }}/"+item;
+	      	  // submit an AJAX delete call
+      		  $.ajax({
+	              url: delete_route,
+	              type: 'DELETE',
+				  data: { entries: crud.checkedItems },
+	              success: function(result) {
+	                  // Show an alert with the result
+	                  new PNotify({
+	                      title: ("{{ trans('backpack::crud.bulk_delete_sucess_title') }}"),
+	                      text: crud.checkedItems.length+"{{ trans('backpack::crud.bulk_delete_sucess_message') }}",
+	                      type: "success"
+	                  });
 
-		      	  // submit an AJAX delete call
-	      		  ajax_calls.push($.ajax({
-		              url: delete_route,
-		              type: 'DELETE',
-		              success: function(result) {
-		                  // Show an alert with the result
-		                  new PNotify({
-		                      title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
-		                      text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
-		                      type: "success"
-		                  });
-		              },
-		              error: function(result) {
-		                  // Show an alert with the result
-		                  new PNotify({
-		                      title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
-		                      text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
-		                      type: "warning"
-		                  });
-		              }
-		          }));
-
-		      });
-
-		      $.when.apply(this, ajax_calls).then(function ( ajax_calls ) {
-		      		crud.checkedItems = [];
-		      		crud.table.ajax.reload();
-				});
+	                  crud.checkedItems = [];
+			      	  crud.table.ajax.reload();
+	              },
+	              error: function(result) {
+	                  // Show an alert with the result
+	                  new PNotify({
+	                      title: "{{ trans('backpack::crud.bulk_delete_error_title') }}",
+	                      text: "{{ trans('backpack::crud.bulk_delete_error_message') }}",
+	                      type: "warning"
+	                  });
+	              }
+	          });
 	      }
       }
 	}
