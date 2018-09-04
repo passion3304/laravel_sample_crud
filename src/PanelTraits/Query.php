@@ -20,7 +20,9 @@ trait Query
      *     $query->activePosts();
      * });
      *
-     * @param [type]
+     * @param callable $function
+     *
+     * @return mixed
      */
     public function addClause($function)
     {
@@ -30,10 +32,9 @@ trait Query
     /**
      * Use eager loading to reduce the number of queries on the table view.
      *
-     * @param  [type]
-     * @param  string
+     * @param array|string $entities
      *
-     * @return [type]
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function with($entities)
     {
@@ -43,10 +44,10 @@ trait Query
     /**
      * Order the results of the query in a certain way.
      *
-     * @param  [type]
-     * @param  string
+     * @param string $field
+     * @param string $order
      *
-     * @return [type]
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function orderBy($field, $order = 'asc')
     {
@@ -56,8 +57,9 @@ trait Query
     /**
      * Group the results of the query in a certain way.
      *
-     * @param  [type]
-     * @return [type]
+     * @param string $field
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function groupBy($field)
     {
@@ -67,8 +69,9 @@ trait Query
     /**
      * Limit the number of results in the query.
      *
-     * @param  [number]
-     * @return [type]
+     * @param int $number
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function limit($number)
     {
@@ -78,8 +81,9 @@ trait Query
     /**
      * Take a certain number of results from the query.
      *
-     * @param  [number]
-     * @return [type]
+     * @param int $number
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function take($number)
     {
@@ -89,8 +93,9 @@ trait Query
     /**
      * Start the result set from a certain number.
      *
-     * @param  int $number [description]
-     * @return [type]         [description]
+     * @param int $number
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function skip($number)
     {
@@ -99,6 +104,7 @@ trait Query
 
     /**
      * Count the number of results.
+     * @return int
      */
     public function count()
     {
