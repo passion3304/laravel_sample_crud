@@ -16,7 +16,7 @@
     <div class="col-sm-3">
         <select
             id="page_or_link_select"
-            name="{{ $field['name'] or 'type' }}"
+            name="{{ $field['name'] ?? 'type' }}"
             @include('crud::inc.field_attributes')
             >
 
