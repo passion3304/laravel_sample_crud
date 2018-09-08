@@ -43,6 +43,9 @@ trait Show
         $this->crud->removeButton('show');
         $this->crud->removeButton('delete');
 
+        // remove bulk actions colums
+        $this->crud->removeColumns(['blank_first_column', 'bulk_actions']);
+
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getShowView(), $this->data);
     }
