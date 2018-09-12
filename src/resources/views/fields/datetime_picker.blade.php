@@ -68,7 +68,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
 
                 $customConfig.locale = $customConfig['language'];
                 delete($customConfig['language']);
-                $picker = $fake.datetimepicker($customConfig);
+                var $picker = $fake.datetimepicker($customConfig);
 
                 $fake.on('keydown', function(e){
                     e.preventDefault();
