@@ -57,7 +57,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
             $('[data-bs-datetimepicker]').each(function(){
 
                 var $fake = $(this),
-                $field = $fake.parents('.form-group').find('input[type="hidden"]'),
+                $field = $fake.closest('.form-group').find('input[type="hidden"]'),
                 $customConfig = $.extend({
                     format: 'DD/MM/YYYY HH:mm',
                     defaultDate: $field.val(),
