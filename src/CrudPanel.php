@@ -358,7 +358,7 @@ class CrudPanel
         foreach ($endModels as $model) {
             if (is_array($model) && isset($model[$attribute])) {
                 $attributes[] = $model[$attribute];
-            } else {
+            } elseif ($model->{$attribute}) {
                 $attributes[] = $model->{$attribute};
             }
         }
