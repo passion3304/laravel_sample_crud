@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.34] - 2018-09-xx
+
+### Fixed
+- merged #1632 - not showing bulk columns on preview page;
+
+
 ## [3.4.33] - 2018-09-05
 
 ### Fixed
