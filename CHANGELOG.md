@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.34] - 2018-09-xx
+## [3.4.34] - 2018-09-25
 
 ### Fixed
 - merged #1632 - not showing bulk columns on preview page;
@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - merged #1642 - where ```getRelationModelInstances()``` returns array instead of object;
 - merged #1643 - new script for ```address``` field type;
 - merged #1614 - show Remove All Filters button even for simple filters;
+
 
 ## [3.4.33] - 2018-09-05
 
