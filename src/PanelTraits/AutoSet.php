@@ -92,6 +92,7 @@ trait AutoSet
 
         switch ($this->db_column_types[$field]['type']) {
             case 'int':
+            case 'integer':
             case 'smallint':
             case 'mediumint':
             case 'longint':

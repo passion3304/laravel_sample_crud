@@ -26,11 +26,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1535 - orderBy gets ignored when the user clicks on a column heading to reoder the datatable;
 
 
-## [3.4.34] - 2018-09-xx
+## [3.4.34] - 2018-09-25
 
 ### Fixed
 - merged #1632 - not showing bulk columns on preview page;
 - merged #1617 - don't mark required_with and required_if with asterisks;
+- merged #1642 - where ```getRelationModelInstances()``` returns array instead of object;
+- merged #1643 - new script for ```address``` field type;
+- merged #1614 - show Remove All Filters button even for simple filters;
 
 
 ## [3.4.33] - 2018-09-05
