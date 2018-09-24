@@ -51,6 +51,10 @@ trait Query
      */
     public function orderBy($field, $order = 'asc')
     {
+        if ($this->request->has('order')) {
+            return $this->query;
+        }
+
         return $this->query->orderBy($field, $order);
     }
 
