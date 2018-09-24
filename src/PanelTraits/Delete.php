@@ -25,4 +25,13 @@ trait Delete
     {
         return (string) $this->model->findOrFail($id)->delete();
     }
+
+    /**
+     * Add the bulk delete button to the bottom stack.
+     */
+    public function addBulkDeleteButton()
+    {
+        // bottom stack
+        $this->addButton('bottom', 'bulk_delete', 'view', 'crud::buttons.bulk_delete');
+    }
 }

@@ -20,8 +20,91 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.34] - 2018-09-xx
 
-## [3.4.23] - 2018-07-xx
+### Fixed
+- merged #1632 - not showing bulk columns on preview page;
+- merged #1617 - don't mark required_with and required_if with asterisks;
+
+
+## [3.4.33] - 2018-09-05
+
+### Fixed
+- merged #1625 - docblocks everywhere;
+- replaced ```or``` with ```??``` for Laravel 5.7 compatibility;
+
+
+## [3.4.32] - 2018-09-04
+
+### Added
+- merged #1609 - bulk actions;
+
+### Fixed
+- Spanish translation;
+- Italian translation;
+
+
+## [3.4.31] - 2018-08-28
+
+### Fixed
+- merged #1606 fixes #1605 - ```upload_multiple``` column type fix disk;
+
+
+## [3.4.30] - 2018-08-10
+
+### Added
+- #1589 - ```upload_multiple``` column type;
+- ```suffix``` option to ```array_count``` column type;
+
+
+## [3.4.29] - 2018-08-10
+
+### Fixed
+- #1588 - show button had a typo and required the update permission instead of show;
+
+## [3.4.28] - 2018-08-07
+
+### Added
+- merged #1577 - French Canadian translation thanks to @khoude24;
+- merged #1579 - table column type;
+- merged #1588 - sending usage stats to mothership in 1% of pageloads (server info only, no client info);
+
+### Fixed
+- text column now json_encodes value if array, so that it does not trigger error;
+- merged #1572 - added padding and alignment to list modal when responsive;
+- merged #1505 - spatie sluggable inconsistency when querying slugs prepended by quotes;
+- merged #1566 - details row is now removed when deleting an entry, thanks to @promatik;
+- merged #1576 - removed length from array_slice in addClause;
+- merged #1580 - show functionality is now prettier, multi-language and official;
+
+## [3.4.27] - 2018-07-19
+
+### Fixed
+- merged #1564 - buttons did not have the ```$button``` variable available inside their blade file;
+
+
+## [3.4.26] - 2018-07-17
+
+### Fixed
+- #1554 - translatable Edit button wasn't entirely visible;
+- number column still used TD instead of SPAN;
+
+
+## [3.4.25] - 2018-07-16
+
+### Fixed
+- #1546 by merging #1548 - fake translatable fields when cast as array/object;
+
+
+## [3.4.24] - 2018-07-16
+
+### Fixed
+- #1542 by merging #1543 - validation rules defined as arrays;
+
+## [3.4.23] - 2018-07-11
+
+### Added
+- composer.lock to gitignore;
 
 ### Fixed
 - #1533 - fixed casts with fakes;

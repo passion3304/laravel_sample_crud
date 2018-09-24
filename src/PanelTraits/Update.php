@@ -15,10 +15,10 @@ trait Update
     /**
      * Update a row in the database.
      *
-     * @param  [Int] The entity's id
-     * @param  [Request] All inputs to be updated.
+     * @param  int   $id   The entity's id
+     * @param  array $data All inputs to be updated.
      *
-     * @return [Eloquent Collection]
+     * @return object
      */
     public function update($id, $data)
     {
@@ -79,7 +79,7 @@ trait Update
      * Get the value of the 'name' attribute from the declared relation model in the given field.
      *
      * @param \Illuminate\Database\Eloquent\Model $model The current CRUD model.
-     * @param array $field The CRUD field array.
+     * @param array                               $field The CRUD field array.
      *
      * @return mixed The value of the 'name' attribute from the relation model.
      */

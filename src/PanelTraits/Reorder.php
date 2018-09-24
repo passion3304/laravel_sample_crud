@@ -13,9 +13,9 @@ trait Reorder
     /**
      * Change the order and parents of the given elements, according to the NestedSortable AJAX call.
      *
-     * @param  [Request] The entire request from the NestedSortable AJAX Call.
+     * @param array $request The entire request from the NestedSortable AJAX Call.
      *
-     * @return [integer] The number of items whose position in the tree has been changed.
+     * @return int The number of items whose position in the tree has been changed.
      */
     public function updateTreeOrder($request)
     {
@@ -41,8 +41,8 @@ trait Reorder
      * Enable the Reorder functionality in the CRUD Panel for users that have the been given access to 'reorder' using:
      * $this->crud->allowAccess('reorder');.
      *
-     * @param  [string] Column name that will be shown on the labels.
-     * @param  [integer] Maximum hierarchy level to which the elements can be nested (1 = no nesting, just reordering).
+     * @param string $label     Column name that will be shown on the labels.
+     * @param int    $max_level Maximum hierarchy level to which the elements can be nested (1 = no nesting, just reordering).
      */
     public function enableReorder($label = 'name', $max_level = 1)
     {
