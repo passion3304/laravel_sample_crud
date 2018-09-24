@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - merged #1632 - not showing bulk columns on preview page;
 - merged #1617 - don't mark required_with and required_if with asterisks;
+- merged #1642 - where ```getRelationModelInstances()``` returns array instead of object;
 
 
 ## [3.4.33] - 2018-09-05
