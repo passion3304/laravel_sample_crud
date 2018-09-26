@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.35] - 2018-09-26
+
+### Fixed
+- unit tests were failing;
+- version update in CrudServiceProvider;
+
 ## [3.4.34] - 2018-09-25
 
 ### Fixed
