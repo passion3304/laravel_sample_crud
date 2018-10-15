@@ -31,11 +31,14 @@ class CrudServiceProvider extends ServiceProvider
     public function boot()
     {
         $_SERVER['BACKPACK_CRUD_VERSION'] = $this::VERSION;
+        $customViewsFolder = resource_path('views/vendor/backpack/crud');
 
         // LOAD THE VIEWS
 
         // - first the published/overwritten views (in case they have any changes)
-        $this->loadViewsFrom(resource_path('views/vendor/backpack/crud'), 'crud');
+        if (file_exists($customViewsFolder)) {
+            $this->loadViewsFrom($customViewsFolder, 'crud');
+        }
         // - then the stock views that come with the package, in case a published view might be missing
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'crud');
 

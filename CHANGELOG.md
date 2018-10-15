@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.36] - 2018-10-15
+
+### Fixed
+- loading the custom views folder is now done only if it exists, this way fixing conflicts with the ```php artisan view:cache``` command;
+
+
 ## [3.4.35] - 2018-09-26
 
 ### Fixed
