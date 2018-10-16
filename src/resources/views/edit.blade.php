@@ -16,7 +16,7 @@
 
 @section('content')
 <div class="row">
-	<div class="col-md-8 col-md-offset-2">
+	<div class="{{ $crud->getEditContentClass() }}">
 		<!-- Default box -->
 		@if ($crud->hasAccess('list'))
 			<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>

@@ -27,6 +27,14 @@ return [
     'show_grouped_errors' => true,
     'show_inline_errors' => true,
 
+    // Here you may override the css-classes for the content section of the create view globally
+    // To override per view use $this->crud->setCreateContentClass('class-string')
+    'create_content_class' => 'col-md-8 col-md-offset-2',
+
+    // Here you may override the css-classes for the content section of the edit view globally
+    // To override per view use $this->crud->setEditContentClass('class-string')
+    'edit_content_class'   => 'col-md-8 col-md-offset-2',
+
     /*
     |------------
     | READ
@@ -48,6 +56,10 @@ return [
     // A 2D array in which the first array is used to define the value options and the second array the displayed options
     // If a 2D array is used, strings in the right hand array will be automatically run through trans()
         'page_length_menu' => [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']],
+
+    // Here you may override the css-class for the content section of the list view globally
+    // To override per view use $this->crud->setListContentClass('class-string')
+    'list_content_class' => 'col-md-12',
 
     // PREVIEW
 

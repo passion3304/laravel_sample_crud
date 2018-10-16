@@ -19,7 +19,7 @@
   <div class="row">
 
     <!-- THE ACTUAL CONTENT -->
-    <div class="col-md-12">
+    <div class="{{ $crud->getListContentClass() }}">
       <div class="box">
         @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
         <div class="box-header hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">

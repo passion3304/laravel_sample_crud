@@ -12,13 +12,16 @@ trait Views
     protected $revisionsTimelineView = 'crud::inc.revision_timeline';
     protected $reorderView = 'crud::reorder';
     protected $listView = 'crud::list';
+    protected $createContentClass;
+    protected $editContentClass;
+    protected $listContentClass;
 
     // -------
     // CREATE
     // -------
 
     /**
-     * Sets the list template.
+     * Sets the create template.
      *
      * @param string $view name of the template file
      *
@@ -38,6 +41,24 @@ trait Views
     public function getCreateView()
     {
         return $this->createView;
+    }
+
+    /**
+     * Sets the create content class.
+     * @param string $createContentClass content class
+     */
+    public function setCreateContentClass(string $createContentClass)
+    {
+        $this->createContentClass = $createContentClass;
+    }
+
+    /**
+     * Gets the create content class.
+     * @return string content class for create view
+     */
+    public function getCreateContentClass()
+    {
+        return $this->createContentClass ?? config('backpack.crud.create_content_class', 'col-md-8 col-md-offset-2');
     }
 
     // -------
@@ -65,6 +86,24 @@ trait Views
     public function getListView()
     {
         return $this->listView;
+    }
+
+    /**
+     * Sets the list content class.
+     * @param string $listContentClass content class
+     */
+    public function setListContentClass(string $listContentClass)
+    {
+        $this->listContentClass = $listContentClass;
+    }
+
+    /**
+     * Gets the list content class.
+     * @return string content class for list view
+     */
+    public function getListContentClass()
+    {
+        return $this->listContentClass ?? config('backpack.crud.list_content_class', 'col-md-12');
     }
 
     /**
@@ -138,6 +177,24 @@ trait Views
     public function getEditView()
     {
         return $this->editView;
+    }
+
+    /**
+     * Sets the edit content class.
+     * @param string $editContentClass content class
+     */
+    public function setEditContentClass(string $editContentClass)
+    {
+        $this->editContentClass = $editContentClass;
+    }
+
+    /**
+     * Gets the edit content class.
+     * @return string content class for edit view
+     */
+    public function getEditContentClass()
+    {
+        return $this->editContentClass ?? config('backpack.crud.edit_content_class', 'col-md-8 col-md-offset-2');
     }
 
     /**
