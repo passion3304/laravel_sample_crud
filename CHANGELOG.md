@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.37] - 2018-10-24
+
+### Fixed
+- spanish translation;
+- updated datetimepicker version in ```datetime_picker``` field;
+
+
 ## [3.4.36] - 2018-10-15
 
 ### Fixed
