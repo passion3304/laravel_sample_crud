@@ -125,4 +125,9 @@ return [
     'internal_link_placeholder' => 'Slug interno. Ejplo: \'admin/page\' (sin comillas) para \':url\'',
     'external_link' => 'Enlace externo',
 
+    // Filtering
+    'filters'           =>  'Filtros',
+    'remove_filters'    =>  'Remover filtros',
+    'toggle_filters'    =>  'Alternar filtros',
+
 ];
