@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.38] - 2018-10-xx
+
+### Added
+- "default" for select field type;
+
+
 ## [3.4.37] - 2018-10-24
 
 ### Fixed
