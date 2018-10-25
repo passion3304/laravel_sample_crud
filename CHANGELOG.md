@@ -25,6 +25,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - "default" for select field type;
 
+### Fixed
+- merged #1651 fixes #1640 - column width when resizing window or sidebar, on unresponsive crud table;
+
 
 ## [3.4.37] - 2018-10-24
 
