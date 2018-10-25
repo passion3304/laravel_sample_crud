@@ -168,12 +168,21 @@
         // make sure the column headings have the same width as the actual columns
         // after the user manually resizes the window
         var resizeTimer;
-        $(window).on('resize', function(e) {
+        function resizeCrudTableColumnWidths() {
           clearTimeout(resizeTimer);
           resizeTimer = setTimeout(function() {
             // Run code here, resizing has "stopped"
             crud.table.columns.adjust();
           }, 250);
+        }
+        $(window).on('resize', function(e) {
+          resizeCrudTableColumnWidths();
+        });
+        $(document).on('expanded.pushMenu', function(e) {
+          resizeCrudTableColumnWidths();
+        });
+        $(document).on('collapsed.pushMenu', function(e) {
+          resizeCrudTableColumnWidths();
         });
       @endif
 
