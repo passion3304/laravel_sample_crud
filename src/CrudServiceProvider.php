@@ -9,7 +9,7 @@ class CrudServiceProvider extends ServiceProvider
 {
     use CrudUsageStats;
 
-    const VERSION = '3.4.37';
+    const VERSION = '3.4.38';
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
