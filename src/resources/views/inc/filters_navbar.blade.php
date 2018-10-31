@@ -36,12 +36,13 @@
     .navbar-filters {
       min-height: 25px;
       border-radius: 0;
-      margin-bottom: 10px;
-      margin-left: -10px;
-      margin-right: -10px;
-      margin-top: -11px;
-      background: #f9f9f9;
+      margin-bottom: 0px;
+      /*margin-left: -10px;*/
+      /*margin-right: -10px;*/
+      margin-top: 10px;
+      background: transparent;
       border-color: #f4f4f4;
+      border: none;
     }
 
     .navbar-filters .navbar-collapse {
