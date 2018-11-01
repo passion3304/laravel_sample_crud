@@ -75,12 +75,12 @@
 
     // move the datatable buttons in the top-right corner and make them smaller
     function moveExportButtonsToTopRight() {
-      // crud.table.buttons().each(function(button) {
-      //   if (button.node.className.indexOf('buttons-columnVisibility') == -1)
-      //   {
-      //     button.node.className = button.node.className + " btn-sm";
-      //   }
-      // })
+      crud.table.buttons().each(function(button) {
+        if (button.node.className.indexOf('buttons-columnVisibility') == -1)
+        {
+          button.node.className = button.node.className + " btn-sm";
+        }
+      })
       $(".dt-buttons").appendTo($('#datatable_button_stack' )).css('display', 'block');
     }
 

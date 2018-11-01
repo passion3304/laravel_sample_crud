@@ -79,15 +79,16 @@
             </tfoot>
           </table>
 
+          @if ( $crud->buttons->where('stack', 'bottom')->count() )
+          <div id="bottom_buttons" class="hidden-print m-b-20">
+            @include('crud::inc.button_stack', ['stack' => 'bottom'])
+
+            <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
+          </div>
+          @endif
+
         </div><!-- /.box-body -->
 
-        @if ( $crud->buttons->where('stack', 'bottom')->count() )
-        <div class="hidden-print">
-          @include('crud::inc.button_stack', ['stack' => 'bottom'])
-
-          <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
-        </div>
-        @endif
       </div><!-- /.box -->
     </div>
 

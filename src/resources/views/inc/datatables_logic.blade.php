@@ -127,6 +127,9 @@
       // move "showing x out of y" info to header
       $("#datatable_info_stack").html($('#crudTable_info'));
 
+      // move the bottom buttons before pagination
+      $("#bottom_buttons").insertBefore($('#crudTable_wrapper .row:last-child' ));
+
       // override ajax error message
       $.fn.dataTable.ext.errMode = 'none';
       $('#crudTable').on('error.dt', function(e, settings, techNote, message) {
