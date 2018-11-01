@@ -23,7 +23,7 @@
       <div class="">
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-xs-6">
             @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
             <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
@@ -32,7 +32,7 @@
             </div>
             @endif
           </div>
-          <div class="col-md-6">
+          <div class="col-xs-6">
               <div id="datatable_search_stack" class="pull-right"></div>
           </div>
         </div>
