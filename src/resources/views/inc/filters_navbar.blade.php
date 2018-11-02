@@ -24,57 +24,6 @@
     </div><!-- /.container-fluid -->
   </nav>
 
-
-@push('crud_list_styles')
-	<style>
-    .backpack-filter label {
-      color: #868686;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .navbar-filters {
-      min-height: 25px;
-      border-radius: 0;
-      margin-bottom: 0px;
-      /*margin-left: -10px;*/
-      /*margin-right: -10px;*/
-      margin-top: 10px;
-      background: transparent;
-      border-color: #f4f4f4;
-      border: none;
-    }
-
-    .navbar-filters .navbar-collapse {
-    	padding: 0;
-    }
-
-    .navbar-filters .navbar-toggle {
-      padding: 10px 15px;
-      border-radius: 0;
-    }
-
-    .navbar-filters .navbar-brand {
-      height: 25px;
-      padding: 5px 15px;
-      font-size: 14px;
-      text-transform: uppercase;
-    }
-    @media (min-width: 768px) {
-      .navbar-filters .navbar-nav>li>a {
-          padding-top: 5px;
-          padding-bottom: 5px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .navbar-filters .navbar-nav {
-        margin: 0;
-      }
-    }
-    </style>
-@endpush
-
 @push('crud_list_scripts')
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.2/URI.min.js" type="text/javascript"></script>
     <script>

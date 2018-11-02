@@ -22,7 +22,7 @@
     <div class="col-md-12">
       <div class="">
 
-        <div class="row">
+        <div class="row m-b-10">
           <div class="col-xs-6">
             @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
             <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
@@ -80,7 +80,7 @@
           </table>
 
           @if ( $crud->buttons->where('stack', 'bottom')->count() )
-          <div id="bottom_buttons" class="hidden-print m-b-20">
+          <div id="bottom_buttons" class="hidden-print">
             @include('crud::inc.button_stack', ['stack' => 'bottom'])
 
             <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>

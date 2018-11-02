@@ -109,7 +109,7 @@
           dom:
             "<'row hidden'<'col-sm-6 hidden-xs'i><'col-sm-6 hidden-print'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'l><'col-sm-2'B><'col-sm-5 hidden-print'p>>",
+            "<'row m-t-10'<'col-sm-5'l><'col-sm-2'B><'col-sm-5 hidden-print'p>>",
       }
   }
   </script>
