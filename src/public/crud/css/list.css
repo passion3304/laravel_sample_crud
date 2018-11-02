@@ -14,10 +14,10 @@
 
 	#crudTable_wrapper .dataTables_processing {
 		background: rgba(255,255,255,0.9);
-		top: 21px;
-		height: 100%;
-		left: 100px;
-		width: 100%;
+		top: 26px;
+		height: 98%;
+		left: 115px;
+		width: 97%;
 		z-index: 999;
 		border: none;
 		box-shadow: none;
