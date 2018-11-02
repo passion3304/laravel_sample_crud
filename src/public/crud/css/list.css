@@ -151,6 +151,8 @@
 	  border-radius: 5px;
 	}
 
+	/* datatable search overwrites */
+
 	.dataTables_filter {
 		text-align: right;
 	}
@@ -167,4 +169,9 @@
 	    width: auto;
 	    border-radius: 25px;
 	    /*border: none;*/
+	}
+
+	/* datatable header overwrites */
+	table.dataTable {
+		margin-top: 0px!important;
 	}
