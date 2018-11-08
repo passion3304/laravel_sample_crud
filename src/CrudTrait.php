@@ -76,10 +76,14 @@ trait CrudTrait
     public function addFakes($columns = ['extras'])
     {
         foreach ($columns as $key => $column) {
+            if (! isset($this->attributes[$column])) {
+                continue;
+            }
+
             $column_contents = $this->{$column};
 
-            if (! is_object($this->{$column})) {
-                $column_contents = json_decode($this->{$column});
+            if ($this->shouldDecodeFake($column)) {
+                $column_contents = json_decode($column_contents);
             }
 
             if ((is_array($column_contents) || is_object($column_contents) || $column_contents instanceof Traversable)) {
@@ -108,6 +112,17 @@ trait CrudTrait
         $this->addFakes($columns);
 
         return $this;
+    }
+
+    /**
+     * Determine if this fake column should be json_decoded.
+     *
+     * @param $column string fake column name
+     * @return bool
+     */
+    public function shouldDecodeFake($column)
+    {
+        return ! in_array($column, array_keys($this->casts));
     }
 
     /**

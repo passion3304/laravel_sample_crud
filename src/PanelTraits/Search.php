@@ -11,11 +11,14 @@ trait Search
     */
 
     public $ajax_table = true;
+    public $responsive_table;
 
     /**
      * Add conditions to the CRUD query for a particular search term.
      *
-     * @param  [string] $searchTerm Whatever string the user types in the search bar.
+     * @param string $searchTerm Whatever string the user types in the search bar.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function applySearchTerm($searchTerm)
     {
@@ -35,14 +38,23 @@ trait Search
      */
     public function applySearchLogicForColumn($query, $column, $searchTerm)
     {
+        $columnType = $column['type'];
+
         // if there's a particular search logic defined, apply that one
         if (isset($column['searchLogic'])) {
             $searchLogic = $column['searchLogic'];
 
+            // if a closure was passed, execute it
             if (is_callable($searchLogic)) {
                 return $searchLogic($query, $column, $searchTerm);
             }
 
+            // if a string was passed, search like it was that column type
+            if (is_string($searchLogic)) {
+                $columnType = $searchLogic;
+            }
+
+            // if false was passed, don't search this column
             if ($searchLogic == false) {
                 return;
             }
@@ -50,7 +62,7 @@ trait Search
 
         // sensible fallback search logic, if none was explicitly given
         if ($column['tableColumn']) {
-            switch ($column['type']) {
+            switch ($columnType) {
                 case 'email':
                 case 'date':
                 case 'datetime':
@@ -94,10 +106,52 @@ trait Search
     }
 
     /**
+     * Tell the list view to NOT show a reponsive DataTable.
+     *
+     * @param  bool $value
+     */
+    public function setResponsiveTable($value = true)
+    {
+        $this->responsive_table = $value;
+    }
+
+    /**
+     * Check if responsiveness is enabled for the table view.
+     *
+     * @return bool
+     */
+    public function getResponsiveTable()
+    {
+        if ($this->responsive_table !== null) {
+            return $this->responsive_table;
+        }
+
+        return config('backpack.crud.responsive_table');
+    }
+
+    /**
+     * Remember to show a responsive table.
+     */
+    public function enableResponsiveTable()
+    {
+        $this->setResponsiveTable(true);
+    }
+
+    /**
+     * Remember to show a table with horizontal scrolling.
+     */
+    public function disableResponsiveTable()
+    {
+        $this->setResponsiveTable(false);
+    }
+
+    /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
-     * @param  Entity $entry A db entry of the current entity;
-     * @param  int The number shown to the user as row number (index);
-     * @return array         Array of HTML cell contents.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
+     * @param  bool|int                            $rowNumber The number shown to the user as row number (index);
+     *
+     * @return array                Array of HTML cell contents.
      */
     public function getRowViews($entry, $rowNumber = false)
     {
@@ -131,10 +185,12 @@ trait Search
 
     /**
      * Get the HTML of a cell, using the column types.
-     * @param  array $column
-     * @param  Entity $entry A db entry of the current entity;
-     * @param  int The number shown to the user as row number (index);
-     * @return HTML
+     *
+     * @param  array                               $column
+     * @param  \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
+     * @param  bool|int                            $rowNumber The number shown to the user as row number (index);
+     *
+     * @return string
      */
     public function getCellView($column, $entry, $rowNumber = false)
     {
@@ -143,7 +199,9 @@ trait Search
 
     /**
      * Get the name of the view to load for the cell.
-     * @param $column
+     *
+     * @param array $column
+     *
      * @return string
      */
     private function getCellViewName($column)
@@ -169,11 +227,13 @@ trait Search
 
     /**
      * Render the given view.
-     * @param $view
-     * @param $column
-     * @param $entry
-     * @param  int The number shown to the user as row number (index);
-     * @return mixed
+     *
+     * @param string   $view
+     * @param array    $column
+     * @param object   $entry
+     * @param bool|int $rowNumber The number shown to the user as row number (index)
+     *
+     * @return string
      */
     private function renderCellView($view, $column, $entry, $rowNumber = false)
     {
@@ -192,7 +252,11 @@ trait Search
     /**
      * Created the array to be fed to the data table.
      *
-     * @param $entries Eloquent results.
+     * @param array    $entries Eloquent results.
+     * @param int      $totalRows
+     * @param int      $filteredRows
+     * @param bool|int $startIndex
+     *
      * @return array
      */
     public function getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex = false)
