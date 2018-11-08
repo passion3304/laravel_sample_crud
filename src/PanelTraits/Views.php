@@ -19,7 +19,9 @@ trait Views
 
     /**
      * Sets the list template.
+     *
      * @param string $view name of the template file
+     *
      * @return string $view name of the template file
      */
     public function setCreateView($view)
@@ -44,7 +46,9 @@ trait Views
 
     /**
      * Sets the list template.
+     *
      * @param string $view name of the template file
+     *
      * @return string $view name of the template file
      */
     public function setListView($view)
@@ -65,7 +69,9 @@ trait Views
 
     /**
      * Sets the details row template.
+     *
      * @param string $view name of the template file
+     *
      * @return string $view name of the template file
      */
     public function setDetailsRowView($view)
@@ -86,7 +92,9 @@ trait Views
 
     /**
      * Sets the show template.
+     *
      * @param string $view name of the template file
+     *
      * @return string $view name of the template file
      */
     public function setShowView($view)
@@ -111,7 +119,9 @@ trait Views
 
     /**
      * Sets the edit template.
+     *
      * @param string $view name of the template file
+     *
      * @return string $view name of the template file
      */
     public function setEditView($view)
@@ -132,7 +142,9 @@ trait Views
 
     /**
      * Sets the reorder template.
+     *
      * @param string $view name of the template file
+     *
      * @return string $view name of the template file
      */
     public function setReorderView($view)
@@ -153,7 +165,9 @@ trait Views
 
     /**
      * Sets the revision template.
+     *
      * @param string $view name of the template file
+     *
      * @return string $view name of the template file
      */
     public function setRevisionsView($view)
@@ -165,7 +179,9 @@ trait Views
 
     /**
      * Sets the revision template.
+     *
      * @param string $view name of the template file
+     *
      * @return string $view name of the template file
      */
     public function setRevisionsTimelineView($view)

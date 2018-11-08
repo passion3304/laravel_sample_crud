@@ -20,5 +20,5 @@ if (is_array($array) && count($array)) {
 }
 ?>
 <span>
-    {{ $displayValue or '-' }}
+    {{ $displayValue ?? '-' }}
 </span>

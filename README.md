@@ -40,17 +40,17 @@ Installation guides:
 - [Install Backpack on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
 - [Install Backpack on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
 - [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - last feature update was 27 Sep 2017;
-- [Install Backpack on Laravel 5.5 or 5.6](https://laravel-backpack.readme.io/v3.4/docs/install-on-laravel-56) - recommended;
+- [Install Backpack on Laravel 5.5, 5.6 or 5.7](https://backpackforlaravel.com/docs/3.4/introduction) - recommended;
 
 
 ## Features
 
-Check out [the about page in the documentation](https://laravel-backpack.readme.io/docs/crud) to get familiar with all the Backpack\CRUD features.
+Check out [the about page in the documentation](https://backpackforlaravel.com/docs/3.4/getting-started-crud-operations) to get familiar with all the Backpack\CRUD features.
 
 
 ## Usage
 
-If you've already checked out the features link above, take a look at how you can create a CRUD for a model in [this example](https://laravel-backpack.readme.io/docs/crud-example). At the end of the page you'll also find a way you can do everything in 1-2 minutes, using the command line and [backpack/generators](https://github.com/laravel-backpack/generators).
+If you've already checked out the features link above, take a look at how you can create a CRUD for a model in [this example](https://backpackforlaravel.com/docs/3.4/getting-started-crud-operations). At the end of the page you'll also find a way you can do everything in 1-2 minutes, using the command line and [backpack/generators](https://github.com/laravel-backpack/generators).
 
 In short:
 

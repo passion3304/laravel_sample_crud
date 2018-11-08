@@ -7,7 +7,7 @@
 			  {!! $crud->model->{$button->content}($crud); !!}
 		@endif
 	  @else
-		@include($button->content)
+		@include($button->content, ['button' => $button])
 	  @endif
 	@endforeach
 @endif

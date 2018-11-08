@@ -13,7 +13,7 @@ trait AutoSet
      * For a simple CRUD Panel, there should be no need to add/define the fields.
      * The public columns in the database will be converted to be fields.
      *
-     * @return [void]
+     * @return void
      */
     public function setFromDb()
     {
@@ -52,7 +52,7 @@ trait AutoSet
     /**
      * Get all columns from the database for that table.
      *
-     * @return [array]
+     * @return array
      */
     public function getDbColumnTypes()
     {
@@ -72,9 +72,9 @@ trait AutoSet
     /**
      * Intuit a field type, judging from the database column type.
      *
-     * @param  [string] Field name.
+     * @param  string $field Field name.
      *
-     * @return [string] Fielt type.
+     * @return string Field type.
      */
     public function getFieldTypeFromDbColumnType($field)
     {
@@ -92,6 +92,7 @@ trait AutoSet
 
         switch ($this->db_column_types[$field]['type']) {
             case 'int':
+            case 'integer':
             case 'smallint':
             case 'mediumint':
             case 'longint':
@@ -154,9 +155,9 @@ trait AutoSet
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
      *
-     * @param  [string] The value.
+     * @param  string $value The value.
      *
-     * @return [string] The transformed value.
+     * @return string The transformed value.
      */
     public function makeLabel($value)
     {
@@ -177,7 +178,10 @@ trait AutoSet
 
     /**
      * Change the way labels are made.
+     *
      * @param callable $labeller A function that receives a string and returns the formatted string, after stripping down useless characters.
+     *
+     * @return self
      */
     public function setLabeller(callable $labeller)
     {
@@ -189,7 +193,7 @@ trait AutoSet
     /**
      * Get the database column names, in order to figure out what fields/columns to show in the auto-fields-and-columns functionality.
      *
-     * @return [array] Database column names as an array.
+     * @return array Database column names as an array.
      */
     public function getDbColumnsNames()
     {
