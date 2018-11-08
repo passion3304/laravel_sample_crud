@@ -12,7 +12,7 @@ trait ListEntries
     public function index()
     {
         $this->crud->hasAccessOrFail('list');
-        $this->crud->setOperation('list');
+        $this->crud->setOperation('ListEntries');
 
         $this->data['crud'] = $this->crud;
         $this->data['title'] = ucfirst($this->crud->entity_name_plural);
@@ -29,7 +29,7 @@ trait ListEntries
     public function search()
     {
         $this->crud->hasAccessOrFail('list');
-        $this->crud->setOperation('list');
+        $this->crud->setOperation('ListEntries');
 
         $totalRows = $filteredRows = $this->crud->count();
         $startIndex = $this->request->input('start') ?: 0;
@@ -79,7 +79,7 @@ trait ListEntries
     public function showDetailsRow($id)
     {
         $this->crud->hasAccessOrFail('details_row');
-        $this->crud->setOperation('list');
+        $this->crud->setOperation('ListEntries');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
