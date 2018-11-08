@@ -32,6 +32,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1527 - custom titles, headings and subheadings;
 - #1518 - CrudPanel class is now macroable;
 
+### Fixed
+- #1658 - model function button did not pass $crud to button;
+
 ----
 
 
