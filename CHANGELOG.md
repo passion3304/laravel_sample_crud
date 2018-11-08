@@ -20,7 +20,6 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-
 ## [3.5.0] - 2018-09-xx
 
 ### BREAKING
@@ -31,6 +30,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1675 - design facelift for the list view - a lot cleaner;
 - #1516 - setters and getters for the current operation;
 - #1527 - custom titles, headings and subheadings;
+
+---
+
+## [3.4.39] - 2018-11-xx
+
+### Fixed
+- #1540 fixes #1539 - what happens if actions don't exist because the controller is overwritten;
 
 
 ## [3.4.38] - 2018-10-26

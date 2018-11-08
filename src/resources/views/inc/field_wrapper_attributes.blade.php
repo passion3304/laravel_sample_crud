@@ -1,5 +1,5 @@
 <?php
-$required = (isset($field['attributes']['required']) || $crud->isRequired($field['name'], $action)) ? ' required' : '';
+$required = (isset($field['attributes']['required']) || (isset($action) && $crud->isRequired($field['name'], $action))) ? ' required' : '';
 ?>
 
 @if (isset($field['wrapperAttributes']))
