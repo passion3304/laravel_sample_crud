@@ -20,6 +20,17 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+
+## [3.5.0] - 2018-09-xx
+
+### BREAKING
+- #1535 - orderBy gets ignored when the user clicks on a column heading to reoder the datatable;
+
+### Added
+- #1680 - Backpack checks that CrudTrait is used on the Model; otherwise it throws a 500 error with a clear message;
+- #1675 - design facelift for the list view - a lot cleaner;
+
+
 ## [3.4.38] - 2018-10-26
 
 ### Added
