@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
+use Illuminate\Http\Request as StoreRequest;
+
 trait Create
 {
     /**

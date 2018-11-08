@@ -21,4 +21,25 @@ trait Delete
 
         return $this->crud->delete($id);
     }
+
+    /**
+     * Delete multiple entries in one go.
+     *
+     * @return string
+     */
+    public function bulkDelete()
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        $entries = $this->request->input('entries');
+        $deletedEntries = [];
+
+        foreach ($entries as $key => $id) {
+            if ($entry = $this->crud->model->find($id)) {
+                $deletedEntries[] = $entry->delete();
+            }
+        }
+
+        return $deletedEntries;
+    }
 }
