@@ -19,7 +19,7 @@ use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Filters;
 use Backpack\CRUD\PanelTraits\Reorder;
 use Backpack\CRUD\PanelTraits\AutoFocus;
-use Illuminate\Support\Traits\Macroable;
+use Backpack\CRUD\PanelTraits\Macroable;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\Operations;
 use Backpack\CRUD\PanelTraits\FakeColumns;
@@ -32,6 +32,7 @@ class CrudPanel
 {
     // load all the default CrudPanel features
     use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields, HeadingsAndTitle, Operations;
+
     // allow developers to add their own closures to this object
     use Macroable;
 
