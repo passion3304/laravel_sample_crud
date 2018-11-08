@@ -94,7 +94,7 @@ class CrudPanel
             throw new \Exception('The model does not exist.', 500);
         }
 
-        if (!method_exists($model_namespace, 'hasCrudTrait')) {
+        if (! method_exists($model_namespace, 'hasCrudTrait')) {
             throw new \Exception('Please use CrudTrait on the model.', 500);
         }
 
