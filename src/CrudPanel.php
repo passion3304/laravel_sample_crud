@@ -91,7 +91,11 @@ class CrudPanel
     public function setModel($model_namespace)
     {
         if (! class_exists($model_namespace)) {
-            throw new \Exception('This model does not exist.', 404);
+            throw new \Exception('The model does not exist.', 500);
+        }
+
+        if (!method_exists($model_namespace, 'hasCrudTrait')) {
+            throw new \Exception('Please use CrudTrait on the model.', 500);
         }
 
         $this->model = new $model_namespace();
