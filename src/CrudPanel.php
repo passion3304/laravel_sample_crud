@@ -32,7 +32,6 @@ class CrudPanel
 {
     // load all the default CrudPanel features
     use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields, HeadingsAndTitle, Operations;
-
     // allow developers to add their own closures to this object
     use Macroable;
 
