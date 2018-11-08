@@ -7,11 +7,12 @@ trait ListEntries
     /**
      * Display all rows in the database for this entity.
      *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
         $this->crud->hasAccessOrFail('list');
+        $this->crud->setOperation('ListEntries');
 
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? ucfirst($this->crud->entity_name_plural);
@@ -23,11 +24,12 @@ trait ListEntries
     /**
      * The search function that is called by the data table.
      *
-     * @return  JSON Array of cells in HTML form.
+     * @return array JSON Array of cells in HTML form.
      */
     public function search()
     {
         $this->crud->hasAccessOrFail('list');
+        $this->crud->setOperation('ListEntries');
 
         $totalRows = $filteredRows = $this->crud->count();
         $startIndex = $this->request->input('start') ?: 0;
@@ -71,10 +73,13 @@ trait ListEntries
      * - setting: $crud->details_row = true;
      * - adding the details route for the entity; ex: Route::get('page/{id}/details', 'PageCrudController@showDetailsRow');
      * - adding a view with the following name to change what the row actually contains: app/resources/views/vendor/backpack/crud/details_row.blade.php
+     *
+     * @return \Illuminate\View\View
      */
     public function showDetailsRow($id)
     {
         $this->crud->hasAccessOrFail('details_row');
+        $this->crud->setOperation('ListEntries');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

@@ -3,6 +3,8 @@
   <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
   <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+  <script src="
+https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
 
   <script>
     var crud = {
@@ -41,9 +43,15 @@
                 } ),
                 renderer: function ( api, rowIdx, columns ) {
                   var data = $.map( columns, function ( col, i ) {
+                      var allColumnHeaders = $("#crudTable thead>tr>th");
+
+                      if ($(allColumnHeaders[col.columnIndex]).attr('data-visible-in-modal') == 'false') {
+                        return '';
+                      }
+
                       return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
-                                '<td><strong>'+col.title.trim()+':'+'<strong></td> '+
-                                '<td>'+col.data+'</td>'+
+                                '<td style="vertical-align:top;"><strong>'+col.title.trim()+':'+'<strong></td> '+
+                                '<td style="padding-left:10px;padding-bottom:10px;">'+col.data+'</td>'+
                               '</tr>';
                   } ).join('');
 
@@ -53,6 +61,7 @@
                 },
             }
         },
+        fixedHeader: true,
         @else
         responsive: false,
         scrollX: true,
@@ -78,8 +87,8 @@
               "paginate": {
                   "first":      "{{ trans('backpack::crud.paginate.first') }}",
                   "last":       "{{ trans('backpack::crud.paginate.last') }}",
-                  "next":       "<span class='hidden-xs hidden-sm'>{{ trans('backpack::crud.paginate.next') }}</span><span class='hidden-md hidden-lg'>></span>",
-                  "previous":   "<span class='hidden-xs hidden-sm'>{{ trans('backpack::crud.paginate.previous') }}</span><span class='hidden-md hidden-lg'><</span>"
+                  "next":       ">",
+                  "previous":   "<"
               },
               "aria": {
                   "sortAscending":  "{{ trans('backpack::crud.aria.sortAscending') }}",
@@ -101,9 +110,9 @@
               "type": "POST"
           },
           dom:
-            "<'row'<'col-sm-6 hidden-xs'l><'col-sm-6 hidden-print'f>>" +
+            "<'row hidden'<'col-sm-6 hidden-xs'i><'col-sm-6 hidden-print'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-2'B><'col-sm-5 hidden-print'p>>",
+            "<'row m-t-10'<'col-sm-5'l><'col-sm-2'B><'col-sm-5 hidden-print'p>>",
       }
   }
   </script>
@@ -114,6 +123,15 @@
     jQuery(document).ready(function($) {
 
       crud.table = $("#crudTable").DataTable(crud.dataTableConfiguration);
+
+      // move search bar
+      $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
+
+      // move "showing x out of y" info to header
+      $("#datatable_info_stack").html($('#crudTable_info'));
+
+      // move the bottom buttons before pagination
+      $("#bottom_buttons").insertBefore($('#crudTable_wrapper .row:last-child' ));
 
       // override ajax error message
       $.fn.dataTable.ext.errMode = 'none';
@@ -148,15 +166,37 @@
          crud.table.responsive.rebuild();
       } ).dataTable();
 
-      // when columns are hidden by reponsive plugin,
-      // the table should have the has-hidden-columns class
-      crud.table.on( 'responsive-resize', function ( e, datatable, columns ) {
-          if (crud.table.responsive.hasHidden()) {
-            $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
-           } else {
-            $("#crudTable").removeClass('has-hidden-columns');
-           }
-      } );
+      @if ($crud->getResponsiveTable())
+        // when columns are hidden by reponsive plugin,
+        // the table should have the has-hidden-columns class
+        crud.table.on( 'responsive-resize', function ( e, datatable, columns ) {
+            if (crud.table.responsive.hasHidden()) {
+              $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
+             } else {
+              $("#crudTable").removeClass('has-hidden-columns');
+             }
+        } );
+      @else
+        // make sure the column headings have the same width as the actual columns
+        // after the user manually resizes the window
+        var resizeTimer;
+        function resizeCrudTableColumnWidths() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function() {
+            // Run code here, resizing has "stopped"
+            crud.table.columns.adjust();
+          }, 250);
+        }
+        $(window).on('resize', function(e) {
+          resizeCrudTableColumnWidths();
+        });
+        $(document).on('expanded.pushMenu', function(e) {
+          resizeCrudTableColumnWidths();
+        });
+        $(document).on('collapsed.pushMenu', function(e) {
+          resizeCrudTableColumnWidths();
+        });
+      @endif
 
     });
   </script>

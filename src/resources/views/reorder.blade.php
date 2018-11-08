@@ -117,7 +117,7 @@ function tree_element($entry, $key, $all_entries, $crud)
         tabSize: 25,
         tolerance: 'pointer',
         toleranceElement: '> div',
-        maxLevels: {{ $crud->reorder_max_level or 3 }},
+        maxLevels: {{ $crud->reorder_max_level ?? 3 }},
 
         isTree: true,
         expandOnHover: 700,

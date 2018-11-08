@@ -14,6 +14,7 @@ trait Create
     public function create()
     {
         $this->crud->hasAccessOrFail('create');
+        $this->crud->setOperation('Create');
 
         // prepare the fields you need to show
         $this->data['crud'] = $this->crud;
@@ -35,6 +36,7 @@ trait Create
     public function storeCrud(StoreRequest $request = null)
     {
         $this->crud->hasAccessOrFail('create');
+        $this->crud->setOperation('Create');
 
         // fallback to global request instance
         if (is_null($request)) {
