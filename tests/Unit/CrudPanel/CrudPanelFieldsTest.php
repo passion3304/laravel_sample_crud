@@ -606,8 +606,10 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     public function testCheckIfFieldIsFirstOfItsType()
     {
-        $isFirstAddressFieldFirst = $this->crudPanel->checkIfFieldIsFirstOfItsType($this->multipleFieldTypesArray[1], $this->expectedMultipleFieldTypesArray);
-        $isSecondAddressFieldFirst = $this->crudPanel->checkIfFieldIsFirstOfItsType($this->multipleFieldTypesArray[2], $this->expectedMultipleFieldTypesArray);
+        $this->crudPanel->addFields($this->multipleFieldTypesArray);
+
+        $isFirstAddressFieldFirst = $this->crudPanel->checkIfFieldIsFirstOfItsType($this->multipleFieldTypesArray[1]);
+        $isSecondAddressFieldFirst = $this->crudPanel->checkIfFieldIsFirstOfItsType($this->multipleFieldTypesArray[2]);
 
         $this->assertTrue($isFirstAddressFieldFirst);
         $this->assertFalse($isSecondAddressFieldFirst);
