@@ -222,12 +222,12 @@ trait Fields
      * It's used in each field_type.blade.php to determine wether to push the css and js content or not (we only need to push the js and css for a field the first time it's loaded in the form, not any subsequent times).
      *
      * @param array $field        The current field being tested if it's the first of its type.
-     * @param array $fields_array All the fields in that particular form.
      *
      * @return bool true/false
      */
-    public function checkIfFieldIsFirstOfItsType($field, $fields_array)
+    public function checkIfFieldIsFirstOfItsType($field)
     {
+        $fields_array = $this->getCurrentFields();
         $first_field = $this->getFirstOfItsTypeInArray($field['type'], $fields_array);
 
         if ($field['name'] == $first_field['name']) {
