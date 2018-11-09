@@ -32,6 +32,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1516 - setters and getters for the current operation;
 - #1527 - custom titles, headings and subheadings;
 - #1518 - CrudPanel class is now macroable;
+- #1687 - ```select2_nested``` field type;
 
 ----
 
