@@ -14,12 +14,13 @@ trait Create
     public function create()
     {
         $this->crud->hasAccessOrFail('create');
+        $this->crud->setOperation('Create');
 
         // prepare the fields you need to show
         $this->data['crud'] = $this->crud;
         $this->data['saveAction'] = $this->getSaveAction();
         $this->data['fields'] = $this->crud->getCreateFields();
-        $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getCreateView(), $this->data);
@@ -35,6 +36,7 @@ trait Create
     public function storeCrud(StoreRequest $request = null)
     {
         $this->crud->hasAccessOrFail('create');
+        $this->crud->setOperation('Create');
 
         // fallback to global request instance
         if (is_null($request)) {

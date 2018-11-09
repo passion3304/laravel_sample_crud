@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 
 trait CrudTrait
 {
+    public static function hasCrudTrait()
+    {
+        return true;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Methods for ENUM and SELECT crud fields.
