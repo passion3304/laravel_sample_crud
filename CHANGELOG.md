@@ -24,16 +24,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### BREAKING
 - #1535 - orderBy gets ignored when the user clicks on a column heading to reoder the datatable;
+- #1658 - model function button did not pass $crud to button;
+- #1680 - Backpack checks that CrudTrait is used on the Model; otherwise it throws a 500 error with a clear message;
 
 ### Added
-- #1680 - Backpack checks that CrudTrait is used on the Model; otherwise it throws a 500 error with a clear message;
 - #1675 - design facelift for the list view - a lot cleaner;
 - #1516 - setters and getters for the current operation;
 - #1527 - custom titles, headings and subheadings;
 - #1518 - CrudPanel class is now macroable;
-
-### Fixed
-- #1658 - model function button did not pass $crud to button;
 
 ----
 
