@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - #1540 fixes #1539 - what happens if actions don't exist because the controller is overwritten;
+- fixes #1678 - ```textarea``` column type has default search logic;
 
 
 ## [3.4.38] - 2018-10-26
