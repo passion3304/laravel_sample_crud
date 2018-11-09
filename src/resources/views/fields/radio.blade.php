@@ -1,7 +1,7 @@
 <!-- radio -->
 @php
     $optionPointer = 0;
-    $optionValue = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+    $optionValue = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
     // if the class isn't overwritten, use 'radio'
     if (!isset($field['attributes']['class'])) {

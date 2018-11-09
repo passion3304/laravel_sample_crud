@@ -1,7 +1,7 @@
 <!-- text input -->
 <?php
 
-$value = old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' ));
+$value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
 // if attribute casting is used, convert to JSON
 if (is_array($value)) {

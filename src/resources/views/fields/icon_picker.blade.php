@@ -12,7 +12,7 @@ if (!isset($field['iconset'])) {
     @include('crud::inc.field_translatable_icon')
 
     <div>
-        <button class="btn btn-default " role="iconpicker" data-icon="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}" data-iconset="{{ $field['iconset'] }}"></button>
+        <button class="btn btn-default " role="iconpicker" data-icon="{{ old($field['name']) ?? $field['value'] ?? $field['default'] ?? '' }}" data-iconset="{{ $field['iconset'] }}"></button>
         <input
             type="hidden"
             name="{{ $field['name'] }}"

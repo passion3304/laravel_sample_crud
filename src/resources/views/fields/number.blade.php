@@ -9,7 +9,7 @@
         	type="number"
         	name="{{ $field['name'] }}"
             id="{{ $field['name'] }}"
-            value="{{ old($field['name']) !== null ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+            value="{{ old($field['name']) ?? $field['value'] ?? $field['default'] ?? '' }}"
             @include('crud::inc.field_attributes')
         	>
         @if(isset($field['suffix'])) <div class="input-group-addon">{!! $field['suffix'] !!}</div> @endif

@@ -1,11 +1,13 @@
 <!-- select2 -->
 @php
-    $current_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+    $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
+
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
+
     <?php $entity_model = $crud->getRelationModel($field['entity'],  - 1); ?>
     <select
         name="{{ $field['name'] }}"

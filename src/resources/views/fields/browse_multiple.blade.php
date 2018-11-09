@@ -1,6 +1,6 @@
 @php
 $multiple = array_get($field, 'multiple', true);
-$value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : null));
+$value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
 if (!$multiple && is_array($value)) {
     $value = array_first($value);

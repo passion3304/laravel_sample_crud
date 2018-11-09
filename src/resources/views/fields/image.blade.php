@@ -5,7 +5,7 @@
     }
 
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
-    $value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '') );
+    $value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
     $image_url = $value
         ? preg_match('/^data\:image\//', $value)
             ? $value
