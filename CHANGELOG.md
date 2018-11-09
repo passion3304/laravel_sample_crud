@@ -20,6 +20,42 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.39] - 2018-11-xx
+
+### Fixed
+- #1540 fixes #1539 - what happens if actions don't exist because the controller is overwritten;
+- fixes #1678 - ```textarea``` column type has default search logic;
+
+
+## [3.4.38] - 2018-10-26
+
+### Added
+- "default" for select field type;
+
+### Fixed
+- merged #1651 fixes #1640 - column width when resizing window or sidebar, on unresponsive crud table;
+- fixed #1648 - select_from_array column can now display multiple entries;
+
+
+## [3.4.37] - 2018-10-24
+
+### Fixed
+- spanish translation;
+- updated datetimepicker version in ```datetime_picker``` field;
+
+
+## [3.4.36] - 2018-10-15
+
+### Fixed
+- loading the custom views folder is now done only if it exists, this way fixing conflicts with the ```php artisan view:cache``` command;
+
+
+## [3.4.35] - 2018-09-26
+
+### Fixed
+- unit tests were failing;
+- version update in CrudServiceProvider;
+
 ## [3.4.34] - 2018-09-25
 
 ### Fixed

@@ -154,15 +154,37 @@
          crud.table.responsive.rebuild();
       } ).dataTable();
 
-      // when columns are hidden by reponsive plugin,
-      // the table should have the has-hidden-columns class
-      crud.table.on( 'responsive-resize', function ( e, datatable, columns ) {
-          if (crud.table.responsive.hasHidden()) {
-            $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
-           } else {
-            $("#crudTable").removeClass('has-hidden-columns');
-           }
-      } );
+      @if ($crud->getResponsiveTable())
+        // when columns are hidden by reponsive plugin,
+        // the table should have the has-hidden-columns class
+        crud.table.on( 'responsive-resize', function ( e, datatable, columns ) {
+            if (crud.table.responsive.hasHidden()) {
+              $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
+             } else {
+              $("#crudTable").removeClass('has-hidden-columns');
+             }
+        } );
+      @else
+        // make sure the column headings have the same width as the actual columns
+        // after the user manually resizes the window
+        var resizeTimer;
+        function resizeCrudTableColumnWidths() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function() {
+            // Run code here, resizing has "stopped"
+            crud.table.columns.adjust();
+          }, 250);
+        }
+        $(window).on('resize', function(e) {
+          resizeCrudTableColumnWidths();
+        });
+        $(document).on('expanded.pushMenu', function(e) {
+          resizeCrudTableColumnWidths();
+        });
+        $(document).on('collapsed.pushMenu', function(e) {
+          resizeCrudTableColumnWidths();
+        });
+      @endif
 
     });
   </script>
