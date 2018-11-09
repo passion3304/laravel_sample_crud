@@ -67,6 +67,7 @@ trait Search
                 case 'date':
                 case 'datetime':
                 case 'text':
+                case 'textarea':
                     $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
                     break;
 
