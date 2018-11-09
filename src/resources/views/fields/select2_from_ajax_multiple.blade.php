@@ -89,7 +89,9 @@
                                         id: item["{{ $connected_entity_key_name }}"]
                                     }
                                 }),
-                                more: data.current_page < data.last_page
+                                pagination: {
+                                     more: data.current_page < data.last_page
+                                }
                             };
                         },
                         cache: true
