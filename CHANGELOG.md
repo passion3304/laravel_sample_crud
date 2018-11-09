@@ -37,11 +37,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ----
 
 
-## [3.4.39] - 2018-11-xx
+## [3.4.39] - 2018-11-09
 
 ### Fixed
 - #1540 fixes #1539 - what happens if actions don't exist because the controller is overwritten;
 - fixes #1678 - ```textarea``` column type has default search logic;
+- fixes #1676 - pagination in ```select2_from_ajax``` and ```select2_from_ajax_multiple``` fields;
+- fixes #509 using #1689 - assets got loaded twice if using tabs;
+- fixes #1421 using #1690 - user can now clear inputs, receive validation error and inputs will still be cleared;
 
 
 ## [3.4.38] - 2018-10-26
