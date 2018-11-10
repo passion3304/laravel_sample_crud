@@ -14,11 +14,11 @@
 
         @if (count($field['options']))
             @foreach ($field['options'] as $key => $value)
-                @if((old($field['name']) && (
-                        $key == old($field['name']) ||
-                        (is_array(old($field['name'])) &&
-                        in_array($key, old($field['name']))))) ||
-                        (null === old($field['name']) &&
+                @if((old(str_brackets_to_dots($field['name'])) && (
+                        $key == old(str_brackets_to_dots($field['name'])) ||
+                        (is_array(old(str_brackets_to_dots($field['name']))) &&
+                        in_array($key, old(str_brackets_to_dots($field['name'])))))) ||
+                        (null === old(str_brackets_to_dots($field['name'])) &&
                             ((isset($field['value']) && (
                                         $key == $field['value'] || (
                                                 is_array($field['value']) &&
