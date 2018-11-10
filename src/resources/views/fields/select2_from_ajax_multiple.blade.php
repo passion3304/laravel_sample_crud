@@ -2,7 +2,7 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
-    $old_value = old(str_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
+    $old_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >

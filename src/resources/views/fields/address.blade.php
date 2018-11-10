@@ -12,7 +12,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-    <input type="hidden" value="{{ old(str_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" name="{{ $field['name'] }}">
+    <input type="hidden" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" name="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix'])) <div class="input-group"> @endif
         @if(isset($field['prefix'])) <div class="input-group-addon">{!! $field['prefix'] !!}</div> @endif
@@ -27,7 +27,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             type="text"
             data-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
             name="{{ $field['name'] }}"
-            value="{{ old(str_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
+            value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
             @include('crud::inc.field_attributes')
         >
         @endif

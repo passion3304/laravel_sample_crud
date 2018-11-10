@@ -1,6 +1,6 @@
 <!-- select2 -->
 @php
-    $current_value = old(str_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
