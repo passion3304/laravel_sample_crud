@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.40] - 2018-11-xx
+
+### Added
+- #1587 - support for temporaryUrl to upload field type;
+
+
 ## [3.4.39] - 2018-11-09
 
 ### Fixed
