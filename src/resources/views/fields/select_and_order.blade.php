@@ -1,27 +1,13 @@
 <!-- select_and_order -->
 @php
-    $values = (array) $field['value'];
+    $values = isset($field['value']) ? (array)$field['value'] : [];
 @endphp
+
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <div>
-        <ul id="{{ $field['name'] }}_all" class="{{ $field['name'] }}_connectedSortable select_and_order_all">
-            @if(old($field["name"]))
-                @foreach ($field['options'] as $key => $value)
-                    @if(!is_array(old($field["name"])) || !in_array($key, old($field["name"])))
-                        <li value="{{ $key}}">{{ $value }}</li>
-                    @endif
-                @endforeach
-            @elseif (isset($field['options']))
-                @foreach ($field['options'] as $key => $value)
-                    @if(is_array($values) && !in_array($key, $values))
-                        <li value="{{ $key}}">{{ $value }}</li>
-                    @endif
-                @endforeach
-            @endif
-        </ul>
-        <ul id="{{ $field['name'] }}_selected" class="{{ $field['name'] }}_connectedSortable select_and_order_selected">
+        <ul id="{{ $field['name'] }}_selected" class="{{ $field['name'] }}_connectedSortable select_and_order_selected col-xs-6 pull-left">
             @if(old($field["name"]))
                 @if(is_array(old($field["name"])))
                     @foreach (old($field["name"]) as $key)
@@ -34,6 +20,21 @@
                 @foreach ($values as $key)
                     @if(array_key_exists($key,$field['options']))
                     <li value="{{$key}}">{{ $field['options'][$key] }}</li>
+                    @endif
+                @endforeach
+            @endif
+        </ul>
+        <ul id="{{ $field['name'] }}_all" class="{{ $field['name'] }}_connectedSortable select_and_order_all col-xs-6 pull-right">
+            @if(old($field["name"]))
+                @foreach ($field['options'] as $key => $value)
+                    @if(!is_array(old($field["name"])) || !in_array($key, old($field["name"])))
+                        <li value="{{ $key}}">{{ $value }}</li>
+                    @endif
+                @endforeach
+            @elseif (isset($field['options']))
+                @foreach ($field['options'] as $key => $value)
+                    @if(is_array($values) && !in_array($key, $values))
+                        <li value="{{ $key}}">{{ $value }}</li>
                     @endif
                 @endforeach
             @endif
@@ -61,25 +62,25 @@
     @push('crud_fields_styles')
     <style>
         .select_and_order_all, .select_and_order_selected {
-            border: 1px solid #d2d6de;
-            width: 202px;
             min-height: 40px;
             list-style-type: none;
-            margin-right: 20px;
-            padding: 5px 0 0 0;
-            float: left;
-            max-height: 190px;
+            max-height: 220px;
             overflow: scroll;
             overflow-x: hidden;
+            padding: 0;
+            width: 48%;
+        }
+        .select_and_order_all li {
+            background: #fbfbfb;
+            color: grey;
         }
         .select_and_order_all li, .select_and_order_selected li{
             border: 1px solid #eee;
-            margin: 0 5px 5px 5px;
+            margin-top: 5px;
             padding: 5px;
-            font-size: 1.2em;
-            width: 175px;
-            overflow:hidden;
-            cursor:grab
+            font-size: 1em;
+            overflow: hidden;
+            cursor: grab;
         }
     </style>
     @endpush
