@@ -23,11 +23,11 @@
 		@endif
 
     	@if (count($options))
-    		@foreach ($options as $connected_entity_entry)
-				@if( (old($field["name"]) && in_array($connected_entity_entry->getKey(), old($field["name"]))) || (is_null(old($field["name"])) && isset($field['value']) && in_array($connected_entity_entry->getKey(), $field['value']->pluck($connected_entity_entry->getKeyName(), $connected_entity_entry->getKeyName())->toArray())))
-					<option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
+    		@foreach ($options as $option)
+				@if( (old($field["name"]) && in_array($option->getKey(), old($field["name"]))) || (is_null(old($field["name"])) && isset($field['value']) && in_array($option->getKey(), $field['value']->pluck($option->getKeyName(), $option->getKeyName())->toArray())))
+					<option value="{{ $option->getKey() }}" selected>{{ $option->{$field['attribute']} }}</option>
 				@else
-					<option value="{{ $connected_entity_entry->getKey() }}">{{ $connected_entity_entry->{$field['attribute']} }}</option>
+					<option value="{{ $option->getKey() }}">{{ $option->{$field['attribute']} }}</option>
 				@endif
     		@endforeach
     	@endif
