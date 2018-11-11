@@ -1,6 +1,12 @@
 <!-- select -->
 @php
 	$current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+
+    if (!isset($field['options'])) {
+        $options = $field['model']::all();
+    } else {
+        $options = call_user_func($field['options'], $field['model']::query());
+    }
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -18,8 +24,8 @@
             <option value="">-</option>
         @endif
 
-        @if (isset($field['model']))
-            @foreach ($field['model']::all() as $connected_entity_entry)
+        @if (count($options))
+            @foreach ($options as $connected_entity_entry)
                 @if($current_value == $connected_entity_entry->getKey())
                     <option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
                 @else
