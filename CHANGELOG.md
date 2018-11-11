@@ -20,10 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.40] - 2018-11-xx
+## [3.4.40] - 2018-11-11
 
 ### Added
 - #1587 - support for temporaryUrl to upload field type;
+- #1693 - Turkish language translations;
 
 
 ### Removed
