@@ -34,6 +34,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1518 - CrudPanel class is now macroable;
 - #1687 - ```select2_nested``` field type;
 
+### Fixed
+- #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
+
+
 ----
 
 
