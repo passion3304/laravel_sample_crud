@@ -1,6 +1,13 @@
 <!-- select2 -->
 @php
     $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+    $entity_model = $crud->getRelationModel($field['entity'],  - 1);
+
+    if (!isset($field['options'])) {
+        $options = $field['model']::all();
+    } else {
+        $options = call_user_func($field['options'], $field['model']::query());
+    }
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -8,7 +15,6 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
 
-    <?php $entity_model = $crud->getRelationModel($field['entity'],  - 1); ?>
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
@@ -19,12 +25,12 @@
             <option value="">-</option>
         @endif
 
-        @if (isset($field['model']))
-            @foreach ($field['model']::all() as $connected_entity_entry)
-                @if($current_value == $connected_entity_entry->getKey())
-                    <option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
+        @if (count($options))
+            @foreach ($options as $option)
+                @if($current_value == $option->getKey())
+                    <option value="{{ $option->getKey() }}" selected>{{ $option->{$field['attribute']} }}</option>
                 @else
-                    <option value="{{ $connected_entity_entry->getKey() }}">{{ $connected_entity_entry->{$field['attribute']} }}</option>
+                    <option value="{{ $option->getKey() }}">{{ $option->{$field['attribute']} }}</option>
                 @endif
             @endforeach
         @endif

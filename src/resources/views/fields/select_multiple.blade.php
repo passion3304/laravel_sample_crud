@@ -1,7 +1,17 @@
 <!-- select multiple -->
+@php
+    if (!isset($field['options'])) {
+        $options = $field['model']::all();
+    } else {
+        $options = call_user_func($field['options'], $field['model']::query());
+    }
+@endphp
+
 <div @include('crud::inc.field_wrapper_attributes') >
+
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
+
     <select
     	class="form-control"
         name="{{ $field['name'] }}[]"
@@ -12,8 +22,8 @@
 			<option value="">-</option>
 		@endif
 
-    	@if (isset($field['model']))
-    		@foreach ($field['model']::all() as $connected_entity_entry)
+    	@if (count($options))
+    		@foreach ($options as $connected_entity_entry)
 				@if( (old($field["name"]) && in_array($connected_entity_entry->getKey(), old($field["name"]))) || (is_null(old($field["name"])) && isset($field['value']) && in_array($connected_entity_entry->getKey(), $field['value']->pluck($connected_entity_entry->getKeyName(), $connected_entity_entry->getKeyName())->toArray())))
 					<option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
 				@else

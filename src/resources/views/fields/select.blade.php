@@ -1,6 +1,7 @@
 <!-- select -->
 @php
 	$current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+    $entity_model = $crud->getRelationModel($field['entity'],  - 1);
 
     if (!isset($field['options'])) {
         $options = $field['model']::all();
@@ -14,7 +15,6 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
 
-    <?php $entity_model = $crud->getRelationModel($field['entity'],  - 1); ?>
     <select
         name="{{ $field['name'] }}"
         @include('crud::inc.field_attributes')
