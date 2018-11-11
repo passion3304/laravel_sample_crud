@@ -67,7 +67,8 @@
             max-height: 220px;
             overflow: scroll;
             overflow-x: hidden;
-            padding: 0;
+            padding: 0px 5px 5px 5px;
+            border: 1px solid #e6e6e6;
             width: 48%;
         }
         .select_and_order_all li {
@@ -81,6 +82,7 @@
             font-size: 1em;
             overflow: hidden;
             cursor: grab;
+            border-style: dashed;
         }
     </style>
     @endpush
