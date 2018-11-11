@@ -12,7 +12,9 @@ trait Fields
      * Add a field to the create/update form or both.
      *
      * @param string|array $field The new field.
-     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
+     * @param string       $form  The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
+     *
+     * @return self
      */
     public function addField($field, $form = 'both')
     {
@@ -59,8 +61,8 @@ trait Fields
     /**
      * Add multiple fields to the create/update form or both.
      *
-     * @param array $fields The new fields.
-     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
+     * @param array  $fields The new fields.
+     * @param string $form   The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
     public function addFields($fields, $form = 'both')
     {
@@ -75,7 +77,7 @@ trait Fields
      * Move the most recently added field after the given target field.
      *
      * @param string $targetFieldName The target field name.
-     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
+     * @param string $form            The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
     public function afterField($targetFieldName, $form = 'both')
     {
@@ -88,7 +90,7 @@ trait Fields
      * Move the most recently added field before the given target field.
      *
      * @param string $targetFieldName The target field name.
-     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
+     * @param string $form            The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
     public function beforeField($targetFieldName, $form = 'both')
     {
@@ -100,9 +102,10 @@ trait Fields
     /**
      * Move the most recently added field before or after the given target field. Default is before.
      *
-     * @param array $fields The form fields.
+     * @param array  $fields          The form fields.
      * @param string $targetFieldName The target field name.
-     * @param bool $before If true, the field will be moved before the target field, otherwise it will be moved after it.
+     * @param bool   $before          If true, the field will be moved before the target field, otherwise it will be moved after it.
+     *
      * @return array
      */
     private function moveField($fields, $targetFieldName, $before = true)
@@ -157,6 +160,48 @@ trait Fields
     }
 
     /**
+     * Remove all fields from the create/update/both forms.
+     *
+     * @param string $form update/create/both
+     */
+    public function removeAllFields($form = 'both')
+    {
+        $current_fields = $this->getCurrentFields();
+        if (! empty($current_fields)) {
+            foreach ($current_fields as $field) {
+                $this->removeField($field['name'], $form);
+            }
+        }
+    }
+
+    /**
+     * Update value of a given key for a current field.
+     *
+     * @param string $field         The field
+     * @param array  $modifications An array of changes to be made.
+     * @param string $form          update/create/both
+     */
+    public function modifyField($field, $modifications, $form = 'both')
+    {
+        foreach ($modifications as $key => $newValue) {
+            switch (strtolower($form)) {
+          case 'create':
+              $this->create_fields[$field][$key] = $newValue;
+              break;
+
+          case 'update':
+              $this->update_fields[$field][$key] = $newValue;
+              break;
+
+          default:
+              $this->create_fields[$field][$key] = $newValue;
+              $this->update_fields[$field][$key] = $newValue;
+              break;
+        }
+        }
+    }
+
+    /**
      * Set label for a specific field.
      *
      * @param string $field
@@ -177,12 +222,12 @@ trait Fields
      * It's used in each field_type.blade.php to determine wether to push the css and js content or not (we only need to push the js and css for a field the first time it's loaded in the form, not any subsequent times).
      *
      * @param array $field        The current field being tested if it's the first of its type.
-     * @param array $fields_array All the fields in that particular form.
      *
      * @return bool true/false
      */
-    public function checkIfFieldIsFirstOfItsType($field, $fields_array)
+    public function checkIfFieldIsFirstOfItsType($field)
     {
+        $fields_array = $this->getCurrentFields();
         $first_field = $this->getFirstOfItsTypeInArray($field['type'], $fields_array);
 
         if ($field['name'] == $first_field['name']) {
@@ -225,6 +270,9 @@ trait Fields
         return $data;
     }
 
+    /**
+     * @return array
+     */
     public function getCurrentFields()
     {
         if ($this->entry) {
@@ -238,8 +286,8 @@ trait Fields
      * Order the CRUD fields in the given form. If certain fields are missing from the given order array, they will be
      * pushed to the new fields array in the original order.
      *
-     * @param array $order An array of field names in the desired order.
-     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'.
+     * @param array  $order An array of field names in the desired order.
+     * @param string $form  The CRUD form. Can be 'create', 'update' or 'both'.
      */
     public function orderFields($order, $form = 'both')
     {
@@ -252,7 +300,8 @@ trait Fields
      * Apply the given order to the fields and return the new array.
      *
      * @param array $fields The fields array.
-     * @param array $order The desired field order array.
+     * @param array $order  The desired field order array.
+     *
      * @return array The ordered fields array.
      */
     private function applyOrderToFields($fields, $order)
@@ -279,7 +328,7 @@ trait Fields
      * @param array $fields Fields order.
      *
      * @deprecated This method was not and will not be implemented since its a duplicate of the orderFields method.
-     * @see Fields::orderFields() to order the CRUD fields.
+     * @see        Fields::orderFields() to order the CRUD fields.
      */
     public function setFieldOrder($fields)
     {
@@ -292,7 +341,7 @@ trait Fields
      * @param array $fields Fields order.
      *
      * @deprecated This method was not and will not be implemented since its a duplicate of the orderFields method.
-     * @see Fields::orderFields() to order the CRUD fields.
+     * @see        Fields::orderFields() to order the CRUD fields.
      */
     public function setFieldsOrder($fields)
     {
@@ -302,7 +351,7 @@ trait Fields
     /**
      * Apply the given callback to the form fields.
      *
-     * @param string $form The CRUD form. Can be 'create', 'update' or 'both'.
+     * @param string   $form     The CRUD form. Can be 'create', 'update' or 'both'.
      * @param callable $callback The callback function to run for the given form fields.
      */
     private function transformFields($form, callable $callback)

@@ -7,7 +7,7 @@ use Backpack\CRUD\PanelTraits\CrudButton;
 class CrudPanelButtonsTest extends BaseCrudPanelTest
 {
     private $defaultButtonNames = [
-        'preview', 'update', 'revisions', 'delete', 'create', 'reorder',
+        'show', 'update', 'revisions', 'delete', 'create', 'reorder',
     ];
 
     private $topViewButton;
@@ -19,11 +19,11 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
     {
         parent::setUp();
 
-        $this->topViewButton = new CrudButton('top', 'topViewButton', 'view', 'crud::buttons.preview');
+        $this->topViewButton = new CrudButton('top', 'topViewButton', 'view', 'crud::buttons.show');
         $this->lineViewButton = new CrudButton('line', 'lineViewButton', 'view', 'crud::buttons.update');
         $this->bottomViewButton = new CrudButton('bottom', 'bottomViewButton', 'view', 'crud::buttons.revisions');
 
-        $this->topModelFunctionButton = new CrudButton('top', 'topModelFunctionButton', 'someModelFunctionName', 'crud::buttons.preview');
+        $this->topModelFunctionButton = new CrudButton('top', 'topModelFunctionButton', 'someModelFunctionName', 'crud::buttons.show');
     }
 
     public function testDefaultButtons()

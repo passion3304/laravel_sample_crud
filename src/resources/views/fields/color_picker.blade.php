@@ -7,7 +7,7 @@
         <input
         	type="text"
         	name="{{ $field['name'] }}"
-            value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+            value="{{ old($field['name']) ?? $field['value'] ?? $field['default'] ?? '' }}"
             @include('crud::inc.field_attributes')
         	>
         <div class="input-group-addon">
@@ -24,7 +24,7 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+@if ($crud->checkIfFieldIsFirstOfItsType($field))
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')

@@ -2,7 +2,7 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
-    $old_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : false ));
+    $old_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? false;
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -45,7 +45,7 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+@if ($crud->checkIfFieldIsFirstOfItsType($field))
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
@@ -110,7 +110,9 @@
                                         id: item["{{ $connected_entity_key_name }}"]
                                     }
                                 }),
-                                more: data.current_page < data.last_page
+                               pagination: {
+                                     more: data.current_page < data.last_page
+                               }
                             };
 
                             return result;

@@ -5,7 +5,7 @@
     $min = isset($field['min']) && (int) $field['min'] > 0 ? $field['min'] : -1;
     $item_name = strtolower(isset($field['entity_singular']) && !empty($field['entity_singular']) ? $field['entity_singular'] : $field['label']);
 
-    $items = old($field['name']) ? (old($field['name'])) : (isset($field['value']) ? ($field['value']) : (isset($field['default']) ? ($field['default']) : '' ));
+    $items = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
     // make sure not matter the attribute casting
     // the $items variable contains a properly defined JSON
@@ -80,7 +80,7 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+@if ($crud->checkIfFieldIsFirstOfItsType($field))
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
@@ -95,7 +95,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
         <script>
-          
+
             window.angularApp = window.angularApp || angular.module('backPackTableApp', ['ui.sortable'], function($interpolateProvider){
                 $interpolateProvider.startSymbol('<%');
                 $interpolateProvider.endSymbol('%>');

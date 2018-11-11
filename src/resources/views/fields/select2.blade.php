@@ -1,7 +1,13 @@
 <!-- select2 -->
+@php
+    $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+@endphp
+
 <div @include('crud::inc.field_wrapper_attributes') >
+
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
+
     <?php $entity_model = $crud->getRelationModel($field['entity'],  - 1); ?>
     <select
         name="{{ $field['name'] }}"
@@ -15,7 +21,7 @@
 
         @if (isset($field['model']))
             @foreach ($field['model']::all() as $connected_entity_entry)
-                @if(old($field['name']) == $connected_entity_entry->getKey() || (is_null(old($field['name'])) && isset($field['value']) && $field['value'] == $connected_entity_entry->getKey()))
+                @if($current_value == $connected_entity_entry->getKey())
                     <option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
                 @else
                     <option value="{{ $connected_entity_entry->getKey() }}">{{ $connected_entity_entry->{$field['attribute']} }}</option>
@@ -33,7 +39,7 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+@if ($crud->checkIfFieldIsFirstOfItsType($field))
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')

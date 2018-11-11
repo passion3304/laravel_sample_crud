@@ -5,7 +5,7 @@
 	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <ul class="dropdown-menu">
-		<li><a parameter="{{ $filter->name }}" key="" href="">-</a></li>
+		<li><a parameter="{{ $filter->name }}" dropdownkey="" href="">-</a></li>
 		<li role="separator" class="divider"></li>
 		@if (is_array($filter->values) && count($filter->values))
 			@foreach($filter->values as $key => $value)
@@ -15,7 +15,7 @@
 					<li class="{{ ($filter->isActive() && $filter->currentValue == $key)?'active':'' }}">
 						<a  parameter="{{ $filter->name }}"
 							href=""
-							key="{{ $key }}"
+							dropdownkey="{{ $key }}"
 							>{{ $value }}</a>
 					</li>
 				@endif
@@ -45,7 +45,7 @@
 			$("li.dropdown[filter-name={{ $filter->name }}] .dropdown-menu li a").click(function(e) {
 				e.preventDefault();
 
-				var value = $(this).attr('key');
+				var value = $(this).attr('dropdownkey');
 				var parameter = $(this).attr('parameter');
 
 		    	// behaviour for ajax table
