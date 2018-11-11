@@ -61,7 +61,8 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
     <style>
-        .select_and_order_all, .select_and_order_selected {
+        .select_and_order_all,
+        .select_and_order_selected {
             min-height: 40px;
             list-style-type: none;
             max-height: 220px;
@@ -75,7 +76,8 @@
             background: #fbfbfb;
             color: grey;
         }
-        .select_and_order_all li, .select_and_order_selected li{
+        .select_and_order_all li,
+        .select_and_order_selected li{
             border: 1px solid #eee;
             margin-top: 5px;
             padding: 5px;
@@ -83,6 +85,17 @@
             overflow: hidden;
             cursor: grab;
             border-style: dashed;
+        }
+        .select_and_order_all li.ui-sortable-helper,
+        .select_and_order_selected li.ui-sortable-helper {
+            color: #3c8dbc;
+            border-collapse: #3c8dbc;
+            z-index: 9999;
+        }
+        .select_and_order_all .ui-sortable-placeholder,
+        .select_and_order_selected .ui-sortable-placeholder {
+            background-color: #3c8dbc;
+            visibility: visible;
         }
     </style>
     @endpush
