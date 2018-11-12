@@ -16,6 +16,8 @@ trait Views
     protected $editContentClass;
     protected $listContentClass;
     protected $showContentClass;
+    protected $reorderContentClass;
+    protected $revisionsTimelineContentClass;
 
     // -------
     // CREATE
@@ -153,6 +155,24 @@ trait Views
         return $this->showView;
     }
 
+    /**
+     * Sets the edit content class.
+     * @param string $editContentClass content class
+     */
+    public function setShowContentClass(string $showContentClass)
+    {
+        $this->showContentClass = $showContentClass;
+    }
+
+    /**
+     * Gets the edit content class.
+     * @return string content class for edit view
+     */
+    public function getShowContentClass()
+    {
+        return $this->showContentClass ?? config('backpack.crud.show_content_class', 'col-md-8 col-md-offset-2');
+    }
+
     // -------
     // UPDATE
     // -------
@@ -199,24 +219,6 @@ trait Views
     }
 
     /**
-     * Sets the edit content class.
-     * @param string $editContentClass content class
-     */
-    public function setShowContentClass(string $showContentClass)
-    {
-        $this->showContentClass = $showContentClass;
-    }
-
-    /**
-     * Gets the edit content class.
-     * @return string content class for edit view
-     */
-    public function getShowContentClass()
-    {
-        return $this->showContentClass ?? config('backpack.crud.show_content_class', 'col-md-8 col-md-offset-2');
-    }
-
-    /**
      * Sets the reorder template.
      *
      * @param string $view name of the template file
@@ -237,6 +239,24 @@ trait Views
     public function getReorderView()
     {
         return $this->reorderView;
+    }
+
+    /**
+     * Sets the reorder content class.
+     * @param string $reorderContentClass content class
+     */
+    public function setReorderContentClass(string $reorderContentClass)
+    {
+        $this->reorderContentClass = $reorderContentClass;
+    }
+
+    /**
+     * Gets the reorder&nest content class.
+     * @return string content class for reorder and nest view
+     */
+    public function getReorderContentClass()
+    {
+        return $this->reorderContentClass ?? config('backpack.crud.reorder_content_class', 'col-md-8 col-md-offset-2');
     }
 
     /**
@@ -283,6 +303,25 @@ trait Views
     public function getRevisionsTimelineView()
     {
         return $this->revisionsTimelineView;
+    }
+
+
+    /**
+     * Sets the revisions timeline content class.
+     * @param string revisions timeline content class
+     */
+    public function setRevisionsTimelineContentClass(string $revisionsTimelineContentClass)
+    {
+        $this->revisionsTimelineContentClass = $revisionsTimelineContentClass;
+    }
+
+    /**
+     * Gets the revisions timeline content class.
+     * @return string content class for revisions timeline view
+     */
+    public function getRevisionsTimelineContentClass()
+    {
+        return $this->revisionsTimelineContentClass ?? config('backpack.crud.revisions_timeline_content_class', 'col-md-8 col-md-offset-2');
     }
 
     // -------

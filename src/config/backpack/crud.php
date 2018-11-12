@@ -35,6 +35,10 @@ return [
     // To override per view use $this->crud->setEditContentClass('class-string')
     'edit_content_class'   => 'col-md-8 col-md-offset-2',
 
+    // Here you may override the css-classes for the content section of the revisions timeline view globally
+    // To override per view use $this->crud->setRevisionsTimelineContentClass('class-string')
+    'revisions_timeline_content_class'   => 'col-md-10 col-md-offset-1',
+
     /*
     |------------
     | READ
@@ -78,6 +82,10 @@ return [
     | REORDER
     |------------
     */
+
+    // Here you may override the css-classes for the content section of the reorder view globally
+    // To override per view use $this->crud->setReorderContentClass('class-string')
+    'reorder_content_class'   => 'col-md-8 col-md-offset-2',
 
     /*
     |------------

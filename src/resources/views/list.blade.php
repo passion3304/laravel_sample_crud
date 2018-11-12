@@ -44,7 +44,7 @@
 
         <div class="overflow-hidden">
 
-        <table id="crudTable" class="box table table-striped table-hover display responsive nowrap m-t-0" cellspacing="0">
+        <table id="crudTable" class="panel table table-striped table-hover display responsive nowrap m-t-0" cellspacing="0">
             <thead>
               <tr>
                 {{-- Table columns --}}
