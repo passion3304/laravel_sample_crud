@@ -61,7 +61,11 @@ return [
     // To override per view use $this->crud->setListContentClass('class-string')
     'list_content_class' => 'col-md-12',
 
-    // PREVIEW
+    // SHOW (PREVIEW)
+
+    // Here you may override the css-classes for the content section of the show view globally
+    // To override per view use $this->crud->setShowContentClass('class-string')
+    'show_content_class'   => 'col-md-8 col-md-offset-2',
 
     /*
     |------------

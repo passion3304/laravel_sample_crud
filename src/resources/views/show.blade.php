@@ -15,13 +15,16 @@
 @endsection
 
 @section('content')
-	@if ($crud->hasAccess('list'))
-		<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
-	@endif
+@if ($crud->hasAccess('list'))
+	<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
+@endif
+<div class="row">
+	<div class="{{ $crud->getShowContentClass() }}">
+
 
 	<!-- Default box -->
-	  <div class="box">
-	    <div class="box-header with-border">
+	  <div class="">
+	    <div class="">
 	    	<span class="pull-right m-l-20 m-r-20 m-t-5"><a href="javascript: window.print();"><i class="fa fa-print"></i></a></span>
 
           @if ($crud->model->translationEnabled())
@@ -36,12 +39,12 @@
 					  	@endforeach
 					  </ul>
 					</div>
-					<h3 class="box-title" style="line-height: 30px;">{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
+					<h4 style="line-height: 30px;">{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
 				@else
-					<h3 class="box-title">{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
+					<h4>{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
 				@endif
 	    </div>
-	    <div class="box-body no-padding">
+	    <div class="panel no-padding no-border">
 			<table class="table table-striped table-bordered">
 		        <tbody>
 		        @foreach ($crud->columns as $column)
@@ -79,6 +82,8 @@
 	    </div><!-- /.box-body -->
 	  </div><!-- /.box -->
 
+	</div>
+</div>
 @endsection
 
 

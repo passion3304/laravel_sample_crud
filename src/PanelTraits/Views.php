@@ -15,6 +15,7 @@ trait Views
     protected $createContentClass;
     protected $editContentClass;
     protected $listContentClass;
+    protected $showContentClass;
 
     // -------
     // CREATE
@@ -195,6 +196,24 @@ trait Views
     public function getEditContentClass()
     {
         return $this->editContentClass ?? config('backpack.crud.edit_content_class', 'col-md-8 col-md-offset-2');
+    }
+
+    /**
+     * Sets the edit content class.
+     * @param string $editContentClass content class
+     */
+    public function setShowContentClass(string $showContentClass)
+    {
+        $this->showContentClass = $showContentClass;
+    }
+
+    /**
+     * Gets the edit content class.
+     * @return string content class for edit view
+     */
+    public function getShowContentClass()
+    {
+        return $this->showContentClass ?? config('backpack.crud.show_content_class', 'col-md-8 col-md-offset-2');
     }
 
     /**
