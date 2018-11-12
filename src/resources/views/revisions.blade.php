@@ -15,12 +15,12 @@
 @endsection
 
 @section('content')
-<div class="row">
+@if ($crud->hasAccess('list'))
+  <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
+@endif
+<div class="row m-t-20">
   <div class="{{ $crud->getRevisionsTimelineContentClass() }}">
     <!-- Default box -->
-    @if ($crud->hasAccess('list'))
-      <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
-    @endif
 
     @if(!count($revisions))
       <div class="box">
