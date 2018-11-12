@@ -41,6 +41,17 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ----
 
 
+## [3.4.40] - 2018-11-11
+
+### Added
+- #1587 - support for temporaryUrl to upload field type;
+- #1693 - Turkish language translations;
+
+
+### Removed
+- obsolete TODO time_picker field; never used;
+
+
 ## [3.4.39] - 2018-11-09
 
 ### Fixed
