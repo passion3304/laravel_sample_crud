@@ -305,7 +305,6 @@ trait Views
         return $this->revisionsTimelineView;
     }
 
-
     /**
      * Sets the revisions timeline content class.
      * @param string revisions timeline content class
