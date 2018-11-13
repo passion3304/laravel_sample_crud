@@ -51,7 +51,7 @@ trait Create
         }
 
         // insert item in the db
-        $item = $this->crud->create($request->except(['save_action', '_token', '_method', 'current_tab']));
+        $item = $this->crud->create($request->except(['save_action', '_token', '_method', 'current_tab', 'http_referrer']));
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
