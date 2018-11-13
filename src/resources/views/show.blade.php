@@ -43,8 +43,8 @@
 	    </div>
 	    @else
 	    @endif
-	    <div class="panel no-padding no-border">
-			<table class="table table-striped table-bordered">
+	    <div class="box no-padding no-border">
+			<table class="table table-striped">
 		        <tbody>
 		        @foreach ($crud->columns as $column)
 		            <tr>

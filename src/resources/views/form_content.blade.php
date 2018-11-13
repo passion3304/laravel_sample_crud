@@ -7,7 +7,7 @@
     @include('crud::inc.show_tabbed_fields')
     <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
-    <div class="panel col-md-12 padding-10 p-t-20">
+    <div class="box col-md-12 padding-10 p-t-20">
     @include('crud::inc.show_fields', ['fields' => $fields])
     </div>
 @endif
