@@ -58,7 +58,7 @@
 				ajax_table.ajax.url(new_url).load();
 
 				// add filter to URL
-				window.history.pushState({}, 'Nice title', new_url.replace('/search', ''));
+				crud.updateUrl(new_url);
 
 				// mark this filter as active in the navbar-filters
 				// mark dropdown items active accordingly
