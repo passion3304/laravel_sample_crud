@@ -101,7 +101,7 @@ trait SaveActions
                 break;
             case 'save_and_back':
             default:
-                $redirectUrl = $this->crud->route;
+                $redirectUrl = \Request::has('http_referrer') ? \Request::get('http_referrer') : $this->crud->route;
                 break;
         }
 

@@ -46,6 +46,9 @@
 				// replace the datatables ajax url with new_url and reload it
 				ajax_table.ajax.url(new_url).load();
 
+				// add filter to URL
+				window.history.pushState({}, 'Nice title', new_url.replace('/search', ''));
+
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
