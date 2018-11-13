@@ -16,7 +16,7 @@
 
 @section('content')
 @if ($crud->hasAccess('list'))
-	<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
+	<a href="{{ starts_with(URL::previous(), url($crud->route)) ? URL::previous() : url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
 
 	<a href="javascript: window.print();" class="pull-right hidden-print"><i class="fa fa-print"></i></a>
 @endif
