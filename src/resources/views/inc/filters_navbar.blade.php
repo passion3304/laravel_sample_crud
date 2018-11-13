@@ -18,7 +18,7 @@
     			@foreach ($crud->filters as $filter)
     				@include($filter->view)
     			@endforeach
-          <li ><a href="#" id="remove_filters_button" class="hidden"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
+          <li ><a href="#" id="remove_filters_button" class="{{ count(Request::input()) != 0 ? '' : 'hidden' }}"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -65,6 +65,9 @@
   				// clear all filters
   				$(".navbar-filters li[filter-name]").trigger('filter:clear');
           $('#remove_filters_button').addClass('hidden');
+
+          // remove filters from URL
+          crud.updateUrl(new_url);
       	})
       });
     </script>

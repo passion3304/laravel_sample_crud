@@ -12,7 +12,7 @@ trait Search
 
     public $ajax_table = true;
     public $responsive_table;
-    public $persistent_table = false;
+    public $persistent_table;
 
     /**
      * Add conditions to the CRUD query for a particular search term.
