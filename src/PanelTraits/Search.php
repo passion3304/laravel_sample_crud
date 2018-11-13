@@ -12,6 +12,7 @@ trait Search
 
     public $ajax_table = true;
     public $responsive_table;
+    public $persistent_table = false;
 
     /**
      * Add conditions to the CRUD query for a particular search term.
@@ -106,6 +107,10 @@ trait Search
         return $this->ajax_table;
     }
 
+    // -------------------------
+    // Responsive Table
+    // -------------------------
+
     /**
      * Tell the list view to NOT show a reponsive DataTable.
      *
@@ -144,6 +149,50 @@ trait Search
     public function disableResponsiveTable()
     {
         $this->setResponsiveTable(false);
+    }
+
+    // -------------------------
+    // Persistent Table
+    // -------------------------
+
+    /**
+     * Tell the list view to NOT store datatable information in local storage.
+     *
+     * @param  bool $value
+     */
+    public function setPersistentTable($value = true)
+    {
+        $this->persistent_table = $value;
+    }
+
+    /**
+     * Check if saved state is enabled for the table view.
+     *
+     * @return bool
+     */
+    public function getPersistentTable()
+    {
+        if ($this->persistent_table !== null) {
+            return $this->persistent_table;
+        }
+
+        return config('backpack.crud.persistent_table');
+    }
+
+    /**
+     * Remember to show a persistent table.
+     */
+    public function enablePersistentTable()
+    {
+        $this->setPersistentTable(true);
+    }
+
+    /**
+     * Remember to show a table that doesn't store URLs and pagination in local storage.
+     */
+    public function disablePersistentTable()
+    {
+        $this->setPersistentTable(false);
     }
 
     /**
