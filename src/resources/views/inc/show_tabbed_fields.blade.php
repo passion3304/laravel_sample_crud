@@ -19,7 +19,13 @@
     </style>
 @endpush
 
-@include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
+@if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
+<div class="box p-t-20">
+    <div class="box-body">
+    @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
+    </div>
+</div>
+@endif
 
 <div class="tab-container {{ $horizontalTabs ? 'col-xs-12' : 'col-xs-3 m-t-10' }}">
 
