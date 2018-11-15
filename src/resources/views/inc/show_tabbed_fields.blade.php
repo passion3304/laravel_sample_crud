@@ -25,6 +25,8 @@
     @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
     </div>
 </div>
+@else
+    @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
 @endif
 
 <div class="tab-container {{ $horizontalTabs ? 'col-xs-12' : 'col-xs-3 m-t-10' }}">
