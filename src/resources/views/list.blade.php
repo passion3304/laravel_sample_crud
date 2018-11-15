@@ -53,13 +53,15 @@
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
                     data-visible-in-modal="{{ (isset($column['visibleInModal']) && $column['visibleInModal'] == false) ? 'false' : 'true' }}"
+                    data-visible="{{ !isset($column['visibleInTable']) ? 'true' : (($column['visibleInTable'] == false) ? 'false' : 'true') }}"
+                    data-visible-in-export="{{ (isset($column['visibleInExport']) && $column['visibleInExport'] == false) ? 'false' : 'true' }}"
                     >
                     {!! $column['label'] !!}
                   </th>
                 @endforeach
 
                 @if ( $crud->buttons->where('stack', 'line')->count() )
-                  <th data-orderable="false" data-priority="{{ $crud->getActionsColumnPriority() }}">{{ trans('backpack::crud.actions') }}</th>
+                  <th data-orderable="false" data-priority="{{ $crud->getActionsColumnPriority() }}" data-visible-in-export="false">{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>
             </thead>
