@@ -59,6 +59,31 @@ trait Query
     }
 
     /**
+     * Order results of the query in a custom way.
+     *
+     * @param  array $column           [description]
+     * @param  string $column_direction ASC or DESC
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function customOrderBy($column, $columnDirection = 'asc')
+    {
+        if (! isset($column['orderLogic'])) {
+            return $this->query;
+        }
+
+        $this->query->getQuery()->orders = null;
+
+        $orderLogic = $column['orderLogic'];
+
+        if (is_callable($orderLogic)) {
+            return $orderLogic($this->query, $column, $columnDirection);
+        }
+
+        return $this->query;
+    }
+
+    /**
      * Group the results of the query in a certain way.
      *
      * @param string $field
