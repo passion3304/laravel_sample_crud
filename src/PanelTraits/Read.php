@@ -178,6 +178,7 @@ trait Read
             'searchLogic' => false,
             'orderable' => false,
             'visibleInModal' => false,
+            'exportable' => false,
         ])->makeFirstColumn();
 
         $this->addColumn([
@@ -188,6 +189,7 @@ trait Read
             'searchLogic' => false,
             'orderable' => false,
             'visibleInModal' => false,
+            'exportable' => false,
         ])->makeFirstColumn();
     }
 
