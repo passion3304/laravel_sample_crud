@@ -11,13 +11,13 @@
     crud.dataTableConfiguration.buttons = [
         {
             extend: 'colvis',
-            columns: ':not(.not-export-col):not([data-exportable=false])'
+            columns: ':not(.not-export-col):not([data-visible-in-export=false])'
         },
         {
             name: 'copyHtml5',
             extend: 'copyHtml5',
             exportOptions: {
-               columns: [':visible:not(.not-export-col):not(.hidden):not([data-exportable=false])'],
+               columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
             },
             action: function(e, dt, button, config) {
                 crud.responsiveToggle(dt);
@@ -29,7 +29,7 @@
             name: 'excelHtml5',
             extend: 'excelHtml5',
             exportOptions: {
-               columns: [':visible:not(.not-export-col):not(.hidden):not([data-exportable=false])'],
+               columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
             },
             action: function(e, dt, button, config) {
                 crud.responsiveToggle(dt);
@@ -41,7 +41,7 @@
             name: 'csvHtml5',
             extend: 'csvHtml5',
             exportOptions: {
-               columns: [':visible:not(.not-export-col):not(.hidden):not([data-exportable=false])'],
+               columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
             },
             action: function(e, dt, button, config) {
                 crud.responsiveToggle(dt);
@@ -53,7 +53,7 @@
             name: 'pdfHtml5',
             extend: 'pdfHtml5',
             exportOptions: {
-               columns: [':visible:not(.not-export-col):not(.hidden):not([data-exportable=false])'],
+               columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
             },
             orientation: 'landscape',
             action: function(e, dt, button, config) {
@@ -66,7 +66,7 @@
             name: 'print',
             extend: 'print',
             exportOptions: {
-               columns: [':visible:not(.not-export-col):not(.hidden):not([data-exportable=false])'],
+               columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
             },
             action: function(e, dt, button, config) {
                 crud.responsiveToggle(dt);
