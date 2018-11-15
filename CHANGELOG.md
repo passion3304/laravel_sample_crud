@@ -35,6 +35,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1687 - ```select2_nested``` field type;
 - #1703 - ```visibleInTable``` option to columns;
 - #1703 - ```visibleInExport``` option to columns;
+- #1704 - added ```orderLogic``` option for columns;
 - #1694 - ```options``` option to ```select```, ```select2```, ```select_multiple```, ```select2_multiple```, that allows developers to filter or order the options shown, using a scope or custom query;
 - #1695 - added ```select_and_order``` field type;
 
