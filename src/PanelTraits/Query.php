@@ -61,7 +61,7 @@ trait Query
     /**
      * Order results of the query in a custom way.
      *
-     * @param  array $column           [description]
+     * @param  array $column           Column array with all attributes
      * @param  string $column_direction ASC or DESC
      *
      * @return \Illuminate\Database\Eloquent\Builder
