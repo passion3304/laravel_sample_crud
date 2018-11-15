@@ -33,6 +33,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1527 - custom titles, headings and subheadings;
 - #1518 - CrudPanel class is now macroable;
 - #1687 - ```select2_nested``` field type;
+- #1703 - ```visibleInTable``` option to columns;
+- #1703 - ```visibleInExport``` option to columns;
 
 ### Fixed
 - #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
