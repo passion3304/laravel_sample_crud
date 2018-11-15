@@ -44,6 +44,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ----
 
+## [3.4.41] - 2018-11-14
+
+## Added
+- #1592 - ```options``` attribute to let developers customize ckeditor;
+
 
 ## [3.4.40] - 2018-11-11
 

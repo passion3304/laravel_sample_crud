@@ -39,6 +39,9 @@
         $('#ckeditor-{{ $field['name'] }}').ckeditor({
             "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
             "extraPlugins" : '{{ isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : 'oembed,widget' }}'
+            @if (isset($field['options']) && count($field['options']))
+                {!! ', '.trim(json_encode($field['options']), "{}") !!}
+            @endif
         });
     });
 </script>
