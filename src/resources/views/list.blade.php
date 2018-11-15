@@ -53,8 +53,8 @@
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
                     data-visible-in-modal="{{ (isset($column['visibleInModal']) && $column['visibleInModal'] == false) ? 'false' : 'true' }}"
+                    data-visible="{{ !isset($column['visibleInTable']) ? 'true' : (($column['visibleInTable'] == false) ? 'false' : 'true') }}"
                     data-exportable="{{ (isset($column['exportable']) && $column['exportable'] == false) ? 'false' : 'true' }}"
-                    data-visible="{{ (isset($column['hidden']) && $column['hidden'] == true) ? 'false' : 'true' }}"
                     >
                     {!! $column['label'] !!}
                   </th>
