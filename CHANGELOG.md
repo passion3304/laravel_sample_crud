@@ -39,6 +39,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1704 - added ```orderLogic``` option for columns;
 - #1694 - ```options``` option to ```select```, ```select2```, ```select_multiple```, ```select2_multiple```, that allows developers to filter or order the options shown, using a scope or custom query;
 - #1695 - added ```select_and_order``` field type;
+- #1708 - added ```Clone``` operation;
 
 ### Fixed
 - #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
