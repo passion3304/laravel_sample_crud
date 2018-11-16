@@ -13,7 +13,7 @@ trait CloneOperation
      */
     public function clone($id)
     {
-        $this->crud->hasAccessOrFail('create');
+        $this->crud->hasAccessOrFail('clone');
 
         $clonedEntry = $this->crud->model->findOrFail($id)->replicate();
 
@@ -29,7 +29,7 @@ trait CloneOperation
      */
     public function bulkClone()
     {
-        $this->crud->hasAccessOrFail('create');
+        $this->crud->hasAccessOrFail('clone');
 
         $entries = $this->request->input('entries');
         $clonedEntries = [];

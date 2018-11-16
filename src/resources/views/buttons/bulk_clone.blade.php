@@ -1,4 +1,4 @@
-@if ($crud->hasAccess('create') && $crud->bulk_actions)
+@if ($crud->hasAccess('clone') && $crud->bulk_actions)
 	<a href="javascript:void(0)" onclick="bulkCloneEntries(this)" class="btn btn-sm btn-default bulk-button"><i class="fa fa-clone"></i> Clone</a>
 @endif
 
