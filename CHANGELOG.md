@@ -41,6 +41,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
+- #791 - could not revert changes made in fake field holders;
 
 
 ----
