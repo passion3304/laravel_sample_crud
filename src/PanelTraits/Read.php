@@ -66,6 +66,18 @@ trait Read
     }
 
     /**
+     * Find and retrieve an entry in the database or fail.
+     *
+     * @param int The id of the row in the db to fetch.
+     *
+     * @return \Illuminate\Database\Eloquent\Model The row in the db.
+     */
+    public function getEntryWithoutFakes($id)
+    {
+        return $this->model->findOrFail($id);
+    }
+
+    /**
      * Make the query JOIN all relationships used in the columns, too,
      * so there will be less database queries overall.
      */
