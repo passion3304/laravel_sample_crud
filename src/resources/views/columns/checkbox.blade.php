@@ -108,6 +108,5 @@
 	crud.addFunctionToDataTablesDrawEventQueue('addOrRemoveCrudCheckedItem');
 	crud.addFunctionToDataTablesDrawEventQueue('markCheckboxAsCheckedIfPreviouslySelected');
 	crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
-	crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
 	crud.addFunctionToDataTablesDrawEventQueue('enableOrDisableBulkButtons');
 </script>
