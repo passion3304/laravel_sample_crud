@@ -6,7 +6,6 @@ use Backpack\CRUD\CrudPanel;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
-use Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\Show;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Backpack\CRUD\app\Http\Controllers\Operations\Create;
@@ -16,6 +15,7 @@ use Backpack\CRUD\app\Http\Controllers\Operations\Reorder;
 use Backpack\CRUD\app\Http\Controllers\Operations\Revisions;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListEntries;
 use Backpack\CRUD\app\Http\Controllers\Operations\SaveActions;
+use Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
 
 class CrudController extends BaseController
 {
