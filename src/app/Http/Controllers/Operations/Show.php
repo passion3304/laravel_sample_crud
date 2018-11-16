@@ -33,6 +33,11 @@ trait Show
             if ($column['type'] == 'row_number') {
                 $this->crud->removeColumn($column['name']);
             }
+
+            // remove columns that have visibleInShow set as false
+            if (isset($column['visibleInShow']) && $column['visibleInShow'] == false) {
+                $this->crud->removeColumn($column['name']);
+            }
         }
 
         // get the info for that entry
