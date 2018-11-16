@@ -192,6 +192,7 @@ trait Read
             'visibleInTable' => true,
             'visibleInModal' => false,
             'visibleInExport' => false,
+            'visibleInShow' => false,
         ])->makeFirstColumn();
 
         $this->addColumn([
@@ -204,6 +205,7 @@ trait Read
             'visibleInTabel' => true,
             'visibleInModal' => false,
             'visibleInExport' => false,
+            'visibleInShow' => false,
         ])->makeFirstColumn();
     }
 
