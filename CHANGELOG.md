@@ -41,6 +41,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1695 - added ```select_and_order``` field type;
 - #1708 - added ```Clone``` operation;
 - #1712 - added ```address_google``` field type;
+- #1674 - you can now pass parameters to ```model_function``` and ```model_function_attribute``` column types; 
 
 ### Fixed
 - #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
