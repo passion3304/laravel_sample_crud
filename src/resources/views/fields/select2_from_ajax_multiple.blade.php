@@ -73,6 +73,7 @@
                     minimumInputLength: "{{ $field['minimum_input_length'] }}",
                     ajax: {
                         url: "{{ $field['data_source'] }}",
+                        type: '{{ $field['method'] ?? 'GET' }}',
                         dataType: 'json',
                         quietMillis: 250,
                         data: function (params) {
