@@ -42,6 +42,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1708 - added ```Clone``` operation;
 - #1712 - added ```address_google``` field type;
 - #1674 - you can now pass parameters to ```model_function``` and ```model_function_attribute``` column types; 
+- #1484 - added dependant select2s with ajax;
+- #1484 - added ```method``` attribute to ajax select2s;
+- #1484 - added ```dependencies``` attribute to ajax select2s;
 
 ### Fixed
 - #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
