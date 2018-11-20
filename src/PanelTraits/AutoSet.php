@@ -130,9 +130,6 @@ trait AutoSet
                 break;
 
             case 'text':
-                return 'textarea';
-            break;
-
             case 'mediumtext':
             case 'longtext':
                 return 'textarea';
@@ -146,6 +143,7 @@ trait AutoSet
             case 'timestamp':
                 return 'datetime';
                 break;
+
             case 'time':
                 return 'time';
                 break;
@@ -214,7 +212,7 @@ trait AutoSet
     public function getDbColumnsNames()
     {
         // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
-        $columns = array_keys($this->getDbTableColumns());
+        $columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
         $fillable = $this->model->getFillable();
 
         if (! empty($fillable)) {
