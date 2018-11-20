@@ -23,13 +23,13 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             @if(isset($field['store_as_json']) && $field['store_as_json'])
                 <input
                         type="text"
-                        data-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
+                        data-google-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
                         @include('crud::inc.field_attributes')
                 >
             @else
                 <input
                         type="text"
-                        data-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
+                        data-google-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
                         name="{{ $field['name'] }}"
                         value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
                         @include('crud::inc.field_attributes')
@@ -73,10 +73,10 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             function initAutocomplete() {
 
 
-                $('[data-address]').each(function () {
+                $('[data-google-address]').each(function () {
 
                     var $this = $(this),
-                        $addressConfig = $this.data('address'),
+                        $addressConfig = $this.data('google-address'),
                         $field = $('[name="' + $addressConfig.field + '"]');
 
                     if ($field.val().length) {
