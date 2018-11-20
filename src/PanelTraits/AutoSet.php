@@ -72,8 +72,7 @@ trait AutoSet
      */
     public function getTableColumns()
     {
-        if (isset($this->table_columns) && $this->table_columns)
-        {
+        if (isset($this->table_columns) && $this->table_columns) {
             return $this->table_columns;
         }
 
@@ -218,7 +217,7 @@ trait AutoSet
         $columns = array_keys($this->getTableColumns());
         $fillable = $this->model->getFillable();
 
-        if (!empty($fillable)) {
+        if (! empty($fillable)) {
             $columns = array_intersect($columns, $fillable);
         }
 
