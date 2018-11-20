@@ -46,6 +46,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
 - #791 - could not revert changes made in fake field holders;
 - #1712 - renamed ```address``` field type to ```address_algolia```; alias keeps backwards-compatibility;
+- #1714 - autoset getting tables now happens only once;
 
 ----
 
