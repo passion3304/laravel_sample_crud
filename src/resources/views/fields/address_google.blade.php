@@ -115,7 +115,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             }
 
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key={{config('backpack.crud.google_places_api_key')}}&libraries=places&callback=initAutocomplete"
+        <script src="https://maps.googleapis.com/maps/api/js?key={{config('services.google_places.key')}}&libraries=places&callback=initAutocomplete"
                 async defer></script>
 
     @endpush
