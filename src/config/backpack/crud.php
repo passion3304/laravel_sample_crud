@@ -70,6 +70,14 @@ return [
     */
 
     /*
+    |------------
+    | API KEYS
+    |------------
+    */
+
+    'google_places_api_key' => env('GOOGLE_PLACES_API_KEY'), //Only needed if you use the address_google field
+
+    /*
     |-------------------
     | TRANSLATABLE CRUDS
     |-------------------
