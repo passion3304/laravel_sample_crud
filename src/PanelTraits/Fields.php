@@ -34,7 +34,7 @@ trait Fields
 
         // if the label is missing, we should set it
         if (! isset($completeFieldsArray['label'])) {
-            $completeFieldsArray['label'] = ucfirst($completeFieldsArray['name']);
+            $completeFieldsArray['label'] = mb_ucfirst(str_replace('_', ' ', $completeFieldsArray['name']));
         }
 
         // if the field type is missing, we should set it

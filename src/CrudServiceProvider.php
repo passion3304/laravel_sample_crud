@@ -9,7 +9,7 @@ class CrudServiceProvider extends ServiceProvider
 {
     use CrudUsageStats;
 
-    const VERSION = '3.4.41';
+    const VERSION = '3.5.0';
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
@@ -92,6 +92,9 @@ class CrudServiceProvider extends ServiceProvider
             return new CRUD($app);
         });
 
+        // register the helper functions
+        $this->loadHelpers();
+
         // register the artisan commands
         $this->commands($this->commands);
 
@@ -104,6 +107,14 @@ class CrudServiceProvider extends ServiceProvider
     public static function resource($name, $controller, array $options = [])
     {
         return new CrudRouter($name, $controller, $options);
+    }
+
+    /**
+     * Load the Backpack helper methods, for convenience.
+     */
+    public function loadHelpers()
+    {
+        require_once __DIR__.'/helpers.php';
     }
 
     /**

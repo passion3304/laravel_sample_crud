@@ -21,7 +21,7 @@
         type="file"
         id="{{ $field['name'] }}_file_input"
         name="{{ $field['name'] }}[]"
-        value="@if (old($field['name'])) old($field['name']) @elseif (isset($field['default'])) $field['default'] @endif"
+        value="@if (old(square_brackets_to_dots($field['name']))) old(square_brackets_to_dots($field['name'])) @elseif (isset($field['default'])) $field['default'] @endif"
         @include('crud::inc.field_attributes')
         multiple
     >

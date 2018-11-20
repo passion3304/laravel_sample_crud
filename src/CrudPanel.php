@@ -19,15 +19,21 @@ use Backpack\CRUD\PanelTraits\Columns;
 use Backpack\CRUD\PanelTraits\Filters;
 use Backpack\CRUD\PanelTraits\Reorder;
 use Backpack\CRUD\PanelTraits\AutoFocus;
+use Backpack\CRUD\PanelTraits\Macroable;
 use Backpack\CRUD\PanelTraits\FakeFields;
+use Backpack\CRUD\PanelTraits\Operations;
 use Backpack\CRUD\PanelTraits\FakeColumns;
 use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\PanelTraits\RequiredFields;
+use Backpack\CRUD\PanelTraits\HeadingsAndTitle;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
 class CrudPanel
 {
-    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields;
+    // load all the default CrudPanel features
+    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields, HeadingsAndTitle, Operations;
+    // allow developers to add their own closures to this object
+    use Macroable;
 
     // --------------
     // CRUD variables
@@ -91,7 +97,11 @@ class CrudPanel
     public function setModel($model_namespace)
     {
         if (! class_exists($model_namespace)) {
-            throw new \Exception('This model does not exist.', 404);
+            throw new \Exception('The model does not exist.', 500);
+        }
+
+        if (! method_exists($model_namespace, 'hasCrudTrait')) {
+            throw new \Exception('Please use CrudTrait on the model.', 500);
         }
 
         $this->model = new $model_namespace();

@@ -1,6 +1,6 @@
 {{-- custom return value --}}
 @php
-	$value = $entry->{$column['function_name']}();
+	$value = $entry->{$column['function_name']}(...($column['function_parameters'] ?? []));
 @endphp
 
 <span>

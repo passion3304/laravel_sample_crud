@@ -6,8 +6,8 @@
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
         <div class="col-sm-6" style="margin-bottom: 20px;">
-            @if(!is_null(old($field['name'])))
-                <img id="mainImage" src="{{ old($field['name']) }}">
+            @if(!is_null(old(square_brackets_to_dots($field['name']))))
+                <img id="mainImage" src="{{ old(square_brackets_to_dots($field['name'])) }}">
             @elseif(isset($field['src']) && isset($entry))
                 <img id="mainImage" src="{{ $entry->find($entry->id)->{$field['src']}() }}">
             @elseif(isset($field['value']))

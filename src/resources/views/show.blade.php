@@ -1,10 +1,10 @@
 @extends('backpack::layout')
 
-@section('content-header')
+@section('header')
 	<section class="content-header">
 	  <h1>
-        <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
-        <small>{{ ucfirst(trans('backpack::crud.preview')).' '.$crud->entity_name }}.</small>
+        <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+        <small>{!! $crud->getSubheading() ?? mb_ucfirst(trans('backpack::crud.preview')).' '.$crud->entity_name !!}.</small>
       </h1>
 	  <ol class="breadcrumb">
 	    <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
@@ -15,34 +15,36 @@
 @endsection
 
 @section('content')
-	@if ($crud->hasAccess('list'))
-		<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
-	@endif
+@if ($crud->hasAccess('list'))
+	<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
+
+	<a href="javascript: window.print();" class="pull-right hidden-print"><i class="fa fa-print"></i></a>
+@endif
+<div class="row">
+	<div class="{{ $crud->getShowContentClass() }}">
 
 	<!-- Default box -->
-	  <div class="box">
-	    <div class="box-header with-border">
-	    	<span class="pull-right m-l-20 m-r-20 m-t-5"><a href="javascript: window.print();"><i class="fa fa-print"></i></a></span>
-
-          @if ($crud->model->translationEnabled())
-			    	<!-- Single button -->
-					<div class="btn-group pull-right">
-					  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[$crud->request->input('locale')?$crud->request->input('locale'):App::getLocale()] }} <span class="caret"></span>
-					  </button>
-					  <ul class="dropdown-menu">
-					  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-						  	<li><a href="{{ url($crud->route.'/'.$entry->getKey()) }}?locale={{ $key }}">{{ $locale }}</a></li>
-					  	@endforeach
-					  </ul>
-					</div>
-					<h3 class="box-title" style="line-height: 30px;">{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
-				@else
-					<h3 class="box-title">{{ trans('backpack::crud.preview') .' '. $crud->entity_name }}</h3>
-				@endif
+	  <div class="m-t-20">
+	  	@if ($crud->model->translationEnabled())
+	    <div class="row">
+	    	<div class="col-md-12 m-b-10">
+				<!-- Change translation button group -->
+				<div class="btn-group pull-right">
+				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[$crud->request->input('locale')?$crud->request->input('locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
+					  	<li><a href="{{ url($crud->route.'/'.$entry->getKey()) }}?locale={{ $key }}">{{ $locale }}</a></li>
+				  	@endforeach
+				  </ul>
+				</div>
+			</div>
 	    </div>
-	    <div class="box-body no-padding">
-			<table class="table table-striped table-bordered">
+	    @else
+	    @endif
+	    <div class="box no-padding no-border">
+			<table class="table table-striped">
 		        <tbody>
 		        @foreach ($crud->columns as $column)
 		            <tr>
@@ -79,6 +81,8 @@
 	    </div><!-- /.box-body -->
 	  </div><!-- /.box -->
 
+	</div>
+</div>
 @endsection
 
 
