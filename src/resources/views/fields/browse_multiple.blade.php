@@ -1,6 +1,6 @@
 @php
 $multiple = array_get($field, 'multiple', true);
-$value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : null));
+$value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
 if (!$multiple && is_array($value)) {
     $value = array_first($value);
@@ -59,7 +59,7 @@ if (!$multiple && is_array($value)) {
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+@if ($crud->checkIfFieldIsFirstOfItsType($field))
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <!-- include browse server css -->

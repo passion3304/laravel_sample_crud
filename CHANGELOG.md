@@ -20,10 +20,106 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.42] - 2018-11-20
+
+## Fixed
+- #870 - error when adding tabs only on update, or only on create;
+
+
+## [3.4.41] - 2018-11-14
+
+## Added
+- #1592 - ```options``` attribute to let developers customize ckeditor;
+
+
+## [3.4.40] - 2018-11-11
+
+### Added
+- #1587 - support for temporaryUrl to upload field type;
+- #1693 - Turkish language translations;
+
+
+### Removed
+- obsolete TODO time_picker field; never used;
+
+
+## [3.4.39] - 2018-11-09
+
+### Fixed
+- #1540 fixes #1539 - what happens if actions don't exist because the controller is overwritten;
+- fixes #1678 - ```textarea``` column type has default search logic;
+- fixes #1676 - pagination in ```select2_from_ajax``` and ```select2_from_ajax_multiple``` fields;
+- fixes #509 using #1689 - assets got loaded twice if using tabs;
+- fixes #1421 using #1690 - user can now clear inputs, receive validation error and inputs will still be cleared;
+
+
+## [3.4.38] - 2018-10-26
+
+### Added
+- "default" for select field type;
+
+### Fixed
+- merged #1651 fixes #1640 - column width when resizing window or sidebar, on unresponsive crud table;
+- fixed #1648 - select_from_array column can now display multiple entries;
+
+
+## [3.4.37] - 2018-10-24
+
+### Fixed
+- spanish translation;
+- updated datetimepicker version in ```datetime_picker``` field;
+
+
+## [3.4.36] - 2018-10-15
+
+### Fixed
+- loading the custom views folder is now done only if it exists, this way fixing conflicts with the ```php artisan view:cache``` command;
+
+
+## [3.4.35] - 2018-09-26
+
+### Fixed
+- unit tests were failing;
+- version update in CrudServiceProvider;
+
+## [3.4.34] - 2018-09-25
+
+### Fixed
+- merged #1632 - not showing bulk columns on preview page;
+- merged #1617 - don't mark required_with and required_if with asterisks;
+- merged #1642 - where ```getRelationModelInstances()``` returns array instead of object;
+- merged #1643 - new script for ```address``` field type;
+- merged #1614 - show Remove All Filters button even for simple filters;
+
+
+## [3.4.33] - 2018-09-05
+
+### Fixed
+- merged #1625 - docblocks everywhere;
+- replaced ```or``` with ```??``` for Laravel 5.7 compatibility;
+
+
+## [3.4.32] - 2018-09-04
+
+### Added
+- merged #1609 - bulk actions;
+
+### Fixed
+- Spanish translation;
+- Italian translation;
+
+
+## [3.4.31] - 2018-08-28
+
+### Fixed
+- merged #1606 fixes #1605 - ```upload_multiple``` column type fix disk;
+
+
 ## [3.4.30] - 2018-08-10
 
 ### Added
 - #1589 - ```upload_multiple``` column type;
+- ```suffix``` option to ```array_count``` column type;
 
 
 ## [3.4.29] - 2018-08-10

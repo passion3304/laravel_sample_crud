@@ -16,9 +16,9 @@ trait Create
     /**
      * Insert a row in the database.
      *
-     * @param  [Request] All input values to be inserted.
+     * @param array $data All input values to be inserted.
      *
-     * @return [Eloquent Collection]
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function create($data)
     {
@@ -38,7 +38,7 @@ trait Create
     /**
      * Get all fields needed for the ADD NEW ENTRY form.
      *
-     * @return [array] The fields with attributes and fake attributes.
+     * @return array The fields with attributes and fake attributes.
      */
     public function getCreateFields()
     {
@@ -48,9 +48,9 @@ trait Create
     /**
      * Get all fields with relation set (model key set on field).
      *
-     * @param [string: create/update/both]
+     * @param string $form create/update/both
      *
-     * @return [array] The fields with model key set.
+     * @return array The fields with model key set.
      */
     public function getRelationFields($form = 'create')
     {
@@ -82,9 +82,9 @@ trait Create
     /**
      * Get all fields with n-n relation set (pivot table is true).
      *
-     * @param [string: create/update/both]
+     * @param string $form create/update/both
      *
-     * @return [array] The fields with n-n relationships.
+     * @return array The fields with n-n relationships.
      */
     public function getRelationFieldsWithPivot($form = 'create')
     {
@@ -99,8 +99,8 @@ trait Create
      * Create the relations for the current model.
      *
      * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
-     * @param array $data The form data.
-     * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
+     * @param array                               $data The form data.
+     * @param string                              $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
     public function createRelations($item, $data, $form = 'create')
     {
@@ -112,8 +112,8 @@ trait Create
      * Sync the declared many-to-many associations through the pivot field.
      *
      * @param \Illuminate\Database\Eloquent\Model $model The current CRUD model.
-     * @param array $data The form data.
-     * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
+     * @param array                               $data  The form data.
+     * @param string                              $form  Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
     public function syncPivot($model, $data, $form = 'create')
     {
@@ -144,8 +144,8 @@ trait Create
      * Create any existing one to one relations for the current model from the form data.
      *
      * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
-     * @param array $data The form data.
-     * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
+     * @param array                               $data The form data.
+     * @param string                              $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
     private function createOneToOneRelations($item, $data, $form = 'create')
     {
@@ -156,8 +156,10 @@ trait Create
     /**
      * Create any existing one to one relations for the current model from the relation data.
      *
-     * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
-     * @param array $formattedData The form data.
+     * @param \Illuminate\Database\Eloquent\Model $item          The current CRUD model.
+     * @param array                               $formattedData The form data.
+     *
+     * @return bool|null
      */
     private function createRelationsForItem($item, $formattedData)
     {
@@ -203,7 +205,7 @@ trait Create
      * attribute values. For relations defined with the "dot" notations, this will be used to calculate the depth in the
      * final array (@see \Illuminate\Support\Arr::set() for more).
      *
-     * @param array $data The form data.
+     * @param array  $data The form data.
      * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      *
      * @return array The formatted relation data.
