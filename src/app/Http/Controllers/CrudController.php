@@ -15,11 +15,12 @@ use Backpack\CRUD\app\Http\Controllers\Operations\Reorder;
 use Backpack\CRUD\app\Http\Controllers\Operations\Revisions;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListEntries;
 use Backpack\CRUD\app\Http\Controllers\Operations\SaveActions;
+use Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
 
 class CrudController extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
-    use Create, Delete, ListEntries, Reorder, Revisions, SaveActions, Show, Update;
+    use Create, CloneOperation, Delete, ListEntries, Reorder, Revisions, SaveActions, Show, Update;
 
     public $data = [];
     public $request;

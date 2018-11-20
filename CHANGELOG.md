@@ -20,6 +20,38 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.0] - 2018-09-xx
+
+### BREAKING
+- #1535 - orderBy gets ignored when the user clicks on a column heading to reoder the datatable;
+- #1658 - model function button did not pass $crud to button;
+- #1680 - Backpack checks that CrudTrait is used on the Model; otherwise it throws a 500 error with a clear message;
+
+### Added
+- #1675 - design facelift for the list view - a lot cleaner;
+- #1516 - setters and getters for the current operation;
+- #1527 - custom titles, headings and subheadings;
+- #1518 - CrudPanel class is now macroable;
+- #1687 - ```select2_nested``` field type;
+- #1703 - ```visibleInTable``` option to columns;
+- #1703 - ```visibleInExport``` option to columns;
+- #1706 - added ```visibleInShow``` option to columns;
+- #1704 - added ```orderLogic``` option for columns;
+- #1694 - ```options``` option to ```select```, ```select2```, ```select_multiple```, ```select2_multiple```, that allows developers to filter or order the options shown, using a scope or custom query;
+- #1695 - added ```select_and_order``` field type;
+- #1708 - added ```Clone``` operation;
+- #1712 - added ```address_google``` field type;
+- #1674 - you can now pass parameters to ```model_function``` and ```model_function_attribute``` column types; 
+
+### Fixed
+- #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
+- #791 - could not revert changes made in fake field holders;
+- #1712 - renamed ```address``` field type to ```address_algolia```; alias keeps backwards-compatibility;
+- #1714 - autoset getting tables now happens only once;
+- #1692 - we can now use arrays for field names, like ```category[0][name]```, the only thing that needed to be fixed was the ```old()``` value which did not work;
+
+----
+
 ## [3.4.42] - 2018-11-20
 
 ## Fixed

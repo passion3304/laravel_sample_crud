@@ -11,7 +11,7 @@
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
-    <input type="hidden" name="{{ $field['name'] }}" value="{{ old($field['name']) ?? $field['value'] ?? $field['default'] ?? '' }}">
+    <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}">
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <div class="input-group date">

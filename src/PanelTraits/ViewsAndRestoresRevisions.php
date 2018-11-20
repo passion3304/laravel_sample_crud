@@ -44,7 +44,7 @@ trait ViewsAndRestoresRevisions
      */
     public function restoreRevision($id, $revisionId)
     {
-        $entry = $this->getEntry($id);
+        $entry = $this->getEntryWithoutFakes($id);
         $revision = Revision::findOrFail($revisionId);
 
         // Update the revisioned field with the old value

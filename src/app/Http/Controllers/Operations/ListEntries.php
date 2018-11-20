@@ -12,9 +12,10 @@ trait ListEntries
     public function index()
     {
         $this->crud->hasAccessOrFail('list');
+        $this->crud->setOperation('ListEntries');
 
         $this->data['crud'] = $this->crud;
-        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
+        $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name_plural);
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getListView(), $this->data);
@@ -28,6 +29,7 @@ trait ListEntries
     public function search()
     {
         $this->crud->hasAccessOrFail('list');
+        $this->crud->setOperation('ListEntries');
 
         $totalRows = $filteredRows = $this->crud->count();
         $startIndex = $this->request->input('start') ?: 0;
@@ -57,6 +59,11 @@ trait ListEntries
                 // apply the current orderBy rules
                 $this->crud->orderBy($column['name'], $column_direction);
             }
+
+            // check for custom order logic in the column definition
+            if (isset($column['orderLogic'])) {
+                $this->crud->customOrderBy($column, $column_direction);
+            }
         }
         $entries = $this->crud->getEntries();
 
@@ -77,6 +84,7 @@ trait ListEntries
     public function showDetailsRow($id)
     {
         $this->crud->hasAccessOrFail('details_row');
+        $this->crud->setOperation('ListEntries');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

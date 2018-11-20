@@ -27,6 +27,18 @@ return [
     'show_grouped_errors' => true,
     'show_inline_errors' => true,
 
+    // Here you may override the css-classes for the content section of the create view globally
+    // To override per view use $this->crud->setCreateContentClass('class-string')
+    'create_content_class' => 'col-md-8 col-md-offset-2',
+
+    // Here you may override the css-classes for the content section of the edit view globally
+    // To override per view use $this->crud->setEditContentClass('class-string')
+    'edit_content_class'   => 'col-md-8 col-md-offset-2',
+
+    // Here you may override the css-classes for the content section of the revisions timeline view globally
+    // To override per view use $this->crud->setRevisionsTimelineContentClass('class-string')
+    'revisions_timeline_content_class'   => 'col-md-10 col-md-offset-1',
+
     /*
     |------------
     | READ
@@ -49,7 +61,15 @@ return [
     // If a 2D array is used, strings in the right hand array will be automatically run through trans()
         'page_length_menu' => [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']],
 
-    // PREVIEW
+    // Here you may override the css-class for the content section of the list view globally
+    // To override per view use $this->crud->setListContentClass('class-string')
+    'list_content_class' => 'col-md-12',
+
+    // SHOW (PREVIEW)
+
+    // Here you may override the css-classes for the content section of the show view globally
+    // To override per view use $this->crud->setShowContentClass('class-string')
+    'show_content_class'   => 'col-md-8 col-md-offset-2',
 
     /*
     |------------
@@ -62,6 +82,10 @@ return [
     | REORDER
     |------------
     */
+
+    // Here you may override the css-classes for the content section of the reorder view globally
+    // To override per view use $this->crud->setReorderContentClass('class-string')
+    'reorder_content_class'   => 'col-md-8 col-md-offset-2',
 
     /*
     |------------
