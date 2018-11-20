@@ -6,7 +6,7 @@
     	id="tinymce-{{ $field['name'] }}"
         name="{{ $field['name'] }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control tinymce'])
-        >{{ old($field['name']) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
+        >{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
     {{-- HINT --}}
     @if (isset($field['hint']))

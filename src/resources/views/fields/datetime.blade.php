@@ -14,7 +14,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
     <input
         type="datetime-local"
         name="{{ $field['name'] }}"
-        value="{{ strftime('%Y-%m-%dT%H:%M:%S', strtotime(old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )))) }}"
+        value="{{ strftime('%Y-%m-%dT%H:%M:%S', strtotime(old(square_brackets_to_dots($field['name'])) ? old(square_brackets_to_dots($field['name'])) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )))) }}"
         @include('crud::inc.field_attributes')
         >
 

@@ -6,7 +6,7 @@
     	id="ckeditor-{{ $field['name'] }}"
         name="{{ $field['name'] }}"
         @include('crud::inc.field_attributes', ['default_class' => 'form-control'])
-    	>{{ old($field['name']) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
+    	>{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
     {{-- HINT --}}
     @if (isset($field['hint']))
@@ -39,6 +39,9 @@
         $('#ckeditor-{{ $field['name'] }}').ckeditor({
             "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
             "extraPlugins" : '{{ isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : 'oembed,widget' }}'
+            @if (isset($field['options']) && count($field['options']))
+                {!! ', '.trim(json_encode($field['options']), "{}") !!}
+            @endif
         });
     });
 </script>

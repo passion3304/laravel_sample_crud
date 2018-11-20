@@ -27,7 +27,7 @@
         type="file"
         id="{{ $field['name'] }}_file_input"
         name="{{ $field['name'] }}"
-        value="{{ old($field['name']) ?? $field['value'] ?? $field['default'] ?? '' }}"
+        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
         @include('crud::inc.field_attributes', ['default_class' =>  isset($field['value']) && $field['value']!=null?'form-control hidden':'form-control'])
     >
 

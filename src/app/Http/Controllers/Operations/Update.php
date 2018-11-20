@@ -51,13 +51,6 @@ trait Update
             $request = \Request::instance();
         }
 
-        // replace empty values with NULL, so that it will work with MySQL strict mode on
-        foreach ($request->input() as $key => $value) {
-            if (empty($value) && $value !== '0') {
-                $request->request->set($key, null);
-            }
-        }
-
         // update the row in the db
         $item = $this->crud->update($request->get($this->crud->model->getKeyName()),
                             $request->except('save_action', '_token', '_method', 'current_tab', 'http_referrer'));

@@ -346,4 +346,14 @@ trait Views
     {
         return $this->setEditView($view);
     }
+
+    public function setUpdateContentClass(string $editContentClass)
+    {
+        return $this->setEditContentClass($editContentClass);
+    }
+
+    public function getUpdateContentClass()
+    {
+        return $this->getEditContentClass();
+    }
 }
