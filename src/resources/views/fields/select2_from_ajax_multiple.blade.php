@@ -102,6 +102,15 @@
                 });
             }
         });
+
+
+        @if (isset($field['dependencies']))
+            @foreach (array_wrap($field['dependencies']) as $dependency)
+                $('input[name={{ $dependency }}], select[name={{ $dependency }}], checkbox[name={{ $dependency }}], radio[name={{ $dependency }}], textarea[name={{ $dependency }}]').change(function () {
+                    $("#select2_ajax_multiple_{{ $field['name'] }}").val(null).trigger("change");
+                });
+            @endforeach
+        @endif
     });
 </script>
 @endpush
