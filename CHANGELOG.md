@@ -45,6 +45,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1484 - added dependant select2s with ajax;
 - #1484 - added ```method``` attribute to ajax select2s;
 - #1484 - added ```dependencies``` attribute to ajax select2s;
+- #1702 - added ```persistent_table``` functionality, and save state datatables;
 
 ### Fixed
 - #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
