@@ -40,11 +40,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1694 - ```options``` option to ```select```, ```select2```, ```select_multiple```, ```select2_multiple```, that allows developers to filter or order the options shown, using a scope or custom query;
 - #1695 - added ```select_and_order``` field type;
 - #1708 - added ```Clone``` operation;
+- #1712 - added ```address_google``` field type;
 
 ### Fixed
 - #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
 - #791 - could not revert changes made in fake field holders;
-
+- #1712 - renamed ```address``` field type to ```address_algolia```; alias keeps backwards-compatibility;
 
 ----
 
