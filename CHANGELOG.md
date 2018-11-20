@@ -50,6 +50,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ----
 
+## [3.4.42] - 2018-11-20
+
+## Fixed
+- #870 - error when adding tabs only on update, or only on create;
+
+
 ## [3.4.41] - 2018-11-14
 
 ## Added
