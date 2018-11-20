@@ -56,7 +56,7 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        foreach ($this->getTableColumns() as $key => $column) {
+        foreach ($this->getDbTableColumns() as $key => $column) {
             $column_type = $column->getType()->getName();
             $this->db_column_types[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $this->db_column_types[$column->getName()]['default'] = $column->getDefault();
@@ -70,7 +70,7 @@ trait AutoSet
      *
      * @return array
      */
-    public function getTableColumns()
+    public function getDbTableColumns()
     {
         if (isset($this->table_columns) && $this->table_columns) {
             return $this->table_columns;
@@ -214,7 +214,7 @@ trait AutoSet
     public function getDbColumnsNames()
     {
         // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
-        $columns = array_keys($this->getTableColumns());
+        $columns = array_keys($this->getDbTableColumns());
         $fillable = $this->model->getFillable();
 
         if (! empty($fillable)) {
