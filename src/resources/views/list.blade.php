@@ -3,8 +3,8 @@
 @section('header')
 	<section class="content-header">
 	  <h1>
-	    <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
-	    <small>{{ trans('backpack::crud.all') }} <span>{{ $crud->entity_name_plural }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
+      <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? trans('backpack::crud.all').'<span>'.$crud->entity_name_plural.'</span> '.trans('backpack::crud.in_the_database') !!}.</small>
 	  </h1>
 	  <ol class="breadcrumb">
 	    <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
@@ -19,25 +19,32 @@
   <div class="row">
 
     <!-- THE ACTUAL CONTENT -->
-    <div class="col-md-12">
-      <div class="box">
-        @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
-        <div class="box-header hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
+    <div class="{{ $crud->getListContentClass() }}">
+      <div class="">
 
-          @include('crud::inc.button_stack', ['stack' => 'top'])
+        <div class="row m-b-10">
+          <div class="col-xs-6">
+            @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
+            <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
-          <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
+              @include('crud::inc.button_stack', ['stack' => 'top'])
+
+            </div>
+            @endif
+          </div>
+          <div class="col-xs-6">
+              <div id="datatable_search_stack" class="pull-right"></div>
+          </div>
         </div>
-        @endif
-
-        <div class="box-body overflow-hidden">
 
         {{-- Backpack List Filters --}}
         @if ($crud->filtersEnabled())
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="table table-striped table-hover display responsive nowrap" cellspacing="0">
+        <div class="overflow-hidden">
+
+        <table id="crudTable" class="box table table-striped table-hover display responsive nowrap m-t-0" cellspacing="0">
             <thead>
               <tr>
                 {{-- Table columns --}}
@@ -46,13 +53,15 @@
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
                     data-visible-in-modal="{{ (isset($column['visibleInModal']) && $column['visibleInModal'] == false) ? 'false' : 'true' }}"
+                    data-visible="{{ !isset($column['visibleInTable']) ? 'true' : (($column['visibleInTable'] == false) ? 'false' : 'true') }}"
+                    data-visible-in-export="{{ (isset($column['visibleInExport']) && $column['visibleInExport'] == false) ? 'false' : 'true' }}"
                     >
                     {!! $column['label'] !!}
                   </th>
                 @endforeach
 
                 @if ( $crud->buttons->where('stack', 'line')->count() )
-                  <th data-orderable="false" data-priority="{{ $crud->getActionsColumnPriority() }}">{{ trans('backpack::crud.actions') }}</th>
+                  <th data-orderable="false" data-priority="{{ $crud->getActionsColumnPriority() }}" data-visible-in-export="false">{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>
             </thead>
@@ -72,13 +81,16 @@
             </tfoot>
           </table>
 
+          @if ( $crud->buttons->where('stack', 'bottom')->count() )
+          <div id="bottom_buttons" class="hidden-print">
+            @include('crud::inc.button_stack', ['stack' => 'bottom'])
+
+            <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
+          </div>
+          @endif
+
         </div><!-- /.box-body -->
 
-        @if ( $crud->buttons->where('stack', 'bottom')->count() )
-        <div class="box-footer hidden-print">
-          @include('crud::inc.button_stack', ['stack' => 'bottom'])
-        </div>
-        @endif
       </div><!-- /.box -->
     </div>
 
@@ -89,6 +101,7 @@
 @section('after_styles')
   <!-- DATA TABLES -->
   <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css">
 
   <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">

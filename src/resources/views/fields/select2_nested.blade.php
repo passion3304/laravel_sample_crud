@@ -1,20 +1,43 @@
-<!-- select2 -->
-@php
-    $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
-    $entity_model = $crud->getRelationModel($field['entity'],  - 1);
+<!-- select2_nested -->
 
-    if (!isset($field['options'])) {
-        $options = $field['model']::all();
-    } else {
-        $options = call_user_func($field['options'], $field['model']::query());
+{{-- Thanks to Erwan Pianezza - https://github.com/breizhwave--}}
+
+{{-- This field assumes you have a nested set Eloquent model, using: --}}
+{{-- 1. children() as a properly defined relationship --}}
+{{-- 2. depth, lft attributes --}}
+
+@php
+    $current_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+
+    if (!function_exists('echoSelect2NestedEntry')) {
+        function echoSelect2NestedEntry($entry, $field, $current_value) {
+            if ($current_value == $entry->getKey()) {
+                $selected = ' selected ';
+            } else {
+                $selected = '';
+            }
+            echo "<option value='".$entry->getKey()."' '.$selected.'>";
+            echo str_repeat("-", (int)$entry->depth - 1).' '.$entry->{$field['attribute']};
+            echo "</option>";
+        }
+    }
+
+    if (!function_exists('echoSelect2NestedChildren')) {
+        function echoSelect2NestedChildren($entity, $field, $current_value)
+        {
+         foreach ($entity->children()->get() as $entry)
+            {
+                echoSelect2NestedEntry($entry, $field, $current_value);
+                echoSelect2NestedChildren($entry, $field, $current_value);
+            }
+        }
     }
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
-
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-
+    <?php $entity_model = $crud->getRelationModel($field['entity'],  - 1); ?>
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
@@ -25,13 +48,17 @@
             <option value="">-</option>
         @endif
 
-        @if (count($options))
-            @foreach ($options as $option)
-                @if($current_value == $option->getKey())
-                    <option value="{{ $option->getKey() }}" selected>{{ $option->{$field['attribute']} }}</option>
-                @else
-                    <option value="{{ $option->getKey() }}">{{ $option->{$field['attribute']} }}</option>
-                @endif
+        @if (isset($field['model']))
+            @php
+                $obj = new $field['model'];
+                $first_level_items = $obj->where('depth', '1')->orWhere('depth', null)->orderBy('lft', 'ASC')->get();
+            @endphp
+
+            @foreach ($first_level_items as $connected_entity_entry)
+                @php
+                    echoSelect2NestedEntry($connected_entity_entry, $field, $current_value);
+                    echoSelect2NestedChildren($connected_entity_entry, $field, $current_value);
+                @endphp
             @endforeach
         @endif
     </select>
@@ -45,7 +72,7 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->checkIfFieldIsFirstOfItsType($field))
+@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')

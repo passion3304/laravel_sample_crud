@@ -3,8 +3,8 @@
 @section('header')
   <section class="content-header">
     <h1>
-        <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
-        <small>{{ trans('backpack::crud.revisions') }}.</small>
+        <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+        <small>{!! $crud->getSubheading() ?? trans('backpack::crud.revisions') !!}.</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{ url(config('backpack.base.route_prefix'),'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
@@ -15,12 +15,12 @@
 @endsection
 
 @section('content')
-<div class="row">
-  <div class="col-md-10 col-md-offset-1">
+@if ($crud->hasAccess('list'))
+  <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
+@endif
+<div class="row m-t-20">
+  <div class="{{ $crud->getRevisionsTimelineContentClass() }}">
     <!-- Default box -->
-    @if ($crud->hasAccess('list'))
-      <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
-    @endif
 
     @if(!count($revisions))
       <div class="box">

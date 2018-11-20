@@ -56,17 +56,33 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $table = $this->model->getTable();
-        $conn = $this->model->getConnection();
-        $table_columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
-
-        foreach ($table_columns as $key => $column) {
+        foreach ($this->getTableColumns() as $key => $column) {
             $column_type = $column->getType()->getName();
             $this->db_column_types[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $this->db_column_types[$column->getName()]['default'] = $column->getDefault();
         }
 
         return $this->db_column_types;
+    }
+
+    /**
+     * Get all columns in the database table.
+     *
+     * @return array
+     */
+    public function getTableColumns()
+    {
+        if (isset($this->table_columns) && $this->table_columns) {
+            return $this->table_columns;
+        }
+
+        $table = $this->model->getTable();
+        $conn = $this->model->getConnection();
+        $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
+
+        $this->table_columns = $columns;
+
+        return $this->table_columns;
     }
 
     /**
@@ -97,13 +113,13 @@ trait AutoSet
             case 'mediumint':
             case 'longint':
                 return 'number';
-            break;
+                break;
 
             case 'string':
             case 'varchar':
             case 'set':
                 return 'text';
-            break;
+                break;
 
             // case 'enum':
             //     return 'enum';
@@ -111,7 +127,7 @@ trait AutoSet
 
             case 'tinyint':
                 return 'active';
-            break;
+                break;
 
             case 'text':
                 return 'textarea';
@@ -120,23 +136,23 @@ trait AutoSet
             case 'mediumtext':
             case 'longtext':
                 return 'textarea';
-            break;
+                break;
 
             case 'date':
                 return 'date';
-            break;
+                break;
 
             case 'datetime':
             case 'timestamp':
                 return 'datetime';
-            break;
+                break;
             case 'time':
                 return 'time';
-            break;
+                break;
 
             default:
                 return 'text';
-            break;
+                break;
         }
     }
 
@@ -165,7 +181,7 @@ trait AutoSet
             return ($this->labeller)($value);
         }
 
-        return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
+        return trim(preg_replace('/(id|at|\[\])$/i', '', mb_ucfirst(str_replace('_', ' ', $value))));
     }
 
     /**
@@ -198,7 +214,7 @@ trait AutoSet
     public function getDbColumnsNames()
     {
         // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
-        $columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
+        $columns = array_keys($this->getTableColumns());
         $fillable = $this->model->getFillable();
 
         if (! empty($fillable)) {

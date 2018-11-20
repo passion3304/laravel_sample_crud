@@ -7,7 +7,7 @@ use Backpack\CRUD\PanelTraits\CrudButton;
 class CrudPanelButtonsTest extends BaseCrudPanelTest
 {
     private $defaultButtonNames = [
-        'show', 'update', 'revisions', 'delete', 'create', 'reorder',
+        'show', 'update', 'revisions', 'delete', 'create', 'reorder', 'clone',
     ];
 
     private $topViewButton;
