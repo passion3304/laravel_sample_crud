@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.5.0] - 2018-09-xx
+## [3.5.0] - 2018-09-22
 
 ### BREAKING
 - #1535 - orderBy gets ignored when the user clicks on a column heading to reoder the datatable;
