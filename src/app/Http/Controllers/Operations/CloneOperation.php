@@ -14,6 +14,7 @@ trait CloneOperation
     public function clone($id)
     {
         $this->crud->hasAccessOrFail('clone');
+        $this->crud->setOperation('clone');
 
         $clonedEntry = $this->crud->model->findOrFail($id)->replicate();
 
@@ -30,6 +31,7 @@ trait CloneOperation
     public function bulkClone()
     {
         $this->crud->hasAccessOrFail('clone');
+        $this->crud->setOperation('clone');
 
         $entries = $this->request->input('entries');
         $clonedEntries = [];

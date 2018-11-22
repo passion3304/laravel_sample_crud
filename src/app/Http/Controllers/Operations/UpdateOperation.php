@@ -4,7 +4,7 @@ namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Illuminate\Http\Request as UpdateRequest;
 
-trait Update
+trait UpdateOperation
 {
     /**
      * Show the form for editing the specified resource.
@@ -16,7 +16,7 @@ trait Update
     public function edit($id)
     {
         $this->crud->hasAccessOrFail('update');
-        $this->crud->setOperation('Update');
+        $this->crud->setOperation('update');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
@@ -44,7 +44,7 @@ trait Update
     public function updateCrud(UpdateRequest $request = null)
     {
         $this->crud->hasAccessOrFail('update');
-        $this->crud->setOperation('Update');
+        $this->crud->setOperation('update');
 
         // fallback to global request instance
         if (is_null($request)) {

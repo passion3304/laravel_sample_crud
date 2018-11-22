@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-trait Show
+trait ShowOperation
 {
     /**
      * Display the specified resource.
@@ -14,7 +14,7 @@ trait Show
     public function show($id)
     {
         $this->crud->hasAccessOrFail('show');
-        $this->crud->setOperation('Show');
+        $this->crud->setOperation('show');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

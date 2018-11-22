@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-trait ListEntries
+trait ListOperation
 {
     /**
      * Display all rows in the database for this entity.
@@ -12,7 +12,7 @@ trait ListEntries
     public function index()
     {
         $this->crud->hasAccessOrFail('list');
-        $this->crud->setOperation('ListEntries');
+        $this->crud->setOperation('list');
 
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name_plural);
@@ -29,7 +29,7 @@ trait ListEntries
     public function search()
     {
         $this->crud->hasAccessOrFail('list');
-        $this->crud->setOperation('ListEntries');
+        $this->crud->setOperation('list');
 
         $totalRows = $filteredRows = $this->crud->count();
         $startIndex = $this->request->input('start') ?: 0;
@@ -84,7 +84,7 @@ trait ListEntries
     public function showDetailsRow($id)
     {
         $this->crud->hasAccessOrFail('details_row');
-        $this->crud->setOperation('ListEntries');
+        $this->crud->setOperation('list');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

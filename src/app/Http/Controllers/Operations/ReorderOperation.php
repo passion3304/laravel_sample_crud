@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-trait Reorder
+trait ReorderOperation
 {
     /**
      *  Reorder the items in the database using the Nested Set pattern.
@@ -14,7 +14,7 @@ trait Reorder
     public function reorder()
     {
         $this->crud->hasAccessOrFail('reorder');
-        $this->crud->setOperation('Reorder');
+        $this->crud->setOperation('reorder');
 
         if (! $this->crud->isReorderEnabled()) {
             abort(403, 'Reorder is disabled.');
@@ -39,7 +39,7 @@ trait Reorder
     public function saveReorder()
     {
         $this->crud->hasAccessOrFail('reorder');
-        $this->crud->setOperation('Reorder');
+        $this->crud->setOperation('reorder');
 
         $all_entries = \Request::input('tree');
 
