@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.2] - 2018-09-22
+
+- Travis CI config file changes;
+
+
 ## [3.5.1] - 2018-09-22
 
 - composer.json change, requiring Backpack/Base 1.0.x;
