@@ -20,6 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.3] - 2018-09-23
+
+- fixed clone button using POST method for AJAX;
+
 ## [3.5.2] - 2018-09-22
 
 - Travis CI config file changes;
