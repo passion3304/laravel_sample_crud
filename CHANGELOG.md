@@ -23,6 +23,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## [3.5.3] - 2018-09-23
 
 - fixed clone button using POST method for AJAX;
+- CRUD buttons sometimes extended beyond table;
 
 ## [3.5.2] - 2018-09-22
 
