@@ -20,6 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.4] - 2018-09-26
+
+- fixed #1723 - export buttons now showing;
+
 ## [3.5.3] - 2018-09-23
 
 - fixed clone button using POST method for AJAX;
