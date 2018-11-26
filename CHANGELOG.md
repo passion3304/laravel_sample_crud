@@ -23,6 +23,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## [3.5.4] - 2018-09-26
 
 - fixed #1723 - export buttons now showing;
+- fixed #1535 - orderBy did not get respected;
 
 ## [3.5.3] - 2018-09-23
 
