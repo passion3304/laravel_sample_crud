@@ -31,7 +31,8 @@ trait ListOperation
         $this->crud->hasAccessOrFail('list');
         $this->crud->setOperation('list');
 
-        $totalRows = $filteredRows = $this->crud->count();
+        $totalRows = $this->crud->model->count();
+        $filteredRows = $this->crud->count();
         $startIndex = $this->request->input('start') ?: 0;
         // if a search term was present
         if ($this->request->input('search') && $this->request->input('search')['value']) {
