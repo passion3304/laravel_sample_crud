@@ -20,6 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.6] - 2018-09-27
+
+- fixed #1728;
+
 ## [3.5.5] - 2018-09-27
 
 - fixed #1723 - export buttons look bad when bulk buttons are missing;
