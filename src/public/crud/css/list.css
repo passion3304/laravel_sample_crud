@@ -31,9 +31,6 @@
 
 	#crudTable_wrapper {
 		/*overflow: hidden;*/
-		display: flex;
-		justify-content: center;
-		align-items: center;
 	}
 
 	#crudTable_wrapper #crudTable {
@@ -57,7 +54,7 @@
 	}
 
 	.dt-buttons {
-		/*display: none;*/
+		display: none;
 	}
 
 	.modal .details-control {

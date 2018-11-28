@@ -20,6 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.8] - 2018-09-28
+
+- fixed #1730 - export buttons causing issues; broken list view;
+
 ## [3.5.7] - 2018-09-27
 
 - fixed #1730 - filtered list view count wasn't quite right;

@@ -91,7 +91,8 @@
           button.node.className = button.node.className + " btn-sm";
         }
       })
-      $(".dt-buttons").appendTo($('#datatable_button_stack' )).css('display', 'block');
+      $(".dt-buttons").appendTo($('#datatable_button_stack' ));
+      $('.dt-buttons').css('display', 'inline-block');
     }
 
     crud.addFunctionToDataTablesDrawEventQueue('moveExportButtonsToTopRight');
