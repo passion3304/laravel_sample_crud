@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.9] - 2018-09-28
+
+- fixed #1732 - added support for laravel/translatable 3.x;
+
+
 ## [3.5.8] - 2018-09-28
 
 - fixed #1730 - export buttons causing issues; broken list view;
