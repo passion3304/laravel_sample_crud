@@ -17,7 +17,7 @@ class CrudRequest extends FormRequest
     public function authorize()
     {
         // only allow creates if the user is logged in
-        return \Auth::check();
+        return backpack_auth()->check();
     }
 
     /**
