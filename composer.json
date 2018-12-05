@@ -31,9 +31,9 @@
         "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.0",
+        "phpunit/phpunit": "~7.0",
         "scrutinizer/ocular": "~1.1",
-        "orchestra/testbench": "~3.0",
+        "orchestra/testbench": "^3.0",
         "orchestra/database": "~3.4",
         "spatie/laravel-translatable": "^2.1"
     },
