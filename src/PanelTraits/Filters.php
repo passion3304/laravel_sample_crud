@@ -141,7 +141,7 @@ trait Filters
     }
 
     /**
-     * @return array
+     * @return array|\Illuminate\Support\Collection
      */
     public function filters()
     {
