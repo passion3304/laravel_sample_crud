@@ -147,7 +147,7 @@ trait Filters
     {
         return $this->filters;
     }
-    
+
     /**
      * @param string $name
      *
@@ -155,19 +155,20 @@ trait Filters
      */
     public function getFilter($name)
     {
-        if(filtersEnabled())
+        if(filtersEnabled()){
             return $this->filters()->firstWhere('name', $name);
+        }
     }
-     
+
     /**
      * @param string $name
-     *                          
+     * 
      * @return bool
      */
     public function hasActiveFilter($name)
     {
         $crudFilter = $this->getFilterByName($name);
-        
+
         return $crudFilter instanceof CrudFilter
             && $crudFilter->isActive();
     }
