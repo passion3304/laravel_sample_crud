@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - #1736 - minor CSS issues in list;
+- #1068 - better date and datetime search; searching for "28 nov 2018" now works too, search strings no longer have to be in MySQL format;
 
 
 ## [3.5.10] - 2018-12-05
