@@ -8,7 +8,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#"><i class="fa fa-filter"></i> <span class="hidden-md hidden-lg">{{ trans('backpack::crud.filters') }}</span></a>
+        <a class="navbar-brand" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"><i class="fa fa-filter"></i> <span class="hidden-md hidden-lg">{{ trans('backpack::crud.filters') }}</span></a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
