@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.11] - 2018-12-xx
+
+### Fixed
+- #1736 - minor CSS issues in list;
+
+
 ## [3.5.10] - 2018-12-05
 
 - merged #1741 - deprecated ```CrudRequest``` uses ```backpack_auth()```;
