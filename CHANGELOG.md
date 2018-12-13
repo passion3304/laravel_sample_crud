@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.5.11] - 2018-12-xx
+## [3.5.11] - 2018-12-13
 
 ### Fixed
 - #1736 - minor CSS issues in list;
