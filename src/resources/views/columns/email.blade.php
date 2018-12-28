@@ -1,2 +1,6 @@
 {{-- email link --}}
-<span><a href="mailto:{{ $entry->{$column['name']} }}">{{ $entry->{$column['name']} }}</a></span>
+@php
+    $value = data_get($entry, $column['name']);
+@endphp
+
+<span><a href="mailto:{{ $value }}">{{ $value }}</a></span>

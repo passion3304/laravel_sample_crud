@@ -1,7 +1,10 @@
 {{-- enumerate the values in an array  --}}
+@php
+    $array = data_get($entry, $column['name']);
+@endphp
+
 <span>
     <?php
-    $array = $entry->{$column['name']};
     $suffix = isset($column['suffix'])?$column['suffix']:'items';
 
     // the value should be an array wether or not attribute casting is used

@@ -1,6 +1,10 @@
 {{-- converts 1/true or 0/false to yes/no/lang --}}
-<span data-order="{{ $entry->{$column['name']} }}">
-	@if ($entry->{$column['name']} === true || $entry->{$column['name']} === 1 || $entry->{$column['name']} === '1')
+@php
+    $value = data_get($entry, $column['name']);
+@endphp
+
+<span data-order="{{ $value }}">
+	@if ($value === true || $value === 1 || $value === '1')
         @if ( isset( $column['options'][1] ) )
             {!! $column['options'][1] !!}
         @else

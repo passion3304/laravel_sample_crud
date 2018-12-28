@@ -1,6 +1,6 @@
 {{-- enumerate the values in an array  --}}
 <?php
-$array = $entry->{$column['name']};
+$array = data_get($entry, $column['name']);
 
 // if the isn't using attribute casting, decode it
 if (is_string($array)) {
