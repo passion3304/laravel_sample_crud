@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.12] - 2018-12-28
+
+### Added
+- #1758 - ```image``` column type can now show the image of a connected entity, if you use dot notation for the column name;
+
+
 ## [3.5.11] - 2018-12-13
 
 ### Fixed
