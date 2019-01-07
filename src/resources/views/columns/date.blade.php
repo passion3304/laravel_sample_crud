@@ -1,6 +1,10 @@
 {{-- localized date using jenssegers/date --}}
-<span data-order="{{ $entry->{$column['name']} }}">
-    @if (!empty($entry->{$column['name']}))
-	{{ Date::parse($entry->{$column['name']})->format(($column['format'] ?? config('backpack.base.default_date_format'))) }}
+@php
+    $value = data_get($entry, $column['name']);
+@endphp
+
+<span data-order="{{ $value }}">
+    @if (!empty($value))
+	{{ Date::parse($value)->format(($column['format'] ?? config('backpack.base.default_date_format'))) }}
     @endif
 </span>

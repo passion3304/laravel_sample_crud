@@ -1,11 +1,15 @@
 {{-- select_from_array column --}}
+@php
+    $values = data_get($entry, $column['name']);
+@endphp
+
 <span>
 	<?php
-		if ($entry->{$column['name']} !== null) {
-			if (is_array($entry->{$column['name']})) {
+		if ($values !== null) {
+			if (is_array($values)) {
 				$array_of_values = [];
 
-				foreach ($entry->{$column['name']} as $key => $value) {
+				foreach ($values as $key => $value) {
 					$array_of_values[] = $column['options'][$value];
 				}
 
@@ -15,7 +19,7 @@
 					echo $array_of_values;
 				}
 			} else {
-				echo $column['options'][$entry->{$column['name']}];
+				echo $column['options'][$values];
 			}
 	    } else {
 	    	echo "-";
