@@ -8,4 +8,4 @@
 @endphp
 
 {{-- email link --}}
-<span><a href="mailto:{{ $entry->{$column['name']} }}">{{ str_limit(strip_tags($value), array_key_exists('limit', $column) ? $column['limit'] : 50, "[...]") }}</a></span>
+<span><a href="mailto:{{ $entry->{$column['name']} }}">{{ str_limit(strip_tags($value), array_key_exists('limit', $column) ? $column['limit'] : 254, "[...]") }}</a></span>
