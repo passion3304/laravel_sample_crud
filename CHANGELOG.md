@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+
+## [3.5.13] - 2019-01-07
+
+### Added
+- #1783 - ```limit``` functionality to the ```email``` column type;
+
+
 ## [3.5.12] - 2018-12-28
 
 ### Added
