@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - #1783 - ```limit``` functionality to the ```email``` column type;
+- #1770 - added support for dot notation to all relevant column types;
 
 
 ## [3.5.12] - 2018-12-28
