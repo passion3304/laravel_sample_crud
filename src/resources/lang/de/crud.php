@@ -105,7 +105,7 @@ return [
     'update_success' => 'Der Eintrag wurde erfolgreich geändert.',
 
     // CRUD reorder view
-    'reorder'                      => 'Reihenfolge',
+    'reorder'                      => 'Sortiere',
     'reorder_text'                 => 'Zum Ändern der Reihenfolge Einträge verschieben. (Drag&Drop)',
     'reorder_success_title'        => 'Fertig',
     'reorder_success_message'      => 'Die Reihenfolge wurde gespeichert',
