@@ -134,6 +134,19 @@ trait Buttons
         });
     }
 
+    /**
+     * @param array $names Button names
+     * @param string $stack Optional stack name.
+     */
+    public function removeButtons($names, $stack = null)
+    {
+        $this->buttons = $this->buttons->reject(function ($button) use ($names, $stack) {
+            return $stack == null ?
+                in_array($button->name, $names) :
+                ($button->stack == $stack) && (in_array($button->name, $names));
+        });
+    }
+
     public function removeAllButtons()
     {
         $this->buttons = collect([]);
