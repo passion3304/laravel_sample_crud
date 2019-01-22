@@ -140,11 +140,11 @@ trait Buttons
      */
     public function removeButtons($names, $stack = null)
     {
-        $this->buttons = $this->buttons->reject(function ($button) use ($names, $stack) {
-            return $stack == null ?
-                in_array($button->name, $names) :
-                ($button->stack == $stack) && (in_array($button->name, $names));
-        });
+        if (! empty($names)) {
+            foreach ($names as $name) {
+                $this->removeButton($name, $stack);
+            }
+        }
     }
 
     public function removeAllButtons()
