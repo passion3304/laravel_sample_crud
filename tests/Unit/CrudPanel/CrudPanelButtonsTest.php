@@ -163,12 +163,12 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
     {
         $buttons = [
             $this->defaultButtonNames[0],
-            $this->defaultButtonNames[1]
+            $this->defaultButtonNames[1],
         ];
 
         $this->crudPanel->removeButtons($buttons);
 
-        $this->assertEquals(count($this->defaultButtonNames) -2, count($this->crudPanel->buttons));
+        $this->assertEquals(count($this->defaultButtonNames) - 2, count($this->crudPanel->buttons));
         $this->assertNull($this->getButtonByName($buttons[0]));
         $this->assertNull($this->getButtonByName($buttons[1]));
     }
@@ -177,7 +177,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
     {
         $buttonNames = [
             'someButtonName',
-            'someOtherButtonName'
+            'someOtherButtonName',
         ];
 
         $this->crudPanel->removeButtons($buttonNames);

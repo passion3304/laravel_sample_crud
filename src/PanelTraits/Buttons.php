@@ -136,7 +136,7 @@ trait Buttons
 
     /**
      * @param array $names Button names
-     * @param string $stack Optional stack name.
+     * @param string|null $stack Optional stack name.
      */
     public function removeButtons($names, $stack = null)
     {
