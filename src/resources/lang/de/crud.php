@@ -127,7 +127,7 @@ return [
     'page_link' => 'Link zur Seite',
     'page_link_placeholder' => 'http://example.com/ihre-gewuenschte-seite',
     'internal_link' => 'Interner Link',
-    'internal_link_placeholder' => 'Internes Kürzel. Bsp: \'admin/page\' (ohne Anführungszeichen) für \':url\'',
+    'internal_link_placeholder' => 'URL-sicherer Name ("Slug"). Bsp: \'admin/page\' (ohne Anführungszeichen) für \':url\'',
     'external_link' => 'Externer Link',
     'choose_file' => 'Datei auswählen',
 
