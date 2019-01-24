@@ -149,6 +149,31 @@ trait Filters
     }
 
     /**
+     * @param string $name
+     *
+     * @return null|CrudFilter
+     */
+    public function getFilter($name)
+    {
+        if(filtersEnabled()){
+            return $this->filters()->firstWhere('name', $name);
+        }
+    }
+
+    /**
+     * @param string $name
+     * 
+     * @return bool
+     */
+    public function hasActiveFilter($name)
+    {
+        $crudFilter = $this->getFilterByName($name);
+
+        return $crudFilter instanceof CrudFilter
+            && $crudFilter->isActive();
+    }
+
+    /**
      * Modify the attributes of a filter.
      *
      * @param  string $name          The filter name.
