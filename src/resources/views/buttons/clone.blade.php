@@ -2,6 +2,10 @@
 	<a href="javascript:void(0)" onclick="cloneEntry(this)" data-route="{{ url($crud->route.'/'.$entry->getKey().'/clone') }}" class="btn btn-xs btn-default" data-button-type="clone"><i class="fa fa-clone"></i> Clone</a>
 @endif
 
+{{-- Button Javascript --}}
+{{-- - used right away in AJAX operations (ex: List) --}}
+{{-- - pushed to the end of the page, after jQuery is loaded, for non-AJAX operations (ex: Show) --}}
+@push('after_scripts') @if ($crud->request->ajax()) @endpush @endif
 <script>
 	if (typeof cloneEntry != 'function') {
 	  $("[data-button-type=clone]").unbind('click');
@@ -26,7 +30,9 @@
                   // Hide the modal, if any
                   $('.modal').modal('hide');
 
-                  crud.table.ajax.reload();
+                  if (typeof crud !== 'undefined') {
+                    crud.table.ajax.reload();
+                  }
               },
               error: function(result) {
                   // Show an alert with the result
@@ -43,3 +49,4 @@
 	// make it so that the function above is run after each DataTable draw event
 	// crud.addFunctionToDataTablesDrawEventQueue('cloneEntry');
 </script>
+@if (!$crud->request->ajax()) @endpush @endif

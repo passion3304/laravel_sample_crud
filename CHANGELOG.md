@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.14] - 2019-02-xx
+
+### Fixed
+- #1792 - javascript error on Show page, due to Clone button;
+
 
 ## [3.5.13] - 2019-01-07
 
