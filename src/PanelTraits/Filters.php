@@ -155,7 +155,7 @@ trait Filters
      */
     public function getFilter($name)
     {
-        if($this->filtersEnabled()){
+        if ($this->filtersEnabled()) {
             return $this->filters()->firstWhere('name', $name);
         }
     }
