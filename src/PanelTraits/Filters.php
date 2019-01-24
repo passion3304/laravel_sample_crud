@@ -155,22 +155,21 @@ trait Filters
      */
     public function getFilter($name)
     {
-        if(filtersEnabled()){
+        if($this->filtersEnabled()){
             return $this->filters()->firstWhere('name', $name);
         }
     }
 
     /**
      * @param string $name
-     * 
+     *
      * @return bool
      */
     public function hasActiveFilter($name)
     {
-        $crudFilter = $this->getFilterByName($name);
+        $crudFilter = $this->getFilter($name);
 
-        return $crudFilter instanceof CrudFilter
-            && $crudFilter->isActive();
+        return $crudFilter instanceof CrudFilter && $crudFilter->isActive();
     }
 
     /**
