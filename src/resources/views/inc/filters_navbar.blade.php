@@ -8,7 +8,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">{{ trans('backpack::crud.filters') }}</a>
+        <a class="navbar-brand" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"><i class="fa fa-filter"></i> <span class="hidden-md hidden-lg">{{ trans('backpack::crud.filters') }}</span></a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -18,61 +18,11 @@
     			@foreach ($crud->filters as $filter)
     				@include($filter->view)
     			@endforeach
-          <li ><a href="#" id="remove_filters_button" class="hidden"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
+          <li ><a href="#" id="remove_filters_button" class="{{ count(Request::input()) != 0 ? '' : 'hidden' }}"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
-
-
-@push('crud_list_styles')
-	<style>
-    .backpack-filter label {
-      color: #868686;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .navbar-filters {
-      min-height: 25px;
-      border-radius: 0;
-      margin-bottom: 10px;
-      margin-left: -10px;
-      margin-right: -10px;
-      margin-top: -11px;
-      background: #f9f9f9;
-      border-color: #f4f4f4;
-    }
-
-    .navbar-filters .navbar-collapse {
-    	padding: 0;
-    }
-
-    .navbar-filters .navbar-toggle {
-      padding: 10px 15px;
-      border-radius: 0;
-    }
-
-    .navbar-filters .navbar-brand {
-      height: 25px;
-      padding: 5px 15px;
-      font-size: 14px;
-      text-transform: uppercase;
-    }
-    @media (min-width: 768px) {
-      .navbar-filters .navbar-nav>li>a {
-          padding-top: 5px;
-          padding-bottom: 5px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .navbar-filters .navbar-nav {
-        margin: 0;
-      }
-    }
-    </style>
-@endpush
 
 @push('crud_list_scripts')
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.2/URI.min.js" type="text/javascript"></script>
@@ -115,6 +65,9 @@
   				// clear all filters
   				$(".navbar-filters li[filter-name]").trigger('filter:clear');
           $('#remove_filters_button').addClass('hidden');
+
+          // remove filters from URL
+          crud.updateUrl(new_url);
       	})
       });
     </script>

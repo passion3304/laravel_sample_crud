@@ -4,7 +4,7 @@ namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Illuminate\Http\Request as UpdateRequest;
 
-trait Update
+trait UpdateOperation
 {
     /**
      * Show the form for editing the specified resource.
@@ -16,6 +16,7 @@ trait Update
     public function edit($id)
     {
         $this->crud->hasAccessOrFail('update');
+        $this->crud->setOperation('update');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
@@ -25,7 +26,7 @@ trait Update
         $this->data['crud'] = $this->crud;
         $this->data['saveAction'] = $this->getSaveAction();
         $this->data['fields'] = $this->crud->getUpdateFields($id);
-        $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
 
         $this->data['id'] = $id;
 
@@ -43,22 +44,16 @@ trait Update
     public function updateCrud(UpdateRequest $request = null)
     {
         $this->crud->hasAccessOrFail('update');
+        $this->crud->setOperation('update');
 
         // fallback to global request instance
         if (is_null($request)) {
             $request = \Request::instance();
         }
 
-        // replace empty values with NULL, so that it will work with MySQL strict mode on
-        foreach ($request->input() as $key => $value) {
-            if (empty($value) && $value !== '0') {
-                $request->request->set($key, null);
-            }
-        }
-
         // update the row in the db
         $item = $this->crud->update($request->get($this->crud->model->getKeyName()),
-                            $request->except('save_action', '_token', '_method', 'current_tab'));
+                            $request->except('save_action', '_token', '_method', 'current_tab', 'http_referrer'));
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message

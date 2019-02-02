@@ -89,6 +89,9 @@
 				new_url = normalizeAmpersand(new_url.toString());
 				ajax_table.ajax.url(new_url).load();
 
+				// add filter to URL
+				crud.updateUrl(new_url);
+
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');

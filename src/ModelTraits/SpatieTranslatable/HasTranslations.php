@@ -41,6 +41,21 @@ trait HasTranslations
         return $translation;
     }
 
+    public function getTranslation(string $key, string $locale, bool $useFallbackLocale = true)
+    {
+        $locale = $this->normalizeLocale($key, $locale, $useFallbackLocale);
+
+        $translations = $this->getTranslations($key);
+
+        $translation = $translations[$locale] ?? '';
+
+        if ($this->hasGetMutator($key)) {
+            return $this->mutateAttribute($key, $translation);
+        }
+
+        return $translation;
+    }
+
     /*
     |--------------------------------------------------------------------------
     |                            ELOQUENT OVERWRITES

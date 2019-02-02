@@ -3,8 +3,8 @@
 @section('header')
 <section class="content-header">
     <h1>
-        <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
-        <small>{{ trans('backpack::crud.reorder').' '.$crud->entity_name_plural }}.</small>
+        <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+        <small>{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}.</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
@@ -52,39 +52,41 @@ function tree_element($entry, $key, $all_entries, $crud)
 }
 
 ?>
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
-    @if ($crud->hasAccess('list'))
-        <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
-    @endif
 
-        <!-- Default box -->
-        <div class="box">
+@if ($crud->hasAccess('list'))
+    <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
+@endif
 
-            <div class="box-header with-border">
-                <h3 class="box-title">{{ trans('backpack::crud.reorder').' '.$crud->entity_name_plural }}</h3>
-            </div>
+<div class="row m-t-20">
+    <div class="{{ $crud->getReorderContentClass() }}">
 
-            <div class="box-body">
+        <div class="col-md-12">
 
-                <p>{{ trans('backpack::crud.reorder_text') }}</p>
+            <div class="panel padding-10">
 
-                <ol class="sortable">
-                <?php
-                    $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
-                    $root_entries = $all_entries->filter(function ($item) {
-                        return $item->parent_id == 0;
-                    });
-                    foreach ($root_entries as $key => $entry){
-                        $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
-                    }
-                ?>
-                </ol>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>{{ trans('backpack::crud.reorder_text') }}</p>
+
+                        <ol class="sortable">
+                        <?php
+                            $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
+                            $root_entries = $all_entries->filter(function ($item) {
+                                return $item->parent_id == 0;
+                            });
+                            foreach ($root_entries as $key => $entry){
+                                $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+                            }
+                        ?>
+                        </ol>
+                    </div>
+                </div>
 
                 <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
 
-            </div><!-- /.box-body -->
-        </div><!-- /.box -->
+            </div><!-- /.panel -->
+
+        </div>
     </div>
 </div>
 @endsection
@@ -117,7 +119,7 @@ function tree_element($entry, $key, $all_entries, $crud)
         tabSize: 25,
         tolerance: 'pointer',
         toleranceElement: '> div',
-        maxLevels: {{ $crud->reorder_max_level or 3 }},
+        maxLevels: {{ $crud->reorder_max_level ?? 3 }},
 
         isTree: true,
         expandOnHover: 700,

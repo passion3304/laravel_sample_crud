@@ -9,7 +9,7 @@
 
           name="{{ $field['name'] }}"
 
-          @if(old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : false )))
+          @if (old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false)
                  checked="checked"
           @endif
 

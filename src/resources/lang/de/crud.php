@@ -20,7 +20,7 @@ return [
     'save_action_changed_notification' => 'Standardverhalten nach dem Speichern wurde geändert.',
 
     // Create form
-    'add'                 => 'Neu',
+    'add'                 => 'Anlegen: ',
     'back_to_all'         => 'Zurück zur Übersicht ',
     'cancel'              => 'Abbrechen',
     'add_a_new'           => 'Neu anlegen: ',
@@ -30,7 +30,7 @@ return [
     'save'                 => 'Speichern',
 
     // Revisions
-    'revisions'            => 'Revisions',
+    'revisions'            => 'Revisionen',
     'no_revisions'         => 'Keine Revisionen gefunden',
     'created_this'          => 'hat das erstellt',
     'changed_the'          => 'hat das geändert: ',
@@ -53,7 +53,7 @@ return [
     'preview'                   => 'Vorschau',
     'delete'                    => 'Löschen',
     'admin'                     => 'Admin',
-    'details_row'               => 'Diese Zeile zeigt die Details und kann nach belieben geändert werden.',
+    'details_row'               => 'Diese Zeile zeigt die Details und kann nach Belieben geändert werden.',
     'details_row_loading_error' => 'Beim Laden der Details ist ein Fehler aufgetreten. Bitte versuche es noch einmal.',
 
     // Confirmation messages and bubbles
@@ -105,7 +105,7 @@ return [
     'update_success' => 'Der Eintrag wurde erfolgreich geändert.',
 
     // CRUD reorder view
-    'reorder'                      => 'Reihenfolge',
+    'reorder'                      => 'Sortiere',
     'reorder_text'                 => 'Zum Ändern der Reihenfolge Einträge verschieben. (Drag&Drop)',
     'reorder_success_title'        => 'Fertig',
     'reorder_success_message'      => 'Die Reihenfolge wurde gespeichert',
@@ -125,16 +125,16 @@ return [
     'browse_uploads' => 'Uploads durchsuchen',
     'clear' => 'Löschen',
     'page_link' => 'Link zur Seite',
-    'page_link_placeholder' => 'http://example.com/your-desired-page',
+    'page_link_placeholder' => 'http://example.com/ihre-gewuenschte-seite',
     'internal_link' => 'Interner Link',
-    'internal_link_placeholder' => 'Interner slug. Bsp: \'admin/page\' (ohne Anführungszeichen) für \':url\'',
+    'internal_link_placeholder' => 'URL-sicherer Name ("Slug"). Bsp: \'admin/page\' (ohne Anführungszeichen) für \':url\'',
     'external_link' => 'Externer Link',
-    'choose_file' => 'Datei wählen',
+    'choose_file' => 'Datei auswählen',
 
     //Table field
     'table_cant_add' => 'Kann :entity nicht hinzufügen',
     'table_max_reached' => 'Maximale Anzahl von :max erreicht',
 
     // File manager
-    'file_manager' => 'Datei Manager',
+    'file_manager' => 'Datei-Manager',
 ];

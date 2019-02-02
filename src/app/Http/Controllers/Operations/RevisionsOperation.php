@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-trait Revisions
+trait RevisionsOperation
 {
     /**
      * Display the revisions for specified resource.
@@ -14,6 +14,7 @@ trait Revisions
     public function listRevisions($id)
     {
         $this->crud->hasAccessOrFail('revisions');
+        $this->crud->setOperation('revisions');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
@@ -21,7 +22,7 @@ trait Revisions
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
-        $this->data['title'] = ucfirst($this->crud->entity_name).' '.trans('backpack::crud.revisions');
+        $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name).' '.trans('backpack::crud.revisions');
         $this->data['id'] = $id;
         $this->data['revisions'] = $this->crud->listRevisions($id);
 
@@ -42,6 +43,7 @@ trait Revisions
     public function restoreRevision($id)
     {
         $this->crud->hasAccessOrFail('revisions');
+        $this->crud->setOperation('revisions');
 
         $revisionId = \Request::input('revision_id', false);
         if (! $revisionId) {

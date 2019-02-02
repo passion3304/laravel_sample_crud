@@ -1,19 +1,17 @@
 language: php
 
 php:
-  - 7.0
   - 7.1
   - 7.2
-  - nightly
+  - 7.3
 
 matrix:
     allow_failures:
-        - php: nightly
-        - php: 7.2
+        - php: 7.3
 
 sudo: false
 
-install: travis_retry composer install --no-interaction --prefer-source
+install: travis_retry composer install --no-interaction --prefer-dist
 
 script: vendor/bin/phpunit --coverage-clover=coverage.clover
 

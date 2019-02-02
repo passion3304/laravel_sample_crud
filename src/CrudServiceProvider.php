@@ -9,7 +9,7 @@ class CrudServiceProvider extends ServiceProvider
 {
     use CrudUsageStats;
 
-    const VERSION = '3.4.31';
+    const VERSION = '3.5.1';
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
@@ -31,11 +31,14 @@ class CrudServiceProvider extends ServiceProvider
     public function boot()
     {
         $_SERVER['BACKPACK_CRUD_VERSION'] = $this::VERSION;
+        $customViewsFolder = resource_path('views/vendor/backpack/crud');
 
         // LOAD THE VIEWS
 
         // - first the published/overwritten views (in case they have any changes)
-        $this->loadViewsFrom(resource_path('views/vendor/backpack/crud'), 'crud');
+        if (file_exists($customViewsFolder)) {
+            $this->loadViewsFrom($customViewsFolder, 'crud');
+        }
         // - then the stock views that come with the package, in case a published view might be missing
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'crud');
 
@@ -89,6 +92,9 @@ class CrudServiceProvider extends ServiceProvider
             return new CRUD($app);
         });
 
+        // register the helper functions
+        $this->loadHelpers();
+
         // register the artisan commands
         $this->commands($this->commands);
 
@@ -101,6 +107,14 @@ class CrudServiceProvider extends ServiceProvider
     public static function resource($name, $controller, array $options = [])
     {
         return new CrudRouter($name, $controller, $options);
+    }
+
+    /**
+     * Load the Backpack helper methods, for convenience.
+     */
+    public function loadHelpers()
+    {
+        require_once __DIR__.'/helpers.php';
     }
 
     /**

@@ -15,11 +15,17 @@ trait Errors
 
     // Getters
 
+    /**
+     * @return bool
+     */
     public function groupedErrorsEnabled()
     {
         return $this->groupedErrors;
     }
 
+    /**
+     * @return bool
+     */
     public function inlineErrorsEnabled()
     {
         return $this->inlineErrors;

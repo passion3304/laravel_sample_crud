@@ -6,11 +6,17 @@ trait Filters
 {
     public $filters = [];
 
+    /**
+     * @return bool
+     */
     public function filtersEnabled()
     {
         return ! is_array($this->filters);
     }
 
+    /**
+     * @return bool
+     */
     public function filtersDisabled()
     {
         return is_array($this->filters);
@@ -36,10 +42,10 @@ trait Filters
     /**
      * Add a filter to the CRUD table view.
      *
-     * @param array         $options        Name, type, label, etc.
-     * @param array/closure $values         The HTML for the filter.
-     * @param closure       $filter_logic   Query modification (filtering) logic when filter is active.
-     * @param closure       $fallback_logic  Query modification (filtering) logic when filter is not active.
+     * @param array               $options        Name, type, label, etc.
+     * @param bool|array|\Closure $values         The HTML for the filter.
+     * @param bool|\Closure       $filter_logic   Query modification (filtering) logic when filter is active.
+     * @param bool|\Closure       $fallback_logic Query modification (filtering) logic when filter is not active.
      */
     public function addFilter($options, $values = false, $filter_logic = false, $fallback_logic = false)
     {
@@ -83,6 +89,10 @@ trait Filters
         }
     }
 
+    /**
+     * @param string $name
+     * @param string $operator
+     */
     public function addDefaultFilterLogic($name, $operator)
     {
         $input = \Request::all();
@@ -130,17 +140,45 @@ trait Filters
         }
     }
 
+    /**
+     * @return array
+     */
     public function filters()
     {
         return $this->filters;
     }
 
     /**
+     * @param string $name
+     *
+     * @return null|CrudFilter
+     */
+    public function getFilter($name)
+    {
+        if ($this->filtersEnabled()) {
+            return $this->filters()->firstWhere('name', $name);
+        }
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasActiveFilter($name)
+    {
+        $crudFilter = $this->getFilter($name);
+
+        return $crudFilter instanceof CrudFilter && $crudFilter->isActive();
+    }
+
+    /**
      * Modify the attributes of a filter.
      *
      * @param  string $name          The filter name.
-     * @param  array $modifications  An array of changes to be made.
-     * @return filter                The filter that has suffered modifications, for daisychaining methods.
+     * @param  array  $modifications An array of changes to be made.
+     *
+     * @return CrudFilter               The filter that has suffered modifications, for daisychaining methods.
      */
     public function modifyFilter($name, $modifications)
     {
@@ -259,6 +297,9 @@ class CrudFilter
         }
     }
 
+    /**
+     * @return bool
+     */
     public function isActive()
     {
         if (\Request::has($this->name)) {

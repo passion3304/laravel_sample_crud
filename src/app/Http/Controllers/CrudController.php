@@ -6,20 +6,21 @@ use Backpack\CRUD\CrudPanel;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
-use Backpack\CRUD\app\Http\Controllers\Operations\Show;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Backpack\CRUD\app\Http\Controllers\Operations\Create;
-use Backpack\CRUD\app\Http\Controllers\Operations\Delete;
-use Backpack\CRUD\app\Http\Controllers\Operations\Update;
-use Backpack\CRUD\app\Http\Controllers\Operations\Reorder;
-use Backpack\CRUD\app\Http\Controllers\Operations\Revisions;
-use Backpack\CRUD\app\Http\Controllers\Operations\ListEntries;
 use Backpack\CRUD\app\Http\Controllers\Operations\SaveActions;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
 class CrudController extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
-    use Create, Delete, ListEntries, Reorder, Revisions, SaveActions, Show, Update;
+    use CreateOperation, CloneOperation, DeleteOperation, ListOperation, ReorderOperation, RevisionsOperation, SaveActions, ShowOperation, UpdateOperation;
 
     public $data = [];
     public $request;

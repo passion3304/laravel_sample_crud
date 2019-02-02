@@ -7,7 +7,11 @@
     @if (!empty($field['value']))
     <div class="well well-sm">
         @if (isset($field['disk']))
+        @if (isset($field['temporary']))
+            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->temporaryUrl(array_get($field, 'prefix', '').$field['value'], Carbon\Carbon::now()->addMinutes($field['temporary'])))) }}">
+        @else
             <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->url(array_get($field, 'prefix', '').$field['value']))) }}">
+        @endif
         @else
             <a target="_blank" href="{{ (asset(array_get($field, 'prefix', '').$field['value'])) }}">
         @endif
@@ -23,7 +27,7 @@
         type="file"
         id="{{ $field['name'] }}_file_input"
         name="{{ $field['name'] }}"
-        value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
         @include('crud::inc.field_attributes', ['default_class' =>  isset($field['value']) && $field['value']!=null?'form-control hidden':'form-control'])
     >
 

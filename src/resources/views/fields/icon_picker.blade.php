@@ -12,11 +12,11 @@ if (!isset($field['iconset'])) {
     @include('crud::inc.field_translatable_icon')
 
     <div>
-        <button class="btn btn-default " role="iconpicker" data-icon="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}" data-iconset="{{ $field['iconset'] }}"></button>
+        <button class="btn btn-default " role="iconpicker" data-icon="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" data-iconset="{{ $field['iconset'] }}"></button>
         <input
             type="hidden"
             name="{{ $field['name'] }}"
-            value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+            value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
             @include('crud::inc.field_attributes')
         >
     </div>
@@ -28,7 +28,7 @@ if (!isset($field['iconset'])) {
 </div>
 
 
-@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+@if ($crud->checkIfFieldIsFirstOfItsType($field))
 
     @if($field['iconset'] == 'glyphicon')
         @push('crud_fields_scripts')

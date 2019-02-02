@@ -24,6 +24,11 @@ class CrudRouter
             'uses' => $this->controller.'@search',
         ]);
 
+        Route::delete($this->name.'/bulk-delete', [
+            'as' => 'crud.'.$this->name.'.bulkDelete',
+            'uses' => $this->controller.'@bulkDelete',
+        ]);
+
         Route::get($this->name.'/reorder', [
             'as' => 'crud.'.$this->name.'.reorder',
             'uses' => $this->controller.'@reorder',
@@ -52,6 +57,16 @@ class CrudRouter
         Route::post($this->name.'/{id}/revisions/{revisionId}/restore', [
             'as' => 'crud.'.$this->name.'.restoreRevision',
             'uses' => $this->controller.'@restoreRevision',
+        ]);
+
+        Route::post($this->name.'/{id}/clone', [
+            'as' => 'crud.'.$this->name.'.clone',
+            'uses' => $this->controller.'@clone',
+        ]);
+
+        Route::post($this->name.'/bulk-clone', [
+            'as' => 'crud.'.$this->name.'.bulkClone',
+            'uses' => $this->controller.'@bulkClone',
         ]);
     }
 

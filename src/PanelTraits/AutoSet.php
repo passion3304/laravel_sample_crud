@@ -13,7 +13,7 @@ trait AutoSet
      * For a simple CRUD Panel, there should be no need to add/define the fields.
      * The public columns in the database will be converted to be fields.
      *
-     * @return [void]
+     * @return void
      */
     public function setFromDb()
     {
@@ -52,15 +52,11 @@ trait AutoSet
     /**
      * Get all columns from the database for that table.
      *
-     * @return [array]
+     * @return array
      */
     public function getDbColumnTypes()
     {
-        $table = $this->model->getTable();
-        $conn = $this->model->getConnection();
-        $table_columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
-
-        foreach ($table_columns as $key => $column) {
+        foreach ($this->getDbTableColumns() as $key => $column) {
             $column_type = $column->getType()->getName();
             $this->db_column_types[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $this->db_column_types[$column->getName()]['default'] = $column->getDefault();
@@ -70,11 +66,31 @@ trait AutoSet
     }
 
     /**
+     * Get all columns in the database table.
+     *
+     * @return array
+     */
+    public function getDbTableColumns()
+    {
+        if (isset($this->table_columns) && $this->table_columns) {
+            return $this->table_columns;
+        }
+
+        $table = $this->model->getTable();
+        $conn = $this->model->getConnection();
+        $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
+
+        $this->table_columns = $columns;
+
+        return $this->table_columns;
+    }
+
+    /**
      * Intuit a field type, judging from the database column type.
      *
-     * @param  [string] Field name.
+     * @param  string $field Field name.
      *
-     * @return [string] Fielt type.
+     * @return string Field type.
      */
     public function getFieldTypeFromDbColumnType($field)
     {
@@ -92,17 +108,18 @@ trait AutoSet
 
         switch ($this->db_column_types[$field]['type']) {
             case 'int':
+            case 'integer':
             case 'smallint':
             case 'mediumint':
             case 'longint':
                 return 'number';
-            break;
+                break;
 
             case 'string':
             case 'varchar':
             case 'set':
                 return 'text';
-            break;
+                break;
 
             // case 'enum':
             //     return 'enum';
@@ -110,32 +127,30 @@ trait AutoSet
 
             case 'tinyint':
                 return 'active';
-            break;
+                break;
 
             case 'text':
-                return 'textarea';
-            break;
-
             case 'mediumtext':
             case 'longtext':
                 return 'textarea';
-            break;
+                break;
 
             case 'date':
                 return 'date';
-            break;
+                break;
 
             case 'datetime':
             case 'timestamp':
                 return 'datetime';
-            break;
+                break;
+
             case 'time':
                 return 'time';
-            break;
+                break;
 
             default:
                 return 'text';
-            break;
+                break;
         }
     }
 
@@ -154,9 +169,9 @@ trait AutoSet
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
      *
-     * @param  [string] The value.
+     * @param  string $value The value.
      *
-     * @return [string] The transformed value.
+     * @return string The transformed value.
      */
     public function makeLabel($value)
     {
@@ -164,7 +179,7 @@ trait AutoSet
             return ($this->labeller)($value);
         }
 
-        return trim(preg_replace('/(id|at|\[\])$/i', '', ucfirst(str_replace('_', ' ', $value))));
+        return trim(preg_replace('/(id|at|\[\])$/i', '', mb_ucfirst(str_replace('_', ' ', $value))));
     }
 
     /**
@@ -177,7 +192,10 @@ trait AutoSet
 
     /**
      * Change the way labels are made.
+     *
      * @param callable $labeller A function that receives a string and returns the formatted string, after stripping down useless characters.
+     *
+     * @return self
      */
     public function setLabeller(callable $labeller)
     {
@@ -189,7 +207,7 @@ trait AutoSet
     /**
      * Get the database column names, in order to figure out what fields/columns to show in the auto-fields-and-columns functionality.
      *
-     * @return [array] Database column names as an array.
+     * @return array Database column names as an array.
      */
     public function getDbColumnsNames()
     {
