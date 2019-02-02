@@ -91,6 +91,7 @@ return [
         'sortDescending' => ': attiva per ordinare la colonna discendentemente',
     ],
     'export' => [
+        'export'            => 'Esporta',
         'copy'              => 'Copia',
         'excel'             => 'Excel',
         'csv'               => 'CSV',
