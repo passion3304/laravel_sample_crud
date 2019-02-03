@@ -76,7 +76,6 @@ return [
     'bulk_delete_error_title' => 'Record non eliminati',
     'bulk_delete_error_message' => 'Non è stato possibile eliminare uno o più record',
 
-
     'ajax_error_title' => 'Errore',
     'ajax_error_text'  => 'Errore durante il caricamento della pagina. Per favore ricarica la pagina.',
 
