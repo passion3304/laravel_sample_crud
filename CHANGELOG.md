@@ -20,7 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.5.14] - 2019-02-24
+## [3.5.15] - 2019-02-xx
+
+### Fixed
+- Italian translation, thanks to [Roberto Butti](https://github.com/roberto-butti);
+
+
+## [3.5.14] - 2019-01-24
 
 ### Added
 - #1749 - ```$crud->getFilter('name')``` and ```$crud->hasActiveFilter('name')``` methods for Filters;
