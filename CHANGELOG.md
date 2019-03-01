@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.17] - 2019-03-01
+
+### Fixed
+- Backpack/Base dependency ```1.1.*|1.0.*```;
+
 ## [3.5.16] - 2019-03-01
 
 ### Fixed
