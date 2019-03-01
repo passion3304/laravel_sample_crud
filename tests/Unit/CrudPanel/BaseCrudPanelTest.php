@@ -20,7 +20,7 @@ abstract class BaseCrudPanelTest extends BaseTest
      *
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

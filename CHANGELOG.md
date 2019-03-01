@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.3] - 2019-03-01
+
+### Fixed
+- unit tests on Laravel 5.8;
+
+
 ## [3.6.2] - 2019-03-01
 
 ### Fixed

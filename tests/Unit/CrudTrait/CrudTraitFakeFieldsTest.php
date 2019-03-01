@@ -49,7 +49,7 @@ class CrudTraitFakeFieldsTest extends BaseCrudTraitTest
     /**
      * Setup function for each test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
