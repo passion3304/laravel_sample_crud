@@ -22,6 +22,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.5.15] - 2019-03-01
 
+### Added
+- silent support for Backpack 1.1 and Laravel 5.8 through it;
+
 ### Fixed
 - Italian translation, thanks to [Roberto Butti](https://github.com/roberto-butti);
 
