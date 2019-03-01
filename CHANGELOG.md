@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.5.15] - 2019-02-xx
+## [3.5.15] - 2019-03-01
 
 ### Fixed
 - Italian translation, thanks to [Roberto Butti](https://github.com/roberto-butti);
