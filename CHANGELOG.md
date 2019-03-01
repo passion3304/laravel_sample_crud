@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.2] - 2019-03-01
+
+### Fixed
+- date and datetime columns now using carbon v2;
+
+
 ## [3.6.1] - 2019-03-01
 
 ### Added
