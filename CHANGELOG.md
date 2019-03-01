@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.0] - 2019-03-01
+## [3.6.1] - 2019-03-01
 
 ### Added
 - support for Laravel 5.8 through Base 1.1;
