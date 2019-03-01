@@ -20,20 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.5.17] - 2019-03-01
-
-### Fixed
-- Backpack/Base dependency ```1.1.*|1.0.*```;
-
-## [3.5.16] - 2019-03-01
-
-### Fixed
-- Backpack/Base dependency ```1.0.*|1.1.*```;
-
-## [3.5.15] - 2019-03-01
+## [3.6.0] - 2019-03-01
 
 ### Added
-- silent support for Backpack 1.1 and Laravel 5.8 through it;
+- support for Laravel 5.8 through Base 1.1;
 
 ### Fixed
 - Italian translation, thanks to [Roberto Butti](https://github.com/roberto-butti);
