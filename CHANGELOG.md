@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - ```view``` field type now works with PHP 7.3 (it did not, because of ```compact()``` usage); merged #1825;
+- merged #1804 - fixes ```select_grouped``` field for some people;
 
 
 ## [3.6.3] - 2019-03-01
