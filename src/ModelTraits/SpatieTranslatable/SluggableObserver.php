@@ -75,6 +75,6 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
      */
     protected function fireSluggedEvent(Model $model, string $status)
     {
-        $this->events->fire('eloquent.slugged: '.get_class($model), [$model, $status]);
+        $this->events->dispatch('eloquent.slugged: '.get_class($model), [$model, $status]);
     }
 }
