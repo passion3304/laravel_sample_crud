@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.5] - 2019-03-12
+
+### Fixed
+- merged #1830 - ```fire()``` function is not defined in the loaded Dispatcher and throws an error when using sluggables in translatable CRUDs;
+
 
 ## [3.6.4] - 2019-03-03
 
