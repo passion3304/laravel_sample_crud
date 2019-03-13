@@ -76,8 +76,8 @@ trait AutoSet
             return $this->table_columns;
         }
 
-        $table = $this->model->getTable();
         $conn = $this->model->getConnection();
+        $table = $conn->getTablePrefix().$this->model->getTable();
         $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
 
         $this->table_columns = $columns;
