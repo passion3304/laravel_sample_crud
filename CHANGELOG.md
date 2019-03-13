@@ -28,7 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Added
 - merged #1782 - adds unofficial MongoDB support; with a few caveats: all columns are nullable; hasColumn() will always return true - so accidentally adding a column twice will be a bad experience for the developer;
-
+- #1818 - ```limit``` attribute to the ```select``` column; defaults to 50;
 
 ## [3.6.5] - 2019-03-12
 
