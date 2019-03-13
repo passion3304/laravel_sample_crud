@@ -409,6 +409,10 @@ trait Columns
     {
         static $cache = [];
 
+        if ($this->getSchema()->getConnection()->getConfig()['driver'] === 'mongodb') {
+            return true;
+        }
+
         if (isset($cache[$table])) {
             $columns = $cache[$table];
         } else {
