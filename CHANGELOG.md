@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - #1801 - for CRUDs, you can now use entity names that happen to be the same as variables that are already in every request;
+- #1563 - allow using database prefix with AutoSet;
 
 
 ## [3.6.5] - 2019-03-12
