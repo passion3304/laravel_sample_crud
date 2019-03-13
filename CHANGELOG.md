@@ -26,6 +26,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - #1801 - for CRUDs, you can now use entity names that happen to be the same as variables that are already in every request;
 - #1563 - allow using database prefix with AutoSet;
 
+### Added
+- merged #1782 - adds unofficial MongoDB support; with a few caveats: all columns are nullable; hasColumn() will always return true - so accidentally adding a column twice will be a bad experience for the developer;
+
 
 ## [3.6.5] - 2019-03-12
 
