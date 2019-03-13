@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.6] - 2019-03-xx
+## [3.6.6] - 2019-03-13
 
 ### Fixed
 - #1801 - for CRUDs, you can now use entity names that happen to be the same as variables that are already in every request;
