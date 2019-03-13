@@ -59,6 +59,11 @@ trait CrudTrait
         $conn = DB::connection($instance->getConnectionName());
         $table = Config::get('database.connections.'.Config::get('database.default').'.prefix').$instance->getTable();
 
+        // MongoDB columns are alway nullable
+        if ($conn->getConfig()['driver'] === 'mongodb') {
+            return true;
+        }
+
         // register the enum, json and jsonb column type, because Doctrine doesn't support it
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
