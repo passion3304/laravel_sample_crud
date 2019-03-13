@@ -47,7 +47,7 @@ trait ListOperation
         }
         // limit the number of results according to the datatables pagination
         if ($this->request->input('length')) {
-            $this->crud->take($this->request->input('length'));
+            $this->crud->take((int)$this->request->input('length'));
         }
         // overwrite any order set in the setup() method with the datatables order
         if ($this->request->input('order')) {
