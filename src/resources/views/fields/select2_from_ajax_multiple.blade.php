@@ -80,7 +80,9 @@
                             return {
                                 q: params.term, // search term
                                 page: params.page, // pagination
-                                form: form.serializeArray() // all other form inputs
+                                @if($field['include_all_form_fields)'] ?? true)
+                                    form: form.serializeArray() // all other form inputs
+                                @endif
                             };
                         },
                         processResults: function (data, params) {
