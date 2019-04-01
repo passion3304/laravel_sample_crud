@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.10] - 2019-04-01
+
+### Fixed
+- #1769 - vertical tabs not showing on the same line as form content;
+
+
 ## [3.6.9] - 2019-04-01
 
 ### Fixed
