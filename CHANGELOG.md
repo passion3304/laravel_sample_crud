@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.9] - 2019-04-01
+
+### Fixed
+- merged #1840 - when errors happen in forms with tabs, the first tab that has an error gets selected by default;
+
+
 ## [3.6.8] - 2019-04-01
 
 ### Fixed
