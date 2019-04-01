@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.8] - 2019-04-01
+
+### Fixed
+- hotfix extra brackets introduced in #1847;
+
+
 ## [3.6.7] - 2019-04-01
 
 ### Added

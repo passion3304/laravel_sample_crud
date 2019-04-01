@@ -99,7 +99,7 @@
                             return {
                                 q: params.term, // search term
                                 page: params.page, // pagination
-                                @if($field['include_all_form_fields)'] ?? true)
+                                @if($field['include_all_form_fields'] ?? true)
                                     form: form.serializeArray() // all other form inputs
                                 @endif
                             };
