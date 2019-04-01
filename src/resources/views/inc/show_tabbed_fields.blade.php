@@ -1,5 +1,10 @@
 @php
     $horizontalTabs = $crud->getTabsType()=='horizontal' ? true : false;
+
+    if ($errors->any() && array_key_exists(array_keys($errors->messages())[0], $crud->getCurrentFields()) &&
+        array_key_exists('tab', $crud->getCurrentFields()[array_keys($errors->messages())[0]])) {
+        $tabWithError = ($crud->getCurrentFields()[array_keys($errors->messages())[0]]['tab']);
+    }
 @endphp
 
 @push('crud_fields_styles')
@@ -34,7 +39,7 @@
     <div class="nav-tabs-custom" id="form_tabs">
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'nav-stacked nav-pills'}}" role="tablist">
             @foreach ($crud->getTabs() as $k => $tab)
-                <li role="presentation" class="{{$k == 0 ? 'active' : ''}}">
+                <li role="presentation" class="{{ isset($tabWithError) ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}">
                     <a href="#tab_{{ str_slug($tab, "") }}" aria-controls="tab_{{ str_slug($tab, "") }}" role="tab" tab_name="{{ str_slug($tab, "") }}" data-toggle="tab" class="tab_toggler">{{ $tab }}</a>
                 </li>
             @endforeach
@@ -46,7 +51,7 @@
 <div class="tab-content box {{$horizontalTabs ? 'col-md-12' : 'col-md-9 m-t-10'}}">
 
     @foreach ($crud->getTabs() as $k => $tab)
-    <div role="tabpanel" class="tab-pane{{$k == 0 ? ' active' : ''}}" id="tab_{{ str_slug($tab, "") }}">
+    <div role="tabpanel" class="tab-pane{{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ str_slug($tab, "") }}">
 
         @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
 
