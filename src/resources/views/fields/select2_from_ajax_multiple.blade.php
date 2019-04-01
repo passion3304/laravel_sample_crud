@@ -80,7 +80,7 @@
                             return {
                                 q: params.term, // search term
                                 page: params.page, // pagination
-                                @if($field['add_other_fields_in_ajax_request)'] ?? true)
+                                @if($field['include_all_form_fields)'] ?? true)
                                     form: form.serializeArray() // all other form inputs
                                 @endif
                             };
