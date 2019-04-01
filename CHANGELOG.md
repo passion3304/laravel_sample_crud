@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.7] - 2019-04-01
+
+### Added
+- merged #1847 - added ```include_all_form_fields``` option for select2_from_ajax and select2_from_ajax_multiple fields, so that developers can choose NOT to send all form values in the AJAX request;
+
+
 ## [3.6.6] - 2019-03-13
 
 ### Fixed
