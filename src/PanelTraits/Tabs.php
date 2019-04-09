@@ -40,7 +40,7 @@ trait Tabs
     public function setTabsType($type)
     {
         $this->tabsEnabled = true;
-        
+
         $this->tabsType = $type;
 
         return $this->tabsType;
