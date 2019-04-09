@@ -20,11 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.11] - 2019-04-xx
+## [3.6.11] - 2019-04-09
 
 ### Fixed
 - #1851 - cdn.rawgit.com will stop working in October 2019; switched to a different CDN;
 - merged #1822 - vertical tabs can be enabled and switched with one line instead of two;
+- #1829 - when the item is not deleted, a success bubble is no longer shown, but a warning;
 
 
 ## [3.6.10] - 2019-04-01

@@ -18,23 +18,32 @@
 	              url: route,
 	              type: 'DELETE',
 	              success: function(result) {
-	                  // Show an alert with the result
-	                  new PNotify({
-	                      title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
-	                      text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
-	                      type: "success"
-	                  });
+		              if (result != 1) {
+		              	// Show an error alert
+		                  new PNotify({
+		                      title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
+		                      text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
+		                      type: "warning"
+		                  });
+		              } else {
+		                  // Show a success alert with the result
+		                  new PNotify({
+		                      title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
+		                      text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
+		                      type: "success"
+		                  });
 
-	                  // Hide the modal, if any
-	                  $('.modal').modal('hide');
+		                  // Hide the modal, if any
+		                  $('.modal').modal('hide');
 
-	                  // Remove the details row, if it is open
-	                  if (row.hasClass("shown")) {
-	                      row.next().remove();
-	                  }
+		                  // Remove the details row, if it is open
+		                  if (row.hasClass("shown")) {
+		                      row.next().remove();
+		                  }
 
-	                  // Remove the row from the datatable
-	                  row.remove();
+		                  // Remove the row from the datatable
+		                  row.remove();
+		              }
 	              },
 	              error: function(result) {
 	                  // Show an alert with the result
