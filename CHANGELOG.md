@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.11] - 2019-04-xx
+
+### Fixed
+- #1851 - cdn.rawgit.com will stop working in October 2019; switched to a different CDN;
+
+
 ## [3.6.10] - 2019-04-01
 
 ### Fixed
