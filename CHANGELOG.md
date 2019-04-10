@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - merged #1803 - ```enum``` field type uses one less query to determine enum options;
 - #1771 - ```datetime_picker``` field can be manually edited;
+- merged #1764 fixes #1763 - persistent table local storage key is now the route instead of the plural name of the entity, because sometimes there can be two entities with the same plural name (or two cruds for one entity) so that is not unique;
 
 
 ## [3.6.12] - 2019-04-10
