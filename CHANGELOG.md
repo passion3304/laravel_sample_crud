@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - merged #1803 - ```enum``` field type uses one less query to determine enum options;
+- #1771 - ```datetime_picker``` field can be manually edited;
 
 
 ## [3.6.12] - 2019-04-10

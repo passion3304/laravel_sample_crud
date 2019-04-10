@@ -70,10 +70,10 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
                 delete($customConfig['language']);
                 $picker = $fake.datetimepicker($customConfig);
 
-                $fake.on('keydown', function(e){
-                    e.preventDefault();
-                    return false;
-                });
+                // $fake.on('keydown', function(e){
+                //     e.preventDefault();
+                //     return false;
+                // });
 
                 $picker.on('dp.change', function(e){
                     var sqlDate = e.date ? e.date.format('YYYY-MM-DD HH:mm:ss') : null;
