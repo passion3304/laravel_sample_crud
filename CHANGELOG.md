@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.12] - 2019-04-10
+
+### Added
+- merged #1850 - added ```dec_point``` and ```thousands_sep``` to ```number``` column type; parameters and defaults are now the same as PHP's number_format() method: https://www.php.net/manual/en/function.number-format.php
+
+
 ## [3.6.11] - 2019-04-09
 
 ### Fixed
