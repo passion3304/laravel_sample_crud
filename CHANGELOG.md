@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.13] - 2019-04-xx
+## [3.6.13] - 2019-04-10
 
 ### Fixed
 - merged #1803 - ```enum``` field type uses one less query to determine enum options;
