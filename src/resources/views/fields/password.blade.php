@@ -5,6 +5,7 @@
     <input
     	type="password"
     	name="{{ $field['name'] }}"
+    	autocomplete="new-password"
         @include('crud::inc.field_attributes')
     	>
 
