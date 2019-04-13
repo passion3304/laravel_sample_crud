@@ -25,7 +25,7 @@ trait Sluggable
      * @param  array|null $except
      * @return Model
      */
-    public function replicate(array $except = null)
+    public function replicate(array $except = null): Model
     {
         $instance = parent::replicate($except);
         (new SlugService())->slug($instance, true);
@@ -43,14 +43,16 @@ trait Sluggable
      * @param string $slug
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFindSimilarSlugs(Builder $query, Model $model, $attribute, $config, $slug)
+    public function scopeFindSimilarSlugs(Builder $query, string $attribute, array $config, string $slug): Builder
     {
         $separator = $config['separator'];
         $attribute = $attribute.'->'.$this->getLocale();
 
         return $query->where(function (Builder $q) use ($attribute, $slug, $separator) {
             $q->where($attribute, '=', $slug)
-                ->orWhere($attribute, 'LIKE', $slug.$separator.'%');
+                ->orWhere($attribute, 'LIKE', $slug.$separator.'%')
+                // Fixes issues with Json data types in MySQL where data is sourrounded by "
+                ->orWhere($attribute, 'LIKE', '"'.$slug.$separator.'%');
         });
     }
 }

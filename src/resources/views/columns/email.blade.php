@@ -1,2 +1,6 @@
 {{-- email link --}}
-<td><a href="mailto:{{ $entry->{$column['name']} }}">{{ $entry->{$column['name']} }}</a></td>
+@php
+	$value = data_get($entry, $column['name']);
+@endphp
+
+<span><a href="mailto:{{ $entry->{$column['name']} }}">{{ str_limit(strip_tags($value), array_key_exists('limit', $column) ? $column['limit'] : 254, "[...]") }}</a></span>

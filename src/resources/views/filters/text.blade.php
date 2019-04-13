@@ -14,8 +14,8 @@
 							value="{{ $filter->currentValue }}"
 						@endif
 		        		>
-		        <div class="input-group-addon">
-		          <a class="text-filter-{{ str_slug($filter->name) }}-clear-button" href=""><i class="fa fa-times"></i></a>
+		        <div class="input-group-addon text-filter-{{ str_slug($filter->name) }}-clear-button">
+		          <a class="" href=""><i class="fa fa-times"></i></a>
 		        </div>
 		    </div>
 		</div>
@@ -46,6 +46,9 @@
 				// replace the datatables ajax url with new_url and reload it
 				new_url = normalizeAmpersand(new_url.toString());
 				ajax_table.ajax.url(new_url).load();
+
+				// add filter to URL
+				crud.updateUrl(new_url);
 
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {

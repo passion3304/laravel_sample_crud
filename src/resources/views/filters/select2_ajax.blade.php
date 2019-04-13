@@ -25,9 +25,6 @@
 	  .form-inline .select2-container {
 	    display: inline-block;
 	  }
-	  li[filter-type="{{ $filter->type }}"] .select2-container {
-	  	display: block;
-	  }
 	  .select2-drop-active {
 	  	border:none;
 	  }
@@ -107,6 +104,9 @@
 
 				// replace the datatables ajax url with new_url and reload it
 				ajax_table.ajax.url(new_url).load();
+
+				// add filter to URL
+				crud.updateUrl(new_url);
 
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {

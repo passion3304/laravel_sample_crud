@@ -11,11 +11,49 @@ trait Read
     */
 
     /**
+     * Find and retrieve the id of the current entry.
+     *
+     * @return int|bool The id in the db or false.
+     */
+    public function getCurrentEntryId()
+    {
+        if ($this->entry) {
+            return $this->entry->getKey();
+        }
+
+        $params = \Route::current()->parameters();
+
+        return  // use the entity name to get the current entry
+                // this makes sure the ID is corrent even for nested resources
+                $this->request->input($this->entity_name) ??
+                // otherwise use the next to last parameter
+                array_values($params)[count($params) - 1] ??
+                // otherwise return false
+                false;
+    }
+
+    /**
+     * Find and retrieve the current entry.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|bool The row in the db or false.
+     */
+    public function getCurrentEntry()
+    {
+        $id = $this->getCurrentEntryId();
+
+        if (! $id) {
+            return false;
+        }
+
+        return $this->getEntry($id);
+    }
+
+    /**
      * Find and retrieve an entry in the database or fail.
      *
-     * @param  [int] The id of the row in the db to fetch.
+     * @param int The id of the row in the db to fetch.
      *
-     * @return [Eloquent Collection] The row in the db.
+     * @return \Illuminate\Database\Eloquent\Model The row in the db.
      */
     public function getEntry($id)
     {
@@ -25,6 +63,18 @@ trait Read
         }
 
         return $this->entry;
+    }
+
+    /**
+     * Find and retrieve an entry in the database or fail.
+     *
+     * @param int The id of the row in the db to fetch.
+     *
+     * @return \Illuminate\Database\Eloquent\Model The row in the db.
+     */
+    public function getEntryWithoutFakes($id)
+    {
+        return $this->model->findOrFail($id);
     }
 
     /**
@@ -43,7 +93,7 @@ trait Read
     /**
      * Get all entries from the database.
      *
-     * @return [Collection of your model]
+     * @return array|\Illuminate\Database\Eloquent\Collection
      */
     public function getEntries()
     {
@@ -62,10 +112,10 @@ trait Read
     /**
      * Get the fields for the create or update forms.
      *
-     * @param  [form] create / update / both - defaults to 'both'
-     * @param  [integer] the ID of the entity to be edited in the Update form
+     * @param  string   $form create/update/both - defaults to 'both'
+     * @param  bool|int $id   the ID of the entity to be edited in the Update form
      *
-     * @return [array] all the fields that need to be shown and their information
+     * @return array all the fields that need to be shown and their information
      */
     public function getFields($form, $id = false)
     {
@@ -87,8 +137,10 @@ trait Read
     /**
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
-     * @param  [form] create / update / both - defaults to 'both'
-     * @param  [id] id of the entity - defaults to false
+     *
+     * @param  string   $form create/update/both - defaults to 'both'
+     * @param  bool|int $id   id of the entity - defaults to false
+     *
      * @return bool
      */
     public function hasUploadFields($form, $id = false)
@@ -121,6 +173,54 @@ trait Read
     }
 
     /**
+     * Add two more columns at the beginning of the ListEntrie table:
+     * - one shows the checkboxes needed for bulk actions
+     * - one is blank, in order for evenual details_row or expand buttons
+     * to be in a separate column.
+     */
+    public function enableBulkActions()
+    {
+        $this->bulk_actions = true;
+
+        $this->addColumn([
+            'type' => 'checkbox',
+            'name' => 'bulk_actions',
+            'label' => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" style="width: 16px; height: 16px;" />',
+            'priority' => 1,
+            'searchLogic' => false,
+            'orderable' => false,
+            'visibleInTable' => true,
+            'visibleInModal' => false,
+            'visibleInExport' => false,
+            'visibleInShow' => false,
+        ])->makeFirstColumn();
+
+        $this->addColumn([
+            'type' => 'custom_html',
+            'name' => 'blank_first_column',
+            'label' => ' ',
+            'priority' => 1,
+            'searchLogic' => false,
+            'orderable' => false,
+            'visibleInTabel' => true,
+            'visibleInModal' => false,
+            'visibleInExport' => false,
+            'visibleInShow' => false,
+        ])->makeFirstColumn();
+    }
+
+    /**
+     * Remove the two columns needed for bulk actions.
+     */
+    public function disableBulkActions()
+    {
+        $this->bulk_actions = false;
+
+        $this->removeColumn('bulk_actions');
+        $this->removeColumn('blank_first_column');
+    }
+
+    /**
      * Set the number of rows that should be show on the list view.
      */
     public function setDefaultPageLength($value)
@@ -130,6 +230,8 @@ trait Read
 
     /**
      * Get the number of rows that should be show on the list view.
+     *
+     * @return int
      */
     public function getDefaultPageLength()
     {
@@ -147,9 +249,28 @@ trait Read
     }
 
     /**
+     * If a custom page length was specified as default, make sure it
+     * also show up in the page length menu.
+     */
+    public function addCustomPageLengthToPageLengthMenu()
+    {
+        // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
+        // assume both array are the same lenght.
+        if (! in_array($this->getDefaultPageLength(), $this->page_length_menu[0])) {
+            // Loop through 2 arrays of prop. page_length_menu
+            foreach ($this->page_length_menu as $key => &$page_length_choices) {
+                // This is a condition that should be always true.
+                if (is_array($page_length_choices)) {
+                    array_unshift($page_length_choices, $this->getDefaultPageLength());
+                }
+            }
+        }
+    }
+
+    /**
      * Specify array of available page lengths on the list view.
      *
-     * @param array $menu 1d array of page length values,
+     * @param array $menu  1d array of page length values,
      *                     or 2d array (first array: page length values, second array: page length labels)
      *                     More at: https://datatables.net/reference/option/lengthMenu
      */
@@ -179,6 +300,8 @@ trait Read
                 }
             }
         }
+
+        $this->addCustomPageLengthToPageLengthMenu();
 
         return $this->page_length_menu;
     }

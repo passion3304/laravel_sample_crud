@@ -1,8 +1,20 @@
 <!-- select2 -->
+@php
+    $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+    $entity_model = $crud->getRelationModel($field['entity'],  - 1);
+
+    if (!isset($field['options'])) {
+        $options = $field['model']::all();
+    } else {
+        $options = call_user_func($field['options'], $field['model']::query());
+    }
+@endphp
+
 <div @include('crud::inc.field_wrapper_attributes') >
+
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-    <?php $entity_model = $crud->model; ?>
+
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
@@ -13,12 +25,12 @@
             <option value="">-</option>
         @endif
 
-        @if (isset($field['model']))
-            @foreach ($field['model']::all() as $connected_entity_entry)
-                @if(old($field['name']) == $connected_entity_entry->getKey() || (is_null(old($field['name'])) && isset($field['value']) && $field['value'] == $connected_entity_entry->getKey()))
-                    <option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
+        @if (count($options))
+            @foreach ($options as $option)
+                @if($current_value == $option->getKey())
+                    <option value="{{ $option->getKey() }}" selected>{{ $option->{$field['attribute']} }}</option>
                 @else
-                    <option value="{{ $connected_entity_entry->getKey() }}">{{ $connected_entity_entry->{$field['attribute']} }}</option>
+                    <option value="{{ $option->getKey() }}">{{ $option->{$field['attribute']} }}</option>
                 @endif
             @endforeach
         @endif
@@ -33,19 +45,19 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+@if ($crud->checkIfFieldIsFirstOfItsType($field))
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <!-- include select2 css-->
-        <link href="{{ asset('vendor/adminlte/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('vendor/adminlte/bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <!-- include select2 js-->
-        <script src="{{ asset('vendor/adminlte/plugins/select2/select2.min.js') }}"></script>
+        <script src="{{ asset('vendor/adminlte/bower_components/select2/dist/js/select2.min.js') }}"></script>
         <script>
             jQuery(document).ready(function($) {
                 // trigger select2 for each untriggered select2 box

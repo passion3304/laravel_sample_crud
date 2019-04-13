@@ -26,8 +26,8 @@
 					        placeholder="{{ $date_range }}"
 						@endif
 		        		>
-		        <div class="input-group-addon">
-		          <a class="daterangepicker-{{ str_slug($filter->name) }}-clear-button" href=""><i class="fa fa-times"></i></a>
+		        <div class="input-group-addon daterangepicker-{{ str_slug($filter->name) }}-clear-button">
+		          <a class="" href=""><i class="fa fa-times"></i></a>
 		        </div>
 		    </div>
 		</div>
@@ -62,7 +62,7 @@
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
   <script>
 
-  		function applyDateRangeFilter(start, end) {
+  		function applyDateRangeFilter{{camel_case($filter->name)}}(start, end) {
   			if (start && end) {
   				var dates = {
 					'from': start.format('YYYY-MM-DD'),
@@ -83,6 +83,9 @@
 			// replace the datatables ajax url with new_url and reload it
 			new_url = normalizeAmpersand(new_url.toString());
 			ajax_table.ajax.url(new_url).load();
+
+			// add filter to URL
+			crud.updateUrl(new_url);
 
 			// mark this filter as active in the navbar-filters
 			if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
@@ -111,9 +114,10 @@
 				@endif
 				alwaysShowCalendars: true,
 				autoUpdateInput: true
-			},
-			function (start, end) {
-				applyDateRangeFilter(start, end);
+			});
+
+			dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
+				applyDateRangeFilter{{camel_case($filter->name)}}(picker.startDate, picker.endDate);
 			});
 
 			$('li[filter-name={{ $filter->name }}]').on('hide.bs.dropdown', function () {
@@ -130,7 +134,7 @@
 			// datepicker clear button
 			$(".daterangepicker-{{ str_slug($filter->name) }}-clear-button").click(function(e) {
 				e.preventDefault();
-				applyDateRangeFilter(null, null);
+				applyDateRangeFilter{{camel_case($filter->name)}}(null, null);
 			})
 		});
   </script>

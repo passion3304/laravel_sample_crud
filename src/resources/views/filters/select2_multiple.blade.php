@@ -77,7 +77,14 @@
     <script>
 		jQuery(document).ready(function($) {
 			$("select[name=filter_{{ $filter->name }}]").change(function() {
-				var value = JSON.stringify($(this).val());
+                var value = '';
+                if ($(this).val() !== null) {
+                    // clean array from undefined, null, "".
+                    var values = $(this).val().filter(function(e){ return e === 0 || e });
+                    // stringify only if values is not empty. otherwise it will be '[]'.
+                    value = values.length !== 0 ? JSON.stringify(values) : '';
+                }
+
 				var parameter = '{{ $filter->name }}';
 
 		    	// behaviour for ajax table
@@ -88,6 +95,9 @@
 				// replace the datatables ajax url with new_url and reload it
 				new_url = normalizeAmpersand(new_url.toString());
 				ajax_table.ajax.url(new_url).load();
+
+				// add filter to URL
+				crud.updateUrl(new_url);
 
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {

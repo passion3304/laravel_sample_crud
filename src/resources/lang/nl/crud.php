@@ -40,6 +40,10 @@ return [
     'undo'                 => 'Ongedaan maken',
     'revision_restored'    => 'Revisie succesvol hersteld',
 
+    // Translatable models
+    'edit_translations' => 'VERTALING WIJZIGEN',
+    'language'          => 'Taal',
+
     // CRUD table view
     'all'                       => 'Alles ',
     'in_the_database'           => 'in de database',
@@ -105,6 +109,8 @@ return [
 
     // Fields
         'browse_uploads' => 'Blader uploads',
+        'select_files' => 'Selecteer bestanden',
+        'select_file' => 'Selecteer bestand',
         'clear' => 'Wissen',
         'page_link' => 'Pagina link',
         'page_link_placeholder' => 'http://example.com/your-desired-page',

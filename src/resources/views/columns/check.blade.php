@@ -1,12 +1,19 @@
 {{-- checkbox with loose false/null/0 checking --}}
-<?php
-$icon = "fa-check-square-o";
+@php
+$checkValue = data_get($entry, $column['name']);
 
-if (strip_tags($entry->{$column['name']}) == false) {
-    $icon = "fa-square-o";
-}
-?>
+$checkedIcon = data_get($column, 'icons.checked', 'fa-check-square-o');
+$uncheckedIcon = data_get($column, 'icons.unchecked', 'fa-square-o');
 
-<td>
+$exportCheckedText = data_get($column, 'labels.checked', 'Yes');
+$exportUncheckedText = data_get($column, 'labels.unchecked', 'No');
+
+$icon = $checkValue == false ? $uncheckedIcon : $checkedIcon;
+$text = $checkValue == false ? $exportUncheckedText : $exportCheckedText;
+@endphp
+
+<span>
     <i class="fa {{ $icon }}"></i>
-</td>
+</span>
+
+<span class="hidden">{{ $text }}</span>

@@ -9,7 +9,6 @@ trait Tabs
 
     public function enableTabs()
     {
-        $this->tabsEnabled = true;
         $this->setTabsType(config('backpack.crud.tabs_type', 'horizontal'));
 
         return $this->tabsEnabled;
@@ -22,11 +21,17 @@ trait Tabs
         return $this->tabsEnabled;
     }
 
+    /**
+     * @return bool
+     */
     public function tabsEnabled()
     {
         return $this->tabsEnabled;
     }
 
+    /**
+     * @return bool
+     */
     public function tabsDisabled()
     {
         return ! $this->tabsEnabled;
@@ -34,11 +39,16 @@ trait Tabs
 
     public function setTabsType($type)
     {
+        $this->tabsEnabled = true;
+
         $this->tabsType = $type;
 
         return $this->tabsType;
     }
 
+    /**
+     * @return string
+     */
     public function getTabsType()
     {
         return $this->tabsType;
@@ -64,6 +74,11 @@ trait Tabs
         return $this->setTabsType('vertical');
     }
 
+    /**
+     * @param string $label
+     *
+     * @return bool
+     */
     public function tabExists($label)
     {
         $tabs = $this->getTabs();
@@ -71,6 +86,9 @@ trait Tabs
         return in_array($label, $tabs);
     }
 
+    /**
+     * @return bool|string
+     */
     public function getLastTab()
     {
         $tabs = $this->getTabs();
@@ -82,11 +100,19 @@ trait Tabs
         return false;
     }
 
+    /**
+     * @param $label
+     *
+     * @return bool
+     */
     public function isLastTab($label)
     {
         return $this->getLastTab() == $label;
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function getFieldsWithoutATab()
     {
         $all_fields = $this->getCurrentFields();
@@ -98,6 +124,11 @@ trait Tabs
         return $fields_without_a_tab;
     }
 
+    /**
+     * @param $label
+     *
+     * @return array|\Illuminate\Support\Collection
+     */
     public function getTabFields($label)
     {
         if ($this->tabExists($label)) {
@@ -113,6 +144,9 @@ trait Tabs
         return [];
     }
 
+    /**
+     * @return array
+     */
     public function getTabs()
     {
         $tabs = [];

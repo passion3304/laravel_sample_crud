@@ -1,2 +1,6 @@
 {{-- regular object attribute --}}
-<td>{!! $entry->{$column['name']} !!}</td>
+@php
+    $value = data_get($entry, $column['name']);
+@endphp
+
+<span>{!! $value !!}</span>

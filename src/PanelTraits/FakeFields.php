@@ -9,9 +9,9 @@ trait FakeFields
      * The resulting array will only include the fields that are stored in the database and their values,
      * plus the '_token' and 'redirect_after_save' variables.
      *
-     * @param array $requestInput The request input.
-     * @param string $form The CRUD form. Can be 'create' or 'update' . Default is 'create'.
-     * @param int|bool $id The CRUD entry id in the case of the 'update' form.
+     * @param array    $requestInput The request input.
+     * @param string   $form         The CRUD form. Can be 'create' or 'update' . Default is 'create'.
+     * @param int|bool $id           The CRUD entry id in the case of the 'update' form.
      *
      * @see \Illuminate\Http\Request::all() For an example on how to get the request input.
      *
@@ -35,9 +35,9 @@ trait FakeFields
             }
         }
 
-        // json_encode all fake_value columns in the database, so they can be properly stored and interpreted
+        // json_encode all fake_value columns if applicable in the database, so they can be properly stored and interpreted
         foreach ($compactedFakeFields as $value) {
-            if (! (property_exists($this->model, 'translatable') && in_array($value, $this->model->getTranslatableAttributes(), true))) {
+            if (! (property_exists($this->model, 'translatable') && in_array($value, $this->model->getTranslatableAttributes(), true)) && $this->model->shouldEncodeFake($value)) {
                 $requestInput[$value] = json_encode($requestInput[$value]);
             }
         }
@@ -49,9 +49,9 @@ trait FakeFields
     /**
      * Compact a fake field in the request input array.
      *
-     * @param array $requestInput The request input.
+     * @param array  $requestInput  The request input.
      * @param string $fakeFieldName The fake field name.
-     * @param string $fakeFieldKey The fake field key.
+     * @param string $fakeFieldKey  The fake field key.
      */
     private function addCompactedField(&$requestInput, $fakeFieldName, $fakeFieldKey)
     {

@@ -5,8 +5,15 @@
     }
 
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
-    $value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '') );
-    $image_url = $value?(isset($field['disk']) ? Storage::disk($field['disk'])->url($prefix.$value) : url($prefix.$value)):'';
+    $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    $image_url = $value
+        ? preg_match('/^data\:image\//', $value)
+            ? $value
+            : (isset($field['disk'])
+                ? Storage::disk($field['disk'])->url($prefix.$value)
+                : url($prefix.$value))
+        :''; // if validation failed, tha value will be base64, so no need to create a URL for it
+
 @endphp
 
   <div data-preview="#{{ $field['name'] }}"
@@ -57,7 +64,7 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->checkIfFieldIsFirstOfItsType($field, $fields))
+@if ($crud->checkIfFieldIsFirstOfItsType($field))
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')

@@ -1,6 +1,5 @@
 <?php
 
-
 return [
 
     /*
@@ -66,6 +65,20 @@ return [
     'delete_confirmation_not_deleted_title'       => 'Non eliminato',
     'delete_confirmation_not_deleted_message'     => "Non è successo niente. L'elemento è al sicuro.",
 
+    // Bulk actions
+    'bulk_no_entries_selected_title' => 'Nessun record selezionato',
+    'bulk_no_entries_selected_message' => 'Seleziona uno o più record su cui effetturare l\'operaione.',
+
+    // Bulk confirmation
+    'bulk_delete_are_you_sure' => 'Sei sicuro di voler eliminare :number record?',
+    'bulk_delete_sucess_title' => 'Record eliminati',
+    'bulk_delete_sucess_message' => ' record sono stati eliminati',
+    'bulk_delete_error_title' => 'Record non eliminati',
+    'bulk_delete_error_message' => 'Non è stato possibile eliminare uno o più record',
+
+    'ajax_error_title' => 'Errore',
+    'ajax_error_text'  => 'Errore durante il caricamento della pagina. Per favore ricarica la pagina.',
+
     // DataTables translation
     'emptyTable'     => 'Nessun record da visualizzare',
     'info'           => 'Visualizzando da _START_ a _END_ record di _TOTAL_',
@@ -79,20 +92,24 @@ return [
     'search'         => 'Cerca: ',
     'zeroRecords'    => 'Nessun record corrispondente',
     'paginate'       => [
-    'first'    => 'Primo',
-    'last'     => 'Ultimo',
-    'next'     => 'Prossimo',
-    'previous' => 'Precedente',
-],
+        'first'    => 'Primo',
+        'last'     => 'Ultimo',
+        'next'     => 'Prossimo',
+        'previous' => 'Precedente',
+    ],
     'aria' => [
-    'sortAscending'  => ': attiva per ordinare la colonna ascendentemente',
-    'sortDescending' => ': attiva per ordinare la colonna discendentemente',
-],
+        'sortAscending'  => ': attiva per ordinare la colonna ascendentemente',
+        'sortDescending' => ': attiva per ordinare la colonna discendentemente',
+    ],
     'export' => [
-    'copy'              => 'Copia',
-    'print'             => 'Stampa',
-    'column_visibility' => 'Visibilità colonne',
-],
+        'export'            => 'Esporta',
+        'copy'              => 'Copia',
+        'excel'             => 'Excel',
+        'csv'               => 'CSV',
+        'pdf'               => 'PDF',
+        'print'             => 'Stampa',
+        'column_visibility' => 'Visibilità colonne',
+    ],
 
     // global crud - errors
     'unauthorized_access' => 'Accesso non autorizzato - non hai i permessi necessari per vedere questa pagina.',
@@ -121,6 +138,9 @@ return [
 
     // Fields
     'browse_uploads' => 'Sfoglia file caricati',
+    'select_all' => 'Seleziona tutti',
+    'select_files' => 'Seleziona i files',
+    'select_file' => 'Seleziona un file',
     'clear' => 'Pulisci',
     'page_link' => 'Link Pagina',
     'page_link_placeholder' => 'http://esempio.com/pagina-desiderata',
@@ -132,4 +152,7 @@ return [
     //Table field
     'table_cant_add' => 'Impossibile aggiungere una nuova :entity',
     'table_max_reached' => 'Numero massimo di :max raggiunto',
+
+    // File manager
+    'file_manager' => 'File Manager',
 ];

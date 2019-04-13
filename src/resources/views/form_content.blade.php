@@ -1,12 +1,17 @@
+<input type="hidden" name="http_referrer" value={{ old('http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
+
 @if ($crud->model->translationEnabled())
 <input type="hidden" name="locale" value={{ $crud->request->input('locale')?$crud->request->input('locale'):App::getLocale() }}>
 @endif
 
 {{-- See if we're using tabs --}}
-@if ($crud->tabsEnabled())
+@if ($crud->tabsEnabled() && count($crud->getTabs()))
     @include('crud::inc.show_tabbed_fields')
+    <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
+    <div class="box col-md-12 padding-10 p-t-20">
     @include('crud::inc.show_fields', ['fields' => $fields])
+    </div>
 @endif
 
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
@@ -68,7 +73,10 @@
         @endphp
 
         @if ($focusField)
-          window.focusField = $('[name="{{ $focusField['name'] }}"]').eq(0),
+        @php
+        $focusFieldName = !is_iterable($focusField['value']) ? $focusField['name'] : ($focusField['name'] . '[]');
+        @endphp
+          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0),
         @else
           var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
         @endif
@@ -116,6 +124,11 @@
         });
 
       @endif
+
+      $("a[data-toggle='tab']").click(function(){
+          currentTabName = $(this).attr('tab_name');
+          $("input[name='current_tab']").val(currentTabName);
+      });
 
       });
     </script>
