@@ -98,7 +98,7 @@ Please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/ne
 
 Special thanks go to:
 - [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was the obvious inspiration for this package.
-- [Jaroen Noten](https://github.com/JeroenNoten/Laravel-AdminLTE) - creator of AdminLTE
+- [Abdullah Almsaeed](https://adminlte.io/) - creator of AdminLTE
 
 
 ## License
