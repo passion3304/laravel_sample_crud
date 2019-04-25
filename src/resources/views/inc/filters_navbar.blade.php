@@ -64,11 +64,25 @@
 
   				// clear all filters
   				$(".navbar-filters li[filter-name]").trigger('filter:clear');
-          $('#remove_filters_button').addClass('hidden');
 
           // remove filters from URL
           crud.updateUrl(new_url);
-      	})
+      	});
+
+        // hide the Remove filters button when no filter is active
+        $(".navbar-filters li[filter-name]").on('filter:clear', function() {
+          var anyActiveFilters = false;
+          $(".navbar-filters li[filter-name]").each(function () {
+            if ($(this).hasClass('active')) {
+              anyActiveFilters = true;
+              console.log('ACTIVE FILTER');
+            }
+          });
+
+          if (anyActiveFilters == false) {
+            $('#remove_filters_button').addClass('hidden');
+          }
+        });
       });
     </script>
 @endpush

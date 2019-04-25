@@ -24,7 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - merged #1858 - ```password``` field type now has ```autocomplete = off``` by default; since that's better in most use cases;
-
+- fixes #1343 - hides the Remove Filters button when all filters are cleared;
 
 ## [3.6.13] - 2019-04-10
 
