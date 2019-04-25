@@ -35,7 +35,7 @@ trait HasTranslations
 
         // if it's a fake field, json_encode it
         if (is_array($translation)) {
-            return json_encode($translation);
+            return json_encode($translation, JSON_UNESCAPED_UNICODE);
         }
 
         return $translation;
