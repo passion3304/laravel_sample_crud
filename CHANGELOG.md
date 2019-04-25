@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.16] - 2019-04-25
+
+### Fixed
+- merged #1871 fixes #1808 - unicode characters got escaped in translated models; no mas;
+
+
 ## [3.6.15] - 2019-04-25
 
 ### Fixed
