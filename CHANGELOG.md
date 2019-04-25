@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.14] - 2019-04-25
+
+### Fixed
+- merged #1858 - ```password``` field type now has ```autocomplete = off``` by default; since that's better in most use cases;
+
+
 ## [3.6.13] - 2019-04-10
 
 ### Fixed
