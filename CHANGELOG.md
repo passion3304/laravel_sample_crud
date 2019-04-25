@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - merged #1858 - ```password``` field type now has ```autocomplete = off``` by default; since that's better in most use cases;
 - fixes #1343 - hides the Remove Filters button when all filters are cleared;
+- merged #1863 fixes #1862 - makes ```image```, ```base64_image``` and ```checklist_dependency``` fields look fine on XS displays;
 
 ## [3.6.13] - 2019-04-10
 
