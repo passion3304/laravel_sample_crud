@@ -1,7 +1,7 @@
 @php
     if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['class']))
     {
-        $field['wrapperAttributes']['class'] = "form-group col-md-12 image";
+        $field['wrapperAttributes']['class'] = "form-group col-xs-12 image";
     }
 
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';

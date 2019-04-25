@@ -1,5 +1,5 @@
 <!-- dependencyJson -->
-<div class="form-group col-md-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}" @include('crud::inc.field_wrapper_attributes')>
+<div class="form-group col-xs-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}" @include('crud::inc.field_wrapper_attributes')>
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <?php
