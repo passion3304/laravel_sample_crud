@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.15] - 2019-04-25
+
+### Fixed
+- merged #1868 - error when opening revisions timeline because it was still using jessengers/date;
+
+
 ## [3.6.14] - 2019-04-25
 
 ### Fixed
