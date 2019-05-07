@@ -55,10 +55,12 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
                     }
                 } ),
                 renderer: function ( api, rowIdx, columns ) {
+
                   var data = $.map( columns, function ( col, i ) {
+                      var columnHeading = crud.table.columns().header()[col.columnIndex];
                       var allColumnHeaders = $("#crudTable thead>tr>th");
 
-                      if ($(allColumnHeaders[col.columnIndex]).attr('data-visible-in-modal') == 'false') {
+                      if ($(columnHeading).attr('data-visible-in-modal') == 'false') {
                         return '';
                       }
 
