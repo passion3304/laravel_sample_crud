@@ -24,6 +24,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - fixes #1824; merges #1880 - inside the ListEntries operation, ```visibleInModal``` did not work for columns that were NOT ```visibleInTable```;
+- fixes #1806 - visible export and column visiblity buttons when using fixed adminlte layout;
 
 ## [3.6.16] - 2019-04-25
 
