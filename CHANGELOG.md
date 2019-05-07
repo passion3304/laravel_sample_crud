@@ -20,10 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.17] - 2019-05-07
+## [3.6.17] - 2019-05-xx
 
 ### Fixed
-- fixes #1824 - inside the ListEntries operation, ```visibleInModal``` did not work for columns that were NOT ```visibleInTable```;
+- fixes #1824; merges #1880 - inside the ListEntries operation, ```visibleInModal``` did not work for columns that were NOT ```visibleInTable```;
 
 ## [3.6.16] - 2019-04-25
 
