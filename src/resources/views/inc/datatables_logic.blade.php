@@ -58,8 +58,8 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
 
                   var data = $.map( columns, function ( col, i ) {
                       var columnHeading = crud.table.columns().header()[col.columnIndex];
-                      var allColumnHeaders = $("#crudTable thead>tr>th");
 
+                      // hide columns that have VisibleInModal false
                       if ($(columnHeading).attr('data-visible-in-modal') == 'false') {
                         return '';
                       }
