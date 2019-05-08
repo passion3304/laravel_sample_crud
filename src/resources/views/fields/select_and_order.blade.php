@@ -112,7 +112,7 @@
     @endpush
 
     @push('crud_fields_scripts')
-    <script src="{{ asset('vendor/adminlte/bower_components/jquery-ui/ui/sortable.js') }}"></script>
+    <script src="{{ asset('vendor/adminlte/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
     @endpush
 
 @endif
