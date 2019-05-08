@@ -20,13 +20,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.18] - 2019-05-xx
+## [3.6.18] - 2019-05-08
 
 ### Fixed
 - #1789 - ```select_and_order``` javascript error fixed;
-
-
-### Fixed
 
 ## [3.6.17] - 2019-05-07
 
