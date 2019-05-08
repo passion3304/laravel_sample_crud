@@ -114,8 +114,10 @@ trait CrudTrait
     public function withFakes($columns = [])
     {
         $model = '\\'.get_class($this);
-
-        if (! count($columns)) {
+        
+        $columnCount = (is_countable($columns) ? count($columns) : 0);
+        
+        if ($columnCount == 0) {
             $columns = (property_exists($model, 'fakeColumns')) ? $this->fakeColumns : ['extras'];
         }
 
