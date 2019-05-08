@@ -25,7 +25,7 @@ if (! function_exists('is_countable')) {
      *
      * @param $obj
      *
-     * @return boolean
+     * @return bool
      */
     function is_countable($obj)
     {
