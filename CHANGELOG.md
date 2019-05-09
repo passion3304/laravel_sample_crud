@@ -20,10 +20,17 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.19] - 2019-05-xx
+
+### Added
+- merged #1884 - added ```is_countable()``` helper;
+
+
 ## [3.6.18] - 2019-05-08
 
 ### Fixed
 - #1789 - ```select_and_order``` javascript error fixed;
+
 
 ## [3.6.17] - 2019-05-07
 

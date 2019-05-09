@@ -16,3 +16,19 @@ if (! function_exists('square_brackets_to_dots')) {
         return $string;
     }
 }
+
+if (! function_exists('is_countable')) {
+    /**
+     * We need this because is_countable was only introduced in PHP 7.3,
+     * and in PHP 7.2 you should check if count() argument is really countable.
+     * This function may be removed in future if PHP >= 7.3 becomes a requirement.
+     *
+     * @param $obj
+     *
+     * @return bool
+     */
+    function is_countable($obj)
+    {
+        return is_array($obj) || $obj instanceof Countable;
+    }
+}
