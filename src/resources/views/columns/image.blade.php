@@ -7,7 +7,6 @@
     $value = json_encode($value);
   }
 
-
   if (preg_match('/^data\:image\//', $value)) { // base64_image
     $href = $src = $value;
   } elseif (isset($columns['disk'])) { // image from a different disk (like s3 bucket)

@@ -20,11 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-
-## [3.6.20] - 2019-05-xx
+## [3.6.20] - 2019-05-09
 
 ### Added
 - fixes #1591 - added base64 and disk support to ```image``` column type;
+
+### Fixed
+- unit tests failed because ```is_countable()``` helper cannot be included in unit tests;
 
 
 ## [3.6.19] - 2019-05-09

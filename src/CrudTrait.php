@@ -115,7 +115,7 @@ trait CrudTrait
     {
         $model = '\\'.get_class($this);
 
-        $columnCount = (is_countable($columns) ? count($columns) : 0);
+        $columnCount = ((is_array($columns) || $columns instanceof Countable) ? count($columns) : 0);
 
         if ($columnCount == 0) {
             $columns = (property_exists($model, 'fakeColumns')) ? $this->fakeColumns : ['extras'];
