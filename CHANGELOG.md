@@ -20,10 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.19] - 2019-05-xx
+## [3.6.19] - 2019-05-09
 
 ### Added
 - merged #1884 - added ```is_countable()``` helper;
+
+### Fixed
+- fixed #1861 merged #1882 - ```count()``` was run on non-countable object;
 
 
 ## [3.6.18] - 2019-05-08
