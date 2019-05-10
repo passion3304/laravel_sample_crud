@@ -78,7 +78,8 @@ trait Filters
     }
 
     /**
-     * Apply the filter
+     * Apply the filter.
+     *
      * @param CrudFilter $filter
      * @param ParameterBag|array|null $input
      */
