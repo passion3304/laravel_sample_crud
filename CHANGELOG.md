@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.21] - 2019-05-16
+
+### Fixed
+- issue #1889 - a space was present in some columns after the text, which was inconvenient for copy-pasting;
+
 ## [3.6.20] - 2019-05-09
 
 ### Added
