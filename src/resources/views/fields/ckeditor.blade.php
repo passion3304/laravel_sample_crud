@@ -5,6 +5,7 @@
     <textarea
     	id="ckeditor-{{ $field['name'] }}"
         name="{{ $field['name'] }}"
+        data-javascript-function-for-field-initialisation="bpFieldInitCKEditorElement"
         @include('crud::inc.field_attributes', ['default_class' => 'form-control'])
     	>{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
@@ -35,15 +36,15 @@
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
 <script>
-    jQuery(document).ready(function($) {
-        $('#ckeditor-{{ $field['name'] }}').ckeditor({
+    function bpFieldInitCKEditorElement(element) {
+        element.ckeditor({
             "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
             "extraPlugins" : '{{ isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : 'oembed,widget' }}'
             @if (isset($field['options']) && count($field['options']))
                 {!! ', '.trim(json_encode($field['options']), "{}") !!}
             @endif
         });
-    });
+    }
 </script>
 @endpush
 

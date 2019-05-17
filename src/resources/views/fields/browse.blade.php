@@ -10,6 +10,8 @@
 
 		name="{{ $field['name'] }}"
         value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
+        data-javascript-function-for-field-initialisation="bpFieldInitBrowseElement"
+        data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup/'.$field['name']."-filemanager") }}"
         @include('crud::inc.field_attributes')
 
 		@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
@@ -47,39 +49,39 @@
 	@push('crud_fields_scripts')
 		<!-- include browse server js -->
 		<script src="{{ asset('vendor/backpack/colorbox/jquery.colorbox-min.js') }}"></script>
+		<script>
+			// function to update the file selected by elfinder
+			function processSelectedFile(filePath, requestingField) {
+			    $('#' + requestingField).val(filePath.replace(/\\/g,"/"));
+			}
+
+			function bpFieldInitBrowseElement(element) {
+				var fieldName = element.attr('name');
+				var triggerUrl = element.data('elfinder-trigger-url');
+
+				$(document).on('click', '.popup_selector[data-inputid='+fieldName+'-filemanager]',function (event) {
+				    event.preventDefault();
+
+				    // trigger the reveal modal with elfinder inside
+				    $.colorbox({
+				        href: triggerUrl,
+				        fastIframe: true,
+				        iframe: true,
+				        width: '80%',
+				        height: '80%'
+				    });
+				});
+
+				$(document).on('click','.clear_elfinder_picker[data-inputid='+fieldName+'-filemanager]',function (event) {
+				    event.preventDefault();
+				    var updateID = $(this).attr('data-inputid'); // Btn id clicked
+				    $("#"+updateID).val("");
+				});
+			}
+		</script>
 	@endpush
 
 @endif
-
-{{-- FIELD JS - will be loaded in the after_scripts section --}}
-@push('crud_fields_scripts')
-	<script>
-		$(document).on('click','.popup_selector[data-inputid={{ $field['name'] }}-filemanager]',function (event) {
-		    event.preventDefault();
-
-		    // trigger the reveal modal with elfinder inside
-		    var triggerUrl = "{{ url(config('elfinder.route.prefix').'/popup/'.$field['name']."-filemanager") }}";
-		    $.colorbox({
-		        href: triggerUrl,
-		        fastIframe: true,
-		        iframe: true,
-		        width: '80%',
-		        height: '80%'
-		    });
-		});
-
-		// function to update the file selected by elfinder
-		function processSelectedFile(filePath, requestingField) {
-		    $('#' + requestingField).val(filePath.replace(/\\/g,"/"));
-		}
-
-		$(document).on('click','.clear_elfinder_picker[data-inputid={{ $field['name'] }}-filemanager]',function (event) {
-		    event.preventDefault();
-		    var updateID = $(this).attr('data-inputid'); // Btn id clicked
-		    $("#"+updateID).val("");
-		});
-	</script>
-@endpush
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

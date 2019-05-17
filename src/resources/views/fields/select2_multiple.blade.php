@@ -13,6 +13,7 @@
     <select
         name="{{ $field['name'] }}[]"
         style="width: 100%"
+        data-javascript-function-for-field-initialisation="bpFieldInitSelect2MultipleElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_multiple'])
         multiple>
 
@@ -60,12 +61,10 @@
         <!-- include select2 js-->
         <script src="{{ asset('vendor/adminlte/bower_components/select2/dist/js/select2.min.js') }}"></script>
         <script>
-            jQuery(document).ready(function($) {
-                // trigger select2 for each untriggered select2_multiple box
-                $('.select2_multiple').each(function (i, obj) {
-                    if (!$(obj).hasClass("select2-hidden-accessible"))
+            function bpFieldInitSelect2MultipleElement(element) {
+                if (!element.hasClass("select2-hidden-accessible"))
                     {
-                        var $obj = $(obj).select2({
+                        var $obj = element.select2({
                             theme: "bootstrap"
                         });
 
@@ -77,16 +76,15 @@
                         @endif
 
                         @if(isset($field['select_all']) && $field['select_all'])
-                            $(obj).parent().find('.clear').on("click", function () {
+                            element.parent().find('.clear').on("click", function () {
                                 $obj.val([]).trigger("change");
                             });
-                            $(obj).parent().find('.select_all').on("click", function () {
+                            element.parent().find('.select_all').on("click", function () {
                                 $obj.val(options).trigger("change");
                             });
                         @endif
                     }
-                });
-            });
+            }
         </script>
     @endpush
 

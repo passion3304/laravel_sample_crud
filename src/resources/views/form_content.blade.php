@@ -36,6 +36,17 @@
     <script>
     jQuery('document').ready(function($){
 
+      // trigger the javascript for all fields that have their js defined in a separate method
+      $("form [data-javascript-function-for-field-initialisation]").each(function () {
+        var element = $(this);
+        var functionName = element.data('javascript-function-for-field-initialisation');
+
+        console.log('running ' + functionName + '()');
+
+        window[functionName](element);
+      })
+
+
       // Save button has multiple actions: save and exit, save and edit, save and new
       var saveActions = $('#saveActions'),
       crudForm        = saveActions.parents('form'),
