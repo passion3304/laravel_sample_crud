@@ -4,6 +4,7 @@
     <select
         name="{{ $field['name'] }}@if (isset($field['allows_multiple']) && $field['allows_multiple']==true)[]@endif"
         style="width: 100%"
+        data-javascript-function-for-field-initialisation="bpFieldInitSelect2FromArrayElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_from_array'])
         @if (isset($field['allows_multiple']) && $field['allows_multiple']==true)multiple @endif
         >
@@ -64,17 +65,14 @@
     <!-- include select2 js-->
     <script src="{{ asset('vendor/adminlte/bower_components/select2/dist/js/select2.min.js') }}"></script>
     <script>
-        jQuery(document).ready(function($) {
-            // trigger select2 for each untriggered select2 box
-            $('.select2_from_array').each(function (i, obj) {
-                if (!$(obj).hasClass("select2-hidden-accessible"))
+        function bpFieldInitSelect2FromArrayElement(element) {
+            if (!element.hasClass("select2-hidden-accessible"))
                 {
-                    $(obj).select2({
+                    element.select2({
                         theme: "bootstrap"
                     });
                 }
-            });
-        });
+        }
     </script>
     @endpush
 

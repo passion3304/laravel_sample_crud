@@ -41,6 +41,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
+        data-javascript-function-for-field-initialisation="bpFieldInitSelect2NestedElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
         >
 
@@ -86,17 +87,14 @@
         <!-- include select2 js-->
         <script src="{{ asset('vendor/adminlte/bower_components/select2/dist/js/select2.min.js') }}"></script>
         <script>
-            jQuery(document).ready(function($) {
-                // trigger select2 for each untriggered select2 box
-                $('.select2_field').each(function (i, obj) {
-                    if (!$(obj).hasClass("select2-hidden-accessible"))
-                    {
-                        $(obj).select2({
-                            theme: "bootstrap"
-                        });
-                    }
-                });
-            });
+            function bpFieldInitSelect2NestedElement(element) {
+                if (!element.hasClass("select2-hidden-accessible"))
+                {
+                    element.select2({
+                        theme: "bootstrap"
+                    });
+                }
+            }
         </script>
     @endpush
 

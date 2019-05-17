@@ -32,6 +32,7 @@
     <div class="input-group date">
         <input
             data-bs-daterangepicker="{{ isset($field['date_range_options']) ? json_encode($field['date_range_options']) : '{}'}}"
+            data-javascript-function-for-field-initialisation="bpFieldInitDateRangeElement"
             type="text"
             @include('crud::inc.field_attributes')
             >
@@ -61,10 +62,8 @@
     <script src="{{ asset('/vendor/adminlte/bower_components/moment/moment.js') }}"></script>
     <script src="{{ asset('/vendor/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script>
-        jQuery(document).ready(function($){
-            $('[data-bs-daterangepicker]').each(function(){
-
-                var $fake = $(this),
+        function bpFieldInitDateRangeElement(element) {
+                var $fake = element,
                 $start = $fake.parents('.form-group').find('.datepicker-range-start'),
                 $end = $fake.parents('.form-group').find('.datepicker-range-end'),
                 $customConfig = $.extend({
@@ -86,9 +85,7 @@
                     $start.val( picker.startDate.format('YYYY-MM-DD HH:mm:ss') );
                     $end.val( picker.endDate.format('YYYY-MM-DD H:mm:ss') );
                 });
-
-            });
-        });
+        }
     </script>
     @endpush
 

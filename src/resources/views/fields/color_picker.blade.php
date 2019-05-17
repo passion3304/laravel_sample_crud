@@ -8,6 +8,7 @@
         	type="text"
         	name="{{ $field['name'] }}"
             value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
+            data-javascript-function-for-field-initialisation="bpFieldInitColorPickerElement"
             @include('crud::inc.field_attributes')
         	>
         <div class="input-group-addon">
@@ -34,22 +35,20 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.5/js/bootstrap-colorpicker.min.js"></script>
+    <script>
+        function bpFieldInitColorPickerElement(element) {
+            // https://itsjaviaguilar.com/bootstrap-colorpicker/
+            var config = jQuery.extend({}, {!! isset($field['color_picker_options']) ? json_encode($field['color_picker_options']) : '{}' !!});
+            var picker = $('[name="{{ $field['name'] }}"]').parents('.colorpicker-component').colorpicker(config);
+
+            element.on('focus', function(){
+                picker.colorpicker('show');
+            });
+        }
+    </script>
     @endpush
 
 @endif
-
-@push('crud_fields_scripts')
-<script type="text/javascript">
-    jQuery('document').ready(function($){
-        //https://itsjaviaguilar.com/bootstrap-colorpicker/
-        var config = jQuery.extend({}, {!! isset($field['color_picker_options']) ? json_encode($field['color_picker_options']) : '{}' !!});
-        var picker = $('[name="{{ $field['name'] }}"]').parents('.colorpicker-component').colorpicker(config);
-        $('[name="{{ $field['name'] }}"]').on('focus', function(){
-            picker.colorpicker('show');
-        });
-    })
-</script>
-@endpush
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
