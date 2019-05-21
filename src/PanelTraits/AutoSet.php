@@ -17,6 +17,10 @@ trait AutoSet
      */
     public function setFromDb()
     {
+        if ($this->getSchema()->getConnection()->getConfig()['driver'] === 'mongodb') {
+            return;
+        }
+
         $this->setDoctrineTypesMapping();
         $this->getDbColumnTypes();
 
