@@ -43,7 +43,7 @@ trait ListOperation
         }
         // start the results according to the datatables pagination
         if ($this->request->input('start')) {
-            $this->crud->skip($this->request->input('start'));
+            $this->crud->skip((int) $this->request->input('start'));
         }
         // limit the number of results according to the datatables pagination
         if ($this->request->input('length')) {
