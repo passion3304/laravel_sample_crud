@@ -140,6 +140,16 @@ class CrudPanel
     }
 
     /**
+     * Check if the database connection driver is using mongodb
+     *
+     * @return boolean
+     */
+    private function driverIsMongoDb()
+    {
+        return $this->getSchema()->getConnection()->getConfig()['driver'] === 'mongodb';
+    }
+
+    /**
      * Set the route for this CRUD.
      * Ex: admin/article.
      *

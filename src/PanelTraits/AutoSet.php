@@ -17,7 +17,7 @@ trait AutoSet
      */
     public function setFromDb()
     {
-        if ($this->getSchema()->getConnection()->getConfig()['driver'] === 'mongodb') {
+        if ($this->driverIsMongoDb()) {
             return;
         }
 

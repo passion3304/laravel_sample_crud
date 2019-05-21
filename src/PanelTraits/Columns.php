@@ -409,7 +409,7 @@ trait Columns
     {
         static $cache = [];
 
-        if ($this->getSchema()->getConnection()->getConfig()['driver'] === 'mongodb') {
+        if ($this->driverIsMongoDb()) {
             return true;
         }
 
