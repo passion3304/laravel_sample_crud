@@ -57,6 +57,7 @@
 			// function to update the file selected by elfinder
 			function processSelectedFile(filePath, requestingField) {
 				elfinderTarget.val(filePath.replace(/\\/g,"/"));
+				elfinderTarget = false;
 			}
 
 			function bpFieldInitBrowseElement(element) {

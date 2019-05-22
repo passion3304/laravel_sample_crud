@@ -42,7 +42,7 @@
         function bpFieldInitColorPickerElement(element) {
             // https://itsjaviaguilar.com/bootstrap-colorpicker/
             var config = jQuery.extend({}, {!! isset($field['color_picker_options']) ? json_encode($field['color_picker_options']) : '{}' !!});
-            var picker = $('[name="{{ $field['name'] }}"]').parents('.colorpicker-component').colorpicker(config);
+            var picker = element.parents('.colorpicker-component').colorpicker(config);
 
             element.on('focus', function(){
                 picker.colorpicker('show');
