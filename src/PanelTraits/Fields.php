@@ -371,4 +371,97 @@ trait Fields
                 break;
         }
     }
+
+
+    // ----------------------
+    // FIELD ASSET MANAGEMENT
+    // ----------------------
+
+    // array to store which field types have been loaded on page,
+    // so that we don't load their CSS and JS twice
+    private $loadedFieldTypes = [];
+
+
+    /**
+     * Get all the field types whose resources (JS and CSS) have already been loaded on page.
+     *
+     * @return array Array with the names of the field types.
+     */
+    public function getLoadedFieldTypes()
+    {
+        return $this->loadedFieldTypes;
+    }
+
+    /**
+     * Get a namespaced version of the field type name.
+     * Appends the 'view_namespace' attribute of the field to the `type', using dot notation.
+     *
+     * @param  array $field Field array
+     * @return string Namespaced version of the field type name. Ex: 'text', 'custom.view.path.text'
+     */
+    public function getFieldTypeWithNamespace($field)
+    {
+        $fieldType = $field['type'];
+
+        if (isset($field['view_namespace'])) {
+            $fieldType = implode('.', [$field['view_namespace'], $field['type']]);
+        }
+
+        return $fieldType;
+    }
+
+    /**
+     * Add a new field type to the loadedFieldTypes array.
+     *
+     * @param string $field Field array
+     * @return  boolean Successful operation true/false.
+     */
+    public function addLoadedFieldType($field)
+    {
+        $alreadyLoaded = $this->loadedFieldTypes;
+        $type = $this->getFieldTypeWithNamespace($field);
+
+        if (!in_array($type, $this->getLoadedFieldTypes(), true)) {
+            $alreadyLoaded[] = $type;
+            $this->loadedFieldTypes = $alreadyLoaded;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Alias of the addLoadedFieldType() method.
+     * Adds a new field type to the loadedFieldTypes array.
+     *
+     * @param string $field Field array
+     * @return  boolean Successful operation true/false.
+     */
+    public function markFieldTypeAsLoaded($field)
+    {
+        return $this->addLoadedFieldType($field);
+    }
+
+    /**
+     * Check if a field type's reasources (CSS and JS) have already been loaded.
+     *
+     * @param string $field Field array
+     * @return  boolean Whether the field type has been marked as loaded.
+     */
+    public function fieldTypeLoaded($field)
+    {
+        return in_array($this->getFieldTypeWithNamespace($field), $this->getLoadedFieldTypes());
+    }
+
+    /**
+     * Check if a field type's reasources (CSS and JS) have NOT been loaded.
+     *
+     * @param string $field Field array
+     * @return  boolean Whether the field type has NOT been marked as loaded.
+     */
+    public function fieldTypeNotLoaded($field)
+    {
+        return !in_array($this->getFieldTypeWithNamespace($field), $this->getLoadedFieldTypes());
+    }
 }
