@@ -41,10 +41,10 @@
         var element = $(this);
         var functionName = element.data('javascript-function-for-field-initialisation');
 
-        console.log('running ' + functionName + '()');
-
-        window[functionName](element);
-      })
+        if (typeof window[functionName] === "function") {
+          window[functionName](element);
+        }
+      });
 
 
       // Save button has multiple actions: save and exit, save and edit, save and new
