@@ -140,9 +140,9 @@ class CrudPanel
     }
 
     /**
-     * Check if the database connection driver is using mongodb
+     * Check if the database connection driver is using mongodb.
      *
-     * @return boolean
+     * @return bool
      */
     private function driverIsMongoDb()
     {
