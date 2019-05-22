@@ -7,11 +7,10 @@
 	<input
 		type="text"
 		id="{{ $field['name'] }}-filemanager"
-
 		name="{{ $field['name'] }}"
         value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
         data-javascript-function-for-field-initialisation="bpFieldInitBrowseElement"
-        data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup/'.$field['name']."-filemanager") }}"
+        data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup') }}"
         @include('crud::inc.field_attributes')
 
 		@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
@@ -58,7 +57,7 @@
 
 			function bpFieldInitBrowseElement(element) {
 				var fieldName = element.attr('name');
-				var triggerUrl = element.data('elfinder-trigger-url');
+				var triggerUrl = element.data('elfinder-trigger-url')+'/'+element.attr('id');
 
 				element.siblings('.btn-group').children('button.popup_selector').click(function (event) {
 				    event.preventDefault();
