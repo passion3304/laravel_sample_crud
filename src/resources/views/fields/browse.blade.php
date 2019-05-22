@@ -50,9 +50,13 @@
 		<!-- include browse server js -->
 		<script src="{{ asset('vendor/backpack/colorbox/jquery.colorbox-min.js') }}"></script>
 		<script>
+			// this global variable is used to remember what input to update with the file path
+			// because elfinder is actually loaded in an iframe by colorbox
+			var elfinderTarget = false;
+
 			// function to update the file selected by elfinder
 			function processSelectedFile(filePath, requestingField) {
-			    $('input[name=' + requestingField + ']').val(filePath.replace(/\\/g,"/"));
+				elfinderTarget.val(filePath.replace(/\\/g,"/"));
 			}
 
 			function bpFieldInitBrowseElement(element) {
@@ -61,6 +65,8 @@
 
 				element.siblings('.btn-group').children('button.popup_selector').click(function (event) {
 				    event.preventDefault();
+
+				    elfinderTarget = element;
 
 				    // trigger the reveal modal with elfinder inside
 				    $.colorbox({
