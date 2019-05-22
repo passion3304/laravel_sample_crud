@@ -18,10 +18,8 @@
 	>
 
 	<div class="btn-group" role="group" aria-label="..." style="margin-top: 3px;">
-	  <button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-default popup_selector">
-		<i class="fa fa-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
-		<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-default clear_elfinder_picker">
-		<i class="fa fa-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
+		<button type="button" class="btn btn-default popup_selector"><i class="fa fa-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
+		<button type="button" class="btn btn-default clear_elfinder_picker"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
 	</div>
 
 	@if (isset($field['hint']))
@@ -62,7 +60,7 @@
 				var fieldName = element.attr('name');
 				var triggerUrl = element.data('elfinder-trigger-url');
 
-				$(document).on('click', '.popup_selector[data-inputid='+fieldName+'-filemanager]',function (event) {
+				element.siblings('.btn-group').children('button.popup_selector').click(function (event) {
 				    event.preventDefault();
 
 				    // trigger the reveal modal with elfinder inside
@@ -75,10 +73,9 @@
 				    });
 				});
 
-				$(document).on('click','.clear_elfinder_picker[data-inputid='+fieldName+'-filemanager]',function (event) {
+				element.siblings('.btn-group').children('button.clear_elfinder_picker').click(function (event) {
 				    event.preventDefault();
-				    var updateID = $(this).attr('data-inputid'); // Btn id clicked
-				    $("#"+updateID).val("");
+				    element.val("");
 				});
 			}
 		</script>
