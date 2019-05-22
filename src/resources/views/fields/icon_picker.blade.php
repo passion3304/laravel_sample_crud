@@ -28,7 +28,10 @@ if (!isset($field['iconset'])) {
 </div>
 
 
-@if ($crud->checkIfFieldIsFirstOfItsType($field))
+@if ($crud->fieldTypeNotLoaded($field))
+    @php
+        $crud->markFieldTypeAsLoaded($field);
+    @endphp
 
     @if($field['iconset'] == 'glyphicon')
         @push('crud_fields_scripts')
