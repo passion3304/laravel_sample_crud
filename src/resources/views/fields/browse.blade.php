@@ -52,19 +52,19 @@
 		<script>
 			// function to update the file selected by elfinder
 			function processSelectedFile(filePath, requestingField) {
-			    $('#' + requestingField).val(filePath.replace(/\\/g,"/"));
+			    $('input[name=' + requestingField + ']').val(filePath.replace(/\\/g,"/"));
 			}
 
 			function bpFieldInitBrowseElement(element) {
-				var fieldName = element.attr('name');
-				var triggerUrl = element.data('elfinder-trigger-url')+'/'+element.attr('id');
+				var triggerUrl = element.data('elfinder-trigger-url')
+				var name = element.attr('name');
 
 				element.siblings('.btn-group').children('button.popup_selector').click(function (event) {
 				    event.preventDefault();
 
 				    // trigger the reveal modal with elfinder inside
 				    $.colorbox({
-				        href: triggerUrl,
+				        href: triggerUrl + '/' + name,
 				        fastIframe: true,
 				        iframe: true,
 				        width: '80%',
