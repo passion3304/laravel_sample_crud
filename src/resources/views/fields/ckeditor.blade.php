@@ -34,6 +34,10 @@
         <script src="{{ asset('vendor/backpack/ckeditor/adapters/jquery.js') }}"></script>
         <script>
             function bpFieldInitCKEditorElement(element) {
+                // remove any previous CKEditors from right next to the textarea
+                element.siblings("[id^='cke_ckeditor']").remove();
+
+                // trigger a new CKEditor
                 element.ckeditor({
                     "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
                     "extraPlugins" : '{{ isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : 'oembed,widget' }}'
