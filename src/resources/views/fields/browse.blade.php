@@ -4,6 +4,7 @@
 
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
+    <div class="input-group">
 	<input
 		type="text"
 		id="{{ $field['name'] }}-filemanager"
@@ -16,9 +17,10 @@
 		@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
 	>
 
-	<div class="btn-group" role="group" aria-label="..." style="margin-top: 3px;">
+	<div class="input-group-btn" style="border: 1px solid #d2d6de">
 		<button type="button" class="btn btn-default popup_selector"><i class="fa fa-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
 		<button type="button" class="btn btn-default clear_elfinder_picker"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
+	</div>
 	</div>
 
 	@if (isset($field['hint']))
@@ -64,7 +66,7 @@
 				var triggerUrl = element.data('elfinder-trigger-url')
 				var name = element.attr('name');
 
-				element.siblings('.btn-group').children('button.popup_selector').click(function (event) {
+				element.siblings('.input-group-btn').children('button.popup_selector').click(function (event) {
 				    event.preventDefault();
 
 				    elfinderTarget = element;
@@ -79,7 +81,7 @@
 				    });
 				});
 
-				element.siblings('.btn-group').children('button.clear_elfinder_picker').click(function (event) {
+				element.siblings('.input-group-btn').children('button.clear_elfinder_picker').click(function (event) {
 				    event.preventDefault();
 				    element.val("");
 				});
