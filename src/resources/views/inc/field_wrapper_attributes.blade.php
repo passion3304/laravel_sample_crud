@@ -1,5 +1,9 @@
 <?php
-$required = (isset($field['attributes']['required']) || (isset($action) && $crud->isRequired($field['name'], $action))) ? ' required' : '';
+// if the field is required in the FormRequest, it should have an asterisk
+$required = (isset($action) && $crud->isRequired($field['name'], $action)) ? ' required' : '';
+// if the developer has intentionally set the required attribute on the field
+// forget whatever is in the FormRequest, do what the developer wants
+$required = (isset($field['attributes']['required'])) ? ($field['attributes']['required'] ? ' required' : '') : $required;
 ?>
 
 @if (isset($field['wrapperAttributes']))
@@ -9,7 +13,7 @@ $required = (isset($field['attributes']['required']) || (isset($action) && $crud
         class="{{ $field['wrapperAttributes']['class'] }} {{ $required }}"
     @endif
 
-    @php 
+    @php
         unset($field['wrapperAttributes']['class']);
     @endphp
 
