@@ -34,10 +34,8 @@
     @stack('crud_fields_scripts')
 
     <script>
-    jQuery('document').ready(function($){
-
-      // trigger the javascript for all fields that have their js defined in a separate method
-      $("form [data-javascript-function-for-field-initialisation]").each(function () {
+    function initializeFieldsWithJavascript(container) {
+      $(container + " [data-javascript-function-for-field-initialisation]").each(function () {
         var element = $(this);
         var functionName = element.data('javascript-function-for-field-initialisation');
 
@@ -45,6 +43,12 @@
           window[functionName](element);
         }
       });
+    }
+
+    jQuery('document').ready(function($){
+
+      // trigger the javascript for all fields that have their js defined in a separate method
+      initializeFieldsWithJavascript('form');
 
 
       // Save button has multiple actions: save and exit, save and edit, save and new
