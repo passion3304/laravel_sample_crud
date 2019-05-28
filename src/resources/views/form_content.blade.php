@@ -54,7 +54,7 @@
     jQuery('document').ready(function($){
 
       // trigger the javascript for all fields that have their js defined in a separate method
-      initializeFieldsWithJavascript($('form'));
+      initializeFieldsWithJavascript('form');
 
 
       // Save button has multiple actions: save and exit, save and edit, save and new
