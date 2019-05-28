@@ -35,12 +35,19 @@
 
     <script>
     function initializeFieldsWithJavascript(container) {
-      $(container + " [data-javascript-function-for-field-initialisation]").each(function () {
+      var selector;
+      if (container instanceof jQuery) {
+        selector = container.children("[data-javascript-function-for-field-initialisation]");
+      } else {
+        selector = $(container + " [data-javascript-function-for-field-initialisation]");
+      }
+      selector.each(function () {
         var element = $(this);
         var functionName = element.data('javascript-function-for-field-initialisation');
 
         if (typeof window[functionName] === "function") {
           window[functionName](element);
+          element.data('javascript-initialised', 'true');
         }
       });
     }
