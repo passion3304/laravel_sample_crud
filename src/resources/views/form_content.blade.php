@@ -47,7 +47,6 @@
 
         if (typeof window[functionName] === "function") {
           window[functionName](element);
-          element.data('javascript-initialised', 'true');
         }
       });
     }
