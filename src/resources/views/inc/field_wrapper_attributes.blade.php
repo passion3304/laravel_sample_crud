@@ -3,7 +3,7 @@
 $required = (isset($action) && $crud->isRequired($field['name'], $action)) ? ' required' : '';
 // if the developer has intentionally set the required attribute on the field
 // forget whatever is in the FormRequest, do what the developer wants
-$required = (isset($field['attributes']['required'])) ? ($field['attributes']['required'] ? ' required' : '') : $required;
+$required = (isset($field['showAsterisk'])) ? ($field['showAsterisk'] ? ' required' : '') : $required;
 ?>
 
 @if (isset($field['wrapperAttributes']))
