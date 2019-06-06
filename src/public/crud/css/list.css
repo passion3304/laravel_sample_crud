@@ -44,13 +44,11 @@
 		background-color: transparent;
 		color: #636161;
 		font-family: 'FontAwesome';
-		width: 15px;
-		content: "\f142";
+		width: 16px;
+		content: "\f1c4";
 		font-size: 21px;
 		box-shadow: none;
-		border: none;
-		font-weight: 100;
-		margin-top: 5px;
+		margin-top: 6px;
 	}
 
 	.dt-buttons {

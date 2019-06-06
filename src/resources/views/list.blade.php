@@ -1,17 +1,20 @@
 @extends('backpack::layout')
 
 @section('header')
-	<section class="content-header">
-	  <h1>
+  {{-- <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
+      <li class="breadcrumb-item"><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ trans('backpack::crud.list') }}</li>
+    </ol>
+  </nav> --}}
+
+  <div class="container-fluid">
+    <h1>
       <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
       <small id="datatable_info_stack">{!! $crud->getSubheading() ?? trans('backpack::crud.all').'<span>'.$crud->entity_name_plural.'</span> '.trans('backpack::crud.in_the_database') !!}.</small>
-	  </h1>
-	  <ol class="breadcrumb">
-	    <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
-	    <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
-	    <li class="active">{{ trans('backpack::crud.list') }}</li>
-	  </ol>
-	</section>
+    </h1>
+  </div>
 @endsection
 
 @section('content')
@@ -23,7 +26,7 @@
       <div class="">
 
         <div class="row m-b-10">
-          <div class="col-xs-6">
+          <div class="col-6">
             @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
             <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
@@ -32,7 +35,7 @@
             </div>
             @endif
           </div>
-          <div class="col-xs-6">
+          <div class="col-6">
               <div id="datatable_search_stack" class="pull-right"></div>
           </div>
         </div>
@@ -44,7 +47,7 @@
 
         <div class="overflow-hidden">
 
-        <table id="crudTable" class="box table table-striped table-hover display responsive nowrap m-t-0" cellspacing="0">
+        <table id="crudTable" class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs" cellspacing="0">
             <thead>
               <tr>
                 {{-- Table columns --}}
@@ -100,7 +103,7 @@
 
 @section('after_styles')
   <!-- DATA TABLES -->
-  <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css">
 
