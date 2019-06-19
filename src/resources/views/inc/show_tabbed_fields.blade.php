@@ -25,8 +25,8 @@
 @endpush
 
 @if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
-<div class="box p-t-20">
-    <div class="box-body">
+<div class="card">
+    <div class="card-body">
     @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
     </div>
 </div>
@@ -34,28 +34,28 @@
     @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
 @endif
 
-<div class="tab-container {{ $horizontalTabs ? 'col-xs-12' : 'col-xs-3 m-t-10' }}">
+<div class="tab-container {{ $horizontalTabs ? '' : 'container'}} mb-2">
 
-    <div class="nav-tabs-custom" id="form_tabs">
-        <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'nav-stacked nav-pills'}}" role="tablist">
+    <div class="nav-tabs-custom {{ $horizontalTabs ? '' : 'row'}}" id="form_tabs">
+        <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'flex-column nav-pills'}} {{ $horizontalTabs ? '' : 'col-md-3' }}" role="tablist">
             @foreach ($crud->getTabs() as $k => $tab)
-                <li role="presentation" class="{{ isset($tabWithError) ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}">
-                    <a href="#tab_{{ str_slug($tab, "") }}" aria-controls="tab_{{ str_slug($tab, "") }}" role="tab" tab_name="{{ str_slug($tab, "") }}" data-toggle="tab" class="tab_toggler">{{ $tab }}</a>
+                <li role="presentation" class="nav-item">
+                    <a href="#tab_{{ str_slug($tab, "") }}" aria-controls="tab_{{ str_slug($tab, "") }}" role="tab" tab_name="{{ str_slug($tab, "") }}" data-toggle="tab" class="nav-link {{ isset($tabWithError) ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}">{{ $tab }}</a>
                 </li>
             @endforeach
         </ul>
-    </div>
 
+        <div class="tab-content {{$horizontalTabs ? '' : 'col-md-9'}}">
+
+            @foreach ($crud->getTabs() as $k => $tab)
+            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ str_slug($tab, "") }}">
+
+                @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
+
+            </div>
+            @endforeach
+
+        </div>
+    </div>
 </div>
 
-<div class="tab-content panel {{$horizontalTabs ? 'col-md-12' : 'col-md-8 m-t-10'}}">
-
-    @foreach ($crud->getTabs() as $k => $tab)
-    <div role="tabpanel" class="tab-pane{{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ str_slug($tab, "") }}">
-
-        @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
-
-    </div>
-    @endforeach
-
-</div>
