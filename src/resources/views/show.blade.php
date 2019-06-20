@@ -1,33 +1,34 @@
 @extends('backpack::layout')
 
 @section('header')
-	<section class="content-header">
-	  <h1>
+	<nav aria-label="breadcrumb">
+	  <ol class="breadcrumb">
+	    <li class="breadcrumb-item"><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
+	    <li class="breadcrumb-item"><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
+	    <li class="breadcrumb-item active" aria-current="page">{{ trans('backpack::crud.preview') }}</li>
+	  </ol>
+	</nav>
+
+	<section class="container-fluid">
+	 <h1>
         <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
         <small>{!! $crud->getSubheading() ?? mb_ucfirst(trans('backpack::crud.preview')).' '.$crud->entity_name !!}.</small>
-      </h1>
-	  <ol class="breadcrumb">
-	    <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
-	    <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
-	    <li class="active">{{ trans('backpack::crud.preview') }}</li>
-	  </ol>
-	</section>
+        @if ($crud->hasAccess('list'))
+          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+        @endif
+     </h1>
+    </section>
 @endsection
 
 @section('content')
-@if ($crud->hasAccess('list'))
-	<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
-
-	<a href="javascript: window.print();" class="pull-right hidden-print"><i class="fa fa-print"></i></a>
-@endif
 <div class="row">
 	<div class="{{ $crud->getShowContentClass() }}">
 
 	<!-- Default box -->
-	  <div class="m-t-20">
+	  <div class="">
 	  	@if ($crud->model->translationEnabled())
 	    <div class="row">
-	    	<div class="col-md-12 m-b-10">
+	    	<div class="col-md-12 mb-2">
 				<!-- Change translation button group -->
 				<div class="btn-group pull-right">
 				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,7 +36,7 @@
 				  </button>
 				  <ul class="dropdown-menu">
 				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-					  	<li><a href="{{ url($crud->route.'/'.$entry->getKey()) }}?locale={{ $key }}">{{ $locale }}</a></li>
+					  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey()) }}?locale={{ $key }}">{{ $locale }}</a>
 				  	@endforeach
 				  </ul>
 				</div>
@@ -43,8 +44,8 @@
 	    </div>
 	    @else
 	    @endif
-	    <div class="box no-padding no-border">
-			<table class="table table-striped">
+	    <div class="card no-padding no-border">
+			<table class="table table-striped mb-0">
 		        <tbody>
 		        @foreach ($crud->columns as $column)
 		            <tr>

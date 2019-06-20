@@ -320,7 +320,7 @@ trait Views
      */
     public function getRevisionsTimelineContentClass()
     {
-        return $this->revisionsTimelineContentClass ?? config('backpack.crud.revisions_timeline_content_class', 'col-md-8 col-md-offset-2');
+        return $this->revisionsTimelineContentClass ?? config('backpack.crud.revisions_timeline_content_class', 'col-md-12');
     }
 
     // -------

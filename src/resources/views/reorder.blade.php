@@ -1,17 +1,24 @@
 @extends('backpack::layout')
 
 @section('header')
-<section class="content-header">
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ trans('backpack::crud.reorder') }}</li>
+  </ol>
+</nav>
+
+<div class="container-fluid">
     <h1>
         <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
         <small>{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}.</small>
+
+        @if ($crud->hasAccess('list'))
+          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+        @endif
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
-        <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
-        <li class="active">{{ trans('backpack::crud.reorder') }}</li>
-    </ol>
-</section>
+</div>
 @endsection
 
 @section('content')
@@ -53,40 +60,26 @@ function tree_element($entry, $key, $all_entries, $crud)
 
 ?>
 
-@if ($crud->hasAccess('list'))
-    <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
-@endif
-
-<div class="row m-t-20">
+<div class="row mt-4">
     <div class="{{ $crud->getReorderContentClass() }}">
+        <div class="card p-4">
+                    <p>{{ trans('backpack::crud.reorder_text') }}</p>
 
-        <div class="col-md-12">
+                    <ol class="sortable">
+                    <?php
+                        $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
+                        $root_entries = $all_entries->filter(function ($item) {
+                            return $item->parent_id == 0;
+                        });
+                        foreach ($root_entries as $key => $entry){
+                            $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+                        }
+                    ?>
+                    </ol>
 
-            <div class="panel padding-10">
+        </div><!-- /.card -->
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <p>{{ trans('backpack::crud.reorder_text') }}</p>
-
-                        <ol class="sortable">
-                        <?php
-                            $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
-                            $root_entries = $all_entries->filter(function ($item) {
-                                return $item->parent_id == 0;
-                            });
-                            foreach ($root_entries as $key => $entry){
-                                $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
-                            }
-                        ?>
-                        </ol>
-                    </div>
-                </div>
-
-                <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
-
-            </div><!-- /.panel -->
-
-        </div>
+        <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
     </div>
 </div>
 @endsection

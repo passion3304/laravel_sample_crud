@@ -41,7 +41,7 @@
 @push('crud_list_scripts')
     <script>
 		jQuery(document).ready(function($) {
-			$("li.dropdown[filter-name={{ $filter->name }}] .dropdown-menu li a").click(function(e) {
+			$("li.dropdown[filter-name={{ $filter->name }}] .dropdown-menu a").click(function(e) {
 				e.preventDefault();
 
 				var value = $(this).attr('dropdownkey');
