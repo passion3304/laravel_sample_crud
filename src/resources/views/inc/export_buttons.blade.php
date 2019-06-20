@@ -1,17 +1,18 @@
 @if ($crud->exportButtons())
-  <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js" type="text/javascript"></script>
-  <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.bootstrap.min.js" type="text/javascript"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js" type="text/javascript"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" type="text/javascript"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.18/pdfmake.min.js" type="text/javascript"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.18/vfs_fonts.js" type="text/javascript"></script>
-  <script src="//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js" type="text/javascript"></script>
-  <script src="//cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js" type="text/javascript"></script>
-  <script src="//cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js" type="text/javascript"></script>
+  <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js" type="text/javascript"></script>
+  <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js" type="text/javascript"></script>
+  <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js" type="text/javascript"></script>
   <script>
     crud.dataTableConfiguration.buttons = [
         {
             extend: 'collection',
             text: '<i class="fa fa-download"></i> {{ trans('backpack::crud.export.export') }}',
+            dropup: true,
             buttons: [
                 {
                     name: 'copyHtml5',
@@ -79,7 +80,8 @@
         {
             extend: 'colvis',
             text: '<i class="fa fa-eye-slash"></i> {{ trans('backpack::crud.export.column_visibility') }}',
-            columns: ':not(.not-export-col):not([data-visible-in-export=false])'
+            columns: ':not(.not-export-col):not([data-visible-in-export=false])',
+            dropup: true
         }
     ];
 

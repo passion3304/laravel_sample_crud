@@ -1,8 +1,8 @@
   <!-- DATA TABLES SCRIPT -->
-  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
-  <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-  <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
-  <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.2/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.2/js/responsive.bootstrap4.min.js"></script>
   <script src="
 https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
 
@@ -71,7 +71,7 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
                   } ).join('');
 
                   return data ?
-                      $('<table class="table table-striped table-condensed m-b-0">').append( data ) :
+                      $('<table class="table table-striped mb-0">').append( data ) :
                       false;
                 },
             }
@@ -130,7 +130,7 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
           dom:
             "<'row hidden'<'col-sm-6 hidden-xs'i><'col-sm-6 hidden-print'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row m-t-10'<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
+            "<'row mt-2'<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
       }
   }
   </script>
