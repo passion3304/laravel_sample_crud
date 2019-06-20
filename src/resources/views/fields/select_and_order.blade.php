@@ -6,7 +6,8 @@
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-    <div>
+    <div class="row">
+        <div class="col">
         <ul id="{{ $field['name'] }}_selected" class="{{ $field['name'] }}_connectedSortable select_and_order_selected pull-left">
             @if(old($field["name"]))
                 @if(is_array(old($field["name"])))
@@ -42,6 +43,7 @@
 
         {{-- The results will be stored here --}}
         <div id="{{ $field['name'] }}_results"></div>
+        </div>
     </div>
 
 

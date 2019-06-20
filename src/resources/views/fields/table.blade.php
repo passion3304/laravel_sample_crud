@@ -29,7 +29,7 @@
 
     <div class="array-container form-group">
 
-        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ $items }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'">
+        <table class="table table-striped table-sm m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ $items }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'">
 
             <thead>
                 <tr>
@@ -50,7 +50,7 @@
 
                     @foreach( $field['columns'] as $prop => $label)
                     <td>
-                        <input class="form-control input-sm" type="text" ng-model="item.{{ $prop }}">
+                        <input class="form-control form-control-sm" type="text" ng-model="item.{{ $prop }}">
                     </td>
                     @endforeach
                     <td ng-if="max == -1 || max > 1">

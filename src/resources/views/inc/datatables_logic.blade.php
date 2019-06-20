@@ -144,6 +144,7 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
 
       // move search bar
       $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
+      $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
       $("#datatable_info_stack").html($('#crudTable_info'));

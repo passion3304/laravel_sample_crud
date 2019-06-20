@@ -61,7 +61,7 @@ trait Views
      */
     public function getCreateContentClass()
     {
-        return $this->createContentClass ?? config('backpack.crud.create_content_class', 'col-md');
+        return $this->createContentClass ?? config('backpack.crud.create_content_class', 'col-md-8 bold-labels');
     }
 
     // -------
@@ -215,7 +215,7 @@ trait Views
      */
     public function getEditContentClass()
     {
-        return $this->editContentClass ?? config('backpack.crud.edit_content_class', 'col-md-8 col-md-offset-2');
+        return $this->editContentClass ?? config('backpack.crud.edit_content_class', 'col-md-8 bold-labels');
     }
 
     /**
