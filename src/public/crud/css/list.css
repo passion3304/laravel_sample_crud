@@ -190,7 +190,8 @@
 	.navbar-filters li>a:active,
 	.navbar-filters .navbar-nav>.active>a, .navbar-filters .navbar-nav>.active>a:focus, .navbar-filters .navbar-nav>.active>a:hover,
 	.navbar-filters .navbar-nav>.open>a, .navbar-filters .navbar-nav>.open>a:focus, .navbar-filters .navbar-nav>.open>a:hover {
-		background-color: #e0e0e9;
+		background-color: #e4e7ea;
+		border-radius: 3px;
 	}
 	.navbar-filters li {
 		margin: 0 2px;

@@ -2,13 +2,13 @@
 
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
-	<div class="dropdown-menu">
-		<div class="form-group backpack-filter m-b-0">
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
+	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
+	<div class="dropdown-menu p-0">
+		<div class="form-group backpack-filter mb-0">
 			<div class="input-group date">
-		        <div class="input-group-addon">
-		          <i class="fa fa-calendar"></i>
+		        <div class="input-group-prepend">
+		          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
 		        </div>
 		        <input class="form-control pull-right"
 		        		id="daterangepicker-{{ str_slug($filter->name) }}"
@@ -26,8 +26,8 @@
 					        placeholder="{{ $date_range }}"
 						@endif
 		        		>
-		        <div class="input-group-addon daterangepicker-{{ str_slug($filter->name) }}-clear-button">
-		          <a class="" href=""><i class="fa fa-times"></i></a>
+		        <div class="input-group-append daterangepicker-{{ str_slug($filter->name) }}-clear-button">
+		          <a class="input-group-text" href=""><i class="fa fa-times"></i></a>
 		        </div>
 		    </div>
 		</div>
