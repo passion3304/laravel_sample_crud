@@ -12,7 +12,7 @@
   <div class="container-fluid">
     <h1>
       <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? trans('backpack::crud.all').'<span>'.$crud->entity_name_plural.'</span> '.trans('backpack::crud.in_the_database') !!}.</small>
+      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
     </h1>
   </div>
 @endsection
