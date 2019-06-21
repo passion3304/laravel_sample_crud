@@ -45,7 +45,7 @@
             @endforeach
         </ul>
 
-        <div class="tab-content {{$horizontalTabs ? '' : 'col-md-9'}}">
+        <div class="tab-content p-0 {{$horizontalTabs ? '' : 'col-md-9'}}">
 
             @foreach ($crud->getTabs() as $k => $tab)
             <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ str_slug($tab, "") }}">
