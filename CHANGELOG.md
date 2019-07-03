@@ -27,6 +27,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - merged #1917 - typo in image column type;
+- merged #1901 - pushed checklist_dependency var into crud_fields_scripts stack;
 
 
 ## [3.6.21] - 2019-05-16
