@@ -23,7 +23,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## [3.6.22] - 2019-07-03
 
 ### Added
-- merged #1899 - Czech translation thanks to [Aleš Zatloukal](https://github.com/aleszatloukal);
+- merged #1899 - Czech translation, thanks to [Aleš Zatloukal](https://github.com/aleszatloukal);
+- merged #1891 - support for MongoDB, thanks to [andrycs](https://github.com/andrycs);
 
 ### Fixed
 - merged #1917 - typo in image column type;
