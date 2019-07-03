@@ -25,6 +25,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - merged #1899 - Czech translation thanks to [Aleš Zatloukal](https://github.com/aleszatloukal);
 
+### Fixed
+- merged #1917 - typo in image column type;
+
 
 ## [3.6.21] - 2019-05-16
 
