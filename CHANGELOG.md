@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - merged #1899 - Czech translation, thanks to [Aleš Zatloukal](https://github.com/aleszatloukal);
 - merged #1891 - support for MongoDB, thanks to [andrycs](https://github.com/andrycs);
+- merged #1911 - markdown column type;
 
 ### Fixed
 - merged #1917 - typo in image column type;
