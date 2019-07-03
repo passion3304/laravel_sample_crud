@@ -30,12 +30,22 @@
     <script src="{{ asset('vendor/backpack/tinymce/tinymce.min.js') }}"></script>
     {{-- <script src="{{ asset(config('backpack.base.route_prefix').'/js/vendor/tinymce/jquery.tinymce.min.js') }}"></script> --}}
 
+    @php
+    $options = [
+        'selector' => 'textarea.tinymce',
+        'skin' => 'dick-light',
+        'plugins' => 'image,link,media,anchor',
+    ];
+
+    if (isset($field['options']) && count($field['options'])) {
+        $options = array_merge($options, $field['options']);
+    }
+    @endphp
+
     <script type="text/javascript">
     tinymce.init({
-        selector: "textarea.tinymce",
-        skin: "dick-light",
-        plugins: "image,link,media,anchor",
-        file_browser_callback : elFinderBrowser,
+        file_browser_callback : elFinderBrowser
+        {!! ', '.trim(json_encode($options), "{}") !!}
      });
 
     function elFinderBrowser (field_name, url, type, win) {
