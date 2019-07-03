@@ -57,9 +57,6 @@
         //json encode of dependency matrix
         $dependencyJson = json_encode($dependencyArray);
     ?>
-    <script>
-        var  {{ $field['field_unique_name'] }} = {!! $dependencyJson !!};
-    </script>
 
     <div class="row" >
 
@@ -168,6 +165,13 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
+
+@push('crud_fields_scripts')
+    <script>
+        var  {{ $field['field_unique_name'] }} = {!! $dependencyJson !!};
+    </script>
+@endpush
+
 @if ($crud->checkIfFieldIsFirstOfItsType($field))
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
