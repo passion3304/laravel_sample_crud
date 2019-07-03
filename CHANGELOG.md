@@ -26,6 +26,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - merged #1899 - Czech translation, thanks to [Aleš Zatloukal](https://github.com/aleszatloukal);
 - merged #1891 - support for MongoDB, thanks to [andrycs](https://github.com/andrycs);
 - merged #1911 - markdown column type;
+- merged #1908 - added options to tinymce field type;
 
 ### Fixed
 - merged #1917 - typo in image column type;
