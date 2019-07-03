@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.22] - 2019-07-03
+
+### Added
+- merged #1899 - Czech translation thanks to [Aleš Zatloukal](https://github.com/aleszatloukal);
+
+
 ## [3.6.21] - 2019-05-16
 
 ### Fixed
