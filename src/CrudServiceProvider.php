@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD;
 
-use Route;
 use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
