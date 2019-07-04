@@ -71,7 +71,7 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
                   } ).join('');
 
                   return data ?
-                      $('<table class="table table-striped table-condensed m-b-0">').append( '<tbody> + data + '</tbody' ) :
+                      $('<table class="table table-striped table-condensed m-b-0">').append( '<tbody> + data + '</tbody>' ) :
                       false;
                 },
             }
