@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.23] - 2019-07-09
+
+### Fixed
+- issue #1922 - merges #1923 - list view details modal is now prettier - table has table and table-hovered classes;
+
+
 ## [3.6.22] - 2019-07-03
 
 ### Added
