@@ -9,12 +9,12 @@ trait CreateOperation
 {
     /**
      * Define which routes are needed for this operation.
-     * 
+     *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForCreate($name, $controller, $options) 
+    protected function setupRoutesForCreate($name, $controller, $options)
     {
         Route::get($name.'/create', [
             'as' => 'crud.'.$name.'.create',
