@@ -61,10 +61,7 @@
         "laravel": {
             "providers": [
                 "Backpack\\CRUD\\CrudServiceProvider"
-            ],
-            "aliases": {
-                "CRUD": "Backpack\\CRUD\\CrudServiceProvider"
-            }
+            ]
         }
     }
 }
