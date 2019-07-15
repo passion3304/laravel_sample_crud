@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Http\Controllers;
 
 use Backpack\CRUD\CrudPanel;
 use Illuminate\Http\Request;
-use Backpack\CRUD\CrudRouter;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -65,8 +64,6 @@ class CrudController extends BaseController
      */
     public function routes($name, $controller, $options = [])
     {
-        $defaultRoutes = new CrudRouter($name, $controller, $options);
-
         $setupRouteMethods = preg_grep('/^setupRoutesFor/', get_class_methods($this));
 
         if (count($setupRouteMethods)) {
