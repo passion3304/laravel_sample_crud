@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
@@ -91,6 +92,12 @@ class CrudServiceProvider extends ServiceProvider
             return new CRUD($app);
         });
 
+        // load a macro for Route,
+        // for developers to be able to load all routes for a CRUD resource in one line
+        if (!Route::hasMacro('crudResource')) {
+            $this->addRouteMacro();
+        }
+
         // register the helper functions
         $this->loadHelpers();
 
@@ -103,9 +110,21 @@ class CrudServiceProvider extends ServiceProvider
         }
     }
 
-    public static function resource($name, $controller, array $options = [])
+    /**
+     * The route macro allows developers to generate the routes for a CrudController,  
+     * for all operations, using a simple syntax: Route::crud().
+     *
+     * It will go to the given CrudController and get the routes() method on it.
+     */
+    private function addRouteMacro()
     {
-        return new CrudRouter($name, $controller, $options);
+        Route::macro('crud', function ($router, $name, $controller, array $options = []) {
+            $groupStack = $router->hasGroupStack() ? $router->getGroupStack()[0]['namespace'].'\\' : 'App\\';
+            $namespacedController = $groupStack.$controller;
+            $controllerInstance = new $namespacedController;
+
+            return $controllerInstance->routes($name, $controller, $options);
+        });
     }
 
     /**

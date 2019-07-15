@@ -2,8 +2,25 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
+use Illuminate\Support\Facades\Route;
+
 trait ShowOperation
 {
+    /**
+     * Define which routes are needed for this operation.
+     * 
+     * @param  string $name       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $controller Name of the current CrudController.
+     * @param  [type] $options    Route options (optional).
+     */
+    protected function setupRoutesForShow($name, $controller, $options) 
+    {
+        Route::get($name.'/{id}', [
+            'as' => 'crud.'.$name.'.show',
+            'uses' => $controller.'@show',
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *

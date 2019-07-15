@@ -2,8 +2,35 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
+use Illuminate\Support\Facades\Route;
+
 trait ListOperation
 {
+    /**
+     * Define which routes are needed for this operation.
+     * 
+     * @param  string $name       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $controller Name of the current CrudController.
+     * @param  [type] $options    Route options (optional).
+     */
+    protected function setupRoutesForList($name, $controller, $options) 
+    {
+        Route::get($name.'/', [
+            'as' => 'crud.'.$name.'.index',
+            'uses' => $controller.'@index',
+        ]);
+
+        Route::post($name.'/search', [
+            'as' => 'crud.'.$name.'.search',
+            'uses' => $controller.'@search',
+        ]);
+
+        Route::get($name.'/{id}/details', [
+            'as' => 'crud.'.$name.'.showDetailsRow',
+            'uses' => $controller.'@showDetailsRow',
+        ]);
+    }
+
     /**
      * Display all rows in the database for this entity.
      *
