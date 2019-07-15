@@ -94,7 +94,7 @@ class CrudServiceProvider extends ServiceProvider
 
         // load a macro for Route,
         // for developers to be able to load all routes for a CRUD resource in one line
-        if (!Route::hasMacro('crudResource')) {
+        if (! Route::hasMacro('crudResource')) {
             $this->addRouteMacro();
         }
 
@@ -111,7 +111,7 @@ class CrudServiceProvider extends ServiceProvider
     }
 
     /**
-     * The route macro allows developers to generate the routes for a CrudController,  
+     * The route macro allows developers to generate the routes for a CrudController,
      * for all operations, using a simple syntax: Route::crud().
      *
      * It will go to the given CrudController and get the routes() method on it.

@@ -2,19 +2,19 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-use Illuminate\Http\Request as UpdateRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request as UpdateRequest;
 
 trait UpdateOperation
 {
     /**
      * Define which routes are needed for this operation.
-     * 
+     *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForUpdate($name, $controller, $options) 
+    protected function setupRoutesForUpdate($name, $controller, $options)
     {
         Route::get($name.'/{id}/edit', [
             'as' => 'crud.'.$name.'.edit',
