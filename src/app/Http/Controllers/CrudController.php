@@ -7,20 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Backpack\CRUD\app\Http\Controllers\Operations\SaveActions;
-use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
 class CrudController extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
-    use CreateOperation, CloneOperation, DeleteOperation, ListOperation, ReorderOperation, RevisionsOperation, SaveActions, ShowOperation, UpdateOperation;
 
     public $data = [];
     public $request;
