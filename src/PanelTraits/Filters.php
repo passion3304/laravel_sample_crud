@@ -46,10 +46,10 @@ trait Filters
      *
      * @param array               $options        Name, type, label, etc.
      * @param bool|array|\Closure $values         The HTML for the filter.
-     * @param bool|\Closure       $filter_logic   Query modification (filtering) logic when filter is active.
-     * @param bool|\Closure       $fallback_logic Query modification (filtering) logic when filter is not active.
+     * @param bool|\Closure       $filterLogic   Query modification (filtering) logic when filter is active.
+     * @param bool|\Closure       $fallbackLogic Query modification (filtering) logic when filter is not active.
      */
-    public function addFilter($options, $values = false, $filter_logic = false, $fallback_logic = false)
+    public function addFilter($options, $values = false, $filterLogic = false, $fallbackLogic = false)
     {
         // if a closure was passed as "values"
         if (is_callable($values)) {
@@ -69,7 +69,7 @@ trait Filters
         }
 
         // add a new filter to the interface
-        $filter = new CrudFilter($options, $values, $filter_logic, $fallback_logic);
+        $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic);
         $this->filters->push($filter);
 
         if ($this->doingListOperation()) {
@@ -92,7 +92,7 @@ trait Filters
         $input = $input ?? new ParameterBag($this->request->all());
 
         if ($input->has($filter->options['name'])) {
-            // if a closure was passed as "filter_logic"
+            // if a closure was passed as "filterLogic"
             if (is_callable($filter->logic)) {
                 // apply it
                 ($filter->logic)($input->get($filter->options['name']));
@@ -101,9 +101,9 @@ trait Filters
             }
         } else {
             //if the filter is not active, but fallback logic was supplied
-            if (is_callable($filter->fallback_logic)) {
+            if (is_callable($filter->fallbackLogic)) {
                 // apply the fallback logic
-                ($filter->fallback_logic)();
+                ($filter->fallbackLogic)();
             }
         }
     }
@@ -111,6 +111,7 @@ trait Filters
     /**
      * @param string $name
      * @param string $operator
+     * @param array  $input
      */
     public function addDefaultFilterLogic($name, $operator, $input = null)
     {
@@ -278,12 +279,12 @@ class CrudFilter
     public $values;
     public $options;
     public $logic;
-    public $fallback_logic;
+    public $fallbackLogic;
     public $currentValue;
     public $view;
     public $viewNamespace = 'crud::filters';
 
-    public function __construct($options, $values, $logic, $fallback_logic)
+    public function __construct($options, $values, $logic, $fallbackLogic)
     {
         $this->checkOptionsIntegrity($options);
 
@@ -297,7 +298,7 @@ class CrudFilter
         $this->values = $values;
         $this->options = $options;
         $this->logic = $logic;
-        $this->fallback_logic = $fallback_logic;
+        $this->fallbackLogic = $fallbackLogic;
 
         if (\Request::has($this->name)) {
             $this->currentValue = \Request::input($this->name);
