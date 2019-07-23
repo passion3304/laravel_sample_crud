@@ -11,9 +11,8 @@ trait ShowOperation
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
-     * @param  [type] $options    Route options (optional).
      */
-    protected function setupShowRoutes($name, $controller, $options)
+    protected function setupShowRoutes($name, $controller)
     {
         Route::get($name.'/{id}', [
             'as' => 'crud.'.$name.'.show',

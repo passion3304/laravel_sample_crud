@@ -11,9 +11,8 @@ trait CloneOperation
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
-     * @param  [type] $options    Route options (optional).
      */
-    protected function setupCloneRoutes($name, $controller, $options)
+    protected function setupCloneRoutes($name, $controller)
     {
         Route::post($name.'/{id}/clone', [
             'as' => 'crud.'.$name.'.clone',

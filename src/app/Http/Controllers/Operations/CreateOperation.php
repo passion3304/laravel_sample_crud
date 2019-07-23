@@ -12,9 +12,8 @@ trait CreateOperation
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
-     * @param  [type] $options    Route options (optional).
      */
-    protected function setupCreateRoutes($name, $controller, $options)
+    protected function setupCreateRoutes($name, $controller)
     {
         Route::get($name.'/create', [
             'as' => 'crud.'.$name.'.create',

@@ -11,9 +11,8 @@ trait ReorderOperation
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
-     * @param  [type] $options    Route options (optional).
      */
-    protected function setupReorderRoutes($name, $controller, $options)
+    protected function setupReorderRoutes($name, $controller)
     {
         Route::get($name.'/reorder', [
             'as' => 'crud.'.$name.'.reorder',

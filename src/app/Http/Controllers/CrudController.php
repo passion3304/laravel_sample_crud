@@ -53,13 +53,13 @@ class CrudController extends BaseController
      * @param  string $controller Name of the current controller.
      * @param  array  $options    Options for the route (optional).
      */
-    public function routes($name, $controller, $options = [])
+    public function routes($name, $controller)
     {
         preg_match_all('/(?<=^|;)setup([^;]+?)Routes(;|$)/', implode(';', get_class_methods($this)), $matches);
 
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
-                $this->{'setup'.$methodName.'Routes'}($name, $controller, $options);
+                $this->{'setup'.$methodName.'Routes'}($name, $controller);
             }
         }
     }

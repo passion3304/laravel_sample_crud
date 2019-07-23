@@ -11,9 +11,8 @@ trait BulkCloneOperation
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
-     * @param  [type] $options    Route options (optional).
      */
-    protected function setupBulkCloneRoutes($name, $controller, $options)
+    protected function setupBulkCloneRoutes($name, $controller)
     {
         Route::post($name.'/bulk-clone', [
             'as' => 'crud.'.$name.'.bulkClone',

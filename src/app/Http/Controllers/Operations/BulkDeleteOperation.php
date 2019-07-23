@@ -11,9 +11,8 @@ trait BulkDeleteOperation
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
-     * @param  [type] $options    Route options (optional).
      */
-    protected function setupBulkDeleteRoutes($name, $controller, $options)
+    protected function setupBulkDeleteRoutes($name, $controller)
     {
         Route::post($name.'/bulk-delete', [
             'as' => 'crud.'.$name.'.bulkDelete',

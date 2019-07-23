@@ -12,9 +12,8 @@ trait UpdateOperation
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
      * @param  string $controller Name of the current CrudController.
-     * @param  [type] $options    Route options (optional).
      */
-    protected function setupUpdateRoutes($name, $controller, $options)
+    protected function setupUpdateRoutes($name, $controller)
     {
         Route::get($name.'/{id}/edit', [
             'as' => 'crud.'.$name.'.edit',
