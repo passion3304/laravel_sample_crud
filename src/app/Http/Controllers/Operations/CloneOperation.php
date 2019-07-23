@@ -16,7 +16,7 @@ trait CloneOperation
     protected function setupCloneRoutes($segment, $routeName, $controller)
     {
         Route::post($segment.'/{id}/clone', [
-            'as' => $routeName.'clone',
+            'as' => $routeName.'.clone',
             'uses' => $controller.'@clone',
         ]);
     }

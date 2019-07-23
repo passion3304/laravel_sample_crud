@@ -94,7 +94,7 @@ class CrudServiceProvider extends ServiceProvider
 
         // load a macro for Route,
         // for developers to be able to load all routes for a CRUD resource in one line
-        if (! Route::hasMacro('crudResource')) {
+        if (! Route::hasMacro('crud')) {
             $this->addRouteMacro();
         }
 
@@ -119,7 +119,8 @@ class CrudServiceProvider extends ServiceProvider
     private function addRouteMacro()
     {
         Route::macro('crud', function ($name, $controller) {
-            // check if a specific route name was passed
+            // put together the route name prefix,
+            // as passed to the Route::group() statements
             $routeName = '';
             if ($this->hasGroupStack()) {
                 foreach ($this->getGroupStack() as $key => $groupStack) {
@@ -132,7 +133,9 @@ class CrudServiceProvider extends ServiceProvider
                     }
                 }
             }
-            $routeName .= $name.'.';
+            // add the name of the current entity to the route name prefix
+            // the result will be the current route name (not ending in dot)
+            $routeName .= $name;
 
             // get an instance of the controller
             $groupStack = $this->hasGroupStack() ? $this->getGroupStack()[0]['namespace'].'\\' : 'App\\';

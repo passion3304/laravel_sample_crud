@@ -16,7 +16,7 @@ trait ShowOperation
     protected function setupShowRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/{id}', [
-            'as' => $routeName.'show',
+            'as' => $routeName.'.show',
             'uses' => $controller.'@show',
         ]);
     }

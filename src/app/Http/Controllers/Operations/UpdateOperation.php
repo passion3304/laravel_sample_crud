@@ -17,17 +17,17 @@ trait UpdateOperation
     protected function setupUpdateRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/{id}/edit', [
-            'as' => $routeName.'edit',
+            'as' => $routeName.'.edit',
             'uses' => $controller.'@edit',
         ]);
 
         Route::put($segment.'/{id}', [
-            'as' => $routeName.'update',
+            'as' => $routeName.'.update',
             'uses' => $controller.'@update',
         ]);
 
         Route::get($segment.'/{id}/translate/{lang}', [
-            'as' => $routeName.'translateItem',
+            'as' => $routeName.'.translateItem',
             'uses' => $controller.'@translateItem',
         ]);
     }

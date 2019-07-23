@@ -16,7 +16,7 @@ trait BulkCloneOperation
     protected function setupBulkCloneRoutes($segment, $routeName, $controller)
     {
         Route::post($segment.'/bulk-clone', [
-            'as' => $routeName.'bulkClone',
+            'as' => $routeName.'.bulkClone',
             'uses' => $controller.'@bulkClone',
         ]);
     }

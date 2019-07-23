@@ -16,12 +16,12 @@ trait ReorderOperation
     protected function setupReorderRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/reorder', [
-            'as' => $routeName.'reorder',
+            'as' => $routeName.'.reorder',
             'uses' => $controller.'@reorder',
         ]);
 
         Route::post($segment.'/reorder', [
-            'as' => $routeName.'save.reorder',
+            'as' => $routeName.'.save.reorder',
             'uses' => $controller.'@saveReorder',
         ]);
     }

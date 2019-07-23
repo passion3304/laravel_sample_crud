@@ -16,12 +16,12 @@ trait RevisionsOperation
     protected function setupRevisionsRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/{id}/revisions', [
-            'as' => $routeName.'listRevisions',
+            'as' => $routeName.'.listRevisions',
             'uses' => $controller.'@listRevisions',
         ]);
 
         Route::post($segment.'/{id}/revisions/{revisionId}/restore', [
-            'as' => $routeName.'restoreRevision',
+            'as' => $routeName.'.restoreRevision',
             'uses' => $controller.'@restoreRevision',
         ]);
     }

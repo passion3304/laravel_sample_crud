@@ -17,7 +17,7 @@ trait CreateOperation
     protected function setupCreateRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/create', [
-            'as' => $routeName.'create',
+            'as' => $routeName.'.create',
             'uses' => $controller.'@create',
         ]);
 

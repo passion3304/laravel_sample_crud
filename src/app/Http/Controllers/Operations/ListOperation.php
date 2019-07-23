@@ -16,17 +16,17 @@ trait ListOperation
     protected function setupListRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/', [
-            'as' => $routeName.'index',
+            'as' => $routeName.'.index',
             'uses' => $controller.'@index',
         ]);
 
         Route::post($segment.'/search', [
-            'as' => $routeName.'search',
+            'as' => $routeName.'.search',
             'uses' => $controller.'@search',
         ]);
 
         Route::get($segment.'/{id}/details', [
-            'as' => $routeName.'showDetailsRow',
+            'as' => $routeName.'.showDetailsRow',
             'uses' => $controller.'@showDetailsRow',
         ]);
     }
