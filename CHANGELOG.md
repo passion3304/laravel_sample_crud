@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.24] - 2019-07-23
+
+### Added
+- merged #1886 - applying the filters is done in a separate method; so that filters can be used outside the List operation;
+
+
 ## [3.6.23] - 2019-07-09
 
 ### Fixed
