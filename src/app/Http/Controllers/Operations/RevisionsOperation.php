@@ -9,18 +9,19 @@ trait RevisionsOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param  string $name       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $segment       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $routeName    Prefix of the route name.
      * @param  string $controller Name of the current CrudController.
      */
-    protected function setupRevisionsRoutes($name, $controller)
+    protected function setupRevisionsRoutes($segment, $routeName, $controller)
     {
-        Route::get($name.'/{id}/revisions', [
-            'as' => 'crud.'.$name.'.listRevisions',
+        Route::get($segment.'/{id}/revisions', [
+            'as' => $routeName.'listRevisions',
             'uses' => $controller.'@listRevisions',
         ]);
 
-        Route::post($name.'/{id}/revisions/{revisionId}/restore', [
-            'as' => 'crud.'.$name.'.restoreRevision',
+        Route::post($segment.'/{id}/revisions/{revisionId}/restore', [
+            'as' => $routeName.'restoreRevision',
             'uses' => $controller.'@restoreRevision',
         ]);
     }

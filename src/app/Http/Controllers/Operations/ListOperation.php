@@ -9,23 +9,24 @@ trait ListOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param  string $name       Name of the current entity (singular). Used as first URL segment.
-     * @param  string $controller Name of the current CrudController.
+     * @param  string $segment      Name of the current entity (singular). Used as first URL segment.
+     * @param  string $routeName    Prefix of the route name.
+     * @param  string $controller   Name of the current CrudController.
      */
-    protected function setupListRoutes($name, $controller)
+    protected function setupListRoutes($segment, $routeName, $controller)
     {
-        Route::get($name.'/', [
-            'as' => 'crud.'.$name.'.index',
+        Route::get($segment.'/', [
+            'as' => $routeName.'index',
             'uses' => $controller.'@index',
         ]);
 
-        Route::post($name.'/search', [
-            'as' => 'crud.'.$name.'.search',
+        Route::post($segment.'/search', [
+            'as' => $routeName.'search',
             'uses' => $controller.'@search',
         ]);
 
-        Route::get($name.'/{id}/details', [
-            'as' => 'crud.'.$name.'.showDetailsRow',
+        Route::get($segment.'/{id}/details', [
+            'as' => $routeName.'showDetailsRow',
             'uses' => $controller.'@showDetailsRow',
         ]);
     }

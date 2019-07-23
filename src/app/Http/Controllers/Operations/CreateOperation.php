@@ -10,18 +10,19 @@ trait CreateOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param  string $name       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $segment       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $routeName    Prefix of the route name.
      * @param  string $controller Name of the current CrudController.
      */
-    protected function setupCreateRoutes($name, $controller)
+    protected function setupCreateRoutes($segment, $routeName, $controller)
     {
-        Route::get($name.'/create', [
-            'as' => 'crud.'.$name.'.create',
+        Route::get($segment.'/create', [
+            'as' => $routeName.'create',
             'uses' => $controller.'@create',
         ]);
 
-        Route::put($name.'/create', [
-            'as' => 'crud.'.$name.'.store',
+        Route::put($segment.'/create', [
+            'as' => $routeName.'store',
             'uses' => $controller.'@store',
         ]);
     }

@@ -11,22 +11,23 @@ trait UpdateOperation
      * Define which routes are needed for this operation.
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $routeName    Prefix of the route name.
      * @param  string $controller Name of the current CrudController.
      */
-    protected function setupUpdateRoutes($name, $controller)
+    protected function setupUpdateRoutes($segment, $routeName, $controller)
     {
-        Route::get($name.'/{id}/edit', [
-            'as' => 'crud.'.$name.'.edit',
+        Route::get($segment.'/{id}/edit', [
+            'as' => $routeName.'edit',
             'uses' => $controller.'@edit',
         ]);
 
-        Route::put($name.'/{id}', [
-            'as' => 'crud.'.$name.'.update',
+        Route::put($segment.'/{id}', [
+            'as' => $routeName.'update',
             'uses' => $controller.'@update',
         ]);
 
-        Route::get($name.'/{id}/translate/{lang}', [
-            'as' => 'crud.'.$name.'.translateItem',
+        Route::get($segment.'/{id}/translate/{lang}', [
+            'as' => $routeName.'translateItem',
             'uses' => $controller.'@translateItem',
         ]);
     }

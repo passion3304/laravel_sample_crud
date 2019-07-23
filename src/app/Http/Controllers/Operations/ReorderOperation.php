@@ -10,17 +10,18 @@ trait ReorderOperation
      * Define which routes are needed for this operation.
      *
      * @param  string $name       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $routeName    Prefix of the route name.
      * @param  string $controller Name of the current CrudController.
      */
-    protected function setupReorderRoutes($name, $controller)
+    protected function setupReorderRoutes($segment, $routeName, $controller)
     {
-        Route::get($name.'/reorder', [
-            'as' => 'crud.'.$name.'.reorder',
+        Route::get($segment.'/reorder', [
+            'as' => $routeName.'reorder',
             'uses' => $controller.'@reorder',
         ]);
 
-        Route::post($name.'/reorder', [
-            'as' => 'crud.'.$name.'.save.reorder',
+        Route::post($segment.'/reorder', [
+            'as' => $routeName.'save.reorder',
             'uses' => $controller.'@saveReorder',
         ]);
     }

@@ -118,12 +118,28 @@ class CrudServiceProvider extends ServiceProvider
      */
     private function addRouteMacro()
     {
-        Route::macro('crud', function ($router, $name, $controller, array $options = []) {
-            $groupStack = $router->hasGroupStack() ? $router->getGroupStack()[0]['namespace'].'\\' : 'App\\';
+        Route::macro('crud', function ($name, $controller) {
+            // check if a specific route name was passed
+            $routeName = '';
+            if ($this->hasGroupStack()) {
+                foreach ($this->getGroupStack() as $key => $groupStack) {
+                    if (isset($groupStack['name'])) {
+                        if (is_array($groupStack['name'])) {
+                            $routeName = implode('', $groupStack['name']);
+                        } else {
+                            $routeName = $groupStack['name'];
+                        }
+                    }
+                }
+            }
+            $routeName .= $name.'.';
+
+            // get an instance of the controller
+            $groupStack = $this->hasGroupStack() ? $this->getGroupStack()[0]['namespace'].'\\' : 'App\\';
             $namespacedController = $groupStack.$controller;
             $controllerInstance = new $namespacedController;
 
-            return $controllerInstance->routes($name, $controller, $options);
+            return $controllerInstance->routes($name, $routeName, $controller);
         });
     }
 
