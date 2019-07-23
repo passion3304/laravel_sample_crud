@@ -19,11 +19,6 @@ trait DeleteOperation
             'as' => 'crud.'.$name.'.destroy',
             'uses' => $controller.'@destroy',
         ]);
-
-        Route::delete($name.'/bulk-delete', [
-            'as' => 'crud.'.$name.'.bulkDelete',
-            'uses' => $controller.'@bulkDelete',
-        ]);
     }
 
     /**
@@ -42,27 +37,5 @@ trait DeleteOperation
         $id = $this->crud->getCurrentEntryId() ?? $id;
 
         return $this->crud->delete($id);
-    }
-
-    /**
-     * Delete multiple entries in one go.
-     *
-     * @return string
-     */
-    public function bulkDelete()
-    {
-        $this->crud->hasAccessOrFail('delete');
-        $this->crud->setOperation('delete');
-
-        $entries = $this->request->input('entries');
-        $deletedEntries = [];
-
-        foreach ($entries as $key => $id) {
-            if ($entry = $this->crud->model->find($id)) {
-                $deletedEntries[] = $entry->delete();
-            }
-        }
-
-        return $deletedEntries;
     }
 }

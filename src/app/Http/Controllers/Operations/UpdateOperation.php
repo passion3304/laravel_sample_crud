@@ -21,7 +21,7 @@ trait UpdateOperation
             'uses' => $controller.'@edit',
         ]);
 
-        Route::post($name.'/{id}/edit', [
+        Route::put($name.'/{id}', [
             'as' => 'crud.'.$name.'.update',
             'uses' => $controller.'@update',
         ]);
@@ -67,7 +67,7 @@ trait UpdateOperation
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateCrud(UpdateRequest $request = null)
+    public function updateEntry(UpdateRequest $request = null)
     {
         $this->crud->hasAccessOrFail('update');
         $this->crud->setOperation('update');

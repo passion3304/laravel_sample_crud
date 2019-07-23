@@ -19,11 +19,6 @@ trait CloneOperation
             'as' => 'crud.'.$name.'.clone',
             'uses' => $controller.'@clone',
         ]);
-
-        Route::post($name.'/bulk-clone', [
-            'as' => 'crud.'.$name.'.bulkClone',
-            'uses' => $controller.'@bulkClone',
-        ]);
     }
 
     /**
@@ -41,29 +36,5 @@ trait CloneOperation
         $clonedEntry = $this->crud->model->findOrFail($id)->replicate();
 
         return (string) $clonedEntry->push();
-    }
-
-    /**
-     * Create duplicates of multiple entries in the datatabase.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function bulkClone()
-    {
-        $this->crud->hasAccessOrFail('clone');
-        $this->crud->setOperation('clone');
-
-        $entries = $this->request->input('entries');
-        $clonedEntries = [];
-
-        foreach ($entries as $key => $id) {
-            if ($entry = $this->crud->model->find($id)) {
-                $clonedEntries[] = $entry->replicate()->push();
-            }
-        }
-
-        return $clonedEntries;
     }
 }

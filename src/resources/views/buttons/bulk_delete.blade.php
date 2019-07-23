@@ -29,7 +29,7 @@
 	      	  // submit an AJAX delete call
       		  $.ajax({
 	              url: delete_route,
-	              type: 'DELETE',
+	              type: 'POST',
 				  data: { entries: crud.checkedItems },
 	              success: function(result) {
 	                  // Show an alert with the result

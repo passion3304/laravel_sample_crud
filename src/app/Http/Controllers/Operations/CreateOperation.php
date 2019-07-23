@@ -54,7 +54,7 @@ trait CreateOperation
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeCrud(StoreRequest $request = null)
+    public function storeEntry(StoreRequest $request = null)
     {
         $this->crud->hasAccessOrFail('create');
         $this->crud->setOperation('create');
