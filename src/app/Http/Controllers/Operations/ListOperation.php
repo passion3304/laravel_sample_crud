@@ -13,7 +13,7 @@ trait ListOperation
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForList($name, $controller, $options)
+    protected function setupListRoutes($name, $controller, $options)
     {
         Route::get($name.'/', [
             'as' => 'crud.'.$name.'.index',

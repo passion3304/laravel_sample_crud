@@ -13,7 +13,7 @@ trait ShowOperation
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForShow($name, $controller, $options)
+    protected function setupShowRoutes($name, $controller, $options)
     {
         Route::get($name.'/{id}', [
             'as' => 'crud.'.$name.'.show',

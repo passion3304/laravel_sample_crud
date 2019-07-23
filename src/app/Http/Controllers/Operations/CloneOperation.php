@@ -13,7 +13,7 @@ trait CloneOperation
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForClone($name, $controller, $options)
+    protected function setupCloneRoutes($name, $controller, $options)
     {
         Route::post($name.'/{id}/clone', [
             'as' => 'crud.'.$name.'.clone',

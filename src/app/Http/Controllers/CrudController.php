@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Str;
 
 class CrudController extends BaseController
 {
@@ -54,11 +55,11 @@ class CrudController extends BaseController
      */
     public function routes($name, $controller, $options = [])
     {
-        $setupRouteMethods = preg_grep('/^setupRoutesFor/', get_class_methods($this));
+        preg_match_all('/(?<=^|;)setup([^;]+?)Routes(;|$)/', implode(';', get_class_methods($this)), $matches);
 
-        if (count($setupRouteMethods)) {
-            foreach ($setupRouteMethods as $methodName) {
-                $this->{$methodName}($name, $controller, $options);
+        if (count($matches[1])) {
+            foreach ($matches[1] as $methodName) {
+                $this->{'setup'.$methodName.'Routes'}($name, $controller, $options);
             }
         }
     }

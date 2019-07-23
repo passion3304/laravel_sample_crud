@@ -13,7 +13,7 @@ trait RevisionsOperation
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForRevisions($name, $controller, $options)
+    protected function setupRevisionsRoutes($name, $controller, $options)
     {
         Route::get($name.'/{id}/revisions', [
             'as' => 'crud.'.$name.'.listRevisions',

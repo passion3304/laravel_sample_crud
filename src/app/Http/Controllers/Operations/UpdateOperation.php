@@ -14,7 +14,7 @@ trait UpdateOperation
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForUpdate($name, $controller, $options)
+    protected function setupUpdateRoutes($name, $controller, $options)
     {
         Route::get($name.'/{id}/edit', [
             'as' => 'crud.'.$name.'.edit',

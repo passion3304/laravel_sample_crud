@@ -14,7 +14,7 @@ trait CreateOperation
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForCreate($name, $controller, $options)
+    protected function setupCreateRoutes($name, $controller, $options)
     {
         Route::get($name.'/create', [
             'as' => 'crud.'.$name.'.create',

@@ -13,7 +13,7 @@ trait DeleteOperation
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForDelete($name, $controller, $options)
+    protected function setupDeleteRoutes($name, $controller, $options)
     {
         Route::delete($name.'/{id}', [
             'as' => 'crud.'.$name.'.destroy',

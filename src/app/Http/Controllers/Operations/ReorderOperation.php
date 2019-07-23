@@ -13,7 +13,7 @@ trait ReorderOperation
      * @param  string $controller Name of the current CrudController.
      * @param  [type] $options    Route options (optional).
      */
-    protected function setupRoutesForReorder($name, $controller, $options)
+    protected function setupReorderRoutes($name, $controller, $options)
     {
         Route::get($name.'/reorder', [
             'as' => 'crud.'.$name.'.reorder',
