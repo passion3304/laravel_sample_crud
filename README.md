@@ -91,9 +91,9 @@ Please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/ne
 
 - [Cristian Tabacitu](http://tabacitu.ro) - architect, designer, manager, main coder, PR guy, customer service guy & chief honcho;
 - [Owen Melbourne](https://github.com/OwenMelbz) - new features, bug fixing and support;
-- [Cristian Tone](http://updivision.com) - architecture improvements;
-- [Marius Constantin](http://updivision.com) - bug fixing & improvements;
-- [Federico Liva](https://github.com/fede91it) - bug fixing;
+- [Oliver Ziegler](https://github.com/OliverZiegler) - new features, bug fixing and support;
+- [Thomas Swonke](https://github.com/tswonke) - new features, bug fixing and support;
+- [Catalin Tudorache](https://github.com/tumf87) - new features, bug fixing and support;
 - [All Contributors][link-contributors]
 
 Special thanks go to:
