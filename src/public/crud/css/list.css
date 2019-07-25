@@ -31,6 +31,7 @@
 
 	#crudTable_wrapper {
 		/*overflow: hidden;*/
+		display: block;
 	}
 
 	#crudTable_wrapper #crudTable {
