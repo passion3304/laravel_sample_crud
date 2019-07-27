@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "backpack/base": "dev-v4 as 1.1.99",
+        "backpack/base": "v4.x-dev as 1.1.99",
         "doctrine/dbal": "^2.5",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "^2.3",
