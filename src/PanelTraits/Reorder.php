@@ -30,7 +30,7 @@ trait Reorder
                         'parent_id' => empty($entry['parent_id']) ? null : $entry['parent_id'],
                         'depth' => empty($entry['depth']) ? null : $entry['depth'],
                         'lft' => empty($entry['left']) ? null : $entry['left'],
-                        'rgt' => empty($entry['right']) ? null : $entry['right']
+                        'rgt' => empty($entry['right']) ? null : $entry['right'],
                     ]);
 
                 $count++;
