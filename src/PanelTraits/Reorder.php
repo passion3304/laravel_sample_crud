@@ -24,7 +24,7 @@ trait Reorder
         \DB::beginTransaction();
             foreach ($request as $key => $entry) {
                 if ($entry['item_id'] != '' && $entry['item_id'] != null) {
-                    \DB::table('topics')
+                    \DB::table($this->model->getTable())
                         ->where('id', '=', $entry['item_id'])
                         ->update([
                             'parent_id' => empty($entry['parent_id']) ? null : $entry['parent_id'],
