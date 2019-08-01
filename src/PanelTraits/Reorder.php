@@ -22,20 +22,20 @@ trait Reorder
         $count = 0;
 
         \DB::beginTransaction();
-            foreach ($request as $key => $entry) {
-                if ($entry['item_id'] != '' && $entry['item_id'] != null) {
-                    \DB::table($this->model->getTable())
-                        ->where('id', '=', $entry['item_id'])
-                        ->update([
-                            'parent_id' => empty($entry['parent_id']) ? null : $entry['parent_id'],
-                            'depth' => empty($entry['depth']) ? null : $entry['depth'],
-                            'lft' => empty($entry['left']) ? null : $entry['left'],
-                            'rgt' => empty($entry['right']) ? null : $entry['right']
-                        ]);
+        foreach ($request as $key => $entry) {
+            if ($entry['item_id'] != '' && $entry['item_id'] != null) {
+                \DB::table($this->model->getTable())
+                    ->where('id', '=', $entry['item_id'])
+                    ->update([
+                        'parent_id' => empty($entry['parent_id']) ? null : $entry['parent_id'],
+                        'depth' => empty($entry['depth']) ? null : $entry['depth'],
+                        'lft' => empty($entry['left']) ? null : $entry['left'],
+                        'rgt' => empty($entry['right']) ? null : $entry['right']
+                    ]);
 
-                    $count++;
-                }
+                $count++;
             }
+        }
         \DB::commit();
 
         return $count;
