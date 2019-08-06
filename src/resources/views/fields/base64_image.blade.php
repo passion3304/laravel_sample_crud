@@ -227,7 +227,11 @@
                                 }
                             };
                         } else {
-                            alert("Please choose an image file.");
+                            PNotify.alert({
+                              title: "Please choose an image file",
+                              text: "The file you've chosen does not look like an image.",
+                              type: "error"
+                            });
                         }
                     });
 

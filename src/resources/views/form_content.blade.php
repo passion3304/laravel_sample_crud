@@ -54,7 +54,6 @@
           if ((e.which == '115' || e.which == '83' ) && (e.ctrlKey || e.metaKey))
           {
               e.preventDefault();
-              // alert("Ctrl-s pressed");
               $("button[type=submit]").trigger('click');
               return false;
           }
