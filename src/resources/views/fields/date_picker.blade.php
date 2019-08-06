@@ -101,7 +101,7 @@
                         } catch(e){
                             if( $fake.val() ){
                                 PNotify.removeAll();
-                                new PNotify({
+                                PNotify.alert({
                                     title: 'Whoops!',
                                     text: 'Sorry we did not recognise that date format, please make sure it uses a yyyy mm dd combination',
                                     type: 'error',

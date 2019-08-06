@@ -141,7 +141,7 @@ function tree_element($entry, $key, $all_entries, $crud)
         })
         .done(function() {
             //console.log("success");
-            new PNotify({
+            PNotify.alert({
                         title: "{{ trans('backpack::crud.reorder_success_title') }}",
                         text: "{{ trans('backpack::crud.reorder_success_message') }}",
                         type: "success"
@@ -149,10 +149,10 @@ function tree_element($entry, $key, $all_entries, $crud)
           })
         .fail(function() {
             //console.log("error");
-            new PNotify({
+            PNotify.alert({
                         title: "{{ trans('backpack::crud.reorder_error_title') }}",
                         text: "{{ trans('backpack::crud.reorder_error_message') }}",
-                        type: "danger"
+                        type: "error"
                     });
           })
         .always(function() {

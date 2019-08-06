@@ -121,7 +121,7 @@
                             var item = {};
                             $scope.items.push(item);
                         } else {
-                            new PNotify({
+                            PNotify.alert({
                                 title: $scope.maxErrorTitle,
                                 text: $scope.maxErrorMessage,
                                 type: 'error'

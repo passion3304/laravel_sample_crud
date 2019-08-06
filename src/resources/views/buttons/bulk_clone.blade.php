@@ -9,10 +9,10 @@
 
 	      if (typeof crud.checkedItems === 'undefined' || crud.checkedItems.length == 0)
 	      {
-	      	new PNotify({
+	      	PNotify.alert({
 	              title: "{{ trans('backpack::crud.bulk_no_entries_selected_title') }}",
 	              text: "{{ trans('backpack::crud.bulk_no_entries_selected_message') }}",
-	              type: "warning"
+	              type: "notice"
 	          });
 
 	      	return;
@@ -33,7 +33,7 @@
 					data: { entries: crud.checkedItems },
 					success: function(result) {
 					  // Show an alert with the result
-					  new PNotify({
+					  PNotify.alert({
 					      title: "Entries cloned",
 					      text: crud.checkedItems.length+" new entries have been added.",
 					      type: "success"
@@ -44,10 +44,10 @@
 					},
 					error: function(result) {
 					  // Show an alert with the result
-					  new PNotify({
+					  PNotify.alert({
 					      title: "Cloning failed",
 					      text: "One or more entries could not be created. Please try again.",
-					      type: "warning"
+					      type: "notice"
 					  });
 					}
 				});

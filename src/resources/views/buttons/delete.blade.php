@@ -20,14 +20,14 @@
 	              success: function(result) {
 		              if (result != 1) {
 		              	// Show an error alert
-		                  new PNotify({
+		                  PNotify.alert({
 		                      title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
 		                      text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
-		                      type: "warning"
+		                      type: "notice"
 		                  });
 		              } else {
 		                  // Show a success alert with the result
-		                  new PNotify({
+		                  PNotify.alert({
 		                      title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
 		                      text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
 		                      type: "success"
@@ -47,16 +47,16 @@
 	              },
 	              error: function(result) {
 	                  // Show an alert with the result
-	                  new PNotify({
+	                  PNotify.alert({
 	                      title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
 	                      text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
-	                      type: "warning"
+	                      type: "notice"
 	                  });
 	              }
 	          });
 	      } else {
 	      	  // Show an alert telling the user we don't know what went wrong
-	          new PNotify({
+	          PNotify.alert({
 	              title: "{{ trans('backpack::crud.delete_confirmation_not_deleted_title') }}",
 	              text: "{{ trans('backpack::crud.delete_confirmation_not_deleted_message') }}",
 	              type: "info"
