@@ -7,61 +7,111 @@
 	  $("[data-button-type=delete]").unbind('click');
 
 	  function deleteEntry(button) {
-	      // ask for confirmation before deleting an item
-	      // e.preventDefault();
-	      var button = $(button);
-	      var route = button.attr('data-route');
-	      var row = $("#crudTable a[data-route='"+route+"']").closest('tr');
+		// ask for confirmation before deleting an item
+		// e.preventDefault();
+		var button = $(button);
+		var route = button.attr('data-route');
+		var row = $("#crudTable a[data-route='"+route+"']").closest('tr');
 
-	      if (confirm("{{ trans('backpack::crud.delete_confirm') }}") == true) {
-	          $.ajax({
-	              url: route,
-	              type: 'DELETE',
-	              success: function(result) {
-		              if (result != 1) {
-		              	// Show an error alert
-		                  PNotify.alert({
-		                      title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
-		                      text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
-		                      type: "notice"
-		                  });
-		              } else {
-		                  // Show a success alert with the result
-		                  PNotify.alert({
-		                      title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
-		                      text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
-		                      type: "success"
-		                  });
+		var notice = PNotify.error({
+		  // title: 'Confirmation Needed',
+		  text: '{{ trans('backpack::crud.delete_confirm') }}<br><br>',
+		  textTrusted: true,
+		  icon: 'fa fa-question-circle',
+		  hide: false,
+		  stack: {
+		    'dir1': 'down',
+		    'modal': true,
+		    'firstpos1': 25
+		  },
+		  modules: {
+            // Animate: {
+            //   animate: true,
+            //   inClass: 'bounceIn',
+            //   outClass: 'bounceOut'
+            // },
+		    Confirm: {
+		      confirm: true,
+		      align: 'center',
+		      buttons: [{
+		          text: '{{ trans('backpack::crud.delete') }}',
+		          primary: true,
+		          click: function(notice) {
+		            $.ajax({
+					      url: route,
+					      type: 'DELETE',
+					      success: function(result) {
+					          if (result != 1) {
+					          	// Show an error alert
+					              PNotify.alert({
+					                  title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
+					                  text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
+					                  type: "notice"
+					              });
+					          } else {
+					              // Show a success alert with the result
+					              PNotify.alert({
+					                  title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
+					                  text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
+					                  type: "success"
+					              });
 
-		                  // Hide the modal, if any
-		                  $('.modal').modal('hide');
+					              // Hide the modal, if any
+					              $('.modal').modal('hide');
 
-		                  // Remove the details row, if it is open
-		                  if (row.hasClass("shown")) {
-		                      row.next().remove();
-		                  }
+					              // Remove the details row, if it is open
+					              if (row.hasClass("shown")) {
+					                  row.next().remove();
+					              }
 
-		                  // Remove the row from the datatable
-		                  row.remove();
+					              // Remove the row from the datatable
+					              row.remove();
+					          }
+					      },
+					      error: function(result) {
+					          // Show an alert with the result
+					          PNotify.alert({
+					              title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
+					              text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
+					              type: "notice"
+					          });
+					      }
+					  });
+		          }
+		        },
+		        {
+		          text: '{{ trans('backpack::crud.cancel') }}',
+		          click: function(notice) {
+		            notice.update({
+		              title: '{{ trans('backpack::crud.delete_confirmation_not_deleted_title') }}',
+		              text: '{{ trans('backpack::crud.delete_confirmation_not_deleted_message') }}',
+		              icon: true,
+		              type: 'info',
+		              delay: '1000',
+		              hide: true,
+		              modules: {
+		                Confirm: {
+		                  confirm: false
+		                },
+		                Buttons: {
+		                  closer: true,
+		                  sticker: true
+		                }
 		              }
-	              },
-	              error: function(result) {
-	                  // Show an alert with the result
-	                  PNotify.alert({
-	                      title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
-	                      text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
-	                      type: "notice"
-	                  });
-	              }
-	          });
-	      } else {
-	      	  // Show an alert telling the user we don't know what went wrong
-	          PNotify.alert({
-	              title: "{{ trans('backpack::crud.delete_confirmation_not_deleted_title') }}",
-	              text: "{{ trans('backpack::crud.delete_confirmation_not_deleted_message') }}",
-	              type: "info"
-	          });
-	      }
+		            });
+		          }
+		        }
+		      ]
+		    },
+		    Buttons: {
+		      closer: false,
+		      sticker: false
+		    },
+		    History: {
+		      history: false
+		    }
+		  }
+		});
       }
 	}
 
