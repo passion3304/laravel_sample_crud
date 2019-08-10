@@ -155,11 +155,10 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
       // override ajax error message
       $.fn.dataTable.ext.errMode = 'none';
       $('#crudTable').on('error.dt', function(e, settings, techNote, message) {
-          PNotify.alert({
+          new Noty({
               type: "error",
-              title: "{{ trans('backpack::crud.ajax_error_title') }}",
-              text: "{{ trans('backpack::crud.ajax_error_text') }}"
-          });
+              text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
+          }).show();
       });
 
       // make sure AJAX requests include XSRF token

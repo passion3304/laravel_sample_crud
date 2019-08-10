@@ -227,11 +227,10 @@
                                 }
                             };
                         } else {
-                            PNotify.alert({
-                              title: "Please choose an image file",
-                              text: "The file you've chosen does not look like an image.",
-                              type: "error"
-                            });
+                            new Noty({
+                                type: "error",
+                                text: "<strong>Please choose an image file</strong><br>The file you've chosen does not look like an image."
+                            }).show();
                         }
                     });
 

@@ -100,13 +100,10 @@
                             }
                         } catch(e){
                             if( $fake.val() ){
-                                PNotify.removeAll();
-                                PNotify.alert({
-                                    title: 'Whoops!',
-                                    text: 'Sorry we did not recognise that date format, please make sure it uses a yyyy mm dd combination',
-                                    type: 'error',
-                                    icon: false
-                                });
+                                new Noty({
+                                    type: "error",
+                                    text: "<strong>Whoops!</strong><br>Sorry we did not recognise that date format, please make sure it uses a yyyy mm dd combination"
+                                  }).show();
                             }
                         }
                     }

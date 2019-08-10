@@ -316,10 +316,10 @@ if (is_array($value)) {
                                     else {
                                         pDummy.show();
                                         pWrap.hide();
-                                        PNotify.alert({
-                                          text: videoJson.message,
-                                          type: "error"
-                                        });
+                                        new Noty({
+                                            type: "error",
+                                            text: videoJson.message
+                                        }).show();
                                     }
 
                                     videoParsing = false;
@@ -340,11 +340,10 @@ if (is_array($value)) {
 
                 $('form').on('submit', function(e){
                     if( videoParsing ){
-                        PNotify.alert({
-                          title: "Please wait.",
-                          text: "Video details are still loading, please wait a moment and try again.",
-                          type: "error"
-                        });
+                        new Noty({
+                            type: "error",
+                            text: "<strong>Please wait.</strong><br>Video details are still loading, please wait a moment or try again."
+                        }).show();
                         e.preventDefault();
                         return false;
                     }

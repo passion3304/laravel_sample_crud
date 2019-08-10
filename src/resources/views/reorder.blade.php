@@ -140,20 +140,16 @@ function tree_element($entry, $key, $all_entries, $crud)
             data: { tree: arraied },
         })
         .done(function() {
-            //console.log("success");
-            PNotify.alert({
-                        title: "{{ trans('backpack::crud.reorder_success_title') }}",
-                        text: "{{ trans('backpack::crud.reorder_success_message') }}",
-                        type: "success"
-                    });
+            new Noty({
+                type: "success",
+                text: "<strong>{{ trans('backpack::crud.reorder_success_title') }}</strong><br>{{ trans('backpack::crud.reorder_success_message') }}"
+            }).show();
           })
         .fail(function() {
-            //console.log("error");
-            PNotify.alert({
-                        title: "{{ trans('backpack::crud.reorder_error_title') }}",
-                        text: "{{ trans('backpack::crud.reorder_error_message') }}",
-                        type: "error"
-                    });
+            new Noty({
+                type: "error",
+                text: "<strong>{{ trans('backpack::crud.reorder_error_title') }}</strong><br>{{ trans('backpack::crud.reorder_error_message') }}"
+            }).show();
           })
         .always(function() {
             console.log("complete");

@@ -21,11 +21,10 @@
               type: 'POST',
               success: function(result) {
                   // Show an alert with the result
-                  PNotify.alert({
-                      title: "Entry cloned",
-                      text: "A new entry has been added, with the same information as this one.",
-                      type: "success"
-                  });
+                  new Noty({
+                    type: "success",
+                    text: "<strong>Entry cloned</strong><br>A new entry has been added, with the same information as this one."
+                  }).show();
 
                   // Hide the modal, if any
                   $('.modal').modal('hide');
@@ -36,11 +35,10 @@
               },
               error: function(result) {
                   // Show an alert with the result
-                  PNotify.alert({
-                      title: "Cloning failed",
-                      text: "The new entry could not be created. Please try again.",
-                      type: "notice"
-                  });
+                  new Noty({
+                    type: "warning",
+                    text: "<strong>Cloning failed</strong><br>The new entry could not be created. Please try again."
+                  }).show();
               }
           });
       }

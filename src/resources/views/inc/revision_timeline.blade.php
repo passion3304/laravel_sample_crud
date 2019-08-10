@@ -63,10 +63,10 @@
 
           // Animate the new revision in (by sliding)
           $('.timeline-item-wrap').first().addClass('fadein');
-          PNotify.alert({
-              text: '{{ trans('backpack::crud.revision_restored') }}',
-              type: 'success'
-          });
+          new Noty({
+              type: "success",
+              text: "{{ trans('backpack::crud.revision_restored') }}"
+          }).show();
         }
       });
   }

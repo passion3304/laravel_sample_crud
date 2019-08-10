@@ -14,7 +14,7 @@
 		var row = $("#crudTable a[data-route='"+route+"']").closest('tr');
 
 		swal({
-		  title: "{{ trans('backpack::base.warning') }}!",
+		  title: "{{ trans('backpack::base.warning') }}",
 		  text: "{{ trans('backpack::crud.delete_confirm') }}",
 		  icon: "warning",
 		  buttons: {
@@ -75,7 +75,7 @@
 		              	title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
 		              	text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
 		              	icon: "error",
-		              	timer: 2000,
+		              	timer: 1000,
 		              	buttons: false,
 		              });
 			      }

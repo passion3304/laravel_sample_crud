@@ -121,11 +121,10 @@
                             var item = {};
                             $scope.items.push(item);
                         } else {
-                            PNotify.alert({
-                                title: $scope.maxErrorTitle,
-                                text: $scope.maxErrorMessage,
-                                type: 'error'
-                            });
+                            new Noty({
+                                type: "error",
+                                text: "<strong>"+$scope.maxErrorTitle+"</strong><br>"+$scope.maxErrorMessage
+                            }).show();
                         }
                     }
                     else {

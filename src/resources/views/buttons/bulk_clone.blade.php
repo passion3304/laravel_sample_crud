@@ -9,11 +9,10 @@
 
 	      if (typeof crud.checkedItems === 'undefined' || crud.checkedItems.length == 0)
 	      {
-	      	PNotify.alert({
-	              title: "{{ trans('backpack::crud.bulk_no_entries_selected_title') }}",
-	              text: "{{ trans('backpack::crud.bulk_no_entries_selected_message') }}",
-	              type: "notice"
-	          });
+  	        new Noty({
+	          type: "warning",
+	          text: "<strong>{{ trans('backpack::crud.bulk_no_entries_selected_title') }}</strong><br>{{ trans('backpack::crud.bulk_no_entries_selected_message') }}"
+	        }).show();
 
 	      	return;
 	      }
@@ -22,36 +21,55 @@
 	      message = message.replace(":number", crud.checkedItems.length);
 
 	      // show confirm message
-	      if (confirm(message) == true) {
-	      		var ajax_calls = [];
-	      		var clone_route = "{{ url($crud->route) }}/bulk-clone";
+	      swal({
+			  title: "{{ trans('backpack::base.warning') }}",
+			  text: message,
+			  icon: "warning",
+			  buttons: {
+			  	cancel: {
+				  text: "{{ trans('backpack::crud.cancel') }}",
+				  value: null,
+				  visible: true,
+				  className: "bg-secondary",
+				  closeModal: true,
+				},
+			  	delete: {
+				  text: "Clone",
+				  value: true,
+				  visible: true,
+				  className: "bg-primary",
+				}
+			  },
+			}).then((value) => {
+				if (value) {
+					var ajax_calls = [];
+		      		var clone_route = "{{ url($crud->route) }}/bulk-clone";
 
-				// submit an AJAX delete call
-				$.ajax({
-					url: clone_route,
-					type: 'POST',
-					data: { entries: crud.checkedItems },
-					success: function(result) {
-					  // Show an alert with the result
-					  PNotify.alert({
-					      title: "Entries cloned",
-					      text: crud.checkedItems.length+" new entries have been added.",
-					      type: "success"
-					  });
+					// submit an AJAX delete call
+					$.ajax({
+						url: clone_route,
+						type: 'POST',
+						data: { entries: crud.checkedItems },
+						success: function(result) {
+						  // Show an alert with the result
+		    	          new Noty({
+				            type: "success",
+				            text: "<strong>Entries cloned</strong><br>"+crud.checkedItems.length+" new entries have been added."
+				          }).show();
 
-					  crud.checkedItems = [];
-					  crud.table.ajax.reload();
-					},
-					error: function(result) {
-					  // Show an alert with the result
-					  PNotify.alert({
-					      title: "Cloning failed",
-					      text: "One or more entries could not be created. Please try again.",
-					      type: "notice"
-					  });
-					}
-				});
-	      }
+						  crud.checkedItems = [];
+						  crud.table.ajax.reload();
+						},
+						error: function(result) {
+						  // Show an alert with the result
+		    	          new Noty({
+				            type: "danger",
+				            text: "<strong>Cloning failed</strong><br>One or more entries could not be created. Please try again."
+				          }).show();
+						}
+					});
+				}
+			});
       }
 	}
 </script>
