@@ -14,6 +14,7 @@
                 : url($prefix.$value))
         :''; // if validation failed, tha value will be base64, so no need to create a URL for it
 
+    $max_image_size_in_bytes = isset($field['max_image_size']) ? $field['max_image_size'] : -1;
 @endphp
 
   <div data-preview="#{{ $field['name'] }}"
@@ -187,7 +188,12 @@
                         }
                         file = files[0];
 
-                        if (/^image\/\w+$/.test(file.type)) {
+                        const maxImageSize = {{ $max_image_size_in_bytes }};
+                        if(maxImageSize > 0 && file.size > maxImageSize) {
+
+                            alert(`Please pick an image smaller than ${maxImageSize} bytes.`);
+                        } else if (/^image\/\w+$/.test(file.type)) {
+                            
                             fileReader.readAsDataURL(file);
                             fileReader.onload = function () {
                                 $uploadImage.val("");
