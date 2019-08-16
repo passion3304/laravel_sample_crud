@@ -22,6 +22,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.6.25] - 2019-08-xx
 
+### Added
+- merged #1952 - ```json``` column type;
+
 ### Fixed
 - merged #1906 fixes #1902 - save_and_back url redirected to the default language, instead of the current editing locale;
 - merged #1896 - default button view namespace is now ```crud::buttons```;
