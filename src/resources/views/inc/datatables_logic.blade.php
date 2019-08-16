@@ -65,13 +65,13 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
                       }
 
                       return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
-                                '<td style="vertical-align:top;"><strong>'+col.title.trim()+':'+'<strong></td> '+
-                                '<td style="padding-left:10px;padding-bottom:10px;">'+col.data+'</td>'+
+                                '<td style="vertical-align:top; border:none;"><strong>'+col.title.trim()+':'+'<strong></td> '+
+                                '<td style="padding-left:10px;padding-bottom:10px; border:none;">'+col.data+'</td>'+
                               '</tr>';
                   } ).join('');
 
                   return data ?
-                      $('<table class="table table-striped table-condensed m-b-0">').append( data ) :
+                      $('<table class="table table-hover m-b-0">').append( '<tbody>' + data + '</tbody>' ) :
                       false;
                 },
             }
