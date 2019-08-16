@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.25] - 2019-08-xx
+
+### Fixed
+- merged #1906 fixes #1902 - save_and_back url redirected to the default language, instead of the current editing locale;
+
+
 ## [3.6.24] - 2019-07-23
 
 ### Added
