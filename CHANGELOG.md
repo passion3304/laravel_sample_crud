@@ -26,7 +26,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - merged #1906 fixes #1902 - save_and_back url redirected to the default language, instead of the current editing locale;
 - merged #1896 - default button view namespace is now ```crud::buttons```;
 - merged #1921 - table column type can now output both arrays and objects;
-- merged #1852 - sync() method now allows pivot data;
+- merged #1852 - syncPivot() method now allows pivot data;
+- merged #1954 - semicolons on date_picker field js;
 
 
 ## [3.6.24] - 2019-07-23
