@@ -14,7 +14,28 @@
                 : url($prefix.$value))
         :''; // if validation failed, tha value will be base64, so no need to create a URL for it
 
-    $max_image_size_in_bytes = isset($field['max_image_size']) ? $field['max_image_size'] : -1;
+    function maximumServerUploadSizeInBytes() {
+        
+        $val = trim(ini_get('upload_max_filesize'));
+        $last = strtolower($val[strlen($val)-1]);
+
+        switch($last) {
+            // The 'G' modifier is available since PHP 5.1.0
+            case 'g':
+                $val = (int)$val * 1073741824;
+                break;
+            case 'm':
+                $val = (int)$val * 1048576;
+                break;
+            case 'k':
+                $val = (int)$val * 1024;
+                break;
+        }
+
+        return $val;
+    }
+
+    $max_image_size_in_bytes = isset($field['max_file_size']) ?? maximumServerUploadSizeInBytes();
 @endphp
 
   <div data-preview="#{{ $field['name'] }}"
