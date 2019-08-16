@@ -8,6 +8,13 @@
     }
 
     $field_language = isset($field['date_picker_options']['language'])?$field['date_picker_options']['language']:\App::getLocale();
+
+    if (!isset($field['attributes']['style'])) {
+        $field['attributes']['style'] = 'background-color: white!important;';
+    }
+    if (!isset($field['attributes']['readonly'])) {
+        $field['attributes']['readonly'] = 'readonly';
+    }
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -83,10 +90,12 @@
                     $picker.bootstrapDP('update', preparedDate);
                 }
 
-                $fake.on('keydown', function(e){
-                    e.preventDefault();
-                    return false;
-                });
+                // prevent users from typing their own date
+                // since the js plugin does not support it
+                // $fake.on('keydown', function(e){
+                //     e.preventDefault();
+                //     return false;
+                // });
 
                 $picker.on('show hide change', function(e){
                     if( e.date ){

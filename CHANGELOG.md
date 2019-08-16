@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - merged #1921 - table column type can now output both arrays and objects;
 - merged #1852 - syncPivot() method now allows pivot data;
 - merged #1954 - semicolons on date_picker field js;
+- fixes #1910 - allows keyboard use on date_picker field type;
 
 
 ## [3.6.24] - 2019-07-23
