@@ -140,7 +140,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
         $this->crudPanel->addButtonFromView($expectedButton->stack, $expectedButton->name, $viewName, $expectedButton->content);
 
-        $backpackButtonViewPackage = 'vendor.backpack.crud.buttons.';
+        $backpackButtonViewPackage = 'crud::buttons.';
         $actualButton = $this->crudPanel->buttons->last();
 
         $this->assertEquals($expectedButton->stack, $actualButton->stack);
