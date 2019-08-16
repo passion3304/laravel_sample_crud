@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - merged #1852 - syncPivot() method now allows pivot data;
 - merged #1954 - semicolons on date_picker field js;
 - merges #1962 fixes #1910 - allows keyboard use on date_picker field type;
+- merges #1945 - select_and_order did not have its default values after 2 saves;
 
 
 ## [3.6.24] - 2019-07-23
