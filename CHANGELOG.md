@@ -20,11 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.27] - 2019-08-xx
+## [3.6.27] - 2019-08-17
 
 ### Fixed
 - merged #1634 - using closest instead of parents for datetime_picker field type;
-
+- merged #1594 - fixes ```upload_multiple``` field error when casting to array;
 
 ## [3.6.26] - 2019-08-17
 
