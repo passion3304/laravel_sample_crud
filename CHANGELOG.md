@@ -20,10 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.26] - 2019-08-xx
+## [3.6.26] - 2019-08-17
 
 ### Added
 - merged #1795 - adds a ```removeButtons()``` method to the CRUD API, which allows developers to remove multiple buttons in one go;
+- merged #1965 - adds a ```multiple``` attribute for ```select2_multiple``` field, which allows developers to force the user to only select one item, even though the relationship is n-n;
 
 ### Fixed
 - merged #1964, fixes #1836 - allows carbon immutable dates;
