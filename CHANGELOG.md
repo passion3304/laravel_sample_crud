@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.25] - 2019-08-17
+## [3.6.26] - 2019-08-xx
 
 ### Fixed
 - merged #1964, fixes #1836 - allows carbon immutable dates;
