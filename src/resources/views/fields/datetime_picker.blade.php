@@ -57,7 +57,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\CarbonInterfa
             $('[data-bs-datetimepicker]').each(function(){
 
                 var $fake = $(this),
-                $field = $fake.parents('.form-group').find('input[type="hidden"]'),
+                $field = $fake.closest('.form-group').find('input[type="hidden"]'),
                 $customConfig = $.extend({
                     format: 'DD/MM/YYYY HH:mm',
                     defaultDate: $field.val(),
@@ -68,7 +68,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\CarbonInterfa
 
                 $customConfig.locale = $customConfig['language'];
                 delete($customConfig['language']);
-                $picker = $fake.datetimepicker($customConfig);
+                var $picker = $fake.datetimepicker($customConfig);
 
                 // $fake.on('keydown', function(e){
                 //     e.preventDefault();
