@@ -20,7 +20,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.6.25] - 2019-08-xx
+## [3.6.25] - 2019-08-17
 
 ### Added
 - merged #1952 - ```json``` column type;
