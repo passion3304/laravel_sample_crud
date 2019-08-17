@@ -22,6 +22,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ## [3.6.25] - 2019-08-17
 
+### Fixed
+- merged #1964, fixes #1836 - allows carbon immutable dates;
+
+
+## [3.6.25] - 2019-08-17
+
 ### Added
 - merged #1952 - ```json``` column type;
 
