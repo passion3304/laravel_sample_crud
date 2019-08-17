@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.27] - 2019-08-xx
+
+### Fixed
+- merged #1634 - using closest instead of parents for datetime_picker field type;
+
+
 ## [3.6.26] - 2019-08-17
 
 ### Added
