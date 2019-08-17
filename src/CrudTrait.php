@@ -219,7 +219,11 @@ trait CrudTrait
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {
         $request = \Request::instance();
-        $attribute_value = json_decode($this->{$attribute_name}, true) ?? [];
+        if (!is_array($this->{$attribute_name})) {
+            $attribute_value = json_decode($this->{$attribute_name}, true) ?? [];
+        } else {
+            $attribute_value = $this->{$attribute_name};
+        }
         $files_to_clear = $request->get('clear_'.$attribute_name);
 
         // if a file has been marked for removal,

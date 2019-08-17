@@ -6,7 +6,11 @@
 	{{-- Show the file name and a "Clear" button on EDIT form. --}}
 	@if (isset($field['value']))
 	@php
-		$values = json_decode($field['value'], true) ?? [];
+		if (is_string($field['value'])) {
+			$values = json_decode($field['value'], true) ?? [];
+		} else {
+			$values = $field['value'];
+		}
 	@endphp
 	@if (count($values))
     <div class="well well-sm file-preview-container">
