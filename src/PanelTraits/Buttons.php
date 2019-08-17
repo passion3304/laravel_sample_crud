@@ -134,6 +134,19 @@ trait Buttons
         });
     }
 
+    /**
+     * @param array $names Button names
+     * @param string|null $stack Optional stack name.
+     */
+    public function removeButtons($names, $stack = null)
+    {
+        if (! empty($names)) {
+            foreach ($names as $name) {
+                $this->removeButton($name, $stack);
+            }
+        }
+    }
+
     public function removeAllButtons()
     {
         $this->buttons = collect([]);
