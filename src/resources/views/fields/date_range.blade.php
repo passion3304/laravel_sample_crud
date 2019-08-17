@@ -9,7 +9,7 @@
             $formattedDate = null;
             if (isset($entry) && !empty($entry->{$dateFieldName})) {
                 $dateField = $entry->{$dateFieldName};
-                if ($dateField instanceof \Carbon\Carbon || $dateField instanceof \Jenssegers\Date\Date) {
+                if ($dateField instanceof \Carbon\CarbonInterface || $dateField instanceof \Jenssegers\Date\Date) {
                     $formattedDate = $dateField->format('Y-m-d H:i:s');
                 } else {
                     $formattedDate = date('Y-m-d H:i:s', strtotime($entry->{$dateFieldName}));

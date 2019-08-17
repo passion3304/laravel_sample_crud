@@ -8,7 +8,7 @@
     <div class="well well-sm">
         @if (isset($field['disk']))
         @if (isset($field['temporary']))
-            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->temporaryUrl(array_get($field, 'prefix', '').$field['value'], Carbon\Carbon::now()->addMinutes($field['temporary'])))) }}">
+            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->temporaryUrl(array_get($field, 'prefix', '').$field['value'], Carbon\CarbonInterface::now()->addMinutes($field['temporary'])))) }}">
         @else
             <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->url(array_get($field, 'prefix', '').$field['value']))) }}">
         @endif
