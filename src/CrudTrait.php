@@ -191,7 +191,7 @@ trait CrudTrait
         if ($request->hasFile($attribute_name) && $request->file($attribute_name)->isValid()) {
             // 1. Generate a new file name
             $file = $request->file($attribute_name);
-            $new_file_name = md5($file->getClientOriginalName().time()).'.'.$file->getClientOriginalExtension();
+            $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
 
             // 2. Move the new file to the correct path
             $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
@@ -242,7 +242,7 @@ trait CrudTrait
             foreach ($request->file($attribute_name) as $file) {
                 if ($file->isValid()) {
                     // 1. Generate a new file name
-                    $new_file_name = md5($file->getClientOriginalName().time()).'.'.$file->getClientOriginalExtension();
+                    $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
 
                     // 2. Move the new file to the correct path
                     $file_path = $file->storeAs($destination_path, $new_file_name, $disk);

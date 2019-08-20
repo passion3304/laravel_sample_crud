@@ -26,6 +26,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Added
 - merged #1750 - localization for select2 filters;
 
+### Fixed
+- fixed #1762 - uploaded have unique file names even if the same file is submitted twice in the same form;
+
 
 ## [3.6.27] - 2019-08-17
 
