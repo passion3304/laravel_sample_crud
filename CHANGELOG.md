@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+
+## [3.6.28] - 2019-08-20
+
+### Added
+- merged #1750 - localization for select2 filters;
+
+
 ## [3.6.27] - 2019-08-17
 
 ### Fixed
