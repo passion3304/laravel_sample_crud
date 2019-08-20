@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 ### Fixed
 - fixed #1762 - uploaded have unique file names even if the same file is submitted twice in the same form;
+- fixed #1652 - small ```table``` field and ```table``` column bugs when inserting empty last rows;
 
 
 ## [3.6.27] - 2019-08-17
@@ -35,6 +36,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - merged #1634 - using closest instead of parents for datetime_picker field type;
 - merged #1594 - fixes ```upload_multiple``` field error when casting to array;
+
 
 ## [3.6.26] - 2019-08-17
 

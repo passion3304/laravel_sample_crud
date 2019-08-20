@@ -28,7 +28,7 @@
                             
                             {{ $tableRow[$tableColumnKey] }}
                         
-                        @elseif( property_exists($tableRow, $tableColumnKey) )
+                        @elseif( is_object($tableRow) && property_exists($tableRow, $tableColumnKey) )
                         
                             {{ $tableRow->{$tableColumnKey} }}
                         
