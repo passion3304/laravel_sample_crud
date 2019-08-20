@@ -29,6 +29,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - fixed #1762 - uploaded have unique file names even if the same file is submitted twice in the same form;
 - fixed #1652 - small ```table``` field and ```table``` column bugs when inserting empty last rows;
+- adresses #1224 - ```select2_from_array``` with multiple now shows empty option when all are unselected;
 
 
 ## [3.6.27] - 2019-08-17
