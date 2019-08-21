@@ -35,12 +35,12 @@
                 <tr>
 
                     @foreach( $field['columns'] as $prop )
-                    <th style="font-weight: 600!important;">
+                    <th class="bg-light">
                         {{ $prop }}
                     </th>
                     @endforeach
-                    <th class="text-center" ng-if="max == -1 || max > 1"> {{-- <i class="fa fa-sort"></i> --}} </th>
-                    <th class="text-center" ng-if="max == -1 || max > 1"> {{-- <i class="fa fa-trash"></i> --}} </th>
+                    <th class="bg-light" ng-if="max == -1 || max > 1"></th>
+                    <th class="bg-light" ng-if="max == -1 || max > 1"></th>
                 </tr>
             </thead>
 
@@ -53,11 +53,11 @@
                         <input class="form-control form-control-sm" type="text" ng-model="item.{{ $prop }}">
                     </td>
                     @endforeach
-                    <td ng-if="max == -1 || max > 1">
-                        <span class="btn btn-sm btn-default sort-handle"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
+                    <td ng-if="max == -1 || max > 1" class="text-right">
+                        <span class="btn btn-sm btn-light sort-handle"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
                     </td>
-                    <td ng-if="max == -1 || max > 1">
-                        <button ng-hide="min > -1 && $index < min" class="btn btn-sm btn-default" type="button" ng-click="removeItem(item);"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
+                    <td ng-if="max == -1 || max > 1" class="text-left">
+                        <button ng-hide="min > -1 && $index < min" class="btn btn-sm btn-light" type="button" ng-click="removeItem(item);"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
                     </td>
                 </tr>
 
@@ -66,7 +66,7 @@
         </table>
 
         <div class="array-controls btn-group m-t-10">
-            <button ng-if="max == -1 || items.length < max" class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> {{trans('backpack::crud.add')}} {{ $item_name }}</button>
+            <button ng-if="max == -1 || items.length < max" class="btn btn-sm btn-light" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> {{trans('backpack::crud.add')}} {{ $item_name }}</button>
         </div>
 
     </div>
