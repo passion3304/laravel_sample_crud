@@ -1,10 +1,9 @@
 {{-- Show the errors, if any --}}
 @if ($crud->groupedErrorsEnabled() && $errors->any())
-    <div class="callout callout-danger">
-        <h4>{{ trans('backpack::crud.please_fix') }}</h4>
-        <ul>
+    <div class="alert alert-danger pb-0">
+        <ul class="list-unstyled">
             @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li><i class="fa fa-info-circle"></i> {{ $error }}</li>
             @endforeach
         </ul>
     </div>

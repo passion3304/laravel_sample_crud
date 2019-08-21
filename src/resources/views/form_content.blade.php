@@ -109,11 +109,12 @@
                         $('[name="' + normalizedProperty + '"]'),
                         container = field.parents('.form-group');
 
-            container.addClass('has-error');
+            container.addClass('text-danger');
+            container.children('input, textarea').addClass('is-invalid');
 
             $.each(messages, function(key, msg){
                 // highlight the input that errored
-                var row = $('<div class="help-block">' + msg + '</div>');
+                var row = $('<div class="invalid-feedback">' + msg + '</div>');
                 row.appendTo(container);
 
                 // highlight its parent tab
