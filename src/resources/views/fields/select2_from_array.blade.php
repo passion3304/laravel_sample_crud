@@ -1,4 +1,7 @@
 <!-- select2 from array -->
+@php
+    echo '<pre>'; var_dump($field); echo '</pre>';
+@endphp
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     <select
@@ -71,6 +74,10 @@
                 {
                     $(obj).select2({
                         theme: "bootstrap"
+                    }).on('select2:unselect', function(e) {
+                        if ($(this).attr('multiple') && $(this).val().length == 0) {
+                            $(this).val(null).trigger('change');
+                        }
                     });
                 }
             });

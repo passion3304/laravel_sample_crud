@@ -45,6 +45,10 @@
 @push('crud_list_scripts')
 	<!-- include select2 js-->
     <script src="{{ asset('vendor/backpack/select2/select2.js') }}"></script>
+    @if (app()->getLocale() !== 'en')
+    <script src="{{ asset('vendor/backpack/select2/select2_locale_' . app()->getLocale() . '.js') }}"></script>
+    @endif
+    
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box

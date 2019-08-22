@@ -19,6 +19,13 @@
         $items = '[]';
     }
 
+    // define how an empty row should look like (all columns blank)
+    $empty_row = $field['columns'];
+    foreach ($field['columns'] as $key => $column) {
+        $empty_row[$key] = '';
+    }
+    $empty_row = json_encode($empty_row);
+
 ?>
 <div ng-app="backPackTableApp" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
@@ -29,7 +36,7 @@
 
     <div class="array-container form-group">
 
-        <table class="table table-striped table-sm m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ $items }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'">
+        <table class="table table-sm table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ $items }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'; emptyRow='{{ $empty_row }}';">
 
             <thead>
                 <tr>
@@ -118,8 +125,7 @@
 
                     if( $scope.max > -1 ){
                         if( $scope.items.length < $scope.max ){
-                            var item = {};
-                            $scope.items.push(item);
+                            $scope.items.push(JSON.parse($scope.emptyRow));
                         } else {
                             new Noty({
                                 type: "error",
@@ -128,8 +134,7 @@
                         }
                     }
                     else {
-                        var item = {};
-                        $scope.items.push(item);
+                        $scope.items.push(JSON.parse($scope.emptyRow));
                     }
                 }
 

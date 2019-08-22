@@ -3,7 +3,7 @@
 <?php
 // if the column has been cast to Carbon or Date (using attribute casting)
 // get the value as a date string
-if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $field['value'] instanceof \Jenssegers\Date\Date )) {
+if (isset($field['value']) && ( $field['value'] instanceof \Carbon\CarbonInterface )) {
     $field['value'] = $field['value']->format('Y-m-d H:i:s');
 }
 
@@ -57,7 +57,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
             $('[data-bs-datetimepicker]').each(function(){
 
                 var $fake = $(this),
-                $field = $fake.parents('.form-group').find('input[type="hidden"]'),
+                $field = $fake.closest('.form-group').find('input[type="hidden"]'),
                 $customConfig = $.extend({
                     format: 'DD/MM/YYYY HH:mm',
                     defaultDate: $field.val(),
@@ -68,7 +68,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $fi
 
                 $customConfig.locale = $customConfig['language'];
                 delete($customConfig['language']);
-                $picker = $fake.datetimepicker($customConfig);
+                var $picker = $fake.datetimepicker($customConfig);
 
                 // $fake.on('keydown', function(e){
                 //     e.preventDefault();

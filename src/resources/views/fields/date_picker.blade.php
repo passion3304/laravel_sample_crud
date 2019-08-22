@@ -3,11 +3,18 @@
 <?php
     // if the column has been cast to Carbon or Date (using attribute casting)
     // get the value as a date string
-    if (isset($field['value']) && ( $field['value'] instanceof \Carbon\Carbon || $field['value'] instanceof \Jenssegers\Date\Date )) {
+    if (isset($field['value']) && ( $field['value'] instanceof \Carbon\CarbonInterface )) {
         $field['value'] = $field['value']->format('Y-m-d');
     }
 
     $field_language = isset($field['date_picker_options']['language'])?$field['date_picker_options']['language']:\App::getLocale();
+
+    if (!isset($field['attributes']['style'])) {
+        $field['attributes']['style'] = 'background-color: white!important;';
+    }
+    if (!isset($field['attributes']['readonly'])) {
+        $field['attributes']['readonly'] = 'readonly';
+    }
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -74,19 +81,21 @@
                     // varying behavior across browsers. Splitting and passing in parts of the date
                     // manually gives us more defined behavior.
                     // See https://stackoverflow.com/questions/2587345/why-does-date-parse-give-incorrect-results
-                    var parts = $existingVal.split('-')
-                    var year = parts[0]
-                    var month = parts[1] - 1 // Date constructor expects a zero-indexed month
-                    var day = parts[2]
+                    var parts = $existingVal.split('-');
+                    var year = parts[0];
+                    var month = parts[1] - 1; // Date constructor expects a zero-indexed month
+                    var day = parts[2];
                     preparedDate = new Date(year, month, day).format($customConfig.format);
                     $fake.val(preparedDate);
                     $picker.bootstrapDP('update', preparedDate);
                 }
 
-                $fake.on('keydown', function(e){
-                    e.preventDefault();
-                    return false;
-                });
+                // prevent users from typing their own date
+                // since the js plugin does not support it
+                // $fake.on('keydown', function(e){
+                //     e.preventDefault();
+                //     return false;
+                // });
 
                 $picker.on('show hide change', function(e){
                     if( e.date ){

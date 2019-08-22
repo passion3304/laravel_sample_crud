@@ -140,7 +140,7 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
         $this->crudPanel->addButtonFromView($expectedButton->stack, $expectedButton->name, $viewName, $expectedButton->content);
 
-        $backpackButtonViewPackage = 'vendor.backpack.crud.buttons.';
+        $backpackButtonViewPackage = 'crud::buttons.';
         $actualButton = $this->crudPanel->buttons->last();
 
         $this->assertEquals($expectedButton->stack, $actualButton->stack);
@@ -157,6 +157,32 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
         $this->assertEquals(count($this->defaultButtonNames) - 1, count($this->crudPanel->buttons));
         $this->assertNull($this->getButtonByName($buttonName));
+    }
+
+    public function testRemoveButtons()
+    {
+        $buttons = [
+            $this->defaultButtonNames[0],
+            $this->defaultButtonNames[1],
+        ];
+
+        $this->crudPanel->removeButtons($buttons);
+
+        $this->assertEquals(count($this->defaultButtonNames) - 2, count($this->crudPanel->buttons));
+        $this->assertNull($this->getButtonByName($buttons[0]));
+        $this->assertNull($this->getButtonByName($buttons[1]));
+    }
+
+    public function testRemoveUnknownButtons()
+    {
+        $buttonNames = [
+            'someButtonName',
+            'someOtherButtonName',
+        ];
+
+        $this->crudPanel->removeButtons($buttonNames);
+
+        $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons));
     }
 
     public function testRemoveUnknownButton()

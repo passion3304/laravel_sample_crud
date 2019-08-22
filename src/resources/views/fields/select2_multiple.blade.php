@@ -5,6 +5,7 @@
     } else {
         $options = call_user_func($field['options'], $field['model']::query());
     }
+    $multiple = isset($field['multiple']) && $field['multiple']===false ? '': 'multiple';
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -14,7 +15,7 @@
         name="{{ $field['name'] }}[]"
         style="width: 100%"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_multiple'])
-        multiple>
+        {{$multiple}}>
 
         @if (isset($field['allows_null']) && $field['allows_null']==true)
             <option value="">-</option>

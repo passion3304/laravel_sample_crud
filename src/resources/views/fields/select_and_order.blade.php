@@ -7,7 +7,7 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <div class="row">
-        <div class="col">
+        <div class="col-md-12">
         <ul id="{{ $field['name'] }}_selected" class="{{ $field['name'] }}_connectedSortable select_and_order_selected pull-left">
             @if(old($field["name"]))
                 @if(is_array(old($field["name"])))
@@ -42,16 +42,18 @@
         </ul>
 
         {{-- The results will be stored here --}}
-        <div id="{{ $field['name'] }}_results"></div>
+        <div id="{{ $field['name'] }}_results">
+            @foreach ($values as $key)
+                <input type="hidden" name="{{ $field['name'] }}[]" value="{{ $key }}">
+            @endforeach
         </div>
     </div>
-
-
 
     {{-- HINT --}}
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
+    </div>
 </div>
 
 
