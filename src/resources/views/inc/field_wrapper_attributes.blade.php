@@ -4,7 +4,7 @@ $required = (isset($field['attributes']['required']) || (isset($action) && $crud
 
 @if (isset($field['wrapperAttributes']))
     @if (!isset($field['wrapperAttributes']['class']))
-        class="form-group col-xs-12 {{ $required }}"
+        class="form-group col-sm-12 {{ $required }}"
     @else
         class="{{ $field['wrapperAttributes']['class'] }} {{ $required }}"
     @endif
@@ -19,5 +19,5 @@ $required = (isset($field['attributes']['required']) || (isset($action) && $crud
         @endif
     @endforeach
 @else
-    class="form-group col-xs-12{{ $required }}"
+    class="form-group col-sm-12{{ $required }}"
 @endif

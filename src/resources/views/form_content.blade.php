@@ -10,7 +10,7 @@
     <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
   <div class="card">
-    <div class="card-body">
+    <div class="card-body row">
       @include('crud::inc.show_fields', ['fields' => $fields])
     </div>
   </div>
