@@ -13,13 +13,13 @@
 
 @section('header')
 	<section class="container-fluid">
-	 <h1>
+	 <h2>
         <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
         <small>{!! $crud->getSubheading() ?? mb_ucfirst(trans('backpack::crud.preview')).' '.$crud->entity_name !!}.</small>
         @if ($crud->hasAccess('list'))
           <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
         @endif
-     </h1>
+     </h2>
     </section>
 @endsection
 

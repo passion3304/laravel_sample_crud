@@ -47,7 +47,7 @@
 
 @section('header')
     <section class="container-fluid">
-      <h1>File Manager</h1>
+      <h2>File Manager</h2>
     </section>
 @endsection
 

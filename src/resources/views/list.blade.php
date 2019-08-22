@@ -13,10 +13,10 @@
 
 @section('header')
   <div class="container-fluid">
-    <h1>
+    <h2>
       <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
       <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
-    </h1>
+    </h2>
   </div>
 @endsection
 
