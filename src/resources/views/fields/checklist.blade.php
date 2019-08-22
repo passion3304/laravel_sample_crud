@@ -8,7 +8,7 @@
         @foreach ($field['model']::all() as $connected_entity_entry)
             <div class="col-sm-4">
                 <div class="checkbox">
-                  <label>
+                  <label class="font-weight-normal">
                     <input type="checkbox"
                       name="{{ $field['name'] }}[]"
                       value="{{ $connected_entity_entry->getKey() }}"

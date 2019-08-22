@@ -1,5 +1,5 @@
 <!-- dependencyJson -->
-<div class="form-group col-xs-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}" @include('crud::inc.field_wrapper_attributes')>
+<div class="form-group col-sm-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}" @include('crud::inc.field_wrapper_attributes')>
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <?php
@@ -62,7 +62,7 @@
 
       <div class="row">
 
-          <div class="col-xs-12">
+          <div class="col-sm-12">
               <label>{!! $primary_dependency['label'] !!}</label>
           </div>
       </div>
@@ -86,7 +86,7 @@
       @foreach ($primary_dependency['model']::all() as $connected_entity_entry)
           <div class="col-sm-{{ isset($primary_dependency['number_columns']) ? intval(12/$primary_dependency['number_columns']) : '4'}}">
               <div class="checkbox">
-                  <label>
+                  <label class="font-weight-normal">
                       <input type="checkbox"
                           data-id = "{{ $connected_entity_entry->id }}"
                           class = 'primary_list'
@@ -112,7 +112,7 @@
       </div>
 
       <div class="row">
-          <div class="col-xs-12">
+          <div class="col-sm-12">
               <label>{!! $secondary_dependency['label'] !!}</label>
           </div>
       </div>
@@ -135,7 +135,7 @@
           @foreach ($secondary_dependency['model']::all() as $connected_entity_entry)
               <div class="col-sm-{{ isset($secondary_dependency['number_columns']) ? intval(12/$secondary_dependency['number_columns']) : '4'}}">
                   <div class="checkbox">
-                      <label>
+                      <label class="font-weight-normal">
                       <input type="checkbox"
                           class = 'secondary_list'
                           data-id = "{{ $connected_entity_entry->id }}"
