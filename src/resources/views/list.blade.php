@@ -39,7 +39,7 @@
             @endif
           </div>
           <div class="col-6">
-              <div id="datatable_search_stack" class="pull-right"></div>
+              <div id="datatable_search_stack" class="float-right"></div>
           </div>
         </div>
 
@@ -91,7 +91,7 @@
           <div id="bottom_buttons" class="hidden-print">
             @include('crud::inc.button_stack', ['stack' => 'bottom'])
 
-            <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
+            <div id="datatable_button_stack" class="float-right text-right hidden-xs"></div>
           </div>
           @endif
 
