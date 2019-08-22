@@ -17,7 +17,7 @@
         @endif
             {{ $field['value'] }}
         </a>
-    	<a id="{{ $field['name'] }}_file_clear_button" href="#" class="btn btn-default btn-xs pull-right" title="Clear file"><i class="fa fa-remove"></i></a>
+    	<a id="{{ $field['name'] }}_file_clear_button" href="#" class="btn btn-default btn-sm pull-right" title="Clear file"><i class="fa fa-remove"></i></a>
     	<div class="clearfix"></div>
     </div>
     @endif

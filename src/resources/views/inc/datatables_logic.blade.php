@@ -50,8 +50,9 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
                     header: function ( row ) {
                         // show the content of the first column
                         // as the modal header
-                        var data = row.data();
-                        return data[0];
+                        // var data = row.data();
+                        // return data[0];
+                        return '';
                     }
                 } ),
                 renderer: function ( api, rowIdx, columns ) {

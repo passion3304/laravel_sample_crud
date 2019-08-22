@@ -44,12 +44,13 @@
 	#crudTable.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before {
 		background-color: transparent;
 		color: #636161;
-		font-family: 'FontAwesome';
+		font-family: 'LineAwesome';
 		width: 16px;
 		content: "\f1c4";
 		font-size: 21px;
 		box-shadow: none;
-		margin-top: 3px;
+		margin-top: 12px;
+		border: none;
 	}
 
 	.dt-buttons {
@@ -170,6 +171,11 @@
 	    width: auto;
 	    border-radius: 25px;
 	    /*border: none;*/
+	}
+
+	/* datatale modal overwrites */
+	.dtr-bs-modal .modal-body {
+		padding: 0;
 	}
 
 	/* datatable header overwrites */
