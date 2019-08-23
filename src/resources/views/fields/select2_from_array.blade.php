@@ -1,7 +1,4 @@
 <!-- select2 from array -->
-@php
-    echo '<pre>'; var_dump($field); echo '</pre>';
-@endphp
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     <select

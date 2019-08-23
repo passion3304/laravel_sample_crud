@@ -20,6 +20,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.29] - 2019-08-23
+
+### Fixed
+- fixes #1972 - removed var_dump from select2_from_array field;
+
 
 ## 4.0.0 - 2019-08-xx
 
