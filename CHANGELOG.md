@@ -1,29 +1,12 @@
 # Changelog
 
-All Notable changes to `Backpack CRUD` will be documented in this file
+All Notable changes to `Backpack CRUD` will be documented in this file.
 
-## NEXT - YYYY-MM-DD
-
-### Added
-- Nothing
-
-### Deprecated
-- Nothing
-
-### Fixed
-- Nothing
-
-### Removed
-- Nothing
-
-### Security
-- Nothing
 -----------
 
-## [3.6.29] - 2019-08-23
+# Backpack Version 4
 
-### Fixed
-- fixes #1972 - removed var_dump from select2_from_array field;
+-----------
 
 
 ## 4.0.0 - 2019-08-xx
@@ -33,6 +16,16 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 
 
 -----------
+
+# Backpack Version 3
+
+-----------
+
+## [3.6.29] - 2019-08-23
+
+### Fixed
+- fixes #1972 - removed var_dump from select2_from_array field;
+
 
 ## [3.6.28] - 2019-08-20
 
@@ -1171,6 +1164,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;
 
+
 ## [3.1.60] - 2017-02-13
 
 ### Fixed
@@ -1731,9 +1725,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - issue #58 where select_from_array automatically selected an item with value zero;
 - custom html attributes are now given to the field in a separate array, 'attributes';
 
+-----------
 
-## ----------------------------------------------------------------------------
+# Backpack Version 2
 
+-----------
 
 ## [2.0.24] - 2016-07-13
 
