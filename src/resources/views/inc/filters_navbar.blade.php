@@ -68,7 +68,7 @@
           $(".navbar-filters li[filter-name]").each(function () {
             if ($(this).hasClass('active')) {
               anyActiveFilters = true;
-              console.log('ACTIVE FILTER');
+              // console.log('ACTIVE FILTER');
             }
           });
 

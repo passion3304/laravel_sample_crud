@@ -116,7 +116,7 @@
     @endpush
 
     @push('crud_fields_scripts')
-    <script src="{{ asset('vendor/adminlte/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
     @endpush
 
 @endif

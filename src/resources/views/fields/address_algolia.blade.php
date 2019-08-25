@@ -59,7 +59,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-    <script src="https://cdn.jsdelivr.net/npm/places.js@1.11.0"></script>
+    <script src="{{ asset('packages/places.js/dist/cdn/places.min.js') }}"></script>
     <script>
         jQuery(document).ready(function($){
             window.AlgoliaPlaces = window.AlgoliaPlaces || {};

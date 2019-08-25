@@ -33,8 +33,8 @@
 
 @push('crud_list_styles')
     <!-- include select2 css-->
-    <link href="{{ asset('vendor/backpack/select2/select2.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('vendor/backpack/select2/select2-bootstrap-dick.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
 	  .form-inline .select2-container {
 	    display: inline-block;
@@ -58,9 +58,9 @@
 
 @push('crud_list_scripts')
 	<!-- include select2 js-->
-    <script src="{{ asset('vendor/backpack/select2/select2.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('vendor/backpack/select2/select2_locale_' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
     @endif
     
     <script>
@@ -71,7 +71,8 @@
                 {
                     $(obj).select2({
                     	allowClear: true,
-    					closeOnSelect: false
+    					closeOnSelect: false,
+    					theme: "bootstrap",
                     });
                 }
             });

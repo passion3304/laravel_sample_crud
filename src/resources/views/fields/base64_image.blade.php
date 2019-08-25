@@ -1,4 +1,4 @@
-  <div class="form-group col-xs-12 image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}" data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}" @include('crud::inc.field_wrapper_attributes')>
+  <div class="form-group col-sm-12 image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}" data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}" @include('crud::inc.field_wrapper_attributes')>
     <div>
         <label>{!! $field['label'] !!}</label>
         @include('crud::inc.field_translatable_icon')
@@ -58,8 +58,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        {{-- YOUR CSS HERE --}}
-        <link href="{{ asset('vendor/backpack/cropper/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('packages/cropperjs/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
         <style>
             .hide {
                 display: none;
@@ -109,8 +108,8 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        {{-- YOUR JS HERE --}}
-        <script src="{{ asset('vendor/backpack/cropper/dist/cropper.min.js') }}"></script>
+        <script src="{{ asset('packages/cropperjs/dist/cropper.min.js') }}"></script>
+        <script src="{{ asset('packages/jquery-cropper/dist/jquery-cropper.min.js') }}"></script>
         <script>
             jQuery(document).ready(function($) {
                 // Loop through all instances of the image field

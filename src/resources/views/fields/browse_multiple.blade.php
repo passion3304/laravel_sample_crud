@@ -17,7 +17,7 @@ if (!$multiple && is_array($value)) {
                 <div class="input-group input-group-sm">
                     <input type="text" name="{{ $field['name'] }}[]" value="{{ $v }}" @include('crud::inc.field_attributes') readonly>
                     <div class="input-group-btn">
-                        <button type="button" class="browse_{{ $field['name'] }} remove btn btn-default">
+                        <button type="button" class="browse_{{ $field['name'] }} remove btn btn-sm btn-light">
                             <i class="fa fa-trash"></i>
                         </button>
                     </div>
@@ -29,11 +29,11 @@ if (!$multiple && is_array($value)) {
     @endif
 
     <div class="btn-group" role="group" aria-label="..." style="margin-top: 3px;">
-        <button type="button" class="browse_{{ $field['name'] }} popup btn btn-default">
+        <button type="button" class="browse_{{ $field['name'] }} popup btn btn-sm btn-light">
             <i class="fa fa-cloud-upload"></i>
             {{ trans('backpack::crud.browse_uploads') }}
         </button>
-        <button type="button" class="browse_{{ $field['name'] }} clear btn btn-default">
+        <button type="button" class="browse_{{ $field['name'] }} clear btn btn-sm btn-light">
             <i class="fa fa-eraser"></i>
             {{ trans('backpack::crud.clear') }}
         </button>
@@ -49,7 +49,7 @@ if (!$multiple && is_array($value)) {
     <div class="input-group input-group-sm">
         <input type="text" name="{{ $field['name'] }}[]" @include('crud::inc.field_attributes') readonly>
         <div class="input-group-btn">
-            <button type="button" class="browse_{{ $field['name'] }} remove btn btn-default">
+            <button type="button" class="browse_{{ $field['name'] }} remove btn btn-sm btn-light">
                 <i class="fa fa-trash"></i>
             </button>
         </div>
@@ -63,11 +63,10 @@ if (!$multiple && is_array($value)) {
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <!-- include browse server css -->
-        <link rel="stylesheet" type="text/css"
-              href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="{{ asset('packages/jquery-ui-dist/jquery-ui.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('packages/barryvdh/elfinder/css/elfinder.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('packages/barryvdh/elfinder/css/theme.css') }}">
-        <link href="{{ asset('vendor/backpack/colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
         <style>
             #cboxContent, #cboxLoadedContent, .cboxIframe {
                 background: transparent;
@@ -77,8 +76,8 @@ if (!$multiple && is_array($value)) {
 
     @push('crud_fields_scripts')
         <!-- include browse server js -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-        <script src="{{ asset('vendor/backpack/colorbox/jquery.colorbox-min.js') }}"></script>
+        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/barryvdh/elfinder/js/elfinder.min.js') }}"></script>
         {{-- <script type="text/javascript" src="{{ asset('packages/barryvdh/elfinder/js/extras/editors.default.min.js') }}"></script> --}}
         @if (($locale = \App::getLocale()) != 'en')

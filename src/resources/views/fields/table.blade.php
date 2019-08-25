@@ -89,18 +89,12 @@
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
 @if ($crud->checkIfFieldIsFirstOfItsType($field))
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
-    {{-- @push('crud_fields_styles')
-        {{-- YOUR CSS HERE --}}
-    @endpush
-
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         {{-- YOUR JS HERE --}}
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
+        <script src="{{ asset('packages/angular/angular.min.js') }}"></script>
+        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('packages/angular-ui-sortable/dist/sortable.min.js') }}"></script>
         <script>
 
             window.angularApp = window.angularApp || angular.module('backPackTableApp', ['ui.sortable'], function($interpolateProvider){

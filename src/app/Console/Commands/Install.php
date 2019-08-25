@@ -84,10 +84,10 @@ class Install extends BaseInstall
             $this->line(' Adding sidebar menu item for File Manager');
             switch (DIRECTORY_SEPARATOR) {
                 case '/': // unix
-                    $this->executeProcess('php artisan backpack:base:add-sidebar-content "<li class="nav-item"><a class="nav-link" href=\"{{ backpack_url(\'elfinder\') }}\"><i class=\"fa fa-files-o\"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
+                    $this->executeProcess('php artisan backpack:base:add-sidebar-content "<li class="nav-item"><a class="nav-link" href=\"{{ backpack_url(\'elfinder\') }}\"><i class=\"nav-icon fa fa-files-o\"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
                     break;
                 case '\\': // windows
-                    $this->executeProcess('php artisan backpack:base:add-sidebar-content "<li class="nav-item"><a class="nav-link" href=""{{ backpack_url(\'elfinder\') }}""><i class=""fa fa-files-o""></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
+                    $this->executeProcess('php artisan backpack:base:add-sidebar-content "<li class="nav-item"><a class="nav-link" href=""{{ backpack_url(\'elfinder\') }}""><i class=""nav-icon fa fa-files-o""></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
                     break;
             }
         }

@@ -5,28 +5,28 @@
 
     switch ($field['iconset']) {
         case 'ionicon':
-            $fontIconFilePath = asset('vendor/backpack/bootstrap-iconpicker/icon-fonts/ionicons-1.5.2/css/ionicons.min.css');
+            $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/ionicons-1.5.2/css/ionicons.min.css');
 
         case 'weathericon':
-            $fontIconFilePath = asset('vendor/backpack/bootstrap-iconpicker/icon-fonts/weather-icons-1.2.0/css/weather-icons.min.css');
+            $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/weather-icons-1.2.0/css/weather-icons.min.css');
 
         case 'mapicon':
-            $fontIconFilePath = asset('vendor/backpack/bootstrap-iconpicker/icon-fonts/map-icons-2.1.0/css/map-icons.min.css');
+            $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/map-icons-2.1.0/css/map-icons.min.css');
 
         case 'octicon':
-            $fontIconFilePath = asset('vendor/backpack/bootstrap-iconpicker/icon-fonts/octicons-2.1.2/css/octicons.min.css');
+            $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/octicons-2.1.2/css/octicons.min.css');
 
         case 'typicon':
-            $fontIconFilePath = asset('vendor/backpack/bootstrap-iconpicker/icon-fonts/typicons-2.0.6/css/typicons.min.css');
+            $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/typicons-2.0.6/css/typicons.min.css');
 
         case 'elusiveicon':
-            $fontIconFilePath = asset('vendor/backpack/bootstrap-iconpicker/icon-fonts/elusive-icons-2.0.0/css/elusive-icons.min.css');
+            $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/elusive-icons-2.0.0/css/elusive-icons.min.css');
 
         case 'meterialdesign':
-            $fontIconFilePath = asset('vendor/backpack/bootstrap-iconpicker/icon-fonts/material-design-1.1.1/css)/material-design-iconic-font.min.css');
+            $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/material-design-1.1.1/css)/material-design-iconic-font.min.css');
         
         default:
-            $fontIconFilePath = asset('vendor/backpack/bootstrap-iconpicker/icon-fonts/font-awesome-5.10.1/css/all.css');
+            $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/font-awesome-5.10.1/css/all.min.css');
             break;
     }
 
@@ -62,13 +62,13 @@
         {{-- The chosen font --}}
         <link rel="stylesheet" type="text/css" href="{{ $fontIconFilePath }}">
         <!-- Bootstrap-Iconpicker -->
-        <link rel="stylesheet" href="{{ asset('vendor/backpack/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('packages/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css') }}"/>
     @endpush
 
     {{-- FIELD EXTRA JS --}}
     @push('crud_fields_scripts')
         <!-- Bootstrap-Iconpicker -->
-        <script type="text/javascript" src="{{ asset('vendor/backpack/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js') }}"></script>
 
         {{-- Bootstrap-Iconpicker - set hidden input value --}}
         <script>

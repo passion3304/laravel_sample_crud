@@ -32,7 +32,7 @@
 {{-- push things in the after_styles section --}}
 
 @push('crud_list_styles')
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ asset('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}">
 	<style>
 		.input-group.date {
 			width: 320px;
@@ -47,7 +47,7 @@
 
 @push('crud_list_scripts')
 	<!-- include select2 js-->
-	<script src="{{ asset('vendor/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ asset('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <script>
 		jQuery(document).ready(function($) {
 			var dateInput = $('#datepicker-{{ str_slug($filter->name) }}').datepicker({

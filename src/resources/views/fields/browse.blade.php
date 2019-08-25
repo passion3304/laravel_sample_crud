@@ -36,7 +36,7 @@
 	{{-- FIELD CSS - will be loaded in the after_styles section --}}
 	@push('crud_fields_styles')
 		<!-- include browse server css -->
-		<link href="{{ asset('vendor/backpack/colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
 		<style>
 			#cboxContent, #cboxLoadedContent, .cboxIframe {
 				background: transparent;
@@ -46,7 +46,7 @@
 
 	@push('crud_fields_scripts')
 		<!-- include browse server js -->
-		<script src="{{ asset('vendor/backpack/colorbox/jquery.colorbox-min.js') }}"></script>
+		<script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
 	@endpush
 
 @endif
