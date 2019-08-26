@@ -4,6 +4,19 @@
 *
 */
 
+	table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before {
+		right: 0.4em;
+	    top: 1em;
+	    content: "\f16c";
+	    font: normal normal normal 14px/1 "LineAwesome";
+	}
+
+	table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+	    right: 0.4em;
+	    content: "\f165";
+	    font: normal normal normal 14px/1 "LineAwesome";
+	}
+	
 	/* Removes the horizontal scroll (if the width allows it) */
 	.box-body.table-responsive {
 	    padding-left: 15px;
