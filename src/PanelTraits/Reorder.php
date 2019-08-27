@@ -21,7 +21,7 @@ trait Reorder
     {
         $count = 0;
         $primaryKey = $this->model->getKeyName();
-        
+
         \DB::beginTransaction();
         foreach ($request as $key => $entry) {
             if ($entry['item_id'] != '' && $entry['item_id'] != null) {
