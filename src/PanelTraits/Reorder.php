@@ -20,19 +20,22 @@ trait Reorder
     public function updateTreeOrder($request)
     {
         $count = 0;
-
+        $primaryKey = $this->model->getKeyName();
+        
+        \DB::beginTransaction();
         foreach ($request as $key => $entry) {
             if ($entry['item_id'] != '' && $entry['item_id'] != null) {
-                $item = $this->model->find($entry['item_id']);
-                $item->parent_id = empty($entry['parent_id']) ? null : $entry['parent_id'];
-                $item->depth = empty($entry['depth']) ? null : $entry['depth'];
-                $item->lft = empty($entry['left']) ? null : $entry['left'];
-                $item->rgt = empty($entry['right']) ? null : $entry['right'];
-                $item->save();
+                $item = $this->model->where($primaryKey, $entry['item_id'])->update([
+                    'parent_id' => empty($entry['parent_id']) ? null : $entry['parent_id'],
+                    'depth' => empty($entry['depth']) ? null : $entry['depth'],
+                    'lft' => empty($entry['left']) ? null : $entry['left'],
+                    'rgt' => empty($entry['right']) ? null : $entry['right'],
+                ]);
 
                 $count++;
             }
         }
+        \DB::commit();
 
         return $count;
     }
