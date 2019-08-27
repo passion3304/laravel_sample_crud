@@ -1,4 +1,4 @@
-<!-- array input -->
+<!-- Backpack Table Field Type -->
 
 <?php
     $max = isset($field['max']) && (int) $field['max'] > 0 ? $field['max'] : -1;
@@ -8,7 +8,7 @@
     $items = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
     // make sure not matter the attribute casting
-    // the $items variable contains a properly defined JSON
+    // the $items variable contains a properly defined JSON string
     if (is_array($items)) {
         if (count($items)) {
             $items = json_encode($items);
@@ -19,52 +19,44 @@
         $items = '[]';
     }
 
-    // define how an empty row should look like (all columns blank)
-    $empty_row = $field['columns'];
-    foreach ($field['columns'] as $key => $column) {
-        $empty_row[$key] = '';
-    }
-    $empty_row = json_encode($empty_row);
-
+    echo '<pre>'; var_dump($items); echo '</pre>';
 ?>
-<div ng-app="backPackTableApp" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
+<div data-field-type="table" data-field-name="{{ $field['name'] }}" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
 
-    <input class="array-json" type="hidden" id="{{ $field['name'] }}" name="{{ $field['name'] }}">
+    <input class="array-json" type="hidden" name="{{ $field['name'] }}">
 
     <div class="array-container form-group">
 
-        <table class="table table-sm table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ $items }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'; emptyRow='{{ $empty_row }}';">
+        <table class="table table-sm table-striped m-b-0" data-items="{{ $items }}" data-max="{{$max}}" data-min="{{$min}}" data-maxErrorTitle="{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}" data-maxErrorMessage="{{trans('backpack::crud.table_max_reached', ['max' => $max])}}">
 
             <thead>
                 <tr>
-
-                    @foreach( $field['columns'] as $prop )
-                    <th class="bg-light">
-                        {{ $prop }}
+                    @foreach( $field['columns'] as $column )
+                    <th style="font-weight: 600!important;">
+                        {{ $column }}
                     </th>
                     @endforeach
-                    <th class="bg-light" ng-if="max == -1 || max > 1"></th>
-                    <th class="bg-light" ng-if="max == -1 || max > 1"></th>
+                    <th class="text-center"> {{-- <i class="fa fa-sort"></i> --}} </th>
+                    <th class="text-center"> {{-- <i class="fa fa-trash"></i> --}} </th>
                 </tr>
             </thead>
 
-            <tbody ui-sortable="sortableOptions" ng-model="items" class="table-striped">
+            <tbody class="table-striped items sortableOptions">
 
-                <tr ng-repeat="item in items" class="array-row">
-
-                    @foreach( $field['columns'] as $prop => $label)
+                <tr class="array-row clonable" style="display: none;">
+                    @foreach( $field['columns'] as $column => $label)
                     <td>
-                        <input class="form-control form-control-sm" type="text" ng-model="item.{{ $prop }}">
+                        <input class="form-control form-control-sm" type="text" name="item.{{ $column }}">
                     </td>
                     @endforeach
-                    <td ng-if="max == -1 || max > 1" class="text-right">
-                        <span class="btn btn-sm btn-light sort-handle"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
+                    <td>
+                        <span class="btn btn-sm btn-light sort-handle pull-right"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
                     </td>
-                    <td ng-if="max == -1 || max > 1" class="text-left">
-                        <button ng-hide="min > -1 && $index < min" class="btn btn-sm btn-light" type="button" ng-click="removeItem(item);"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
+                    <td>
+                        <button class="btn btn-sm btn-light removeItem" type="button"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
                     </td>
                 </tr>
 
@@ -73,7 +65,7 @@
         </table>
 
         <div class="array-controls btn-group m-t-10">
-            <button ng-if="max == -1 || items.length < max" class="btn btn-sm btn-light" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> {{trans('backpack::crud.add')}} {{ $item_name }}</button>
+            <button class="btn btn-sm btn-light" type="button" data-button-type="addItem"><i class="fa fa-plus"></i> {{trans('backpack::crud.add')}} {{ $item_name }}</button>
         </div>
 
     </div>
@@ -92,88 +84,138 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         {{-- YOUR JS HERE --}}
-        <script src="{{ asset('packages/angular/angular.min.js') }}"></script>
-        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-        <script src="{{ asset('packages/angular-ui-sortable/dist/sortable.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+
         <script>
+            jQuery(document).ready(function($) {
+                $('[data-field-type=table]').each(function() {
+                    var $tableWrapper = $(this);
 
-            window.angularApp = window.angularApp || angular.module('backPackTableApp', ['ui.sortable'], function($interpolateProvider){
-                $interpolateProvider.startSymbol('<%');
-                $interpolateProvider.endSymbol('%>');
-            });
+                    var $max = $tableWrapper.find('table').attr('data-max');
+                    var $min = $tableWrapper.find('table').attr('data-min');
 
-            window.angularApp.controller('tableController', function($scope){
+                    var $maxErrorTitle = $tableWrapper.find('table').attr('data-maxErrorTitle');
+                    var $maxErrorMessage = $tableWrapper.find('table').attr('data-maxErrorMessage');
 
-                $scope.sortableOptions = {
-                    handle: '.sort-handle',
-                    axis: 'y',
-                    helper: function(e, ui) {
-                        ui.children().each(function() {
-                            $(this).width($(this).width());
+                    var $tbody = $(this).find('tbody');
+                    var $items = $.parseJSON($tableWrapper.find('table').attr('data-items'));
+
+                    // populate the table field with the initial data in the JSON
+                    if($items != '[]') {
+
+                        $.each($items, function() {
+                            addItem();
+
+                            $.each(this, function(k , v) {
+                                console.log("writing "+v+" to "+k);
+                                $tableWrapper.find('tbody tr:last').find('input[name="item.' + k + '"]').val(v);
+
+                                console.log('updateTableFieldJson because there ARE rows');
+                                updateTableFieldJson();
+                            });
+
                         });
-                        return ui;
-                    },
-                };
+                        
+                    }
 
-                $scope.addItem = function(){
+                    $(this).find('.sortableOptions').sortable({
+                        handle: '.sort-handle',
+                        axis: 'y',
+                        helper: function(e, ui) {
+                            ui.children().each(function() {
+                                $(this).width($(this).width());
+                            });
+                            return ui;
+                        },
+                        update: function( event, ui ) {                        
 
-                    if( $scope.max > -1 ){
-                        if( $scope.items.length < $scope.max ){
-                            $scope.items.push(JSON.parse($scope.emptyRow));
-                        } else {
-                            new Noty({
-                                type: "error",
-                                text: "<strong>"+$scope.maxErrorTitle+"</strong><br>"+$scope.maxErrorMessage
-                            }).show();
+                            console.log('updateTableFieldJson because sortable');
+                            updateTableFieldJson();
                         }
-                    }
-                    else {
-                        $scope.items.push(JSON.parse($scope.emptyRow));
-                    }
-                }
+                    });
 
-                $scope.removeItem = function(item){
-                    var index = $scope.items.indexOf(item);
-                    $scope.items.splice(index, 1);
-                }
+                    $tableWrapper.find('[data-button-type=addItem]').click(function() {
+                        if($max > -1) {
+                            var totalRows = $tableWrapper.find('tbody tr:visible').length;
 
-                $scope.$watch('items', function(a, b){
-
-                    if( $scope.min > -1 ){
-                        while($scope.items.length < $scope.min){
-                            $scope.addItem();
-                        }
-                    }
-
-                    if( typeof $scope.items != 'undefined' ){
-
-                        if( typeof $scope.field != 'undefined'){
-                            if( typeof $scope.field == 'string' ){
-                                $scope.field = $($scope.field);
+                            if(totalRows < $max) {
+                                addItem();
+                            } else {
+                                new Noty({
+                                  type: "warning",
+                                  text: "<strong>"+$maxErrorTitle+"</strong><br>"+$maxErrorMessage
+                                }).show();
                             }
-                            $scope.field.val( $scope.items.length ? angular.toJson($scope.items) : null );
+                        } else {
+                            addItem();
+                        }
+                    });
+
+                    function addItem() {
+                        $tableWrapper.find('tbody').append($tableWrapper.find('tbody .clonable').clone().show().removeClass('clonable'));
+
+                        console.log('updateTableFieldJson because add item');
+                        updateTableFieldJson();
+                    }
+
+                    $(this).on('click', '.remove-item', function() {
+                        $(this).closest('tr').remove();
+
+                        console.log('updateTableFieldJson because remove item');
+                        updateTableFieldJson();
+
+                        return false;
+                    });
+
+                    $(this).on('change', $tbody, function() {
+                        console.log('updateTableFieldJson because on change');
+                        updateTableFieldJson();
+                    });
+
+
+                    // add minimum rows if needed
+                    var itemCount = $(this).find('tbody tr').not('.clonable').length;
+                    if($min > 0 && itemCount < $min) {
+                        $rowsToAdd = Number($min) - Number(itemCount);
+
+                        for(var i = 0; i < $rowsToAdd; i++){
+                            addItem();
                         }
                     }
-                }, true);
 
-                if( $scope.min > -1 ){
-                    for(var i = 0; i < $scope.min; i++){
-                        $scope.addItem();
-                    }
-                }
-            });
+                    function updateTableFieldJson() {
+                        var $rows = $tableWrapper.find('tbody tr:visible');
+                        var $fieldName = $tableWrapper.attr('data-field-name');
+                        var $hiddenField = $($tableWrapper).find('input[name='+$fieldName+']');
 
-            angular.element(document).ready(function(){
-                angular.forEach(angular.element('[ng-app]'), function(ctrl){
-                    var ctrlDom = angular.element(ctrl);
-                    if( !ctrlDom.hasClass('ng-scope') ){
-                        angular.bootstrap(ctrl, [ctrlDom.attr('ng-app')]);
+                        console.log("Counting "+$rows.length+" rows.");
+
+                        var json = '[';
+                        var otArr = [];
+                        var tbl2 = $rows.each(function(i) {
+                            x = $(this).children().closest('td').find('input');
+                            var itArr = [];
+                            x.each(function() {
+                                if(this.value.length > 0) {
+                                    itArr.push('"' + this.name.replace('item.','') + '":"' + this.value + '"');
+                                }
+                            });
+                            otArr.push('{' + itArr.join(',') + '}');
+                        })
+                        json += otArr.join(",") + ']';
+
+                        var totalRows = $rows.length;
+
+                        $hiddenField.val( totalRows ? json : null );
+
+                        console.log('HIDDEN INPUT value was set to: '+(totalRows ? json : null));
                     }
+
+                    // on page load, make sure the input has the old values
+                    updateTableFieldJson();
                 });
-            })
-
+            });
         </script>
-
     @endpush
 @endif
 {{-- End of Extra CSS and JS --}}
