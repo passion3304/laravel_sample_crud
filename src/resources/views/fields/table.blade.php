@@ -24,7 +24,10 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
 
-    <input class="array-json" type="hidden" name="{{ $field['name'] }}">
+    <input class="array-json" 
+            type="hidden" 
+            data-javascript-function-for-field-initialisation="bpFieldInitTableElement"
+            name="{{ $field['name'] }}">
 
     <div class="array-container form-group">
 
@@ -88,128 +91,126 @@
         <script type="text/javascript" src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
 
         <script>
-            jQuery(document).ready(function($) {
-                $('[data-field-type=table]').each(function() {
-                    var $tableWrapper = $(this);
+            function bpFieldInitTableElement(element) {
+                var $tableWrapper = element.parent('[data-field-type=table]');
 
-                    var $max = $tableWrapper.find('table').attr('data-max');
-                    var $min = $tableWrapper.find('table').attr('data-min');
+                var $max = $tableWrapper.find('table').attr('data-max');
+                var $min = $tableWrapper.find('table').attr('data-min');
 
-                    var $maxErrorTitle = $tableWrapper.find('table').attr('data-maxErrorTitle');
-                    var $maxErrorMessage = $tableWrapper.find('table').attr('data-maxErrorMessage');
+                var $maxErrorTitle = $tableWrapper.find('table').attr('data-maxErrorTitle');
+                var $maxErrorMessage = $tableWrapper.find('table').attr('data-maxErrorMessage');
 
-                    var $rows = $.parseJSON($tableWrapper.find('table').attr('data-items'));
+                var $rows = $.parseJSON($tableWrapper.find('table').attr('data-items'));
 
-                    // add rows with the information from the database
-                    if($rows != '[]') {
-                        $.each($rows, function(key) {
+                // add rows with the information from the database
+                if($rows != '[]') {
+                    $.each($rows, function(key) {
 
-                            addItem();
+                        addItem();
 
-                            $.each(this, function(column , value) {
-                                $tableWrapper.find('tbody tr:last').find('input[data-name="item.' + column + '"]').val(value);
-                            });
-
-                            // if it's the last row, update the JSON
-                            if ($rows.length == key+1) {
-                                updateTableFieldJson();
-                            }
+                        $.each(this, function(column , value) {
+                            $tableWrapper.find('tbody tr:last').find('input[data-name="item.' + column + '"]').val(value);
                         });
-                    }
 
-                    // add minimum rows if needed
-                    var itemCount = $(this).find('tbody tr').not('.clonable').length;
-                    if($min > 0 && itemCount < $min) {
-                        $rowsToAdd = Number($min) - Number(itemCount);
-
-                        for(var i = 0; i < $rowsToAdd; i++){
-                            addItem();
-                        }
-                    }
-
-                    $(this).find('.sortableOptions').sortable({
-                        handle: '.sort-handle',
-                        axis: 'y',
-                        helper: function(e, ui) {
-                            ui.children().each(function() {
-                                $(this).width($(this).width());
-                            });
-                            return ui;
-                        },
-                        update: function( event, ui ) {
+                        // if it's the last row, update the JSON
+                        if ($rows.length == key+1) {
                             updateTableFieldJson();
                         }
                     });
+                }
 
+                // add minimum rows if needed
+                var itemCount = $tableWrapper.find('tbody tr').not('.clonable').length;
+                if($min > 0 && itemCount < $min) {
+                    $rowsToAdd = Number($min) - Number(itemCount);
 
-                    $tableWrapper.find('[data-button-type=addItem]').click(function() {
-                        if($max > -1) {
-                            var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
-
-                            if(totalRows < $max) {
-                                addItem();
-                                updateTableFieldJson();
-                            } else {
-                                new Noty({
-                                  type: "warning",
-                                  text: "<strong>"+$maxErrorTitle+"</strong><br>"+$maxErrorMessage
-                                }).show();
-                            }
-                        } else {
-                            addItem();
-                            updateTableFieldJson();
-                        }
-                    });
-
-                    function addItem() {
-                        $tableWrapper.find('tbody').append($tableWrapper.find('tbody .clonable').clone().show().removeClass('clonable'));
+                    for(var i = 0; i < $rowsToAdd; i++){
+                        addItem();
                     }
+                }
 
-                    $tableWrapper.on('click', '.removeItem', function() {
-                        var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
-                        if (totalRows > $min) {
-                            $(this).closest('tr').remove();
-                            updateTableFieldJson();
-                            return false;
-                        }
-                    });
-
-                    $(this).find('tbody').on('keyup', function() {
+                $tableWrapper.find('.sortableOptions').sortable({
+                    handle: '.sort-handle',
+                    axis: 'y',
+                    helper: function(e, ui) {
+                        ui.children().each(function() {
+                            $(this).width($(this).width());
+                        });
+                        return ui;
+                    },
+                    update: function( event, ui ) {
                         updateTableFieldJson();
-                    });
-
-
-                    function updateTableFieldJson() {
-                        var $rows = $tableWrapper.find('tbody tr').not('.clonable');
-                        var $fieldName = $tableWrapper.attr('data-field-name');
-                        var $hiddenField = $($tableWrapper).find('input[name='+$fieldName+']');
-
-                        var json = '[';
-                        var otArr = [];
-                        var tbl2 = $rows.each(function(i) {
-                            x = $(this).children().closest('td').find('input');
-                            var itArr = [];
-                            x.each(function() {
-                                if(this.value.length > 0) {
-                                    var key = $(this).attr('data-name').replace('item.','');
-                                    var value = this.value.replace(/(['"])/g, "\\$1"); // escapes single and double quotes
-
-                                    itArr.push('"' + key + '":"' + value + '"');
-                                }
-                            });
-                            otArr.push('{' + itArr.join(',') + '}');
-                        })
-                        json += otArr.join(",") + ']';
-
-                        var totalRows = $rows.length;
-
-                        $hiddenField.val( totalRows ? json : null );
                     }
+                });
 
-                    // on page load, make sure the input has the old values
+
+                $tableWrapper.find('[data-button-type=addItem]').click(function() {
+                    if($max > -1) {
+                        var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
+
+                        if(totalRows < $max) {
+                            addItem();
+                            updateTableFieldJson();
+                        } else {
+                            new Noty({
+                              type: "warning",
+                              text: "<strong>"+$maxErrorTitle+"</strong><br>"+$maxErrorMessage
+                            }).show();
+                        }
+                    } else {
+                        addItem();
+                        updateTableFieldJson();
+                    }
+                });
+
+                function addItem() {
+                    $tableWrapper.find('tbody').append($tableWrapper.find('tbody .clonable').clone().show().removeClass('clonable'));
+                }
+
+                $tableWrapper.on('click', '.removeItem', function() {
+                    var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
+                    if (totalRows > $min) {
+                        $(this).closest('tr').remove();
+                        updateTableFieldJson();
+                        return false;
+                    }
+                });
+
+                $tableWrapper.find('tbody').on('keyup', function() {
                     updateTableFieldJson();
                 });
-            });
+
+
+                function updateTableFieldJson() {
+                    var $rows = $tableWrapper.find('tbody tr').not('.clonable');
+                    var $fieldName = $tableWrapper.attr('data-field-name');
+                    var $hiddenField = $($tableWrapper).find('input[name='+$fieldName+']');
+
+                    var json = '[';
+                    var otArr = [];
+                    var tbl2 = $rows.each(function(i) {
+                        x = $(this).children().closest('td').find('input');
+                        var itArr = [];
+                        x.each(function() {
+                            if(this.value.length > 0) {
+                                var key = $(this).attr('data-name').replace('item.','');
+                                var value = this.value.replace(/(['"])/g, "\\$1"); // escapes single and double quotes
+
+                                itArr.push('"' + key + '":"' + value + '"');
+                            }
+                        });
+                        otArr.push('{' + itArr.join(',') + '}');
+                    })
+                    json += otArr.join(",") + ']';
+
+                    var totalRows = $rows.length;
+
+                    $hiddenField.val( totalRows ? json : null );
+                }
+
+                // on page load, make sure the input has the old values
+                updateTableFieldJson();
+            }
         </script>
     @endpush
 @endif
