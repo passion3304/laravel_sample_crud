@@ -18,8 +18,6 @@
     } elseif (is_string($items) && !is_array(json_decode($items))) {
         $items = '[]';
     }
-
-    echo '<pre>'; var_dump($items); echo '</pre>';
 ?>
 <div data-field-type="table" data-field-name="{{ $field['name'] }}" @include('crud::inc.field_wrapper_attributes') >
 
@@ -102,7 +100,6 @@
                     // add rows with the information from the database
                     if($rows != '[]') {
                         $.each($rows, function(key) {
-                            console.log('adding initial row no '+key);
 
                             addItem();
 
@@ -110,8 +107,8 @@
                                 $tableWrapper.find('tbody tr:last').find('input[data-name="item.' + column + '"]').val(value);
                             });
 
+                            // if it's the last row, update the JSON
                             if ($rows.length == key+1) {
-                                console.log('got to the end');
                                 updateTableFieldJson();
                             }
                         });
@@ -141,9 +138,10 @@
                         }
                     });
 
+
                     $tableWrapper.find('[data-button-type=addItem]').click(function() {
                         if($max > -1) {
-                            var totalRows = $tableWrapper.find('tbody tr:visible').length;
+                            var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
 
                             if(totalRows < $max) {
                                 addItem();
@@ -164,22 +162,24 @@
                         $tableWrapper.find('tbody').append($tableWrapper.find('tbody .clonable').clone().show().removeClass('clonable'));
                     }
 
-                    $(this).on('click', '.remove-item', function() {
-                        $(this).closest('tr').remove();
-                        updateTableFieldJson();
-                        return false;
+                    $tableWrapper.on('click', '.removeItem', function() {
+                        var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
+                        if (totalRows > $min) {
+                            $(this).closest('tr').remove();
+                            updateTableFieldJson();
+                            return false;
+                        }
                     });
 
-                    $(this).find('tbody').on('change', function() {
+                    $(this).find('tbody').on('keyup', function() {
                         updateTableFieldJson();
                     });
+
 
                     function updateTableFieldJson() {
-                        var $rows = $tableWrapper.find('tbody tr:visible');
+                        var $rows = $tableWrapper.find('tbody tr').not('.clonable');
                         var $fieldName = $tableWrapper.attr('data-field-name');
                         var $hiddenField = $($tableWrapper).find('input[name='+$fieldName+']');
-
-                        console.log("updateTableFieldJson - Counting "+$rows.length+" rows.");
 
                         var json = '[';
                         var otArr = [];
@@ -188,7 +188,10 @@
                             var itArr = [];
                             x.each(function() {
                                 if(this.value.length > 0) {
-                                    itArr.push('"' + $(this).attr('data-name').replace('item.','') + '":"' + this.value.replace(/(['"])/g, "\\$1") + '"');
+                                    var key = $(this).attr('data-name').replace('item.','');
+                                    var value = this.value.replace(/(['"])/g, "\\$1"); // escapes single and double quotes
+
+                                    itArr.push('"' + key + '":"' + value + '"');
                                 }
                             });
                             otArr.push('{' + itArr.join(',') + '}');
@@ -198,8 +201,6 @@
                         var totalRows = $rows.length;
 
                         $hiddenField.val( totalRows ? json : null );
-
-                        console.log('updateTableFieldJson - HIDDEN INPUT value was set to: '+(totalRows ? json : null));
                     }
 
                     // on page load, make sure the input has the old values
