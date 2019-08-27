@@ -13,9 +13,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Added
 - merged #1955 - ```image``` field type has a new ```max_file_size``` option; which defaults to the defaults to ```upload_max_filesize``` set in PHP;
+- merged #1913 - new design based on CoreUI, instead of AdminLTE; 
+- developers can now add widgets to the top/bottom of the operation views;
+
 
 ### Fixed
 - merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
+- merged #1977 - fields, filters and operations now use LOCAL assets, instead of CDNs; Backpack can now be used on intranets;
+- merged #1947 fixes #1927 - package version was often incorrect, due to maintainers not updating the number on each patch release; fixed by using ocramius/package-versions to determine the package version;
 
 
 -----------
