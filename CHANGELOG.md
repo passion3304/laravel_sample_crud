@@ -14,6 +14,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 ### Added
 - merged #1955 - ```image``` field type has a new ```max_file_size``` option; which defaults to the defaults to ```upload_max_filesize``` set in PHP;
 
+### Fixed
+- merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
+
 
 -----------
 
