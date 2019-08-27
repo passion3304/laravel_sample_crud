@@ -19,15 +19,8 @@
         $items = '[]';
     }
 
-    // define how an empty row should look like (all columns blank)
-    $empty_row = $field['columns'];
-    foreach ($field['columns'] as $key => $column) {
-        $empty_row[$key] = '';
-    }
-    $empty_row = json_encode($empty_row);
-
 ?>
-<div ng-app="backPackTableApp" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
+<div id="backPackTableApp" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
@@ -36,35 +29,33 @@
 
     <div class="array-container form-group">
 
-        <table class="table table-bordered table-striped m-b-0" ng-init="field = '#{{ $field['name'] }}'; items = {{ $items }}; max = {{$max}}; min = {{$min}}; maxErrorTitle = '{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}'; maxErrorMessage = '{{trans('backpack::crud.table_max_reached', ['max' => $max])}}'; emptyRow='{{ $empty_row }}';">
+        <table class="table table-bordered table-striped m-b-0" data-field="#{{ $field['name'] }}" data-items="{{ $items }}" data-max="{{$max}}" data-min="{{$min}}" data-maxErrorTitle="{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}" data-maxErrorMessage="{{trans('backpack::crud.table_max_reached', ['max' => $max])}}">
 
             <thead>
                 <tr>
-
                     @foreach( $field['columns'] as $prop )
                     <th style="font-weight: 600!important;">
                         {{ $prop }}
                     </th>
                     @endforeach
-                    <th class="text-center" ng-if="max == -1 || max > 1"> {{-- <i class="fa fa-sort"></i> --}} </th>
-                    <th class="text-center" ng-if="max == -1 || max > 1"> {{-- <i class="fa fa-trash"></i> --}} </th>
+                    <th class="text-center"> {{-- <i class="fa fa-sort"></i> --}} </th>
+                    <th class="text-center"> {{-- <i class="fa fa-trash"></i> --}} </th>
                 </tr>
             </thead>
 
-            <tbody ui-sortable="sortableOptions" ng-model="items" class="table-striped">
+            <tbody id="sortableOptions" class="table-striped items">
 
-                <tr ng-repeat="item in items" class="array-row">
-
+                <tr class="array-row clonable" style="display: none;">
                     @foreach( $field['columns'] as $prop => $label)
                     <td>
-                        <input class="form-control input-sm" type="text" ng-model="item.{{ $prop }}">
+                        <input class="form-control input-sm" type="text" name="item.{{ $prop }}">
                     </td>
                     @endforeach
-                    <td ng-if="max == -1 || max > 1">
+                    <td>
                         <span class="btn btn-sm btn-default sort-handle"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
                     </td>
-                    <td ng-if="max == -1 || max > 1">
-                        <button ng-hide="min > -1 && $index < min" class="btn btn-sm btn-default" type="button" ng-click="removeItem(item);"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
+                    <td>
+                        <button class="btn btn-sm btn-default removeItem" type="button"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
                     </td>
                 </tr>
 
@@ -73,7 +64,7 @@
         </table>
 
         <div class="array-controls btn-group m-t-10">
-            <button ng-if="max == -1 || items.length < max" class="btn btn-sm btn-default" type="button" ng-click="addItem()"><i class="fa fa-plus"></i> {{trans('backpack::crud.add')}} {{ $item_name }}</button>
+            <button class="btn btn-sm btn-default" type="button" id="addItem"><i class="fa fa-plus"></i> {{trans('backpack::crud.add')}} {{ $item_name }}</button>
         </div>
 
     </div>
@@ -98,19 +89,27 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         {{-- YOUR JS HERE --}}
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js"></script>
+
         <script>
+            jQuery(document).ready(function($) {
+                var $tableObj = $('#backPackTableApp');
+                var $addItem = $tableObj.find('#addItem');
+                var $removeItem = '.removeItem';
 
-            window.angularApp = window.angularApp || angular.module('backPackTableApp', ['ui.sortable'], function($interpolateProvider){
-                $interpolateProvider.startSymbol('<%');
-                $interpolateProvider.endSymbol('%>');
-            });
+                var $max = $tableObj.find('table').attr('data-max');
+                var $min = $tableObj.find('table').attr('data-min');
 
-            window.angularApp.controller('tableController', function($scope){
+                var $maxErrorTitle = $tableObj.find('table').attr('data-maxErrorTitle');
+                var $maxErrorMessage = $tableObj.find('table').attr('data-maxErrorMessage');
 
-                $scope.sortableOptions = {
+                var $field = $($tableObj.find('table').attr('data-field'));
+
+                var $items = $('.items');
+
+                var items = $tableObj.find('table').attr('data-items');
+
+                $('#sortableOptions').sortable({
                     handle: '.sort-handle',
                     axis: 'y',
                     helper: function(e, ui) {
@@ -119,68 +118,89 @@
                         });
                         return ui;
                     },
-                };
+                    update: function( event, ui ) {
+                        html2json($tableObj.find('tbody tr:visible'));
+                    }
+                });
 
-                $scope.addItem = function(){
+                $addItem.click(function() {
+                    if($max > -1) {
+                        var totalRows = $tableObj.find('tbody tr:visible').length;
 
-                    if( $scope.max > -1 ){
-                        if( $scope.items.length < $scope.max ){
-                            $scope.items.push(JSON.parse($scope.emptyRow));
+                        if(totalRows < $max) {
+                            addItem();
                         } else {
                             new PNotify({
-                                title: $scope.maxErrorTitle,
-                                text: $scope.maxErrorMessage,
+                                title: $maxErrorTitle,
+                                text: $maxErrorMessage,
                                 type: 'error'
                             });
                         }
-                    }
-                    else {
-                        $scope.items.push(JSON.parse($scope.emptyRow));
-                    }
-                }
-
-                $scope.removeItem = function(item){
-                    var index = $scope.items.indexOf(item);
-                    $scope.items.splice(index, 1);
-                }
-
-                $scope.$watch('items', function(a, b){
-
-                    if( $scope.min > -1 ){
-                        while($scope.items.length < $scope.min){
-                            $scope.addItem();
-                        }
-                    }
-
-                    if( typeof $scope.items != 'undefined' ){
-
-                        if( typeof $scope.field != 'undefined'){
-                            if( typeof $scope.field == 'string' ){
-                                $scope.field = $($scope.field);
-                            }
-                            $scope.field.val( $scope.items.length ? angular.toJson($scope.items) : null );
-                        }
-                    }
-                }, true);
-
-                if( $scope.min > -1 ){
-                    for(var i = 0; i < $scope.min; i++){
-                        $scope.addItem();
-                    }
-                }
-            });
-
-            angular.element(document).ready(function(){
-                angular.forEach(angular.element('[ng-app]'), function(ctrl){
-                    var ctrlDom = angular.element(ctrl);
-                    if( !ctrlDom.hasClass('ng-scope') ){
-                        angular.bootstrap(ctrl, [ctrlDom.attr('ng-app')]);
+                    } else {
+                        addItem();
                     }
                 });
-            })
 
+                function addItem() {
+                    $tableObj.find('tbody').append($tableObj.find('tbody .clonable').clone().show().removeClass('clonable'));
+
+                    html2json($tableObj.find('tbody tr:visible'));
+                }
+
+                $('body').on('click', $removeItem, function() {
+                    $(this).closest('tr').remove();
+
+                    html2json($tableObj.find('tbody tr:visible'));
+
+                    return false;
+                });
+
+                $('body').on('change', $items, function() {
+                    html2json($tableObj.find('tbody tr:visible'));
+                });
+
+                if($min > -1) {
+                    for(var i = 0; i < $min; i++){
+                        addItem();
+                    }
+                }
+
+                if(items != '[]') {
+                    var tbl_body = "";
+                    var odd_even = false;
+
+                    $.each($.parseJSON(items), function() {
+                        addItem();
+
+                        $.each(this, function(k , v) {
+                            $tableObj.find('tbody tr:last').find('input[name="item.' + k + '"]').val(v);
+                        })
+                    });
+
+                    html2json($tableObj.find('tbody tr:visible'));
+                }
+
+                function html2json(table) {
+                    var json = '[';
+                    var otArr = [];
+                    var tbl2 = table.each(function(i) {
+                        x = $(this).children().closest('td').find('input');
+                        var itArr = [];
+                        x.each(function() {
+                            if(this.value.length > 0) {
+                                itArr.push('"' + this.name.replace('item.','') + '":"' + this.value + '"');
+                            }
+                        });
+                        otArr.push('{' + itArr.join(',') + '}');
+                    })
+                    json += otArr.join(",") + ']'
+
+                    var totalRows = table.length;
+
+                    $field.val( totalRows ? json : null );
+                }
+            });
         </script>
-
     @endpush
 @endif
 {{-- End of Extra CSS and JS --}}
