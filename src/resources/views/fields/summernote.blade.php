@@ -34,6 +34,7 @@
         <!-- include summernote js-->
         {{-- <script src="{{ asset('packages/summernote/dist/summernote.min.js') }}"></script> --}}
         <script src="{{ asset('packages/summernote/dist/summernote-bs4.min.js') }}"></script>
+        <script>
             function bpFieldInitSummernoteElement(element) {
                 element.summernote(@json($field['options'] ?? []));
             }
