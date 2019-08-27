@@ -43,6 +43,7 @@
         <input
             type="hidden"
             name="{{ $field['name'] }}"
+            data-javascript-function-for-field-initialisation="bpFieldInitIconPickerElement"
             value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
             @include('crud::inc.field_attributes')
         >
@@ -75,11 +76,11 @@
 
         {{-- Bootstrap-Iconpicker - set hidden input value --}}
         <script>
-            jQuery(document).ready(function($) {
-                $('button[role=iconpicker]').on('change', function(e) {
+            function bpFieldInitIconPickerElement(element) {
+                element.siblings('button[role=iconpicker]').on('change', function(e) {
                     $(this).siblings('input[type=hidden]').val(e.icon);
                 });
-            });
+            }
         </script>
     @endpush
 
