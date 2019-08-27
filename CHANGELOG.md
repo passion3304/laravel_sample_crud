@@ -21,6 +21,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
 - merged #1977 - fields, filters and operations now use LOCAL assets, instead of CDNs; Backpack can now be used on intranets;
 - merged #1947 fixes #1927 - package version was often incorrect, due to maintainers not updating the number on each patch release; fixed by using ocramius/package-versions to determine the package version;
+- merged #1950 - reorder operation is now twice as fast;
 
 
 -----------
