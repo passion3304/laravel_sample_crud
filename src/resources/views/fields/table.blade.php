@@ -49,7 +49,7 @@
                 <tr class="array-row clonable" style="display: none;">
                     @foreach( $field['columns'] as $column => $label)
                     <td>
-                        <input class="form-control form-control-sm" type="text" name="item.{{ $column }}">
+                        <input class="form-control form-control-sm" type="text" data-name="item.{{ $column }}">
                     </td>
                     @endforeach
                     <td>
@@ -97,81 +97,25 @@
                     var $maxErrorTitle = $tableWrapper.find('table').attr('data-maxErrorTitle');
                     var $maxErrorMessage = $tableWrapper.find('table').attr('data-maxErrorMessage');
 
-                    var $tbody = $(this).find('tbody');
-                    var $items = $.parseJSON($tableWrapper.find('table').attr('data-items'));
+                    var $rows = $.parseJSON($tableWrapper.find('table').attr('data-items'));
 
-                    // populate the table field with the initial data in the JSON
-                    if($items != '[]') {
+                    // add rows with the information from the database
+                    if($rows != '[]') {
+                        $.each($rows, function(key) {
+                            console.log('adding initial row no '+key);
 
-                        $.each($items, function() {
                             addItem();
 
-                            $.each(this, function(k , v) {
-                                console.log("writing "+v+" to "+k);
-                                $tableWrapper.find('tbody tr:last').find('input[name="item.' + k + '"]').val(v);
+                            $.each(this, function(column , value) {
+                                $tableWrapper.find('tbody tr:last').find('input[data-name="item.' + column + '"]').val(value);
+                            });
 
-                                console.log('updateTableFieldJson because there ARE rows');
+                            if ($rows.length == key+1) {
+                                console.log('got to the end');
                                 updateTableFieldJson();
-                            });
-
-                        });
-                        
-                    }
-
-                    $(this).find('.sortableOptions').sortable({
-                        handle: '.sort-handle',
-                        axis: 'y',
-                        helper: function(e, ui) {
-                            ui.children().each(function() {
-                                $(this).width($(this).width());
-                            });
-                            return ui;
-                        },
-                        update: function( event, ui ) {                        
-
-                            console.log('updateTableFieldJson because sortable');
-                            updateTableFieldJson();
-                        }
-                    });
-
-                    $tableWrapper.find('[data-button-type=addItem]').click(function() {
-                        if($max > -1) {
-                            var totalRows = $tableWrapper.find('tbody tr:visible').length;
-
-                            if(totalRows < $max) {
-                                addItem();
-                            } else {
-                                new Noty({
-                                  type: "warning",
-                                  text: "<strong>"+$maxErrorTitle+"</strong><br>"+$maxErrorMessage
-                                }).show();
                             }
-                        } else {
-                            addItem();
-                        }
-                    });
-
-                    function addItem() {
-                        $tableWrapper.find('tbody').append($tableWrapper.find('tbody .clonable').clone().show().removeClass('clonable'));
-
-                        console.log('updateTableFieldJson because add item');
-                        updateTableFieldJson();
+                        });
                     }
-
-                    $(this).on('click', '.remove-item', function() {
-                        $(this).closest('tr').remove();
-
-                        console.log('updateTableFieldJson because remove item');
-                        updateTableFieldJson();
-
-                        return false;
-                    });
-
-                    $(this).on('change', $tbody, function() {
-                        console.log('updateTableFieldJson because on change');
-                        updateTableFieldJson();
-                    });
-
 
                     // add minimum rows if needed
                     var itemCount = $(this).find('tbody tr').not('.clonable').length;
@@ -183,12 +127,59 @@
                         }
                     }
 
+                    $(this).find('.sortableOptions').sortable({
+                        handle: '.sort-handle',
+                        axis: 'y',
+                        helper: function(e, ui) {
+                            ui.children().each(function() {
+                                $(this).width($(this).width());
+                            });
+                            return ui;
+                        },
+                        update: function( event, ui ) {
+                            updateTableFieldJson();
+                        }
+                    });
+
+                    $tableWrapper.find('[data-button-type=addItem]').click(function() {
+                        if($max > -1) {
+                            var totalRows = $tableWrapper.find('tbody tr:visible').length;
+
+                            if(totalRows < $max) {
+                                addItem();
+                                updateTableFieldJson();
+                            } else {
+                                new Noty({
+                                  type: "warning",
+                                  text: "<strong>"+$maxErrorTitle+"</strong><br>"+$maxErrorMessage
+                                }).show();
+                            }
+                        } else {
+                            addItem();
+                            updateTableFieldJson();
+                        }
+                    });
+
+                    function addItem() {
+                        $tableWrapper.find('tbody').append($tableWrapper.find('tbody .clonable').clone().show().removeClass('clonable'));
+                    }
+
+                    $(this).on('click', '.remove-item', function() {
+                        $(this).closest('tr').remove();
+                        updateTableFieldJson();
+                        return false;
+                    });
+
+                    $(this).find('tbody').on('change', function() {
+                        updateTableFieldJson();
+                    });
+
                     function updateTableFieldJson() {
                         var $rows = $tableWrapper.find('tbody tr:visible');
                         var $fieldName = $tableWrapper.attr('data-field-name');
                         var $hiddenField = $($tableWrapper).find('input[name='+$fieldName+']');
 
-                        console.log("Counting "+$rows.length+" rows.");
+                        console.log("updateTableFieldJson - Counting "+$rows.length+" rows.");
 
                         var json = '[';
                         var otArr = [];
@@ -197,7 +188,7 @@
                             var itArr = [];
                             x.each(function() {
                                 if(this.value.length > 0) {
-                                    itArr.push('"' + this.name.replace('item.','') + '":"' + this.value + '"');
+                                    itArr.push('"' + $(this).attr('data-name').replace('item.','') + '":"' + this.value + '"');
                                 }
                             });
                             otArr.push('{' + itArr.join(',') + '}');
@@ -208,7 +199,7 @@
 
                         $hiddenField.val( totalRows ? json : null );
 
-                        console.log('HIDDEN INPUT value was set to: '+(totalRows ? json : null));
+                        console.log('updateTableFieldJson - HIDDEN INPUT value was set to: '+(totalRows ? json : null));
                     }
 
                     // on page load, make sure the input has the old values
