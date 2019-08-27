@@ -188,7 +188,7 @@
                             var itArr = [];
                             x.each(function() {
                                 if(this.value.length > 0) {
-                                    itArr.push('"' + $(this).attr('data-name').replace('item.','') + '":"' + this.value + '"');
+                                    itArr.push('"' + $(this).attr('data-name').replace('item.','') + '":"' + this.value.replace(/(['"])/g, "\\$1") + '"');
                                 }
                             });
                             otArr.push('{' + itArr.join(',') + '}');
