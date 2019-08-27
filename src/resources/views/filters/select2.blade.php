@@ -2,13 +2,11 @@
 
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
-    <div class="dropdown-menu">
-      <div class="form-group backpack-filter m-b-0">
-			<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm select2" placeholder="{{ $filter->placeholder }}">
-				<option></option>
-
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
+    <div class="dropdown-menu p-0">
+      <div class="form-group backpack-filter mb-0">
+			<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2" data-filter-name="{{ $filter->name }}" placeholder="{{ $filter->placeholder }}">
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)
 						<option value="{{ $key }}"
@@ -33,8 +31,8 @@
 
 @push('crud_list_styles')
     <!-- include select2 css-->
-    <link href="{{ asset('vendor/backpack/select2/select2.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('vendor/backpack/select2/select2-bootstrap-dick.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
 	  .form-inline .select2-container {
 	    display: inline-block;
@@ -58,61 +56,63 @@
 
 @push('crud_list_scripts')
 	<!-- include select2 js-->
-    <script src="{{ asset('vendor/backpack/select2/select2.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
+    @if (app()->getLocale() !== 'en')
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    @endif
+    
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box
-            $('.select2').each(function (i, obj) {
-                if (!$(obj).data("select2"))
-                {
-                    $(obj).select2({
-                    	allowClear: true,
-    					closeOnSelect: false
-                    });
-                }
+            $('select[data-filter-type=select2]').not('[data-filter-enabled]').each(function () {
+            	var filterName = $(this).attr('data-filter-name');
+
+            	$(this).attr('data-filter-enabled', 'true');
+
+            	$(this).select2({
+	            	allowClear: true,
+					closeOnSelect: true,
+					theme: "bootstrap",
+	            });
+
+				$(this).change(function() {
+					var value = $(this).val();
+					var parameter = $(this).attr('data-filter-name');
+
+			    	// behaviour for ajax table
+					var ajax_table = $("#crudTable").DataTable();
+					var current_url = ajax_table.ajax.url();
+					var new_url = addOrUpdateUriParameter(current_url, parameter, value);
+
+					// replace the datatables ajax url with new_url and reload it
+					new_url = normalizeAmpersand(new_url.toString());
+					ajax_table.ajax.url(new_url).load();
+
+					// add filter to URL
+					crud.updateUrl(new_url);
+
+					// mark this filter as active in the navbar-filters
+					if (URI(new_url).hasQuery(parameter, true)) {
+						$("li[filter-name="+parameter+"]").removeClass('active').addClass('active');
+					}
+					else
+					{
+						$("li[filter-name="+parameter+"]").trigger("filter:clear");
+					}
+				});
+
+				// when the dropdown is opened, autofocus on the select2
+				$("li[filter-name="+filterName+"]").on('shown.bs.dropdown', function () {
+					$('select[data-filter-name='+filterName+']').select2('open');
+				});
+
+				// clear filter event (used here and by the Remove all filters button)
+				$("li[filter-name="+filterName+"]").on('filter:clear', function(e) {
+					// console.log('select2 filter cleared');
+					$("li[filter-name="+filterName+"]").removeClass('active');
+					$("li[filter-name="+filterName+"] select").select2("val", null);
+				});
             });
-        });
-    </script>
-
-    <script>
-		jQuery(document).ready(function($) {
-			$("select[name=filter_{{ $filter->name }}]").change(function() {
-				var value = $(this).val();
-				var parameter = '{{ $filter->name }}';
-
-		    	// behaviour for ajax table
-				var ajax_table = $("#crudTable").DataTable();
-				var current_url = ajax_table.ajax.url();
-				var new_url = addOrUpdateUriParameter(current_url, parameter, value);
-
-				// replace the datatables ajax url with new_url and reload it
-				new_url = normalizeAmpersand(new_url.toString());
-				ajax_table.ajax.url(new_url).load();
-
-				// add filter to URL
-				crud.updateUrl(new_url);
-
-				// mark this filter as active in the navbar-filters
-				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
-				}
-				else
-				{
-					$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
-				}
-			});
-
-			// when the dropdown is opened, autofocus on the select2
-			$("li[filter-name={{ $filter->name }}]").on('shown.bs.dropdown', function () {
-				$('#filter_{{ $filter->name }}').select2('open');
-			});
-
-			// clear filter event (used here and by the Remove all filters button)
-			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
-				// console.log('select2 filter cleared');
-				$("li[filter-name={{ $filter->name }}]").removeClass('active');
-				$("li[filter-name={{ $filter->name }}] .select2").select2("val", "");
-			});
 		});
 	</script>
 @endpush

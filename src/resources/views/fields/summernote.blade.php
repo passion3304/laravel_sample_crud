@@ -26,14 +26,14 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <!-- include summernote css-->
-        <link href="{{ asset('vendor/backpack/summernote/summernote.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('packages/summernote/dist/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <!-- include summernote js-->
-        <script src="{{ asset('vendor/backpack/summernote/summernote.min.js') }}"></script>
-        <script>
+        {{-- <script src="{{ asset('packages/summernote/dist/summernote.min.js') }}"></script> --}}
+        <script src="{{ asset('packages/summernote/dist/summernote-bs4.min.js') }}"></script>
             function bpFieldInitSummernoteElement(element) {
                 element.summernote(@json($field['options'] ?? []));
             }

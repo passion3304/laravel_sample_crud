@@ -1,10 +1,10 @@
   <!-- DATA TABLES SCRIPT -->
-  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
-  <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-  <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
-  <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
-  <script src="
-https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+  <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
 
   <script>
     @if ($crud->getPersistentTable())
@@ -50,8 +50,9 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
                     header: function ( row ) {
                         // show the content of the first column
                         // as the modal header
-                        var data = row.data();
-                        return data[0];
+                        // var data = row.data();
+                        // return data[0];
+                        return '';
                     }
                 } ),
                 renderer: function ( api, rowIdx, columns ) {
@@ -65,13 +66,13 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
                       }
 
                       return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
-                                '<td style="vertical-align:top;"><strong>'+col.title.trim()+':'+'<strong></td> '+
-                                '<td style="padding-left:10px;padding-bottom:10px;">'+col.data+'</td>'+
+                                '<td style="vertical-align:top; border:none;"><strong>'+col.title.trim()+':'+'<strong></td> '+
+                                '<td style="padding-left:10px;padding-bottom:10px; border:none;">'+col.data+'</td>'+
                               '</tr>';
                   } ).join('');
 
                   return data ?
-                      $('<table class="table table-striped table-condensed m-b-0">').append( data ) :
+                      $('<table class="table table-striped mb-0">').append( '<tbody>' + data + '</tbody>' ) :
                       false;
                 },
             }
@@ -130,7 +131,7 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
           dom:
             "<'row hidden'<'col-sm-6 hidden-xs'i><'col-sm-6 hidden-print'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row m-t-10'<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
+            "<'row mt-2'<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
       }
   }
   </script>
@@ -144,6 +145,7 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
 
       // move search bar
       $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
+      $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
       $("#datatable_info_stack").html($('#crudTable_info'));
@@ -154,11 +156,10 @@ https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"><
       // override ajax error message
       $.fn.dataTable.ext.errMode = 'none';
       $('#crudTable').on('error.dt', function(e, settings, techNote, message) {
-          new PNotify({
+          new Noty({
               type: "error",
-              title: "{{ trans('backpack::crud.ajax_error_title') }}",
-              text: "{{ trans('backpack::crud.ajax_error_text') }}"
-          });
+              text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
+          }).show();
       });
 
       // make sure AJAX requests include XSRF token

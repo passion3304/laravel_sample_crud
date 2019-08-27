@@ -1,17 +1,27 @@
-@extends('backpack::layout')
+@extends(backpack_view('layouts.top_left'))
+
+@php
+  $defaultBreadcrumbs = [
+    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
+    $crud->entity_name_plural => url($crud->route),
+    trans('backpack::crud.reorder') => false,
+  ];
+
+  // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
+  $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
+@endphp
 
 @section('header')
-<section class="content-header">
-    <h1>
+<div class="container-fluid">
+    <h2>
         <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
         <small>{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}.</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
-        <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
-        <li class="active">{{ trans('backpack::crud.reorder') }}</li>
-    </ol>
-</section>
+
+        @if ($crud->hasAccess('list'))
+          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+        @endif
+    </h2>
+</div>
 @endsection
 
 @section('content')
@@ -53,56 +63,170 @@ function tree_element($entry, $key, $all_entries, $crud)
 
 ?>
 
-@if ($crud->hasAccess('list'))
-    <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
-@endif
-
-<div class="row m-t-20">
+<div class="row mt-4">
     <div class="{{ $crud->getReorderContentClass() }}">
+        <div class="card p-4">
+            <p>{{ trans('backpack::crud.reorder_text') }}</p>
 
-        <div class="col-md-12">
+            <ol class="sortable mt-0">
+            <?php
+                $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
+                $root_entries = $all_entries->filter(function ($item) {
+                    return $item->parent_id == 0;
+                });
+                foreach ($root_entries as $key => $entry){
+                    $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+                }
+            ?>
+            </ol>
 
-            <div class="panel padding-10">
+        </div><!-- /.card -->
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <p>{{ trans('backpack::crud.reorder_text') }}</p>
-
-                        <ol class="sortable">
-                        <?php
-                            $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
-                            $root_entries = $all_entries->filter(function ($item) {
-                                return $item->parent_id == 0;
-                            });
-                            foreach ($root_entries as $key => $entry){
-                                $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
-                            }
-                        ?>
-                        </ol>
-                    </div>
-                </div>
-
-                <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
-
-            </div><!-- /.panel -->
-
-        </div>
+        <button id="toArray" class="btn btn-success ladda-button" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::crud.save') }}</span></button>
     </div>
 </div>
 @endsection
 
 
 @section('after_styles')
-<link rel="stylesheet" href="{{ asset('vendor/backpack/nestedSortable/nestedSortable.css') }}">
+<style>
+    .ui-sortable .placeholder {
+      outline: 1px dashed #4183C4;
+      /*-webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      margin: -1px;*/
+    }
+
+    .ui-sortable .mjs-nestedSortable-error {
+      background: #fbe3e4;
+      border-color: transparent;
+    }
+
+    .ui-sortable ol {
+      margin: 0;
+      padding: 0;
+      padding-left: 30px;
+    }
+
+    ol.sortable, ol.sortable ol {
+      margin: 0 0 0 25px;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    ol.sortable {
+      margin: 2em 0;
+    }
+
+    .sortable li {
+      margin: 5px 0 0 0;
+      padding: 0;
+    }
+
+    .sortable li div  {
+      border: 1px solid #ddd;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      padding: 6px;
+      margin: 0;
+      cursor: move;
+      background-color: #f4f4f4;
+      color: #444;
+      border-color: #00acd6;
+    }
+
+    .sortable li.mjs-nestedSortable-branch div {
+      /*background-color: #00c0ef;*/
+      /*border-color: #00acd6;*/
+    }
+
+    .sortable li.mjs-nestedSortable-leaf div {
+      /*background-color: #00c0ef;*/
+      border: 1px solid #ddd;
+    }
+
+    li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+      border-color: #999;
+      background: #fafafa;
+    }
+
+    .ui-sortable .disclose {
+      cursor: pointer;
+      width: 10px;
+      display: none;
+    }
+
+    .sortable li.mjs-nestedSortable-collapsed > ol {
+      display: none;
+    }
+
+    .sortable li.mjs-nestedSortable-branch > div > .disclose {
+      display: inline-block;
+    }
+
+    .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
+      content: '+ ';
+    }
+
+    .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
+      content: '- ';
+    }
+
+    .ui-sortable h1 {
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+
+    .ui-sortable h2 {
+      font-size: 1.2em;
+      font-weight: normal;
+      font-style: italic;
+      margin-top: .2em;
+      margin-bottom: 1.5em;
+    }
+
+    .ui-sortable h3 {
+      font-size: 1em;
+      margin: 1em 0 .3em;;
+    }
+
+    .ui-sortable p, .ui-sortable ol, .ui-sortable ul, .ui-sortable pre, .ui-sortable form {
+      margin-top: 0;
+      margin-bottom: 1em;
+    }
+
+    .ui-sortable dl {
+      margin: 0;
+    }
+
+    .ui-sortable dd {
+      margin: 0;
+      padding: 0 0 0 1.5em;
+    }
+
+    .ui-sortable code {
+      background: #e5e5e5;
+    }
+
+    .ui-sortable input {
+      vertical-align: text-bottom;
+    }
+
+    .ui-sortable .notice {
+      color: #c33;
+    }
+</style>
 <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
 <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/reorder.css') }}">
 @endsection
 
 @section('after_scripts')
-<script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
-<script src="{{ asset('vendor/backpack/crud/js/reorder.js') }}"></script>
-<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js" type="text/javascript"></script>
-<script src="{{ url('vendor/backpack/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript"></script>
+<script src="{{ asset('vendor/backpack/crud/js/crud.js') }}" type="text/javascript" ></script>
+<script src="{{ asset('vendor/backpack/crud/js/reorder.js') }}" type="text/javascript" ></script>
+<script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}" type="text/javascript" ></script>
+<script src="{{ asset('packages/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript" ></script>
 
 <script type="text/javascript">
     jQuery(document).ready(function($) {
@@ -144,20 +268,16 @@ function tree_element($entry, $key, $all_entries, $crud)
             data: { tree: arraied },
         })
         .done(function() {
-            //console.log("success");
-            new PNotify({
-                        title: "{{ trans('backpack::crud.reorder_success_title') }}",
-                        text: "{{ trans('backpack::crud.reorder_success_message') }}",
-                        type: "success"
-                    });
+            new Noty({
+                type: "success",
+                text: "<strong>{{ trans('backpack::crud.reorder_success_title') }}</strong><br>{{ trans('backpack::crud.reorder_success_message') }}"
+            }).show();
           })
         .fail(function() {
-            //console.log("error");
-            new PNotify({
-                        title: "{{ trans('backpack::crud.reorder_error_title') }}",
-                        text: "{{ trans('backpack::crud.reorder_error_message') }}",
-                        type: "danger"
-                    });
+            new Noty({
+                type: "error",
+                text: "<strong>{{ trans('backpack::crud.reorder_error_title') }}</strong><br>{{ trans('backpack::crud.reorder_error_message') }}"
+            }).show();
           })
         .always(function() {
             console.log("complete");

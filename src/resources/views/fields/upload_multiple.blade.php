@@ -4,16 +4,29 @@
     @include('crud::inc.field_translatable_icon')
 
 	{{-- Show the file name and a "Clear" button on EDIT form. --}}
-	@if (isset($field['value']) && count($field['value']))
+	@if (isset($field['value']))
+	@php
+		if (is_string($field['value'])) {
+			$values = json_decode($field['value'], true) ?? [];
+		} else {
+			$values = $field['value'];
+		}
+	@endphp
+	@if (count($values))
     <div class="well well-sm file-preview-container">
-    	@foreach($field['value'] as $key => $file_path)
+    	@foreach($values as $key => $file_path)
     		<div class="file-preview">
-	    		<a target="_blank" href="{{ isset($field['disk'])?asset(\Storage::disk($field['disk'])->url($file_path)):asset($file_path) }}">{{ $file_path }}</a>
+    			@if (isset($field['temporary']))
+		            <a target="_blank" href="{{ isset($field['disk'])?asset(\Storage::disk($field['disk'])->temporaryUrl($file_path, Carbon\Carbon::now()->addMinutes($field['temporary']))):asset($file_path) }}">{{ $file_path }}</a>
+		        @else
+		            <a target="_blank" href="{{ isset($field['disk'])?asset(\Storage::disk($field['disk'])->url($file_path)):asset($file_path) }}">{{ $file_path }}</a>
+		        @endif
 		    	<a id="{{ $field['name'] }}_{{ $key }}_clear_button" href="#" class="btn btn-default btn-xs pull-right file-clear-button" title="Clear file" data-filename="{{ $file_path }}"><i class="fa fa-remove"></i></a>
 		    	<div class="clearfix"></div>
 	    	</div>
     	@endforeach
     </div>
+    @endif
     @endif
 	{{-- Show the file picker on CREATE form. --}}
 	<input name="{{ $field['name'] }}[]" type="hidden" value="">

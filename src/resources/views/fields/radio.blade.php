@@ -23,22 +23,23 @@
 
             @if( isset($field['inline']) && $field['inline'] )
 
-            <label class="radio-inline" for="{{$field['name']}}_{{$optionPointer}}">
+            <div class="form-check form-check-inline">
                 <input  type="radio"
+                        class="form-check-input"
                         id="{{$field['name']}}_{{$optionPointer}}"
                         name="{{$field['name']}}"
                         value="{{$value}}"
                         @include('crud::inc.field_attributes')
                         {{$optionValue == $value ? ' checked': ''}}
-                        > {!! $label !!}
-            </label>
+                        >
+                <label class="radio-inline form-check-label font-weight-normal" for="{{$field['name']}}_{{$optionPointer}}">{!! $label !!}</label>
+            </div>
 
             @else
 
-            <div class="radio">
-                <label for="{{$field['name']}}_{{$optionPointer}}">
-                    <input type="radio" id="{{$field['name']}}_{{$optionPointer}}" name="{{$field['name']}}" value="{{$value}}" {{$optionValue == $value ? ' checked': ''}}> {!! $label !!}
-                </label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="{{$field['name']}}_{{$optionPointer}}" name="{{$field['name']}}" value="{{$value}}" {{$optionValue == $value ? ' checked': ''}}>
+                <label class="form-check-label font-weight-normal" for="{{$field['name']}}_{{$optionPointer}}">{!! $label !!}</label>
             </div>
 
             @endif

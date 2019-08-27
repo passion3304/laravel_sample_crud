@@ -62,8 +62,8 @@ trait CrudUsageStats
             'SERVER_SOFTWARE' => $_SERVER['SERVER_SOFTWARE'] ?? false,
             'DB_CONNECTION' => $_SERVER['DB_CONNECTION'] ?? false,
             'LARAVEL_VERSION' => $this->app->version() ?? false,
-            'BACKPACK_BASE_VERSION' => $_SERVER['BACKPACK_BASE_VERSION'] ?? false,
-            'BACKPACK_CRUD_VERSION' => $_SERVER['BACKPACK_CRUD_VERSION'] ?? false,
+            'BACKPACK_BASE_VERSION' => \PackageVersions\Versions::getVersion('backpack/base') ?? false,
+            'BACKPACK_CRUD_VERSION' => \PackageVersions\Versions::getVersion('backpack/crud') ?? false,
             'BACKPACK_LICENSE' => config('backpack.base.license_code') ?? false,
         ];
 

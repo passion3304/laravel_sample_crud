@@ -3,7 +3,6 @@
 <div @include('crud::inc.field_wrapper_attributes') >
     @include('crud::inc.field_translatable_icon')
     <div class="checkbox">
-    	<label>
         <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false }}">
     	  <input type="checkbox"
           data-javascript-function-for-field-initialisation="bpFieldInitCheckbox"
@@ -17,8 +16,8 @@
     			{{ $attribute }}="{{ $value }}"
         	  @endforeach
           @endif
-          > {!! $field['label'] !!}
-    	</label>
+          >
+    	<label class="form-check-label font-weight-normal" for="{{ $field['name'] }}_checkbox">{!! $field['label'] !!}</label>
 
         {{-- HINT --}}
         @if (isset($field['hint']))

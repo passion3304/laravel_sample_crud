@@ -1,24 +1,108 @@
 # Changelog
 
-All Notable changes to `Backpack CRUD` will be documented in this file
+All Notable changes to `Backpack CRUD` will be documented in this file.
 
-## NEXT - YYYY-MM-DD
+-----------
+
+# Backpack Version 4
+
+-----------
+
+
+## 4.0.0 - 2019-08-xx
 
 ### Added
-- Nothing
+- merged #1955 - ```image``` field type has a new ```max_file_size``` option; which defaults to the defaults to ```upload_max_filesize``` set in PHP;
+- merged #1913 - new design based on CoreUI, instead of AdminLTE; 
+- developers can now add widgets to the top/bottom of the operation views;
 
-### Deprecated
-- Nothing
 
 ### Fixed
-- Nothing
+- merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
+- merged #1977 - fields, filters and operations now use LOCAL assets, instead of CDNs; Backpack can now be used on intranets;
+- merged #1947 fixes #1927 - package version was often incorrect, due to maintainers not updating the number on each patch release; fixed by using ocramius/package-versions to determine the package version;
+- merged #1950 - reorder operation is now twice as fast;
 
-### Removed
-- Nothing
 
-### Security
-- Nothing
 -----------
+
+# Backpack Version 3
+
+-----------
+
+## [3.6.29] - 2019-08-23
+
+### Fixed
+- fixes #1972 - removed var_dump from select2_from_array field;
+
+
+## [3.6.28] - 2019-08-20
+
+### Added
+- merged #1750 - localization for select2 filters;
+
+### Fixed
+- fixed #1762 - uploaded have unique file names even if the same file is submitted twice in the same form;
+- fixed #1652 - small ```table``` field and ```table``` column bugs when inserting empty last rows;
+- adresses #1224 - ```select2_from_array``` with multiple now shows empty option when all are unselected;
+
+
+## [3.6.27] - 2019-08-17
+
+### Fixed
+- merged #1634 - using closest instead of parents for datetime_picker field type;
+- merged #1594 - fixes ```upload_multiple``` field error when casting to array;
+
+
+## [3.6.26] - 2019-08-17
+
+### Added
+- merged #1795 - adds a ```removeButtons()``` method to the CRUD API, which allows developers to remove multiple buttons in one go;
+- merged #1965 - adds a ```multiple``` attribute for ```select2_multiple``` field, which allows developers to force the user to only select one item, even though the relationship is n-n;
+
+### Fixed
+- merged #1964, fixes #1836 - allows carbon immutable dates;
+
+
+## [3.6.25] - 2019-08-17
+
+### Added
+- merged #1952 - ```json``` column type;
+
+### Fixed
+- merged #1906 fixes #1902 - save_and_back url redirected to the default language, instead of the current editing locale;
+- merged #1896 - default button view namespace is now ```crud::buttons```;
+- merged #1921 - table column type can now output both arrays and objects;
+- merged #1852 - syncPivot() method now allows pivot data;
+- merged #1954 - semicolons on date_picker field js;
+- merges #1962 fixes #1910 - allows keyboard use on date_picker field type;
+- merges #1945 - select_and_order did not have its default values after 2 saves;
+
+
+## [3.6.24] - 2019-07-23
+
+### Added
+- merged #1886 - applying the filters is done in a separate method; so that filters can be used outside the List operation;
+
+
+## [3.6.23] - 2019-07-09
+
+### Fixed
+- issue #1922 - merges #1923 - list view details modal is now prettier - table has table and table-hovered classes;
+
+
+## [3.6.22] - 2019-07-03
+
+### Added
+- merged #1899 - Czech translation, thanks to [Aleš Zatloukal](https://github.com/aleszatloukal);
+- merged #1891 - support for MongoDB, thanks to [andrycs](https://github.com/andrycs);
+- merged #1911 - markdown column type;
+- merged #1908 - added options to tinymce field type;
+
+### Fixed
+- merged #1917 - typo in image column type;
+- merged #1901 - pushed checklist_dependency var into crud_fields_scripts stack;
+
 
 ## [3.6.21] - 2019-05-16
 
@@ -1089,6 +1173,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;
 
+
 ## [3.1.60] - 2017-02-13
 
 ### Fixed
@@ -1649,9 +1734,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - issue #58 where select_from_array automatically selected an item with value zero;
 - custom html attributes are now given to the field in a separate array, 'attributes';
 
+-----------
 
-## ----------------------------------------------------------------------------
+# Backpack Version 2
 
+-----------
 
 ## [2.0.24] - 2016-07-13
 

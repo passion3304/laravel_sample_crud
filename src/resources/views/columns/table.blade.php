@@ -23,7 +23,17 @@
 			<tr>
 				@foreach($columns as $tableColumnKey => $tableColumnLabel)
 					<td>
-						{{ $tableRow->{$tableColumnKey} ?? $tableRow[$tableColumnKey] }}
+                    
+						@if( is_array($tableRow) && isset($tableRow[$tableColumnKey]) )
+                            
+                            {{ $tableRow[$tableColumnKey] }}
+                        
+                        @elseif( is_object($tableRow) && property_exists($tableRow, $tableColumnKey) )
+                        
+                            {{ $tableRow->{$tableColumnKey} }}
+                        
+                        @endif
+                        
 					</td>
 				@endforeach
 			</tr>

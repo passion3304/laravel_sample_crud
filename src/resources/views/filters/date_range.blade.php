@@ -2,13 +2,13 @@
 
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
-	<div class="dropdown-menu">
-		<div class="form-group backpack-filter m-b-0">
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
+	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
+	<div class="dropdown-menu p-0">
+		<div class="form-group backpack-filter mb-0">
 			<div class="input-group date">
-		        <div class="input-group-addon">
-		          <i class="fa fa-calendar"></i>
+		        <div class="input-group-prepend">
+		          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
 		        </div>
 		        <input class="form-control pull-right"
 		        		id="daterangepicker-{{ str_slug($filter->name) }}"
@@ -26,8 +26,8 @@
 					        placeholder="{{ $date_range }}"
 						@endif
 		        		>
-		        <div class="input-group-addon daterangepicker-{{ str_slug($filter->name) }}-clear-button">
-		          <a class="" href=""><i class="fa fa-times"></i></a>
+		        <div class="input-group-append daterangepicker-{{ str_slug($filter->name) }}-clear-button">
+		          <a class="input-group-text" href=""><i class="fa fa-times"></i></a>
 		        </div>
 		    </div>
 		</div>
@@ -42,7 +42,7 @@
 
 @push('crud_list_styles')
     <!-- include select2 css-->
-	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.css') }}" />
 	<style>
 		.input-group.date {
 			width: 320px;
@@ -58,8 +58,8 @@
 {{-- push things in the after_scripts section --}}
 
 @push('crud_list_scripts')
-	<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+	<script type="text/javascript" src="{{ asset('packages/moment/min/moment.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
   <script>
 
   		function applyDateRangeFilter{{camel_case($filter->name)}}(start, end) {

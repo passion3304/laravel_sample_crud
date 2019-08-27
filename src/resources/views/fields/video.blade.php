@@ -21,19 +21,19 @@ if (is_array($value)) {
     <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ $value }}">
     <div class="input-group">
         <input @include('crud::inc.field_attributes', ['default_class' => 'video-link form-control']) type="text" id="{{ $field['name'] }}_link">
-        <div class="input-group-addon video-previewSuffix video-noPadding">
+        <div class="input-group-append video-previewSuffix video-noPadding">
             <div class="video-preview">
                 <span class="video-previewImage"></span>
                 <a class="video-previewLink hidden" target="_blank" href="">
-                    <i class="fa video-previewIcon"></i>
+                    <i class="fa fa-lg video-previewIcon"></i>
                 </a>
             </div>
             <div class="video-dummy">
                 <a class="video-previewLink youtube dummy" target="_blank" href="">
-                    <i class="fa fa-youtube video-previewIcon dummy"></i>
+                    <i class="fa fa-lg fa-youtube video-previewIcon dummy"></i>
                 </a>
                 <a class="video-previewLink vimeo dummy" target="_blank" href="">
-                    <i class="fa fa-vimeo video-previewIcon dummy"></i>
+                    <i class="fa fa-lg fa-vimeo video-previewIcon dummy"></i>
                 </a>
             </div>
         </div>
@@ -68,7 +68,7 @@ if (is_array($value)) {
             .video-previewLink {
                  color: #fff;
                  display: block;
-                 width: 34px; height: 34px;
+                 width: 2.375rem; height: 2.375rem;
                  text-align: center;
                  float: left; }
             .video-previewLink.youtube {
@@ -76,11 +76,11 @@ if (is_array($value)) {
             .video-previewLink.vimeo {
                 background: #00ADEF; }
             .video-previewIcon {
-                transform: translateY(10px); }
+                transform: translateY(7px); }
             .video-previewImage {
                 float: left;
                 display: block;
-                width: 34px; height: 34px;
+                width: 2.375rem; height: 2.375rem;
                 background-size: cover;
                 background-position: center center; }
         </style>
@@ -319,7 +319,10 @@ if (is_array($value)) {
                                     else {
                                         pDummy.show();
                                         pWrap.hide();
-                                        alert(videoJson.message);
+                                        new Noty({
+                                            type: "error",
+                                            text: videoJson.message
+                                        }).show();
                                     }
 
                                     videoParsing = false;
@@ -340,7 +343,10 @@ if (is_array($value)) {
 
                 $('form').on('submit', function(e){
                     if( videoParsing ){
-                        alert('Video details are still loading, please wait a moment and try again');
+                        new Noty({
+                            type: "error",
+                            text: "<strong>Please wait.</strong><br>Video details are still loading, please wait a moment or try again."
+                        }).show();
                         e.preventDefault();
                         return false;
                     }

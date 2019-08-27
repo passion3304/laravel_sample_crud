@@ -5,6 +5,7 @@
     <textarea
     	id="tinymce-{{ $field['name'] }}"
         name="{{ $field['name'] }}"
+        data-javascript-function-for-field-initialisation="bpFieldInitTinyMceElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control tinymce'])
         >{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
@@ -29,33 +30,43 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <!-- include tinymce js-->
-        <script src="{{ asset('vendor/backpack/tinymce/tinymce.min.js') }}"></script>
-        {{-- <script src="{{ asset(config('backpack.base.route_prefix').'/js/vendor/tinymce/jquery.tinymce.min.js') }}"></script> --}}
+    <!-- include tinymce js-->
+    <script src="{{ asset('packages/tinymce/tinymce.min.js') }}"></script>
 
-        <script type="text/javascript">
-            tinymce.init({
-                selector: "textarea.tinymce",
-                skin: "dick-light",
-                plugins: "image,link,media,anchor",
-                file_browser_callback : elFinderBrowser,
-             });
+    @php
+    $options = [
+        'selector' => 'textarea.tinymce',
+        'plugins' => 'image,link,media,anchor',
+    ];
 
-            function elFinderBrowser (field_name, url, type, win) {
-              tinymce.activeEditor.windowManager.open({
-                file: '{{ url(config('backpack.base.route_prefix').'/elfinder/tinymce4') }}',// use an absolute path!
-                title: 'elFinder 2.0',
-                width: 900,
-                height: 450,
-                resizable: 'yes'
-              }, {
-                setUrl: function (url) {
-                  win.document.getElementById(field_name).value = url;
-                }
-              });
-              return false;
-            }
-        </script>
+    if (isset($field['options']) && count($field['options'])) {
+        $options = array_merge($options, $field['options']);
+    }
+    @endphp
+
+    <script type="text/javascript">
+    function bpFieldInitTinyMceElement(element) {
+        tinymce.init({
+            file_browser_callback : elFinderBrowser
+            {!! ', '.trim(json_encode($options), "{}") !!}
+         });
+    }
+
+    function elFinderBrowser (field_name, url, type, win) {
+      tinymce.activeEditor.windowManager.open({
+        file: '{{ url(config('backpack.base.route_prefix').'/elfinder/tinymce4') }}',// use an absolute path!
+        title: 'elFinder 2.0',
+        width: 900,
+        height: 450,
+        resizable: 'yes'
+      }, {
+        setUrl: function (url) {
+          win.document.getElementById(field_name).value = url;
+        }
+      });
+      return false;
+    }
+    </script>
     @endpush
 
 @endif

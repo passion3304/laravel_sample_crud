@@ -1,31 +1,38 @@
-@extends('backpack::layout')
+@extends(backpack_view('layouts.top_left'))
+
+@php
+  $defaultBreadcrumbs = [
+    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
+    $crud->entity_name_plural => url($crud->route),
+    trans('backpack::crud.revisions') => false,
+  ];
+
+  // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
+  $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
+@endphp
 
 @section('header')
-  <section class="content-header">
-    <h1>
+  <div class="container-fluid">
+    <h2>
         <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
         <small>{!! $crud->getSubheading() ?? trans('backpack::crud.revisions') !!}.</small>
-    </h1>
-    <ol class="breadcrumb">
-      <li><a href="{{ url(config('backpack.base.route_prefix'),'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
-      <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
-      <li class="active">{{ trans('backpack::crud.revisions') }}</li>
-    </ol>
-  </section>
+
+        @if ($crud->hasAccess('list'))
+          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+        @endif
+    </h2>
+  </div>
 @endsection
 
 @section('content')
-@if ($crud->hasAccess('list'))
-  <a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
-@endif
 <div class="row m-t-20">
   <div class="{{ $crud->getRevisionsTimelineContentClass() }}">
     <!-- Default box -->
 
     @if(!count($revisions))
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">{{ trans('backpack::crud.no_revisions') }}</h3>
+      <div class="card">
+        <div class="card-header with-border">
+          <h3 class="card-title">{{ trans('backpack::crud.no_revisions') }}</h3>
         </div>
       </div>
     @else

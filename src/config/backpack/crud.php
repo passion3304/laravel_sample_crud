@@ -29,15 +29,15 @@ return [
 
     // Here you may override the css-classes for the content section of the create view globally
     // To override per view use $this->crud->setCreateContentClass('class-string')
-    'create_content_class' => 'col-md-8 col-md-offset-2',
+    'create_content_class' => 'col-md-8 bold-labels',
 
     // Here you may override the css-classes for the content section of the edit view globally
     // To override per view use $this->crud->setEditContentClass('class-string')
-    'edit_content_class'   => 'col-md-8 col-md-offset-2',
+    'edit_content_class'   => 'col-md-8 bold-labels',
 
     // Here you may override the css-classes for the content section of the revisions timeline view globally
     // To override per view use $this->crud->setRevisionsTimelineContentClass('class-string')
-    'revisions_timeline_content_class'   => 'col-md-10 col-md-offset-1',
+    'revisions_timeline_content_class'   => 'col-md-12',
 
     /*
     |------------

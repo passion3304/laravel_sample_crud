@@ -4,23 +4,25 @@
 
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-    <div class="input-group">
-	<input
-		type="text"
-		id="{{ $field['name'] }}-filemanager"
-		name="{{ $field['name'] }}"
-        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
-        data-javascript-function-for-field-initialisation="bpFieldInitBrowseElement"
-        data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup') }}"
-        @include('crud::inc.field_attributes')
+    <div class="controls">
+	    <div class="input-group">
+			<input
+				type="text"
+				id="{{ $field['name'] }}-filemanager"
+				name="{{ $field['name'] }}"
+		        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
+		        data-javascript-function-for-field-initialisation="bpFieldInitBrowseElement"
+		        data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup') }}"
+		        @include('crud::inc.field_attributes')
 
-		@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
-	>
+				@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
+			>
 
-	<div class="input-group-btn" style="border: 1px solid #d2d6de">
-		<button type="button" class="btn btn-default popup_selector"><i class="fa fa-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
-		<button type="button" class="btn btn-default clear_elfinder_picker"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
-	</div>
+			<span class="input-group-append">
+			  	<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm popup_selector"><i class="fa fa-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
+				<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm clear_elfinder_picker"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
+			</span>
+		</div>
 	</div>
 
 	@if (isset($field['hint']))
@@ -40,7 +42,7 @@
 	{{-- FIELD CSS - will be loaded in the after_styles section --}}
 	@push('crud_fields_styles')
 		<!-- include browse server css -->
-		<link href="{{ asset('vendor/backpack/colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
 		<style>
 			#cboxContent, #cboxLoadedContent, .cboxIframe {
 				background: transparent;
@@ -50,8 +52,8 @@
 
 	@push('crud_fields_scripts')
 		<!-- include browse server js -->
-		<script src="{{ asset('vendor/backpack/colorbox/jquery.colorbox-min.js') }}"></script>
-		<script>
+		<script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
+		<script type="text/javascript">
 			// this global variable is used to remember what input to update with the file path
 			// because elfinder is actually loaded in an iframe by colorbox
 			var elfinderTarget = false;
@@ -66,7 +68,7 @@
 				var triggerUrl = element.data('elfinder-trigger-url')
 				var name = element.attr('name');
 
-				element.siblings('.input-group-btn').children('button.popup_selector').click(function (event) {
+				element.siblings('.input-group-append').children('button.popup_selector').click(function (event) {
 				    event.preventDefault();
 
 				    elfinderTarget = element;
@@ -81,7 +83,7 @@
 				    });
 				});
 
-				element.siblings('.input-group-btn').children('button.clear_elfinder_picker').click(function (event) {
+				element.siblings('.input-group-append').children('button.clear_elfinder_picker').click(function (event) {
 				    event.preventDefault();
 				    element.val("");
 				});
