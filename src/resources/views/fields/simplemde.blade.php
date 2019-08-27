@@ -5,6 +5,9 @@
     <textarea
     	id="simplemde_{{ $field['name'] }}"
         name="{{ $field['name'] }}"
+        data-javascript-function-for-field-initialisation="bpFieldInitSimpleMdeElement"
+        data-simplemdeAttributesRaw="{{ isset($field['simplemdeAttributesRaw']) ? "{".$field['simplemdeAttributesRaw']."}" : "{}" }}"
+        data-simplemdeAttributes="{{ isset($field['simplemdeAttributes']) ? json_encode($field['simplemdeAttributes']) : "{}" }}"
         @include('crud::inc.field_attributes', ['default_class' => 'form-control'])
     	>{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
@@ -39,27 +42,29 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <script src="{{ asset('packages/simplemde/dist/simplemde.min.js') }}"></script>
+        <script>
+            function bpFieldInitSimpleMdeElement(element) {
+                var elementId = element.attr('id');
+                var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
+                var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
+                var configurationObject = {
+                    element: $(elementId)[0],
+                };
+
+                configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
+
+                var smdeObject = new SimpleMDE(configurationObject);
+            
+                smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
+                smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
+                });
+            }
+        </script>
     @endpush
 
 @endif
 
-@push('crud_fields_scripts')
-<script>
-    var simplemde_{{ $field['name'] }} = new SimpleMDE({
-    	element: $("#simplemde_{{ $field['name'] }}")[0],
-    	@if(isset($field['simplemdeAttributes']))
-    		@foreach($field['simplemdeAttributes'] as $index => $value)
-    			{{$index}} : @if(is_bool($value)) {{ ($value?'true':'false') }} @else {!! '"'.$value.'"' !!} @endif,
-    		@endforeach
-    	@endif
-    	{!! isset($field['simplemdeAttributesRaw']) ? $field['simplemdeAttributesRaw'] : "" !!}
-    });
-    simplemde_{{ $field['name'] }}.options.minHeight = simplemde_{{ $field['name'] }}.options.minHeight || "300px";
-    simplemde_{{ $field['name'] }}.codemirror.getScrollerElement().style.minHeight = simplemde_{{ $field['name'] }}.options.minHeight;
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    	setTimeout(function() { simplemde_{{ $field['name'] }}.codemirror.refresh(); }, 10);
-    });
-</script>
-@endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
