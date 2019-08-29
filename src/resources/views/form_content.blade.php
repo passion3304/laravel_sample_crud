@@ -9,9 +9,11 @@
     @include('crud::inc.show_tabbed_fields')
     <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
-    <div class="box col-md-12 padding-10 p-t-20">
-    @include('crud::inc.show_fields', ['fields' => $fields])
+  <div class="card">
+    <div class="card-body row">
+      @include('crud::inc.show_fields', ['fields' => $fields])
     </div>
+  </div>
 @endif
 
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
@@ -52,7 +54,6 @@
           if ((e.which == '115' || e.which == '83' ) && (e.ctrlKey || e.metaKey))
           {
               e.preventDefault();
-              // alert("Ctrl-s pressed");
               $("button[type=submit]").trigger('click');
               return false;
           }
@@ -108,11 +109,12 @@
                         $('[name="' + normalizedProperty + '"]'),
                         container = field.parents('.form-group');
 
-            container.addClass('has-error');
+            container.addClass('text-danger');
+            container.children('input, textarea').addClass('is-invalid');
 
             $.each(messages, function(key, msg){
                 // highlight the input that errored
-                var row = $('<div class="help-block">' + msg + '</div>');
+                var row = $('<div class="invalid-feedback">' + msg + '</div>');
                 row.appendTo(container);
 
                 // highlight its parent tab

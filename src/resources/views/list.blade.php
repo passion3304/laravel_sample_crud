@@ -1,17 +1,23 @@
-@extends('backpack::layout')
+@extends(backpack_view('layouts.top_left'))
+
+@php
+  $defaultBreadcrumbs = [
+    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
+    $crud->entity_name_plural => url($crud->route),
+    trans('backpack::crud.list') => false,
+  ];
+
+  // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
+  $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
+@endphp
 
 @section('header')
-	<section class="content-header">
-	  <h1>
+  <div class="container-fluid">
+    <h2>
       <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? trans('backpack::crud.all').'<span>'.$crud->entity_name_plural.'</span> '.trans('backpack::crud.in_the_database') !!}.</small>
-	  </h1>
-	  <ol class="breadcrumb">
-	    <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
-	    <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
-	    <li class="active">{{ trans('backpack::crud.list') }}</li>
-	  </ol>
-	</section>
+      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
+    </h2>
+  </div>
 @endsection
 
 @section('content')
@@ -22,8 +28,8 @@
     <div class="{{ $crud->getListContentClass() }}">
       <div class="">
 
-        <div class="row m-b-10">
-          <div class="col-xs-6">
+        <div class="row mb-0">
+          <div class="col-6">
             @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
             <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
@@ -32,8 +38,8 @@
             </div>
             @endif
           </div>
-          <div class="col-xs-6">
-              <div id="datatable_search_stack" class="pull-right"></div>
+          <div class="col-6">
+              <div id="datatable_search_stack" class="float-right"></div>
           </div>
         </div>
 
@@ -42,9 +48,9 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <div class="overflow-hidden">
+        <div class="overflow-hidden mt-2">
 
-        <table id="crudTable" class="box table table-striped table-hover display responsive nowrap m-t-0" cellspacing="0">
+        <table id="crudTable" class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs" cellspacing="0">
             <thead>
               <tr>
                 {{-- Table columns --}}
@@ -85,7 +91,7 @@
           <div id="bottom_buttons" class="hidden-print">
             @include('crud::inc.button_stack', ['stack' => 'bottom'])
 
-            <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
+            <div id="datatable_button_stack" class="float-right text-right hidden-xs"></div>
           </div>
           @endif
 
@@ -100,9 +106,9 @@
 
 @section('after_styles')
   <!-- DATA TABLES -->
-  <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.dataTables.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
 
   <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
   <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/form.css') }}">

@@ -1,27 +1,20 @@
-<nav class="navbar navbar-default navbar-filters">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-filters mb-0 pb-0 pt-0">
       <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">{{ trans('backpack::crud.toggle_filters') }}</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"><i class="fa fa-filter"></i> <span class="hidden-md hidden-lg">{{ trans('backpack::crud.filters') }}</span></a>
-      </div>
+      <a class="nav-item d-none d-lg-block"><span class="fa fa-filter"></span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bp-filters-navbar" aria-controls="bp-filters-navbar" aria-expanded="false" aria-label="{{ trans('backpack::crud.toggle_filters') }}">
+        <span class="fa fa-filter"></span> {{ trans('backpack::crud.filters') }}
+      </button>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="collapse navbar-collapse" id="bp-filters-navbar">
         <ul class="nav navbar-nav">
           <!-- THE ACTUAL FILTERS -->
     			@foreach ($crud->filters as $filter)
     				@include($filter->view)
     			@endforeach
-          <li ><a href="#" id="remove_filters_button" class="{{ count(Request::input()) != 0 ? '' : 'hidden' }}"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
+          <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'hidden' }}"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
   </nav>
 
 @push('crud_list_scripts')
@@ -75,7 +68,7 @@
           $(".navbar-filters li[filter-name]").each(function () {
             if ($(this).hasClass('active')) {
               anyActiveFilters = true;
-              console.log('ACTIVE FILTER');
+              // console.log('ACTIVE FILTER');
             }
           });
 

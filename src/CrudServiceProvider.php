@@ -9,8 +9,6 @@ class CrudServiceProvider extends ServiceProvider
 {
     use CrudUsageStats;
 
-    const VERSION = '3.5.1';
-
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
         \Backpack\CRUD\app\Console\Commands\Publish::class,
@@ -30,7 +28,6 @@ class CrudServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $_SERVER['BACKPACK_CRUD_VERSION'] = $this::VERSION;
         $customViewsFolder = resource_path('views/vendor/backpack/crud');
 
         // LOAD THE VIEWS

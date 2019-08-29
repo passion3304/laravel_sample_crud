@@ -1,25 +1,32 @@
-@extends('backpack::layout')
+@extends(backpack_view('layouts.top_left'))
+
+@php
+  $defaultBreadcrumbs = [
+    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
+    $crud->entity_name_plural => url($crud->route),
+    trans('backpack::crud.edit') => false,
+  ];
+
+  // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
+  $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
+@endphp
 
 @section('header')
-	<section class="content-header">
-	  <h1>
+	<section class="container-fluid">
+	  <h2>
         <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
         <small>{!! $crud->getSubheading() ?? trans('backpack::crud.edit').' '.$crud->entity_name !!}.</small>
-	  </h1>
-	  <ol class="breadcrumb">
-	    <li><a href="{{ url(config('backpack.base.route_prefix'),'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
-	    <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
-	    <li class="active">{{ trans('backpack::crud.edit') }}</li>
-	  </ol>
+
+        @if ($crud->hasAccess('list'))
+          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+        @endif
+	  </h2>
 	</section>
 @endsection
 
 @section('content')
-@if ($crud->hasAccess('list'))
-	<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a>
-@endif
 
-<div class="row m-t-20">
+<div class="row">
 	<div class="{{ $crud->getEditContentClass() }}">
 		<!-- Default box -->
 
@@ -33,9 +40,9 @@
 		  		>
 		  {!! csrf_field() !!}
 		  {!! method_field('PUT') !!}
-		  <div class="col-md-12">
+
 		  	@if ($crud->model->translationEnabled())
-		    <div class="row m-b-10">
+		    <div class="mb-2">
 		    	<!-- Single button -->
 				<div class="btn-group pull-right">
 				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,27 +50,20 @@
 				  </button>
 				  <ul class="dropdown-menu">
 				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-					  	<li><a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?locale={{ $key }}">{{ $locale }}</a></li>
+					  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?locale={{ $key }}">{{ $locale }}</a>
 				  	@endforeach
 				  </ul>
 				</div>
 		    </div>
 		    @endif
-		    <div class="row display-flex-wrap">
 		      <!-- load the view from the application if it exists, otherwise load the one in the package -->
 		      @if(view()->exists('vendor.backpack.crud.form_content'))
 		      	@include('vendor.backpack.crud.form_content', ['fields' => $fields, 'action' => 'edit'])
 		      @else
 		      	@include('crud::form_content', ['fields' => $fields, 'action' => 'edit'])
 		      @endif
-		    </div><!-- /.box-body -->
 
-            <div class="">
-
-                @include('crud::inc.form_save_buttons')
-
-		    </div><!-- /.box-footer-->
-		  </div><!-- /.box -->
+            @include('crud::inc.form_save_buttons')
 		  </form>
 	</div>
 </div>

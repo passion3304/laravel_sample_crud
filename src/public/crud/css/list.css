@@ -4,6 +4,19 @@
 *
 */
 
+	table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before {
+		right: 0.4em;
+	    top: 1em;
+	    content: "\f16c";
+	    font: normal normal normal 14px/1 "LineAwesome";
+	}
+
+	table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+	    right: 0.4em;
+	    content: "\f165";
+	    font: normal normal normal 14px/1 "LineAwesome";
+	}
+	
 	/* Removes the horizontal scroll (if the width allows it) */
 	.box-body.table-responsive {
 	    padding-left: 15px;
@@ -31,6 +44,7 @@
 
 	#crudTable_wrapper {
 		/*overflow: hidden;*/
+		display: block;
 	}
 
 	#crudTable_wrapper #crudTable {
@@ -43,14 +57,13 @@
 	#crudTable.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before {
 		background-color: transparent;
 		color: #636161;
-		font-family: 'FontAwesome';
-		width: 15px;
-		content: "\f142";
+		font-family: 'LineAwesome';
+		width: 16px;
+		content: "\f1c4";
 		font-size: 21px;
 		box-shadow: none;
+		margin-top: 8px;
 		border: none;
-		font-weight: 100;
-		margin-top: 5px;
 	}
 
 	.dt-buttons {
@@ -63,6 +76,7 @@
 
 	#crudTable td {
 		outline: none;
+		vertical-align: middle;
 	}
 
 	#crudTable.has-hidden-columns .details-control {
@@ -172,6 +186,11 @@
 	    /*border: none;*/
 	}
 
+	/* datatale modal overwrites */
+	.dtr-bs-modal .modal-body {
+		padding: 0;
+	}
+
 	/* datatable header overwrites */
 	table.dataTable {
 		margin-top: 0px!important;
@@ -192,7 +211,8 @@
 	.navbar-filters li>a:active,
 	.navbar-filters .navbar-nav>.active>a, .navbar-filters .navbar-nav>.active>a:focus, .navbar-filters .navbar-nav>.active>a:hover,
 	.navbar-filters .navbar-nav>.open>a, .navbar-filters .navbar-nav>.open>a:focus, .navbar-filters .navbar-nav>.open>a:hover {
-		background-color: #e0e0e9;
+		background-color: #e4e7ea;
+		border-radius: 3px;
 	}
 	.navbar-filters li {
 		margin: 0 2px;

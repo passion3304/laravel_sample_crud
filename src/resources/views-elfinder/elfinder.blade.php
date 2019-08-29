@@ -1,4 +1,4 @@
-@extends('backpack::layout')
+@extends('backpack::layouts.top_left')
 
 @section('after_scripts')
     <!-- jQuery and jQuery UI (REQUIRED) -->
@@ -14,7 +14,7 @@
     <!-- elFinder JS (REQUIRED) -->
     <script src="<?= asset($dir.'/js/elfinder.min.js') ?>"></script>
 
-    <?php if ($locale) { ?>
+    <?php if($locale){ ?>
     <!-- elFinder translation (OPTIONAL) -->
     <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
     <?php } ?>
@@ -26,7 +26,7 @@
         $().ready(function() {
             $('#elfinder').elfinder({
                 // set your elFinder options here
-                <?php if ($locale) { ?>
+                <?php if($locale){ ?>
                     lang: '<?= $locale ?>', // locale
                 <?php } ?>
                 customData: {
@@ -38,15 +38,16 @@
     </script>
 @endsection
 
+@php
+  $breadcrumbs = [
+    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
+    'File Manager' => false,
+  ];
+@endphp
+
 @section('header')
-    <section class="content-header">
-      <h1>
-        {{ trans('backpack::crud.file_manager') }}
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="{{ url(config('backpack.base.route_prefix')) }}">Admin</a></li>
-        <li class="active">{{ trans('backpack::crud.file_manager') }}</li>
-      </ol>
+    <section class="container-fluid">
+      <h2>File Manager</h2>
     </section>
 @endsection
 

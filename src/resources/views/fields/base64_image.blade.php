@@ -1,4 +1,4 @@
-  <div class="form-group col-xs-12 image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}" data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}" @include('crud::inc.field_wrapper_attributes')>
+  <div class="form-group col-sm-12 image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}" data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}" @include('crud::inc.field_wrapper_attributes')>
     <div>
         <label>{!! $field['label'] !!}</label>
         @include('crud::inc.field_translatable_icon')
@@ -7,15 +7,15 @@
     <div class="row">
         <div class="col-sm-6" style="margin-bottom: 20px;">
             @if(!is_null(old(square_brackets_to_dots($field['name']))))
-                <img id="mainImage" src="{{ old(square_brackets_to_dots($field['name'])) }}">
+                <img data-handle="mainImage" src="{{ old(square_brackets_to_dots($field['name'])) }}">
             @elseif(isset($field['src']) && isset($entry))
-                <img id="mainImage" src="{{ $entry->find($entry->id)->{$field['src']}() }}">
+                <img data-handle="mainImage" src="{{ $entry->find($entry->id)->{$field['src']}() }}">
             @elseif(isset($field['value']))
-                <img id="mainImage" src="{{ $field['value'] }}">
+                <img data-handle="mainImage" src="{{ $field['value'] }}">
             @elseif(isset($field['default']))
-                <img id="mainImage" src="{{ $field['default'] }}">
+                <img data-handle="mainImage" src="{{ $field['default'] }}">
             @else
-                <img id="mainImage" src="">
+                <img data-handle="mainImage" src="">
             @endif
         </div>
         @if(isset($field['crop']) && $field['crop'])
@@ -30,18 +30,18 @@
         <input type="hidden" id="hiddenFilename" name="{{ $field['filename'] }}" value="">
     </div>
     <div class="btn-group">
-        <label class="btn btn-primary btn-file">
-            Choose file <input type="file" accept="image/*" id="uploadImage" @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
-            <input type="hidden" id="hiddenImage" name="{{ $field['name'] }}">
-        </label>
+        <div class="btn btn-light btn-sm btn-file">
+            Choose file <input type="file" accept="image/*" data-handle="uploadImage" @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
+            <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}">
+        </div>
         @if(isset($field['crop']) && $field['crop'])
-        <button class="btn btn-default" id="rotateLeft" type="button" style="display: none;"><i class="fa fa-rotate-left"></i></button>
-        <button class="btn btn-default" id="rotateRight" type="button" style="display: none;"><i class="fa fa-rotate-right"></i></button>
-        <button class="btn btn-default" id="zoomIn" type="button" style="display: none;"><i class="fa fa-search-plus"></i></button>
-        <button class="btn btn-default" id="zoomOut" type="button" style="display: none;"><i class="fa fa-search-minus"></i></button>
-        <button class="btn btn-warning" id="reset" type="button" style="display: none;"><i class="fa fa-times"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="rotateLeft" type="button" style="display: none;"><i class="fa fa-rotate-left"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="rotateRight" type="button" style="display: none;"><i class="fa fa-rotate-right"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="zoomIn" type="button" style="display: none;"><i class="fa fa-search-plus"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="zoomOut" type="button" style="display: none;"><i class="fa fa-search-minus"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="reset" type="button" style="display: none;"><i class="fa fa-times"></i></button>
         @endif
-        <button class="btn btn-danger" id="remove" type="button"><i class="fa fa-trash"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="remove" type="button"><i class="fa fa-trash"></i></button>
     </div>
 
     {{-- HINT --}}
@@ -58,8 +58,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        {{-- YOUR CSS HERE --}}
-        <link href="{{ asset('vendor/backpack/cropper/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('packages/cropperjs/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
         <style>
             .hide {
                 display: none;
@@ -109,23 +108,23 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        {{-- YOUR JS HERE --}}
-        <script src="{{ asset('vendor/backpack/cropper/dist/cropper.min.js') }}"></script>
+        <script src="{{ asset('packages/cropperjs/dist/cropper.min.js') }}"></script>
+        <script src="{{ asset('packages/jquery-cropper/dist/jquery-cropper.min.js') }}"></script>
         <script>
             jQuery(document).ready(function($) {
                 // Loop through all instances of the image field
                 $('.form-group.image').each(function(index){
                     // Find DOM elements under this form-group element
-                    var $mainImage = $(this).find('#mainImage');
-                    var $uploadImage = $(this).find("#uploadImage");
-                    var $hiddenImage = $(this).find("#hiddenImage");
+                    var $mainImage = $(this).find('[data-handle=mainImage]');
+                    var $uploadImage = $(this).find("[data-handle=uploadImage]");
+                    var $hiddenImage = $(this).find("[data-handle=hiddenImage]");
                     var $hiddenFilename = $(this).find("#hiddenFilename");
-                    var $rotateLeft = $(this).find("#rotateLeft")
-                    var $rotateRight = $(this).find("#rotateRight")
-                    var $zoomIn = $(this).find("#zoomIn")
-                    var $zoomOut = $(this).find("#zoomOut")
-                    var $reset = $(this).find("#reset")
-                    var $remove = $(this).find("#remove")
+                    var $rotateLeft = $(this).find("[data-handle=rotateLeft]")
+                    var $rotateRight = $(this).find("[data-handle=rotateRight]")
+                    var $zoomIn = $(this).find("[data-handle=zoomIn]")
+                    var $zoomOut = $(this).find("[data-handle=zoomOut]")
+                    var $reset = $(this).find("[data-handle=reset]")
+                    var $remove = $(this).find("[data-handle=remove]")
                     // Options either global for all image type fields, or use 'data-*' elements for options passed in via the CRUD controller
                     var options = {
                         viewMode: 2,
@@ -227,7 +226,10 @@
                                 }
                             };
                         } else {
-                            alert("Please choose an image file.");
+                            new Noty({
+                                type: "error",
+                                text: "<strong>Please choose an image file</strong><br>The file you've chosen does not look like an image."
+                            }).show();
                         }
                     });
 

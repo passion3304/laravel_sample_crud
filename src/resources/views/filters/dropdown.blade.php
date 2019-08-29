@@ -2,22 +2,21 @@
 
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <ul class="dropdown-menu">
-		<li><a parameter="{{ $filter->name }}" dropdownkey="" href="">-</a></li>
-		<li role="separator" class="divider"></li>
+		<a class="dropdown-item" parameter="{{ $filter->name }}" dropdownkey="" href="">-</a>
+		<div role="separator" class="dropdown-divider"></div>
 		@if (is_array($filter->values) && count($filter->values))
 			@foreach($filter->values as $key => $value)
 				@if ($key === 'dropdown-separator')
-					<li role="separator" class="divider"></li>
+					<div role="separator" class="dropdown-divider"></div>
 				@else
-					<li class="{{ ($filter->isActive() && $filter->currentValue == $key)?'active':'' }}">
-						<a  parameter="{{ $filter->name }}"
-							href=""
-							dropdownkey="{{ $key }}"
-							>{{ $value }}</a>
-					</li>
+					<a  class="dropdown-item {{ ($filter->isActive() && $filter->currentValue == $key)?'active':'' }}"
+						parameter="{{ $filter->name }}"
+						href=""
+						dropdownkey="{{ $key }}"
+						>{{ $value }}</a>
 				@endif
 			@endforeach
 		@endif
@@ -42,7 +41,7 @@
 @push('crud_list_scripts')
     <script>
 		jQuery(document).ready(function($) {
-			$("li.dropdown[filter-name={{ $filter->name }}] .dropdown-menu li a").click(function(e) {
+			$("li.dropdown[filter-name={{ $filter->name }}] .dropdown-menu a").click(function(e) {
 				e.preventDefault();
 
 				var value = $(this).attr('dropdownkey');

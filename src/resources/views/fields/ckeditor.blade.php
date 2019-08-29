@@ -26,8 +26,8 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <script src="{{ asset('vendor/backpack/ckeditor/ckeditor.js') }}"></script>
-        <script src="{{ asset('vendor/backpack/ckeditor/adapters/jquery.js') }}"></script>
+        <script src="{{ asset('packages/ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset('packages/ckeditor/adapters/jquery.js') }}"></script>
     @endpush
 
 @endif
@@ -38,7 +38,8 @@
     jQuery(document).ready(function($) {
         $('#ckeditor-{{ $field['name'] }}').ckeditor({
             "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
-            "extraPlugins" : '{{ isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : 'oembed,widget' }}'
+            "extraPlugins" : '{{ isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : 'embed,widget' }}',
+            "embed_provider": '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
             @if (isset($field['options']) && count($field['options']))
                 {!! ', '.trim(json_encode($field['options']), "{}") !!}
             @endif

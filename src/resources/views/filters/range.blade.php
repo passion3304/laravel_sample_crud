@@ -1,11 +1,11 @@
 {{-- Example Backpack CRUD filter --}}
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
-    <div class="dropdown-menu padding-10">
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
+    <div class="dropdown-menu p-0">
 
-			<div class="form-group backpack-filter m-b-0">
+			<div class="form-group backpack-filter mb-0">
 					<?php
 						$from = '';
 						$to = '';
@@ -38,8 +38,8 @@
 										placeholder = "max value"
 									@endif
 				        		>
-				        <div class="input-group-addon range-filter-{{ str_slug($filter->name) }}-clear-button">
-				          <a class="" href=""><i class="fa fa-times"></i></a>
+				        <div class="input-group-append range-filter-{{ str_slug($filter->name) }}-clear-button">
+				          <a class="input-group-text" href=""><i class="fa fa-times"></i></a>
 				        </div>
 				    </div>
 			</div>

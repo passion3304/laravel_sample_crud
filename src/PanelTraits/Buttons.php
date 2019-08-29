@@ -64,7 +64,7 @@ trait Buttons
 
     public function addButtonFromView($stack, $name, $view, $position = false)
     {
-        $view = 'vendor.backpack.crud.buttons.'.$view;
+        $view = 'crud::buttons.'.$view;
 
         $this->addButton($stack, $name, 'view', $view, $position);
     }
@@ -132,6 +132,19 @@ trait Buttons
         $this->buttons = $this->buttons->reject(function ($button) use ($name, $stack) {
             return $stack == null ? $button->name == $name : ($button->stack == $stack) && ($button->name == $name);
         });
+    }
+
+    /**
+     * @param array $names Button names
+     * @param string|null $stack Optional stack name.
+     */
+    public function removeButtons($names, $stack = null)
+    {
+        if (! empty($names)) {
+            foreach ($names as $name) {
+                $this->removeButton($name, $stack);
+            }
+        }
     }
 
     public function removeAllButtons()

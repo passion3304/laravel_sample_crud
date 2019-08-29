@@ -16,9 +16,9 @@
 	>
 
 	<div class="btn-group" role="group" aria-label="..." style="margin-top: 3px;">
-	  <button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-default popup_selector">
+	  <button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm popup_selector">
 		<i class="fa fa-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
-		<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-default clear_elfinder_picker">
+		<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm clear_elfinder_picker">
 		<i class="fa fa-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
 	</div>
 
@@ -36,7 +36,7 @@
 	{{-- FIELD CSS - will be loaded in the after_styles section --}}
 	@push('crud_fields_styles')
 		<!-- include browse server css -->
-		<link href="{{ asset('vendor/backpack/colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
 		<style>
 			#cboxContent, #cboxLoadedContent, .cboxIframe {
 				background: transparent;
@@ -46,7 +46,7 @@
 
 	@push('crud_fields_scripts')
 		<!-- include browse server js -->
-		<script src="{{ asset('vendor/backpack/colorbox/jquery.colorbox-min.js') }}"></script>
+		<script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
 	@endpush
 
 @endif

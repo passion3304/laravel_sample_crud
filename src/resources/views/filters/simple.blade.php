@@ -2,8 +2,8 @@
 
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="{{ Request::get($filter->name)?'active':'' }}">
-    <a 	href=""
+	class="nav-item {{ Request::get($filter->name)?'active':'' }}">
+    <a class="nav-link" href=""
 		parameter="{{ $filter->name }}"
     	>{{ $filter->label }}</a>
   </li>
