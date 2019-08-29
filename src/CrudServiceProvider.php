@@ -4,7 +4,6 @@ namespace Backpack\CRUD;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Backpack\CRUD\CrudPanel;
 
 class CrudServiceProvider extends ServiceProvider
 {
