@@ -25,6 +25,11 @@ trait CreateOperation
             'as' => $routeName.'store',
             'uses' => $controller.'@store',
         ]);
+
+        Route::post($segment, [
+            'as' => $routeName.'store',
+            'uses' => $controller.'@store',
+        ]);
     }
 
     /**
