@@ -9,7 +9,6 @@ trait RequiredFields
     |                             REQUIRED FIELDS
     |--------------------------------------------------------------------------
     */
-    public $requiredFields = [];
 
     /**
      * Parse a FormRequest class, figure out what inputs are required
@@ -21,8 +20,8 @@ trait RequiredFields
     public function setRequiredFields($class, $operation)
     {
         $formRequest = new $class;
-
         $rules = $formRequest->rules();
+        $requiredFields = [];
 
         if (count($rules)) {
             foreach ($rules as $key => $rule) {
@@ -30,10 +29,12 @@ trait RequiredFields
                     (is_string($rule) && strpos($rule, 'required') !== false && strpos($rule, 'required_') === false) ||
                     (is_array($rule) && array_search('required', $rule) !== false && array_search('required_', $rule) === false)
                 ) {
-                    $this->requiredFields[$operation][] = $key;
+                    $requiredFields[] = $key;
                 }
             }
         }
+
+        $this->set($operation.'.requiredFields', $requiredFields);
     }
 
     /**
@@ -47,10 +48,10 @@ trait RequiredFields
      */
     public function isRequired($inputName, $operation)
     {
-        if (! isset($this->requiredFields[$operation])) {
+        if (! $this->has($operation.'.requiredFields')) {
             return false;
         }
 
-        return in_array($inputName, $this->requiredFields[$operation]);
+        return in_array($inputName, $this->get($operation.'.requiredFields'));
     }
 }

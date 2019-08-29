@@ -4,6 +4,9 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Query
 {
+    public $query;
+    public $request;
+    
     // ----------------
     // ADVANCED QUERIES
     // ----------------

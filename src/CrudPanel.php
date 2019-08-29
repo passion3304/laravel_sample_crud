@@ -26,14 +26,14 @@ use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\SaveActions;
 use Backpack\CRUD\PanelTraits\Settings;
 use Backpack\CRUD\PanelTraits\RequiredFields;
-use Backpack\CRUD\PanelTraits\HeadingsAndTitle;
+use Backpack\CRUD\PanelTraits\HeadingsAndTitles;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 use Illuminate\Database\Eloquent\Collection;
 
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields, HeadingsAndTitle, Operations, SaveActions, Settings;
+    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields, HeadingsAndTitles, Operations, SaveActions, Settings;
 
     // allow developers to add their own closures to this object
     use Macroable;
@@ -49,9 +49,7 @@ class CrudPanel
     public $route; // what route have you defined for your entity? used for links.
     public $entity_name = 'entry'; // what name will show up on the buttons, in singural (ex: Add entity)
     public $entity_name_plural = 'entries'; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
-    public $request;
 
-    public $query;
     public $entry;
     public $db_column_types = [];
 

@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
-trait HeadingsAndTitle
+trait HeadingsAndTitles
 {
     // -----
     // TITLE

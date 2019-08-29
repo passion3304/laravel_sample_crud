@@ -107,50 +107,6 @@ trait Read
     }
 
     /**
-     * Get the fields for the create or update forms.
-     *
-     * @param  string   $form create/update/both - defaults to 'both'
-     * @param  bool|int $id   the ID of the entity to be edited in the Update form
-     *
-     * @return array all the fields that need to be shown and their information
-     */
-    public function getFields($form, $id = false)
-    {
-        switch (strtolower($form)) {
-            case 'create':
-                return $this->getCreateFields();
-                break;
-
-            case 'update':
-                return $this->getUpdateFields($id);
-                break;
-
-            default:
-                return $this->getCreateFields();
-                break;
-        }
-    }
-
-    /**
-     * Check if the create/update form has upload fields.
-     * Upload fields are the ones that have "upload" => true defined on them.
-     *
-     * @param  string   $form create/update/both - defaults to 'both'
-     * @param  bool|int $id   id of the entity - defaults to false
-     *
-     * @return bool
-     */
-    public function hasUploadFields($form, $id = false)
-    {
-        $fields = $this->getFields($form, $id);
-        $upload_fields = array_where($fields, function ($value, $key) {
-            return isset($value['upload']) && $value['upload'] == true;
-        });
-
-        return count($upload_fields) ? true : false;
-    }
-
-    /**
      * Enable the DETAILS ROW functionality:.
      *
      * In the table view, show a plus sign next to each entry.
@@ -158,7 +114,7 @@ trait Read
      */
     public function enableDetailsRow()
     {
-        $this->set('list.details_row', true);
+        $this->set('list.detailsRow', true);
     }
 
     /**
@@ -166,18 +122,18 @@ trait Read
      */
     public function disableDetailsRow()
     {
-        $this->set('list.details_row', false);
+        $this->set('list.detailsRow', false);
     }
 
     /**
      * Add two more columns at the beginning of the ListEntrie table:
      * - one shows the checkboxes needed for bulk actions
-     * - one is blank, in order for evenual details_row or expand buttons
+     * - one is blank, in order for evenual detailsRow or expand buttons
      * to be in a separate column.
      */
     public function enableBulkActions()
     {
-        $this->set('list.bulk_actions', true);
+        $this->set('list.bulkActions', true);
 
         $this->addColumn([
             'type' => 'checkbox',
@@ -211,7 +167,7 @@ trait Read
      */
     public function disableBulkActions()
     {
-        $this->set('list.bulk_actions', false);
+        $this->set('list.bulkActions', false);
 
         $this->removeColumn('bulk_actions');
         $this->removeColumn('blank_first_column');
@@ -304,7 +260,7 @@ trait Read
      */
     public function enableExportButtons()
     {
-        $this->set('list.export_buttons', true);
+        $this->set('list.exportButtons', true);
     }
 
     /**
@@ -313,6 +269,6 @@ trait Read
      */
     public function exportButtons()
     {
-        return $this->get('list.export_buttons');
+        return $this->get('list.exportButtons');
     }
 }

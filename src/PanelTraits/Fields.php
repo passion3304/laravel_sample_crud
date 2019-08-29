@@ -6,7 +6,7 @@ trait Fields
 {
     public $create_fields = []; // Define the fields for the "Add new entry" view as an array;
     public $update_fields = []; // Define the fields for the "Edit entry" view as an array;
-    
+
     // ------------
     // FIELDS
     // ------------
@@ -373,5 +373,49 @@ trait Fields
                 $this->update_fields = $callback($this->update_fields);
                 break;
         }
+    }
+    
+    /**
+     * Get the fields for the create or update forms.
+     *
+     * @param  string   $form create/update/both - defaults to 'both'
+     * @param  bool|int $id   the ID of the entity to be edited in the Update form
+     *
+     * @return array all the fields that need to be shown and their information
+     */
+    public function getFields($form, $id = false)
+    {
+        switch (strtolower($form)) {
+            case 'create':
+                return $this->getCreateFields();
+                break;
+
+            case 'update':
+                return $this->getUpdateFields($id);
+                break;
+
+            default:
+                return $this->getCreateFields();
+                break;
+        }
+    }
+
+    /**
+     * Check if the create/update form has upload fields.
+     * Upload fields are the ones that have "upload" => true defined on them.
+     *
+     * @param  string   $form create/update/both - defaults to 'both'
+     * @param  bool|int $id   id of the entity - defaults to false
+     *
+     * @return bool
+     */
+    public function hasUploadFields($form, $id = false)
+    {
+        $fields = $this->getFields($form, $id);
+        $upload_fields = array_where($fields, function ($value, $key) {
+            return isset($value['upload']) && $value['upload'] == true;
+        });
+
+        return count($upload_fields) ? true : false;
     }
 }

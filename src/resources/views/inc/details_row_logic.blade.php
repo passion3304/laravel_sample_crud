@@ -1,4 +1,4 @@
-  @if ($crud->get('list.details_row'))
+  @if ($crud->get('list.detailsRow'))
   <script>
     if (typeof registerDetailsRowButtonAction != 'function') {
       function registerDetailsRowButtonAction() {
