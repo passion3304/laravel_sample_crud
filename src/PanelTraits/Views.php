@@ -59,7 +59,7 @@ trait Views
      * @return string $view name of the template file
      */
     public function setListView($view)
-    {   
+    {
         return $this->set('list.view', $view);
     }
 
