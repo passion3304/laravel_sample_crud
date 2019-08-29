@@ -15,6 +15,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - merged #1955 - ```image``` field type has a new ```max_file_size``` option; which defaults to the defaults to ```upload_max_filesize``` set in PHP;
 - merged #1913 - new design based on CoreUI, instead of AdminLTE; 
 - developers can now add widgets to the top/bottom of the operation views;
+- ```CRUD``` facade, so developers can now do ```CRUD::addField()``` instead of ```$this->crud->addField()```;
+- the ability for developers to use a different CrudPanel object instead of the one in the package; this way, they can customize/overwrite how anything works inside the CrudPanel object;
+- routes are now defined inside operations; you no longer need to edit the route file to add routes to one controller; you can now re-use an operation on different controllers and it will also add the necessary routes;
 
 
 ### Fixed
@@ -22,6 +25,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - merged #1977 - fields, filters and operations now use LOCAL assets, instead of CDNs; Backpack can now be used on intranets;
 - merged #1947 fixes #1927 - package version was often incorrect, due to maintainers not updating the number on each patch release; fixed by using ocramius/package-versions to determine the package version;
 - merged #1950 - reorder operation is now twice as fast;
+
+### Removed
+- CrudControllers now come with zero operations and zero routes by default; old EntityCrudControllers should now specifically mention which operations should be loaded, using operation traits;
+- ```CRUD::route()``` is no longer the way to load routes for a CrudController, but ```Route::crud()```;
 
 
 -----------
