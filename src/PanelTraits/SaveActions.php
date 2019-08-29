@@ -1,13 +1,15 @@
 <?php
 
-namespace Backpack\CRUD\app\Http\Controllers\Operations;
+namespace Backpack\CRUD\PanelTraits;
+
+use Backpack\CRUD\Exception\AccessDeniedException;
 
 trait SaveActions
 {
     /**
      * Get save actions, with pre-selected action from stored session variable or config fallback.
      *
-     * TODO: move this to the CrudPanel object; They don't belong in controllers;
+     * TODO: rewrite this in a simpler way, to allow developers to easily add their custom save actions.
      *
      * @return array
      */
@@ -25,7 +27,7 @@ trait SaveActions
         $saveOptions = collect($permissions)
             // Restrict list to allowed actions.
             ->filter(function ($action, $permission) {
-                return $this->crud->hasAccess($permission);
+                return $this->hasAccess($permission);
             })
             // Generate list of possible actions.
             ->mapWithKeys(function ($action, $permission) {
@@ -87,10 +89,10 @@ trait SaveActions
 
         switch ($saveAction) {
             case 'save_and_new':
-                $redirectUrl = $this->crud->route.'/create';
+                $redirectUrl = $this->route.'/create';
                 break;
             case 'save_and_edit':
-                $redirectUrl = $this->crud->route.'/'.$itemId.'/edit';
+                $redirectUrl = $this->route.'/'.$itemId.'/edit';
                 if (\Request::has('locale')) {
                     $redirectUrl .= '?locale='.\Request::input('locale');
                 }
@@ -100,7 +102,7 @@ trait SaveActions
                 break;
             case 'save_and_back':
             default:
-                $redirectUrl = \Request::has('http_referrer') ? \Request::get('http_referrer') : $this->crud->route;
+                $redirectUrl = \Request::has('http_referrer') ? \Request::get('http_referrer') : $this->route;
                 break;
         }
 
@@ -108,7 +110,7 @@ trait SaveActions
         if ($this->request->ajax()) {
             return [
                 'success' => true,
-                'data' => $this->crud->entry,
+                'data' => $this->entry,
                 'redirect_url' => $redirectUrl,
             ];
         }

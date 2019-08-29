@@ -44,7 +44,7 @@ trait CreateOperation
 
         // prepare the fields you need to show
         $this->data['crud'] = $this->crud;
-        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['saveAction'] = $this->crud->getSaveAction();
         $this->data['fields'] = $this->crud->getCreateFields();
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
 
@@ -77,8 +77,8 @@ trait CreateOperation
         \Alert::success(trans('backpack::crud.insert_success'))->flash();
 
         // save the redirect choice for next time
-        $this->setSaveAction();
+        $this->crud->setSaveAction();
 
-        return $this->performSaveAction($item->getKey());
+        return $this->crud->performSaveAction($item->getKey());
     }
 }
