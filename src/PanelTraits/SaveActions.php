@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
-use Backpack\CRUD\Exception\AccessDeniedException;
-
 trait SaveActions
 {
     /**
