@@ -23,11 +23,11 @@ use Backpack\CRUD\PanelTraits\Macroable;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\Operations;
 use Backpack\CRUD\PanelTraits\FakeColumns;
+use Backpack\CRUD\PanelTraits\SaveActions;
 use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\PanelTraits\RequiredFields;
 use Backpack\CRUD\PanelTraits\HeadingsAndTitle;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
-use Backpack\CRUD\PanelTraits\SaveActions;
 
 class CrudPanel
 {
