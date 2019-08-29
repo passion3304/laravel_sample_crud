@@ -4,6 +4,9 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Fields
 {
+    public $create_fields = []; // Define the fields for the "Add new entry" view as an array;
+    public $update_fields = []; // Define the fields for the "Edit entry" view as an array;
+    
     // ------------
     // FIELDS
     // ------------

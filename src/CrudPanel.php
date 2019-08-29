@@ -25,10 +25,10 @@ use Backpack\CRUD\PanelTraits\Operations;
 use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\SaveActions;
 use Backpack\CRUD\PanelTraits\Settings;
-use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\PanelTraits\RequiredFields;
 use Backpack\CRUD\PanelTraits\HeadingsAndTitle;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
+use Illuminate\Database\Eloquent\Collection;
 
 class CrudPanel
 {
@@ -51,19 +51,9 @@ class CrudPanel
     public $entity_name_plural = 'entries'; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
     public $request;
 
-    public $columns = []; // Define the columns for the table view as an array;
-    public $create_fields = []; // Define the fields for the "Add new entry" view as an array;
-    public $update_fields = []; // Define the fields for the "Edit entry" view as an array;
-
     public $query;
     public $entry;
-    public $buttons;
     public $db_column_types = [];
-    public $default_page_length = false;
-    public $page_length_menu = false;
-
-    // TONE FIELDS - TODO: find out what he did with them, replicate or delete
-    public $sort = [];
 
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 
@@ -281,36 +271,6 @@ class CrudPanel
                 return $field;
             }, $this->{$type});
         }
-    }
-
-    /**
-     * @deprecated No longer used by internal code and not recommended.
-     */
-    public function setSort($items, $order)
-    {
-        $this->sort[$items] = $order;
-    }
-
-    /**
-     * @deprecated No longer used by internal code and not recommended.
-     */
-    public function sort($items)
-    {
-        if (array_key_exists($items, $this->sort)) {
-            $elements = [];
-
-            foreach ($this->sort[$items] as $item) {
-                if (is_numeric($key = array_search($item, array_column($this->{$items}, 'name')))) {
-                    $elements[] = $this->{$items}[$key];
-                }
-            }
-
-            return $this->{$items} = array_merge($elements, array_filter($this->{$items}, function ($item) use ($items) {
-                return ! in_array($item['name'], $this->sort[$items]);
-            }));
-        }
-
-        return $this->{$items};
     }
 
     /**

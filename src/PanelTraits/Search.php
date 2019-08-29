@@ -13,10 +13,6 @@ trait Search
     |--------------------------------------------------------------------------
     */
 
-    public $ajax_table = true;
-    public $responsive_table;
-    public $persistent_table;
-
     /**
      * Add conditions to the CRUD query for a particular search term.
      *
@@ -98,27 +94,6 @@ trait Search
         }
     }
 
-    /**
-     * Tell the list view to use AJAX for loading multiple rows.
-     *
-     * @deprecated 3.3.0 All tables are AjaxTables starting with 3.3.0.
-     */
-    public function enableAjaxTable()
-    {
-        $this->ajax_table = true;
-    }
-
-    /**
-     * Check if ajax is enabled for the table view.
-     *
-     * @deprecated 3.3.0 Since all tables use ajax, this will soon be removed.
-     * @return bool
-     */
-    public function ajaxTable()
-    {
-        return $this->ajax_table;
-    }
-
     // -------------------------
     // Responsive Table
     // -------------------------
@@ -130,7 +105,7 @@ trait Search
      */
     public function setResponsiveTable($value = true)
     {
-        $this->responsive_table = $value;
+        $this->set('list.responsiveTable', $value);
     }
 
     /**
@@ -140,8 +115,8 @@ trait Search
      */
     public function getResponsiveTable()
     {
-        if ($this->responsive_table !== null) {
-            return $this->responsive_table;
+        if ($this->get('list.responsiveTable') !== null) {
+            return $this->get('list.responsiveTable');
         }
 
         return config('backpack.crud.responsive_table');
@@ -174,7 +149,7 @@ trait Search
      */
     public function setPersistentTable($value = true)
     {
-        $this->persistent_table = $value;
+        return $this->get('list.persistentTable', $value);
     }
 
     /**
@@ -184,8 +159,8 @@ trait Search
      */
     public function getPersistentTable()
     {
-        if ($this->persistent_table !== null) {
-            return $this->persistent_table;
+        if ($this->get('list.persistentTable') !== null) {
+            return $this->get('list.persistentTable');
         }
 
         return config('backpack.crud.persistent_table');
@@ -196,7 +171,7 @@ trait Search
      */
     public function enablePersistentTable()
     {
-        $this->setPersistentTable(true);
+        return $this->setPersistentTable(true);
     }
 
     /**
@@ -204,7 +179,7 @@ trait Search
      */
     public function disablePersistentTable()
     {
-        $this->setPersistentTable(false);
+        return $this->setPersistentTable(false);
     }
 
     /**
@@ -233,7 +208,7 @@ trait Search
         }
 
         // add the details_row button to the first column
-        if ($this->details_row) {
+        if ($this->get('list.details_row')) {
             $details_row_button = \View::make('crud::columns.details_row_button')
                                            ->with('crud', $this)
                                            ->with('entry', $entry)

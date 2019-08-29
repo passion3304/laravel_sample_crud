@@ -16,13 +16,11 @@ trait Access
 
     public function allowAccess($access)
     {
-        // $this->addButtons((array)$access);
         return $this->access = array_merge(array_diff((array) $access, $this->access), $this->access);
     }
 
     public function denyAccess($access)
     {
-        // $this->removeButtons((array)$access);
         return $this->access = array_diff($this->access, (array) $access);
     }
 

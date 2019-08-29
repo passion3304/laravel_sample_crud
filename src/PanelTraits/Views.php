@@ -4,21 +4,6 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Views
 {
-    protected $createView = 'crud::create';
-    protected $editView = 'crud::edit';
-    protected $showView = 'crud::show';
-    protected $detailsRowView = 'crud::details_row';
-    protected $revisionsView = 'crud::revisions';
-    protected $revisionsTimelineView = 'crud::inc.revision_timeline';
-    protected $reorderView = 'crud::reorder';
-    protected $listView = 'crud::list';
-    protected $createContentClass;
-    protected $editContentClass;
-    protected $listContentClass;
-    protected $showContentClass;
-    protected $reorderContentClass;
-    protected $revisionsTimelineContentClass;
-
     // -------
     // CREATE
     // -------
@@ -32,9 +17,7 @@ trait Views
      */
     public function setCreateView($view)
     {
-        $this->createView = $view;
-
-        return $this->createView;
+        return $this->set('create.view', $view);
     }
 
     /**
@@ -43,16 +26,16 @@ trait Views
      */
     public function getCreateView()
     {
-        return $this->createView;
+        return $this->get('create.view') ?? 'crud::create';
     }
 
     /**
      * Sets the create content class.
-     * @param string $createContentClass content class
+     * @param string $class content class
      */
-    public function setCreateContentClass(string $createContentClass)
+    public function setCreateContentClass(string $class)
     {
-        $this->createContentClass = $createContentClass;
+        return $this->set('create.contentClass', $class);
     }
 
     /**
@@ -61,7 +44,7 @@ trait Views
      */
     public function getCreateContentClass()
     {
-        return $this->createContentClass ?? config('backpack.crud.create_content_class', 'col-md-8 bold-labels');
+        return $this->get('create.contentClass') ?? config('backpack.crud.create_content_class', 'col-md-8 bold-labels');
     }
 
     // -------
@@ -76,10 +59,8 @@ trait Views
      * @return string $view name of the template file
      */
     public function setListView($view)
-    {
-        $this->listView = $view;
-
-        return $this->listView;
+    {   
+        return $this->set('list.view', $view);
     }
 
     /**
@@ -88,16 +69,16 @@ trait Views
      */
     public function getListView()
     {
-        return $this->listView;
+        return $this->get('list.view') ?? 'crud::list';
     }
 
     /**
      * Sets the list content class.
-     * @param string $listContentClass content class
+     * @param string $class content class
      */
-    public function setListContentClass(string $listContentClass)
+    public function setListContentClass(string $class)
     {
-        $this->listContentClass = $listContentClass;
+        return $this->set('list.contentClass', $class);
     }
 
     /**
@@ -106,7 +87,7 @@ trait Views
      */
     public function getListContentClass()
     {
-        return $this->listContentClass ?? config('backpack.crud.list_content_class', 'col-md-12');
+        return $this->get('list.contentClass') ?? config('backpack.crud.list_content_class', 'col-md-12');
     }
 
     /**
@@ -118,9 +99,7 @@ trait Views
      */
     public function setDetailsRowView($view)
     {
-        $this->detailsRowView = $view;
-
-        return $this->detailsRowView;
+        return $this->get('list.detailsRowView', $view);
     }
 
     /**
@@ -129,7 +108,7 @@ trait Views
      */
     public function getDetailsRowView()
     {
-        return $this->detailsRowView;
+        return $this->get('list.detailsRowView') ?? 'crud::details_row';
     }
 
     /**
@@ -141,9 +120,7 @@ trait Views
      */
     public function setShowView($view)
     {
-        $this->showView = $view;
-
-        return $this->showView;
+        return $this->set('show.view', $view);
     }
 
     /**
@@ -152,16 +129,16 @@ trait Views
      */
     public function getShowView()
     {
-        return $this->showView;
+        return $this->get('show.view') ?? 'crud::show';
     }
 
     /**
      * Sets the edit content class.
-     * @param string $editContentClass content class
+     * @param string $class content class
      */
-    public function setShowContentClass(string $showContentClass)
+    public function setShowContentClass(string $class)
     {
-        $this->showContentClass = $showContentClass;
+        return $this->set('show.contentClass', $class);
     }
 
     /**
@@ -170,7 +147,7 @@ trait Views
      */
     public function getShowContentClass()
     {
-        return $this->showContentClass ?? config('backpack.crud.show_content_class', 'col-md-8 col-md-offset-2');
+        return $this->get('show.contentClass') ?? config('backpack.crud.show_content_class', 'col-md-8 col-md-offset-2');
     }
 
     // -------
@@ -186,9 +163,7 @@ trait Views
      */
     public function setEditView($view)
     {
-        $this->editView = $view;
-
-        return $this->editView;
+        return $this->set('edit.view', $view);
     }
 
     /**
@@ -197,16 +172,16 @@ trait Views
      */
     public function getEditView()
     {
-        return $this->editView;
+        return $this->get('edit.view') ?? 'crud::edit';
     }
 
     /**
      * Sets the edit content class.
-     * @param string $editContentClass content class
+     * @param string $class content class
      */
-    public function setEditContentClass(string $editContentClass)
+    public function setEditContentClass(string $class)
     {
-        $this->editContentClass = $editContentClass;
+        return $this->set('edit.contentClass', $class);
     }
 
     /**
@@ -215,7 +190,7 @@ trait Views
      */
     public function getEditContentClass()
     {
-        return $this->editContentClass ?? config('backpack.crud.edit_content_class', 'col-md-8 bold-labels');
+        return $this->get('edit.contentClass') ?? config('backpack.crud.edit_content_class', 'col-md-8 bold-labels');
     }
 
     /**
@@ -227,9 +202,7 @@ trait Views
      */
     public function setReorderView($view)
     {
-        $this->reorderView = $view;
-
-        return $this->reorderView;
+        return $this->set('reorder.view', $view);
     }
 
     /**
@@ -238,16 +211,16 @@ trait Views
      */
     public function getReorderView()
     {
-        return $this->reorderView;
+        return $this->get('reorder.view') ?? 'crud::reorder';
     }
 
     /**
      * Sets the reorder content class.
-     * @param string $reorderContentClass content class
+     * @param string $class content class
      */
-    public function setReorderContentClass(string $reorderContentClass)
+    public function setReorderContentClass(string $class)
     {
-        $this->reorderContentClass = $reorderContentClass;
+        return $this->set('reorder.contentClass', $class);
     }
 
     /**
@@ -256,7 +229,7 @@ trait Views
      */
     public function getReorderContentClass()
     {
-        return $this->reorderContentClass ?? config('backpack.crud.reorder_content_class', 'col-md-8 col-md-offset-2');
+        return $this->get('reorder.contentClass') ?? config('backpack.crud.reorder_content_class', 'col-md-8 col-md-offset-2');
     }
 
     /**
@@ -268,9 +241,7 @@ trait Views
      */
     public function setRevisionsView($view)
     {
-        $this->revisionsView = $view;
-
-        return $this->revisionsView;
+        return $this->set('revisions.view', $view);
     }
 
     /**
@@ -282,9 +253,7 @@ trait Views
      */
     public function setRevisionsTimelineView($view)
     {
-        $this->revisionsTimelineView = $view;
-
-        return $this->revisionsTimelineView;
+        return $this->set('revisions.timelineView', $view);
     }
 
     /**
@@ -293,7 +262,7 @@ trait Views
      */
     public function getRevisionsView()
     {
-        return $this->revisionsView;
+        return $this->get('revisions.view') ?? 'crud::revisions';
     }
 
     /**
@@ -302,16 +271,16 @@ trait Views
      */
     public function getRevisionsTimelineView()
     {
-        return $this->revisionsTimelineView;
+        return $this->get('revisions.timelineView') ?? 'crud::inc.revision_timeline';
     }
 
     /**
      * Sets the revisions timeline content class.
      * @param string revisions timeline content class
      */
-    public function setRevisionsTimelineContentClass(string $revisionsTimelineContentClass)
+    public function setRevisionsTimelineContentClass(string $class)
     {
-        $this->revisionsTimelineContentClass = $revisionsTimelineContentClass;
+        $this->set('revisions.timelineContentClass', $class);
     }
 
     /**
@@ -320,7 +289,7 @@ trait Views
      */
     public function getRevisionsTimelineContentClass()
     {
-        return $this->revisionsTimelineContentClass ?? config('backpack.crud.revisions_timeline_content_class', 'col-md-12');
+        return $this->get('revisions.timelineContentClass') ?? config('backpack.crud.revisions_timeline_content_class', 'col-md-12');
     }
 
     // -------

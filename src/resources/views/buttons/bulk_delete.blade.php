@@ -1,4 +1,4 @@
-@if ($crud->hasAccess('delete') && $crud->bulk_actions)
+@if ($crud->hasAccess('delete') && $crud->get('list.bulk_actions'))
 	<a href="javascript:void(0)" onclick="bulkDeleteEntries(this)" class="btn btn-sm btn-secondary bulk-button"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
 @endif
 

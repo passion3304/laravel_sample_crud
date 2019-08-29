@@ -35,7 +35,7 @@ function tree_element($entry, $key, $all_entries, $crud)
 
         // show the tree element
         echo '<li id="list_'.$entry->getKey().'">';
-        echo '<div><span class="disclose"><span></span></span>'.object_get($entry, $crud->reorder_label).'</div>';
+        echo '<div><span class="disclose"><span></span></span>'.object_get($entry, $crud->get("reorder.label")).'</div>';
 
         // see if this element has any children
         $children = [];
@@ -243,7 +243,7 @@ function tree_element($entry, $key, $all_entries, $crud)
         tabSize: 25,
         tolerance: 'pointer',
         toleranceElement: '> div',
-        maxLevels: {{ $crud->reorder_max_level ?? 3 }},
+        maxLevels: {{ $crud->get('reorder.max_level') ?? 3 }},
 
         isTree: true,
         expandOnHover: 700,

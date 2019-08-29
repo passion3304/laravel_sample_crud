@@ -16,7 +16,7 @@
     @endif
 
     var crud = {
-      exportButtons: JSON.parse('{!! json_encode($crud->export_buttons) !!}'),
+      exportButtons: JSON.parse('{!! json_encode($crud->get('list.export_buttons')) !!}'),
       functionsToRunOnDataTablesDrawEvent: [],
       addFunctionToDataTablesDrawEventQueue: function (functionName) {
           if (this.functionsToRunOnDataTablesDrawEvent.indexOf(functionName) == -1) {

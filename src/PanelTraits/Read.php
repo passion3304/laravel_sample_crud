@@ -7,10 +7,6 @@ namespace Backpack\CRUD\PanelTraits;
  */
 trait Read
 {
-    public $details_row = false;
-    public $export_buttons = false;
-    public $bulk_actions = false;
-
     /**
      * Find and retrieve the id of the current entry.
      *
@@ -162,7 +158,7 @@ trait Read
      */
     public function enableDetailsRow()
     {
-        $this->details_row = true;
+        $this->set('list.details_row', true);
     }
 
     /**
@@ -170,7 +166,7 @@ trait Read
      */
     public function disableDetailsRow()
     {
-        $this->details_row = false;
+        $this->set('list.details_row', false);
     }
 
     /**
@@ -181,7 +177,7 @@ trait Read
      */
     public function enableBulkActions()
     {
-        $this->bulk_actions = true;
+        $this->set('list.bulk_actions', true);
 
         $this->addColumn([
             'type' => 'checkbox',
@@ -215,7 +211,7 @@ trait Read
      */
     public function disableBulkActions()
     {
-        $this->bulk_actions = false;
+        $this->set('list.bulk_actions', false);
 
         $this->removeColumn('bulk_actions');
         $this->removeColumn('blank_first_column');
@@ -226,7 +222,7 @@ trait Read
      */
     public function setDefaultPageLength($value)
     {
-        $this->default_page_length = $value;
+        $this->set('list.defaultPageLength', $value);
     }
 
     /**
@@ -236,17 +232,7 @@ trait Read
      */
     public function getDefaultPageLength()
     {
-        // return the custom value for this crud panel, if set using setDefaultPageLength()
-        if ($this->default_page_length) {
-            return $this->default_page_length;
-        }
-
-        // otherwise return the default value in the config file
-        if (config('backpack.crud.default_page_length')) {
-            return config('backpack.crud.default_page_length');
-        }
-
-        return 25;
+        return $this->get('list.defaultPageLength') ?? config('backpack.crud.default_page_length') ?? 25;
     }
 
     /**
@@ -256,10 +242,10 @@ trait Read
     public function addCustomPageLengthToPageLengthMenu()
     {
         // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
-        // assume both array are the same lenght.
-        if (! in_array($this->getDefaultPageLength(), $this->page_length_menu[0])) {
+        // assume both arrays are the same length.
+        if (! in_array($this->getDefaultPageLength(), $this->get('list.pageLengthMenu')[0])) {
             // Loop through 2 arrays of prop. page_length_menu
-            foreach ($this->page_length_menu as $key => &$page_length_choices) {
+            foreach ($this->get('list.pageLengthMenu') as $key => &$page_length_choices) {
                 // This is a condition that should be always true.
                 if (is_array($page_length_choices)) {
                     array_unshift($page_length_choices, $this->getDefaultPageLength());
@@ -277,7 +263,7 @@ trait Read
      */
     public function setPageLengthMenu($menu)
     {
-        $this->page_length_menu = $menu;
+        $this->set('list.pageLengthMenu', $menu);
     }
 
     /**
@@ -288,23 +274,23 @@ trait Read
     public function getPageLengthMenu()
     {
         // if already set, use that
-        if (! $this->page_length_menu) {
+        if (! $this->get('list.pageLengthMenu')) {
             // try to get the menu settings from the config file
-            if (! $this->page_length_menu = config('backpack.crud.page_length_menu')) {
-                // otherwise set a sensible default
-                $this->page_length_menu = [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']];
-            }
+            $this->set('list.pageLengthMenu', config('backpack.crud.page_length_menu') ?? [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']]);
+
             // if we have a 2D array, update all the values in the right hand array to their translated values
-            if (isset($this->page_length_menu[1]) && is_array($this->page_length_menu[1])) {
-                foreach ($this->page_length_menu[1] as $key => $val) {
-                    $this->page_length_menu[1][$key] = trans($val);
+            if (isset($this->get('list.pageLengthMenu')[1]) && is_array($this->get('list.pageLengthMenu')[1])) {
+                $aux = $this->get('list.pageLengthMenu');
+                foreach ($this->get('list.pageLengthMenu')[1] as $key => $val) {
+                    $aux[1][$key] = trans($val);
                 }
+                $this->set('list.pageLengthMenu', $aux);
             }
         }
 
         $this->addCustomPageLengthToPageLengthMenu();
 
-        return $this->page_length_menu;
+        return $this->get('list.pageLengthMenu');
     }
 
     /*
@@ -318,7 +304,7 @@ trait Read
      */
     public function enableExportButtons()
     {
-        $this->export_buttons = true;
+        $this->set('list.export_buttons', true);
     }
 
     /**
@@ -327,6 +313,6 @@ trait Read
      */
     public function exportButtons()
     {
-        return $this->export_buttons;
+        return $this->get('list.export_buttons');
     }
 }

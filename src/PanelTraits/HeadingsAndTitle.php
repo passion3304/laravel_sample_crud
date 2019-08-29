@@ -4,10 +4,6 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait HeadingsAndTitle
 {
-    public $titles = [];
-    public $headings = [];
-    public $subheadings = [];
-
     // -----
     // TITLE
     // -----
@@ -25,8 +21,8 @@ trait HeadingsAndTitle
             $action = $this->getActionMethod();
         }
 
-        if (isset($this->titles[$action])) {
-            return $this->titles[$action];
+        if ($this->has($action.'.title')) {
+            return $this->get($action.'.title');
         }
     }
 
@@ -42,7 +38,7 @@ trait HeadingsAndTitle
             $action = $this->getActionMethod();
         }
 
-        $this->titles[$action] = $string;
+        return $this->set($action.'.title', $string);
     }
 
     // -------
@@ -62,8 +58,8 @@ trait HeadingsAndTitle
             $action = $this->getActionMethod();
         }
 
-        if (isset($this->headings[$action])) {
-            return $this->headings[$action];
+        if ($this->has($action.'.heading')) {
+            return $this->get($action.'.heading');
         }
     }
 
@@ -79,7 +75,7 @@ trait HeadingsAndTitle
             $action = $this->getActionMethod();
         }
 
-        $this->headings[$action] = $string;
+        return $this->set($action.'.heading', $string);
     }
 
     // ----------
@@ -99,8 +95,8 @@ trait HeadingsAndTitle
             $action = $this->getActionMethod();
         }
 
-        if (isset($this->subheadings[$action])) {
-            return $this->subheadings[$action];
+        if ($this->has($action.'.subheading')) {
+            return $this->get($action.'.subheading');
         }
     }
 
@@ -116,6 +112,6 @@ trait HeadingsAndTitle
             $action = $this->getActionMethod();
         }
 
-        $this->subheadings[$action] = $string;
+        return $this->set($action.'subheading', $string);
     }
 }

@@ -4,11 +4,11 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Columns
 {
+    public $columns = []; // Define the columns for the table view as an array;
+
     // ------------
     // COLUMNS
     // ------------
-
-    public $actions_column_priority = 1;
 
     /**
      * Get the CRUD columns.
@@ -430,7 +430,7 @@ trait Columns
      */
     public function getActionsColumnPriority()
     {
-        return (int) $this->actions_column_priority;
+        return (int) $this->get('list.actionsColumnPriority') ?? 1;
     }
 
     /**
@@ -443,7 +443,7 @@ trait Columns
      */
     public function setActionsColumnPriority($number)
     {
-        $this->actions_column_priority = (int) $number;
+        $this->set('list.actionsColumnPriority', (int) $number);
 
         return $this;
     }

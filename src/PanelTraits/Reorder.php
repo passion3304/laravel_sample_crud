@@ -7,10 +7,6 @@ namespace Backpack\CRUD\PanelTraits;
  */
 trait Reorder
 {
-    public $reorder = false;
-    public $reorder_label = false;
-    public $reorder_max_level = 3;
-
     /**
      * Change the order and parents of the given elements, according to the NestedSortable AJAX call.
      *
@@ -50,9 +46,9 @@ trait Reorder
      */
     public function enableReorder($label = 'name', $max_level = 1)
     {
-        $this->reorder = true;
-        $this->reorder_label = $label;
-        $this->reorder_max_level = $max_level;
+        $this->set('reorder.enabled', true);
+        $this->set('reorder.label', $label);
+        $this->set('reorder.max_level', $max_level);
     }
 
     /**
@@ -60,7 +56,7 @@ trait Reorder
      */
     public function disableReorder()
     {
-        $this->reorder = false;
+        $this->set('reorder.enabled', false);
     }
 
     /**
@@ -70,6 +66,6 @@ trait Reorder
      */
     public function isReorderEnabled()
     {
-        return $this->reorder;
+        return $this->get('reorder.enabled');
     }
 }

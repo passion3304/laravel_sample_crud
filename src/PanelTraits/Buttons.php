@@ -6,6 +6,8 @@ use Illuminate\Support\Collection;
 
 trait Buttons
 {
+    public $buttons;
+    
     // ------------
     // BUTTONS
     // ------------
