@@ -2,13 +2,14 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+/**
+ * Properties and methods for the Reorder operation.
+ */
 trait Reorder
 {
-    /*
-    |--------------------------------------------------------------------------
-    |                                   REORDER
-    |--------------------------------------------------------------------------
-    */
+    public $reorder = false;
+    public $reorder_label = false;
+    public $reorder_max_level = 3;
 
     /**
      * Change the order and parents of the given elements, according to the NestedSortable AJAX call.

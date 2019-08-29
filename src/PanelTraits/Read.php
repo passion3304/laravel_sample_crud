@@ -2,13 +2,14 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+/**
+ * Properties and methods used by the List operation.
+ */
 trait Read
 {
-    /*
-    |--------------------------------------------------------------------------
-    |                                   READ
-    |--------------------------------------------------------------------------
-    */
+    public $details_row = false;
+    public $export_buttons = false;
+    public $bulk_actions = false;
 
     /**
      * Find and retrieve the id of the current entry.

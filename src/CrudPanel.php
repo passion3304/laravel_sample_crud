@@ -24,6 +24,7 @@ use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\Operations;
 use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\SaveActions;
+use Backpack\CRUD\PanelTraits\Settings;
 use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\PanelTraits\RequiredFields;
 use Backpack\CRUD\PanelTraits\HeadingsAndTitle;
@@ -32,7 +33,8 @@ use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields, HeadingsAndTitle, Operations, SaveActions;
+    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, RequiredFields, HeadingsAndTitle, Operations, SaveActions, Settings;
+
     // allow developers to add their own closures to this object
     use Macroable;
 
@@ -43,33 +45,11 @@ class CrudPanel
     // All variables are public, so they can be modified from your EntityCrudController.
     // All functions and methods are also public, so they can be used in your EntityCrudController to modify these variables.
 
-    // TODO: translate $entity_name and $entity_name_plural by default, with english fallback
-
     public $model = "\App\Models\Entity"; // what's the namespace for your entity's model
     public $route; // what route have you defined for your entity? used for links.
     public $entity_name = 'entry'; // what name will show up on the buttons, in singural (ex: Add entity)
     public $entity_name_plural = 'entries'; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
     public $request;
-    public $settings = [
-        'create' => [],
-        'update' => [],
-        'list' => [],
-        'delete' => [],
-        'clone' => [],
-        'reorder' => [],
-        'revisions' => [],
-        'show' => [],
-    ];
-
-    public $access = ['list', 'create', 'update', 'delete'/* 'revisions', reorder', 'show', 'details_row' */];
-
-    public $reorder = false;
-    public $reorder_label = false;
-    public $reorder_max_level = 3;
-
-    public $details_row = false;
-    public $export_buttons = false;
-    public $bulk_actions = false;
 
     public $columns = []; // Define the columns for the table view as an array;
     public $create_fields = []; // Define the fields for the "Add new entry" view as an array;
