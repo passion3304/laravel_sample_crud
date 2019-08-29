@@ -9,8 +9,6 @@ trait SaveActions
     /**
      * Get save actions, with pre-selected action from stored session variable or config fallback.
      *
-     * TODO: rewrite this in a simpler way, to allow developers to easily add their custom save actions.
-     *
      * @return array
      */
     public function getSaveAction()
