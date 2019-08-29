@@ -6,7 +6,7 @@ trait Query
 {
     public $query;
     public $request;
-    
+
     // ----------------
     // ADVANCED QUERIES
     // ----------------
