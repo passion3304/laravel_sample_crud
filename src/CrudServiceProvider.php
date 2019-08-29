@@ -4,6 +4,7 @@ namespace Backpack\CRUD;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Backpack\CRUD\CrudPanel;
 
 class CrudServiceProvider extends ServiceProvider
 {
@@ -85,8 +86,9 @@ class CrudServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('CRUD', function ($app) {
-            return new CRUD($app);
+        // Bind the CrudPanel object to Laravel's service container
+        $this->app->singleton('crud', function ($app) {
+            return new CrudPanel($app);
         });
 
         // load a macro for Route,
