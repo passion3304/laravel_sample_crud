@@ -12,7 +12,6 @@ trait Operations
     | the contoller method being run.
     */
     protected $currentOperation;
-    protected $configuredOperations = [];
 
     /**
      * Get the current CRUD operation being performed.
@@ -52,45 +51,66 @@ trait Operations
     public function setCurrentOperation($operation_name)
     {
         $this->currentOperation = $operation_name;
-    }
-
-    /**
-     * Get the name of the CRUD operation currently being configured (aka set up).
-     *
-     * @return string Operation being performed in string form.
-     */
-    public function getConfiguredOperations()
-    {
-        return $this->configuredOperations;
-    }
-
-    /**
-     * Set the CRUD operation currently being configured (aka set up).
-     *
-     * @param string $operation_name Ex: create / update / revision / delete
-     */
-    public function setConfiguredOperations($operation_name)
-    {
-        $this->configuredOperations = $operation_name;
+        $this->runConfigurationForOperation($operation_name);
     }
 
     /**
      * Convenience method to make sure all calls are made to a particular operation.
-     * And all settings are put inside that operation's namespace.
      * 
-     * @param  string           $operation      Operation name in string form
+     * @param  string|array     $operation      Operation name in string form
      * @param  bool|\Closure    $closure        Code that calls CrudPanel methods.
      * @return void
      */
     public function operation($operations, $closure = false)
     {
-        $this->setConfiguredOperations((array)$operations);
+        return $this->configureOperation($operations, $closure);
+    }
 
-        if (is_callable($closure)) {
-            // apply the closure
-            ($closure)();
+
+    /**
+     * Store a closure which configures a certain operation inside settings.
+     * Allc configurations are put inside that operation's namespace.
+     * Ex: show.configuration
+     * 
+     * @param  string|array     $operation      Operation name in string form
+     * @param  bool|\Closure    $closure        Code that calls CrudPanel methods.
+     * @return void
+     */
+    public function configureOperation($operations, $closure = false)
+    {
+        $operations = (array)$operations;
+
+        foreach ($operations as $operation) {
+            $configuration = (array)$this->get($operation.'.configuration');
+            $configuration[] = $closure;
+
+            $this->set($operation.'.configuration', $configuration);
+        }
+    }
+
+    /**
+     * Run the closures that have been specified for each operation, as configurations.
+     * This is called when an operation does setCurrentOperation()
+     * 
+     * @param  string|array $operations [description]
+     * @return void
+     */
+    public function runConfigurationForOperation($operations)
+    {
+        $operations = (array)$operations;
+
+        foreach ($operations as $operation) {
+            $configuration = (array)$this->get($operation.'.configuration');
+            
+            if (count($configuration)) {
+                foreach ($configuration as $closure) {
+                    if (is_callable($closure)) {
+                        // apply the closure
+                        ($closure)();
+                    }
+                }
+            }
         }
 
-        return $this;
     }
 }
