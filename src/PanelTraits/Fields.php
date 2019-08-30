@@ -374,7 +374,7 @@ trait Fields
                 break;
         }
     }
-    
+
     /**
      * Get the fields for the create or update forms.
      *

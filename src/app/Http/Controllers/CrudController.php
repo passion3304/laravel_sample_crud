@@ -66,7 +66,7 @@ class CrudController extends BaseController
 
     /**
      * Load defaults for all operations.
-     * Allow developers to insert default settings by creating a method 
+     * Allow developers to insert default settings by creating a method
      * that looks like setupOperationNameDefaults.
      */
     public function setupDefaults()

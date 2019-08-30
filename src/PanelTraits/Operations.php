@@ -77,14 +77,14 @@ trait Operations
     /**
      * Convenience method to make sure all calls are made to a particular operation.
      * And all settings are put inside that operation's namespace.
-     * 
+     *
      * @param  string           $operation      Operation name in string form
      * @param  bool|\Closure    $closure        Code that calls CrudPanel methods.
      * @return void
      */
     public function operation($operations, $closure = false)
     {
-        $this->setConfiguredOperations((array)$operations);
+        $this->setConfiguredOperations((array) $operations);
 
         if (is_callable($closure)) {
             // apply the closure
