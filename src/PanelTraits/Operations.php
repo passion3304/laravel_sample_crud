@@ -91,6 +91,7 @@ trait Operations
     /**
      * Run the closures that have been specified for each operation, as configurations.
      * This is called when an operation does setCurrentOperation()
+     *
      * 
      * @param  string|array $operations [description]
      * @return void
