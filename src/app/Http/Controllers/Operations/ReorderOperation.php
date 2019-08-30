@@ -27,6 +27,14 @@ trait ReorderOperation
     }
 
     /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupReorderDefaults()
+    {
+        $this->crud->addButton('top', 'reorder', 'view', 'crud::buttons.reorder');
+    }
+
+    /**
      *  Reorder the items in the database using the Nested Set pattern.
      *
      *  Database columns needed: id, parent_id, lft, rgt, depth, name/title

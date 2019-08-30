@@ -112,7 +112,7 @@ class CrudServiceProvider extends ServiceProvider
      * The route macro allows developers to generate the routes for a CrudController,
      * for all operations, using a simple syntax: Route::crud().
      *
-     * It will go to the given CrudController and get the routes() method on it.
+     * It will go to the given CrudController and get the setupRoutes() method on it.
      */
     private function addRouteMacro()
     {
@@ -140,7 +140,7 @@ class CrudServiceProvider extends ServiceProvider
             $namespacedController = $groupStack.$controller;
             $controllerInstance = new $namespacedController;
 
-            return $controllerInstance->routes($name, $routeName, $controller);
+            return $controllerInstance->setupRoutes($name, $routeName, $controller);
         });
     }
 

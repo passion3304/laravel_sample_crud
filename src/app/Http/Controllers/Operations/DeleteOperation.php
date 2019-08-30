@@ -22,6 +22,14 @@ trait DeleteOperation
     }
 
     /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupDeleteDefaults()
+    {
+        $this->crud->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param int $id

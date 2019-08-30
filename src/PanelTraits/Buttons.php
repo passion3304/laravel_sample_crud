@@ -82,17 +82,6 @@ trait Buttons
     public function initButtons()
     {
         $this->buttons = collect();
-
-        // line stack
-        $this->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
-        $this->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
-        $this->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
-        $this->addButton('line', 'clone', 'view', 'crud::buttons.clone', 'end');
-        $this->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
-
-        // top stack
-        $this->addButton('top', 'create', 'view', 'crud::buttons.create');
-        $this->addButton('top', 'reorder', 'view', 'crud::buttons.reorder');
     }
 
     /**

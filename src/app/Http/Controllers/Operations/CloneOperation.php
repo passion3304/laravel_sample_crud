@@ -22,6 +22,14 @@ trait CloneOperation
     }
 
     /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupCloneDefaults()
+    {
+        $this->crud->addButton('line', 'clone', 'view', 'crud::buttons.clone', 'end');
+    }
+
+    /**
      * Create a duplicate of the current entry in the datatabase.
      *
      * @param int $id

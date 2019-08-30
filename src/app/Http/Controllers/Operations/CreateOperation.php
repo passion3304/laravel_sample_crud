@@ -33,6 +33,14 @@ trait CreateOperation
     }
 
     /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupCreateDefaults()
+    {
+        $this->crud->addButton('top', 'create', 'view', 'crud::buttons.create');
+    }
+
+    /**
      * Show the form for creating inserting a new row.
      *
      * @return Response

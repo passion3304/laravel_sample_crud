@@ -22,6 +22,14 @@ trait ShowOperation
     }
 
     /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupShowDefaults()
+    {
+        $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param int $id

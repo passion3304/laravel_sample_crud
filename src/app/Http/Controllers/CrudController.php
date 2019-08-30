@@ -30,6 +30,7 @@ class CrudController extends BaseController
             $this->middleware(function ($request, $next) {
                 $this->request = $request;
                 $this->crud->request = $request;
+                $this->setupDefaults();
                 $this->setup();
 
                 return $next($request);
@@ -46,19 +47,35 @@ class CrudController extends BaseController
 
     /**
      * Load routes for all operations.
-     * Allow developers to load extra routes by creating a  method that starts with setupRoutesFor.
+     * Allow developers to load extra routes by creating a method that looks like setupOperationNameRoutes.
      *
      * @param  string $segment       Name of the current entity (singular).
      * @param  string  $routeName     Route name prefix (ends with .).
      * @param  string $controller    Name of the current controller.
      */
-    public function routes($segment, $routeName, $controller)
+    public function setupRoutes($segment, $routeName, $controller)
     {
         preg_match_all('/(?<=^|;)setup([^;]+?)Routes(;|$)/', implode(';', get_class_methods($this)), $matches);
 
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
                 $this->{'setup'.$methodName.'Routes'}($segment, $routeName, $controller);
+            }
+        }
+    }
+
+    /**
+     * Load defaults for all operations.
+     * Allow developers to insert default settings by creating a method 
+     * that looks like setupOperationNameDefaults.
+     */
+    public function setupDefaults()
+    {
+        preg_match_all('/(?<=^|;)setup([^;]+?)Defaults(;|$)/', implode(';', get_class_methods($this)), $matches);
+
+        if (count($matches[1])) {
+            foreach ($matches[1] as $methodName) {
+                $this->{'setup'.$methodName.'Defaults'}();
             }
         }
     }

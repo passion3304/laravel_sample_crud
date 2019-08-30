@@ -27,6 +27,14 @@ trait RevisionsOperation
     }
 
     /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupRevisionsDefaults()
+    {
+        $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
+    }
+
+    /**
      * Display the revisions for specified resource.
      *
      * @param int $id

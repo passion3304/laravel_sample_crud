@@ -33,6 +33,14 @@ trait UpdateOperation
     }
 
     /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupUpdateDefaults()
+    {
+        $this->crud->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param int $id

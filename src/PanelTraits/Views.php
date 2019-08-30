@@ -99,7 +99,7 @@ trait Views
      */
     public function setDetailsRowView($view)
     {
-        return $this->get('list.detailsRowView', $view);
+        return $this->get('list.detailsRow.view', $view);
     }
 
     /**
@@ -108,7 +108,7 @@ trait Views
      */
     public function getDetailsRowView()
     {
-        return $this->get('list.detailsRowView') ?? 'crud::details_row';
+        return $this->get('list.detailsRow.view') ?? 'crud::details_row';
     }
 
     /**
