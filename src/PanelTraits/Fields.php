@@ -60,7 +60,7 @@ trait Fields
         }
 
         $fields = $this->getOperationSetting('fields');
-        $fields = \Arr::add($this->fields(), $newField['name'], $newField);       
+        $fields = \Arr::add($this->fields(), $newField['name'], $newField);
         $this->setOperationSetting('fields', $fields);
 
         return $this;
@@ -190,7 +190,7 @@ trait Fields
         $fields = $this->fields();
 
         foreach ($modifications as $attributeName => $attributeValue) {
-            $fields[$field][$attributeName]=$attributeValue;
+            $fields[$field][$attributeName] = $attributeValue;
         }
 
         $this->setOperationSetting('fields', $fields);
