@@ -6,14 +6,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait Filters
 {
-    public $filters = [];
-
     /**
      * @return bool
      */
     public function filtersEnabled()
     {
-        return ! is_array($this->filters);
+        return $this->filters() && $this->filters() != [];
     }
 
     /**
@@ -21,24 +19,24 @@ trait Filters
      */
     public function filtersDisabled()
     {
-        return is_array($this->filters);
+        return $this->filters() == [] || $this->filters() == null;
     }
 
     public function enableFilters()
     {
         if ($this->filtersDisabled()) {
-            $this->filters = new FiltersCollection;
+            $this->set($this->getCurrentOperation().'.filters', new FiltersCollection);
         }
     }
 
     public function disableFilters()
     {
-        $this->filters = [];
+        $this->set($this->getCurrentOperation().'.filters', []);
     }
 
     public function clearFilters()
     {
-        $this->filters = new FiltersCollection;
+        $this->set($this->getCurrentOperation().'.filters', new FiltersCollection);
     }
 
     /**
@@ -64,17 +62,16 @@ trait Filters
         if (! isset($options['name'])) {
             abort(500, 'All your filters need names.');
         }
-        if ($this->filters->contains('name', $options['name'])) {
+        if ($this->filters()->contains('name', $options['name'])) {
             abort(500, "Sorry, you can't have two filters with the same name.");
         }
 
         // add a new filter to the interface
         $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic);
-        $this->filters->push($filter);
+        $this->set($this->getCurrentOperation().'.filters', $this->filters()->push($filter));
 
-        if ($this->doingListOperation()) {
-            $this->applyFilter($filter);
-        }
+        // apply the filter logic
+        $this->applyFilter($filter);
     }
 
     /**
@@ -165,7 +162,7 @@ trait Filters
      */
     public function filters()
     {
-        return $this->filters;
+        return $this->get($this->getCurrentOperation().'.filters');
     }
 
     /**
@@ -202,7 +199,7 @@ trait Filters
      */
     public function modifyFilter($name, $modifications)
     {
-        $filter = $this->filters->firstWhere('name', $name);
+        $filter = $this->filters()->firstWhere('name', $name);
 
         if (! $filter) {
             abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.');
@@ -219,50 +216,24 @@ trait Filters
 
     public function removeFilter($name)
     {
-        $this->filters = $this->filters->reject(function ($filter) use ($name) {
+        $strippedFiltersCollection = $this->filters()->reject(function ($filter) use ($name) {
             return $filter->name == $name;
         });
+
+        $this->set($this->getCurrentOperation().'.filters', $strippedFiltersCollection);
     }
 
     public function removeAllFilters()
     {
-        $this->filters = collect([]);
-    }
-
-    /**
-     * Determine if the current CRUD action is a list operation (using standard or ajax DataTables).
-     * @return bool
-     */
-    public function doingListOperation()
-    {
-        $route = $this->route;
-
-        switch ($this->request->url()) {
-            case url($this->route):
-                if ($this->request->getMethod() == 'POST' ||
-                    $this->request->getMethod() == 'PATCH') {
-                    return false;
-                }
-
-                return true;
-                break;
-
-            case url($this->route.'/search'):
-                return true;
-                break;
-
-            default:
-                return false;
-                break;
-        }
+        $this->set($this->getCurrentOperation().'.filters', new FiltersCollection);
     }
 }
 
 class FiltersCollection extends \Illuminate\Support\Collection
 {
-    public function removeFilter($name)
-    {
-    }
+    // public function removeFilter($name)
+    // {
+    // }
 
     // public function count()
     // {

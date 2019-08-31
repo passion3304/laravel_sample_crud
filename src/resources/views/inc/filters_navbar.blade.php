@@ -9,7 +9,7 @@
       <div class="collapse navbar-collapse" id="bp-filters-navbar">
         <ul class="nav navbar-nav">
           <!-- THE ACTUAL FILTERS -->
-    			@foreach ($crud->filters as $filter)
+    			@foreach ($crud->filters() as $filter)
     				@include($filter->view)
     			@endforeach
           <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'hidden' }}"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
