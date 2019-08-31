@@ -48,7 +48,7 @@ trait UpdateOperation
             $this->crud->set('update.autoFocusOnFirstField', true);
         });
 
-        $this->crud->operation('list', function () {
+        $this->crud->operation(['list', 'show'], function () {
             $this->crud->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
         });
     }

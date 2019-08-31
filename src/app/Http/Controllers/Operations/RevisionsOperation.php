@@ -35,7 +35,7 @@ trait RevisionsOperation
     {
         $this->crud->allowAccess('revisions');
 
-        $this->crud->operation('list', function() {
+        $this->crud->operation(['list', 'show'], function() {
             $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
         }):
     }

@@ -56,7 +56,11 @@ class CrudPanel
 
     public function __construct()
     {
-        $this->initButtons();
+        $this->request = \Request::instance();
+
+        if ($this->getCurrentOperation()) {
+            $this->setOperation($this->getCurrentOperation());
+        }
     }
 
     // ------------------------------------------------------

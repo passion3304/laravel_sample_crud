@@ -29,7 +29,7 @@ trait DeleteOperation
     {
         $this->crud->allowAccess('delete');
 
-        $this->crud->operation('list', function () {
+        $this->crud->operation(['list', 'show'], function () {
             $this->crud->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
         });
     }

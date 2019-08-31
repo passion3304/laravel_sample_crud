@@ -6,8 +6,6 @@ use Illuminate\Support\Collection;
 
 trait Buttons
 {
-    public $buttons;
-
     // ------------
     // BUTTONS
     // ------------
@@ -48,11 +46,11 @@ trait Buttons
         $button = new CrudButton($stack, $name, $type, $content);
         switch ($position) {
             case 'beginning':
-                $this->buttons->prepend($button);
+                $this->set($this->getCurrentOperation().".buttons", $this->buttons()->prepend($button));
                 break;
 
             default:
-                $this->buttons->push($button);
+                $this->set($this->getCurrentOperation().".buttons", $this->buttons()->push($button));
                 break;
         }
 
@@ -76,12 +74,7 @@ trait Buttons
      */
     public function buttons()
     {
-        return $this->buttons;
-    }
-
-    public function initButtons()
-    {
-        $this->buttons = collect();
+        return $this->get($this->getCurrentOperation().'.buttons') ?? collect();
     }
 
     /**
@@ -120,9 +113,9 @@ trait Buttons
      */
     public function removeButton($name, $stack = null)
     {
-        $this->buttons = $this->buttons->reject(function ($button) use ($name, $stack) {
+        $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->reject(function ($button) use ($name, $stack) {
             return $stack == null ? $button->name == $name : ($button->stack == $stack) && ($button->name == $name);
-        });
+        }));
     }
 
     /**
@@ -140,21 +133,21 @@ trait Buttons
 
     public function removeAllButtons()
     {
-        $this->buttons = collect([]);
+        $this->set($this->getCurrentOperation().'.buttons', collect());
     }
 
     public function removeAllButtonsFromStack($stack)
     {
-        $this->buttons = $this->buttons->reject(function ($button) use ($stack) {
+        $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->reject(function ($button) use ($stack) {
             return $button->stack == $stack;
-        });
+        }));
     }
 
     public function removeButtonFromStack($name, $stack)
     {
-        $this->buttons = $this->buttons->reject(function ($button) use ($name, $stack) {
+        $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->reject(function ($button) use ($name, $stack) {
             return $button->name == $name && $button->stack == $stack;
-        });
+        }));
     }
 }
 

@@ -28,6 +28,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - merged #1947 fixes #1927 - package version was often incorrect, due to maintainers not updating the number on each patch release; fixed by using ocramius/package-versions to determine the package version;
 - merged #1950 - reorder operation is now twice as fast;
 - merged #1994 - moved SaveActions to the CrudPanel object, since they're not an operation;
+- delete button now shows up (and works) in the Show operation view;
 
 
 ### Removed

@@ -30,7 +30,7 @@
 
         <div class="row mb-0">
           <div class="col-6">
-            @if ( $crud->buttons->where('stack', 'top')->count() ||  $crud->exportButtons())
+            @if ( $crud->buttons()->where('stack', 'top')->count() ||  $crud->exportButtons())
             <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
               @include('crud::inc.button_stack', ['stack' => 'top'])
@@ -66,7 +66,7 @@
                   </th>
                 @endforeach
 
-                @if ( $crud->buttons->where('stack', 'line')->count() )
+                @if ( $crud->buttons()->where('stack', 'line')->count() )
                   <th data-orderable="false" data-priority="{{ $crud->getActionsColumnPriority() }}" data-visible-in-export="false">{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>
@@ -80,14 +80,14 @@
                   <th>{!! $column['label'] !!}</th>
                 @endforeach
 
-                @if ( $crud->buttons->where('stack', 'line')->count() )
+                @if ( $crud->buttons()->where('stack', 'line')->count() )
                   <th>{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>
             </tfoot>
           </table>
 
-          @if ( $crud->buttons->where('stack', 'bottom')->count() )
+          @if ( $crud->buttons()->where('stack', 'bottom')->count() )
           <div id="bottom_buttons" class="hidden-print">
             @include('crud::inc.button_stack', ['stack' => 'bottom'])
 

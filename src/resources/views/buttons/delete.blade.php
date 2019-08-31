@@ -2,7 +2,12 @@
 	<a href="javascript:void(0)" onclick="deleteEntry(this)" data-route="{{ url($crud->route.'/'.$entry->getKey()) }}" class="btn btn-sm btn-link" data-button-type="delete"><i class="fa fa-trash"></i> {{ trans('backpack::crud.delete') }}</a>
 @endif
 
+{{-- Button Javascript --}}
+{{-- - used right away in AJAX operations (ex: List) --}}
+{{-- - pushed to the end of the page, after jQuery is loaded, for non-AJAX operations (ex: Show) --}}
+@push('after_scripts') @if ($crud->request->ajax()) @endpush @endif
 <script>
+
 	if (typeof deleteEntry != 'function') {
 	  $("[data-button-type=delete]").unbind('click');
 
@@ -89,3 +94,4 @@
 	// make it so that the function above is run after each DataTable draw event
 	// crud.addFunctionToDataTablesDrawEventQueue('deleteEntry');
 </script>
+@if (!$crud->request->ajax()) @endpush @endif

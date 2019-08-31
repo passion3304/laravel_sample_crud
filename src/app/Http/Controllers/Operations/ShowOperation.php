@@ -31,7 +31,7 @@ trait ShowOperation
 
         $this->crud->operation('list', function() {
             $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
-        }):
+        });
     }
 
     /**
@@ -77,7 +77,6 @@ trait ShowOperation
 
         // remove preview button from stack:line
         $this->crud->removeButton('show');
-        $this->crud->removeButton('delete');
 
         // remove bulk actions colums
         $this->crud->removeColumns(['blank_first_column', 'bulk_actions']);

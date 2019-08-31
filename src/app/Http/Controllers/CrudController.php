@@ -21,22 +21,22 @@ class CrudController extends BaseController
 
     public function __construct()
     {
-        if (! $this->crud) {
+        if ($this->crud) {
+            return;
+        }
+
+        // call the setup function inside this closure to also have the request there
+        // this way, developers can use things stored in session (auth variables, etc)
+        $this->middleware(function ($request, $next) {
             // make a new CrudPanel object, from the one stored in Laravel's service container
             $this->crud = app()->make('crud');
+            $this->request = $request;
+            $this->setupDefaults();
+            $this->setup();
+            $this->setupConfigurations();
 
-            // call the setup function inside this closure to also have the request there
-            // this way, developers can use things stored in session (auth variables, etc)
-            $this->middleware(function ($request, $next) {
-                $this->request = $request;
-                $this->crud->request = $request;
-                $this->setupDefaults();
-                $this->setup();
-                $this->setupConfigurations();
-
-                return $next($request);
-            });
-        }
+            return $next($request);
+        });
     }
 
     /**
