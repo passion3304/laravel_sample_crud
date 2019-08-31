@@ -70,7 +70,7 @@ class CrudController extends BaseController
      * Allow developers to insert default settings by creating a method
      * that looks like setupOperationNameDefaults.
      */
-    public function setupDefaults()
+    protected function setupDefaults()
     {
         preg_match_all('/(?<=^|;)setup([^;]+?)Defaults(;|$)/', implode(';', get_class_methods($this)), $matches);
 
@@ -86,7 +86,7 @@ class CrudController extends BaseController
      * Allow developers to insert default settings by creating a method
      * that looks like setupOperationNameDefaults.
      */
-    public function setupConfigurations()
+    protected function setupConfigurations()
     {
         preg_match_all('/(?<=^|;)setup([^;]+?)Configuration(;|$)/', implode(';', get_class_methods($this)), $matches);
 

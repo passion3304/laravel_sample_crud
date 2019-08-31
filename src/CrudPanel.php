@@ -56,7 +56,6 @@ class CrudPanel
 
     public function __construct()
     {
-        $this->setErrorDefaults();
         $this->initButtons();
     }
 

@@ -42,6 +42,11 @@ trait CreateOperation
     {
         $this->crud->allowAccess('create');
 
+        $this->crud->operation('create', function() {
+            $this->crud->set('create.groupedErrors', config('backpack.crud.show_grouped_errors', true));
+            $this->crud->set('create.inlineErrors', config('backpack.crud.show_inline_errors', true));
+        });
+
         $this->crud->operation('list', function() {
             $this->crud->addButton('top', 'create', 'view', 'crud::buttons.create');
         });
