@@ -45,6 +45,7 @@ trait CreateOperation
         $this->crud->operation('create', function () {
             $this->crud->set('create.groupedErrors', config('backpack.crud.show_grouped_errors', true));
             $this->crud->set('create.inlineErrors', config('backpack.crud.show_inline_errors', true));
+            $this->crud->set('create.autoFocusOnFirstField', true);
         });
 
         $this->crud->operation('list', function () {

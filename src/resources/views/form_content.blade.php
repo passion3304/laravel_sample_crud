@@ -66,7 +66,7 @@
       });
 
       // Place the focus on the first element in the form
-      @if( $crud->autoFocusOnFirstField )
+      @if( $crud->getAutoFocusOnFirstField() )
         @php
           $focusField = array_first($fields, function($field) {
               return isset($field['auto_focus']) && $field['auto_focus'] == true;
