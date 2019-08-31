@@ -29,7 +29,7 @@ trait ShowOperation
     {
         $this->crud->allowAccess('show');
 
-        $this->crud->operation('list', function() {
+        $this->crud->operation('list', function () {
             $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
         });
     }
