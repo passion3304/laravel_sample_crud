@@ -6,15 +6,15 @@ trait Tabs
 {
     public function enableTabs()
     {
-        $this->set($this->getCurrentOperation().'.tabsEnabled', true);
-        $this->set($this->getCurrentOperation().'.tabsType', config('backpack.crud.tabs_type', 'horizontal'));
+        $this->setOperationSetting('tabsEnabled', true);
+        $this->setOperationSetting('tabsType', config('backpack.crud.tabs_type', 'horizontal'));
 
         return $this->tabsEnabled();
     }
 
     public function disableTabs()
     {
-        $this->set($this->getCurrentOperation().'.tabsEnabled', false);
+        $this->setOperationSetting('tabsEnabled', false);
 
         return $this->tabsEnabled();
     }
@@ -24,7 +24,7 @@ trait Tabs
      */
     public function tabsEnabled()
     {
-        return $this->get($this->getCurrentOperation().'.tabsEnabled');
+        return $this->getOperationSetting('tabsEnabled');
     }
 
     /**
@@ -38,9 +38,9 @@ trait Tabs
     public function setTabsType($type)
     {
         $this->enableTabs();
-        $this->set($this->getCurrentOperation().'.tabsType', $type);
+        $this->setOperationSetting('tabsType', $type);
 
-        return $this->get($this->getCurrentOperation().'.tabsType');
+        return $this->getOperationSetting('tabsType');
     }
 
     /**
@@ -48,7 +48,7 @@ trait Tabs
      */
     public function getTabsType()
     {
-        return $this->get($this->getCurrentOperation().'.tabsType');
+        return $this->getOperationSetting('tabsType');
     }
 
     public function enableVerticalTabs()

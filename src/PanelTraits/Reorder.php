@@ -46,9 +46,9 @@ trait Reorder
      */
     public function enableReorder($label = 'name', $max_level = 1)
     {
-        $this->set('reorder.enabled', true);
-        $this->set('reorder.label', $label);
-        $this->set('reorder.max_level', $max_level);
+        $this->setOperationSetting('enabled', true);
+        $this->setOperationSetting('label', $label);
+        $this->setOperationSetting('max_level', $max_level);
     }
 
     /**
@@ -56,7 +56,7 @@ trait Reorder
      */
     public function disableReorder()
     {
-        $this->set('reorder.enabled', false);
+        $this->setOperationSetting('enabled', false);
     }
 
     /**
@@ -66,6 +66,6 @@ trait Reorder
      */
     public function isReorderEnabled()
     {
-        return $this->get('reorder.enabled');
+        return $this->getOperationSetting('enabled');
     }
 }

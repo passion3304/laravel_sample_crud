@@ -13,7 +13,7 @@ trait Errors
      */
     public function groupedErrorsEnabled()
     {
-        return $this->get($this->getCurrentOperation().'.groupedErrors');
+        return $this->getOperationSetting('groupedErrors');
     }
 
     /**
@@ -21,7 +21,7 @@ trait Errors
      */
     public function inlineErrorsEnabled()
     {
-        return $this->get($this->getCurrentOperation().'.inlineErrors');
+        return $this->getOperationSetting('inlineErrors');
     }
 
     // -------
@@ -30,21 +30,21 @@ trait Errors
 
     public function enableGroupedErrors()
     {
-        return $this->set($this->getCurrentOperation().'.groupedErrors', true);
+        return $this->setOperationSetting('groupedErrors', true);
     }
 
     public function disableGroupedErrors()
     {
-        return $this->set($this->getCurrentOperation().'.groupedErrors', false);
+        return $this->setOperationSetting('groupedErrors', false);
     }
 
     public function enableInlineErrors()
     {
-        return $this->set($this->getCurrentOperation().'.inlineErrors', true);
+        return $this->setOperationSetting('inlineErrors', true);
     }
 
     public function disableInlineErrors()
     {
-        return $this->set($this->getCurrentOperation().'.inlineErrors', false);
+        return $this->setOperationSetting('inlineErrors', false);
     }
 }

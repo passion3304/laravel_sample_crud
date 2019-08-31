@@ -46,11 +46,11 @@ trait Buttons
         $button = new CrudButton($stack, $name, $type, $content);
         switch ($position) {
             case 'beginning':
-                $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->prepend($button));
+                $this->setOperationSetting('buttons', $this->buttons()->prepend($button));
                 break;
 
             default:
-                $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->push($button));
+                $this->setOperationSetting('buttons', $this->buttons()->push($button));
                 break;
         }
 
@@ -74,7 +74,7 @@ trait Buttons
      */
     public function buttons()
     {
-        return $this->get($this->getCurrentOperation().'.buttons') ?? collect();
+        return $this->getOperationSetting('buttons') ?? collect();
     }
 
     /**
@@ -113,7 +113,7 @@ trait Buttons
      */
     public function removeButton($name, $stack = null)
     {
-        $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->reject(function ($button) use ($name, $stack) {
+        $this->setOperationSetting('buttons', $this->buttons()->reject(function ($button) use ($name, $stack) {
             return $stack == null ? $button->name == $name : ($button->stack == $stack) && ($button->name == $name);
         }));
     }
@@ -133,19 +133,19 @@ trait Buttons
 
     public function removeAllButtons()
     {
-        $this->set($this->getCurrentOperation().'.buttons', collect());
+        $this->setOperationSetting('buttons', collect());
     }
 
     public function removeAllButtonsFromStack($stack)
     {
-        $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->reject(function ($button) use ($stack) {
+        $this->setOperationSetting('buttons', $this->buttons()->reject(function ($button) use ($stack) {
             return $button->stack == $stack;
         }));
     }
 
     public function removeButtonFromStack($name, $stack)
     {
-        $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->reject(function ($button) use ($name, $stack) {
+        $this->setOperationSetting('buttons', $this->buttons()->reject(function ($button) use ($name, $stack) {
             return $button->name == $name && $button->stack == $stack;
         }));
     }

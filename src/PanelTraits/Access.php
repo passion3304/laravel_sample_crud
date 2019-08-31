@@ -13,7 +13,7 @@ trait Access
      */
     public function getAccess()
     {
-        return $this->get($this->getCurrentOperation().'.access');
+        return $this->getOperationSetting('access');
     }
 
     /**

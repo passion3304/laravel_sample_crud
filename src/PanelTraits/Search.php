@@ -105,7 +105,7 @@ trait Search
      */
     public function setResponsiveTable($value = true)
     {
-        $this->set('list.responsiveTable', $value);
+        $this->setOperationSetting('responsiveTable', $value);
     }
 
     /**
@@ -115,8 +115,8 @@ trait Search
      */
     public function getResponsiveTable()
     {
-        if ($this->get('list.responsiveTable') !== null) {
-            return $this->get('list.responsiveTable');
+        if ($this->getOperationSetting('responsiveTable') !== null) {
+            return $this->getOperationSetting('responsiveTable');
         }
 
         return config('backpack.crud.responsive_table');
@@ -149,7 +149,7 @@ trait Search
      */
     public function setPersistentTable($value = true)
     {
-        return $this->get('list.persistentTable', $value);
+        return $this->getOperationSetting('persistentTable', $value);
     }
 
     /**
@@ -159,8 +159,8 @@ trait Search
      */
     public function getPersistentTable()
     {
-        if ($this->get('list.persistentTable') !== null) {
-            return $this->get('list.persistentTable');
+        if ($this->getOperationSetting('persistentTable') !== null) {
+            return $this->getOperationSetting('persistentTable');
         }
 
         return config('backpack.crud.persistent_table');
@@ -208,7 +208,7 @@ trait Search
         }
 
         // add the details_row button to the first column
-        if ($this->get('list.detailsRow')) {
+        if ($this->getOperationSetting('detailsRow')) {
             $details_row_button = \View::make('crud::columns.details_row_button')
                                            ->with('crud', $this)
                                            ->with('entry', $entry)

@@ -9,12 +9,12 @@ trait AutoFocus
      */
     public function getAutoFocusOnFirstField()
     {
-        return $this->get($this->getCurrentOperation().'.autoFocusOnFirstField');
+        return $this->getOperationSetting('autoFocusOnFirstField');
     }
 
     public function setAutoFocusOnFirstField($value)
     {
-        return $this->set($this->getCurrentOperation().'autoFocusOnFirstField', (bool) $value);
+        return $this->setOperationSetting('autoFocusOnFirstField', (bool) $value);
     }
 
     public function enableAutoFocus()

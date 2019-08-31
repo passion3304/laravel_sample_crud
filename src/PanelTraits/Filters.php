@@ -25,18 +25,18 @@ trait Filters
     public function enableFilters()
     {
         if ($this->filtersDisabled()) {
-            $this->set($this->getCurrentOperation().'.filters', new FiltersCollection);
+            $this->setOperationSetting('filters', new FiltersCollection);
         }
     }
 
     public function disableFilters()
     {
-        $this->set($this->getCurrentOperation().'.filters', []);
+        $this->setOperationSetting('filters', []);
     }
 
     public function clearFilters()
     {
-        $this->set($this->getCurrentOperation().'.filters', new FiltersCollection);
+        $this->setOperationSetting('filters', new FiltersCollection);
     }
 
     /**
@@ -68,7 +68,7 @@ trait Filters
 
         // add a new filter to the interface
         $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic);
-        $this->set($this->getCurrentOperation().'.filters', $this->filters()->push($filter));
+        $this->setOperationSetting('filters', $this->filters()->push($filter));
 
         // apply the filter logic
         $this->applyFilter($filter);
@@ -162,7 +162,7 @@ trait Filters
      */
     public function filters()
     {
-        return $this->get($this->getCurrentOperation().'.filters');
+        return $this->getOperationSetting('filters');
     }
 
     /**
@@ -220,12 +220,12 @@ trait Filters
             return $filter->name == $name;
         });
 
-        $this->set($this->getCurrentOperation().'.filters', $strippedFiltersCollection);
+        $this->setOperationSetting('filters', $strippedFiltersCollection);
     }
 
     public function removeAllFilters()
     {
-        $this->set($this->getCurrentOperation().'.filters', new FiltersCollection);
+        $this->setOperationSetting('filters', new FiltersCollection);
     }
 }
 

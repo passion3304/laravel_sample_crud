@@ -57,4 +57,46 @@ trait Settings
 
         return false;
     }
+
+    /**
+     * Convenience method for getting or setting a key on the current operation.
+     * 
+     * @param  string   $key   Has no operation prepended. (ex: exportButtons)
+     * @param  mixed    $value The value you want to store.
+     * @return mixed           Setting value for setter. True/false for getter.
+     */
+    public function operationSetting(string $key, $value = null, $operation = null)
+    {
+        $operation = $operation ?? $this->getCurrentOperation();
+
+        return $this->setting($operation.'.'.$key, $value);
+    }
+
+    /**
+     * Getter for the settings key-value store on a certain operation.
+     * Defaults to the current operation.
+     * 
+     * @param  string   $key   Has no operation prepended. (ex: exportButtons)
+     * @return mixed      [description]
+     */
+    public function getOperationSetting(string $key, $operation = null)
+    {
+        $operation = $operation ?? $this->getCurrentOperation();
+
+        return $this->get($operation.'.'.$key);
+    }
+
+    /**
+     * Setter for the settings key-value store for a certain operation.
+     * Defaults to the current operation.
+     * 
+     * @param string $key   Has no operation prepended. (ex: max_level)
+     * @param bool $value True/false depending on success.
+     */
+    public function setOperationSetting(string $key, $value, $operation = null)
+    {
+        $operation = $operation ?? $this->getCurrentOperation();
+
+        return $this->set($operation.'.'.$key, $value);
+    }
 }
