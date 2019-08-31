@@ -50,7 +50,6 @@ class CrudPanel
     public $entity_name_plural = 'entries'; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
 
     public $entry;
-    public $db_column_types = [];
 
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 

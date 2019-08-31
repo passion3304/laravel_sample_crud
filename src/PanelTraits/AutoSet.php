@@ -4,10 +4,7 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait AutoSet
 {
-    // ------------------------------------------------------
-    // AUTO-SET-FIELDS-AND-COLUMNS FUNCTIONALITY
-    // ------------------------------------------------------
-    public $labeller = false;
+    protected $autoset = [];
 
     /**
      * For a simple CRUD Panel, there should be no need to add/define the fields.
@@ -27,7 +24,7 @@ trait AutoSet
                 'name'       => $field,
                 'label'      => $this->makeLabel($field),
                 'value'      => null,
-                'default'    => isset($this->db_column_types[$field]['default']) ? $this->db_column_types[$field]['default'] : null,
+                'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
                 'type'       => $this->getFieldTypeFromDbColumnType($field),
                 'values'     => [],
                 'attributes' => [],
@@ -60,11 +57,11 @@ trait AutoSet
     {
         foreach ($this->getDbTableColumns() as $key => $column) {
             $column_type = $column->getType()->getName();
-            $this->db_column_types[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
-            $this->db_column_types[$column->getName()]['default'] = $column->getDefault();
+            $this->autoset['db_column_types'][$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
+            $this->autoset['db_column_types'][$column->getName()]['default'] = $column->getDefault();
         }
 
-        return $this->db_column_types;
+        return $this->autoset['db_column_types'];
     }
 
     /**
@@ -74,17 +71,17 @@ trait AutoSet
      */
     public function getDbTableColumns()
     {
-        if (isset($this->table_columns) && $this->table_columns) {
-            return $this->table_columns;
+        if (isset($this->autoset['table_columns']) && $this->autoset['table_columns']) {
+            return $this->autoset['table_columns'];
         }
 
         $conn = $this->model->getConnection();
         $table = $conn->getTablePrefix().$this->model->getTable();
         $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
 
-        $this->table_columns = $columns;
+        $this->autoset['table_columns'] = $columns;
 
-        return $this->table_columns;
+        return $this->autoset['table_columns'];
     }
 
     /**
@@ -96,7 +93,7 @@ trait AutoSet
      */
     public function getFieldTypeFromDbColumnType($field)
     {
-        if (! array_key_exists($field, $this->db_column_types)) {
+        if (! array_key_exists($field, $this->autoset['db_column_types'])) {
             return 'text';
         }
 
@@ -108,7 +105,7 @@ trait AutoSet
             return 'email';
         }
 
-        switch ($this->db_column_types[$field]['type']) {
+        switch ($this->autoset['db_column_types'][$field]['type']) {
             case 'int':
             case 'integer':
             case 'smallint':
@@ -177,8 +174,8 @@ trait AutoSet
      */
     public function makeLabel($value)
     {
-        if ($this->labeller) {
-            return ($this->labeller)($value);
+        if (isset($this->autoset['labeller']) && is_callable($this->autoset['labeller'])) {
+            return ($this->autoset['labeller'])($value);
         }
 
         return trim(preg_replace('/(id|at|\[\])$/i', '', mb_ucfirst(str_replace('_', ' ', $value))));
@@ -201,7 +198,7 @@ trait AutoSet
      */
     public function setLabeller(callable $labeller)
     {
-        $this->labeller = $labeller;
+        $this->autoset['labeller'] = $labeller;
 
         return $this;
     }

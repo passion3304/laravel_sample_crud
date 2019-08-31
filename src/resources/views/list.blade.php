@@ -54,7 +54,7 @@
             <thead>
               <tr>
                 {{-- Table columns --}}
-                @foreach ($crud->columns as $column)
+                @foreach ($crud->columns() as $column)
                   <th
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
@@ -76,7 +76,7 @@
             <tfoot>
               <tr>
                 {{-- Table columns --}}
-                @foreach ($crud->columns as $column)
+                @foreach ($crud->columns() as $column)
                   <th>{!! $column['label'] !!}</th>
                 @endforeach
 

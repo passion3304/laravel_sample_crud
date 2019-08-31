@@ -23,7 +23,7 @@ trait Search
     public function applySearchTerm($searchTerm)
     {
         return $this->query->where(function ($query) use ($searchTerm) {
-            foreach ($this->getColumns() as $column) {
+            foreach ($this->columns() as $column) {
                 if (! isset($column['type'])) {
                     abort(400, 'Missing column type when trying to apply search term.');
                 }
@@ -194,7 +194,7 @@ trait Search
     {
         $row_items = [];
 
-        foreach ($this->columns as $key => $column) {
+        foreach ($this->columns() as $key => $column) {
             $row_items[] = $this->getCellView($column, $entry, $rowNumber);
         }
 

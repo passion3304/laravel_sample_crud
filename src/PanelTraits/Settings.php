@@ -7,7 +7,7 @@ namespace Backpack\CRUD\PanelTraits;
  */
 trait Settings
 {
-    private $settings = [];
+    protected $settings = [];
 
     /**
      * Getter and setter for the settings key-value store.
