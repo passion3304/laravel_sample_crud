@@ -43,8 +43,8 @@ trait CloneOperation
      */
     public function clone($id)
     {
-        $this->crud->hasAccessOrFail('clone');
         $this->crud->applyConfigurationFromSettings('clone');
+        $this->crud->hasAccessOrFail('clone');
 
         $clonedEntry = $this->crud->model->findOrFail($id)->replicate();
 

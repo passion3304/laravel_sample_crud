@@ -60,8 +60,8 @@ trait CreateOperation
      */
     public function create()
     {
-        $this->crud->hasAccessOrFail('create');
         $this->crud->applyConfigurationFromSettings('create');
+        $this->crud->hasAccessOrFail('create');
 
         // prepare the fields you need to show
         $this->data['crud'] = $this->crud;
@@ -82,8 +82,8 @@ trait CreateOperation
      */
     public function storeEntry(StoreRequest $request = null)
     {
-        $this->crud->hasAccessOrFail('create');
         $this->crud->applyConfigurationFromSettings('create');
+        $this->crud->hasAccessOrFail('create');
 
         // fallback to global request instance
         if (is_null($request)) {

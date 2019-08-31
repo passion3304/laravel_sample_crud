@@ -50,8 +50,8 @@ trait ReorderOperation
      */
     public function reorder()
     {
-        $this->crud->hasAccessOrFail('reorder');
         $this->crud->applyConfigurationFromSettings('reorder');
+        $this->crud->hasAccessOrFail('reorder');
 
         if (! $this->crud->isReorderEnabled()) {
             abort(403, 'Reorder is disabled.');
@@ -75,8 +75,8 @@ trait ReorderOperation
      */
     public function saveReorder()
     {
-        $this->crud->hasAccessOrFail('reorder');
         $this->crud->applyConfigurationFromSettings('reorder');
+        $this->crud->hasAccessOrFail('reorder');
 
         $all_entries = \Request::input('tree');
 

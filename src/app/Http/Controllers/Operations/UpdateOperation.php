@@ -62,8 +62,8 @@ trait UpdateOperation
      */
     public function edit($id)
     {
-        $this->crud->hasAccessOrFail('update');
         $this->crud->applyConfigurationFromSettings('update');
+        $this->crud->hasAccessOrFail('update');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
@@ -90,8 +90,8 @@ trait UpdateOperation
      */
     public function updateEntry(UpdateRequest $request = null)
     {
-        $this->crud->hasAccessOrFail('update');
         $this->crud->applyConfigurationFromSettings('update');
+        $this->crud->hasAccessOrFail('update');
 
         // fallback to global request instance
         if (is_null($request)) {

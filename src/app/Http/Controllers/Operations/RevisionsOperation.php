@@ -49,8 +49,8 @@ trait RevisionsOperation
      */
     public function listRevisions($id)
     {
-        $this->crud->hasAccessOrFail('revisions');
         $this->crud->applyConfigurationFromSettings('revisions');
+        $this->crud->hasAccessOrFail('revisions');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

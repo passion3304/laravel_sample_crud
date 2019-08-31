@@ -43,8 +43,8 @@ trait ShowOperation
      */
     public function show($id)
     {
-        $this->crud->hasAccessOrFail('show');
         $this->crud->applyConfigurationFromSettings('show');
+        $this->crud->hasAccessOrFail('show');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

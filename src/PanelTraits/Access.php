@@ -6,51 +6,67 @@ use Backpack\CRUD\Exception\AccessDeniedException;
 
 trait Access
 {
-    public $access = [];
-
-    /*
-    |--------------------------------------------------------------------------
-    |                                   CRUD ACCESS
-    |--------------------------------------------------------------------------
-    */
-
-    public function allowAccess($access)
+    /**
+     * Get the access for the current operation.
+     * 
+     * @return bool
+     */
+    public function getAccess()
     {
-        return $this->access = array_merge(array_diff((array) $access, $this->access), $this->access);
-    }
-
-    public function denyAccess($access)
-    {
-        return $this->access = array_diff($this->access, (array) $access);
+        return $this->get($this->getCurrentOperation().'.access');
     }
 
     /**
-     * Check if a permission is enabled for a Crud Panel. Return false if not.
-     *
-     * @param string $permission Permission.
-     *
+     * Set an operation as having access using the Settings API.
+     * 
+     * @param  string $operation
      * @return bool
      */
-    public function hasAccess($permission)
+    public function allowAccess($operation)
     {
-        if (! in_array($permission, $this->access)) {
-            return false;
+        foreach ((array)$operation as $op) {
+            $this->set($op.'.access', true);
         }
 
-        return true;
+        return $this->hasAccessToAll($operation);
     }
 
     /**
-     * Check if any permission is enabled for a Crud Panel. Return false if not.
+     * Disable the access to a certain operation, or the current one.
+     * 
+     * @param  boolean $operation [description]
+     * @return [type]             [description]
+     */
+    public function denyAccess($operation)
+    {
+        foreach ((array)$operation as $op) {
+            $this->set($op.'.access', false);
+        }
+
+        return ! $this->hasAccessToAny($operation);
+    }
+
+    /**
+     * Check if a operation is allowed for a Crud Panel. Return false if not.
      *
-     * @param array $permission_array Permissions.
-     *
+     * @param string $operation
      * @return bool
      */
-    public function hasAccessToAny($permission_array)
+    public function hasAccess($operation)
     {
-        foreach ($permission_array as $key => $permission) {
-            if (in_array($permission, $this->access)) {
+        return $this->get($operation.'.access');
+    }
+
+    /**
+     * Check if any operations are allowed for a Crud Panel. Return false if not.
+     *
+     * @param array $operation_array
+     * @return bool
+     */
+    public function hasAccessToAny($operation_array)
+    {
+        foreach ((array)$operation_array as $key => $operation) {
+            if ($this->get($operation.'.access') == true) {
                 return true;
             }
         }
@@ -59,16 +75,15 @@ trait Access
     }
 
     /**
-     * Check if all permissions are enabled for a Crud Panel. Return false if not.
+     * Check if all operations are allowed for a Crud Panel. Return false if not.
      *
-     * @param array $permission_array Permissions.
-     *
+     * @param array $operation_array Permissions.
      * @return bool
      */
-    public function hasAccessToAll($permission_array)
+    public function hasAccessToAll($operation_array)
     {
-        foreach ($permission_array as $key => $permission) {
-            if (! in_array($permission, $this->access)) {
+        foreach ((array)$operation_array as $key => $operation) {
+            if (! $this->get($operation.'.access')) {
                 return false;
             }
         }
@@ -77,18 +92,16 @@ trait Access
     }
 
     /**
-     * Check if a permission is enabled for a Crud Panel. Fail if not.
+     * Check if a operation is allowed for a Crud Panel. Fail if not.
      *
-     * @param string $permission Permission
-     *
+     * @param string $operation
      * @return bool
-     *
-     * @throws \Backpack\CRUD\Exception\AccessDeniedException in case the permission is not enabled
+     * @throws \Backpack\CRUD\Exception\AccessDeniedException in case the operation is not enabled
      */
-    public function hasAccessOrFail($permission)
+    public function hasAccessOrFail($operation)
     {
-        if (! in_array($permission, $this->access)) {
-            throw new AccessDeniedException(trans('backpack::crud.unauthorized_access', ['access' => $permission]));
+        if (! $this->get($operation.'.access')) {
+            throw new AccessDeniedException(trans('backpack::crud.unauthorized_access', ['access' => $operation]));
         }
 
         return true;

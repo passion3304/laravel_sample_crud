@@ -49,8 +49,8 @@ trait ListOperation
      */
     public function index()
     {
-        $this->crud->hasAccessOrFail('list');
         $this->crud->applyConfigurationFromSettings('list');
+        $this->crud->hasAccessOrFail('list');
 
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name_plural);
@@ -66,8 +66,8 @@ trait ListOperation
      */
     public function search()
     {
-        $this->crud->hasAccessOrFail('list');
         $this->crud->applyConfigurationFromSettings('list');
+        $this->crud->hasAccessOrFail('list');
 
         $totalRows = $this->crud->model->count();
         $filteredRows = $this->crud->count();
@@ -122,8 +122,8 @@ trait ListOperation
      */
     public function showDetailsRow($id)
     {
-        $this->crud->hasAccessOrFail('details_row');
         $this->crud->applyConfigurationFromSettings('list');
+        $this->crud->hasAccessOrFail('details_row');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

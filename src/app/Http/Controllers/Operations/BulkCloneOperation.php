@@ -44,8 +44,8 @@ trait BulkCloneOperation
      */
     public function bulkClone()
     {
-        $this->crud->hasAccessOrFail('bulkClone');
         $this->crud->applyConfigurationFromSettings('bulkClone');
+        $this->crud->hasAccessOrFail('bulkClone');
 
         $entries = $this->request->input('entries');
         $clonedEntries = [];
