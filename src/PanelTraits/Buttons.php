@@ -46,11 +46,11 @@ trait Buttons
         $button = new CrudButton($stack, $name, $type, $content);
         switch ($position) {
             case 'beginning':
-                $this->set($this->getCurrentOperation().".buttons", $this->buttons()->prepend($button));
+                $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->prepend($button));
                 break;
 
             default:
-                $this->set($this->getCurrentOperation().".buttons", $this->buttons()->push($button));
+                $this->set($this->getCurrentOperation().'.buttons', $this->buttons()->push($button));
                 break;
         }
 
