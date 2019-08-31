@@ -83,7 +83,7 @@ class CrudController extends BaseController
 
     /**
      * Load configurations for the current operation.
-     * 
+     *
      * Allow developers to insert default settings by creating a method
      * that looks like setupOperationNameDefaults.
      */
