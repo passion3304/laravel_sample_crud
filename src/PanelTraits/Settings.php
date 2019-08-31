@@ -60,7 +60,7 @@ trait Settings
 
     /**
      * Convenience method for getting or setting a key on the current operation.
-     * 
+     *
      * @param  string   $key   Has no operation prepended. (ex: exportButtons)
      * @param  mixed    $value The value you want to store.
      * @return mixed           Setting value for setter. True/false for getter.
@@ -75,7 +75,7 @@ trait Settings
     /**
      * Getter for the settings key-value store on a certain operation.
      * Defaults to the current operation.
-     * 
+     *
      * @param  string   $key   Has no operation prepended. (ex: exportButtons)
      * @return mixed      [description]
      */
@@ -89,7 +89,7 @@ trait Settings
     /**
      * Setter for the settings key-value store for a certain operation.
      * Defaults to the current operation.
-     * 
+     *
      * @param string $key   Has no operation prepended. (ex: max_level)
      * @param bool $value True/false depending on success.
      */
