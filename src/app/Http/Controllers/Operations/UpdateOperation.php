@@ -42,7 +42,7 @@ trait UpdateOperation
     {
         $this->crud->allowAccess('update');
 
-        $this->crud->operation('list', function() {
+        $this->crud->operation('list', function () {
             $this->crud->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
         });
     }

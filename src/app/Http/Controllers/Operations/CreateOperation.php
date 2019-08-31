@@ -42,7 +42,7 @@ trait CreateOperation
     {
         $this->crud->allowAccess('create');
 
-        $this->crud->operation('list', function() {
+        $this->crud->operation('list', function () {
             $this->crud->addButton('top', 'create', 'view', 'crud::buttons.create');
         });
     }
