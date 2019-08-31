@@ -4,21 +4,19 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Tabs
 {
-    public $tabsEnabled = false;
-    public $tabsType = 'horizontal';
-
     public function enableTabs()
     {
-        $this->setTabsType(config('backpack.crud.tabs_type', 'horizontal'));
+        $this->set($this->getCurrentOperation().'.tabsEnabled', true);
+        $this->set($this->getCurrentOperation().'.tabsType', config('backpack.crud.tabs_type', 'horizontal'));
 
-        return $this->tabsEnabled;
+        return $this->tabsEnabled();
     }
 
     public function disableTabs()
     {
-        $this->tabsEnabled = false;
+        $this->set($this->getCurrentOperation().'.tabsEnabled', false);
 
-        return $this->tabsEnabled;
+        return $this->tabsEnabled();
     }
 
     /**
@@ -26,7 +24,7 @@ trait Tabs
      */
     public function tabsEnabled()
     {
-        return $this->tabsEnabled;
+        return $this->get($this->getCurrentOperation().'.tabsEnabled');
     }
 
     /**
@@ -34,16 +32,15 @@ trait Tabs
      */
     public function tabsDisabled()
     {
-        return ! $this->tabsEnabled;
+        return ! $this->tabsEnabled();
     }
 
     public function setTabsType($type)
     {
-        $this->tabsEnabled = true;
+        $this->enableTabs();
+        $this->set($this->getCurrentOperation().'.tabsType', $type);
 
-        $this->tabsType = $type;
-
-        return $this->tabsType;
+        return $this->get($this->getCurrentOperation().'.tabsType');
     }
 
     /**
@@ -51,7 +48,7 @@ trait Tabs
      */
     public function getTabsType()
     {
-        return $this->tabsType;
+        return $this->get($this->getCurrentOperation().'.tabsType');
     }
 
     public function enableVerticalTabs()
