@@ -8,7 +8,7 @@ trait Access
 {
     /**
      * Get the access for the current operation.
-     * 
+     *
      * @return bool
      */
     public function getAccess()
@@ -18,13 +18,13 @@ trait Access
 
     /**
      * Set an operation as having access using the Settings API.
-     * 
+     *
      * @param  string $operation
      * @return bool
      */
     public function allowAccess($operation)
     {
-        foreach ((array)$operation as $op) {
+        foreach ((array) $operation as $op) {
             $this->set($op.'.access', true);
         }
 
@@ -33,13 +33,13 @@ trait Access
 
     /**
      * Disable the access to a certain operation, or the current one.
-     * 
-     * @param  boolean $operation [description]
+     *
+     * @param  bool $operation [description]
      * @return [type]             [description]
      */
     public function denyAccess($operation)
     {
-        foreach ((array)$operation as $op) {
+        foreach ((array) $operation as $op) {
             $this->set($op.'.access', false);
         }
 
@@ -65,7 +65,7 @@ trait Access
      */
     public function hasAccessToAny($operation_array)
     {
-        foreach ((array)$operation_array as $key => $operation) {
+        foreach ((array) $operation_array as $key => $operation) {
             if ($this->get($operation.'.access') == true) {
                 return true;
             }
@@ -82,7 +82,7 @@ trait Access
      */
     public function hasAccessToAll($operation_array)
     {
-        foreach ((array)$operation_array as $key => $operation) {
+        foreach ((array) $operation_array as $key => $operation) {
             if (! $this->get($operation.'.access')) {
                 return false;
             }
