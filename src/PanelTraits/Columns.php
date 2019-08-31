@@ -240,7 +240,7 @@ trait Columns
      * @param string $column The column key.
      */
     public function removeColumn($columnKey)
-    {   
+    {
         $columnsArray = $this->columns();
         array_forget($columnsArray, $columnKey);
         $this->setOperationSetting('columns', $columnsArray);
@@ -290,7 +290,7 @@ trait Columns
     public function setColumnDetails($columnKey, $attributesAndValues)
     {
         $columnsArray = $this->columns();
-        
+
         if (isset($columnsArray[$columnKey])) {
             foreach ($attributesAndValues as $attributeName => $attributeValue) {
                 $columnsArray[$columnKey][$attributeName] = $attributeValue;
