@@ -91,7 +91,7 @@ trait AutoSet
      */
     public function getFieldTypeFromDbColumnType($field)
     {
-        if (!isset($this->autoset['db_column_types']) || ! array_key_exists($field, $this->autoset['db_column_types'])) {
+        if (! isset($this->autoset['db_column_types']) || ! array_key_exists($field, $this->autoset['db_column_types'])) {
             return 'text';
         }
 
