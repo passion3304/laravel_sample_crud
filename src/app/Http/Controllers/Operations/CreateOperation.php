@@ -23,13 +23,13 @@ trait CreateOperation
         ]);
 
         Route::put($segment.'/create', [
-            'as' => $routeName.'store',
+            'as' => $routeName.'.store',
             'uses' => $controller.'@store',
             'operation' => 'create',
         ]);
 
         Route::post($segment, [
-            'as' => $routeName.'store',
+            'as' => $routeName.'.store',
             'uses' => $controller.'@store',
             'operation' => 'create',
         ]);
