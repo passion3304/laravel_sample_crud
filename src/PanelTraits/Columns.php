@@ -9,7 +9,7 @@ trait Columns
     // ------------
 
     /**
-     * Get the CRUD columns.
+     * Get the CRUD columns for the current operation.
      *
      * @return array CRUD columns.
      */

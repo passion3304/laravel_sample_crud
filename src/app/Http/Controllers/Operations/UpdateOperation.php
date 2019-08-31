@@ -67,12 +67,12 @@ trait UpdateOperation
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
 
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
         $this->data['saveAction'] = $this->crud->getSaveAction();
-        $this->data['fields'] = $this->crud->getUpdateFields($id);
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
 
         $this->data['id'] = $id;

@@ -4,12 +4,19 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Fields
 {
-    public $create_fields = []; // Define the fields for the "Add new entry" view as an array;
-    public $update_fields = []; // Define the fields for the "Edit entry" view as an array;
-
     // ------------
     // FIELDS
     // ------------
+
+    /**
+     * Get the CRUD fields for the current operation.
+     *
+     * @return array
+     */
+    public function fields()
+    {
+        return $this->getOperationSetting('fields') ?? [];
+    }
 
     /**
      * Add a field to the create/update form or both.
@@ -19,44 +26,42 @@ trait Fields
      *
      * @return self
      */
-    public function addField($field, $form = 'both')
+    public function addField($field)
     {
         // if the field_definition_array array is a string, it means the programmer was lazy and has only passed the name
         // set some default values, so the field will still work
         if (is_string($field)) {
-            $completeFieldsArray['name'] = $field;
+            $newField['name'] = $field;
         } else {
-            $completeFieldsArray = $field;
+            $newField = $field;
         }
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
-        if (isset($completeFieldsArray['entity']) && ! isset($completeFieldsArray['model'])) {
-            $completeFieldsArray['model'] = $this->getRelationModel($completeFieldsArray['entity']);
+        if (isset($newField['entity']) && ! isset($newField['model'])) {
+            $newField['model'] = $this->getRelationModel($newField['entity']);
         }
 
         // if the label is missing, we should set it
-        if (! isset($completeFieldsArray['label'])) {
-            $completeFieldsArray['label'] = mb_ucfirst(str_replace('_', ' ', $completeFieldsArray['name']));
+        if (! isset($newField['label'])) {
+            $newField['label'] = mb_ucfirst(str_replace('_', ' ', $newField['name']));
         }
 
         // if the field type is missing, we should set it
-        if (! isset($completeFieldsArray['type'])) {
-            $completeFieldsArray['type'] = $this->getFieldTypeFromDbColumnType($completeFieldsArray['name']);
+        if (! isset($newField['type'])) {
+            $newField['type'] = $this->getFieldTypeFromDbColumnType($newField['name']);
         }
 
         // if a tab was mentioned, we should enable it
-        if (isset($completeFieldsArray['tab'])) {
+        if (isset($newField['tab'])) {
             if (! $this->tabsEnabled()) {
                 $this->enableTabs();
             }
         }
 
-        $this->transformFields($form, function ($fields) use ($completeFieldsArray) {
-            $fields[$completeFieldsArray['name']] = $completeFieldsArray;
-
-            return $fields;
-        });
+        $fields = $this->getOperationSetting('fields');
+        $fields = \Arr::add($this->fields(), $newField['name'], $newField);       
+        $this->setOperationSetting('fields', $fields);
 
         return $this;
     }
@@ -67,11 +72,11 @@ trait Fields
      * @param array  $fields The new fields.
      * @param string $form   The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
-    public function addFields($fields, $form = 'both')
+    public function addFields($fields)
     {
         if (count($fields)) {
             foreach ($fields as $field) {
-                $this->addField($field, $form);
+                $this->addField($field);
             }
         }
     }
@@ -82,9 +87,9 @@ trait Fields
      * @param string $targetFieldName The target field name.
      * @param string $form            The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
-    public function afterField($targetFieldName, $form = 'both')
+    public function afterField($targetFieldName)
     {
-        $this->transformFields($form, function ($fields) use ($targetFieldName) {
+        $this->transformFields(function ($fields) use ($targetFieldName) {
             return $this->moveField($fields, $targetFieldName, false);
         });
     }
@@ -95,9 +100,9 @@ trait Fields
      * @param string $targetFieldName The target field name.
      * @param string $form            The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
-    public function beforeField($targetFieldName, $form = 'both')
+    public function beforeField($targetFieldName)
     {
-        $this->transformFields($form, function ($fields) use ($targetFieldName) {
+        $this->transformFields(function ($fields) use ($targetFieldName) {
             return $this->moveField($fields, $targetFieldName, true);
         });
     }
@@ -138,9 +143,9 @@ trait Fields
      * @param string $name Field name (as defined with the addField() procedure)
      * @param string $form update/create/both
      */
-    public function removeField($name, $form = 'both')
+    public function removeField($name)
     {
-        $this->transformFields($form, function ($fields) use ($name) {
+        $this->transformFields(function ($fields) use ($name) {
             array_forget($fields, $name);
 
             return $fields;
@@ -151,28 +156,25 @@ trait Fields
      * Remove many fields from the create/update/both forms by their name.
      *
      * @param array  $array_of_names A simple array of the names of the fields to be removed.
-     * @param string $form           update/create/both
      */
-    public function removeFields($array_of_names, $form = 'both')
+    public function removeFields($array_of_names)
     {
         if (! empty($array_of_names)) {
             foreach ($array_of_names as $name) {
-                $this->removeField($name, $form);
+                $this->removeField($name);
             }
         }
     }
 
     /**
      * Remove all fields from the create/update/both forms.
-     *
-     * @param string $form update/create/both
      */
-    public function removeAllFields($form = 'both')
+    public function removeAllFields()
     {
         $current_fields = $this->getCurrentFields();
         if (! empty($current_fields)) {
             foreach ($current_fields as $field) {
-                $this->removeField($field['name'], $form);
+                $this->removeField($field['name']);
             }
         }
     }
@@ -182,26 +184,16 @@ trait Fields
      *
      * @param string $field         The field
      * @param array  $modifications An array of changes to be made.
-     * @param string $form          update/create/both
      */
-    public function modifyField($field, $modifications, $form = 'both')
+    public function modifyField($field, $modifications)
     {
-        foreach ($modifications as $key => $newValue) {
-            switch (strtolower($form)) {
-          case 'create':
-              $this->create_fields[$field][$key] = $newValue;
-              break;
+        $fields = $this->fields();
 
-          case 'update':
-              $this->update_fields[$field][$key] = $newValue;
-              break;
+        foreach ($modifications as $attributeName => $attributeValue) {
+            $fields[$field][$attributeName]=$attributeValue;
+        }
 
-          default:
-              $this->create_fields[$field][$key] = $newValue;
-              $this->update_fields[$field][$key] = $newValue;
-              break;
-        }
-        }
+        $this->setOperationSetting('fields', $fields);
     }
 
     /**
@@ -212,12 +204,7 @@ trait Fields
      */
     public function setFieldLabel($field, $label)
     {
-        if (isset($this->create_fields[$field])) {
-            $this->create_fields[$field]['label'] = $label;
-        }
-        if (isset($this->update_fields[$field])) {
-            $this->update_fields[$field]['label'] = $label;
-        }
+        $this->modifyField($field, ['label' => $label]);
     }
 
     /**
@@ -245,10 +232,9 @@ trait Fields
      * So that they are not json_encoded twice before they are stored in the db
      * (once by Backpack in front-end, once by Laravel Attribute Casting).
      */
-    public function decodeJsonCastedAttributes($data, $form, $id = false)
+    public function decodeJsonCastedAttributes($data)
     {
-        // get the right fields according to the form type (create/update)
-        $fields = $this->getFields($form, $id);
+        $fields = $this->getFields();
         $casted_attributes = $this->model->getCastedAttributes();
 
         foreach ($fields as $field) {
@@ -278,23 +264,18 @@ trait Fields
      */
     public function getCurrentFields()
     {
-        if ($this->entry) {
-            return $this->getUpdateFields($this->entry->getKey());
-        }
-
-        return $this->getCreateFields();
+        return $this->fields();
     }
 
     /**
-     * Order the CRUD fields in the given form. If certain fields are missing from the given order array, they will be
+     * Order the CRUD fields. If certain fields are missing from the given order array, they will be
      * pushed to the new fields array in the original order.
      *
      * @param array  $order An array of field names in the desired order.
-     * @param string $form  The CRUD form. Can be 'create', 'update' or 'both'.
      */
-    public function orderFields($order, $form = 'both')
+    public function orderFields($order)
     {
-        $this->transformFields($form, function ($fields) use ($order) {
+        $this->transformFields(function ($fields) use ($order) {
             return $this->applyOrderToFields($fields, $order);
         });
     }
@@ -326,78 +307,23 @@ trait Fields
     }
 
     /**
-     * Set the order of the CRUD fields.
-     *
-     * @param array $fields Fields order.
-     *
-     * @deprecated This method was not and will not be implemented since its a duplicate of the orderFields method.
-     * @see        Fields::orderFields() to order the CRUD fields.
-     */
-    public function setFieldOrder($fields)
-    {
-        // not implemented
-    }
-
-    /**
-     * Set the order of the CRUD fields.
-     *
-     * @param array $fields Fields order.
-     *
-     * @deprecated This method was not and will not be implemented since its a duplicate of the orderFields method.
-     * @see        Fields::orderFields() to order the CRUD fields.
-     */
-    public function setFieldsOrder($fields)
-    {
-        $this->setFieldOrder($fields);
-    }
-
-    /**
      * Apply the given callback to the form fields.
      *
-     * @param string   $form     The CRUD form. Can be 'create', 'update' or 'both'.
      * @param callable $callback The callback function to run for the given form fields.
      */
-    private function transformFields($form, callable $callback)
+    private function transformFields(callable $callback)
     {
-        switch (strtolower($form)) {
-            case 'create':
-                $this->create_fields = $callback($this->create_fields);
-                break;
-
-            case 'update':
-                $this->update_fields = $callback($this->update_fields);
-                break;
-
-            default:
-                $this->create_fields = $callback($this->create_fields);
-                $this->update_fields = $callback($this->update_fields);
-                break;
-        }
+        $this->setOperationSetting('fields', $callback($this->fields()));
     }
 
     /**
      * Get the fields for the create or update forms.
      *
-     * @param  string   $form create/update/both - defaults to 'both'
-     * @param  bool|int $id   the ID of the entity to be edited in the Update form
-     *
      * @return array all the fields that need to be shown and their information
      */
-    public function getFields($form, $id = false)
+    public function getFields()
     {
-        switch (strtolower($form)) {
-            case 'create':
-                return $this->getCreateFields();
-                break;
-
-            case 'update':
-                return $this->getUpdateFields($id);
-                break;
-
-            default:
-                return $this->getCreateFields();
-                break;
-        }
+        return $this->fields();
     }
 
     /**
@@ -409,9 +335,9 @@ trait Fields
      *
      * @return bool
      */
-    public function hasUploadFields($form, $id = false)
+    public function hasUploadFields()
     {
-        $fields = $this->getFields($form, $id);
+        $fields = $this->getFields();
         $upload_fields = array_where($fields, function ($value, $key) {
             return isset($value['upload']) && $value['upload'] == true;
         });

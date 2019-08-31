@@ -42,9 +42,9 @@
 
 		      <!-- load the view from the application if it exists, otherwise load the one in the package -->
 		      @if(view()->exists('vendor.backpack.crud.form_content'))
-		      	@include('vendor.backpack.crud.form_content', [ 'fields' => $crud->getFields('create'), 'action' => 'create' ])
+		      	@include('vendor.backpack.crud.form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
 		      @else
-		      	@include('crud::form_content', [ 'fields' => $crud->getFields('create'), 'action' => 'create' ])
+		      	@include('crud::form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
 		      @endif
 
 	          @include('crud::inc.form_save_buttons')

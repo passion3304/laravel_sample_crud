@@ -28,11 +28,9 @@ trait AutoSet
                 'attributes' => [],
                 'autoset'    => true,
             ];
-            if (! isset($this->create_fields[$field])) {
-                $this->create_fields[$field] = $new_field;
-            }
-            if (! isset($this->update_fields[$field])) {
-                $this->update_fields[$field] = $new_field;
+
+            if (! isset($this->fields()[$field])) {
+                $this->addField($field);
             }
 
             if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
@@ -93,7 +91,7 @@ trait AutoSet
      */
     public function getFieldTypeFromDbColumnType($field)
     {
-        if (! array_key_exists($field, $this->autoset['db_column_types'])) {
+        if (!isset($this->autoset['db_column_types']) || ! array_key_exists($field, $this->autoset['db_column_types'])) {
             return 'text';
         }
 
