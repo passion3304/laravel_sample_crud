@@ -33,7 +33,7 @@ class CrudController extends BaseController
             $this->request = $request;
             $this->setupDefaults();
             $this->setup();
-            $this->setupConfigurations();
+            $this->setupConfigurationForCurrentOperation();
 
             return $next($request);
         });
@@ -82,18 +82,17 @@ class CrudController extends BaseController
     }
 
     /**
-     * Load configurations for all operations.
+     * Load configurations for the current operation.
+     * 
      * Allow developers to insert default settings by creating a method
      * that looks like setupOperationNameDefaults.
      */
-    protected function setupConfigurations()
+    protected function setupConfigurationForCurrentOperation()
     {
-        preg_match_all('/(?<=^|;)setup([^;]+?)Configuration(;|$)/', implode(';', get_class_methods($this)), $matches);
+        $className = 'setup'.\Str::studly($this->crud->getCurrentOperation()).'Configuration';
 
-        if (count($matches[1])) {
-            foreach ($matches[1] as $methodName) {
-                $this->{'setup'.$methodName.'Configuration'}();
-            }
+        if (method_exists($this, $className)) {
+            $this->{$className}();
         }
     }
 }
