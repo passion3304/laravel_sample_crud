@@ -18,17 +18,28 @@ trait ListOperation
         Route::get($segment.'/', [
             'as' => $routeName.'.index',
             'uses' => $controller.'@index',
+            'operation' => 'list',
         ]);
 
         Route::post($segment.'/search', [
             'as' => $routeName.'.search',
             'uses' => $controller.'@search',
+            'operation' => 'list',
         ]);
 
         Route::get($segment.'/{id}/details', [
             'as' => $routeName.'.showDetailsRow',
             'uses' => $controller.'@showDetailsRow',
+            'operation' => 'list',
         ]);
+    }
+
+    /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupListDefaults()
+    {
+        $this->crud->allowAccess('list');
     }
 
     /**
@@ -39,7 +50,7 @@ trait ListOperation
     public function index()
     {
         $this->crud->hasAccessOrFail('list');
-        $this->crud->setOperation('list');
+        $this->crud->applyConfigurationFromSettings('list');
 
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name_plural);
@@ -56,7 +67,7 @@ trait ListOperation
     public function search()
     {
         $this->crud->hasAccessOrFail('list');
-        $this->crud->setOperation('list');
+        $this->crud->applyConfigurationFromSettings('list');
 
         $totalRows = $this->crud->model->count();
         $filteredRows = $this->crud->count();
@@ -112,7 +123,7 @@ trait ListOperation
     public function showDetailsRow($id)
     {
         $this->crud->hasAccessOrFail('details_row');
-        $this->crud->setOperation('list');
+        $this->crud->applyConfigurationFromSettings('list');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

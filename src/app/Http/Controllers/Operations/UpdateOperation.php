@@ -19,16 +19,19 @@ trait UpdateOperation
         Route::get($segment.'/{id}/edit', [
             'as' => $routeName.'.edit',
             'uses' => $controller.'@edit',
+            'operation' => 'update',
         ]);
 
         Route::put($segment.'/{id}', [
             'as' => $routeName.'.update',
             'uses' => $controller.'@update',
+            'operation' => 'update',
         ]);
 
         Route::get($segment.'/{id}/translate/{lang}', [
             'as' => $routeName.'.translateItem',
             'uses' => $controller.'@translateItem',
+            'operation' => 'update',
         ]);
     }
 
@@ -37,7 +40,11 @@ trait UpdateOperation
      */
     protected function setupUpdateDefaults()
     {
-        $this->crud->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
+        $this->crud->allowAccess('update');
+
+        $this->crud->operation('list', function() {
+            $this->crud->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
+        });
     }
 
     /**
@@ -50,7 +57,7 @@ trait UpdateOperation
     public function edit($id)
     {
         $this->crud->hasAccessOrFail('update');
-        $this->crud->setOperation('update');
+        $this->crud->applyConfigurationFromSettings('update');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
@@ -78,7 +85,7 @@ trait UpdateOperation
     public function updateEntry(UpdateRequest $request = null)
     {
         $this->crud->hasAccessOrFail('update');
-        $this->crud->setOperation('update');
+        $this->crud->applyConfigurationFromSettings('update');
 
         // fallback to global request instance
         if (is_null($request)) {

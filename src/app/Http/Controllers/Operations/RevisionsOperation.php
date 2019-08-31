@@ -18,11 +18,13 @@ trait RevisionsOperation
         Route::get($segment.'/{id}/revisions', [
             'as' => $routeName.'.listRevisions',
             'uses' => $controller.'@listRevisions',
+            'operation' => 'revisions',
         ]);
 
         Route::post($segment.'/{id}/revisions/{revisionId}/restore', [
             'as' => $routeName.'.restoreRevision',
             'uses' => $controller.'@restoreRevision',
+            'operation' => 'revisions',
         ]);
     }
 
@@ -31,7 +33,11 @@ trait RevisionsOperation
      */
     protected function setupRevisionsDefaults()
     {
-        $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
+        $this->crud->allowAccess('revisions');
+
+        $this->crud->operation('list', function() {
+            $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
+        }):
     }
 
     /**
@@ -44,7 +50,7 @@ trait RevisionsOperation
     public function listRevisions($id)
     {
         $this->crud->hasAccessOrFail('revisions');
-        $this->crud->setOperation('revisions');
+        $this->crud->applyConfigurationFromSettings('revisions');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
@@ -73,7 +79,7 @@ trait RevisionsOperation
     public function restoreRevision($id)
     {
         $this->crud->hasAccessOrFail('revisions');
-        $this->crud->setOperation('revisions');
+        $this->crud->applyConfigurationFromSettings('revisions');
 
         $revisionId = \Request::input('revision_id', false);
         if (! $revisionId) {

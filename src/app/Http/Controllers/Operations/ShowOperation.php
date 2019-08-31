@@ -18,6 +18,7 @@ trait ShowOperation
         Route::get($segment.'/{id}', [
             'as' => $routeName.'.show',
             'uses' => $controller.'@show',
+            'operation' => 'show',
         ]);
     }
 
@@ -26,7 +27,11 @@ trait ShowOperation
      */
     protected function setupShowDefaults()
     {
-        $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
+        $this->crud->allowAccess('show');
+
+        $this->crud->operation('list', function() {
+            $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
+        }):
     }
 
     /**
@@ -39,7 +44,7 @@ trait ShowOperation
     public function show($id)
     {
         $this->crud->hasAccessOrFail('show');
-        $this->crud->setOperation('show');
+        $this->crud->applyConfigurationFromSettings('show');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

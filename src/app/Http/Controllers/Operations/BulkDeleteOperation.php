@@ -18,7 +18,21 @@ trait BulkDeleteOperation
         Route::post($segment.'/bulk-delete', [
             'as' => $routeName.'.bulkDelete',
             'uses' => $controller.'@bulkDelete',
+            'operation' => 'bulkDelete',
         ]);
+    }
+
+    /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupBulkDeleteDefaults()
+    {
+        $this->crud->allowAccess('bulkDelete');
+
+        $this->crud->operation('list', function() {
+            $this->crud->enableBulkActions();
+            $this->crud->addButton('bottom', 'bulk_delete', 'view', 'crud::buttons.bulk_delete');
+        });
     }
 
     /**
@@ -28,8 +42,8 @@ trait BulkDeleteOperation
      */
     public function bulkDelete()
     {
-        $this->crud->hasAccessOrFail('delete');
-        $this->crud->setOperation('delete');
+        $this->crud->hasAccessOrFail('bulkDelete');
+        $this->crud->applyConfigurationFromSettings('bulkDelete');
 
         $entries = $this->request->input('entries');
         $deletedEntries = [];

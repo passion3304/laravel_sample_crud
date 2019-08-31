@@ -18,11 +18,13 @@ trait ReorderOperation
         Route::get($segment.'/reorder', [
             'as' => $routeName.'.reorder',
             'uses' => $controller.'@reorder',
+            'operation' => 'reorder',
         ]);
 
         Route::post($segment.'/reorder', [
             'as' => $routeName.'.save.reorder',
             'uses' => $controller.'@saveReorder',
+            'operation' => 'reorder',
         ]);
     }
 
@@ -33,7 +35,10 @@ trait ReorderOperation
     {
         $this->crud->set('reorder.enabled', true);
         $this->crud->allowAccess('reorder');
-        $this->crud->addButton('top', 'reorder', 'view', 'crud::buttons.reorder');
+
+        $this->crud->operation('list', function() {
+            $this->crud->addButton('top', 'reorder', 'view', 'crud::buttons.reorder');
+        });
     }
 
     /**
@@ -46,7 +51,7 @@ trait ReorderOperation
     public function reorder()
     {
         $this->crud->hasAccessOrFail('reorder');
-        $this->crud->setOperation('reorder');
+        $this->crud->applyConfigurationFromSettings('reorder');
 
         if (! $this->crud->isReorderEnabled()) {
             abort(403, 'Reorder is disabled.');
@@ -71,7 +76,7 @@ trait ReorderOperation
     public function saveReorder()
     {
         $this->crud->hasAccessOrFail('reorder');
-        $this->crud->setOperation('reorder');
+        $this->crud->applyConfigurationFromSettings('reorder');
 
         $all_entries = \Request::input('tree');
 

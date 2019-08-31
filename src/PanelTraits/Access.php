@@ -6,7 +6,7 @@ use Backpack\CRUD\Exception\AccessDeniedException;
 
 trait Access
 {
-    public $access = ['list', 'create', 'update', 'delete'];
+    public $access = [];
 
     /*
     |--------------------------------------------------------------------------

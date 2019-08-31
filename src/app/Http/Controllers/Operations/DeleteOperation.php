@@ -18,6 +18,7 @@ trait DeleteOperation
         Route::delete($segment.'/{id}', [
             'as' => $routeName.'.destroy',
             'uses' => $controller.'@destroy',
+            'operation' => 'delete',
         ]);
     }
 
@@ -26,7 +27,11 @@ trait DeleteOperation
      */
     protected function setupDeleteDefaults()
     {
-        $this->crud->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
+        $this->crud->allowAccess('delete');
+
+        $this->crud->operation('list', function() {
+            $this->crud->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
+        });
     }
 
     /**
@@ -39,7 +44,7 @@ trait DeleteOperation
     public function destroy($id)
     {
         $this->crud->hasAccessOrFail('delete');
-        $this->crud->setOperation('delete');
+        $this->crud->applyConfigurationFromSettings('delete');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

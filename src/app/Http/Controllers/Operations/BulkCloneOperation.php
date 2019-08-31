@@ -18,7 +18,21 @@ trait BulkCloneOperation
         Route::post($segment.'/bulk-clone', [
             'as' => $routeName.'.bulkClone',
             'uses' => $controller.'@bulkClone',
+            'operation' => 'bulkClone',
         ]);
+    }
+
+    /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupBulkCloneDefaults()
+    {
+        $this->crud->allowAccess('bulkClone');
+
+        $this->crud->operation('list', function() {
+            $this->crud->enableBulkActions();
+            $this->crud->addButton('bottom', 'bulk_clone', 'view', 'crud::buttons.bulk_clone', 'beginning');
+        });
     }
 
     /**
@@ -30,8 +44,8 @@ trait BulkCloneOperation
      */
     public function bulkClone()
     {
-        $this->crud->hasAccessOrFail('clone');
-        $this->crud->setOperation('clone');
+        $this->crud->hasAccessOrFail('bulkClone');
+        $this->crud->applyConfigurationFromSettings('bulkClone');
 
         $entries = $this->request->input('entries');
         $clonedEntries = [];

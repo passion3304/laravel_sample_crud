@@ -18,6 +18,7 @@ trait CloneOperation
         Route::post($segment.'/{id}/clone', [
             'as' => $routeName.'.clone',
             'uses' => $controller.'@clone',
+            'operation' => 'clone',
         ]);
     }
 
@@ -26,7 +27,11 @@ trait CloneOperation
      */
     protected function setupCloneDefaults()
     {
-        $this->crud->addButton('line', 'clone', 'view', 'crud::buttons.clone', 'end');
+        $this->crud->allowAccess('clone');
+        
+        $this->crud->operation('list', function() {
+            $this->crud->addButton('line', 'clone', 'view', 'crud::buttons.clone', 'end');
+        });
     }
 
     /**
@@ -39,7 +44,7 @@ trait CloneOperation
     public function clone($id)
     {
         $this->crud->hasAccessOrFail('clone');
-        $this->crud->setOperation('clone');
+        $this->crud->applyConfigurationFromSettings('clone');
 
         $clonedEntry = $this->crud->model->findOrFail($id)->replicate();
 

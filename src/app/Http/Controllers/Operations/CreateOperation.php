@@ -19,16 +19,19 @@ trait CreateOperation
         Route::get($segment.'/create', [
             'as' => $routeName.'.create',
             'uses' => $controller.'@create',
+            'operation' => 'create',
         ]);
 
         Route::put($segment.'/create', [
             'as' => $routeName.'store',
             'uses' => $controller.'@store',
+            'operation' => 'create',
         ]);
 
         Route::post($segment, [
             'as' => $routeName.'store',
             'uses' => $controller.'@store',
+            'operation' => 'create',
         ]);
     }
 
@@ -37,7 +40,11 @@ trait CreateOperation
      */
     protected function setupCreateDefaults()
     {
-        $this->crud->addButton('top', 'create', 'view', 'crud::buttons.create');
+        $this->crud->allowAccess('create');
+
+        $this->crud->operation('list', function() {
+            $this->crud->addButton('top', 'create', 'view', 'crud::buttons.create');
+        });
     }
 
     /**
@@ -48,7 +55,7 @@ trait CreateOperation
     public function create()
     {
         $this->crud->hasAccessOrFail('create');
-        $this->crud->setOperation('create');
+        $this->crud->applyConfigurationFromSettings('create');
 
         // prepare the fields you need to show
         $this->data['crud'] = $this->crud;
@@ -70,7 +77,7 @@ trait CreateOperation
     public function storeEntry(StoreRequest $request = null)
     {
         $this->crud->hasAccessOrFail('create');
-        $this->crud->setOperation('create');
+        $this->crud->applyConfigurationFromSettings('create');
 
         // fallback to global request instance
         if (is_null($request)) {

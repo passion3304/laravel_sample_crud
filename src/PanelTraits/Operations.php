@@ -40,7 +40,7 @@ trait Operations
      */
     public function getCurrentOperation()
     {
-        return $this->currentOperation;
+        return $this->currentOperation ?? \Route::getCurrentRoute()->action['operation'] ?? null;
     }
 
     /**
@@ -51,7 +51,6 @@ trait Operations
     public function setCurrentOperation($operation_name)
     {
         $this->currentOperation = $operation_name;
-        $this->runConfigurationForOperation($operation_name);
     }
 
     /**
@@ -95,7 +94,7 @@ trait Operations
      * @param  string|array $operations [description]
      * @return void
      */
-    public function runConfigurationForOperation($operations)
+    public function applyConfigurationFromSettings($operations)
     {
         $operations = (array) $operations;
 
