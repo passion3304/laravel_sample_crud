@@ -29,7 +29,7 @@ trait BulkCloneOperation
     {
         $this->crud->allowAccess('bulkClone');
 
-        $this->crud->operation('list', function() {
+        $this->crud->operation('list', function () {
             $this->crud->enableBulkActions();
             $this->crud->addButton('bottom', 'bulk_clone', 'view', 'crud::buttons.bulk_clone', 'beginning');
         });

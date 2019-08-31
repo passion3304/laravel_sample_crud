@@ -28,8 +28,8 @@ trait CloneOperation
     protected function setupCloneDefaults()
     {
         $this->crud->allowAccess('clone');
-        
-        $this->crud->operation('list', function() {
+
+        $this->crud->operation('list', function () {
             $this->crud->addButton('line', 'clone', 'view', 'crud::buttons.clone', 'end');
         });
     }
