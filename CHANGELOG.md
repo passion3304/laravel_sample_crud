@@ -20,6 +20,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.30] - 2019-09-01
+
+### Fixed
+- fixes #1982 merged #1983 - AutoSet uses model connection instead of default connection;
+- French language fixes;
+
+
 ## [3.6.29] - 2019-08-23
 
 ### Fixed
