@@ -153,7 +153,7 @@ trait AutoSet
                     break;
             }
         }
-        
+
         return 'text';
     }
 
