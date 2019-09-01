@@ -25,6 +25,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - fixes #1982 merged #1983 - AutoSet uses model connection instead of default connection;
 - French language fixes;
+- fixes #2006 merged #2007 - Create/Update forms not opening the correct tab when Saving and Editing an item multiple times;
 
 
 ## [3.6.29] - 2019-08-23
