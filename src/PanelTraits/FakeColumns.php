@@ -5,7 +5,7 @@ namespace Backpack\CRUD\PanelTraits;
 trait FakeColumns
 {
     /**
-     * Returns an array of database columns names, that are used to store fake values or ['extras'] 
+     * Returns an array of database columns names, that are used to store fake values or ['extras']
      * if no columns have been found.
      *
      * @return array The fake columns array.

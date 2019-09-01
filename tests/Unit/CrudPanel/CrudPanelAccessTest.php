@@ -86,7 +86,7 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
     public function testHasAccessOrFail()
     {
         $this->crudPanel->allowAccess($this->fullAccessList);
-        
+
         foreach ($this->fullAccessList as $permission) {
             $this->assertTrue($this->crudPanel->hasAccessOrFail($permission));
         }
