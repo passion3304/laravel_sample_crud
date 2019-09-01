@@ -2,11 +2,13 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\ColumnType;
 use Doctrine\DBAL\DBALException;
-use Illuminate\Support\Facades\DB;
+use Backpack\CRUD\Tests\Unit\Models\ColumnType;
 
-class MyColumnTypeWithOtherConnection extends ColumnType { protected $connection = 'testing_2'; }
+class MyColumnTypeWithOtherConnection extends ColumnType
+{
+    protected $connection = 'testing_2';
+}
 
 class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
 {
