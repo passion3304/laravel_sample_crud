@@ -18,6 +18,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - ```CRUD``` facade, so developers can now do ```CRUD::addField()``` instead of ```$this->crud->addField()```;
 - the ability for developers to use a different CrudPanel object instead of the one in the package; this way, they can customize/overwrite how anything works inside the CrudPanel object;
 - routes are now defined inside operations; you no longer need to edit the route file to add routes to one controller; you can now re-use an operation on different controllers and it will also add the necessary routes;
+- merged #2012 - phone column type;
 - when specifying a route to an EntityCrudController, an "operation" is specified for each action; that "operation" is used as the string name of the operation (basically doing setOperation() automatically); there are currently two ways to set the current operation: (1) by defining the operation when defining the route, and (2) by doing setOperation()
 - inside each operation action, it's no longer required to run ```setOperation()```; but IT IS required to run ```setConfigurationFromSettings()``` so that anything that was inside operation closures gets run;
 
