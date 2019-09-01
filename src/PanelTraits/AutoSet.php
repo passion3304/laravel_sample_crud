@@ -161,7 +161,7 @@ trait AutoSet
     public function setDoctrineTypesMapping()
     {
         $types = ['enum' => 'string'];
-        $platform = \DB::getDoctrineConnection()->getDatabasePlatform();
+        $platform = $this->getSchema()->getConnection()->getDoctrineConnection()->getDatabasePlatform();
         foreach ($types as $type_key => $type_value) {
             if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
                 $platform->registerDoctrineTypeMapping($type_key, $type_value);
