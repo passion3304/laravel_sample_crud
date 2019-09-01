@@ -132,6 +132,10 @@
           $("input[name='current_tab']").val(currentTabName);
       });
 
+      if (window.location.hash) {
+          $("input[name='current_tab']").val(window.location.hash.substr(1));
+      }
+
       });
     </script>
 @endsection
