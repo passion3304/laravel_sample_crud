@@ -18,6 +18,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - ```CRUD``` facade, so developers can now do ```CRUD::addField()``` instead of ```$this->crud->addField()```;
 - the ability for developers to use a different CrudPanel object instead of the one in the package; this way, they can customize/overwrite how anything works inside the CrudPanel object;
 - routes are now defined inside operations; you no longer need to edit the route file to add routes to one controller; you can now re-use an operation on different controllers and it will also add the necessary routes;
+- merged #2012 - phone column type;
 
 ### Fixed
 - merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
