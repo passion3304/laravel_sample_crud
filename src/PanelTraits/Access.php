@@ -7,16 +7,6 @@ use Backpack\CRUD\Exception\AccessDeniedException;
 trait Access
 {
     /**
-     * Get the access for the current operation.
-     *
-     * @return bool
-     */
-    public function getAccess()
-    {
-        return $this->getOperationSetting('access');
-    }
-
-    /**
      * Set an operation as having access using the Settings API.
      *
      * @param  string $operation
@@ -54,7 +44,7 @@ trait Access
      */
     public function hasAccess($operation)
     {
-        return $this->get($operation.'.access');
+        return $this->get($operation.'.access') ?? false;
     }
 
     /**

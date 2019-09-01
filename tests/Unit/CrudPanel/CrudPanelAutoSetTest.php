@@ -723,10 +723,11 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
     public function testGetFieldTypeFromDbColumnType()
     {
         $this->crudPanel->setModel(ColumnType::class);
+        $this->crudPanel->setOperation('create');
         $this->crudPanel->setFromDb();
 
         $fieldTypesFromColumnType = [];
-        foreach ($this->crudPanel->create_fields as $field) {
+        foreach ($this->crudPanel->fields() as $field) {
             $fieldTypesFromColumnType[] = $this->crudPanel->getFieldTypeFromDbColumnType($field['name']);
         }
 
@@ -736,11 +737,10 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
     public function testSetFromDb()
     {
         $this->crudPanel->setModel(ColumnType::class);
-
+        $this->crudPanel->setOperation('create');
         $this->crudPanel->setFromDb();
 
-        $this->assertEquals($this->expectedFieldsFromDb, $this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedFieldsFromDb, $this->crudPanel->update_fields);
+        $this->assertEquals($this->expectedFieldsFromDb, $this->crudPanel->fields());
     }
 
     public function testGetDbColumnTypes()

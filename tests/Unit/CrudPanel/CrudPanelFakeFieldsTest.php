@@ -136,25 +136,23 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 
     public function testCompactFakeFieldsFromUpdateFormWithoutId()
     {
-        $this->expectException(ModelNotFoundException::class);
-
         $this->crudPanel->setModel(Article::class);
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update');
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData);
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }
 
     public function testCompactFakeFieldsFromUpdateFormWithUnknownId()
     {
-        $this->expectException(ModelNotFoundException::class);
-
         $unknownId = DB::getPdo()->lastInsertId() + 1;
         $this->crudPanel->setModel(Article::class);
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update', $unknownId);
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData);
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }

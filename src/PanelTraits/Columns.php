@@ -116,7 +116,7 @@ trait Columns
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
         if (isset($column_with_details['entity']) && ! isset($column_with_details['model'])) {
-            $columnsArray[$column_with_details[$key]]['model'] = $this->getRelationModel($column_with_details['entity']);
+            $columnsArray[$column_with_details['key']]['model'] = $this->getRelationModel($column_with_details['entity']);
         }
 
         $this->setOperationSetting('columns', $columnsArray);

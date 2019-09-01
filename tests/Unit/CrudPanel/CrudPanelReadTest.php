@@ -162,6 +162,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     public function testAutoEagerLoadRelationshipColumns()
     {
         $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->setOperation('list');
         $this->crudPanel->addColumn($this->relationshipColumn);
 
         $this->crudPanel->autoEagerLoadRelationshipColumns();
@@ -219,38 +220,13 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     {
         $this->crudPanel->setModel(Article::class);
 
+        $this->crudPanel->setOperation('update');
         $this->crudPanel->addFields($this->articleFieldsArray);
 
         // TODO: update method documentation. the $form parameter does not default to 'both'.
-        $fields = $this->crudPanel->getFields('update', 1);
+        $fields = $this->crudPanel->getUpdateFields(1);
 
         $this->assertEquals($this->expectedUpdateFormArticleFieldsArray, $fields);
-    }
-
-    public function testGetFieldsUpdateFormUnknownId()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $this->crudPanel->setModel(Article::class);
-
-        $this->crudPanel->addFields($this->articleFieldsArray);
-
-        // TODO: update method documentation. the $form parameter does not default to 'both'.
-        $unknownId = DB::getPdo()->lastInsertId() + 1;
-        $this->crudPanel->getFields('update', $unknownId);
-    }
-
-    public function testGetFieldsUnknownForm()
-    {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->crudPanel->addFields($this->articleFieldsArray);
-
-        // TODO: this should throw an invalid argument exception but doesn't because the getFields method returns the
-        //       create fields in case of an unknown form type.
-        $this->crudPanel->getFields('unknownForm');
     }
 
     public function testHasUploadFieldsCreateForm()
@@ -284,29 +260,20 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $this->assertTrue($hasUploadFields);
     }
 
-    public function testHasUploadFieldsUpdateFormUnknownId()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $this->crudPanel->setModel(Article::class);
-        $this->crudPanel->addField($this->uploadField, 'update');
-
-        $unknownId = DB::getPdo()->lastInsertId() + 1;
-        $this->crudPanel->hasUploadFields('update', $unknownId);
-    }
-
     public function testEnableDetailsRow()
     {
+        $this->crudPanel->setOperation('create');
         $this->crudPanel->enableDetailsRow();
 
-        $this->assertTrue($this->crudPanel->details_row);
+        $this->assertTrue($this->crudPanel->getOperationSetting('detailsRow'));
     }
 
     public function testDisableDetailsRow()
     {
+        $this->crudPanel->setOperation('list');
         $this->crudPanel->disableDetailsRow();
 
-        $this->assertFalse($this->crudPanel->details_row);
+        $this->assertFalse($this->crudPanel->get('list.detailsRow'));
     }
 
     public function testSetDefaultPageLength()
@@ -322,20 +289,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $defaultPageLength = $this->crudPanel->getDefaultPageLength();
 
         $this->assertEquals(25, $defaultPageLength);
-    }
-
-    public function testEnableAjaxTable()
-    {
-        $this->crudPanel->enableAjaxTable();
-
-        $this->assertTrue($this->crudPanel->ajaxTable());
-    }
-
-    public function testGetAjaxTable()
-    {
-        $ajaxTable = $this->crudPanel->ajaxTable();
-
-        $this->assertTrue($ajaxTable);
     }
 
     public function testEnableExportButtons()

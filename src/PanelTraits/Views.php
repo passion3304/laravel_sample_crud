@@ -99,7 +99,7 @@ trait Views
      */
     public function setDetailsRowView($view)
     {
-        return $this->get('list.detailsRow.view', $view);
+        return $this->set('list.detailsRow.view', $view);
     }
 
     /**
@@ -163,7 +163,7 @@ trait Views
      */
     public function setEditView($view)
     {
-        return $this->set('edit.view', $view);
+        return $this->set('update.view', $view);
     }
 
     /**
@@ -172,7 +172,7 @@ trait Views
      */
     public function getEditView()
     {
-        return $this->get('edit.view') ?? 'crud::edit';
+        return $this->get('update.view') ?? 'crud::edit';
     }
 
     /**
@@ -181,7 +181,7 @@ trait Views
      */
     public function setEditContentClass(string $class)
     {
-        return $this->set('edit.contentClass', $class);
+        return $this->set('update.contentClass', $class);
     }
 
     /**
@@ -190,7 +190,7 @@ trait Views
      */
     public function getEditContentClass()
     {
-        return $this->get('edit.contentClass') ?? config('backpack.crud.edit_content_class', 'col-md-8 bold-labels');
+        return $this->get('update.contentClass') ?? config('backpack.crud.edit_content_class', 'col-md-8 bold-labels');
     }
 
     /**

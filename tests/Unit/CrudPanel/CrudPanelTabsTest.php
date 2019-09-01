@@ -75,16 +75,17 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
 
     public function testEnableTabs()
     {
+        $this->crudPanel->setOperation('create');
         $this->crudPanel->enableTabs();
 
-        $this->assertTrue($this->crudPanel->tabsEnabled);
+        $this->assertTrue($this->crudPanel->getOperationSetting('tabsEnabled'));
     }
 
     public function testDisableTabs()
     {
         $this->crudPanel->disableTabs();
 
-        $this->assertFalse($this->crudPanel->tabsEnabled);
+        $this->assertFalse($this->crudPanel->getOperationSetting('tabsEnabled'));
     }
 
     public function testTabsEnabled()
@@ -105,11 +106,14 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
     {
         $this->crudPanel->setTabsType($this->verticalTabsType);
 
-        $this->assertEquals($this->verticalTabsType, $this->crudPanel->tabsType);
+        $this->assertEquals($this->verticalTabsType, $this->crudPanel->getOperationSetting('tabsType'));
     }
 
     public function testGetTabsType()
     {
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->enableTabs();
+
         $defaultTabsType = $this->crudPanel->getTabsType();
 
         $this->assertEquals($this->horizontalTabsType, $defaultTabsType);

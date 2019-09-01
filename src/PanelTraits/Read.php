@@ -269,6 +269,6 @@ trait Read
      */
     public function exportButtons()
     {
-        return $this->getOperationSetting('exportButtons');
+        return $this->getOperationSetting('exportButtons') ?? false;
     }
 }

@@ -30,7 +30,7 @@ trait AutoSet
             ];
 
             if (! isset($this->fields()[$field])) {
-                $this->addField($field);
+                $this->addField($new_field);
             }
 
             if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
@@ -53,13 +53,17 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
+        $dbColumnTypes = [];
+
         foreach ($this->getDbTableColumns() as $key => $column) {
             $column_type = $column->getType()->getName();
-            $this->autoset['db_column_types'][$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
-            $this->autoset['db_column_types'][$column->getName()]['default'] = $column->getDefault();
+            $dbColumnTypes[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
+            $dbColumnTypes[$column->getName()]['default'] = $column->getDefault();
         }
 
-        return $this->autoset['db_column_types'];
+        $this->autoset['db_column_types'] = $dbColumnTypes;
+
+        return $dbColumnTypes;
     }
 
     /**
@@ -91,9 +95,7 @@ trait AutoSet
      */
     public function getFieldTypeFromDbColumnType($field)
     {
-        if (! isset($this->autoset['db_column_types']) || ! array_key_exists($field, $this->autoset['db_column_types'])) {
-            return 'text';
-        }
+        $dbColumnTypes = $this->getDbColumnTypes();
 
         if ($field == 'password') {
             return 'password';
@@ -103,52 +105,56 @@ trait AutoSet
             return 'email';
         }
 
-        switch ($this->autoset['db_column_types'][$field]['type']) {
-            case 'int':
-            case 'integer':
-            case 'smallint':
-            case 'mediumint':
-            case 'longint':
-                return 'number';
-                break;
+        if (isset($dbColumnTypes[$field])) {
+            switch ($dbColumnTypes[$field]['type']) {
+                case 'int':
+                case 'integer':
+                case 'smallint':
+                case 'mediumint':
+                case 'longint':
+                    return 'number';
+                    break;
 
-            case 'string':
-            case 'varchar':
-            case 'set':
-                return 'text';
-                break;
+                case 'string':
+                case 'varchar':
+                case 'set':
+                    return 'text';
+                    break;
 
-            // case 'enum':
-            //     return 'enum';
-            // break;
+                // case 'enum':
+                //     return 'enum';
+                // break;
 
-            case 'tinyint':
-                return 'active';
-                break;
+                case 'tinyint':
+                    return 'active';
+                    break;
 
-            case 'text':
-            case 'mediumtext':
-            case 'longtext':
-                return 'textarea';
-                break;
+                case 'text':
+                case 'mediumtext':
+                case 'longtext':
+                    return 'textarea';
+                    break;
 
-            case 'date':
-                return 'date';
-                break;
+                case 'date':
+                    return 'date';
+                    break;
 
-            case 'datetime':
-            case 'timestamp':
-                return 'datetime';
-                break;
+                case 'datetime':
+                case 'timestamp':
+                    return 'datetime';
+                    break;
 
-            case 'time':
-                return 'time';
-                break;
+                case 'time':
+                    return 'time';
+                    break;
 
-            default:
-                return 'text';
-                break;
+                default:
+                    return 'text';
+                    break;
+            }
         }
+        
+        return 'text';
     }
 
     // Fix for DBAL not supporting enum

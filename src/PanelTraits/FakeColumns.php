@@ -5,20 +5,17 @@ namespace Backpack\CRUD\PanelTraits;
 trait FakeColumns
 {
     /**
-     * Returns an array of database columns names, that are used to store fake values or ['extras'] if no columns have
-     * been found.
-     *
-     * @param string   $form The CRUD form. Can be 'create', 'update' or 'both'. Default is 'create'.
-     * @param int|bool $id   Optional entity ID needed in the case of the update form.
+     * Returns an array of database columns names, that are used to store fake values or ['extras'] 
+     * if no columns have been found.
      *
      * @return array The fake columns array.
      */
-    public function getFakeColumnsAsArray($form = 'create', $id = false)
+    public function getFakeColumnsAsArray()
     {
         $fakeFieldsColumnsArray = [];
 
         // get the right fields according to the form type (create/update)
-        $fields = $this->getFields($form, $id);
+        $fields = $this->getFields();
 
         foreach ($fields as $field) {
             // if it's a fake field

@@ -43,10 +43,10 @@ trait Update
      *
      * @return array The fields with attributes, fake attributes and values.
      */
-    public function getUpdateFields()
+    public function getUpdateFields($id = false)
     {
         $fields = $this->fields();
-        $entry = $this->getCurrentEntry();
+        $entry = ($id != false) ? $this->getEntry($id) : $this->getCurrentEntry();
 
         foreach ($fields as &$field) {
             // set the value

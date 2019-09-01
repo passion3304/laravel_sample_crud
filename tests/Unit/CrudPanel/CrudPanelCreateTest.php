@@ -177,21 +177,23 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     public function testGetRelationFieldsCreateForm()
     {
         $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsManyToMany, 'create');
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->userInputFieldsManyToMany);
 
-        $relationFields = $this->crudPanel->getRelationFields('create');
+        $relationFields = $this->crudPanel->getRelationFields();
 
-        $this->assertEquals($this->crudPanel->create_fields['roles'], array_last($relationFields));
+        $this->assertEquals($this->crudPanel->get('create.fields')['roles'], array_last($relationFields));
     }
 
     public function testGetRelationFieldsUpdateForm()
     {
         $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsManyToMany, 'update');
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->addFields($this->userInputFieldsManyToMany);
 
-        $relationFields = $this->crudPanel->getRelationFields('update');
+        $relationFields = $this->crudPanel->getRelationFields();
 
-        $this->assertEquals($this->crudPanel->update_fields['roles'], array_last($relationFields));
+        $this->assertEquals($this->crudPanel->get('update.fields')['roles'], array_last($relationFields));
     }
 
     public function testGetRelationFieldsUnknownForm()
@@ -211,11 +213,12 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     public function testGetRelationFieldsDotNotation()
     {
         $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsDotNotation, 'create');
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->userInputFieldsDotNotation);
 
-        $relationFields = $this->crudPanel->getRelationFields('create');
+        $relationFields = $this->crudPanel->getRelationFields();
 
-        $this->assertEquals($this->crudPanel->create_fields['street'], array_last($relationFields));
+        $this->assertEquals($this->crudPanel->get('create.fields')['street'], array_last($relationFields));
     }
 
     public function testGetRelationFieldsNoRelations()
@@ -237,19 +240,21 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     public function testGetRelationFieldsWithPivot()
     {
         $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsDotNotation, 'create');
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->userInputFieldsDotNotation);
 
-        $relationFields = $this->crudPanel->getRelationFieldsWithPivot('create');
+        $relationFields = $this->crudPanel->getRelationFieldsWithPivot();
 
-        $this->assertEquals($this->crudPanel->create_fields['roles'], array_last($relationFields));
+        $this->assertEquals($this->crudPanel->get('create.fields')['roles'], array_last($relationFields));
     }
 
     public function testGetRelationFieldsWithPivotNoRelations()
     {
         $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->nonRelationshipField, 'create');
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->nonRelationshipField);
 
-        $relationFields = $this->crudPanel->getRelationFieldsWithPivot('create');
+        $relationFields = $this->crudPanel->getRelationFieldsWithPivot();
 
         $this->assertEmpty($relationFields);
     }

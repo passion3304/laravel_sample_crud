@@ -49,26 +49,22 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
     public function testGetFakeColumnsAsArrayFromCreateForm()
     {
         $this->crudPanel->setModel(Article::class);
-
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'create');
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
         $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
-        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update', 1);
 
         $this->assertEquals($this->expectedFakeFieldsColumnNames, $createFakeColumnsArray);
-        $this->assertEquals($this->emptyFakeColumnsArray, $updateFakeColumnsArray);
     }
 
     public function testGetFakeColumnsAsArrayFromUpdateForm()
     {
         $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
 
-        $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
-        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update', 1);
-
-        $this->assertEquals($this->emptyFakeColumnsArray, $createFakeColumnsArray);
         $this->assertEquals($this->expectedFakeFieldsColumnNames, $updateFakeColumnsArray);
     }
 
