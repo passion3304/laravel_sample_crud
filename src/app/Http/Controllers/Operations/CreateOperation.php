@@ -75,19 +75,15 @@ trait CreateOperation
     /**
      * Store a newly created resource in the database.
      *
-     * @param StoreRequest $request - type injection used for validation using Requests
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeEntry(StoreRequest $request = null)
+    public function store()
     {
         $this->crud->applyConfigurationFromSettings('create');
         $this->crud->hasAccessOrFail('create');
 
-        // fallback to global request instance
-        if (is_null($request)) {
-            $request = \Request::instance();
-        }
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
 
         // insert item in the db
         $item = $this->crud->create($request->except(['save_action', '_token', '_method', 'current_tab', 'http_referrer']));
