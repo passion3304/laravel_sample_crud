@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request as StoreRequest;
 
 trait CreateOperation
 {

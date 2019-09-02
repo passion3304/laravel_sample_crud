@@ -6,11 +6,11 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Foundation\Http\FormRequest;
 
 trait Validation
-{  
+{
     /**
      * Mark a FormRequest file as required for the current operation, in Settings.
      * Adds the required rules to an array for easy access.
-     * 
+     *
      * @param FormRequest $formRequest
      */
     public function setValidation($formRequest)
@@ -21,7 +21,7 @@ trait Validation
 
     /**
      * Mark a FormRequest file as required for the current operation, in Settings.
-     * 
+     *
      * @param FormRequest $formRequest
      */
     public function setFormRequest($formRequest)
@@ -31,8 +31,8 @@ trait Validation
 
     /**
      * Get the current form request file, in any.
-     * Returns null if no FormRequest is required for the current operation. 
-     * 
+     * Returns null if no FormRequest is required for the current operation.
+     *
      * @return FormRequest
      */
     public function getFormRequest()

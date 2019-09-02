@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request as UpdateRequest;
 
 trait UpdateOperation
 {
@@ -83,7 +82,7 @@ trait UpdateOperation
 
     /**
      * Update the specified resource in the database.
-     * 
+     *
      * @return Response
      */
     public function update()
