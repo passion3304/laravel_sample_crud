@@ -113,10 +113,11 @@ trait ListOperation
         collect($orderBy)->each(function ($item, $key) use ($hasOrderByPrimaryKey) {
             if ($item['column'] == $this->crud->model->getKeyName()) {
                 $hasOrderByPrimaryKey = true;
+
                 return false;
             }
         });
-        if (!$hasOrderByPrimaryKey) {
+        if (! $hasOrderByPrimaryKey) {
             $this->crud->query->orderByDesc($this->crud->model->getKeyName());
         }
 
