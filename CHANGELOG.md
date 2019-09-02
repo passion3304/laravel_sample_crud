@@ -30,6 +30,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - merged #1950 - reorder operation is now twice as fast;
 - merged #1994 - moved SaveActions to the CrudPanel object, since they're not an operation;
 - delete button now shows up (and works) in the Show operation view;
+- for the List operation, the default order is now by primary key DESC (instead of ASC); backwards-compatible, in that if a different order has been set for the primary key, that one will be used instead;
 
 
 ### Removed

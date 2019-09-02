@@ -104,6 +104,22 @@ trait ListOperation
                 $this->crud->customOrderBy($column, $column_direction);
             }
         }
+
+        // show newest items first, by default (if no order has been set for the primary column)
+        // if there was no order set, this will be the only one
+        // if there was an order set, this will be the last one (after all others were applied)
+        $orderBy = $this->crud->query->getQuery()->orders;
+        $hasOrderByPrimaryKey = false;
+        collect($orderBy)->each(function ($item, $key) use ($hasOrderByPrimaryKey) {
+            if ($item['column'] == $this->crud->model->getKeyName()) {
+                $hasOrderByPrimaryKey = true;
+                return false;
+            }
+        });
+        if (!$hasOrderByPrimaryKey) {
+            $this->crud->query->orderByDesc($this->crud->model->getKeyName());
+        }
+
         $entries = $this->crud->getEntries();
 
         return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
