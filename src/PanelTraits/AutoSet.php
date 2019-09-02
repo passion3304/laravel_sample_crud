@@ -148,6 +148,10 @@ trait AutoSet
                     return 'time';
                     break;
 
+                case 'json':
+                    return 'table';
+                    break;
+
                 default:
                     return 'text';
                     break;

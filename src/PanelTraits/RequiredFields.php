@@ -43,17 +43,19 @@ trait RequiredFields
      * Check the current object to see if an input is required
      * for the given operation.
      *
-     * @param string $inputName Field or input name.
+     * @param string $inputKey Field or input name.
      * @param string $operation create / update
      *
      * @return bool
      */
-    public function isRequired($inputName, $operation)
+    public function isRequired($inputKey, $operation = null)
     {
+        $operation = $operation ?? $this->getCurrentOperation();
+
         if (! $this->has($operation.'.requiredFields')) {
             return false;
         }
 
-        return in_array($inputName, $this->get($operation.'.requiredFields'));
+        return in_array($inputKey, $this->get($operation.'.requiredFields'));
     }
 }
