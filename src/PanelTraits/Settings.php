@@ -10,21 +10,6 @@ trait Settings
     protected $settings = [];
 
     /**
-     * Getter and setter for the settings key-value store.
-     * @param  string   $key   Usually operation.name (ex: list.exportButtons)
-     * @param  mixed    $value The value you want to store.
-     * @return mixed           Setting value for setter. True/false for getter.
-     */
-    public function setting(string $key, $value = null)
-    {
-        if ($value === null) {
-            return $this->get($key);
-        }
-
-        return $this->set($key);
-    }
-
-    /**
      * Getter for the settings key-value store.
      * @param  string   $key   Usually operation.name (ex: list.exportButtons)
      * @return mixed      [description]
@@ -56,6 +41,32 @@ trait Settings
         }
 
         return false;
+    }
+
+    /**
+     * Get all operation settings, ordered by key.
+     * @return array
+     */
+    public function settings()
+    {
+        return \Arr::sort($this->settings, function($value, $key) {
+            return $key;
+        });
+    }
+
+    /**
+     * Getter and setter for the settings key-value store.
+     * @param  string   $key   Usually operation.name (ex: list.exportButtons)
+     * @param  mixed    $value The value you want to store.
+     * @return mixed           Setting value for setter. True/false for getter.
+     */
+    public function setting(string $key, $value = null)
+    {
+        if ($value === null) {
+            return $this->get($key);
+        }
+
+        return $this->set($key);
     }
 
     /**
