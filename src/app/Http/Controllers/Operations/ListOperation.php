@@ -130,17 +130,12 @@ trait ListOperation
      * Used with AJAX in the list view (datatables) to show extra information about that row that didn't fit in the table.
      * It defaults to showing some dummy text.
      *
-     * It's enabled by:
-     * - setting: $crud->details_row = true;
-     * - adding the details route for the entity; ex: Route::get('page/{id}/details', 'PageCrudController@showDetailsRow');
-     * - adding a view with the following name to change what the row actually contains: app/resources/views/vendor/backpack/crud/details_row.blade.php
-     *
      * @return \Illuminate\View\View
      */
     public function showDetailsRow($id)
     {
         $this->crud->applyConfigurationFromSettings('list');
-        $this->crud->hasAccessOrFail('details_row');
+        $this->crud->hasAccessOrFail('list');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

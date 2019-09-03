@@ -53,4 +53,4 @@
     // otherwise details_row buttons wouldn't work on subsequent pages (page 2, page 17, etc)
     crud.addFunctionToDataTablesDrawEventQueue('registerDetailsRowButtonAction');
   </script>
-  @endif
+@endif
