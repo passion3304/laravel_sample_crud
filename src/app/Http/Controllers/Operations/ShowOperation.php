@@ -68,6 +68,11 @@ trait ShowOperation
             if (isset($column['visibleInShow']) && $column['visibleInShow'] == false) {
                 $this->crud->removeColumn($column['name']);
             }
+
+            // remove the character limit on columns that take it into account
+            if (in_array($column['type'], ['text', 'email', 'model_function', 'model_function_attribute', 'phone', 'row_number', 'select'])) {
+                $this->crud->modifyColumn($column['name'], ['limit' => 999]);
+            }
         }
 
         // get the info for that entry
