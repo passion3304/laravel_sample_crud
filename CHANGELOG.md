@@ -48,6 +48,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## [3.6.31] - 2019-09-01
+
+### Fixed
+- fixes #2010 - number column should show null when null, not zero;
+
+
 ## [3.6.30] - 2019-09-01
 
 ### Fixed
