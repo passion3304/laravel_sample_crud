@@ -136,7 +136,7 @@ class CrudServiceProvider extends ServiceProvider
             $routeName .= $name;
 
             // get an instance of the controller
-            $groupStack = $this->hasGroupStack() ? $this->getGroupStack()[0]['namespace'].'\\' : 'App\\';
+            $groupStack = $this->hasGroupStack() && isset($this->getGroupStack()[0]['namespace']) ? $this->getGroupStack()[0]['namespace'].'\\' : 'App\\';
             $namespacedController = $groupStack.$controller;
             $controllerInstance = new $namespacedController;
 

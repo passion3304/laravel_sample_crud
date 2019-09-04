@@ -20,6 +20,22 @@ trait Validation
     }
 
     /**
+     * Remove the current FormRequest from configuration, so it will no longer be validated.
+     */
+    public function unsetValidation()
+    {
+        $this->setOperationSetting('formRequest', false);
+    }
+
+    /**
+     * Remove the current FormRequest from configuration, so it will no longer be validated.
+     */
+    public function disableValidation()
+    {
+        $this->unsetValidation();
+    }
+
+    /**
      * Mark a FormRequest file as required for the current operation, in Settings.
      *
      * @param FormRequest $formRequest
@@ -40,16 +56,19 @@ trait Validation
         return $this->getOperationSetting('formRequest');
     }
 
+    /**
+     * Run the authorization and validation the currently set FormRequest.
+     * @return Request
+     */
     public function validateRequest()
     {
         $formRequest = $this->getFormRequest();
 
         if ($formRequest) {
             // authorize and validate the formRequest
-            $request = FormRequest::createFrom($this->request, new $formRequest)
-                        ->setContainer(app())
-                        ->setRedirector(app()->make(Redirector::class));
-            $request->validateResolved();
+            // this is done automatically by Laravel's FormRequestServiceProvider
+            // because form requests implement ValidatesWhenResolved
+            $request = app($formRequest);
         } else {
             $request = $this->request;
         }
