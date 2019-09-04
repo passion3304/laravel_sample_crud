@@ -9,7 +9,7 @@
 [![Style CI](https://styleci.io/repos/53581270/shield)](https://styleci.io/repos/53581270)
 [![Total Downloads](https://img.shields.io/packagist/dt/backpack/crud.svg?style=flat-square)](https://packagist.org/packages/backpack/crud)
 
-Quickly build an admin interface for your Eloquent models, using Laravel 5. Erect a complete CMS at 10 minutes/model, max.
+Quickly build an admin interface for your Eloquent models, using Laravel 6 or 5.8. Erect a complete CMS at 10 minutes/model, max.
 
 Features:
 - 49+ field types
@@ -40,8 +40,8 @@ Installation guides:
 - [Install Backpack on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
 - [Install Backpack on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
 - [Install Backpack on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - last feature update was 27 Sep 2017;
-- [Install Backpack on Laravel 5.5, 5.6, 5.7 or 5.8](https://backpackforlaravel.com/docs/3.5/installation) - recommended;
-
+- [Install Backpack on Laravel 5.5, 5.6, 5.7](https://backpackforlaravel.com/docs/3.5/installation) - last feature update was 27th Feb 2019;
+- [Install Backpack on Laravel 5.8 or 6.x](https://backpackforlaravel.com/docs/3.6/installation) - recommended;
 
 ## Features
 
