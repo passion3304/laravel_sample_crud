@@ -83,20 +83,16 @@ trait UpdateOperation
 
     /**
      * Update the specified resource in the database.
-     *
-     * @param UpdateRequest $request - type injection used for validation using Requests
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * 
+     * @return Response
      */
-    public function updateEntry(UpdateRequest $request = null)
+    public function update()
     {
         $this->crud->applyConfigurationFromSettings('update');
         $this->crud->hasAccessOrFail('update');
 
-        // fallback to global request instance
-        if (is_null($request)) {
-            $request = \Request::instance();
-        }
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
 
         // update the row in the db
         $item = $this->crud->update($request->get($this->crud->model->getKeyName()),

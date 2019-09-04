@@ -98,6 +98,20 @@ trait Settings
     }
 
     /**
+     * Check if the settings key is used (has a value).
+     * Defaults to the current operation.
+     *
+     * @param  string   $key   Has no operation prepended. (ex: exportButtons)
+     * @return mixed      [description]
+     */
+    public function hasOperationSetting(string $key, $operation = null)
+    {
+        $operation = $operation ?? $this->getCurrentOperation();
+
+        return $this->has($operation.'.'.$key);
+    }
+
+    /**
      * Setter for the settings key-value store for a certain operation.
      * Defaults to the current operation.
      *
