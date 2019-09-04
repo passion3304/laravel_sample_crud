@@ -23,10 +23,10 @@ use Backpack\CRUD\PanelTraits\AutoFocus;
 use Backpack\CRUD\PanelTraits\Macroable;
 use Backpack\CRUD\PanelTraits\FakeFields;
 use Backpack\CRUD\PanelTraits\Operations;
+use Backpack\CRUD\PanelTraits\Validation;
 use Backpack\CRUD\PanelTraits\FakeColumns;
 use Backpack\CRUD\PanelTraits\SaveActions;
 use Illuminate\Database\Eloquent\Collection;
-use Backpack\CRUD\PanelTraits\Validation;
 use Backpack\CRUD\PanelTraits\HeadingsAndTitles;
 use Backpack\CRUD\PanelTraits\ViewsAndRestoresRevisions;
 
