@@ -113,7 +113,7 @@ class Install extends Command
         // end of elFinder steps
 
         $this->progressBar->finish();
-        $this->info(" Backpack installation finished.");
+        $this->info(' Backpack installation finished.');
     }
 
     /**

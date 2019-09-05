@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
 {

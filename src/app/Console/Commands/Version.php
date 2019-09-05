@@ -37,7 +37,6 @@ class Version extends Command
 
         $this->comment('### BACKPACK VERSION:');
         $this->runConsoleCommand('composer show | grep "backpack"');
-
     }
 
     /**

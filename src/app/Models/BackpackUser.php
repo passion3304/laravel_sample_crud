@@ -3,9 +3,9 @@
 namespace Backpack\Crud\app\Models;
 
 use App\User;
+use Illuminate\Notifications\Notifiable;
 use Backpack\Crud\app\Models\Traits\InheritsRelationsFromParentModel;
 use Backpack\Crud\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
-use Illuminate\Notifications\Notifiable;
 
 class BackpackUser extends User
 {

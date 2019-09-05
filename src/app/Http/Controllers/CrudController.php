@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\app\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class CrudController extends Controller
