@@ -1,7 +1,6 @@
 .idea/
 vendor/
 node_modules/
-fonts/
 .DS_Store
 .composer.lock
 composer.lock
