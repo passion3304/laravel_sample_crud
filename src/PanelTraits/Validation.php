@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
-use Illuminate\Routing\Redirector;
 use Illuminate\Foundation\Http\FormRequest;
 
 trait Validation

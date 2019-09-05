@@ -2,9 +2,9 @@
 
 namespace Backpack\Crud\app\Notifications;
 
-use Illuminate\Auth\Notifications\ResetPassword as ResetPassword;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPassword;
 
 class ResetPasswordNotification extends ResetPassword
 {

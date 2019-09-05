@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
@@ -35,7 +35,7 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function boot(\Illuminate\Routing\Router $router)
     {
-        $this->loadViewsWithFallbacks();   
+        $this->loadViewsWithFallbacks();
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -45,7 +45,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->checkLicenseCodeExists();
         $this->sendUsageStats();
     }
-
 
     /**
      * Register any package services.
@@ -80,7 +79,7 @@ class BackpackServiceProvider extends ServiceProvider
         //         $this->app->register('Backpack\Generators\GeneratorsServiceProvider');
         //     }
         // }
-        
+
         // map the elfinder prefix
         if (! \Config::get('elfinder.route.prefix')) {
             \Config::set('elfinder.route.prefix', \Config::get('backpack.base.route_prefix').'/elfinder');
@@ -92,7 +91,7 @@ class BackpackServiceProvider extends ServiceProvider
         $middleware_key = config('backpack.base.middleware_key');
         $middleware_class = config('backpack.base.middleware_class');
 
-        if (!is_array($middleware_class)) {
+        if (! is_array($middleware_class)) {
             $router->pushMiddlewareToGroup($middleware_key, $middleware_class);
 
             return;
@@ -112,7 +111,7 @@ class BackpackServiceProvider extends ServiceProvider
         $backpack_config_files = [__DIR__.'/config' => config_path()];
         $elfinder_files = [
             __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
-            __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder')
+            __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
         ];
 
         // sidebar_content view, which is the only view most people need to overwrite
@@ -228,7 +227,7 @@ class BackpackServiceProvider extends ServiceProvider
     {
         $customBaseFolder = resource_path('views/vendor/backpack/base');
         $customCrudFolder = resource_path('views/vendor/backpack/crud');
-        
+
         // - first the published/overwritten views (in case they have any changes)
         if (file_exists($customBaseFolder)) {
             $this->loadViewsFrom($customBaseFolder, 'backpack');
@@ -253,14 +252,14 @@ class BackpackServiceProvider extends ServiceProvider
             'root'   => base_path(),
         ];
 
-        /**
+        /*
          * Backpack login differs from the standard Laravel login.
          * As such, Backpack uses its own authentication provider, password broker and guard.
          *
          * THe process below adds those configuration values on top of whatever is in config/auth.php.
-         * Developers can overwrite the backpack provider, password broker or guard by adding a 
-         * provider/broker/guard with the "backpack" name inside their config/auth.php file. 
-         * Or they can use another provider/broker/guard entirely, by changing the corresponding 
+         * Developers can overwrite the backpack provider, password broker or guard by adding a
+         * provider/broker/guard with the "backpack" name inside their config/auth.php file.
+         * Or they can use another provider/broker/guard entirely, by changing the corresponding
          * value inside config/backpack/base.php
          */
 
@@ -309,7 +308,7 @@ class BackpackServiceProvider extends ServiceProvider
      */
     private function checkLicenseCodeExists()
     {
-        if ($this->app->environment() != 'local' && !config('backpack.base.license_code')) {
+        if ($this->app->environment() != 'local' && ! config('backpack.base.license_code')) {
             \Alert::add('warning', "<strong>You're using unlicensed software.</strong> Please ask your web developer to <a target='_blank' class='alert-link' href='http://backpackforlaravel.com'>purchase a license code</a> to hide this message.");
         }
     }
