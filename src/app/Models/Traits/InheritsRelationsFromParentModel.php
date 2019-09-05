@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Models\Traits;
+namespace Backpack\CRUD\app\Models\Traits;
 
 use Illuminate\Support\Str;
 use ReflectionClass;

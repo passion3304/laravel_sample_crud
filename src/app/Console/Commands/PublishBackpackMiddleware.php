@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Console\Commands;
+namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
@@ -11,7 +11,7 @@ class PublishBackpackMiddleware extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'backpack:base:publish-middleware';
+    protected $signature = 'backpack:publish-middleware';
 
     /**
      * The console command description.
@@ -77,7 +77,7 @@ class PublishBackpackMiddleware extends GeneratorCommand
      */
     protected function makeReplacements(&$stub)
     {
-        $stub = str_replace('Backpack\Base\app\\', $this->laravel->getNamespace(), $stub);
+        $stub = str_replace('Backpack\CRUD\app\\', $this->laravel->getNamespace(), $stub);
 
         return $stub;
     }

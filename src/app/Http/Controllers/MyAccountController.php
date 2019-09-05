@@ -1,13 +1,14 @@
 <?php
 
-namespace Backpack\Base\app\Http\Controllers;
+namespace Backpack\CRUD\app\Http\Controllers;
 
 use Alert;
-use Backpack\Base\app\Http\Requests\AccountInfoRequest;
-use Backpack\Base\app\Http\Requests\ChangePasswordRequest;
+use Backpack\CRUD\app\Http\Requests\AccountInfoRequest;
+use Backpack\CRUD\app\Http\Requests\ChangePasswordRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Routing\Controller;
 
-class MyAccountController extends BaseController
+class MyAccountController extends Controller
 {
     protected $data = [];
 

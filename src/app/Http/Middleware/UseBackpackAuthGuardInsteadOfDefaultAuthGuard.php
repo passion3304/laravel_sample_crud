@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Http\Middleware;
+namespace Backpack\CRUD\app\Http\Middleware;
 
 use Closure;
 

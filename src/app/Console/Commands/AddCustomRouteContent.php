@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Console\Commands;
+namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +14,7 @@ class AddCustomRouteContent extends Command
      *
      * @var string
      */
-    protected $signature = 'backpack:base:add-custom-route
+    protected $signature = 'backpack:add-custom-route
                                 {code : HTML/PHP code that registers a route. Use either single quotes or double quotes. Never both. }';
 
     /**

@@ -4,21 +4,21 @@ namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class PublishCrud extends Command
+class PublishView extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'backpack:crud:publish';
+    protected $name = 'backpack:publish';
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'backpack:crud:publish
+    protected $signature = 'backpack:publish
                             {subpath : short path to the view file (ex: fields/text)}';
 
     /**
@@ -38,7 +38,7 @@ class PublishCrud extends Command
      * The directory where the views will pe published TO.
      * @var string
      */
-    public $destinationPath = 'resources/views/vendor/backpack/crud/';
+    public $destinationPath = 'resources/views/vendor/backpack/';
 
     /**
      * Create a new command instance.

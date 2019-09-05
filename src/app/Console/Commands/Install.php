@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Console\Commands;
+namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -15,7 +15,8 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'backpack:base:install
+    protected $signature = 'backpack:install
+                                {--elfinder=ask : Should it install the File Manager. }
                                 {--timeout=300} : How many seconds to allow each process to run.
                                 {--debug} : Show process output or not. Useful for debugging.';
 
@@ -24,17 +25,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $description = 'Require dev packages and publish files for Backpack\Base to work';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Install Backpack requirements on dev, publish files and create uploads directory.';
 
     /**
      * Execute the console command.
@@ -43,7 +34,27 @@ class Install extends Command
      */
     public function handle()
     {
-        $this->progressBar = $this->output->createProgressBar(8);
+        /*
+        * "ask" comes by default, when no option is provided, like: "backpack:crud:install"
+        * https://laravel.com/docs/6.0/artisan#options
+        */
+        $install_elfinder = null;
+
+        if ($this->option('elfinder') == 'ask') {
+            $install_elfinder = $this->confirm("Install & set up the File Manager (elFinder)? The admin will be able to browse the 'uploads' folder and create/read/modify files and folders there.", 'yes');
+        } elseif ($this->option('elfinder') == 'no') {
+            $install_elfinder = false;
+        } elseif ($this->option('elfinder') == 'yes') {
+            $install_elfinder = true;
+        } else {
+            $this->error('Option not recognized: '.$elfinderOption);
+
+            return false;
+        }
+
+        $steps = $install_elfinder ? 12 : 7;
+
+        $this->progressBar = $this->output->createProgressBar($steps);
         $this->progressBar->start();
         $this->info(" Backpack\Base installation started. Please wait...");
         $this->progressBar->advance();
@@ -52,7 +63,7 @@ class Install extends Command
         $this->executeProcess('composer require --dev webfactor/laravel-generators');
 
         $this->line(' Publishing configs, langs, views and AdminLTE files');
-        $this->executeProcess('php artisan vendor:publish --provider="Backpack\Base\BaseServiceProvider" --tag=minimum');
+        $this->executeProcess('php artisan vendor:publish --provider="Backpack\Crud\BackpackServiceProvider" --tag=minimum');
 
         $this->line(' Publishing config for notifications - prologue/alerts');
         $this->executeProcess('php artisan vendor:publish --provider="Prologue\Alerts\AlertsServiceProvider"');
@@ -61,13 +72,48 @@ class Install extends Command
         $this->executeProcess('php artisan migrate');
 
         $this->line(" Creating App\Models\BackpackUser.php");
-        $this->executeProcess('php artisan backpack:base:publish-user-model');
+        $this->executeProcess('php artisan backpack:publish-user-model');
 
         $this->line(" Creating App\Http\Middleware\CheckIfAdmin.php");
-        $this->executeProcess('php artisan backpack:base:publish-middleware');
+        $this->executeProcess('php artisan backpack:publish-middleware');
+
+        // elFinder steps
+        if ($install_elfinder) {
+            $this->line(' Installing barryvdh/laravel-elfinder');
+            $this->executeProcess('composer require barryvdh/laravel-elfinder');
+
+            $this->line(' Creating uploads directory');
+            switch (DIRECTORY_SEPARATOR) {
+                case '/': // unix
+                    $this->executeProcess('mkdir -p public/uploads');
+                    break;
+                case '\\': // windows
+                    if (! file_exists('public\uploads')) {
+                        $this->executeProcess('mkdir public\uploads');
+                    }
+                    break;
+            }
+
+            $this->line(' Publishing elFinder assets');
+            $this->executeProcess('php artisan elfinder:publish');
+
+            $this->line(' Publishing custom elfinder views');
+            $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder"');
+
+            $this->line(' Adding sidebar menu item for File Manager');
+            switch (DIRECTORY_SEPARATOR) {
+                case '/': // unix
+                    $this->executeProcess('php artisan backpack:add-sidebar-content "<li class="nav-item"><a class="nav-link" href=\"{{ backpack_url(\'elfinder\') }}\"><i class=\"nav-icon fa fa-files-o\"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
+                    break;
+                case '\\': // windows
+                    $this->executeProcess('php artisan backpack:add-sidebar-content "<li class="nav-item"><a class="nav-link" href=""{{ backpack_url(\'elfinder\') }}""><i class=""nav-icon fa fa-files-o""></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>"');
+                    break;
+            }
+        }
+        // end of elFinder steps
 
         $this->progressBar->finish();
-        $this->info(" Backpack\Base installation finished.");
+        $this->info(" Backpack installation finished.");
     }
 
     /**

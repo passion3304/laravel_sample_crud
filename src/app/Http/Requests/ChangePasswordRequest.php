@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Http\Requests;
+namespace Backpack\CRUD\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;

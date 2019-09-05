@@ -4,10 +4,10 @@ namespace Backpack\CRUD\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
-class CrudController extends BaseController
+class CrudController extends Controller
 {
     use DispatchesJobs, ValidatesRequests;
 

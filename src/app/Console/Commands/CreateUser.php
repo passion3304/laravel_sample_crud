@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Console\Commands;
+namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 
@@ -11,7 +11,7 @@ class CreateUser extends Command
      *
      * @var string
      */
-    protected $signature = 'backpack:base:user
+    protected $signature = 'backpack:user
                             {--N|name= : The name of the new user}
                             {--E|email= : The user\'s email address}
                             {--P|password= : User\'s password}

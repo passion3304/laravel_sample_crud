@@ -1,14 +1,14 @@
 <?php
 
-namespace Backpack\Base\app\Http\Controllers\Auth;
+namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
-use Backpack\Base\app\Http\Controllers\BaseController;
+use Illuminate\Routing\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Validator;
 
-class RegisterController extends BaseController
+class RegisterController extends Controller
 {
     protected $data = []; // the information we send to the view
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Console\Commands;
+namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +12,7 @@ class AddSidebarContent extends Command
      *
      * @var string
      */
-    protected $signature = 'backpack:base:add-sidebar-content
+    protected $signature = 'backpack:add-sidebar-content
                                 {code : HTML/PHP code that shows the sidebar item. Use either single quotes or double quotes. Never both. }';
 
     /**

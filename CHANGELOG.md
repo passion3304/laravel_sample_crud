@@ -51,6 +51,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - AdminLTE dependency;
 - Backpack/Generators from the installation command;
 - Laracasts/Laravel-Generators from the installation command;
+- Since all Backpack/Base/app classes have been moved to Backpack/CRUD/app, when upgrading to 4.0 you need to do a search-and-replace in all your application files; search for "Backpack/Base/app" and replace with "Backpack/CRUD/app"; make sure you include the following folders: app, config, resources/views, routes;
+- If you're importing or extending our BaseController (```Backpack/Base/app/Http/Controllers/BaseController``` or ```Backpack/CRUD/app/Http/Controllers/BaseController```) anywhere inside your app, know that that controller is no longer needed. It's identical to ```Illuminate\Routing\Controller```, so you can use that instead. We haven't removed the file in this version yet, but it's considered deprecated and will be removed in the next version; 
 
 
 -----------

@@ -1,12 +1,12 @@
 <?php
 
-namespace Backpack\Base\app\Http\Controllers\Auth;
+namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
-use Backpack\Base\app\Http\Controllers\BaseController;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Routing\Controller;
 
-class ForgotPasswordController extends BaseController
+class ForgotPasswordController extends Controller
 {
     protected $data = []; // the information we send to the view
 

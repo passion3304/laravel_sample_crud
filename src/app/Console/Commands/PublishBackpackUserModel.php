@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Base\app\Console\Commands;
+namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
@@ -11,7 +11,7 @@ class PublishBackpackUserModel extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'backpack:base:publish-user-model';
+    protected $signature = 'backpack:publish-user-model';
 
     /**
      * The console command description.
@@ -77,7 +77,7 @@ class PublishBackpackUserModel extends GeneratorCommand
      */
     protected function makeReplacements(&$stub)
     {
-        $stub = str_replace('Backpack\Base\app\Models;', $this->laravel->getNamespace().'Models;', $stub);
+        $stub = str_replace('Backpack\CRUD\app\Models;', $this->laravel->getNamespace().'Models;', $stub);
 
         if (!$this->files->exists($this->laravel['path'].'/User.php') && $this->files->exists($this->laravel['path'].'/Models/User.php')) {
             $stub = str_replace($this->laravel->getNamespace().'User', $this->laravel->getNamespace().'Models\User', $stub);

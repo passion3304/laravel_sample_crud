@@ -1,8 +1,10 @@
 <?php
 
-namespace Backpack\Base\app\Http\Controllers;
+namespace Backpack\CRUD\app\Http\Controllers;
 
-class AdminController extends BaseController
+use Illuminate\Routing\Controller;
+
+class AdminController extends Controller
 {
     protected $data = []; // the information we send to the view
 

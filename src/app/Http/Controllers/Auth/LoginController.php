@@ -1,12 +1,12 @@
 <?php
 
-namespace Backpack\Base\app\Http\Controllers\Auth;
+namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
-use Backpack\Base\app\Http\Controllers\BaseController;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class LoginController extends BaseController
+class LoginController extends Controller
 {
     protected $data = []; // the information we send to the view
 
