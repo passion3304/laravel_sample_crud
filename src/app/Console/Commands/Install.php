@@ -59,7 +59,7 @@ class Install extends Command
         $this->info(" Backpack\Base installation started. Please wait...");
         $this->progressBar->advance();
 
-        $this->line(' Publishing configs, langs, views and AdminLTE files');
+        $this->line(' Publishing configs, langs, views, js and css files');
         $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\BackpackServiceProvider" --tag=minimum');
 
         $this->line(' Publishing config for notifications - prologue/alerts');
