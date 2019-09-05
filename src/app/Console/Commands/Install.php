@@ -60,7 +60,7 @@ class Install extends Command
         $this->progressBar->advance();
 
         $this->line(' Publishing configs, langs, views and AdminLTE files');
-        $this->executeProcess('php artisan vendor:publish --provider="Backpack\Crud\BackpackServiceProvider" --tag=minimum');
+        $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\BackpackServiceProvider" --tag=minimum');
 
         $this->line(' Publishing config for notifications - prologue/alerts');
         $this->executeProcess('php artisan vendor:publish --provider="Prologue\Alerts\AlertsServiceProvider"');
