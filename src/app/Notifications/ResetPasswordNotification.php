@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\Crud\app\Notifications;
+namespace Backpack\CRUD\app\Notifications;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;

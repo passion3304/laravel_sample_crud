@@ -1,11 +1,11 @@
 <?php
 
-namespace Backpack\Crud\app\Models;
+namespace Backpack\CRUD\app\Models;
 
 use App\User;
 use Illuminate\Notifications\Notifiable;
-use Backpack\Crud\app\Models\Traits\InheritsRelationsFromParentModel;
-use Backpack\Crud\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
+use Backpack\CRUD\app\Models\Traits\InheritsRelationsFromParentModel;
+use Backpack\CRUD\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
 
 class BackpackUser extends User
 {
