@@ -4,7 +4,7 @@
   <section class="content-header">
     <h1>
         <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-        <small>{!! $crud->getSubheading() ?? trans('backpack::crud.revisions_for').' '.$entry->identifiableName() !!}.</small>
+        <small>{!! $crud->getSubheading() ?? isset($entry->identifiableName()) ? trans('backpack::crud.revisions_for').' '.$entry->identifiableName() : trans('backpack::crud.revisions') !!}.</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{ url(config('backpack.base.route_prefix'),'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
