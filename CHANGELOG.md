@@ -22,7 +22,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - merged #1997 - settings API;
 - when specifying a route to an EntityCrudController, an "operation" is specified for each action; that "operation" is used as the string name of the operation (basically doing setOperation() automatically); there are currently two ways to set the current operation: (1) by defining the operation when defining the route, and (2) by doing setOperation()
 - inside each operation action, it's no longer required to run ```setOperation()```; but IT IS required to run ```setConfigurationFromSettings()``` so that anything that was inside operation closures gets run;
-
+- All Backpack/Base functionality inside Backpack\CRUD;
+- Laravel-Backpack/Base#384 - Ability to toggle breadcrumbs on/off;
+- Laravel-Backpack/Base#385 - NPM and Laravel Mix for CSS & JS dependencies;
+- Laravel-Backpack/Base#385 - By default Backpack\Base no longer loads anything from CDNs;
+- Laravel-Backpack/Base#387 - Easily add scripts/style to all admin panes, using asset() or mix();
+- Laravel-Backpack/Base#387 - Easily remove the bundled js and css and use CDNs if you want to;
+- Laravel-Backpack/Base#380 - New design - Backstrap, based on CoreUI;
+- [Webfactor/Laravel-Generators](https://github.com/webfactor/laravel-generatorssu) to the installation command;
 
 ### Fixed
 - merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
@@ -40,6 +47,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - ```CRUD::route()``` is no longer the way to load routes for a CrudController, but ```Route::crud()```;
 - merged #1994 - moved SaveActions methods to the CrudPanel object;
 - no CRUD access is provided by defaul; access is automatically given when using an operation trait on an EntityCrudController;
+- Backpack/Base as a separate package; It's now included in Backpack/CRUD;
+- AdminLTE dependency;
+- Backpack/Generators from the installation command;
+- Laracasts/Laravel-Generators from the installation command;
 
 
 -----------
