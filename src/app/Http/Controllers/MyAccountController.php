@@ -3,9 +3,9 @@
 namespace Backpack\Base\app\Http\Controllers;
 
 use Alert;
+use Illuminate\Support\Facades\Hash;
 use Backpack\Base\app\Http\Requests\AccountInfoRequest;
 use Backpack\Base\app\Http\Requests\ChangePasswordRequest;
-use Illuminate\Support\Facades\Hash;
 
 class MyAccountController extends BaseController
 {

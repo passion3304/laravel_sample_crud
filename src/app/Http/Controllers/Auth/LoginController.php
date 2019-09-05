@@ -2,9 +2,9 @@
 
 namespace Backpack\Base\app\Http\Controllers\Auth;
 
-use Backpack\Base\app\Http\Controllers\BaseController;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Backpack\Base\app\Http\Controllers\BaseController;
 
 class LoginController extends BaseController
 {

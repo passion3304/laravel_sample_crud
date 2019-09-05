@@ -2,8 +2,8 @@
 
 namespace Backpack\Base\app\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AccountInfoRequest extends FormRequest
 {
