@@ -52,15 +52,12 @@ class Install extends Command
             return false;
         }
 
-        $steps = $install_elfinder ? 12 : 7;
+        $steps = $install_elfinder ? 11 : 6;
 
         $this->progressBar = $this->output->createProgressBar($steps);
         $this->progressBar->start();
         $this->info(" Backpack\Base installation started. Please wait...");
         $this->progressBar->advance();
-
-        $this->line(' Installing webfactor/laravel-generators');
-        $this->executeProcess('composer require --dev webfactor/laravel-generators');
 
         $this->line(' Publishing configs, langs, views and AdminLTE files');
         $this->executeProcess('php artisan vendor:publish --provider="Backpack\Crud\BackpackServiceProvider" --tag=minimum');
