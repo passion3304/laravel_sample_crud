@@ -110,9 +110,9 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
 
-  <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/crud.css') }}">
-  <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/form.css') }}">
-  <link rel="stylesheet" href="{{ asset('vendor/backpack/crud/css/list.css') }}">
+  <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css') }}">
+  <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/form.css') }}">
+  <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/list.css') }}">
 
   <!-- CRUD LIST CONTENT - crud_list_styles stack -->
   @stack('crud_list_styles')
@@ -121,9 +121,9 @@
 @section('after_scripts')
 	@include('crud::inc.datatables_logic')
 
-  <script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
-  <script src="{{ asset('vendor/backpack/crud/js/form.js') }}"></script>
-  <script src="{{ asset('vendor/backpack/crud/js/list.js') }}"></script>
+  <script src="{{ asset('packages/backpack/crud/js/crud.js') }}"></script>
+  <script src="{{ asset('packages/backpack/crud/js/form.js') }}"></script>
+  <script src="{{ asset('packages/backpack/crud/js/list.js') }}"></script>
 
   <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
   @stack('crud_list_scripts')
