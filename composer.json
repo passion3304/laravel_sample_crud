@@ -59,7 +59,6 @@
         "psr-4": {
             "Backpack\\CRUD\\Tests\\": "tests"
         },
-        "files": ["vendor/backpack/crud/src/helpers.php"],
         "exclude-from-classmap": [
             "**/config"
         ]
