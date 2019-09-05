@@ -136,7 +136,7 @@ class BackpackServiceProvider extends ServiceProvider
             $backpack_menu_contents_view,
             $backpack_custom_routes_file,
             $gravatar_assets,
-            $elfinder_files,
+            $elfinder_files
         );
 
         // register all possible publish commands and assign tags to each
