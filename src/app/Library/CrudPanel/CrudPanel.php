@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
@@ -26,7 +27,6 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
-use Illuminate\Database\Eloquent\Collection;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
 
