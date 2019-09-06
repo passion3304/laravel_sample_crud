@@ -2,8 +2,8 @@
 
 namespace Unit\CrudPanel\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\Sluggable;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\SluggableScopeHelpers;
