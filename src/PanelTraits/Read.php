@@ -2,14 +2,11 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+/**
+ * Properties and methods used by the List operation.
+ */
 trait Read
 {
-    /*
-    |--------------------------------------------------------------------------
-    |                                   READ
-    |--------------------------------------------------------------------------
-    */
-
     /**
      * Find and retrieve the id of the current entry.
      *
@@ -110,50 +107,6 @@ trait Read
     }
 
     /**
-     * Get the fields for the create or update forms.
-     *
-     * @param  string   $form create/update/both - defaults to 'both'
-     * @param  bool|int $id   the ID of the entity to be edited in the Update form
-     *
-     * @return array all the fields that need to be shown and their information
-     */
-    public function getFields($form, $id = false)
-    {
-        switch (strtolower($form)) {
-            case 'create':
-                return $this->getCreateFields();
-                break;
-
-            case 'update':
-                return $this->getUpdateFields($id);
-                break;
-
-            default:
-                return $this->getCreateFields();
-                break;
-        }
-    }
-
-    /**
-     * Check if the create/update form has upload fields.
-     * Upload fields are the ones that have "upload" => true defined on them.
-     *
-     * @param  string   $form create/update/both - defaults to 'both'
-     * @param  bool|int $id   id of the entity - defaults to false
-     *
-     * @return bool
-     */
-    public function hasUploadFields($form, $id = false)
-    {
-        $fields = $this->getFields($form, $id);
-        $upload_fields = array_where($fields, function ($value, $key) {
-            return isset($value['upload']) && $value['upload'] == true;
-        });
-
-        return count($upload_fields) ? true : false;
-    }
-
-    /**
      * Enable the DETAILS ROW functionality:.
      *
      * In the table view, show a plus sign next to each entry.
@@ -161,7 +114,7 @@ trait Read
      */
     public function enableDetailsRow()
     {
-        $this->details_row = true;
+        $this->setOperationSetting('detailsRow', true);
     }
 
     /**
@@ -169,18 +122,18 @@ trait Read
      */
     public function disableDetailsRow()
     {
-        $this->details_row = false;
+        $this->setOperationSetting('detailsRow', false);
     }
 
     /**
      * Add two more columns at the beginning of the ListEntrie table:
      * - one shows the checkboxes needed for bulk actions
-     * - one is blank, in order for evenual details_row or expand buttons
+     * - one is blank, in order for evenual detailsRow or expand buttons
      * to be in a separate column.
      */
     public function enableBulkActions()
     {
-        $this->bulk_actions = true;
+        $this->setOperationSetting('bulkActions', true);
 
         $this->addColumn([
             'type' => 'checkbox',
@@ -214,7 +167,7 @@ trait Read
      */
     public function disableBulkActions()
     {
-        $this->bulk_actions = false;
+        $this->setOperationSetting('bulkActions', false);
 
         $this->removeColumn('bulk_actions');
         $this->removeColumn('blank_first_column');
@@ -225,7 +178,7 @@ trait Read
      */
     public function setDefaultPageLength($value)
     {
-        $this->default_page_length = $value;
+        $this->setOperationSetting('defaultPageLength', $value);
     }
 
     /**
@@ -235,17 +188,7 @@ trait Read
      */
     public function getDefaultPageLength()
     {
-        // return the custom value for this crud panel, if set using setDefaultPageLength()
-        if ($this->default_page_length) {
-            return $this->default_page_length;
-        }
-
-        // otherwise return the default value in the config file
-        if (config('backpack.crud.default_page_length')) {
-            return config('backpack.crud.default_page_length');
-        }
-
-        return 25;
+        return $this->getOperationSetting('defaultPageLength') ?? config('backpack.crud.default_page_length') ?? 25;
     }
 
     /**
@@ -255,10 +198,10 @@ trait Read
     public function addCustomPageLengthToPageLengthMenu()
     {
         // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
-        // assume both array are the same lenght.
-        if (! in_array($this->getDefaultPageLength(), $this->page_length_menu[0])) {
+        // assume both arrays are the same length.
+        if (! in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
             // Loop through 2 arrays of prop. page_length_menu
-            foreach ($this->page_length_menu as $key => &$page_length_choices) {
+            foreach ($this->getOperationSetting('pageLengthMenu') as $key => &$page_length_choices) {
                 // This is a condition that should be always true.
                 if (is_array($page_length_choices)) {
                     array_unshift($page_length_choices, $this->getDefaultPageLength());
@@ -276,7 +219,7 @@ trait Read
      */
     public function setPageLengthMenu($menu)
     {
-        $this->page_length_menu = $menu;
+        $this->setOperationSetting('pageLengthMenu', $menu);
     }
 
     /**
@@ -287,23 +230,23 @@ trait Read
     public function getPageLengthMenu()
     {
         // if already set, use that
-        if (! $this->page_length_menu) {
+        if (! $this->getOperationSetting('pageLengthMenu')) {
             // try to get the menu settings from the config file
-            if (! $this->page_length_menu = config('backpack.crud.page_length_menu')) {
-                // otherwise set a sensible default
-                $this->page_length_menu = [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']];
-            }
+            $this->setOperationSetting('pageLengthMenu', config('backpack.crud.page_length_menu') ?? [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']]);
+
             // if we have a 2D array, update all the values in the right hand array to their translated values
-            if (isset($this->page_length_menu[1]) && is_array($this->page_length_menu[1])) {
-                foreach ($this->page_length_menu[1] as $key => $val) {
-                    $this->page_length_menu[1][$key] = trans($val);
+            if (isset($this->getOperationSetting('pageLengthMenu')[1]) && is_array($this->getOperationSetting('pageLengthMenu')[1])) {
+                $aux = $this->getOperationSetting('pageLengthMenu');
+                foreach ($this->getOperationSetting('pageLengthMenu')[1] as $key => $val) {
+                    $aux[1][$key] = trans($val);
                 }
+                $this->setOperationSetting('pageLengthMenu', $aux);
             }
         }
 
         $this->addCustomPageLengthToPageLengthMenu();
 
-        return $this->page_length_menu;
+        return $this->getOperationSetting('pageLengthMenu');
     }
 
     /*
@@ -317,7 +260,7 @@ trait Read
      */
     public function enableExportButtons()
     {
-        $this->export_buttons = true;
+        $this->setOperationSetting('exportButtons', true);
     }
 
     /**
@@ -326,6 +269,6 @@ trait Read
      */
     public function exportButtons()
     {
-        return $this->export_buttons;
+        return $this->getOperationSetting('exportButtons') ?? false;
     }
 }

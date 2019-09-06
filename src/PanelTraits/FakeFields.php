@@ -17,10 +17,10 @@ trait FakeFields
      *
      * @return array The updated request input.
      */
-    public function compactFakeFields($requestInput, $form = 'create', $id = false)
+    public function compactFakeFields($requestInput)
     {
         // get the right fields according to the form type (create/update)
-        $fields = $this->getFields($form, $id);
+        $fields = $this->fields();
 
         $compactedFakeFields = [];
         foreach ($fields as $field) {

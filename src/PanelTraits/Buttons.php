@@ -46,11 +46,11 @@ trait Buttons
         $button = new CrudButton($stack, $name, $type, $content);
         switch ($position) {
             case 'beginning':
-                $this->buttons->prepend($button);
+                $this->setOperationSetting('buttons', $this->buttons()->prepend($button));
                 break;
 
             default:
-                $this->buttons->push($button);
+                $this->setOperationSetting('buttons', $this->buttons()->push($button));
                 break;
         }
 
@@ -74,23 +74,7 @@ trait Buttons
      */
     public function buttons()
     {
-        return $this->buttons;
-    }
-
-    public function initButtons()
-    {
-        $this->buttons = collect();
-
-        // line stack
-        $this->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
-        $this->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
-        $this->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
-        $this->addButton('line', 'clone', 'view', 'crud::buttons.clone', 'end');
-        $this->addButton('line', 'delete', 'view', 'crud::buttons.delete', 'end');
-
-        // top stack
-        $this->addButton('top', 'create', 'view', 'crud::buttons.create');
-        $this->addButton('top', 'reorder', 'view', 'crud::buttons.reorder');
+        return $this->getOperationSetting('buttons') ?? collect();
     }
 
     /**
@@ -129,9 +113,9 @@ trait Buttons
      */
     public function removeButton($name, $stack = null)
     {
-        $this->buttons = $this->buttons->reject(function ($button) use ($name, $stack) {
+        $this->setOperationSetting('buttons', $this->buttons()->reject(function ($button) use ($name, $stack) {
             return $stack == null ? $button->name == $name : ($button->stack == $stack) && ($button->name == $name);
-        });
+        }));
     }
 
     /**
@@ -149,21 +133,21 @@ trait Buttons
 
     public function removeAllButtons()
     {
-        $this->buttons = collect([]);
+        $this->setOperationSetting('buttons', collect());
     }
 
     public function removeAllButtonsFromStack($stack)
     {
-        $this->buttons = $this->buttons->reject(function ($button) use ($stack) {
+        $this->setOperationSetting('buttons', $this->buttons()->reject(function ($button) use ($stack) {
             return $button->stack == $stack;
-        });
+        }));
     }
 
     public function removeButtonFromStack($name, $stack)
     {
-        $this->buttons = $this->buttons->reject(function ($button) use ($name, $stack) {
+        $this->setOperationSetting('buttons', $this->buttons()->reject(function ($button) use ($name, $stack) {
             return $button->name == $name && $button->stack == $stack;
-        });
+        }));
     }
 }
 

@@ -8,38 +8,26 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 {
     private $unknownPermission = 'unknownPermission';
 
-    private $defaultAccessList = [
-        'list',
-        'create',
-        'update',
-        'delete',
-    ];
+    private $defaultAccessList = [];
 
     private $fullAccessList = [
         'list',
         'create',
         'update',
         'delete',
+        'bulkDelete',
         'revisions',
         'reorder',
         'show',
-        'details_row',
+        'clone',
+        'bulkClone',
     ];
-
-    public function testDefaultAccess()
-    {
-        $this->assertEquals($this->defaultAccessList, $this->crudPanel->access);
-    }
 
     public function testHasAccess()
     {
-        foreach ($this->defaultAccessList as $permission) {
-            $this->assertTrue($this->crudPanel->hasAccess($permission));
-        }
-
-        foreach (array_diff($this->fullAccessList, $this->defaultAccessList) as $permission) {
-            $this->assertFalse($this->crudPanel->hasAccess($permission));
-        }
+        $this->crudPanel->allowAccess('list');
+        $this->assertTrue($this->crudPanel->hasAccess('list'));
+        $this->assertFalse($this->crudPanel->hasAccess('create'));
     }
 
     public function testAllowAccess()
@@ -60,12 +48,9 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 
     public function testDenyAccess()
     {
-        $permission = 'delete';
+        $this->crudPanel->denyAccess('delete');
 
-        $this->crudPanel->denyAccess($permission);
-
-        $this->assertFalse($this->crudPanel->hasAccess($permission));
-        $this->assertEquals(array_diff($this->crudPanel->access, [$permission]), $this->crudPanel->access);
+        $this->assertFalse($this->crudPanel->hasAccess('delete'));
     }
 
     public function testDenyAccessToUnknownPermission()
@@ -73,11 +58,12 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
         $this->crudPanel->denyAccess($this->unknownPermission);
 
         $this->assertFalse($this->crudPanel->hasAccess($this->unknownPermission));
-        $this->assertEquals($this->defaultAccessList, $this->crudPanel->access);
     }
 
     public function testHasAccessToAny()
     {
+        $this->crudPanel->allowAccess('create');
+
         $this->assertTrue($this->crudPanel->hasAccessToAny($this->fullAccessList));
     }
 
@@ -88,7 +74,8 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 
     public function testHasAccessToAll()
     {
-        $this->assertTrue($this->crudPanel->hasAccessToAll($this->defaultAccessList));
+        $this->crudPanel->allowAccess($this->fullAccessList);
+        $this->assertTrue($this->crudPanel->hasAccessToAll($this->fullAccessList));
     }
 
     public function testHasAccessToAllDenied()
@@ -98,7 +85,9 @@ class CrudPanelAccessTest extends BaseCrudPanelTest
 
     public function testHasAccessOrFail()
     {
-        foreach ($this->defaultAccessList as $permission) {
+        $this->crudPanel->allowAccess($this->fullAccessList);
+
+        foreach ($this->fullAccessList as $permission) {
             $this->assertTrue($this->crudPanel->hasAccessOrFail($permission));
         }
     }

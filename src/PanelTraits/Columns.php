@@ -8,16 +8,14 @@ trait Columns
     // COLUMNS
     // ------------
 
-    public $actions_column_priority = 1;
-
     /**
-     * Get the CRUD columns.
+     * Get the CRUD columns for the current operation.
      *
      * @return array CRUD columns.
      */
-    public function getColumns()
+    public function columns()
     {
-        return $this->columns;
+        return $this->getOperationSetting('columns') ?? [];
     }
 
     /**
@@ -28,7 +26,7 @@ trait Columns
     public function setColumns($columns)
     {
         // clear any columns already set
-        $this->columns = [];
+        $this->removeAllColumns();
 
         // if array, add a column for each of the items
         if (is_array($columns) && count($columns)) {
@@ -38,24 +36,21 @@ trait Columns
                     $this->addColumn($column);
                 } else {
                     $this->addColumn([
-                                    'name'  => $column,
-                                    'label' => mb_ucfirst($column),
-                                    'type'  => 'text',
-                                ]);
+                        'name'  => $column,
+                        'label' => mb_ucfirst($column),
+                        'type'  => 'text',
+                    ]);
                 }
             }
         }
 
         if (is_string($columns)) {
             $this->addColumn([
-                                'name'  => $columns,
-                                'label' => mb_ucfirst($columns),
-                                'type'  => 'text',
-                                ]);
+                'name'  => $columns,
+                'label' => mb_ucfirst($columns),
+                'type'  => 'text',
+            ]);
         }
-
-        // This was the old setColumns() function, and it did not work:
-        // $this->columns = array_filter(array_map([$this, 'addDefaultTypeToColumn'], $columns));
     }
 
     /**
@@ -108,20 +103,23 @@ trait Columns
             $column_with_details['searchLogic'] = $columnExistsInDb ? true : false;
         }
 
-        array_filter($this->columns[$column_with_details['key']] = $column_with_details);
+        $columnsArray = \Arr::add($this->columns(), $column_with_details['key'], $column_with_details);
+        $this->setOperationSetting('columns', $columnsArray);
 
         // make sure the column has a priority in terms of visibility
         // if no priority has been defined, use the order in the array plus one
         if (! array_key_exists('priority', $column_with_details)) {
-            $position_in_columns_array = (int) array_search($column_with_details['key'], array_keys($this->columns));
-            $this->columns[$column_with_details['key']]['priority'] = $position_in_columns_array + 1;
+            $position_in_columns_array = (int) array_search($column_with_details['key'], array_keys($this->columns()));
+            $columnsArray[$column_with_details['key']]['priority'] = $position_in_columns_array + 1;
         }
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
         if (isset($column_with_details['entity']) && ! isset($column_with_details['model'])) {
-            $column_with_details['model'] = $this->getRelationModel($column_with_details['entity']);
+            $columnsArray[$column_with_details['key']]['model'] = $this->getRelationModel($column_with_details['entity']);
         }
+
+        $this->setOperationSetting('columns', $columnsArray);
 
         return $this;
     }
@@ -166,11 +164,11 @@ trait Columns
      */
     public function makeFirstColumn()
     {
-        if (! $this->columns) {
+        if (! $this->columns()) {
             return false;
         }
 
-        $firstColumn = array_keys(array_slice($this->columns, 0, 1))[0];
+        $firstColumn = array_keys(array_slice($this->columns(), 0, 1))[0];
         $this->beforeColumn($firstColumn);
     }
 
@@ -185,16 +183,18 @@ trait Columns
         // TODO: this and the moveField method from the Fields trait should be refactored into a single method and moved
         //       into a common class
         $targetColumnName = is_array($targetColumn) ? $targetColumn['name'] : $targetColumn;
+        $columnsArray = $this->columns();
 
-        if (array_key_exists($targetColumnName, $this->columns)) {
-            $targetColumnPosition = $before ? array_search($targetColumnName, array_keys($this->columns)) :
-                array_search($targetColumnName, array_keys($this->columns)) + 1;
+        if (array_key_exists($targetColumnName, $columnsArray)) {
+            $targetColumnPosition = $before ? array_search($targetColumnName, array_keys($columnsArray)) :
+                array_search($targetColumnName, array_keys($columnsArray)) + 1;
 
-            $element = array_pop($this->columns);
-            $beginningPart = array_slice($this->columns, 0, $targetColumnPosition, true);
-            $endingArrayPart = array_slice($this->columns, $targetColumnPosition, null, true);
+            $element = array_pop($columnsArray);
+            $beginningPart = array_slice($columnsArray, 0, $targetColumnPosition, true);
+            $endingArrayPart = array_slice($columnsArray, $targetColumnPosition, null, true);
 
-            $this->columns = array_merge($beginningPart, [$element['name'] => $element], $endingArrayPart);
+            $columnsArray = array_merge($beginningPart, [$element['name'] => $element], $endingArrayPart);
+            $this->setOperationSetting('columns', $columnsArray);
         }
     }
 
@@ -237,11 +237,13 @@ trait Columns
     /**
      * Remove a column from the CRUD panel by name.
      *
-     * @param string $column The column name.
+     * @param string $column The column key.
      */
-    public function removeColumn($column)
+    public function removeColumn($columnKey)
     {
-        array_forget($this->columns, $column);
+        $columnsArray = $this->columns();
+        array_forget($columnsArray, $columnKey);
+        $this->setOperationSetting('columns', $columnsArray);
     }
 
     /**
@@ -252,30 +254,18 @@ trait Columns
     public function removeColumns($columns)
     {
         if (! empty($columns)) {
-            foreach ($columns as $columnName) {
-                $this->removeColumn($columnName);
+            foreach ($columns as $columnKey) {
+                $this->removeColumn($columnKey);
             }
         }
     }
 
     /**
-     * Remove an entry from an array.
-     *
-     * @param string $entity
-     * @param array  $fields
-     *
-     * @return array values
-     *
-     * @deprecated This method is no longer used by internal code and is not recommended as it does not preserve the
-     *             target array keys.
-     * @see        Columns::removeColumn() to remove a column from the CRUD panel by name.
-     * @see        Columns::removeColumns() to remove multiple columns from the CRUD panel by name.
+     * Remove all columns from the CRUD panel.
      */
-    public function remove($entity, $fields)
+    public function removeAllColumns()
     {
-        return array_values(array_filter($this->{$entity}, function ($field) use ($fields) {
-            return ! in_array($field['name'], (array) $fields);
-        }));
+        $this->setOperationSetting('columns', []);
     }
 
     /**
@@ -286,18 +276,28 @@ trait Columns
      */
     public function setColumnsDetails($columns, $attributes)
     {
-        $this->sync('columns', $columns, $attributes);
+        foreach ($columns as $columnKey) {
+            $this->setColumnDetails($columnKey, $attributes);
+        }
     }
 
     /**
      * Change attributes for a certain column.
      *
-     * @param string $column Column name.
-     * @param array  $attributes
+     * @param string $columnKey Column key.
+     * @param array  $attributesAndValues
      */
-    public function setColumnDetails($column, $attributes)
+    public function setColumnDetails($columnKey, $attributesAndValues)
     {
-        $this->setColumnsDetails([$column], $attributes);
+        $columnsArray = $this->columns();
+
+        if (isset($columnsArray[$columnKey])) {
+            foreach ($attributesAndValues as $attributeName => $attributeValue) {
+                $columnsArray[$columnKey][$attributeName] = $attributeValue;
+            }
+        }
+
+        $this->setOperationSetting('columns', $columnsArray);
     }
 
     /**
@@ -329,7 +329,7 @@ trait Columns
      */
     public function getColumnsRelationships()
     {
-        $columns = $this->getColumns();
+        $columns = $this->columns();
 
         return collect($columns)->pluck('entity')->reject(function ($value, $key) {
             return $value == null;
@@ -346,8 +346,8 @@ trait Columns
     {
         $orderedColumns = [];
         foreach ($order as $columnName) {
-            if (array_key_exists($columnName, $this->columns)) {
-                $orderedColumns[$columnName] = $this->columns[$columnName];
+            if (array_key_exists($columnName, $this->columns())) {
+                $orderedColumns[$columnName] = $this->columns()[$columnName];
             }
         }
 
@@ -355,34 +355,8 @@ trait Columns
             return;
         }
 
-        $remaining = array_diff_key($this->columns, $orderedColumns);
-        $this->columns = array_merge($orderedColumns, $remaining);
-    }
-
-    /**
-     * Set the order of the CRUD columns.
-     *
-     * @param array $columns Column order.
-     *
-     * @deprecated This method was not and will not be implemented since it's a duplicate of the orderColumns method.
-     * @see        Columns::orderColumns() to order the CRUD columns.
-     */
-    public function setColumnOrder($columns)
-    {
-        // not implemented
-    }
-
-    /**
-     * Set the order of the CRUD columns.
-     *
-     * @param array $columns Column order.
-     *
-     * @deprecated This method was not and will not be implemented since it's a duplicate of the orderColumns method.
-     * @see        Columns::orderColumns() to order the CRUD columns.
-     */
-    public function setColumnsOrder($columns)
-    {
-        $this->setColumnOrder($columns);
+        $remaining = array_diff_key($this->columns(), $orderedColumns);
+        $this->setOperationSetting('columns', array_merge($orderedColumns, $remaining));
     }
 
     /**
@@ -394,7 +368,7 @@ trait Columns
      */
     public function findColumnById($column_number)
     {
-        $result = array_slice($this->getColumns(), $column_number, 1);
+        $result = array_slice($this->columns(), $column_number, 1);
 
         return reset($result);
     }
@@ -430,7 +404,7 @@ trait Columns
      */
     public function getActionsColumnPriority()
     {
-        return (int) $this->actions_column_priority;
+        return (int) $this->getOperationSetting('actionsColumnPriority') ?? 1;
     }
 
     /**
@@ -443,7 +417,7 @@ trait Columns
      */
     public function setActionsColumnPriority($number)
     {
-        $this->actions_column_priority = (int) $number;
+        $this->setOperationSetting('actionsColumnPriority', (int) $number);
 
         return $this;
     }

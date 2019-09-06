@@ -4,19 +4,17 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait AutoFocus
 {
-    public $autoFocusOnFirstField = true;
-
     /**
      * @return bool
      */
     public function getAutoFocusOnFirstField()
     {
-        return $this->autoFocusOnFirstField;
+        return $this->getOperationSetting('autoFocusOnFirstField');
     }
 
     public function setAutoFocusOnFirstField($value)
     {
-        return $this->autoFocusOnFirstField = (bool) $value;
+        return $this->setOperationSetting('autoFocusOnFirstField', (bool) $value);
     }
 
     public function enableAutoFocus()

@@ -22,11 +22,11 @@ trait Create
      */
     public function create($data)
     {
-        $data = $this->decodeJsonCastedAttributes($data, 'create');
-        $data = $this->compactFakeFields($data, 'create');
+        $data = $this->decodeJsonCastedAttributes($data);
+        $data = $this->compactFakeFields($data);
 
         // omit the n-n relationships when updating the eloquent item
-        $nn_relationships = array_pluck($this->getRelationFieldsWithPivot('create'), 'name');
+        $nn_relationships = array_pluck($this->getRelationFieldsWithPivot(), 'name');
         $item = $this->model->create(array_except($data, $nn_relationships));
 
         // if there are any relationships available, also sync those
@@ -42,24 +42,17 @@ trait Create
      */
     public function getCreateFields()
     {
-        return $this->create_fields;
+        return $this->fields();
     }
 
     /**
      * Get all fields with relation set (model key set on field).
      *
-     * @param string $form create/update/both
-     *
      * @return array The fields with model key set.
      */
-    public function getRelationFields($form = 'create')
+    public function getRelationFields()
     {
-        if ($form == 'create') {
-            $fields = $this->create_fields;
-        } else {
-            $fields = $this->update_fields;
-        }
-
+        $fields = $this->fields();
         $relationFields = [];
 
         foreach ($fields as $field) {
@@ -82,13 +75,11 @@ trait Create
     /**
      * Get all fields with n-n relation set (pivot table is true).
      *
-     * @param string $form create/update/both
-     *
      * @return array The fields with n-n relationships.
      */
-    public function getRelationFieldsWithPivot($form = 'create')
+    public function getRelationFieldsWithPivot()
     {
-        $all_relation_fields = $this->getRelationFields($form);
+        $all_relation_fields = $this->getRelationFields();
 
         return array_where($all_relation_fields, function ($value, $key) {
             return isset($value['pivot']) && $value['pivot'];
@@ -100,12 +91,11 @@ trait Create
      *
      * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
      * @param array                               $data The form data.
-     * @param string                              $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
-    public function createRelations($item, $data, $form = 'create')
+    public function createRelations($item, $data)
     {
-        $this->syncPivot($item, $data, $form);
-        $this->createOneToOneRelations($item, $data, $form);
+        $this->syncPivot($item, $data);
+        $this->createOneToOneRelations($item, $data);
     }
 
     /**
@@ -113,11 +103,10 @@ trait Create
      *
      * @param \Illuminate\Database\Eloquent\Model $model The current CRUD model.
      * @param array                               $data  The form data.
-     * @param string                              $form  Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
-    public function syncPivot($model, $data, $form = 'create')
+    public function syncPivot($model, $data)
     {
-        $fields_with_relationships = $this->getRelationFields($form);
+        $fields_with_relationships = $this->getRelationFields();
 
         foreach ($fields_with_relationships as $key => $field) {
             if (isset($field['pivot']) && $field['pivot']) {
@@ -150,11 +139,10 @@ trait Create
      *
      * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
      * @param array                               $data The form data.
-     * @param string                              $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
-    private function createOneToOneRelations($item, $data, $form = 'create')
+    private function createOneToOneRelations($item, $data)
     {
-        $relationData = $this->getRelationDataFromFormData($data, $form);
+        $relationData = $this->getRelationDataFromFormData($data);
         $this->createRelationsForItem($item, $relationData);
     }
 
@@ -211,13 +199,12 @@ trait Create
      * final array (@see \Illuminate\Support\Arr::set() for more).
      *
      * @param array  $data The form data.
-     * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      *
      * @return array The formatted relation data.
      */
-    private function getRelationDataFromFormData($data, $form = 'create')
+    private function getRelationDataFromFormData($data)
     {
-        $relationFields = $this->getRelationFields($form);
+        $relationFields = $this->getRelationFields();
 
         $relationData = [];
         foreach ($relationFields as $relationField) {

@@ -2,8 +2,44 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
+use Illuminate\Support\Facades\Route;
+
 trait RevisionsOperation
 {
+    /**
+     * Define which routes are needed for this operation.
+     *
+     * @param  string $segment       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $routeName    Prefix of the route name.
+     * @param  string $controller Name of the current CrudController.
+     */
+    protected function setupRevisionsRoutes($segment, $routeName, $controller)
+    {
+        Route::get($segment.'/{id}/revisions', [
+            'as' => $routeName.'.listRevisions',
+            'uses' => $controller.'@listRevisions',
+            'operation' => 'revisions',
+        ]);
+
+        Route::post($segment.'/{id}/revisions/{revisionId}/restore', [
+            'as' => $routeName.'.restoreRevision',
+            'uses' => $controller.'@restoreRevision',
+            'operation' => 'revisions',
+        ]);
+    }
+
+    /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupRevisionsDefaults()
+    {
+        $this->crud->allowAccess('revisions');
+
+        $this->crud->operation(['list', 'show'], function() {
+            $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
+        }):
+    }
+
     /**
      * Display the revisions for specified resource.
      *
@@ -13,8 +49,8 @@ trait RevisionsOperation
      */
     public function listRevisions($id)
     {
+        $this->crud->applyConfigurationFromSettings('revisions');
         $this->crud->hasAccessOrFail('revisions');
-        $this->crud->setOperation('revisions');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
@@ -43,7 +79,7 @@ trait RevisionsOperation
     public function restoreRevision($id)
     {
         $this->crud->hasAccessOrFail('revisions');
-        $this->crud->setOperation('revisions');
+        $this->crud->applyConfigurationFromSettings('revisions');
 
         $revisionId = \Request::input('revision_id', false);
         if (! $revisionId) {

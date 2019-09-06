@@ -15,13 +15,44 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - merged #1955 - ```image``` field type has a new ```max_file_size``` option; which defaults to the defaults to ```upload_max_filesize``` set in PHP;
 - merged #1913 - new design based on CoreUI, instead of AdminLTE; 
 - developers can now add widgets to the top/bottom of the operation views;
-
+- ```CRUD``` facade, so developers can now do ```CRUD::addField()``` instead of ```$this->crud->addField()```;
+- the ability for developers to use a different CrudPanel object instead of the one in the package; this way, they can customize/overwrite how anything works inside the CrudPanel object;
+- routes are now defined inside operations; you no longer need to edit the route file to add routes to one controller; you can now re-use an operation on different controllers and it will also add the necessary routes;
+- merged #2012 - phone column type;
+- merged #1997 - settings API;
+- when specifying a route to an EntityCrudController, an "operation" is specified for each action; that "operation" is used as the string name of the operation (basically doing setOperation() automatically); there are currently two ways to set the current operation: (1) by defining the operation when defining the route, and (2) by doing setOperation()
+- inside each operation action, it's no longer required to run ```setOperation()```; but IT IS required to run ```setConfigurationFromSettings()``` so that anything that was inside operation closures gets run;
+- All Backpack/Base functionality inside Backpack\CRUD;
+- Laravel-Backpack/Base#384 - Ability to toggle breadcrumbs on/off;
+- Laravel-Backpack/Base#385 - NPM and Laravel Mix for CSS & JS dependencies;
+- Laravel-Backpack/Base#385 - By default Backpack\Base no longer loads anything from CDNs;
+- Laravel-Backpack/Base#387 - Easily add scripts/style to all admin panes, using asset() or mix();
+- Laravel-Backpack/Base#387 - Easily remove the bundled js and css and use CDNs if you want to;
+- Laravel-Backpack/Base#380 - New design - Backstrap, based on CoreUI;
+- [Webfactor/Laravel-Generators](https://github.com/webfactor/laravel-generatorssu) to the installation command;
 
 ### Fixed
 - merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
 - merged #1977 - fields, filters and operations now use LOCAL assets, instead of CDNs; Backpack can now be used on intranets;
 - merged #1947 fixes #1927 - package version was often incorrect, due to maintainers not updating the number on each patch release; fixed by using ocramius/package-versions to determine the package version;
 - merged #1950 - reorder operation is now twice as fast;
+- merged #1994 - moved SaveActions to the CrudPanel object, since they're not an operation;
+- delete button now shows up (and works) in the Show operation view;
+- for the List operation, the default order is now by primary key DESC (instead of ASC); backwards-compatible, in that if a different order has been set for the primary key, that one will be used instead;
+- we've reduced the default character limit for a all columns that had it - previously if ```text```, ```email```, ```model_function```, ```model_function_attribute```, ```phone```, ```row_number```, ```select``` column had its contents bigger than 50 characters, it got shortened (_Something some[...]_); we've reduced this limit to 40 characters, so that more columns can fit into one screen by default; you can overwrite this default with ```'limit' => 50``` in your column;
+
+
+### Removed
+- CrudControllers now come with zero operations and zero routes by default; old EntityCrudControllers should now specifically mention which operations should be loaded, using operation traits;
+- ```CRUD::route()``` is no longer the way to load routes for a CrudController, but ```Route::crud()```;
+- merged #1994 - moved SaveActions methods to the CrudPanel object;
+- no CRUD access is provided by defaul; access is automatically given when using an operation trait on an EntityCrudController;
+- Backpack/Base as a separate package; It's now included in Backpack/CRUD;
+- AdminLTE dependency;
+- Backpack/Generators from the installation command;
+- Laracasts/Laravel-Generators from the installation command;
+- Since all Backpack/Base/app classes have been moved to Backpack/CRUD/app, when upgrading to 4.0 you need to do a search-and-replace in all your application files; search for "Backpack/Base/app" and replace with "Backpack/CRUD/app"; make sure you include the following folders: app, config, resources/views, routes;
+- If you're importing or extending our BaseController (```Backpack/Base/app/Http/Controllers/BaseController``` or ```Backpack/CRUD/app/Http/Controllers/BaseController```) anywhere inside your app, know that that controller is no longer needed. It's identical to ```Illuminate\Routing\Controller```, so you can use that instead. We haven't removed the file in this version yet, but it's considered deprecated and will be removed in the next version; 
 
 
 -----------
@@ -29,6 +60,20 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 # Backpack Version 3
 
 -----------
+
+## [3.6.31] - 2019-09-01
+
+### Fixed
+- fixes #2010 - number column should show null when null, not zero;
+
+
+## [3.6.30] - 2019-09-01
+
+### Fixed
+- fixes #1982 merged #1983 - AutoSet uses model connection instead of default connection;
+- French language fixes;
+- fixes #2006 merged #2007 - Create/Update forms not opening the correct tab when Saving and Editing an item multiple times;
+
 
 ## [3.6.29] - 2019-08-23
 

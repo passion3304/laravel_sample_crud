@@ -4,21 +4,19 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Tabs
 {
-    public $tabsEnabled = false;
-    public $tabsType = 'horizontal';
-
     public function enableTabs()
     {
-        $this->setTabsType(config('backpack.crud.tabs_type', 'horizontal'));
+        $this->setOperationSetting('tabsEnabled', true);
+        $this->setOperationSetting('tabsType', config('backpack.crud.tabs_type', 'horizontal'));
 
-        return $this->tabsEnabled;
+        return $this->tabsEnabled();
     }
 
     public function disableTabs()
     {
-        $this->tabsEnabled = false;
+        $this->setOperationSetting('tabsEnabled', false);
 
-        return $this->tabsEnabled;
+        return $this->tabsEnabled();
     }
 
     /**
@@ -26,7 +24,7 @@ trait Tabs
      */
     public function tabsEnabled()
     {
-        return $this->tabsEnabled;
+        return $this->getOperationSetting('tabsEnabled');
     }
 
     /**
@@ -34,16 +32,15 @@ trait Tabs
      */
     public function tabsDisabled()
     {
-        return ! $this->tabsEnabled;
+        return ! $this->tabsEnabled();
     }
 
     public function setTabsType($type)
     {
-        $this->tabsEnabled = true;
+        $this->enableTabs();
+        $this->setOperationSetting('tabsType', $type);
 
-        $this->tabsType = $type;
-
-        return $this->tabsType;
+        return $this->getOperationSetting('tabsType');
     }
 
     /**
@@ -51,7 +48,7 @@ trait Tabs
      */
     public function getTabsType()
     {
-        return $this->tabsType;
+        return $this->getOperationSetting('tabsType');
     }
 
     public function enableVerticalTabs()

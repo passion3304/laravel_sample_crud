@@ -2,8 +2,38 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
+use Illuminate\Support\Facades\Route;
+
 trait ShowOperation
 {
+    /**
+     * Define which routes are needed for this operation.
+     *
+     * @param  string $segment       Name of the current entity (singular). Used as first URL segment.
+     * @param  string $routeName    Prefix of the route name.
+     * @param  string $controller Name of the current CrudController.
+     */
+    protected function setupShowRoutes($segment, $routeName, $controller)
+    {
+        Route::get($segment.'/{id}', [
+            'as' => $routeName.'.show',
+            'uses' => $controller.'@show',
+            'operation' => 'show',
+        ]);
+    }
+
+    /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupShowDefaults()
+    {
+        $this->crud->allowAccess('show');
+
+        $this->crud->operation('list', function () {
+            $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'beginning');
+        });
+    }
+
     /**
      * Display the specified resource.
      *
@@ -13,8 +43,8 @@ trait ShowOperation
      */
     public function show($id)
     {
+        $this->crud->applyConfigurationFromSettings('show');
         $this->crud->hasAccessOrFail('show');
-        $this->crud->setOperation('show');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
@@ -23,7 +53,7 @@ trait ShowOperation
         $this->crud->setFromDb();
 
         // cycle through columns
-        foreach ($this->crud->columns as $key => $column) {
+        foreach ($this->crud->columns() as $key => $column) {
             // remove any autoset relationship columns
             if (array_key_exists('model', $column) && array_key_exists('autoset', $column) && $column['autoset']) {
                 $this->crud->removeColumn($column['name']);
@@ -38,6 +68,11 @@ trait ShowOperation
             if (isset($column['visibleInShow']) && $column['visibleInShow'] == false) {
                 $this->crud->removeColumn($column['name']);
             }
+
+            // remove the character limit on columns that take it into account
+            if (in_array($column['type'], ['text', 'email', 'model_function', 'model_function_attribute', 'phone', 'row_number', 'select'])) {
+                $this->crud->modifyColumn($column['name'], ['limit' => 999]);
+            }
         }
 
         // get the info for that entry
@@ -47,7 +82,6 @@ trait ShowOperation
 
         // remove preview button from stack:line
         $this->crud->removeButton('show');
-        $this->crud->removeButton('delete');
 
         // remove bulk actions colums
         $this->crud->removeColumns(['blank_first_column', 'bulk_actions']);

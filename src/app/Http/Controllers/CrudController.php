@@ -2,25 +2,14 @@
 
 namespace Backpack\CRUD\app\Http\Controllers;
 
-use Backpack\CRUD\CrudPanel;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Backpack\CRUD\app\Http\Controllers\Operations\SaveActions;
-use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\CloneOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
-class CrudController extends BaseController
+class CrudController extends Controller
 {
     use DispatchesJobs, ValidatesRequests;
-    use CreateOperation, CloneOperation, DeleteOperation, ListOperation, ReorderOperation, RevisionsOperation, SaveActions, ShowOperation, UpdateOperation;
 
     public $data = [];
     public $request;
@@ -32,19 +21,22 @@ class CrudController extends BaseController
 
     public function __construct()
     {
-        if (! $this->crud) {
-            $this->crud = app()->make(CrudPanel::class);
-
-            // call the setup function inside this closure to also have the request there
-            // this way, developers can use things stored in session (auth variables, etc)
-            $this->middleware(function ($request, $next) {
-                $this->request = $request;
-                $this->crud->request = $request;
-                $this->setup();
-
-                return $next($request);
-            });
+        if ($this->crud) {
+            return;
         }
+
+        // call the setup function inside this closure to also have the request there
+        // this way, developers can use things stored in session (auth variables, etc)
+        $this->middleware(function ($request, $next) {
+            // make a new CrudPanel object, from the one stored in Laravel's service container
+            $this->crud = app()->make('crud');
+            $this->request = $request;
+            $this->setupDefaults();
+            $this->setup();
+            $this->setupConfigurationForCurrentOperation();
+
+            return $next($request);
+        });
     }
 
     /**
@@ -52,5 +44,55 @@ class CrudController extends BaseController
      */
     public function setup()
     {
+    }
+
+    /**
+     * Load routes for all operations.
+     * Allow developers to load extra routes by creating a method that looks like setupOperationNameRoutes.
+     *
+     * @param  string $segment       Name of the current entity (singular).
+     * @param  string  $routeName     Route name prefix (ends with .).
+     * @param  string $controller    Name of the current controller.
+     */
+    public function setupRoutes($segment, $routeName, $controller)
+    {
+        preg_match_all('/(?<=^|;)setup([^;]+?)Routes(;|$)/', implode(';', get_class_methods($this)), $matches);
+
+        if (count($matches[1])) {
+            foreach ($matches[1] as $methodName) {
+                $this->{'setup'.$methodName.'Routes'}($segment, $routeName, $controller);
+            }
+        }
+    }
+
+    /**
+     * Load defaults for all operations.
+     * Allow developers to insert default settings by creating a method
+     * that looks like setupOperationNameDefaults.
+     */
+    protected function setupDefaults()
+    {
+        preg_match_all('/(?<=^|;)setup([^;]+?)Defaults(;|$)/', implode(';', get_class_methods($this)), $matches);
+
+        if (count($matches[1])) {
+            foreach ($matches[1] as $methodName) {
+                $this->{'setup'.$methodName.'Defaults'}();
+            }
+        }
+    }
+
+    /**
+     * Load configurations for the current operation.
+     *
+     * Allow developers to insert default settings by creating a method
+     * that looks like setupOperationNameDefaults.
+     */
+    protected function setupConfigurationForCurrentOperation()
+    {
+        $className = 'setup'.\Str::studly($this->crud->getCurrentOperation()).'Operation';
+
+        if (method_exists($this, $className)) {
+            $this->{$className}();
+        }
     }
 }
