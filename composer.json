@@ -76,7 +76,7 @@
                 "Backpack\\CRUD\\BackpackServiceProvider"
             ],
             "aliases": {
-                "CRUD": "Backpack\\CRUD\\CrudPanelFacade"
+                "CRUD": "Backpack\\CRUD\\app\\Library\\CrudPanel\\CrudPanelFacade"
             }
         }
     }
