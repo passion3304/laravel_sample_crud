@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Exception\AccessDeniedException;
+use Backpack\CRUD\app\Exceptions\AccessDeniedException;
 
 class CrudPanelAccessTest extends BaseCrudPanelTest
 {

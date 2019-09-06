@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\CrudPanel;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Orchestra\Database\ConsoleServiceProvider;
 
 abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
