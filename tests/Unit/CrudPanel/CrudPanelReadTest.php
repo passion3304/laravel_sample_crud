@@ -2,11 +2,11 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\Tests\Unit\Models\User;
 use Backpack\CRUD\Tests\Unit\Models\Article;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CrudPanelReadTest extends BaseDBCrudPanelTest
 {
