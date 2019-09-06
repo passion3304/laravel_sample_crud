@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
 {
-    use CrudUsageStats;
+    use Stats;
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
@@ -55,7 +55,7 @@ class BackpackServiceProvider extends ServiceProvider
     {
         // Bind the CrudPanel object to Laravel's service container
         $this->app->singleton('crud', function ($app) {
-            return new CrudPanel($app);
+            return new \Backpack\CRUD\app\Library\CrudPanel\CrudPanel($app);
         });
 
         // load a macro for Route,

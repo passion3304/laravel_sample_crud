@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\CrudPanel;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\Tests\BaseTest;
 use Backpack\CRUD\Tests\Unit\Models\TestModel;
 
