@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\Models;
 
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model

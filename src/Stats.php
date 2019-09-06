@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD;
 
-trait CrudUsageStats
+trait Stats
 {
     /**
      * Check if the application is running in normal conditions

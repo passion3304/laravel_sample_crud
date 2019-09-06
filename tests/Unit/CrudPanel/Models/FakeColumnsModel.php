@@ -2,7 +2,7 @@
 
 namespace Unit\CrudPanel\Models;
 
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\Sluggable;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\ModelTraits\SpatieTranslatable;
+namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
 use Spatie\Translatable\HasTranslations as OriginalHasTranslations;
 

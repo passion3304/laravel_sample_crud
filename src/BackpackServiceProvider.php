@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
 {
-    use CrudUsageStats;
+    use Stats;
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
