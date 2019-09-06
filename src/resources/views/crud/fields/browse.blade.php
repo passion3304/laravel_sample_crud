@@ -11,7 +11,7 @@
 				id="{{ $field['name'] }}-filemanager"
 				name="{{ $field['name'] }}"
 		        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
-		        data-javascript-function-for-field-initialisation="bpFieldInitBrowseElement"
+		        data-init-function="bpFieldInitBrowseElement"
 		        data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup') }}"
 		        @include('crud::inc.field_attributes')
 

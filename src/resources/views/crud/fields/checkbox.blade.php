@@ -5,7 +5,7 @@
     <div class="checkbox">
         <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false }}">
     	  <input type="checkbox"
-          data-javascript-function-for-field-initialisation="bpFieldInitCheckbox"
+          data-init-function="bpFieldInitCheckbox"
 
           @if (old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false)
                  checked="checked"

@@ -32,7 +32,7 @@
     <div class="input-group date">
         <input
             data-bs-daterangepicker="{{ isset($field['date_range_options']) ? json_encode($field['date_range_options']) : '{}'}}"
-            data-javascript-function-for-field-initialisation="bpFieldInitDateRangeElement"
+            data-init-function="bpFieldInitDateRangeElement"
             type="text"
             @include('crud::inc.field_attributes')
             >

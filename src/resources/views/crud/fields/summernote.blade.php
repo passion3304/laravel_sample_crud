@@ -4,7 +4,7 @@
     @include('crud::inc.field_translatable_icon')
     <textarea
         name="{{ $field['name'] }}"
-        data-javascript-function-for-field-initialisation="bpFieldInitSummernoteElement"
+        data-init-function="bpFieldInitSummernoteElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control summernote'])
         >{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 

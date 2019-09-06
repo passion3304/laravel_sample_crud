@@ -41,7 +41,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        data-javascript-function-for-field-initialisation="bpFieldInitSelect2NestedElement"
+        data-init-function="bpFieldInitSelect2NestedElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
         >
 

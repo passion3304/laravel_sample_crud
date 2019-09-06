@@ -24,7 +24,7 @@
     <div class="input-group date">
         <input
             data-bs-datepicker="{{ isset($field['date_picker_options']) ? json_encode($field['date_picker_options']) : '{}'}}"
-            data-javascript-function-for-field-initialisation="bpFieldInitDatePickerElement"
+            data-init-function="bpFieldInitDatePickerElement"
             type="text"
             @include('crud::inc.field_attributes')
             >

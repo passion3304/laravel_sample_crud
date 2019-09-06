@@ -43,9 +43,9 @@
       } else {
         selector = $(container);
       }
-      selector.find("[data-javascript-function-for-field-initialisation]").each(function () {
+      selector.find("[data-init-function]").each(function () {
         var element = $(this);
-        var functionName = element.data('javascript-function-for-field-initialisation');
+        var functionName = element.data('init-function');
 
         if (typeof window[functionName] === "function") {
           window[functionName](element);

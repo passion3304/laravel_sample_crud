@@ -4,7 +4,7 @@
     <select
         name="{{ $field['name'] }}@if (isset($field['allows_multiple']) && $field['allows_multiple']==true)[]@endif"
         style="width: 100%"
-        data-javascript-function-for-field-initialisation="bpFieldInitSelect2FromArrayElement"
+        data-init-function="bpFieldInitSelect2FromArrayElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_from_array'])
         @if (isset($field['allows_multiple']) && $field['allows_multiple']==true)multiple @endif
         >

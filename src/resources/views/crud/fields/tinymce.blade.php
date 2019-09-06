@@ -5,7 +5,7 @@
     <textarea
     	id="tinymce-{{ $field['name'] }}"
         name="{{ $field['name'] }}"
-        data-javascript-function-for-field-initialisation="bpFieldInitTinyMceElement"
+        data-init-function="bpFieldInitTinyMceElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control tinymce'])
         >{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 

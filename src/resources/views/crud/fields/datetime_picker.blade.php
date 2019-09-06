@@ -18,7 +18,7 @@ if (isset($field['value']) && ( $field['value'] instanceof \Carbon\CarbonInterfa
         <input
             type="text"
             data-bs-datetimepicker="{{ isset($field['datetime_picker_options']) ? json_encode($field['datetime_picker_options']) : '{}'}}"
-            data-javascript-function-for-field-initialisation="bpFieldInitDateTimePickerElement"
+            data-init-function="bpFieldInitDateTimePickerElement"
             @include('crud::inc.field_attributes')
             >
         <div class="input-group-append">

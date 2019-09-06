@@ -14,7 +14,7 @@
     <select
         name="{{ $field['name'] }}[]"
         style="width: 100%"
-        data-javascript-function-for-field-initialisation="bpFieldInitSelect2MultipleElement"
+        data-init-function="bpFieldInitSelect2MultipleElement"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_multiple'])
         {{$multiple}}>
 

@@ -26,7 +26,7 @@
 
     <input class="array-json" 
             type="hidden" 
-            data-javascript-function-for-field-initialisation="bpFieldInitTableElement"
+            data-init-function="bpFieldInitTableElement"
             name="{{ $field['name'] }}">
 
     <div class="array-container form-group">

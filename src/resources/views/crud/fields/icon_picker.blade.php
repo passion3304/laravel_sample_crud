@@ -43,7 +43,7 @@
         <input
             type="hidden"
             name="{{ $field['name'] }}"
-            data-javascript-function-for-field-initialisation="bpFieldInitIconPickerElement"
+            data-init-function="bpFieldInitIconPickerElement"
             value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
             @include('crud::inc.field_attributes')
         >

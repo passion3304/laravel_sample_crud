@@ -9,7 +9,7 @@
         	type="text"
         	name="{{ $field['name'] }}"
             value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
-            data-javascript-function-for-field-initialisation="bpFieldInitColorPickerElement"
+            data-init-function="bpFieldInitColorPickerElement"
             @include('crud::inc.field_attributes')
         	>
         <div class="input-group-addon">

@@ -5,7 +5,7 @@
     <textarea
     	id="simplemde_{{ $field['name'] }}"
         name="{{ $field['name'] }}"
-        data-javascript-function-for-field-initialisation="bpFieldInitSimpleMdeElement"
+        data-init-function="bpFieldInitSimpleMdeElement"
         data-simplemdeAttributesRaw="{{ isset($field['simplemdeAttributesRaw']) ? "{".$field['simplemdeAttributesRaw']."}" : "{}" }}"
         data-simplemdeAttributes="{{ isset($field['simplemdeAttributes']) ? json_encode($field['simplemdeAttributes']) : "{}" }}"
         @include('crud::inc.field_attributes', ['default_class' => 'form-control'])

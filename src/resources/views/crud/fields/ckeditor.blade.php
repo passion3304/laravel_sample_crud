@@ -5,7 +5,7 @@
     <textarea
     	id="ckeditor-{{ $field['name'] }}"
         name="{{ $field['name'] }}"
-        data-javascript-function-for-field-initialisation="bpFieldInitCKEditorElement"
+        data-init-function="bpFieldInitCKEditorElement"
         @include('crud::inc.field_attributes', ['default_class' => 'form-control'])
     	>{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
