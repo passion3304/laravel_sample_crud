@@ -1,4 +1,15 @@
-  <div class="form-group col-sm-12 image" data-preview="#{{ $field['name'] }}" data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}" data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}" @include('crud::inc.field_wrapper_attributes')>
+@php
+    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['class']))
+    {
+        $field['wrapperAttributes']['class'] = "form-group col-sm-12 cropperImage";
+        $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitBase64CropperImageElement';
+    }
+@endphp
+
+  <div  data-preview="#{{ $field['name'] }}" 
+        data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}" 
+        data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}" 
+        @include('crud::inc.field_wrapper_attributes')>
     <div>
         <label>{!! $field['label'] !!}</label>
         @include('crud::inc.field_translatable_icon')
@@ -114,30 +125,28 @@
         <script src="{{ asset('packages/cropperjs/dist/cropper.min.js') }}"></script>
         <script src="{{ asset('packages/jquery-cropper/dist/jquery-cropper.min.js') }}"></script>
         <script>
-            jQuery(document).ready(function($) {
-                // Loop through all instances of the image field
-                $('.form-group.image').each(function(index){
+            function bpFieldInitBase64CropperImageElement(element) {
                     // Find DOM elements under this form-group element
-                    var $mainImage = $(this).find('[data-handle=mainImage]');
-                    var $uploadImage = $(this).find("[data-handle=uploadImage]");
-                    var $hiddenImage = $(this).find("[data-handle=hiddenImage]");
-                    var $hiddenFilename = $(this).find("#hiddenFilename");
-                    var $rotateLeft = $(this).find("[data-handle=rotateLeft]")
-                    var $rotateRight = $(this).find("[data-handle=rotateRight]")
-                    var $zoomIn = $(this).find("[data-handle=zoomIn]")
-                    var $zoomOut = $(this).find("[data-handle=zoomOut]")
-                    var $reset = $(this).find("[data-handle=reset]")
-                    var $remove = $(this).find("[data-handle=remove]")
+                    var $mainImage = element.find('[data-handle=mainImage]');
+                    var $uploadImage = element.find("[data-handle=uploadImage]");
+                    var $hiddenImage = element.find("[data-handle=hiddenImage]");
+                    var $hiddenFilename = element.find("#hiddenFilename");
+                    var $rotateLeft = element.find("[data-handle=rotateLeft]")
+                    var $rotateRight = element.find("[data-handle=rotateRight]")
+                    var $zoomIn = element.find("[data-handle=zoomIn]")
+                    var $zoomOut = element.find("[data-handle=zoomOut]")
+                    var $reset = element.find("[data-handle=reset]")
+                    var $remove = element.find("[data-handle=remove]")
                     // Options either global for all image type fields, or use 'data-*' elements for options passed in via the CRUD controller
                     var options = {
                         viewMode: 2,
                         checkOrientation: false,
                         autoCropArea: 1,
                         responsive: true,
-                        preview : $(this).attr('data-preview'),
-                        aspectRatio : $(this).attr('data-aspectRatio')
+                        preview : element.attr('data-preview'),
+                        aspectRatio : element.attr('data-aspectRatio')
                     };
-                    var crop = $(this).attr('data-crop');
+                    var crop = element.attr('data-crop');
 
                     // Hide 'Remove' button if there is no image saved
                     if (!$mainImage.attr('src')){
@@ -166,7 +175,7 @@
                         });
                     } else {
 
-                        $(this).find("#remove").click(function() {
+                        element.find("#remove").click(function() {
                             $mainImage.attr('src','');
                             $hiddenImage.val('');
                             $hiddenFilename.val('removed');
@@ -235,9 +244,7 @@
                             }).show();
                         }
                     });
-
-                });
-            });
+            }
         </script>
 
 
