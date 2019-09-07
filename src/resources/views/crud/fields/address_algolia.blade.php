@@ -20,12 +20,14 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
         <input
             type="text"
             data-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
+            data-init-function="bpFieldInitAddressAlgoliaElement"
             @include('crud::inc.field_attributes')
         >
         @else
         <input
             type="text"
             data-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
+            data-init-function="bpFieldInitAddressAlgoliaElement"
             name="{{ $field['name'] }}"
             value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
             @include('crud::inc.field_attributes')
@@ -64,20 +66,17 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
     @push('crud_fields_scripts')
     <script src="{{ asset('packages/places.js/dist/cdn/places.min.js') }}"></script>
     <script>
-        jQuery(document).ready(function($){
             window.AlgoliaPlaces = window.AlgoliaPlaces || {};
 
-            $('[data-address]').each(function(){
-
-                var $this      = $(this),
-                $addressConfig = $this.data('address'),
+            function bpFieldInitAddressAlgoliaElement(element) {
+                $addressConfig = element.data('address'),
                 $field = $('[name="'+$addressConfig.field+'"]'),
                 $place = places({
-                    container: $this[0]
+                    container: element[0]
                 });
 
                 function clearInput() {
-                    if( !$this.val().length ){
+                    if( !element.val().length ){
                         $field.val('');
                     }
                 }
@@ -91,18 +90,17 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
                         $field.val( JSON.stringify(result) );
                     });
 
-                    $this.on('change blur', clearInput);
+                    element.on('change blur', clearInput);
                     $place.on('clear', clearInput);
 
                     if( $field.val().length ){
                         var existingData = JSON.parse($field.val());
-                        $this.val(existingData.value);
+                        element.val(existingData.value);
                     }
                 }
 
                 window.AlgoliaPlaces[ $addressConfig.field ] = $place;
-            });
-        });
+            }
     </script>
     @endpush
 
