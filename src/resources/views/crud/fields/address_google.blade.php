@@ -24,12 +24,14 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
                 <input
                         type="text"
                         data-google-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
+                        data-init-function="bpFieldInitAddressGoogleElement"
                         @include('crud::inc.field_attributes')
                 >
             @else
                 <input
                         type="text"
                         data-google-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
+                        data-init-function="bpFieldInitAddressGoogleElement"
                         name="{{ $field['name'] }}"
                         value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
                         @include('crud::inc.field_attributes')
@@ -72,54 +74,55 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
     @push('crud_fields_scripts')
         <script>
 
-            //Function that will be called by Google Places Library
-            function initAutocomplete() {
+            function bpFieldInitAddressGoogleElement(element) {
+                var $addressConfig = element.data('google-address');
+                var $field = $('[name="' + $addressConfig.field + '"]');
 
+                if ($field.val().length) {
+                    var existingData = JSON.parse($field.val());
+                    element.val(existingData.value);
+                }
 
-                $('[data-google-address]').each(function () {
+                var $autocomplete = new google.maps.places.Autocomplete(
+                    (element[0]),
+                    {types: ['geocode']});
 
-                    var $this = $(this),
-                        $addressConfig = $this.data('google-address'),
-                        $field = $('[name="' + $addressConfig.field + '"]');
+                $autocomplete.addListener('place_changed', function fillInAddress() {
 
-                    if ($field.val().length) {
-                        var existingData = JSON.parse($field.val());
-                        $this.val(existingData.value);
+                    var place = $autocomplete.getPlace();
+                    var value = element.val();
+                    var latlng = place.geometry.location;
+                    var data = {"value": value, "latlng": latlng};
+
+                    for (var i = 0; i < place.address_components.length; i++) {
+                        var addressType = place.address_components[i].types[0];
+                        data[addressType] = place.address_components[i]['long_name'];
                     }
-
-                    var $autocomplete = new google.maps.places.Autocomplete(
-                        ($this[0]),
-                        {types: ['geocode']});
-
-                    $autocomplete.addListener('place_changed', function fillInAddress() {
-
-                        var place = $autocomplete.getPlace();
-                        var value = $this.val();
-                        var latlng = place.geometry.location;
-                        var data = {"value": value, "latlng": latlng};
-
-                        for (var i = 0; i < place.address_components.length; i++) {
-                            var addressType = place.address_components[i].types[0];
-                            data[addressType] = place.address_components[i]['long_name'];
-                        }
-                        $field.val(JSON.stringify(data));
-
-                    });
-
-                    $this.change(function(){
-                        if (!$this.val().length) {
-                            $field.val("");
-                        }
-                    });
-
+                    $field.val(JSON.stringify(data));
 
                 });
 
+                element.change(function(){
+                    if (!element.val().length) {
+                        $field.val("");
+                    }
+                });
+            }
+
+            //Function that will be called by Google Places Library
+            function initGoogleAddressAutocomplete() {
+                $('[data-google-address]').each(function () {
+                    var element = $(this);
+                    var functionName = element.data('init-function');
+
+                    if (typeof window[functionName] === "function") {
+                      window[functionName](element);
+                    }
+                });
             }
 
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key={{config('services.google_places.key')}}&libraries=places&callback=initAutocomplete"
-                async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key={{config('services.google_places.key')}}&libraries=places&callback=initGoogleAddressAutocomplete" async defer></script>
 
     @endpush
 
