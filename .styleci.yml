@@ -1,1 +1,4 @@
-preset: laravel
+php:
+  preset: laravel
+  finder:
+    - "*LicenseCheck.php"
