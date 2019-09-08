@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
 {
-    use Stats;
+    use Stats, LicenseCheck;
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
@@ -298,18 +298,5 @@ class BackpackServiceProvider extends ServiceProvider
     public function loadHelpers()
     {
         require_once __DIR__.'/helpers.php';
-    }
-
-    /**
-     * Check to to see if a license code exists.
-     * If it does not, throw a notification bubble.
-     *
-     * @return void
-     */
-    private function checkLicenseCodeExists()
-    {
-        if ($this->app->environment() != 'local' && ! config('backpack.base.license_code')) {
-            \Alert::add('warning', "<strong>You're using unlicensed software.</strong> Please ask your web developer to <a target='_blank' class='alert-link' href='http://backpackforlaravel.com'>purchase a license code</a> to hide this message.");
-        }
     }
 }
