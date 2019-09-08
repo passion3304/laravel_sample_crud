@@ -5,108 +5,108 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 {
     private $oneColumnArray = [
-        'name' => 'column1',
+        'name'  => 'column1',
         'label' => 'Column1',
     ];
 
     private $expectedOneColumnArray = [
         'column1' => [
-            'label' => 'Column1',
-            'name' => 'column1',
-            'key' => 'column1',
-            'type' => 'text',
+            'label'       => 'Column1',
+            'name'        => 'column1',
+            'key'         => 'column1',
+            'type'        => 'text',
             'tableColumn' => false,
-            'orderable' => false,
+            'orderable'   => false,
             'searchLogic' => false,
-            'priority' => 1,
+            'priority'    => 1,
         ],
     ];
 
     private $otherOneColumnArray = [
-        'name' => 'column4',
+        'name'  => 'column4',
         'label' => 'Column4',
     ];
 
     private $twoColumnsArray = [
         [
-            'name' => 'column1',
+            'name'  => 'column1',
             'label' => 'Column1',
         ],
         [
-            'name' => 'column2',
+            'name'  => 'column2',
             'label' => 'Column2',
         ],
     ];
 
     private $expectedTwoColumnsArray = [
         'column1' => [
-            'name' => 'column1',
-            'key' => 'column1',
-            'label' => 'Column1',
-            'type' => 'text',
+            'name'        => 'column1',
+            'key'         => 'column1',
+            'label'       => 'Column1',
+            'type'        => 'text',
             'tableColumn' => false,
-            'orderable' => false,
+            'orderable'   => false,
             'searchLogic' => false,
-            'priority' => 1,
+            'priority'    => 1,
 
         ],
         'column2' => [
-            'name' => 'column2',
-            'key' => 'column2',
-            'label' => 'Column2',
-            'type' => 'text',
+            'name'        => 'column2',
+            'key'         => 'column2',
+            'label'       => 'Column2',
+            'type'        => 'text',
             'tableColumn' => false,
-            'orderable' => false,
+            'orderable'   => false,
             'searchLogic' => false,
-            'priority' => 2,
+            'priority'    => 2,
         ],
     ];
 
     private $threeColumnsArray = [
         [
-            'name' => 'column1',
+            'name'  => 'column1',
             'label' => 'Column1',
         ],
         [
-            'name' => 'column2',
+            'name'  => 'column2',
             'label' => 'Column2',
         ],
         [
-            'name' => 'column3',
+            'name'  => 'column3',
             'label' => 'Column3',
         ],
     ];
 
     private $expectedThreeColumnsArray = [
         'column1' => [
-            'name' => 'column1',
-            'key' => 'column1',
-            'label' => 'Column1',
-            'type' => 'text',
+            'name'        => 'column1',
+            'key'         => 'column1',
+            'label'       => 'Column1',
+            'type'        => 'text',
             'tableColumn' => false,
-            'orderable' => false,
+            'orderable'   => false,
             'searchLogic' => false,
-            'priority' => 1,
+            'priority'    => 1,
         ],
         'column2' => [
-            'name' => 'column2',
-            'key' => 'column2',
-            'label' => 'Column2',
-            'type' => 'text',
+            'name'        => 'column2',
+            'key'         => 'column2',
+            'label'       => 'Column2',
+            'type'        => 'text',
             'tableColumn' => false,
-            'orderable' => false,
+            'orderable'   => false,
             'searchLogic' => false,
-            'priority' => 2,
+            'priority'    => 2,
         ],
         'column3' => [
-            'name' => 'column3',
-            'key' => 'column3',
-            'label' => 'Column3',
-            'type' => 'text',
+            'name'        => 'column3',
+            'key'         => 'column3',
+            'label'       => 'Column3',
+            'type'        => 'text',
             'tableColumn' => false,
-            'orderable' => false,
+            'orderable'   => false,
             'searchLogic' => false,
-            'priority' => 3,
+            'priority'    => 3,
         ],
     ];
 

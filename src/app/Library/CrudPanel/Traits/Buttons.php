@@ -80,10 +80,10 @@ trait Buttons
     /**
      * Modify the attributes of a button.
      *
-     * @param  string $name          The button name.
-     * @param  array  $modifications The attributes and their new values.
+     * @param string $name          The button name.
+     * @param array  $modifications The attributes and their new values.
      *
-     * @return CrudButton                The button that has suffered the changes, for daisychaining methods.
+     * @return CrudButton The button that has suffered the changes, for daisychaining methods.
      */
     public function modifyButton($name, $modifications = null)
     {
@@ -92,7 +92,7 @@ trait Buttons
          */
         $button = $this->buttons()->firstWhere('name', $name);
 
-        if (! $button) {
+        if (!$button) {
             abort(500, 'CRUD Button "'.$name.'" not found. Please check the button exists before you modify it.');
         }
 
@@ -119,12 +119,12 @@ trait Buttons
     }
 
     /**
-     * @param array $names Button names
+     * @param array       $names Button names
      * @param string|null $stack Optional stack name.
      */
     public function removeButtons($names, $stack = null)
     {
-        if (! empty($names)) {
+        if (!empty($names)) {
             foreach ($names as $name) {
                 $this->removeButton($name, $stack);
             }

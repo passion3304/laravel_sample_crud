@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\Eloquent\Model;
 
 class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
 {
@@ -21,7 +21,7 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
      * SluggableObserver constructor.
      *
      * @param \Cviebrock\EloquentSluggable\Services\SlugService $slugService
-     * @param \Illuminate\Contracts\Events\Dispatcher $events
+     * @param \Illuminate\Contracts\Events\Dispatcher           $events
      */
     public function __construct(SlugService $slugService, Dispatcher $events)
     {
@@ -31,6 +31,7 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $model
+     *
      * @return bool|null
      */
     public function saving(Model $model)
@@ -40,7 +41,8 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string $event
+     * @param string                              $event
+     *
      * @return bool|null
      */
     protected function generateSlug(Model $model, string $event)
@@ -57,8 +59,9 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
     /**
      * Fire the namespaced validating event.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
-     * @param  string $event
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string                              $event
+     *
      * @return mixed
      */
     protected function fireSluggingEvent(Model $model, string $event)
@@ -69,8 +72,9 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
     /**
      * Fire the namespaced post-validation event.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
-     * @param  string $status
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string                              $status
+     *
      * @return void
      */
     protected function fireSluggedEvent(Model $model, string $status)

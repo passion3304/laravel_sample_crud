@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('backpack_url')) {
+if (!function_exists('backpack_url')) {
     /**
      * Appends the configured backpack prefix and returns
      * the URL using the standard Laravel helpers.
@@ -11,13 +11,13 @@ if (! function_exists('backpack_url')) {
      */
     function backpack_url($path = null, $parameters = [], $secure = null)
     {
-        $path = ! $path || (substr($path, 0, 1) == '/') ? $path : '/'.$path;
+        $path = !$path || (substr($path, 0, 1) == '/') ? $path : '/'.$path;
 
         return url(config('backpack.base.route_prefix', 'admin').$path, $parameters = [], $secure = null);
     }
 }
 
-if (! function_exists('backpack_authentication_column')) {
+if (!function_exists('backpack_authentication_column')) {
     /**
      * Return the username column name.
      * The Laravel default (and Backpack default) is 'email'.
@@ -30,7 +30,7 @@ if (! function_exists('backpack_authentication_column')) {
     }
 }
 
-if (! function_exists('backpack_users_have_email')) {
+if (!function_exists('backpack_users_have_email')) {
     /**
      * Check if the email column is present on the user table.
      *
@@ -45,7 +45,7 @@ if (! function_exists('backpack_users_have_email')) {
     }
 }
 
-if (! function_exists('backpack_avatar_url')) {
+if (!function_exists('backpack_avatar_url')) {
     /**
      * Returns the avatar URL of a user.
      *
@@ -78,7 +78,7 @@ if (! function_exists('backpack_avatar_url')) {
     }
 }
 
-if (! function_exists('backpack_middleware')) {
+if (!function_exists('backpack_middleware')) {
     /**
      * Return the key of the middleware used across Backpack.
      * That middleware checks if the visitor is an admin.
@@ -93,7 +93,7 @@ if (! function_exists('backpack_middleware')) {
     }
 }
 
-if (! function_exists('backpack_guard_name')) {
+if (!function_exists('backpack_guard_name')) {
     /*
      * Returns the name of the guard defined
      * by the application config
@@ -104,7 +104,7 @@ if (! function_exists('backpack_guard_name')) {
     }
 }
 
-if (! function_exists('backpack_auth')) {
+if (!function_exists('backpack_auth')) {
     /*
      * Returns the user instance if it exists
      * of the currently authenticated admin
@@ -116,7 +116,7 @@ if (! function_exists('backpack_auth')) {
     }
 }
 
-if (! function_exists('backpack_user')) {
+if (!function_exists('backpack_user')) {
     /*
      * Returns back a user instance without
      * the admin guard, however allows you
@@ -128,7 +128,7 @@ if (! function_exists('backpack_user')) {
     }
 }
 
-if (! function_exists('mb_ucfirst')) {
+if (!function_exists('mb_ucfirst')) {
     /**
      * Capitalize the first letter of a string,
      * even if that string is multi-byte (non-latin alphabet).
@@ -150,7 +150,7 @@ if (! function_exists('mb_ucfirst')) {
     }
 }
 
-if (! function_exists('backpack_view')) {
+if (!function_exists('backpack_view')) {
     /**
      * Returns a new displayable view based on the configured backpack view namespace.
      * If that view doesn't exist, it will load the one from the original theme.
@@ -169,7 +169,7 @@ if (! function_exists('backpack_view')) {
 
         $returnView = $theme.$view;
 
-        if (! view()->exists($returnView)) {
+        if (!view()->exists($returnView)) {
             $returnView = $originalTheme.$view;
         }
 
@@ -177,7 +177,7 @@ if (! function_exists('backpack_view')) {
     }
 }
 
-if (! function_exists('square_brackets_to_dots')) {
+if (!function_exists('square_brackets_to_dots')) {
     /**
      * Turns a string from bracket-type array to dot-notation array.
      * Ex: array[0][property] turns into array.0.property.
@@ -194,7 +194,7 @@ if (! function_exists('square_brackets_to_dots')) {
     }
 }
 
-if (! function_exists('is_countable')) {
+if (!function_exists('is_countable')) {
     /**
      * We need this because is_countable was only introduced in PHP 7.3,
      * and in PHP 7.2 you should check if count() argument is really countable.

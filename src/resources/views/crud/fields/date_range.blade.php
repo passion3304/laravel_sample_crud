@@ -15,6 +15,7 @@
                     $formattedDate = date('Y-m-d H:i:s', strtotime($entry->{$dateFieldName}));
                 }
             }
+
             return $formattedDate;
         }
     }

@@ -14,9 +14,9 @@ return [
     */
 
     // Forms
-    'save_action_save_and_new' => 'Guardar e adicionar item',
-    'save_action_save_and_edit' => 'Guardar e editar este item',
-    'save_action_save_and_back' => 'Guardar e voltar',
+    'save_action_save_and_new'         => 'Guardar e adicionar item',
+    'save_action_save_and_edit'        => 'Guardar e editar este item',
+    'save_action_save_and_back'        => 'Guardar e voltar',
     'save_action_changed_notification' => 'Comportamento predefinido depois de gravar.',
 
     // Create form
@@ -66,15 +66,15 @@ return [
     'delete_confirmation_not_deleted_message'     => 'Está tudo bem! O item não foi apagado.',
 
     // Bulk actions
-    'bulk_no_entries_selected_title' => 'Nenhum item seleccionado',
+    'bulk_no_entries_selected_title'   => 'Nenhum item seleccionado',
     'bulk_no_entries_selected_message' => 'Por favor seleccione um ou mais itens para realizar uma acção em massa aos mesmos.',
 
     // Bulk confirmation
-    'bulk_delete_are_you_sure' => 'Tem a certeza que quer apagar estes :number itens?',
-    'bulk_delete_sucess_title' => 'Itens apagados',
+    'bulk_delete_are_you_sure'   => 'Tem a certeza que quer apagar estes :number itens?',
+    'bulk_delete_sucess_title'   => 'Itens apagados',
     'bulk_delete_sucess_message' => ' itens foram apagados',
-    'bulk_delete_error_title' => 'Ocorreu um erro ao apagar o item',
-    'bulk_delete_error_message' => 'Um ou mais itens não puderam ser apagados',
+    'bulk_delete_error_title'    => 'Ocorreu um erro ao apagar o item',
+    'bulk_delete_error_message'  => 'Um ou mais itens não puderam ser apagados',
 
     // Ajax errors
     'ajax_error_title' => 'Erro',
@@ -114,7 +114,7 @@ return [
 
     // global crud - errors
     'unauthorized_access' => 'Acesso não autorizado - não tem as permissões necessárias para ver esta página.',
-    'please_fix' => 'Por favor corrija os seguintes erros:',
+    'please_fix'          => 'Por favor corrija os seguintes erros:',
 
     // global crud - success / error notification bubbles
     'insert_success' => 'O item foi adicionado com sucesso.',
@@ -130,28 +130,28 @@ return [
 
     // CRUD yes/no
     'yes' => 'Sim',
-    'no' => 'Não',
+    'no'  => 'Não',
 
     // CRUD filters navbar view
-    'filters' => 'Filtros',
+    'filters'        => 'Filtros',
     'toggle_filters' => 'Alternar filtros',
     'remove_filters' => 'Remover filtros',
 
     // Fields
-    'browse_uploads' => 'Procurar uploads',
-    'select_all' => 'Seleccionar todos',
-    'select_files' => 'Seleccionar ficheiros',
-    'select_file' => 'Seleccionar ficheiro',
-    'clear' => 'Limpar',
-    'page_link' => 'Link da página',
-    'page_link_placeholder' => 'http://example.com/a-sua-pagina',
-    'internal_link' => 'Link interno',
+    'browse_uploads'            => 'Procurar uploads',
+    'select_all'                => 'Seleccionar todos',
+    'select_files'              => 'Seleccionar ficheiros',
+    'select_file'               => 'Seleccionar ficheiro',
+    'clear'                     => 'Limpar',
+    'page_link'                 => 'Link da página',
+    'page_link_placeholder'     => 'http://example.com/a-sua-pagina',
+    'internal_link'             => 'Link interno',
     'internal_link_placeholder' => 'Slug interno. Ex: \'admin/page\' (sem aspas) para \':url\'',
-    'external_link' => 'Link externo',
-    'choose_file' => 'Escolher ficheiro',
+    'external_link'             => 'Link externo',
+    'choose_file'               => 'Escolher ficheiro',
 
     //Table field
-    'table_cant_add' => 'Não foi possível adicionar novo :entity',
+    'table_cant_add'    => 'Não foi possível adicionar novo :entity',
     'table_max_reached' => 'Limite de :max itens atingido',
 
     // File manager

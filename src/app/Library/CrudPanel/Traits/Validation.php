@@ -57,6 +57,7 @@ trait Validation
 
     /**
      * Run the authorization and validation the currently set FormRequest.
+     *
      * @return Request
      */
     public function validateRequest()
@@ -79,11 +80,11 @@ trait Validation
      * Parse a FormRequest class, figure out what inputs are required
      * and store this knowledge in the current object.
      *
-     * @param string $class     Class that extends FormRequest
+     * @param string $class Class that extends FormRequest
      */
     public function setRequiredFields($class)
     {
-        $formRequest = new $class;
+        $formRequest = new $class();
         $rules = $formRequest->rules();
         $requiredFields = [];
 
@@ -105,14 +106,14 @@ trait Validation
      * Check the current object to see if an input is required
      * for the given operation.
      *
-     * @param string $inputKey Field or input name.
+     * @param string $inputKey  Field or input name.
      * @param string $operation create / update
      *
      * @return bool
      */
     public function isRequired($inputKey)
     {
-        if (! $this->hasOperationSetting('requiredFields')) {
+        if (!$this->hasOperationSetting('requiredFields')) {
             return false;
         }
 

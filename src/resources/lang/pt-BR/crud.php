@@ -14,9 +14,9 @@ return [
     */
 
     // Forms
-    'save_action_save_and_new' => 'Salvar e criar novo item',
-    'save_action_save_and_edit' => 'Salvar e editar item',
-    'save_action_save_and_back' => 'Salvar e voltar',
+    'save_action_save_and_new'         => 'Salvar e criar novo item',
+    'save_action_save_and_edit'        => 'Salvar e editar item',
+    'save_action_save_and_back'        => 'Salvar e voltar',
     'save_action_changed_notification' => 'Comportamento padrão após salvar foi alterado.',
 
     // Create form
@@ -101,7 +101,7 @@ return [
 
     // global crud - errors
         'unauthorized_access' => 'Acesso negado - você não possui a permissão necessária para acessar esta página.',
-        'please_fix' => 'Por favor, corrija os seguintes erros:',
+        'please_fix'          => 'Por favor, corrija os seguintes erros:',
 
     // global crud - success / error notification bubbles
         'insert_success' => 'Item cadastrado com sucesso.',
@@ -117,28 +117,28 @@ return [
 
     // CRUD yes/no
         'yes' => 'Sim',
-        'no' => 'Não',
+        'no'  => 'Não',
 
     // CRUD filters navbar view
-        'filters' => 'Filtros',
+        'filters'        => 'Filtros',
         'toggle_filters' => 'Alternar filtros',
         'remove_filters' => 'Remover filtros',
 
     // Fields
-        'browse_uploads' => 'Pesquisar uploads',
-        'clear' => 'Limpar',
-        'page_link' => 'URL da Página',
-        'page_link_placeholder' => 'http://exemplo.com',
-        'internal_link' => 'Link Interno',
+        'browse_uploads'            => 'Pesquisar uploads',
+        'clear'                     => 'Limpar',
+        'page_link'                 => 'URL da Página',
+        'page_link_placeholder'     => 'http://exemplo.com',
+        'internal_link'             => 'Link Interno',
         'internal_link_placeholder' => 'Endereço interno. Ex: \'admin/pagina\' (sem aspas) para \':url\'',
-        'external_link' => 'Link Externo',
-        'choose_file' => 'Escolher arquivo',
-        'select_all' => 'Selecionar todos',
-        'select_files' => 'Selecionar todos os arquivos',
-        'select_file' => 'Selecionar arquivo',
+        'external_link'             => 'Link Externo',
+        'choose_file'               => 'Escolher arquivo',
+        'select_all'                => 'Selecionar todos',
+        'select_files'              => 'Selecionar todos os arquivos',
+        'select_file'               => 'Selecionar arquivo',
 
     //Table field
-        'table_cant_add' => 'Não foi possível adicionar um(a) novo(a) :entity',
+        'table_cant_add'    => 'Não foi possível adicionar um(a) novo(a) :entity',
         'table_max_reached' => 'Limite de :max alcançado',
 
     // File manager

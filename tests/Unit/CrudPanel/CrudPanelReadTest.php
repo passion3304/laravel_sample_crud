@@ -2,34 +2,34 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\Unit\Models\Article;
+use Backpack\CRUD\Tests\Unit\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Backpack\CRUD\Tests\Unit\Models\User;
-use Backpack\CRUD\Tests\Unit\Models\Article;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CrudPanelReadTest extends BaseDBCrudPanelTest
 {
     private $relationshipColumn = [
-        'name' => 'user_id',
-        'type' => 'select',
-        'entity' => 'user',
+        'name'      => 'user_id',
+        'type'      => 'select',
+        'entity'    => 'user',
         'attribute' => 'name',
     ];
 
     private $nonRelationshipColumn = [
-        'name' => 'field1',
+        'name'  => 'field1',
         'label' => 'Field1',
     ];
 
     private $articleFieldsArray = [
         [
-            'name' => 'content',
+            'name'  => 'content',
             'label' => 'The Content',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         [
-            'name' => 'metas',
+            'name'  => 'metas',
             'label' => 'Metas',
         ],
         [
@@ -42,70 +42,70 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     private $expectedCreateFormArticleFieldsArray = [
         'content' => [
-            'name' => 'content',
+            'name'  => 'content',
             'label' => 'The Content',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'metas' => [
-            'name' => 'metas',
+            'name'  => 'metas',
             'label' => 'Metas',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'tags' => [
-            'name' => 'tags',
+            'name'  => 'tags',
             'label' => 'Tags',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'extras' => [
-            'name' => 'extras',
+            'name'  => 'extras',
             'label' => 'Extras',
-            'type' => 'text',
+            'type'  => 'text',
         ],
     ];
 
     private $expectedUpdateFormArticleFieldsArray = [
         'content' => [
-            'name' => 'content',
+            'name'  => 'content',
             'label' => 'The Content',
-            'type' => 'text',
+            'type'  => 'text',
             'value' => 'Some Content',
         ],
         'metas' => [
-            'name' => 'metas',
+            'name'  => 'metas',
             'label' => 'Metas',
-            'type' => 'text',
+            'type'  => 'text',
             'value' => '{"meta_title":"Meta Title Value","meta_description":"Meta Description Value"}',
         ],
         'tags' => [
-            'name' => 'tags',
+            'name'  => 'tags',
             'label' => 'Tags',
-            'type' => 'text',
+            'type'  => 'text',
             'value' => '{"tags":["tag1","tag2","tag3"]}',
         ],
         'extras' => [
-            'name' => 'extras',
+            'name'  => 'extras',
             'label' => 'Extras',
-            'type' => 'text',
+            'type'  => 'text',
             'value' => '{"extra_details":["detail1","detail2","detail3"]}',
         ],
         'id' => [
-            'name' => 'id',
-            'type' => 'hidden',
+            'name'  => 'id',
+            'type'  => 'hidden',
             'value' => 1,
         ],
     ];
 
     private $uploadField = [
-        'name' => 'image',
-        'label' => 'Image',
-        'type' => 'upload',
+        'name'   => 'image',
+        'label'  => 'Image',
+        'type'   => 'upload',
         'upload' => true,
     ];
 
     private $multipleUploadField = [
-        'name' => 'photos',
-        'label' => 'Photos',
-        'type' => 'upload_multiple',
+        'name'   => 'photos',
+        'label'  => 'Photos',
+        'type'   => 'upload_multiple',
         'upload' => true,
     ];
 

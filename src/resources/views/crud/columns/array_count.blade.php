@@ -5,7 +5,7 @@
 
 <span>
     <?php
-    $suffix = isset($column['suffix'])?$column['suffix']:'items';
+    $suffix = isset($column['suffix']) ? $column['suffix'] : 'items';
 
     // the value should be an array wether or not attribute casting is used
     if (!is_array($array)) {

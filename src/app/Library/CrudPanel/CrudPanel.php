@@ -2,33 +2,33 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Illuminate\Database\Eloquent\Collection;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Access;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Create;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Delete;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Errors;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\AutoFocus;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\AutoSet;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Buttons;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Columns;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Settings;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\AutoFocus;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Create;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Delete;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Errors;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Settings;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
+use Illuminate\Database\Eloquent\Collection;
 
 class CrudPanel
 {
@@ -76,11 +76,11 @@ class CrudPanel
      */
     public function setModel($model_namespace)
     {
-        if (! class_exists($model_namespace)) {
+        if (!class_exists($model_namespace)) {
             throw new \Exception('The model does not exist.', 500);
         }
 
-        if (! method_exists($model_namespace, 'hasCrudTrait')) {
+        if (!method_exists($model_namespace, 'hasCrudTrait')) {
             throw new \Exception('Please use CrudTrait on the model.', 500);
         }
 
@@ -143,7 +143,7 @@ class CrudPanel
     {
         $complete_route = $route.'.index';
 
-        if (! \Route::has($complete_route)) {
+        if (!\Route::has($complete_route)) {
             throw new \Exception('There are no routes for this route name.', 404);
         }
 
@@ -221,9 +221,9 @@ class CrudPanel
      * Check if the controller method being called
      * matches a given string.
      *
-     * @param  string $methodName Name of the method (ex: index, create, update)
+     * @param string $methodName Name of the method (ex: index, create, update)
      *
-     * @return bool                 Whether the condition is met or not.
+     * @return bool Whether the condition is met or not.
      */
     public function actionIs($methodName)
     {
@@ -261,7 +261,7 @@ class CrudPanel
 
     public function sync($type, $fields, $attributes)
     {
-        if (! empty($this->{$type})) {
+        if (!empty($this->{$type})) {
             $this->{$type} = array_map(function ($field) use ($fields, $attributes) {
                 if (in_array($field['name'], (array) $fields)) {
                     $field = array_merge($field, $attributes);
@@ -277,7 +277,6 @@ class CrudPanel
      *
      * @example For a given string 'company' and a relation between App/Models/User and App/Models/Company, defined by a
      *          company() method on the user model, the 'App/Models/Company' string will be returned.
-     *
      * @example For a given string 'company.address' and a relation between App/Models/User, App/Models/Company and
      *          App/Models/Address defined by a company() method on the user model and an address() method on the
      *          company model, the 'App/Models/Address' string will be returned.
@@ -294,11 +293,11 @@ class CrudPanel
     {
         $relationArray = explode('.', $relationString);
 
-        if (! isset($length)) {
+        if (!isset($length)) {
             $length = count($relationArray);
         }
 
-        if (! isset($model)) {
+        if (!isset($model)) {
             $model = $this->model;
         }
 
@@ -352,7 +351,7 @@ class CrudPanel
         $relation = $model->{$firstRelationName};
 
         $results = [];
-        if (! empty($relation)) {
+        if (!empty($relation)) {
             if ($relation instanceof Collection) {
                 $currentResults = $relation->toArray();
             } else {
@@ -361,7 +360,7 @@ class CrudPanel
 
             array_shift($relationArray);
 
-            if (! empty($relationArray)) {
+            if (!empty($relationArray)) {
                 foreach ($currentResults as $currentResult) {
                     $results = array_merge($results, $this->getRelationModelInstances($currentResult, implode('.', $relationArray)));
                 }

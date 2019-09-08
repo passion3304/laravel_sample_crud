@@ -38,7 +38,7 @@ trait Stats
     private function sendUsageStats()
     {
         // only send usage stats in production
-        if (! $this->runningInProduction()) {
+        if (!$this->runningInProduction()) {
             return;
         }
 
@@ -50,21 +50,21 @@ trait Stats
         $url = 'https://backpackforlaravel.com/api/stats';
         $method = 'PUT';
         $stats = [
-            'HTTP_HOST' => $_SERVER['HTTP_HOST'] ?? false,
-            'APP_URL' => $_SERVER['APP_URL'] ?? false,
-            'APP_ENV' => $this->app->environment() ?? false,
-            'APP_DEBUG' => $_SERVER['APP_DEBUG'] ?? false,
-            'SERVER_ADDR' => $_SERVER['SERVER_ADDR'] ?? false,
-            'SERVER_ADMIN' => $_SERVER['SERVER_ADMIN'] ?? false,
-            'SERVER_NAME' => $_SERVER['SERVER_NAME'] ?? false,
-            'SERVER_PORT' => $_SERVER['SERVER_PORT'] ?? false,
-            'SERVER_PROTOCOL' => $_SERVER['SERVER_PROTOCOL'] ?? false,
-            'SERVER_SOFTWARE' => $_SERVER['SERVER_SOFTWARE'] ?? false,
-            'DB_CONNECTION' => $_SERVER['DB_CONNECTION'] ?? false,
-            'LARAVEL_VERSION' => $this->app->version() ?? false,
+            'HTTP_HOST'             => $_SERVER['HTTP_HOST'] ?? false,
+            'APP_URL'               => $_SERVER['APP_URL'] ?? false,
+            'APP_ENV'               => $this->app->environment() ?? false,
+            'APP_DEBUG'             => $_SERVER['APP_DEBUG'] ?? false,
+            'SERVER_ADDR'           => $_SERVER['SERVER_ADDR'] ?? false,
+            'SERVER_ADMIN'          => $_SERVER['SERVER_ADMIN'] ?? false,
+            'SERVER_NAME'           => $_SERVER['SERVER_NAME'] ?? false,
+            'SERVER_PORT'           => $_SERVER['SERVER_PORT'] ?? false,
+            'SERVER_PROTOCOL'       => $_SERVER['SERVER_PROTOCOL'] ?? false,
+            'SERVER_SOFTWARE'       => $_SERVER['SERVER_SOFTWARE'] ?? false,
+            'DB_CONNECTION'         => $_SERVER['DB_CONNECTION'] ?? false,
+            'LARAVEL_VERSION'       => $this->app->version() ?? false,
             'BACKPACK_BASE_VERSION' => \PackageVersions\Versions::getVersion('backpack/base') ?? false,
             'BACKPACK_CRUD_VERSION' => \PackageVersions\Versions::getVersion('backpack/crud') ?? false,
-            'BACKPACK_LICENSE' => config('backpack.base.license_code') ?? false,
+            'BACKPACK_LICENSE'      => config('backpack.base.license_code') ?? false,
         ];
 
         // send this info to the main website to store it in the db
@@ -81,9 +81,10 @@ trait Stats
      * It spins up a separate process for this, and doesn't listen for a reponse,
      * so it has minimal to no impact on pageload.
      *
-     * @param  string $method  HTTP Method to use for the request.
-     * @param  string $url     URL to point the request at.
-     * @param  array $payload  The data you want sent to the URL.
+     * @param string $method  HTTP Method to use for the request.
+     * @param string $url     URL to point the request at.
+     * @param array  $payload The data you want sent to the URL.
+     *
      * @return void
      */
     private function makeCurlRequest($method, $url, $payload)
@@ -105,9 +106,10 @@ trait Stats
      * geographic location this is usually slower than CURL. However,
      * unlike CURL, it works on most machines, so it's reliable.
      *
-     * @param  string $method  HTTP Method to use for the request.
-     * @param  string $url     URL to point the request at.
-     * @param  array $payload  The data you want sent to the URL.
+     * @param string $method  HTTP Method to use for the request.
+     * @param string $url     URL to point the request at.
+     * @param array  $payload The data you want sent to the URL.
+     *
      * @return void
      */
     private function makeGuzzleRequest($method, $url, $payload)
@@ -115,10 +117,10 @@ trait Stats
         try {
             $client = new \GuzzleHttp\Client();
             $res = $client->request($method, $url, [
-                'form_params' => $payload,
-                'http_errors' => false,
+                'form_params'         => $payload,
+                'http_errors'         => false,
                 'connect_timeout'     => 0.5,
-                'timeout'     => 0.5,
+                'timeout'             => 0.5,
             ]);
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
             // do nothing

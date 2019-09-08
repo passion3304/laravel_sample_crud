@@ -38,23 +38,23 @@ trait Fields
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
-        if (isset($newField['entity']) && ! isset($newField['model'])) {
+        if (isset($newField['entity']) && !isset($newField['model'])) {
             $newField['model'] = $this->getRelationModel($newField['entity']);
         }
 
         // if the label is missing, we should set it
-        if (! isset($newField['label'])) {
+        if (!isset($newField['label'])) {
             $newField['label'] = mb_ucfirst(str_replace('_', ' ', $newField['name']));
         }
 
         // if the field type is missing, we should set it
-        if (! isset($newField['type'])) {
+        if (!isset($newField['type'])) {
             $newField['type'] = $this->getFieldTypeFromDbColumnType($newField['name']);
         }
 
         // if a tab was mentioned, we should enable it
         if (isset($newField['tab'])) {
-            if (! $this->tabsEnabled()) {
+            if (!$this->tabsEnabled()) {
                 $this->enableTabs();
             }
         }
@@ -155,11 +155,11 @@ trait Fields
     /**
      * Remove many fields from the create/update/both forms by their name.
      *
-     * @param array  $array_of_names A simple array of the names of the fields to be removed.
+     * @param array $array_of_names A simple array of the names of the fields to be removed.
      */
     public function removeFields($array_of_names)
     {
-        if (! empty($array_of_names)) {
+        if (!empty($array_of_names)) {
             foreach ($array_of_names as $name) {
                 $this->removeField($name);
             }
@@ -172,7 +172,7 @@ trait Fields
     public function removeAllFields()
     {
         $current_fields = $this->getCurrentFields();
-        if (! empty($current_fields)) {
+        if (!empty($current_fields)) {
             foreach ($current_fields as $field) {
                 $this->removeField($field['name']);
             }
@@ -211,7 +211,7 @@ trait Fields
      * Check if field is the first of its type in the given fields array.
      * It's used in each field_type.blade.php to determine wether to push the css and js content or not (we only need to push the js and css for a field the first time it's loaded in the form, not any subsequent times).
      *
-     * @param array $field        The current field being tested if it's the first of its type.
+     * @param array $field The current field being tested if it's the first of its type.
      *
      * @return bool true/false
      */
@@ -246,7 +246,7 @@ trait Fields
                 $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $casted_attributes[$field['name']];
 
-                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && ! is_array($data[$field['name']])) {
+                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && !empty($data[$field['name']]) && !is_array($data[$field['name']])) {
                     try {
                         $data[$field['name']] = json_decode($data[$field['name']]);
                     } catch (\Exception $e) {
@@ -271,7 +271,7 @@ trait Fields
      * Order the CRUD fields. If certain fields are missing from the given order array, they will be
      * pushed to the new fields array in the original order.
      *
-     * @param array  $order An array of field names in the desired order.
+     * @param array $order An array of field names in the desired order.
      */
     public function orderFields($order)
     {
@@ -330,8 +330,8 @@ trait Fields
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
      *
-     * @param  string   $form create/update/both - defaults to 'both'
-     * @param  bool|int $id   id of the entity - defaults to false
+     * @param string   $form create/update/both - defaults to 'both'
+     * @param bool|int $id   id of the entity - defaults to false
      *
      * @return bool
      */

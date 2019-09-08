@@ -23,11 +23,12 @@ trait HasTranslations
      * Use the forced locale if present.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function getAttributeValue($key)
     {
-        if (! $this->isTranslatableAttribute($key)) {
+        if (!$this->isTranslatableAttribute($key)) {
             return parent::getAttributeValue($key);
         }
 
@@ -66,6 +67,7 @@ trait HasTranslations
      * Create translated items as json.
      *
      * @param array $attributes
+     *
      * @return static
      */
     public static function create(array $attributes = [])
@@ -94,11 +96,12 @@ trait HasTranslations
      *
      * @param array $attributes
      * @param array $options
+     *
      * @return bool
      */
     public function update(array $attributes = [], array $options = [])
     {
-        if (! $this->exists) {
+        if (!$this->exists) {
             return false;
         }
 
@@ -174,7 +177,8 @@ trait HasTranslations
      * Magic method to get the db entries already translated in the wanted locale.
      *
      * @param string $method
-     * @param array $parameters
+     * @param array  $parameters
+     *
      * @return
      */
     public function __call($method, $parameters)

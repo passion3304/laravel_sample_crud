@@ -14,9 +14,9 @@ return [
     */
 
     // Forms
-    'save_action_save_and_new' => 'Uložit a přidat nový',
-    'save_action_save_and_edit' => 'Uložit a upravovat',
-    'save_action_save_and_back' => 'Uložit a zpět',
+    'save_action_save_and_new'         => 'Uložit a přidat nový',
+    'save_action_save_and_edit'        => 'Uložit a upravovat',
+    'save_action_save_and_back'        => 'Uložit a zpět',
     'save_action_changed_notification' => 'Výchozí chování po uložení bylo změněno.',
 
     // Create form
@@ -66,15 +66,15 @@ return [
     'delete_confirmation_not_deleted_message'     => 'Nic se nestalo. Váše položka je v bezpečí.',
 
     // Bulk actions
-    'bulk_no_entries_selected_title' => 'Nebyly vybrány žádné položky',
+    'bulk_no_entries_selected_title'   => 'Nebyly vybrány žádné položky',
     'bulk_no_entries_selected_message' => 'Vyberte jednu nebo více položek, abyste na nich provedli hromadnou akci.',
 
     // Bulk confirmation
-    'bulk_delete_are_you_sure' => 'Opravdu chcete smazat těchto :number položek?',
-    'bulk_delete_sucess_title' => 'Položky smazány',
+    'bulk_delete_are_you_sure'   => 'Opravdu chcete smazat těchto :number položek?',
+    'bulk_delete_sucess_title'   => 'Položky smazány',
     'bulk_delete_sucess_message' => ' položek bylo smazáno',
-    'bulk_delete_error_title' => 'Smazání se nezdařilo',
-    'bulk_delete_error_message' => 'Nelze smazat jednu nebo více položek.',
+    'bulk_delete_error_title'    => 'Smazání se nezdařilo',
+    'bulk_delete_error_message'  => 'Nelze smazat jednu nebo více položek.',
 
     // Ajax errors
     'ajax_error_title' => 'Chyba',
@@ -114,7 +114,7 @@ return [
 
     // global crud - errors
     'unauthorized_access' => 'Neautorizovaný pristup - pro zobrazení této stránky nemáte potrebna opravneni.',
-    'please_fix' => 'Prosím opravte následující chyby:',
+    'please_fix'          => 'Prosím opravte následující chyby:',
 
     // global crud - success / error notification bubbles
     'insert_success' => 'Položka byla úspěšně přidána.',
@@ -130,28 +130,28 @@ return [
 
     // CRUD yes/no
     'yes' => 'Ano',
-    'no' => 'Ne',
+    'no'  => 'Ne',
 
     // CRUD filters navbar view
-    'filters' => 'Filtry',
+    'filters'        => 'Filtry',
     'toggle_filters' => 'Přepnout filtry',
     'remove_filters' => 'Odstranit filtry',
 
     // Fields
-    'browse_uploads' => 'Procházet soubory',
-    'select_all' => 'Vybrat vše',
-    'select_files' => 'Vybrat soubory',
-    'select_file' => 'Vybrat soubor',
-    'clear' => 'Vyčistit',
-    'page_link' => 'Odkaz na stránku',
-    'page_link_placeholder' => 'http://example.com/your-desired-page',
-    'internal_link' => 'Interní link',
+    'browse_uploads'            => 'Procházet soubory',
+    'select_all'                => 'Vybrat vše',
+    'select_files'              => 'Vybrat soubory',
+    'select_file'               => 'Vybrat soubor',
+    'clear'                     => 'Vyčistit',
+    'page_link'                 => 'Odkaz na stránku',
+    'page_link_placeholder'     => 'http://example.com/your-desired-page',
+    'internal_link'             => 'Interní link',
     'internal_link_placeholder' => 'Interní slug. např.: \'admin/page\' (bez uvozovek) pro \':url\'',
-    'external_link' => 'Externí odkaz',
-    'choose_file' => 'Vybrat soubor',
+    'external_link'             => 'Externí odkaz',
+    'choose_file'               => 'Vybrat soubor',
 
     //Table field
-    'table_cant_add' => 'Nelze přidat nové :entity',
+    'table_cant_add'    => 'Nelze přidat nové :entity',
     'table_max_reached' => 'Maximální počet :max byl dosáhnut',
 
     // File manager

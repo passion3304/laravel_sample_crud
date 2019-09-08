@@ -5,7 +5,7 @@ $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $fie
 
 // if attribute casting is used, convert to JSON
 if (is_array($value)) {
-    $value = json_encode((object)$value);
+    $value = json_encode((object) $value);
 } elseif (is_object($value)) {
     $value = json_encode($value);
 } else {
