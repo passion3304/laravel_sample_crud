@@ -1,3 +1,4 @@
 preset: laravel
 finder:
-  - "*LicenseCheck.php"
+ not-name:
+  - "LicenseCheck.php"
