@@ -117,7 +117,7 @@ trait ListOperation
                 return false;
             }
         });
-        if (!$hasOrderByPrimaryKey) {
+        if (! $hasOrderByPrimaryKey) {
             $this->crud->query->orderByDesc($this->crud->model->getKeyName());
         }
 

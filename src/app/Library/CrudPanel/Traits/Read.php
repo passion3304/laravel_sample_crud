@@ -38,7 +38,7 @@ trait Read
     {
         $id = $this->getCurrentEntryId();
 
-        if (!$id) {
+        if (! $id) {
             return false;
         }
 
@@ -54,7 +54,7 @@ trait Read
      */
     public function getEntry($id)
     {
-        if (!$this->entry) {
+        if (! $this->entry) {
             $this->entry = $this->model->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
@@ -199,7 +199,7 @@ trait Read
     {
         // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
         // assume both arrays are the same length.
-        if (!in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
+        if (! in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
             // Loop through 2 arrays of prop. page_length_menu
             foreach ($this->getOperationSetting('pageLengthMenu') as $key => &$page_length_choices) {
                 // This is a condition that should be always true.
@@ -230,7 +230,7 @@ trait Read
     public function getPageLengthMenu()
     {
         // if already set, use that
-        if (!$this->getOperationSetting('pageLengthMenu')) {
+        if (! $this->getOperationSetting('pageLengthMenu')) {
             // try to get the menu settings from the config file
             $this->setOperationSetting('pageLengthMenu', config('backpack.crud.page_length_menu') ?? [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']]);
 

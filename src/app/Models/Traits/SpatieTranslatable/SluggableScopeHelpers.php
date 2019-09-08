@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers as OriginalSluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers as OriginalSluggableScopeHelpers;
 
 trait SluggableScopeHelpers
 {

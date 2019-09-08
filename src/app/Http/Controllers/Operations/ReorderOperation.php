@@ -53,7 +53,7 @@ trait ReorderOperation
         $this->crud->applyConfigurationFromSettings('reorder');
         $this->crud->hasAccessOrFail('reorder');
 
-        if (!$this->crud->isReorderEnabled()) {
+        if (! $this->crud->isReorderEnabled()) {
             abort(403, 'Reorder is disabled.');
         }
 

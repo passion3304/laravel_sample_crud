@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
-use Illuminate\Support\Str;
 use ReflectionClass;
+use Illuminate\Support\Str;
 
 /**
  * This trait helps a child model (ex: BackpackUser) inherit all relationships of its parent model (ex: User).
@@ -40,7 +40,7 @@ trait InheritsRelationsFromParentModel
 
     public function getTable()
     {
-        if (!isset($this->table)) {
+        if (! isset($this->table)) {
             return str_replace('\\', '', Str::snake(Str::plural(class_basename($this->getParentClass()))));
         }
 

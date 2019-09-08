@@ -38,7 +38,7 @@ trait Stats
     private function sendUsageStats()
     {
         // only send usage stats in production
-        if (!$this->runningInProduction()) {
+        if (! $this->runningInProduction()) {
             return;
         }
 

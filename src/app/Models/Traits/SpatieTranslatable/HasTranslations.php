@@ -28,7 +28,7 @@ trait HasTranslations
      */
     public function getAttributeValue($key)
     {
-        if (!$this->isTranslatableAttribute($key)) {
+        if (! $this->isTranslatableAttribute($key)) {
             return parent::getAttributeValue($key);
         }
 
@@ -101,7 +101,7 @@ trait HasTranslations
      */
     public function update(array $attributes = [], array $options = [])
     {
-        if (!$this->exists) {
+        if (! $this->exists) {
             return false;
         }
 

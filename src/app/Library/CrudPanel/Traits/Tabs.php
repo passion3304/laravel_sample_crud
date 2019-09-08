@@ -32,7 +32,7 @@ trait Tabs
      */
     public function tabsDisabled()
     {
-        return !$this->tabsEnabled();
+        return ! $this->tabsEnabled();
     }
 
     public function setTabsType($type)
@@ -115,7 +115,7 @@ trait Tabs
         $all_fields = $this->getCurrentFields();
 
         $fields_without_a_tab = collect($all_fields)->filter(function ($value, $key) {
-            return !isset($value['tab']);
+            return ! isset($value['tab']);
         });
 
         return $fields_without_a_tab;
@@ -154,7 +154,7 @@ trait Tabs
                 return isset($value['tab']);
             })
             ->each(function ($value, $key) use (&$tabs) {
-                if (!in_array($value['tab'], $tabs)) {
+                if (! in_array($value['tab'], $tabs)) {
                     $tabs[] = $value['tab'];
                 }
             });

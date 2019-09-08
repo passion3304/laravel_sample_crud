@@ -22,7 +22,7 @@ trait ViewsAndRestoresRevisions
             $revisionDate = date('Y-m-d', strtotime((string) $history->created_at));
 
             // Be sure to instantiate the initial grouping array
-            if (!array_key_exists($revisionDate, $revisions)) {
+            if (! array_key_exists($revisionDate, $revisions)) {
                 $revisions[$revisionDate] = [];
             }
 

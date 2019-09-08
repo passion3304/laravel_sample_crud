@@ -3,9 +3,9 @@
 namespace Backpack\CRUD\app\Models\Traits;
 
 use DB;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
 use Traversable;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
 
 trait CrudTrait
 {
@@ -69,7 +69,7 @@ trait CrudTrait
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json_array');
 
-        return !$conn->getDoctrineColumn($table, $column_name)->getNotnull();
+        return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
     }
 
     /*
@@ -86,7 +86,7 @@ trait CrudTrait
     public function addFakes($columns = ['extras'])
     {
         foreach ($columns as $key => $column) {
-            if (!isset($this->attributes[$column])) {
+            if (! isset($this->attributes[$column])) {
                 continue;
             }
 
@@ -135,7 +135,7 @@ trait CrudTrait
      */
     public function shouldDecodeFake($column)
     {
-        return !in_array($column, array_keys($this->casts));
+        return ! in_array($column, array_keys($this->casts));
     }
 
     /**
@@ -147,7 +147,7 @@ trait CrudTrait
      */
     public function shouldEncodeFake($column)
     {
-        return !in_array($column, array_keys($this->casts));
+        return ! in_array($column, array_keys($this->casts));
     }
 
     /*
@@ -221,7 +221,7 @@ trait CrudTrait
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {
         $request = \Request::instance();
-        if (!is_array($this->{$attribute_name})) {
+        if (! is_array($this->{$attribute_name})) {
             $attribute_value = json_decode($this->{$attribute_name}, true) ?? [];
         } else {
             $attribute_value = $this->{$attribute_name};

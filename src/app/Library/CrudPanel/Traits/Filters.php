@@ -59,7 +59,7 @@ trait Filters
         $this->enableFilters();
 
         // check if another filter with the same name exists
-        if (!isset($options['name'])) {
+        if (! isset($options['name'])) {
             abort(500, 'All your filters need names.');
         }
         if ($this->filters()->contains('name', $options['name'])) {
@@ -201,7 +201,7 @@ trait Filters
     {
         $filter = $this->filters()->firstWhere('name', $name);
 
-        if (!$filter) {
+        if (! $filter) {
             abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.');
         }
 
@@ -278,16 +278,16 @@ class CrudFilter
 
     public function checkOptionsIntegrity($options)
     {
-        if (!isset($options['name'])) {
+        if (! isset($options['name'])) {
             abort(500, 'Please make sure all your filters have names.');
         }
-        if (!isset($options['type'])) {
+        if (! isset($options['type'])) {
             abort(500, 'Please make sure all your filters have types.');
         }
-        if (!\View::exists('crud::filters.'.$options['type'])) {
+        if (! \View::exists('crud::filters.'.$options['type'])) {
             abort(500, 'No filter view named "'.$options['type'].'.blade.php" was found.');
         }
-        if (!isset($options['label'])) {
+        if (! isset($options['label'])) {
             abort(500, 'Please make sure all your filters have labels.');
         }
     }

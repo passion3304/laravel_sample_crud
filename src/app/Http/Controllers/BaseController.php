@@ -2,10 +2,10 @@
 
 namespace Backpack\CRUD\app\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 /**
  * @deprecated This file is no longer needed, since it's identical with Illuminate\Routing\Controller

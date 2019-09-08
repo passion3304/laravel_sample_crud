@@ -38,23 +38,23 @@ trait Fields
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
-        if (isset($newField['entity']) && !isset($newField['model'])) {
+        if (isset($newField['entity']) && ! isset($newField['model'])) {
             $newField['model'] = $this->getRelationModel($newField['entity']);
         }
 
         // if the label is missing, we should set it
-        if (!isset($newField['label'])) {
+        if (! isset($newField['label'])) {
             $newField['label'] = mb_ucfirst(str_replace('_', ' ', $newField['name']));
         }
 
         // if the field type is missing, we should set it
-        if (!isset($newField['type'])) {
+        if (! isset($newField['type'])) {
             $newField['type'] = $this->getFieldTypeFromDbColumnType($newField['name']);
         }
 
         // if a tab was mentioned, we should enable it
         if (isset($newField['tab'])) {
-            if (!$this->tabsEnabled()) {
+            if (! $this->tabsEnabled()) {
                 $this->enableTabs();
             }
         }
@@ -159,7 +159,7 @@ trait Fields
      */
     public function removeFields($array_of_names)
     {
-        if (!empty($array_of_names)) {
+        if (! empty($array_of_names)) {
             foreach ($array_of_names as $name) {
                 $this->removeField($name);
             }
@@ -172,7 +172,7 @@ trait Fields
     public function removeAllFields()
     {
         $current_fields = $this->getCurrentFields();
-        if (!empty($current_fields)) {
+        if (! empty($current_fields)) {
             foreach ($current_fields as $field) {
                 $this->removeField($field['name']);
             }
@@ -246,7 +246,7 @@ trait Fields
                 $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $casted_attributes[$field['name']];
 
-                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && !empty($data[$field['name']]) && !is_array($data[$field['name']])) {
+                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && ! is_array($data[$field['name']])) {
                     try {
                         $data[$field['name']] = json_decode($data[$field['name']]);
                     } catch (\Exception $e) {

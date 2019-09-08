@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Carbon\Carbon;
 use Validator;
+use Carbon\Carbon;
 
 trait Search
 {
@@ -24,7 +24,7 @@ trait Search
     {
         return $this->query->where(function ($query) use ($searchTerm) {
             foreach ($this->columns() as $column) {
-                if (!isset($column['type'])) {
+                if (! isset($column['type'])) {
                     abort(400, 'Missing column type when trying to apply search term.');
                 }
 
@@ -274,7 +274,7 @@ trait Search
      */
     private function renderCellView($view, $column, $entry, $rowNumber = false)
     {
-        if (!view()->exists($view)) {
+        if (! view()->exists($view)) {
             $view = 'crud::columns.text'; // fallback to text column
         }
 

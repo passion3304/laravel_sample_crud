@@ -92,7 +92,7 @@ trait Buttons
          */
         $button = $this->buttons()->firstWhere('name', $name);
 
-        if (!$button) {
+        if (! $button) {
             abort(500, 'CRUD Button "'.$name.'" not found. Please check the button exists before you modify it.');
         }
 
@@ -124,7 +124,7 @@ trait Buttons
      */
     public function removeButtons($names, $stack = null)
     {
-        if (!empty($names)) {
+        if (! empty($names)) {
             foreach ($names as $name) {
                 $this->removeButton($name, $stack);
             }

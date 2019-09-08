@@ -9,10 +9,10 @@
 
     $field_language = isset($field['date_picker_options']['language']) ? $field['date_picker_options']['language'] : \App::getLocale();
 
-    if (!isset($field['attributes']['style'])) {
+    if (! isset($field['attributes']['style'])) {
         $field['attributes']['style'] = 'background-color: white!important;';
     }
-    if (!isset($field['attributes']['readonly'])) {
+    if (! isset($field['attributes']['readonly'])) {
         $field['attributes']['readonly'] = 'readonly';
     }
 ?>

@@ -37,7 +37,7 @@
         </div>
         <div class="col-sm-9">
             <!-- external link input -->
-              <div class="page_or_link_value <?php if (!isset($entry) || $entry->type != 'external_link') {
+              <div class="page_or_link_value <?php if (! isset($entry) || $entry->type != 'external_link') {
     echo 'd-none';
 } ?>" id="page_or_link_external_link">
                 <input
@@ -56,7 +56,7 @@
                     >
               </div>
               <!-- internal link input -->
-              <div class="page_or_link_value <?php if (!isset($entry) || $entry->type != 'internal_link') {
+              <div class="page_or_link_value <?php if (! isset($entry) || $entry->type != 'internal_link') {
     echo 'd-none';
 } ?>" id="page_or_link_internal_link">
                 <input

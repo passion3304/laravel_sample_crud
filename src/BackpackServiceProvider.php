@@ -60,7 +60,7 @@ class BackpackServiceProvider extends ServiceProvider
 
         // load a macro for Route,
         // helps developers load all routes for a CRUD resource in one line
-        if (!Route::hasMacro('crud')) {
+        if (! Route::hasMacro('crud')) {
             $this->addRouteMacro();
         }
 
@@ -81,7 +81,7 @@ class BackpackServiceProvider extends ServiceProvider
         // }
 
         // map the elfinder prefix
-        if (!\Config::get('elfinder.route.prefix')) {
+        if (! \Config::get('elfinder.route.prefix')) {
             \Config::set('elfinder.route.prefix', \Config::get('backpack.base.route_prefix').'/elfinder');
         }
     }
@@ -91,7 +91,7 @@ class BackpackServiceProvider extends ServiceProvider
         $middleware_key = config('backpack.base.middleware_key');
         $middleware_class = config('backpack.base.middleware_class');
 
-        if (!is_array($middleware_class)) {
+        if (! is_array($middleware_class)) {
             $router->pushMiddlewareToGroup($middleware_key, $middleware_class);
 
             return;

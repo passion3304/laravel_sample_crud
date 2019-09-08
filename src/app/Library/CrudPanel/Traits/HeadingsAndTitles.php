@@ -18,7 +18,7 @@ trait HeadingsAndTitles
      */
     public function getTitle($action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
@@ -35,7 +35,7 @@ trait HeadingsAndTitles
      */
     public function setTitle($string, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
@@ -56,7 +56,7 @@ trait HeadingsAndTitles
      */
     public function getHeading($action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
@@ -73,7 +73,7 @@ trait HeadingsAndTitles
      */
     public function setHeading($string, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
@@ -94,7 +94,7 @@ trait HeadingsAndTitles
      */
     public function getSubheading($action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 
@@ -111,7 +111,7 @@ trait HeadingsAndTitles
      */
     public function setSubheading($string, $action = false)
     {
-        if (!$action) {
+        if (! $action) {
             $action = $this->getActionMethod();
         }
 

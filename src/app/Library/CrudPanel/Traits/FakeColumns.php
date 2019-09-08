@@ -22,19 +22,19 @@ trait FakeColumns
             if (isset($field['fake']) && $field['fake'] == true) {
                 // add it to the request in its appropriate variable - the one defined, if defined
                 if (isset($field['store_in'])) {
-                    if (!in_array($field['store_in'], $fakeFieldsColumnsArray, true)) {
+                    if (! in_array($field['store_in'], $fakeFieldsColumnsArray, true)) {
                         array_push($fakeFieldsColumnsArray, $field['store_in']);
                     }
                 } else {
                     //otherwise in the one defined in the $crud variable
-                    if (!in_array('extras', $fakeFieldsColumnsArray, true)) {
+                    if (! in_array('extras', $fakeFieldsColumnsArray, true)) {
                         array_push($fakeFieldsColumnsArray, 'extras');
                     }
                 }
             }
         }
 
-        if (!count($fakeFieldsColumnsArray)) {
+        if (! count($fakeFieldsColumnsArray)) {
             $fakeFieldsColumnsArray = ['extras'];
         }
 

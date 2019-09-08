@@ -3,11 +3,11 @@
 <?php
     // if the column has been cast to Carbon or Date (using attribute casting)
     // get the value as a date string
-    if (!function_exists('formatDate')) {
+    if (! function_exists('formatDate')) {
         function formatDate($entry, $dateFieldName)
         {
             $formattedDate = null;
-            if (isset($entry) && !empty($entry->{$dateFieldName})) {
+            if (isset($entry) && ! empty($entry->{$dateFieldName})) {
                 $dateField = $entry->{$dateFieldName};
                 if ($dateField instanceof \Carbon\CarbonInterface) {
                     $formattedDate = $dateField->format('Y-m-d H:i:s');

@@ -76,7 +76,7 @@ class PublishView extends Command
         $sourceFile = $this->sourcePath.$file.'.blade.php';
         $copiedFile = $this->destinationPath.$file.'.blade.php';
 
-        if (!file_exists($sourceFile)) {
+        if (! file_exists($sourceFile)) {
             return $this->error(
                 'Cannot find source view file at '
                 .$sourceFile.
@@ -96,7 +96,7 @@ class PublishView extends Command
             if ($canCopy) {
                 $path = pathinfo($copiedFile);
 
-                if (!file_exists($path['dirname'])) {
+                if (! file_exists($path['dirname'])) {
                     mkdir($path['dirname'], 0755, true);
                 }
 

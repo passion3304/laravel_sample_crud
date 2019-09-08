@@ -63,7 +63,7 @@ trait Columns
     public function addColumn($column)
     {
         // if a string was passed, not an array, change it to an array
-        if (!is_array($column)) {
+        if (! is_array($column)) {
             $column = ['name' => $column];
         }
 
@@ -71,7 +71,7 @@ trait Columns
         $column_with_details = $this->addDefaultLabel($column);
 
         // make sure the column has a name
-        if (!array_key_exists('name', $column_with_details)) {
+        if (! array_key_exists('name', $column_with_details)) {
             $column_with_details['name'] = 'anonymous_column_'.str_random(5);
         }
 
@@ -79,27 +79,27 @@ trait Columns
         $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column_with_details['name']);
 
         // make sure the column has a type
-        if (!array_key_exists('type', $column_with_details)) {
+        if (! array_key_exists('type', $column_with_details)) {
             $column_with_details['type'] = 'text';
         }
 
         // make sure the column has a key
-        if (!array_key_exists('key', $column_with_details)) {
+        if (! array_key_exists('key', $column_with_details)) {
             $column_with_details['key'] = $column_with_details['name'];
         }
 
         // make sure the column has a tableColumn boolean
-        if (!array_key_exists('tableColumn', $column_with_details)) {
+        if (! array_key_exists('tableColumn', $column_with_details)) {
             $column_with_details['tableColumn'] = $columnExistsInDb ? true : false;
         }
 
         // make sure the column has a orderable boolean
-        if (!array_key_exists('orderable', $column_with_details)) {
+        if (! array_key_exists('orderable', $column_with_details)) {
             $column_with_details['orderable'] = $columnExistsInDb ? true : false;
         }
 
         // make sure the column has a searchLogic
-        if (!array_key_exists('searchLogic', $column_with_details)) {
+        if (! array_key_exists('searchLogic', $column_with_details)) {
             $column_with_details['searchLogic'] = $columnExistsInDb ? true : false;
         }
 
@@ -108,14 +108,14 @@ trait Columns
 
         // make sure the column has a priority in terms of visibility
         // if no priority has been defined, use the order in the array plus one
-        if (!array_key_exists('priority', $column_with_details)) {
+        if (! array_key_exists('priority', $column_with_details)) {
             $position_in_columns_array = (int) array_search($column_with_details['key'], array_keys($this->columns()));
             $columnsArray[$column_with_details['key']]['priority'] = $position_in_columns_array + 1;
         }
 
         // if this is a relation type field and no corresponding model was specified, get it from the relation method
         // defined in the main model
-        if (isset($column_with_details['entity']) && !isset($column_with_details['model'])) {
+        if (isset($column_with_details['entity']) && ! isset($column_with_details['model'])) {
             $columnsArray[$column_with_details['key']]['model'] = $this->getRelationModel($column_with_details['entity']);
         }
 
@@ -165,7 +165,7 @@ trait Columns
      */
     public function makeFirstColumn()
     {
-        if (!$this->columns()) {
+        if (! $this->columns()) {
             return false;
         }
 
@@ -227,7 +227,7 @@ trait Columns
      */
     public function addDefaultLabel($array)
     {
-        if (!array_key_exists('label', (array) $array) && array_key_exists('name', (array) $array)) {
+        if (! array_key_exists('label', (array) $array) && array_key_exists('name', (array) $array)) {
             $array = array_merge(['label' => mb_ucfirst($this->makeLabel($array['name']))], $array);
 
             return $array;
@@ -255,7 +255,7 @@ trait Columns
      */
     public function removeColumns($columns)
     {
-        if (!empty($columns)) {
+        if (! empty($columns)) {
             foreach ($columns as $columnKey) {
                 $this->removeColumn($columnKey);
             }

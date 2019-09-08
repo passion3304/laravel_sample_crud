@@ -113,7 +113,7 @@ trait Validation
      */
     public function isRequired($inputKey)
     {
-        if (!$this->hasOperationSetting('requiredFields')) {
+        if (! $this->hasOperationSetting('requiredFields')) {
             return false;
         }
 

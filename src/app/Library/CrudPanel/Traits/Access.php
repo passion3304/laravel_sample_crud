@@ -35,7 +35,7 @@ trait Access
             $this->set($op.'.access', false);
         }
 
-        return !$this->hasAccessToAny($operation);
+        return ! $this->hasAccessToAny($operation);
     }
 
     /**
@@ -78,7 +78,7 @@ trait Access
     public function hasAccessToAll($operation_array)
     {
         foreach ((array) $operation_array as $key => $operation) {
-            if (!$this->get($operation.'.access')) {
+            if (! $this->get($operation.'.access')) {
                 return false;
             }
         }
@@ -97,7 +97,7 @@ trait Access
      */
     public function hasAccessOrFail($operation)
     {
-        if (!$this->get($operation.'.access')) {
+        if (! $this->get($operation.'.access')) {
             throw new AccessDeniedException(trans('backpack::crud.unauthorized_access', ['access' => $operation]));
         }
 

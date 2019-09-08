@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait Create
 {
@@ -156,7 +156,7 @@ trait Create
      */
     private function createRelationsForItem($item, $formattedData)
     {
-        if (!isset($formattedData['relations'])) {
+        if (! isset($formattedData['relations'])) {
             return false;
         }
 
@@ -213,11 +213,11 @@ trait Create
                 $key = implode('.relations.', explode('.', $relationField['entity']));
                 $fieldData = array_get($relationData, 'relations.'.$key, []);
 
-                if (!array_key_exists('model', $fieldData)) {
+                if (! array_key_exists('model', $fieldData)) {
                     $fieldData['model'] = $relationField['model'];
                 }
 
-                if (!array_key_exists('parent', $fieldData)) {
+                if (! array_key_exists('parent', $fieldData)) {
                     $fieldData['parent'] = $this->getRelationModel($relationField['entity'], -1);
                 }
 

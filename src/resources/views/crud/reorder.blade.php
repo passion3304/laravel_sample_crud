@@ -28,7 +28,7 @@
 <?php
 function tree_element($entry, $key, $all_entries, $crud)
 {
-    if (!isset($entry->tree_element_shown)) {
+    if (! isset($entry->tree_element_shown)) {
         // mark the element as shown
         $all_entries[$key]->tree_element_shown = true;
         $entry->tree_element_shown = true;

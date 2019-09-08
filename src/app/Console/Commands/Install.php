@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Install extends Command
 {
@@ -85,7 +85,7 @@ class Install extends Command
                     $this->executeProcess('mkdir -p public/uploads');
                     break;
                 case '\\': // windows
-                    if (!file_exists('public\uploads')) {
+                    if (! file_exists('public\uploads')) {
                         $this->executeProcess('mkdir public\uploads');
                     }
                     break;
@@ -136,7 +136,7 @@ class Install extends Command
         });
 
         // executes after the command finishes
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 
