@@ -38,7 +38,7 @@ trait Read
     {
         $id = $this->getCurrentEntryId();
 
-        if (! $id) {
+        if (!$id) {
             return false;
         }
 
@@ -54,7 +54,7 @@ trait Read
      */
     public function getEntry($id)
     {
-        if (! $this->entry) {
+        if (!$this->entry) {
             $this->entry = $this->model->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
@@ -136,29 +136,29 @@ trait Read
         $this->setOperationSetting('bulkActions', true);
 
         $this->addColumn([
-            'type' => 'checkbox',
-            'name' => 'bulk_actions',
-            'label' => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" style="width: 16px; height: 16px;" />',
-            'priority' => 1,
-            'searchLogic' => false,
-            'orderable' => false,
-            'visibleInTable' => true,
-            'visibleInModal' => false,
+            'type'            => 'checkbox',
+            'name'            => 'bulk_actions',
+            'label'           => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" style="width: 16px; height: 16px;" />',
+            'priority'        => 1,
+            'searchLogic'     => false,
+            'orderable'       => false,
+            'visibleInTable'  => true,
+            'visibleInModal'  => false,
             'visibleInExport' => false,
-            'visibleInShow' => false,
+            'visibleInShow'   => false,
         ])->makeFirstColumn();
 
         $this->addColumn([
-            'type' => 'custom_html',
-            'name' => 'blank_first_column',
-            'label' => ' ',
-            'priority' => 1,
-            'searchLogic' => false,
-            'orderable' => false,
-            'visibleInTabel' => true,
-            'visibleInModal' => false,
+            'type'            => 'custom_html',
+            'name'            => 'blank_first_column',
+            'label'           => ' ',
+            'priority'        => 1,
+            'searchLogic'     => false,
+            'orderable'       => false,
+            'visibleInTabel'  => true,
+            'visibleInModal'  => false,
             'visibleInExport' => false,
-            'visibleInShow' => false,
+            'visibleInShow'   => false,
         ])->makeFirstColumn();
     }
 
@@ -199,7 +199,7 @@ trait Read
     {
         // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
         // assume both arrays are the same length.
-        if (! in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
+        if (!in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
             // Loop through 2 arrays of prop. page_length_menu
             foreach ($this->getOperationSetting('pageLengthMenu') as $key => &$page_length_choices) {
                 // This is a condition that should be always true.
@@ -213,9 +213,9 @@ trait Read
     /**
      * Specify array of available page lengths on the list view.
      *
-     * @param array $menu  1d array of page length values,
-     *                     or 2d array (first array: page length values, second array: page length labels)
-     *                     More at: https://datatables.net/reference/option/lengthMenu
+     * @param array $menu 1d array of page length values,
+     *                    or 2d array (first array: page length values, second array: page length labels)
+     *                    More at: https://datatables.net/reference/option/lengthMenu
      */
     public function setPageLengthMenu($menu)
     {
@@ -230,7 +230,7 @@ trait Read
     public function getPageLengthMenu()
     {
         // if already set, use that
-        if (! $this->getOperationSetting('pageLengthMenu')) {
+        if (!$this->getOperationSetting('pageLengthMenu')) {
             // try to get the menu settings from the config file
             $this->setOperationSetting('pageLengthMenu', config('backpack.crud.page_length_menu') ?? [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']]);
 
@@ -265,6 +265,7 @@ trait Read
 
     /**
      * Check if export buttons are enabled for the table view.
+     *
      * @return bool
      */
     public function exportButtons()

@@ -30,12 +30,14 @@ class PublishView extends Command
 
     /**
      * The directory where the views will be published FROM.
+     *
      * @var string
      */
     public $sourcePath = 'vendor/backpack/crud/src/resources/views/';
 
     /**
      * The directory where the views will pe published TO.
+     *
      * @var string
      */
     public $destinationPath = 'resources/views/vendor/backpack/';
@@ -65,7 +67,8 @@ class PublishView extends Command
     /**
      * Take a blade file from the vendor folder and publish it to the resources folder.
      *
-     * @param  string $file     The filename without extension
+     * @param string $file The filename without extension
+     *
      * @return void
      */
     protected function publishFile($file)
@@ -73,7 +76,7 @@ class PublishView extends Command
         $sourceFile = $this->sourcePath.$file.'.blade.php';
         $copiedFile = $this->destinationPath.$file.'.blade.php';
 
-        if (! file_exists($sourceFile)) {
+        if (!file_exists($sourceFile)) {
             return $this->error(
                 'Cannot find source view file at '
                 .$sourceFile.
@@ -93,7 +96,7 @@ class PublishView extends Command
             if ($canCopy) {
                 $path = pathinfo($copiedFile);
 
-                if (! file_exists($path['dirname'])) {
+                if (!file_exists($path['dirname'])) {
                     mkdir($path['dirname'], 0755, true);
                 }
 

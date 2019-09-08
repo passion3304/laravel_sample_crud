@@ -16,13 +16,13 @@ class UsersTableSeeder extends Seeder
         $now = \Carbon\Carbon::now();
 
         DB::table('users')->insert([[
-            'id' => 1,
-            'name' => $faker->name,
-            'email' => $faker->safeEmail,
-            'password' => bcrypt('secret'),
+            'id'             => 1,
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt('secret'),
             'remember_token' => str_random(10),
-            'created_at' => $now,
-            'updated_at' => $now,
+            'created_at'     => $now,
+            'updated_at'     => $now,
         ]]);
 
         DB::table('user_role')->insert([
@@ -31,16 +31,16 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('account_details')->insert([
-            'user_id' => 1,
-            'nickname' => $faker->firstName(),
+            'user_id'         => 1,
+            'nickname'        => $faker->firstName(),
             'profile_picture' => $faker->imageUrl(),
         ]);
 
         DB::table('addresses')->insert([
             'account_details_id' => 1,
-            'city' => $faker->city,
-            'street' => $faker->streetName,
-            'number' => $faker->randomDigitNotNull,
+            'city'               => $faker->city,
+            'street'             => $faker->streetName,
+            'number'             => $faker->randomDigitNotNull,
         ]);
     }
 }

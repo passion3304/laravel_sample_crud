@@ -29,7 +29,7 @@ trait FakeFields
                 $fakeFieldKey = isset($field['store_in']) ? $field['store_in'] : 'extras';
                 $this->addCompactedField($requestInput, $field['name'], $fakeFieldKey);
 
-                if (! in_array($fakeFieldKey, $compactedFakeFields)) {
+                if (!in_array($fakeFieldKey, $compactedFakeFields)) {
                     $compactedFakeFields[] = $fakeFieldKey;
                 }
             }
@@ -37,7 +37,7 @@ trait FakeFields
 
         // json_encode all fake_value columns if applicable in the database, so they can be properly stored and interpreted
         foreach ($compactedFakeFields as $value) {
-            if (! (property_exists($this->model, 'translatable') && in_array($value, $this->model->getTranslatableAttributes(), true)) && $this->model->shouldEncodeFake($value)) {
+            if (!(property_exists($this->model, 'translatable') && in_array($value, $this->model->getTranslatableAttributes(), true)) && $this->model->shouldEncodeFake($value)) {
                 $requestInput[$value] = json_encode($requestInput[$value]);
             }
         }

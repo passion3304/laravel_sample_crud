@@ -15,8 +15,8 @@ trait Update
     /**
      * Update a row in the database.
      *
-     * @param  int   $id   The entity's id
-     * @param  array $data All inputs to be updated.
+     * @param int   $id   The entity's id
+     * @param array $data All inputs to be updated.
      *
      * @return object
      */
@@ -50,7 +50,7 @@ trait Update
 
         foreach ($fields as &$field) {
             // set the value
-            if (! isset($field['value'])) {
+            if (!isset($field['value'])) {
                 if (isset($field['subfields'])) {
                     $field['value'] = [];
                     foreach ($field['subfields'] as $subfield) {
@@ -63,7 +63,7 @@ trait Update
         }
 
         // always have a hidden input for the entry id
-        if (! array_key_exists('id', $fields)) {
+        if (!array_key_exists('id', $fields)) {
             $fields['id'] = [
                 'name'  => $entry->getKeyName(),
                 'value' => $entry->getKey(),

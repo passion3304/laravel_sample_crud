@@ -79,7 +79,7 @@ class PublishBackpackUserModel extends GeneratorCommand
     {
         $stub = str_replace('Backpack\CRUD\app\Models;', $this->laravel->getNamespace().'Models;', $stub);
 
-        if (! $this->files->exists($this->laravel['path'].'/User.php') && $this->files->exists($this->laravel['path'].'/Models/User.php')) {
+        if (!$this->files->exists($this->laravel['path'].'/User.php') && $this->files->exists($this->laravel['path'].'/Models/User.php')) {
             $stub = str_replace($this->laravel->getNamespace().'User', $this->laravel->getNamespace().'Models\User', $stub);
         }
 

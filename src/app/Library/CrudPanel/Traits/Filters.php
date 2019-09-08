@@ -25,7 +25,7 @@ trait Filters
     public function enableFilters()
     {
         if ($this->filtersDisabled()) {
-            $this->setOperationSetting('filters', new FiltersCollection);
+            $this->setOperationSetting('filters', new FiltersCollection());
         }
     }
 
@@ -36,14 +36,14 @@ trait Filters
 
     public function clearFilters()
     {
-        $this->setOperationSetting('filters', new FiltersCollection);
+        $this->setOperationSetting('filters', new FiltersCollection());
     }
 
     /**
      * Add a filter to the CRUD table view.
      *
-     * @param array               $options        Name, type, label, etc.
-     * @param bool|array|\Closure $values         The HTML for the filter.
+     * @param array               $options       Name, type, label, etc.
+     * @param bool|array|\Closure $values        The HTML for the filter.
      * @param bool|\Closure       $filterLogic   Query modification (filtering) logic when filter is active.
      * @param bool|\Closure       $fallbackLogic Query modification (filtering) logic when filter is not active.
      */
@@ -59,7 +59,7 @@ trait Filters
         $this->enableFilters();
 
         // check if another filter with the same name exists
-        if (! isset($options['name'])) {
+        if (!isset($options['name'])) {
             abort(500, 'All your filters need names.');
         }
         if ($this->filters()->contains('name', $options['name'])) {
@@ -77,7 +77,7 @@ trait Filters
     /**
      * Apply the filter.
      *
-     * @param CrudFilter $filter
+     * @param CrudFilter              $filter
      * @param ParameterBag|array|null $input
      */
     public function applyFilter(CrudFilter $filter, $input = null)
@@ -192,16 +192,16 @@ trait Filters
     /**
      * Modify the attributes of a filter.
      *
-     * @param  string $name          The filter name.
-     * @param  array  $modifications An array of changes to be made.
+     * @param string $name          The filter name.
+     * @param array  $modifications An array of changes to be made.
      *
-     * @return CrudFilter               The filter that has suffered modifications, for daisychaining methods.
+     * @return CrudFilter The filter that has suffered modifications, for daisychaining methods.
      */
     public function modifyFilter($name, $modifications)
     {
         $filter = $this->filters()->firstWhere('name', $name);
 
-        if (! $filter) {
+        if (!$filter) {
             abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.');
         }
 
@@ -225,7 +225,7 @@ trait Filters
 
     public function removeAllFilters()
     {
-        $this->setOperationSetting('filters', new FiltersCollection);
+        $this->setOperationSetting('filters', new FiltersCollection());
     }
 }
 
@@ -278,16 +278,16 @@ class CrudFilter
 
     public function checkOptionsIntegrity($options)
     {
-        if (! isset($options['name'])) {
+        if (!isset($options['name'])) {
             abort(500, 'Please make sure all your filters have names.');
         }
-        if (! isset($options['type'])) {
+        if (!isset($options['type'])) {
             abort(500, 'Please make sure all your filters have types.');
         }
-        if (! \View::exists('crud::filters.'.$options['type'])) {
+        if (!\View::exists('crud::filters.'.$options['type'])) {
             abort(500, 'No filter view named "'.$options['type'].'.blade.php" was found.');
         }
-        if (! isset($options['label'])) {
+        if (!isset($options['label'])) {
             abort(500, 'Please make sure all your filters have labels.');
         }
     }

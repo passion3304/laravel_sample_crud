@@ -56,7 +56,8 @@ trait SaveActions
     /**
      * Change the session variable that remembers what to do after the "Save" action.
      *
-     * @param  string|null  $forceSaveAction
+     * @param string|null $forceSaveAction
+     *
      * @return void
      */
     public function setSaveAction($forceSaveAction = null)
@@ -75,7 +76,8 @@ trait SaveActions
     /**
      * Redirect to the correct URL, depending on which save action has been selected.
      *
-     * @param  string  $itemId
+     * @param string $itemId
+     *
      * @return \Illuminate\Http\Response
      */
     public function performSaveAction($itemId = null)
@@ -105,8 +107,8 @@ trait SaveActions
         // if the request is AJAX, return a JSON response
         if ($this->request->ajax()) {
             return [
-                'success' => true,
-                'data' => $this->entry,
+                'success'      => true,
+                'data'         => $this->entry,
                 'redirect_url' => $redirectUrl,
             ];
         }
@@ -117,7 +119,8 @@ trait SaveActions
     /**
      * Get the translated text for the Save button.
      *
-     * @param  string  $actionValue
+     * @param string $actionValue
+     *
      * @return string
      */
     private function getSaveActionButtonName($actionValue = 'save_and_back')

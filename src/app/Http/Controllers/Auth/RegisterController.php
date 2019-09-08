@@ -2,11 +2,11 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
-use Validator;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Validator;
 
 class RegisterController extends Controller
 {
@@ -88,7 +88,7 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         // if registration is closed, deny access
-        if (! config('backpack.base.registration_open')) {
+        if (!config('backpack.base.registration_open')) {
             abort(403, trans('backpack::base.registration_closed'));
         }
 
@@ -107,7 +107,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         // if registration is closed, deny access
-        if (! config('backpack.base.registration_open')) {
+        if (!config('backpack.base.registration_open')) {
             abort(403, trans('backpack::base.registration_closed'));
         }
 

@@ -12,12 +12,13 @@ trait HeadingsAndTitles
     /**
      * Get the title string for the current controller method (action).
      *
-     * @param  bool $action   create / edit / reorder / etc
+     * @param bool $action create / edit / reorder / etc
+     *
      * @return string
      */
     public function getTitle($action = false)
     {
-        if (! $action) {
+        if (!$action) {
             $action = $this->getActionMethod();
         }
 
@@ -34,7 +35,7 @@ trait HeadingsAndTitles
      */
     public function setTitle($string, $action = false)
     {
-        if (! $action) {
+        if (!$action) {
             $action = $this->getActionMethod();
         }
 
@@ -49,12 +50,13 @@ trait HeadingsAndTitles
     /**
      * Get the heading string for the current controller method (action).
      *
-     * @param  bool $action   create / edit / reorder / etc
+     * @param bool $action create / edit / reorder / etc
+     *
      * @return string
      */
     public function getHeading($action = false)
     {
-        if (! $action) {
+        if (!$action) {
             $action = $this->getActionMethod();
         }
 
@@ -71,7 +73,7 @@ trait HeadingsAndTitles
      */
     public function setHeading($string, $action = false)
     {
-        if (! $action) {
+        if (!$action) {
             $action = $this->getActionMethod();
         }
 
@@ -86,12 +88,13 @@ trait HeadingsAndTitles
     /**
      * Get the subheading for a certain controller method (action).
      *
-     * @param  bool $action   create / edit / reorder / etc
+     * @param bool $action create / edit / reorder / etc
+     *
      * @return string
      */
     public function getSubheading($action = false)
     {
-        if (! $action) {
+        if (!$action) {
             $action = $this->getActionMethod();
         }
 
@@ -108,7 +111,7 @@ trait HeadingsAndTitles
      */
     public function setSubheading($string, $action = false)
     {
-        if (! $action) {
+        if (!$action) {
             $action = $this->getActionMethod();
         }
 
