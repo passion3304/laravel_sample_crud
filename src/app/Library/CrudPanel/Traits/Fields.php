@@ -60,7 +60,7 @@ trait Fields
         }
 
         $fields = $this->getOperationSetting('fields');
-        $fieldKey = is_array($newField['name']) ? implode("_", $newField['name']) : $newField['name'];
+        $fieldKey = is_array($newField['name']) ? implode('_', $newField['name']) : $newField['name'];
         $fields = \Arr::add($this->fields(), $fieldKey, $newField);
         $this->setOperationSetting('fields', $fields);
 
@@ -445,7 +445,7 @@ trait Fields
 
     /**
      * Get a list of all field names for the current operation.
-     * 
+     *
      * @return array
      */
     public function getAllFieldNames()
@@ -455,7 +455,7 @@ trait Fields
 
     /**
      * Returns the request without anything that might have been maliciously inserted.
-     * Only specific field names that have been introduced with addField() are kept in the request. 
+     * Only specific field names that have been introduced with addField() are kept in the request.
      */
     public function getStrippedSaveRequest()
     {
