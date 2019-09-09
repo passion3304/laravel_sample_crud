@@ -349,10 +349,6 @@ trait Fields
     // FIELD ASSET MANAGEMENT
     // ----------------------
 
-    // array to store which field types have been loaded on page,
-    // so that we don't load their CSS and JS twice
-    private $loadedFieldTypes = [];
-
     /**
      * Get all the field types whose resources (JS and CSS) have already been loaded on page.
      *
@@ -360,7 +356,17 @@ trait Fields
      */
     public function getLoadedFieldTypes()
     {
-        return $this->loadedFieldTypes;
+        return $this->getOperationSetting('loadedFieldTypes') ?? [];
+    }
+
+    /**
+     * Set an array of field type names as already loaded for the current operation.
+     * 
+     * @param array $fieldTypes
+     */
+    public function setLoadedFieldTypes($fieldTypes)
+    {
+        $this->setOperationSetting('loadedFieldTypes', $fieldTypes);
     }
 
     /**
@@ -389,12 +395,12 @@ trait Fields
      */
     public function addLoadedFieldType($field)
     {
-        $alreadyLoaded = $this->loadedFieldTypes;
+        $alreadyLoaded = $this->getLoadedFieldTypes();
         $type = $this->getFieldTypeWithNamespace($field);
 
         if (! in_array($type, $this->getLoadedFieldTypes(), true)) {
             $alreadyLoaded[] = $type;
-            $this->loadedFieldTypes = $alreadyLoaded;
+            $this->setLoadedFieldTypes($alreadyLoaded);
 
             return true;
         }
