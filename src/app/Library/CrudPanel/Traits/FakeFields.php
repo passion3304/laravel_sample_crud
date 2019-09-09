@@ -26,8 +26,8 @@ trait FakeFields
         foreach ($fields as $field) {
             // compact fake fields
             // cast the field name to array first, to account for array field names
-            // in fields that send multiple inputs and want them all saved to the database 
-            foreach ((array)$field['name'] as $fieldName) {
+            // in fields that send multiple inputs and want them all saved to the database
+            foreach ((array) $field['name'] as $fieldName) {
                 if (isset($field['fake']) && $field['fake'] == true && array_key_exists($fieldName, $requestInput)) {
                     $fakeFieldKey = isset($field['store_in']) ? $field['store_in'] : 'extras';
                     $this->addCompactedField($requestInput, $fieldName, $fakeFieldKey);
@@ -37,7 +37,6 @@ trait FakeFields
                     }
                 }
             }
-            
         }
 
         // json_encode all fake_value columns if applicable in the database, so they can be properly stored and interpreted
