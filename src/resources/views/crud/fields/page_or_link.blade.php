@@ -37,7 +37,9 @@
         </div>
         <div class="col-sm-9">
             <!-- external link input -->
-              <div class="page_or_link_value page_or_link_external_link <?php if (! isset($entry) || $entry->type != 'external_link') { echo 'd-none'; } ?>">
+              <div class="page_or_link_value page_or_link_external_link <?php if (! isset($entry) || $entry->type != 'external_link') {
+    echo 'd-none';
+} ?>">
                 <input
                     type="url"
                     class="form-control"
