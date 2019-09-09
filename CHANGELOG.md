@@ -30,6 +30,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - Laravel-Backpack/Base#387 - Easily remove the bundled js and css and use CDNs if you want to;
 - Laravel-Backpack/Base#380 - New design - Backstrap, based on CoreUI;
 - [Webfactor/Laravel-Generators](https://github.com/webfactor/laravel-generatorssu) to the installation command;
+- the Create and Update operations only save the values of the fields (determined using the name attribute); anything else it ignores; this is for security reasons - to prevent saving fields that have been inserted in the front-end maliciously; 
+- field types can now have arrays for names, instead of strings; when a field type wants to save multiple attributes, it should have all of them as array in the "name" field attribute; this makes sure that they will get saved in the database;
+
 
 ### Fixed
 - merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
@@ -40,6 +43,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - delete button now shows up (and works) in the Show operation view;
 - for the List operation, the default order is now by primary key DESC (instead of ASC); backwards-compatible, in that if a different order has been set for the primary key, that one will be used instead;
 - we've reduced the default character limit for a all columns that had it - previously if ```text```, ```email```, ```model_function```, ```model_function_attribute```, ```phone```, ```row_number```, ```select``` column had its contents bigger than 50 characters, it got shortened (_Something some[...]_); we've reduced this limit to 40 characters, so that more columns can fit into one screen by default; you can overwrite this default with ```'limit' => 50``` in your column;
+- checklist_dependency field now uses array for name;
+- date_range field now uses array for names;
 
 
 ### Removed

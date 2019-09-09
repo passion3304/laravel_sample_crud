@@ -60,7 +60,8 @@ trait Fields
         }
 
         $fields = $this->getOperationSetting('fields');
-        $fields = \Arr::add($this->fields(), $newField['name'], $newField);
+        $fieldKey = is_array($newField['name']) ? implode("_", $newField['name']) : $newField['name'];
+        $fields = \Arr::add($this->fields(), $fieldKey, $newField);
         $this->setOperationSetting('fields', $fields);
 
         return $this;
@@ -240,7 +241,7 @@ trait Fields
         foreach ($fields as $field) {
 
             // Test the field is castable
-            if (isset($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
+            if (isset($field['name']) && is_string($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
 
                 // Handle JSON field types
                 $jsonCastables = ['array', 'object', 'json'];
@@ -440,5 +441,24 @@ trait Fields
     public function fieldTypeNotLoaded($field)
     {
         return ! in_array($this->getFieldTypeWithNamespace($field), $this->getLoadedFieldTypes());
+    }
+
+    /**
+     * Get a list of all field names for the current operation.
+     * 
+     * @return array
+     */
+    public function getAllFieldNames()
+    {
+        return \Arr::flatten(\Arr::pluck($this->getCurrentFields(), 'name'));
+    }
+
+    /**
+     * Returns the request without anything that might have been maliciously inserted.
+     * Only specific field names that have been introduced with addField() are kept in the request. 
+     */
+    public function getStrippedSaveRequest()
+    {
+        return $this->request->only($this->getAllFieldNames());
     }
 }

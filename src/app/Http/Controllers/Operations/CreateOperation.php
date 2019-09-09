@@ -85,7 +85,7 @@ trait CreateOperation
         $request = $this->crud->validateRequest();
 
         // insert item in the db
-        $item = $this->crud->create($request->except(['save_action', '_token', '_method', 'current_tab', 'http_referrer']));
+        $item = $this->crud->create($this->crud->getStrippedSaveRequest());
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message

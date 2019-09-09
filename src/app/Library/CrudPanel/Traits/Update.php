@@ -98,6 +98,17 @@ trait Update
             }
         }
 
-        return $model->{$field['name']};
+        if (is_string($field['name'])) {
+            return $model->{$field['name']};
+        }
+
+        if (is_array($field['name'])) {
+            $result = [];
+            foreach ($field['name'] as $key => $value) {
+                $result = $model->{$value};
+            }
+
+            return $result;
+        }
     }
 }
