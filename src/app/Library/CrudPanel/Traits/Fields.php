@@ -361,7 +361,7 @@ trait Fields
 
     /**
      * Set an array of field type names as already loaded for the current operation.
-     * 
+     *
      * @param array $fieldTypes
      */
     public function setLoadedFieldTypes($fieldTypes)
