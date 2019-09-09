@@ -12,7 +12,6 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        id="select2_ajax_{{ $field['name'] }}"
         data-init-function="bpFieldInitSelect2FromAjaxElement"
         data-column-nullable="{{ $entity_model::isColumnNullable($field['name'])?'true':'false' }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
