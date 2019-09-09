@@ -1,5 +1,8 @@
 <!-- dependencyJson -->
-<div class="form-group col-sm-12 checklist_dependency"  data-entity ="{{ $field['field_unique_name'] }}" @include('crud::inc.field_wrapper_attributes')>
+<div class="form-group col-sm-12 checklist_dependency"  
+     data-entity="{{ $field['field_unique_name'] }}"
+     data-init-function="bpFieldInitChecklistDependencyElement"
+     @include('crud::inc.field_wrapper_attributes')>
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <?php
@@ -181,23 +184,20 @@
 @endpush
 
 @if ($crud->checkIfFieldIsFirstOfItsType($field))
-
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
-    @endpush
+    @php
+        $crud->markFieldTypeAsLoaded($field);
+    @endphp
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
     <!-- include checklist_dependency js-->
     <script>
-      jQuery(document).ready(function($) {
+      function bpFieldInitChecklistDependencyElement(element) {
 
-        $('.checklist_dependency').each(function(index, item){
-
-          var unique_name = $(this).data('entity');
+          var unique_name = element.data('entity');
           var dependencyJson = window[unique_name];
+          var thisField = element;
 
-          var thisField = $(this);
           thisField.find('.primary_list').change(function(){
 
             var idCurrent = $(this).data('id');
@@ -267,8 +267,7 @@
             }
           });
 
-        });
-      });
+      } 
     </script>
     @endpush
 
