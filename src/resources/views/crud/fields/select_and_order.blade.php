@@ -6,9 +6,11 @@
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-    <div class="row">
+    <div class="row" 
+         data-init-function="bpFieldInitSelectAndOrderElement"
+         data-field-name="{{ $field['name'] }}">
         <div class="col-md-12">
-        <ul id="{{ $field['name'] }}_selected" class="{{ $field['name'] }}_connectedSortable select_and_order_selected pull-left">
+        <ul id="{{ $field['name'] }}_selected" data-identifier="selected" class="{{ $field['name'] }}_connectedSortable select_and_order_selected float-left">
             @if(old($field["name"]))
                 @if(is_array(old($field["name"])))
                     @foreach (old($field["name"]) as $key)
@@ -25,7 +27,7 @@
                 @endforeach
             @endif
         </ul>
-        <ul id="{{ $field['name'] }}_all" class="{{ $field['name'] }}_connectedSortable select_and_order_all pull-right">
+        <ul id="{{ $field['name'] }}_all" data-identifier="all" class="{{ $field['name'] }}_connectedSortable select_and_order_all float-right">
             @if(old($field["name"]))
                 @foreach ($field['options'] as $key => $value)
                     @if(!is_array(old($field["name"])) || !in_array($key, old($field["name"])))
@@ -127,32 +129,36 @@
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
 <script>
-    jQuery(document).ready(function($) {
-        $( "#{{ $field['name'] }}_all, #{{ $field['name'] }}_selected" ).sortable({
-            connectWith: ".{{ $field['name'] }}_connectedSortable",
+    function bpFieldInitSelectAndOrderElement(element) {
+        var $selected = element.find('[data-identifier=selected]');
+        var $all = element.find('[data-identifier=all]');
+        var $fieldName = element.attr('data-field-name');
+
+        $( "#"+$fieldName+"_all, #"+$fieldName+"_selected" ).sortable({
+            connectWith: "."+$fieldName+"_connectedSortable",
             update: function() {
                 var updatedlist = $(this).attr('id');
-                if((updatedlist == "{{ $field['name'] }}_selected")) {
-                    $("#{{ $field['name'] }}_results").html("");
-                    if($("#{{ $field['name'] }}_selected").find('li').length==0) {
+                if((updatedlist == $fieldName+"_selected")) {
+                    $("#"+$fieldName+"_results").html("");
+                    if($("#"+$fieldName+"_selected").find('li').length==0) {
                         var input = document.createElement("input");
-                        input.setAttribute('name',"{{ $field['name'] }}");
+                        input.setAttribute('name', $fieldName);
                         input.setAttribute('value',null);
                         input.setAttribute('type','hidden');
-                        $("#{{ $field['name'] }}_results").append(input);
+                        $("#"+$fieldName+"_results").append(input);
                     } else {
-                        $("#{{ $field['name'] }}_selected").find('li').each(function(val,obj) {
+                        $("#"+$fieldName+"_selected").find('li').each(function(val,obj) {
                             var input = document.createElement("input");
-                            input.setAttribute('name',"{{ $field['name'] }}[]");
+                            input.setAttribute('name', $fieldName+"[]");
                             input.setAttribute('value',obj.getAttribute('value'));
                             input.setAttribute('type','hidden');
-                            $("#{{ $field['name'] }}_results").append(input);
+                            $("#"+$fieldName+"_results").append(input);
                         });
                     }
                 }
             }
         }).disableSelection();
-    });
+    }
 </script>
 @endpush
 
