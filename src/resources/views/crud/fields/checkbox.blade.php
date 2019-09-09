@@ -3,7 +3,7 @@
 <div @include('crud::inc.field_wrapper_attributes') >
     @include('crud::inc.field_translatable_icon')
     <div class="checkbox">
-        <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false }}">
+        <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? 0 }}">
     	  <input type="checkbox"
           data-init-function="bpFieldInitCheckbox"
 
