@@ -12,10 +12,10 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
 
-    <div class="row">
+    <div class="row" data-init-function="bpFieldInitPageOrLinkElement">
         <div class="col-sm-3">
             <select
-                id="page_or_link_select"
+                data-identifier="page_or_link_select"
                 name="{{ $field['name'] ?? 'type' }}"
                 @include('crud::inc.field_attributes')
                 >
@@ -37,9 +37,7 @@
         </div>
         <div class="col-sm-9">
             <!-- external link input -->
-              <div class="page_or_link_value <?php if (! isset($entry) || $entry->type != 'external_link') {
-    echo 'd-none';
-} ?>" id="page_or_link_external_link">
+              <div class="page_or_link_value page_or_link_external_link <?php if (! isset($entry) || $entry->type != 'external_link') { echo 'd-none'; } ?>">
                 <input
                     type="url"
                     class="form-control"
@@ -56,9 +54,9 @@
                     >
               </div>
               <!-- internal link input -->
-              <div class="page_or_link_value <?php if (! isset($entry) || $entry->type != 'internal_link') {
+              <div class="page_or_link_value page_or_link_internal_link <?php if (! isset($entry) || $entry->type != 'internal_link') {
     echo 'd-none';
-} ?>" id="page_or_link_internal_link">
+} ?>">
                 <input
                     type="text"
                     class="form-control"
@@ -75,9 +73,9 @@
                     >
               </div>
               <!-- page slug input -->
-              <div class="page_or_link_value <?php if (isset($entry) && $entry->type != 'page_link') {
+              <div class="page_or_link_value page_or_link_page <?php if (isset($entry) && $entry->type != 'page_link') {
     echo 'd-none';
-} ?>" id="page_or_link_page">
+} ?>">
                 <select
                     class="form-control"
                     name="page_id"
@@ -122,32 +120,31 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <script>
-            jQuery(document).ready(function($) {
+            function bpFieldInitPageOrLinkElement(element) {
+                $wrapper = element;
 
-                $("#page_or_link_select").change(function(e) {
-                    $(".page_or_link_value input").attr('disabled', 'disabled');
-                    $(".page_or_link_value select").attr('disabled', 'disabled');
-                    $(".page_or_link_value").removeClass("d-none").addClass("d-none");
-
+                $wrapper.find('[data-identifier=page_or_link_select]').change(function(e) {
+                    $wrapper.find(".page_or_link_value input").attr('disabled', 'disabled');
+                    $wrapper.find(".page_or_link_value select").attr('disabled', 'disabled');
+                    $wrapper.find(".page_or_link_value").removeClass("d-none").addClass("d-none");
 
                     switch($(this).val()) {
                         case 'external_link':
-                            $("#page_or_link_external_link input").removeAttr('disabled');
-                            $("#page_or_link_external_link").removeClass('d-none');
+                            $wrapper.find(".page_or_link_external_link input").removeAttr('disabled');
+                            $wrapper.find(".page_or_link_external_link").removeClass('d-none');
                             break;
 
                         case 'internal_link':
-                            $("#page_or_link_internal_link input").removeAttr('disabled');
-                            $("#page_or_link_internal_link").removeClass('d-none');
+                            $wrapper.find(".page_or_link_internal_link input").removeAttr('disabled');
+                            $wrapper.find(".page_or_link_internal_link").removeClass('d-none');
                             break;
 
                         default: // page_link
-                            $("#page_or_link_page select").removeAttr('disabled');
-                            $("#page_or_link_page").removeClass('d-none');
+                            $wrapper.find(".page_or_link_page select").removeAttr('disabled');
+                            $wrapper.find(".page_or_link_page").removeClass('d-none');
                     }
                 });
-
-            });
+            }
         </script>
     @endpush
 
