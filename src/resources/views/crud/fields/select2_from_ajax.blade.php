@@ -13,6 +13,16 @@
         name="{{ $field['name'] }}"
         style="width: 100%"
         id="select2_ajax_{{ $field['name'] }}"
+        data-init-function="bpFieldInitSelect2FromAjaxElement"
+        data-column-nullable="{{ $entity_model::isColumnNullable($field['name'])?'true':'false' }}"
+        data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
+        data-placeholder="{{ $field['placeholder'] }}"
+        data-minimum-input-length="{{ $field['minimum_input_length'] }}"
+        data-data-source="{{ $field['data_source'] }}"
+        data-method="{{ $field['method'] ?? 'GET' }}"
+        data-field-attribute="{{ $field['attribute'] }}"
+        data-connected-entity-key-name="{{ $connected_entity_key_name }}"
+        data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
         >
 
@@ -79,79 +89,87 @@
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
 <script>
-    jQuery(document).ready(function($) {
-        // trigger select2 for each untriggered select2 box
-        $("#select2_ajax_{{ $field['name'] }}").each(function (i, obj) {
-            var form = $(obj).closest('form');
+    function bpFieldInitSelect2FromAjaxElement(element) {
+        var form = element.closest('form');
+        var $placeholder = element.attr('data-placeholder');
+        var $minimumInputLength = element.attr('data-minimum-input-length');
+        var $dataSource = element.attr('data-data-source');
+        var $method = element.attr('data-method');
+        var $fieldAttribute = element.attr('data-field-attribute');
+        var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
+        var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
+        var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
+        var $dependencies = JSON.parse(element.attr('data-dependencies'));
 
-            if (!$(obj).hasClass("select2-hidden-accessible"))
-            {
-                $(obj).select2({
-                    theme: 'bootstrap',
-                    multiple: false,
-                    placeholder: "{{ $field['placeholder'] }}",
-                    minimumInputLength: "{{ $field['minimum_input_length'] }}",
-
-                    {{-- allow clear --}}
-                    @if ($entity_model::isColumnNullable($field['name']))
-                    allowClear: true,
-                    @endif
-                    ajax: {
-                        url: "{{ $field['data_source'] }}",
-                        type: '{{ $field['method'] ?? 'GET' }}',
-                        dataType: 'json',
-                        quietMillis: 250,
-                        data: function (params) {
+        if (!$(element).hasClass("select2-hidden-accessible"))
+        {
+            $(element).select2({
+                theme: 'bootstrap',
+                multiple: false,
+                placeholder: $placeholder,
+                minimumInputLength: $minimumInputLength,
+                allowClear: $allowClear,
+                ajax: {
+                    url: $dataSource,
+                    type: $method,
+                    dataType: 'json',
+                    quietMillis: 250,
+                    data: function (params) {
+                        if ($includeAllFormFields) {
                             return {
                                 q: params.term, // search term
                                 page: params.page, // pagination
-                                @if($field['include_all_form_fields'] ?? true)
-                                    form: form.serializeArray() // all other form inputs
-                                @endif
+                                form: form.serializeArray() // all other form inputs
                             };
-                        },
-                        processResults: function (data, params) {
-                            params.page = params.page || 1;
-
-                            var result = {
-                                results: $.map(data.data, function (item) {
-                                    textField = "{{ $field['attribute'] }}";
-                                    return {
-                                        text: item[textField],
-                                        id: item["{{ $connected_entity_key_name }}"]
-                                    }
-                                }),
-                               pagination: {
-                                     more: data.current_page < data.last_page
-                               }
+                        } else {
+                            return {
+                                q: params.term, // search term
+                                page: params.page, // pagination
                             };
-
-                            return result;
-                        },
-                        cache: true
+                        }
                     },
-                })
-                {{-- allow clear --}}
-                @if ($entity_model::isColumnNullable($field['name']))
-                .on('select2:unselecting', function(e) {
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+
+                        var result = {
+                            results: $.map(data.data, function (item) {
+                                textField = $fieldAttribute;
+                                return {
+                                    text: item[textField],
+                                    id: item[$connectedEntityKeyName]
+                                }
+                            }),
+                           pagination: {
+                                 more: data.current_page < data.last_page
+                           }
+                        };
+
+                        return result;
+                    },
+                    cache: true
+                },
+            });
+
+            // show a clear button if the column is nullable
+            if ($allowClear) {
+                element.on('select2:unselecting', function(e) {
                     $(this).val('').trigger('change');
                     // console.log('cleared! '+$(this).val());
                     e.preventDefault();
-                })
-                @endif
-                ;
-
-            }
-        });
-
-        @if (isset($field['dependencies']))
-            @foreach (array_wrap($field['dependencies']) as $dependency)
-                $('input[name={{ $dependency }}], select[name={{ $dependency }}], checkbox[name={{ $dependency }}], radio[name={{ $dependency }}], textarea[name={{ $dependency }}]').change(function () {
-                    $("#select2_ajax_{{ $field['name'] }}").val(null).trigger("change");
                 });
-            @endforeach
-        @endif
-    });
+            }
+
+            // if any dependencies have been declared
+            // when one of those dependencies changes value
+            // reset the select2 value
+            for (var i=0; i < $dependencies.length; i++) {
+                $dependency = $dependencies[i];
+                $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
+                    element.val(null).trigger("change");
+                });
+            }
+        }
+    }
 </script>
 @endpush
 {{-- End of Extra CSS and JS --}}
