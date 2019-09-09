@@ -24,11 +24,16 @@
         $start_name = formatDate($entry, $field['name'][0]);
         $end_name = formatDate($entry, $field['name'][1]);
     }
+
+    if (isset($field['default'])) {
+        $start_default = $field['default'][0];
+        $end_default = $field['default'][1];
+    }
 ?>
 
 <div @include('crud::inc.field_wrapper_attributes') >
-    <input class="datepicker-range-start" type="hidden" name="{{ $field['name'][0] }}" value="{{ old(square_brackets_to_dots($field['name'][0])) ?? $start_name ?? $field['start_default'] ?? '' }}">
-    <input class="datepicker-range-end" type="hidden" name="{{ $field['name'][1] }}" value="{{ old(square_brackets_to_dots($field['name'][1])) ?? $end_name ?? $field['end_default'] ?? '' }}">
+    <input class="datepicker-range-start" type="hidden" name="{{ $field['name'][0] }}" value="{{ old(square_brackets_to_dots($field['name'][0])) ?? $start_name ?? $start_default ?? '' }}">
+    <input class="datepicker-range-end" type="hidden" name="{{ $field['name'][1] }}" value="{{ old(square_brackets_to_dots($field['name'][1])) ?? $end_name ?? $end_default ?? '' }}">
     <label>{!! $field['label'] !!}</label>
     <div class="input-group date">
         <input
