@@ -221,9 +221,9 @@ class CrudPanel
      * Check if the controller method being called
      * matches a given string.
      *
-     * @param  string $methodName Name of the method (ex: index, create, update)
+     * @param string $methodName Name of the method (ex: index, create, update)
      *
-     * @return bool                 Whether the condition is met or not.
+     * @return bool Whether the condition is met or not.
      */
     public function actionIs($methodName)
     {
@@ -277,7 +277,6 @@ class CrudPanel
      *
      * @example For a given string 'company' and a relation between App/Models/User and App/Models/Company, defined by a
      *          company() method on the user model, the 'App/Models/Company' string will be returned.
-     *
      * @example For a given string 'company.address' and a relation between App/Models/User, App/Models/Company and
      *          App/Models/Address defined by a company() method on the user model and an address() method on the
      *          company model, the 'App/Models/Address' string will be returned.

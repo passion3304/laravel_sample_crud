@@ -15,8 +15,8 @@ trait Update
     /**
      * Update a row in the database.
      *
-     * @param  int   $id   The entity's id
-     * @param  array $data All inputs to be updated.
+     * @param int   $id   The entity's id
+     * @param array $data All inputs to be updated.
      *
      * @return object
      */

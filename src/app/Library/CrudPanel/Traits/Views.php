@@ -22,6 +22,7 @@ trait Views
 
     /**
      * Gets the create template.
+     *
      * @return string name of the template file
      */
     public function getCreateView()
@@ -31,6 +32,7 @@ trait Views
 
     /**
      * Sets the create content class.
+     *
      * @param string $class content class
      */
     public function setCreateContentClass(string $class)
@@ -40,6 +42,7 @@ trait Views
 
     /**
      * Gets the create content class.
+     *
      * @return string content class for create view
      */
     public function getCreateContentClass()
@@ -65,6 +68,7 @@ trait Views
 
     /**
      * Gets the list template.
+     *
      * @return string name of the template file
      */
     public function getListView()
@@ -74,6 +78,7 @@ trait Views
 
     /**
      * Sets the list content class.
+     *
      * @param string $class content class
      */
     public function setListContentClass(string $class)
@@ -83,6 +88,7 @@ trait Views
 
     /**
      * Gets the list content class.
+     *
      * @return string content class for list view
      */
     public function getListContentClass()
@@ -104,6 +110,7 @@ trait Views
 
     /**
      * Gets the details row template.
+     *
      * @return string name of the template file
      */
     public function getDetailsRowView()
@@ -125,6 +132,7 @@ trait Views
 
     /**
      * Gets the show template.
+     *
      * @return string name of the template file
      */
     public function getShowView()
@@ -134,6 +142,7 @@ trait Views
 
     /**
      * Sets the edit content class.
+     *
      * @param string $class content class
      */
     public function setShowContentClass(string $class)
@@ -143,6 +152,7 @@ trait Views
 
     /**
      * Gets the edit content class.
+     *
      * @return string content class for edit view
      */
     public function getShowContentClass()
@@ -168,6 +178,7 @@ trait Views
 
     /**
      * Gets the edit template.
+     *
      * @return string name of the template file
      */
     public function getEditView()
@@ -177,6 +188,7 @@ trait Views
 
     /**
      * Sets the edit content class.
+     *
      * @param string $class content class
      */
     public function setEditContentClass(string $class)
@@ -186,6 +198,7 @@ trait Views
 
     /**
      * Gets the edit content class.
+     *
      * @return string content class for edit view
      */
     public function getEditContentClass()
@@ -207,6 +220,7 @@ trait Views
 
     /**
      * Gets the reorder template.
+     *
      * @return string name of the template file
      */
     public function getReorderView()
@@ -216,6 +230,7 @@ trait Views
 
     /**
      * Sets the reorder content class.
+     *
      * @param string $class content class
      */
     public function setReorderContentClass(string $class)
@@ -225,6 +240,7 @@ trait Views
 
     /**
      * Gets the reorder&nest content class.
+     *
      * @return string content class for reorder and nest view
      */
     public function getReorderContentClass()
@@ -258,6 +274,7 @@ trait Views
 
     /**
      * Gets the revisions template.
+     *
      * @return string name of the template file
      */
     public function getRevisionsView()
@@ -267,6 +284,7 @@ trait Views
 
     /**
      * Gets the revisions template.
+     *
      * @return string name of the template file
      */
     public function getRevisionsTimelineView()
@@ -276,6 +294,7 @@ trait Views
 
     /**
      * Sets the revisions timeline content class.
+     *
      * @param string revisions timeline content class
      */
     public function setRevisionsTimelineContentClass(string $class)
@@ -285,6 +304,7 @@ trait Views
 
     /**
      * Gets the revisions timeline content class.
+     *
      * @return string content class for revisions timeline view
      */
     public function getRevisionsTimelineContentClass()

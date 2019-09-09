@@ -56,8 +56,9 @@ trait Operations
     /**
      * Convenience method to make sure all calls are made to a particular operation.
      *
-     * @param  string|array     $operation      Operation name in string form
-     * @param  bool|\Closure    $closure        Code that calls CrudPanel methods.
+     * @param string|array  $operation Operation name in string form
+     * @param bool|\Closure $closure   Code that calls CrudPanel methods.
+     *
      * @return void
      */
     public function operation($operations, $closure = false)
@@ -70,8 +71,9 @@ trait Operations
      * Allc configurations are put inside that operation's namespace.
      * Ex: show.configuration.
      *
-     * @param  string|array     $operation      Operation name in string form
-     * @param  bool|\Closure    $closure        Code that calls CrudPanel methods.
+     * @param string|array  $operation Operation name in string form
+     * @param bool|\Closure $closure   Code that calls CrudPanel methods.
+     *
      * @return void
      */
     public function configureOperation($operations, $closure = false)
@@ -91,7 +93,8 @@ trait Operations
      * This is called when an operation does setCurrentOperation().
      *
      *
-     * @param  string|array $operations [description]
+     * @param string|array $operations [description]
+     *
      * @return void
      */
     public function applyConfigurationFromSettings($operations)

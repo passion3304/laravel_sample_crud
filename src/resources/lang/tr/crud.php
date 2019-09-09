@@ -3,9 +3,9 @@
 return [
 
     // Forms
-    'save_action_save_and_new' => 'Kaydet ve yeni öğe',
-    'save_action_save_and_edit' => 'Bu öğeyi kaydet ve düzenle',
-    'save_action_save_and_back' => 'Kaydet ve geri dön.',
+    'save_action_save_and_new'         => 'Kaydet ve yeni öğe',
+    'save_action_save_and_edit'        => 'Bu öğeyi kaydet ve düzenle',
+    'save_action_save_and_back'        => 'Kaydet ve geri dön.',
     'save_action_changed_notification' => 'Kaydedildikten sonra varsayılan davranış değiştirildi.',
 
     // Create form
@@ -57,15 +57,15 @@ return [
     'delete_confirmation_not_deleted_message'   => 'Hiçbir şey olmadı. Öğeniz güvende.',
 
     // Bulk actions
-    'bulk_no_entries_selected_title' => 'Kayıt seçilmedi',
+    'bulk_no_entries_selected_title'   => 'Kayıt seçilmedi',
     'bulk_no_entries_selected_message' => 'Lütfen toplu işlem gerçekleştirmek için bir veya daha fazla öğe seçin.',
 
     // Bulk confirmation
-    'bulk_delete_are_you_sure' => 'Bunları silmek istediğinizden emin misiniz? :number öğe',
-    'bulk_delete_sucess_title' => 'Girdiler silindi.',
+    'bulk_delete_are_you_sure'   => 'Bunları silmek istediğinizden emin misiniz? :number öğe',
+    'bulk_delete_sucess_title'   => 'Girdiler silindi.',
     'bulk_delete_sucess_message' => 'Öğeler silindi',
-    'bulk_delete_error_title' => 'Silme başarısız',
-    'bulk_delete_error_message' => 'Bir veya daha fazla öğe silinemedi',
+    'bulk_delete_error_title'    => 'Silme başarısız',
+    'bulk_delete_error_message'  => 'Bir veya daha fazla öğe silinemedi',
 
     // Ajax errors
     'ajax_error_title' => 'Hata',
@@ -104,7 +104,7 @@ return [
 
     // global crud - errors
     'unauthorized_access' => 'Yetkisiz erişim - bu sayfayı görmek için gerekli izinlere sahip değilsiniz.',
-    'please_fix' => 'Lütfen aşağıdaki hataları düzeltin:',
+    'please_fix'          => 'Lütfen aşağıdaki hataları düzeltin:',
 
     // global crud - success / error notification bubbles
     'insert_success' => 'Öğe başarıyla eklendi.',
@@ -120,28 +120,28 @@ return [
 
     // CRUD yes/no
     'yes' => 'Evet',
-    'no' => 'Hayır',
+    'no'  => 'Hayır',
 
     // CRUD filters navbar view
-    'filters' => 'Filtreler',
+    'filters'        => 'Filtreler',
     'toggle_filters' => 'Geçiş filtreleri',
     'remove_filters' => 'Silme filtreleri',
 
     // Fields
-    'browse_uploads' => 'Yüklemelere göz atın',
-    'select_all' => 'Tümünü seç',
-    'select_files' => 'Dosyaları seç',
-    'select_file' => 'Dosya seç',
-    'clear' => 'Temizle',
-    'page_link' => 'Sayfa linki',
-    'page_link_placeholder' => 'https://ornek.com/sayfa',
-    'internal_link' => 'İç link',
+    'browse_uploads'            => 'Yüklemelere göz atın',
+    'select_all'                => 'Tümünü seç',
+    'select_files'              => 'Dosyaları seç',
+    'select_file'               => 'Dosya seç',
+    'clear'                     => 'Temizle',
+    'page_link'                 => 'Sayfa linki',
+    'page_link_placeholder'     => 'https://ornek.com/sayfa',
+    'internal_link'             => 'İç link',
     'internal_link_placeholder' => 'İç sayfa slug. Örn: \'admin/sayfa\' (tırnak isareti yok) => \':url\'',
-    'external_link' => 'Dış link',
-    'choose_file' => 'Dosya seç',
+    'external_link'             => 'Dış link',
+    'choose_file'               => 'Dosya seç',
 
     //Table field
-        'table_cant_add' => 'Yeni :entity eklenemez',
+        'table_cant_add'    => 'Yeni :entity eklenemez',
         'table_max_reached' => 'Maksimum :max kadar',
 
     // File manager

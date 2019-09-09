@@ -136,29 +136,29 @@ trait Read
         $this->setOperationSetting('bulkActions', true);
 
         $this->addColumn([
-            'type' => 'checkbox',
-            'name' => 'bulk_actions',
-            'label' => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" style="width: 16px; height: 16px;" />',
-            'priority' => 1,
-            'searchLogic' => false,
-            'orderable' => false,
-            'visibleInTable' => true,
-            'visibleInModal' => false,
+            'type'            => 'checkbox',
+            'name'            => 'bulk_actions',
+            'label'           => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" style="width: 16px; height: 16px;" />',
+            'priority'        => 1,
+            'searchLogic'     => false,
+            'orderable'       => false,
+            'visibleInTable'  => true,
+            'visibleInModal'  => false,
             'visibleInExport' => false,
-            'visibleInShow' => false,
+            'visibleInShow'   => false,
         ])->makeFirstColumn();
 
         $this->addColumn([
-            'type' => 'custom_html',
-            'name' => 'blank_first_column',
-            'label' => ' ',
-            'priority' => 1,
-            'searchLogic' => false,
-            'orderable' => false,
-            'visibleInTabel' => true,
-            'visibleInModal' => false,
+            'type'            => 'custom_html',
+            'name'            => 'blank_first_column',
+            'label'           => ' ',
+            'priority'        => 1,
+            'searchLogic'     => false,
+            'orderable'       => false,
+            'visibleInTabel'  => true,
+            'visibleInModal'  => false,
             'visibleInExport' => false,
-            'visibleInShow' => false,
+            'visibleInShow'   => false,
         ])->makeFirstColumn();
     }
 
@@ -213,9 +213,9 @@ trait Read
     /**
      * Specify array of available page lengths on the list view.
      *
-     * @param array $menu  1d array of page length values,
-     *                     or 2d array (first array: page length values, second array: page length labels)
-     *                     More at: https://datatables.net/reference/option/lengthMenu
+     * @param array $menu 1d array of page length values,
+     *                    or 2d array (first array: page length values, second array: page length labels)
+     *                    More at: https://datatables.net/reference/option/lengthMenu
      */
     public function setPageLengthMenu($menu)
     {
@@ -265,6 +265,7 @@ trait Read
 
     /**
      * Check if export buttons are enabled for the table view.
+     *
      * @return bool
      */
     public function exportButtons()

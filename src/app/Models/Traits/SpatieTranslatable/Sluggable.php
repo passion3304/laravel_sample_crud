@@ -22,7 +22,8 @@ trait Sluggable
     /**
      * Clone the model into a new, non-existing instance.
      *
-     * @param  array|null $except
+     * @param array|null $except
+     *
      * @return Model
      */
     public function replicate(array $except = null): Model
@@ -37,10 +38,11 @@ trait Sluggable
      * Query scope for finding "similar" slugs, used to determine uniqueness.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string $attribute
-     * @param array $config
-     * @param string $slug
+     * @param \Illuminate\Database\Eloquent\Model   $model
+     * @param string                                $attribute
+     * @param array                                 $config
+     * @param string                                $slug
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFindSimilarSlugs(Builder $query, string $attribute, array $config, string $slug): Builder

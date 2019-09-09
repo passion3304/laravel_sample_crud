@@ -10,7 +10,8 @@ class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
      * Slug the current model.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param bool $force
+     * @param bool                                $force
+     *
      * @return bool
      */
     public function slug(Model $model, bool $force = false): bool
@@ -43,8 +44,9 @@ class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
      * Checks if the slug should be unique, and makes it so if needed.
      *
      * @param string $slug
-     * @param array $config
+     * @param array  $config
      * @param string $attribute
+     *
      * @return string
      */
     protected function makeSlugUnique(string $slug, array $config, string $attribute): string

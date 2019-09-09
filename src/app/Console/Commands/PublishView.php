@@ -30,12 +30,14 @@ class PublishView extends Command
 
     /**
      * The directory where the views will be published FROM.
+     *
      * @var string
      */
     public $sourcePath = 'vendor/backpack/crud/src/resources/views/';
 
     /**
      * The directory where the views will pe published TO.
+     *
      * @var string
      */
     public $destinationPath = 'resources/views/vendor/backpack/';
@@ -65,7 +67,8 @@ class PublishView extends Command
     /**
      * Take a blade file from the vendor folder and publish it to the resources folder.
      *
-     * @param  string $file     The filename without extension
+     * @param string $file The filename without extension
+     *
      * @return void
      */
     protected function publishFile($file)

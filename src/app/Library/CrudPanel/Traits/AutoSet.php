@@ -35,9 +35,9 @@ trait AutoSet
 
             if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
                 $this->addColumn([
-                    'name'  => $field,
-                    'label' => $this->makeLabel($field),
-                    'type'  => $this->getFieldTypeFromDbColumnType($field),
+                    'name'    => $field,
+                    'label'   => $this->makeLabel($field),
+                    'type'    => $this->getFieldTypeFromDbColumnType($field),
                     'autoset' => true,
                 ]);
             }
@@ -89,7 +89,7 @@ trait AutoSet
     /**
      * Intuit a field type, judging from the database column type.
      *
-     * @param  string $field Field name.
+     * @param string $field Field name.
      *
      * @return string Field type.
      */
@@ -176,7 +176,7 @@ trait AutoSet
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
      *
-     * @param  string $value The value.
+     * @param string $value The value.
      *
      * @return string The transformed value.
      */

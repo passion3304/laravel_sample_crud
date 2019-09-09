@@ -25,7 +25,7 @@ trait Filters
     public function enableFilters()
     {
         if ($this->filtersDisabled()) {
-            $this->setOperationSetting('filters', new FiltersCollection);
+            $this->setOperationSetting('filters', new FiltersCollection());
         }
     }
 
@@ -36,14 +36,14 @@ trait Filters
 
     public function clearFilters()
     {
-        $this->setOperationSetting('filters', new FiltersCollection);
+        $this->setOperationSetting('filters', new FiltersCollection());
     }
 
     /**
      * Add a filter to the CRUD table view.
      *
-     * @param array               $options        Name, type, label, etc.
-     * @param bool|array|\Closure $values         The HTML for the filter.
+     * @param array               $options       Name, type, label, etc.
+     * @param bool|array|\Closure $values        The HTML for the filter.
      * @param bool|\Closure       $filterLogic   Query modification (filtering) logic when filter is active.
      * @param bool|\Closure       $fallbackLogic Query modification (filtering) logic when filter is not active.
      */
@@ -77,7 +77,7 @@ trait Filters
     /**
      * Apply the filter.
      *
-     * @param CrudFilter $filter
+     * @param CrudFilter              $filter
      * @param ParameterBag|array|null $input
      */
     public function applyFilter(CrudFilter $filter, $input = null)
@@ -192,10 +192,10 @@ trait Filters
     /**
      * Modify the attributes of a filter.
      *
-     * @param  string $name          The filter name.
-     * @param  array  $modifications An array of changes to be made.
+     * @param string $name          The filter name.
+     * @param array  $modifications An array of changes to be made.
      *
-     * @return CrudFilter               The filter that has suffered modifications, for daisychaining methods.
+     * @return CrudFilter The filter that has suffered modifications, for daisychaining methods.
      */
     public function modifyFilter($name, $modifications)
     {
@@ -225,7 +225,7 @@ trait Filters
 
     public function removeAllFilters()
     {
-        $this->setOperationSetting('filters', new FiltersCollection);
+        $this->setOperationSetting('filters', new FiltersCollection());
     }
 }
 

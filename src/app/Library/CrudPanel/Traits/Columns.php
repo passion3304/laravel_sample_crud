@@ -160,6 +160,7 @@ trait Columns
 
     /**
      * Move this column to be first in the columns list.
+     *
      * @return bool|null
      */
     public function makeFirstColumn()
@@ -202,6 +203,7 @@ trait Columns
      * Add the default column type to the given Column, inferring the type from the database column type.
      *
      * @param array $column
+     *
      * @return array|bool
      */
     public function addDefaultTypeToColumn($column)
@@ -284,7 +286,7 @@ trait Columns
     /**
      * Change attributes for a certain column.
      *
-     * @param string $columnKey Column key.
+     * @param string $columnKey           Column key.
      * @param array  $attributesAndValues
      */
     public function setColumnDetails($columnKey, $attributesAndValues)
@@ -304,7 +306,7 @@ trait Columns
      * Alias for setColumnDetails().
      * Provides a consistent syntax with Fields, Buttons, Filters modify functionality.
      *
-     * @param string $column Column name.
+     * @param string $column     Column name.
      * @param array  $attributes
      */
     public function modifyColumn($column, $attributes)
@@ -325,6 +327,7 @@ trait Columns
 
     /**
      * Get the relationships used in the CRUD columns.
+     *
      * @return array Relationship names
      */
     public function getColumnsRelationships()
@@ -362,7 +365,7 @@ trait Columns
     /**
      * Get a column by the id, from the associative array.
      *
-     * @param  int $column_number Placement inside the columns array.
+     * @param int $column_number Placement inside the columns array.
      *
      * @return array Column details.
      */

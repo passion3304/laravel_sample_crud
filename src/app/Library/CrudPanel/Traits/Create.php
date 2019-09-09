@@ -198,7 +198,7 @@ trait Create
      * attribute values. For relations defined with the "dot" notations, this will be used to calculate the depth in the
      * final array (@see \Illuminate\Support\Arr::set() for more).
      *
-     * @param array  $data The form data.
+     * @param array $data The form data.
      *
      * @return array The formatted relation data.
      */

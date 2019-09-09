@@ -101,7 +101,7 @@ trait Search
     /**
      * Tell the list view to NOT show a reponsive DataTable.
      *
-     * @param  bool $value
+     * @param bool $value
      */
     public function setResponsiveTable($value = true)
     {
@@ -145,7 +145,7 @@ trait Search
     /**
      * Tell the list view to NOT store datatable information in local storage.
      *
-     * @param  bool $value
+     * @param bool $value
      */
     public function setPersistentTable($value = true)
     {
@@ -185,10 +185,10 @@ trait Search
     /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
-     * @param  bool|int                            $rowNumber The number shown to the user as row number (index);
+     * @param \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
+     * @param bool|int                            $rowNumber The number shown to the user as row number (index);
      *
-     * @return array                Array of HTML cell contents.
+     * @return array Array of HTML cell contents.
      */
     public function getRowViews($entry, $rowNumber = false)
     {
@@ -223,9 +223,9 @@ trait Search
     /**
      * Get the HTML of a cell, using the column types.
      *
-     * @param  array                               $column
-     * @param  \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
-     * @param  bool|int                            $rowNumber The number shown to the user as row number (index);
+     * @param array                               $column
+     * @param \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
+     * @param bool|int                            $rowNumber The number shown to the user as row number (index);
      *
      * @return string
      */
@@ -289,7 +289,7 @@ trait Search
     /**
      * Created the array to be fed to the data table.
      *
-     * @param array    $entries Eloquent results.
+     * @param array    $entries      Eloquent results.
      * @param int      $totalRows
      * @param int      $filteredRows
      * @param bool|int $startIndex
