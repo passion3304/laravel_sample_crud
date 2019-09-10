@@ -41,7 +41,7 @@ trait RevisionsOperation
 
         $this->crud->operation(['list', 'show'], function() {
             $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
-        }):
+        });
     }
 
     /**
