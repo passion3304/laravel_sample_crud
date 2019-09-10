@@ -2,7 +2,7 @@
 
 @php
   $defaultBreadcrumbs = [
-    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
+    trans('backpack::crud.admin') => backpack_url('dashboard'),
     $crud->entity_name_plural => url($crud->route),
     trans('backpack::crud.edit') => false,
   ];

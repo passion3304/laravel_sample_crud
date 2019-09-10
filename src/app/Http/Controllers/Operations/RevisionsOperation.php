@@ -33,7 +33,11 @@ trait RevisionsOperation
      */
     protected function setupRevisionsDefaults()
     {
+        // allow access to the operation
         $this->crud->allowAccess('revisions');
+
+        // eager load revisions, so there are fewer db queries
+        $this->crud->with('revisionHistory');
 
         $this->crud->operation(['list', 'show'], function() {
             $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
