@@ -1,5 +1,5 @@
 <div class="{{ $widget['wrapperClass'] ?? '' }}">
-	<div class="jumbotron">
+	<div class="jumbotron mb-2">
 
 	  @if (isset($widget['heading']))
 	  <h1 class="display-3">{!! $widget['heading'] !!}</h1>
