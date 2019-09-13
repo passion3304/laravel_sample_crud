@@ -89,7 +89,7 @@ class CrudController extends Controller
      */
     protected function setupConfigurationForCurrentOperation()
     {
-        $className = 'setup'.\Str::studly($this->crud->getCurrentOperation()).'Operation';
+        $className = 'setup'.studly_case($this->crud->getCurrentOperation()).'Operation';
 
         if (method_exists($this, $className)) {
             $this->{$className}();

@@ -55,7 +55,7 @@ trait Settings
      */
     public function settings()
     {
-        return \Arr::sort($this->settings, function ($value, $key) {
+        return array_sort($this->settings, function ($value, $key) {
             return $key;
         });
     }

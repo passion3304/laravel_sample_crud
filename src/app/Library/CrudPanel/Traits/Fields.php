@@ -61,7 +61,7 @@ trait Fields
 
         $fields = $this->getOperationSetting('fields');
         $fieldKey = is_array($newField['name']) ? implode('_', $newField['name']) : $newField['name'];
-        $fields = \Arr::add($this->fields(), $fieldKey, $newField);
+        $fields = array_add($this->fields(), $fieldKey, $newField);
         $this->setOperationSetting('fields', $fields);
 
         return $this;
@@ -450,7 +450,7 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        return \Arr::flatten(\Arr::pluck($this->getCurrentFields(), 'name'));
+        return array_flatten(array_pluck($this->getCurrentFields(), 'name'));
     }
 
     /**

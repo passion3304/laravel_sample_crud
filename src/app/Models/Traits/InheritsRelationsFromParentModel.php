@@ -41,7 +41,7 @@ trait InheritsRelationsFromParentModel
     public function getTable()
     {
         if (! isset($this->table)) {
-            return str_replace('\\', '', Str::snake(Str::plural(class_basename($this->getParentClass()))));
+            return str_replace('\\', '', snake_case(str_plural(class_basename($this->getParentClass()))));
         }
 
         return $this->table;
@@ -49,7 +49,7 @@ trait InheritsRelationsFromParentModel
 
     public function getForeignKey()
     {
-        return Str::snake(class_basename($this->getParentClass())).'_'.$this->primaryKey;
+        return snake_case(class_basename($this->getParentClass())).'_'.$this->primaryKey;
     }
 
     public function joiningTable($related, $instance = null)
@@ -58,8 +58,8 @@ trait InheritsRelationsFromParentModel
             ? (new $related())->getClassNameForRelationships()
             : class_basename($related);
         $models = [
-            Str::snake($relatedClassName),
-            Str::snake($this->getClassNameForRelationships()),
+            snake_case($relatedClassName),
+            snake_case($this->getClassNameForRelationships()),
         ];
         sort($models);
 

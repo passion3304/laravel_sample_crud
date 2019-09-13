@@ -103,7 +103,7 @@ trait Columns
             $column_with_details['searchLogic'] = $columnExistsInDb ? true : false;
         }
 
-        $columnsArray = \Arr::add($this->columns(), $column_with_details['key'], $column_with_details);
+        $columnsArray = array_add($this->columns(), $column_with_details['key'], $column_with_details);
         $this->setOperationSetting('columns', $columnsArray);
 
         // make sure the column has a priority in terms of visibility
