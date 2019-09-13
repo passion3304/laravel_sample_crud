@@ -133,6 +133,10 @@ trait Read
      */
     public function enableBulkActions()
     {
+        if ($this->getOperationSetting('bulkActions') == true) {
+            return;
+        }
+
         $this->setOperationSetting('bulkActions', true);
 
         $this->addColumn([
