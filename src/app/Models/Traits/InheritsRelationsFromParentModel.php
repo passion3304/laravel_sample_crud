@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Models\Traits;
 
 use ReflectionClass;
-use Illuminate\Support\Str;
 
 /**
  * This trait helps a child model (ex: BackpackUser) inherit all relationships of its parent model (ex: User).
