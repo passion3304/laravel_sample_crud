@@ -45,6 +45,14 @@ trait UpdateOperation
             $this->crud->set('update.groupedErrors', config('backpack.crud.show_grouped_errors', true));
             $this->crud->set('update.inlineErrors', config('backpack.crud.show_inline_errors', true));
             $this->crud->set('update.autoFocusOnFirstField', true);
+
+            if ($this->crud->getModel()->translationEnabled()) {
+                $this->crud->addField([
+                    'name' => 'locale',
+                    'type' => 'hidden',
+                    'value' => $this->request->input('locale')?? app()->getLocale()
+                ]);
+            }
         });
 
         $this->crud->operation(['list', 'show'], function () {
