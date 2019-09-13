@@ -36,10 +36,8 @@ trait RevisionsOperation
         // allow access to the operation
         $this->crud->allowAccess('revisions');
 
-        // eager load revisions, so there are fewer db queries
-        $this->crud->with('revisionHistory');
-
         $this->crud->operation(['list', 'show'], function () {
+            // add a button in the line stack
             $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
         });
     }
@@ -82,8 +80,8 @@ trait RevisionsOperation
      */
     public function restoreRevision($id)
     {
-        $this->crud->hasAccessOrFail('revisions');
         $this->crud->applyConfigurationFromSettings('revisions');
+        $this->crud->hasAccessOrFail('revisions');
 
         $revisionId = \Request::input('revision_id', false);
         if (! $revisionId) {
