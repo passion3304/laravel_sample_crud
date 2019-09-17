@@ -20,6 +20,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.33] - 2019-09-17
+
+### Added
+- japanese translation;
+
+
 ## [3.6.32] - 2019-09-17
 
 ### Added
