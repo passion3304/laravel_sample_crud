@@ -192,7 +192,7 @@ trait Read
      */
     public function getDefaultPageLength()
     {
-        return $this->getOperationSetting('defaultPageLength') ?? config('backpack.crud.operations.list.default_page_length') ?? 25;
+        return $this->getOperationSetting('defaultPageLength') ?? config('backpack.crud.operations.list.defaultPageLength') ?? 25;
     }
 
     /**
@@ -204,7 +204,7 @@ trait Read
         // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
         // assume both arrays are the same length.
         if (! in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
-            // Loop through 2 arrays of prop. page_length_menu
+            // Loop through 2 arrays of prop. pageLengthMenu
             foreach ($this->getOperationSetting('pageLengthMenu') as $key => &$page_length_choices) {
                 // This is a condition that should be always true.
                 if (is_array($page_length_choices)) {
@@ -233,19 +233,13 @@ trait Read
      */
     public function getPageLengthMenu()
     {
-        // if already set, use that
-        if (! $this->getOperationSetting('pageLengthMenu')) {
-            // try to get the menu settings from the config file
-            $this->setOperationSetting('pageLengthMenu', config('backpack.crud.operations.list.page_length_menu') ?? [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']]);
-
-            // if we have a 2D array, update all the values in the right hand array to their translated values
-            if (isset($this->getOperationSetting('pageLengthMenu')[1]) && is_array($this->getOperationSetting('pageLengthMenu')[1])) {
-                $aux = $this->getOperationSetting('pageLengthMenu');
-                foreach ($this->getOperationSetting('pageLengthMenu')[1] as $key => $val) {
-                    $aux[1][$key] = trans($val);
-                }
-                $this->setOperationSetting('pageLengthMenu', $aux);
+        // if we have a 2D array, update all the values in the right hand array to their translated values
+        if (isset($this->getOperationSetting('pageLengthMenu')[1]) && is_array($this->getOperationSetting('pageLengthMenu')[1])) {
+            $aux = $this->getOperationSetting('pageLengthMenu');
+            foreach ($this->getOperationSetting('pageLengthMenu')[1] as $key => $val) {
+                $aux[1][$key] = trans($val);
             }
+            $this->setOperationSetting('pageLengthMenu', $aux);
         }
 
         $this->addCustomPageLengthToPageLengthMenu();
