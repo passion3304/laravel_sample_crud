@@ -18,7 +18,7 @@
 <?php
 function tree_element($entry, $key, $all_entries, $crud)
 {
-    if (!isset($entry->tree_element_shown)) {
+    if (! isset($entry->tree_element_shown)) {
         // mark the element as shown
         $all_entries[$key]->tree_element_shown = true;
         $entry->tree_element_shown = true;
@@ -74,7 +74,7 @@ function tree_element($entry, $key, $all_entries, $crud)
                             $root_entries = $all_entries->filter(function ($item) {
                                 return $item->parent_id == 0;
                             });
-                            foreach ($root_entries as $key => $entry){
+                            foreach ($root_entries as $key => $entry) {
                                 $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
                             }
                         ?>

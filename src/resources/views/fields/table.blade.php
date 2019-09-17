@@ -3,7 +3,7 @@
 <?php
     $max = isset($field['max']) && (int) $field['max'] > 0 ? $field['max'] : -1;
     $min = isset($field['min']) && (int) $field['min'] > 0 ? $field['min'] : -1;
-    $item_name = strtolower(isset($field['entity_singular']) && !empty($field['entity_singular']) ? $field['entity_singular'] : $field['label']);
+    $item_name = strtolower(isset($field['entity_singular']) && ! empty($field['entity_singular']) ? $field['entity_singular'] : $field['label']);
 
     $items = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
@@ -15,7 +15,7 @@
         } else {
             $items = '[]';
         }
-    } elseif (is_string($items) && !is_array(json_decode($items))) {
+    } elseif (is_string($items) && ! is_array(json_decode($items))) {
         $items = '[]';
     }
 

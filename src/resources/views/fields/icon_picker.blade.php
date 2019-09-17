@@ -2,7 +2,7 @@
 
 <?php
 // if no iconset was provided, set the default iconset to Font-Awesome
-if (!isset($field['iconset'])) {
+if (! isset($field['iconset'])) {
     $field['iconset'] = 'fontawesome';
 }
 ?>

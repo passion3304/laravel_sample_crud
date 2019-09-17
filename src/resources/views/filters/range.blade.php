@@ -7,14 +7,14 @@
 
 			<div class="form-group backpack-filter m-b-0">
 					<?php
-						$from = '';
-						$to = '';
-						if($filter->currentValue) {
-							$range = (array)json_decode($filter->currentValue);
-							$from = $range['from'];
-							$to = $range['to'];
-						}
-					?>
+                        $from = '';
+                        $to = '';
+                        if ($filter->currentValue) {
+                            $range = (array) json_decode($filter->currentValue);
+                            $from = $range['from'];
+                            $to = $range['to'];
+                        }
+                    ?>
 					<div class="input-group">
 				        <input class="form-control pull-right from"
 				        		type="number"
