@@ -109,12 +109,7 @@ trait AutoSet
         }
 
         switch ($this->db_column_types[$field]['type']) {
-            case 'int':
             case 'integer':
-            case 'tinyint':
-            case 'smallint':
-            case 'mediumint':
-            case 'longint':
                 return 'number';
                 break;
 
