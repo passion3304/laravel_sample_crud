@@ -271,8 +271,8 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
 
     public function testGetRevisionsTimelineContentClassFromConfig()
     {
-        Config::set('backpack.crud.revisions_timeline_content_class', $this->customContentClass);
+        Config::set('backpack.crud.operations.revisions.timelineContent', $this->customContentClass);
 
-        $this->assertEquals(Config::get('backpack.crud.revisions_timeline_content_class'), $this->crudPanel->getRevisionsTimelineContentClass());
+        $this->assertEquals(Config::get('backpack.crud.operations.revisions.timelineContent'), $this->crudPanel->getRevisionsTimelineContentClass());
     }
 }

@@ -40,6 +40,10 @@ trait ListOperation
     protected function setupListDefaults()
     {
         $this->crud->allowAccess('list');
+
+        $this->crud->operation('list', function() {
+            $this->crud->loadDefaultOperationSettingsFromConfig();
+        });
     }
 
     /**

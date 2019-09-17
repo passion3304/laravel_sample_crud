@@ -29,6 +29,10 @@ trait ShowOperation
     {
         $this->crud->allowAccess('show');
 
+        $this->crud->operation('show', function() {
+            $this->crud->loadDefaultOperationSettingsFromConfig();
+        });
+
         $this->crud->operation('list', function () {
             $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'beginning');
         });

@@ -36,6 +36,10 @@ trait RevisionsOperation
         // allow access to the operation
         $this->crud->allowAccess('revisions');
 
+        $this->crud->operation('revisions', function() {
+            $this->crud->loadDefaultOperationSettingsFromConfig();
+        });
+
         $this->crud->operation(['list', 'show'], function () {
             // add a button in the line stack
             $this->crud->addButton('line', 'revisions', 'view', 'crud::buttons.revisions', 'end');
