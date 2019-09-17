@@ -109,11 +109,7 @@ trait AutoSet
         }
 
         switch ($this->db_column_types[$field]['type']) {
-            case 'int':
             case 'integer':
-            case 'smallint':
-            case 'mediumint':
-            case 'longint':
                 return 'number';
                 break;
 
@@ -127,8 +123,8 @@ trait AutoSet
             //     return 'enum';
             // break;
 
-            case 'tinyint':
-                return 'active';
+            case 'boolean':
+                return 'checkbox';
                 break;
 
             case 'text':
