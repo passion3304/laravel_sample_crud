@@ -20,6 +20,16 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.6.32] - 2019-09-17
+
+### Added
+- boolean field type, as an alias to the checkbox field type;
+
+
+### Fixed
+- merged #2058 - autoset generates boolean column/field type from boolean/tinyint db columns;
+
+
 ## [3.6.31] - 2019-09-01
 
 ### Fixed
