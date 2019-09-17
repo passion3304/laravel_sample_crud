@@ -127,8 +127,8 @@ trait AutoSet
             //     return 'enum';
             // break;
 
-            case 'tinyint':
-                return 'active';
+            case 'boolean':
+                return 'boolean';
                 break;
 
             case 'text':
