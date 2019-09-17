@@ -39,7 +39,7 @@
 
   </div><!-- ./app-body -->
 
-  <footer class="app-footer">
+  <footer class="{{ config('backpack.base.footer_class') }}">
     @include(backpack_view('inc.footer'))
   </footer>
 
