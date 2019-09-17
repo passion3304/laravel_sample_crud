@@ -29,7 +29,7 @@ trait BulkDeleteOperation
     {
         $this->crud->allowAccess('bulkDelete');
 
-        $this->crud->operation('bulkDelete', function() {
+        $this->crud->operation('bulkDelete', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
         });
 

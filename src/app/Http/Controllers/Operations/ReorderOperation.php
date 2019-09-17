@@ -36,7 +36,7 @@ trait ReorderOperation
         $this->crud->set('reorder.enabled', true);
         $this->crud->allowAccess('reorder');
 
-        $this->crud->operation('reorder', function() {
+        $this->crud->operation('reorder', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
         });
 

@@ -7,7 +7,7 @@ trait SaveActions
     /**
      * Get the developer's preference on what save action is the default one
      * for the current operation.
-     * 
+     *
      * @return string
      */
     public function getSaveActionDefaultForCurrentOperation()

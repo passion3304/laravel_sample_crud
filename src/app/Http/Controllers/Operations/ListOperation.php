@@ -41,7 +41,7 @@ trait ListOperation
     {
         $this->crud->allowAccess('list');
 
-        $this->crud->operation('list', function() {
+        $this->crud->operation('list', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
         });
     }

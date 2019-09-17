@@ -29,7 +29,7 @@ trait DeleteOperation
     {
         $this->crud->allowAccess('delete');
 
-        $this->crud->operation('delete', function() {
+        $this->crud->operation('delete', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
         });
 
