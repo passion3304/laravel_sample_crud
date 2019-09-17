@@ -13,7 +13,7 @@ return [
     // --------------------------
     'operations' => [
 
-        /**
+        /*
          * List Operation
          */
         'list' => [
@@ -39,8 +39,8 @@ return [
             // If a 2D array is used, strings in the right hand array will be automatically run through trans()
             'page_length_menu' => [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'backpack::crud.all']],
         ],
-        
-        /**
+
+        /*
          * Create Operation
          */
         'create' => [
@@ -60,14 +60,14 @@ return [
 
             // Where do you want to redirect the user by default, save?
             // options: save_and_back, save_and_edit, save_and_new
-            'defaultSaveAction' => 'save_and_back', 
+            'defaultSaveAction' => 'save_and_back',
 
             // When the user chooses "save and back" or "save and new", show a bubble
             // for the fact that the default save action has been changed?
             'showSaveActionChange' => true, //options: true, false
         ],
-        
-        /**
+
+        /*
          * Update Operation
          */
         'update' => [
@@ -87,14 +87,14 @@ return [
 
             // Where do you want to redirect the user by default, save?
             // options: save_and_back, save_and_edit, save_and_new
-            'defaultSaveAction' => 'save_and_back', 
+            'defaultSaveAction' => 'save_and_back',
 
             // When the user chooses "save and back" or "save and new", show a bubble
             // for the fact that the default save action has been changed?
             'showSaveActionChange' => true, //options: true, false
         ],
 
-        /**
+        /*
          * Show Operation
          */
         'show' => [
@@ -103,7 +103,7 @@ return [
             'contentClass' => 'col-md-8',
         ],
 
-        /**
+        /*
          * Reorder Operation
          */
         'reorder' => [
@@ -112,7 +112,7 @@ return [
             'contentClass'   => 'col-md-8 col-md-offset-2',
         ],
 
-        /**
+        /*
          * Revisions Operation
          */
         'revisions' => [
@@ -122,7 +122,6 @@ return [
         ],
 
     ],
-
 
     /*
     |-------------------

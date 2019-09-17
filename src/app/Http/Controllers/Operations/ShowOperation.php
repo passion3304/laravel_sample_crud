@@ -29,7 +29,7 @@ trait ShowOperation
     {
         $this->crud->allowAccess('show');
 
-        $this->crud->operation('show', function() {
+        $this->crud->operation('show', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
         });
 

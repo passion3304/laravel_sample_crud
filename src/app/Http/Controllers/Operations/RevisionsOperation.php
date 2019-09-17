@@ -36,7 +36,7 @@ trait RevisionsOperation
         // allow access to the operation
         $this->crud->allowAccess('revisions');
 
-        $this->crud->operation('revisions', function() {
+        $this->crud->operation('revisions', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
         });
 

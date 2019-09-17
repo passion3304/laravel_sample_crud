@@ -29,7 +29,7 @@ trait BulkCloneOperation
     {
         $this->crud->allowAccess('bulkClone');
 
-        $this->crud->operation('bulkClone', function() {
+        $this->crud->operation('bulkClone', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
         });
 

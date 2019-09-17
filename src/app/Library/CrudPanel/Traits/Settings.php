@@ -139,7 +139,7 @@ trait Settings
     /**
      * Automatically set values in config file (config/backpack/crud)
      * as settings values for that operation.
-     * 
+     *
      * @param string $configPath   Config string that leads to where the configs are stored.
      */
     public function loadDefaultOperationSettingsFromConfig($configPath = null)

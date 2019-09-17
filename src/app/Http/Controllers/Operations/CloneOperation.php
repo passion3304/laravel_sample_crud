@@ -29,7 +29,7 @@ trait CloneOperation
     {
         $this->crud->allowAccess('clone');
 
-        $this->crud->operation('clone', function() {
+        $this->crud->operation('clone', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
         });
 
