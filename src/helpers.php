@@ -161,7 +161,8 @@ if (! function_exists('backpack_view')) {
      */
     function backpack_view($view)
     {
-        $theme = $originalTheme = config('backpack.base.view_namespace');
+        $originalTheme = 'backpack::';
+        $theme = config('backpack.base.view_namespace');
 
         if (is_null($theme)) {
             $theme = $originalTheme;
