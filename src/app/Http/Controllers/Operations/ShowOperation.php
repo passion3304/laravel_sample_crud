@@ -59,6 +59,11 @@ trait ShowOperation
                 $this->crud->removeColumn($column['name']);
             }
 
+            // remove any autoset table columns
+            if ($column['type'] == 'table' && array_key_exists('autoset', $column) && $column['autoset']) {
+                $this->crud->removeColumn($column['name']);
+            }
+
             // remove the row_number column, since it doesn't make sense in this context
             if ($column['type'] == 'row_number') {
                 $this->crud->removeColumn($column['name']);
