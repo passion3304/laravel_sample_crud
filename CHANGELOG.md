@@ -32,6 +32,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - [Webfactor/Laravel-Generators](https://github.com/webfactor/laravel-generatorssu) to the installation command;
 - the Create and Update operations only save the values of the fields (determined using the name attribute); anything else it ignores; this is for security reasons - to prevent saving fields that have been inserted in the front-end maliciously; 
 - field types can now have arrays for names, instead of strings; when a field type wants to save multiple attributes, it should have all of them as array in the "name" field attribute; this makes sure that they will get saved in the database;
+- support for Right-to-Left languages (just change a variable in the base config file);
 
 
 ### Fixed
