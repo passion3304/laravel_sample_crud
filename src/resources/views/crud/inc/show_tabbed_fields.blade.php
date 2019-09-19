@@ -50,8 +50,9 @@
             @foreach ($crud->getTabs() as $k => $tab)
             <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ str_slug($tab, "") }}">
 
+                <div class="row">
                 @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
-
+                </div>
             </div>
             @endforeach
 

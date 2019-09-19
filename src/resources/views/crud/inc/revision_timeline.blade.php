@@ -1,8 +1,8 @@
 
 @foreach($revisions as $revisionDate => $dateRevisions)
-      <h4 class="text-danger">
+      <h5 class="text-primary">
         {{ Carbon\Carbon::parse($revisionDate)->isoFormat(config('backpack.base.default_date_format')) }}
-      </h4>
+      </h5>
 
   @foreach($dateRevisions as $history)
     <div class="card">
