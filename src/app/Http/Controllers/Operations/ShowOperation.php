@@ -28,6 +28,7 @@ trait ShowOperation
     protected function setupShowDefaults()
     {
         $this->crud->allowAccess('show');
+        $this->crud->setOperationSetting('setFromDb', true);
 
         $this->crud->operation('list', function () {
             $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'beginning');
@@ -48,9 +49,17 @@ trait ShowOperation
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
+        $setFromDb = $this->crud->get('show.setFromDb');
+
+        // get the info for that entry
+        $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
         // set columns from db
-        $this->crud->setFromDb();
+        if ($setFromDb) {
+            $this->crud->setFromDb();
+        }
 
         // cycle through columns
         foreach ($this->crud->columns() as $key => $column) {
@@ -79,11 +88,6 @@ trait ShowOperation
                 $this->crud->modifyColumn($column['name'], ['limit' => 999]);
             }
         }
-
-        // get the info for that entry
-        $this->data['entry'] = $this->crud->getEntry($id);
-        $this->data['crud'] = $this->crud;
-        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
         // remove preview button from stack:line
         $this->crud->removeButton('show');
