@@ -33,7 +33,7 @@ trait AutoSet
                 $this->addField($new_field);
             }
 
-            if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns[$field])) {
+            if (! in_array($field, $this->model->getHidden()) && ! in_array($field, $this->columns())) {
                 $this->addColumn([
                     'name'    => $field,
                     'label'   => $this->makeLabel($field),
