@@ -15,6 +15,10 @@ return [
     'default_date_format'     => 'D MMM YYYY',
     'default_datetime_format' => 'D MMM YYYY, HH:mm',
 
+    // Direction, according to language
+    // (left-to-right vs right-to-left)
+    'html_direction' => 'ltr',
+
     // ----
     // HEAD
     // ----
