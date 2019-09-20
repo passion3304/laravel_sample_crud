@@ -9,7 +9,7 @@
 	<!-- Edit button group -->
 	<div class="btn-group">
 	  <a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}" class="btn btn-sm btn-link pr-0"><i class="fa fa-edit"></i> {{ trans('backpack::crud.edit') }}</a>
-	  <a class="btn btn-sm btn-link dropdown-toggle pl-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	  <a class="btn btn-sm btn-link dropdown-toggle text-primary pl-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	    <span class="caret"></span>
 	  </a>
 	  <ul class="dropdown-menu dropdown-menu-right">
