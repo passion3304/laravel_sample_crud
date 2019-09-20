@@ -47,6 +47,14 @@
 	  	border: none;
 	  	box-shadow: none;
 	  }
+	  .select2-container--bootstrap .select2-dropdown {
+	  	margin-top: -2px;
+	  	margin-left: -1px;
+	  }
+	  .select2-container--bootstrap {
+	  	position: relative!important;
+	  	top: 0px!important;
+	  }
     </style>
 @endpush
 
@@ -71,6 +79,8 @@
                 	allowClear: true,
 					closeOnSelect: false,
 					theme: "bootstrap",
+					dropdownParent: $(this).parent('.form-group'),
+	        	    placeholder: $(this).attr('placeholder'),
                 });
 
                 $(this).change(function() {
@@ -102,7 +112,8 @@
 					}
 					else
 					{
-						$("li[filter-name="+filterName+"]").trigger("filter:clear");
+						$("li[filter-name="+filterName+"]").removeClass("active");
+						$("li[filter-name="+filterName+"]").find('.dropdown-menu').removeClass("show");
 					}
 				});
 
@@ -115,7 +126,7 @@
 				$("li[filter-name="+filterName+"]").on('filter:clear', function(e) {
 					// console.log('select2 filter cleared');
 					$("li[filter-name="+filterName+"]").removeClass('active');
-					$("li[filter-name="+filterName+"] select").select2("val", null);
+	                $('#filter_'+filterName).val(null).trigger('change');
 				});
             });
 		});

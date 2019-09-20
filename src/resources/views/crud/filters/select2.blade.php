@@ -7,6 +7,7 @@
     <div class="dropdown-menu p-0">
       <div class="form-group backpack-filter mb-0">
 			<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2" data-filter-name="{{ $filter->name }}" placeholder="{{ $filter->placeholder }}">
+				<option value="">-</option>
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)
 						<option value="{{ $key }}"
@@ -47,6 +48,14 @@
 	  	border: none;
 	  	box-shadow: none;
 	  }
+	  .select2-container--bootstrap .select2-dropdown {
+	  	margin-top: -2px;
+	  	margin-left: -1px;
+	  }
+	  .select2-container--bootstrap {
+	  	position: relative!important;
+	  	top: 0px!important;
+	  }
     </style>
 @endpush
 
@@ -66,13 +75,16 @@
             // trigger select2 for each untriggered select2 box
             $('select[data-filter-type=select2]').not('[data-filter-enabled]').each(function () {
             	var filterName = $(this).attr('data-filter-name');
+            	var element = $(this);
 
             	$(this).attr('data-filter-enabled', 'true');
 
-            	$(this).select2({
+            	var obj = $(this).select2({
 	            	allowClear: true,
-					closeOnSelect: true,
+		            closeOnSelect: false,
 					theme: "bootstrap",
+					dropdownParent: $(this).parent('.form-group'),
+	        	    placeholder: $(this).attr('placeholder'),
 	            });
 
 				$(this).change(function() {
@@ -97,7 +109,8 @@
 					}
 					else
 					{
-						$("li[filter-name="+parameter+"]").trigger("filter:clear");
+						$("li[filter-name="+parameter+"]").removeClass("active");
+						$("li[filter-name="+parameter+"]").find('.dropdown-menu').removeClass("show");
 					}
 				});
 
@@ -110,7 +123,7 @@
 				$("li[filter-name="+filterName+"]").on('filter:clear', function(e) {
 					// console.log('select2 filter cleared');
 					$("li[filter-name="+filterName+"]").removeClass('active');
-					$("li[filter-name="+filterName+"] select").select2("val", null);
+	                $('#filter_'+filterName).val(null).trigger('change');
 				});
             });
 		});
