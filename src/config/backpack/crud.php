@@ -27,7 +27,7 @@ return [
 
             // stores pagination and filters in localStorage for two hours
             // whenever the user tries to see that page, backpack loads the previous pagination and filtration
-            'persistentTable' => false,
+            'persistentTable' => true,
 
             // How many items should be shown by default by the Datatable?
             // This value can be overwritten on a specific CRUD by calling
