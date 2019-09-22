@@ -119,7 +119,7 @@ trait Search
             return $this->getOperationSetting('responsiveTable');
         }
 
-        return config('backpack.crud.responsive_table');
+        return config('backpack.crud.operations.list.responsiveTable');
     }
 
     /**
@@ -163,7 +163,7 @@ trait Search
             return $this->getOperationSetting('persistentTable');
         }
 
-        return config('backpack.crud.persistent_table');
+        return config('backpack.crud.operations.list.persistentTable');
     }
 
     /**

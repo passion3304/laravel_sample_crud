@@ -5,13 +5,24 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 trait SaveActions
 {
     /**
+     * Get the developer's preference on what save action is the default one
+     * for the current operation.
+     *
+     * @return string
+     */
+    public function getSaveActionDefaultForCurrentOperation()
+    {
+        return config('backpack.crud.operations.'.$this->getCurrentOperation().'.defaultSaveAction', 'save_and_back');
+    }
+
+    /**
      * Get save actions, with pre-selected action from stored session variable or config fallback.
      *
      * @return array
      */
     public function getSaveAction()
     {
-        $saveAction = session('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
+        $saveAction = session($this->getCurrentOperation().'.saveAction', $this->getSaveActionDefaultForCurrentOperation());
 
         // Permissions and their related actions.
         $permissions = [
@@ -63,14 +74,16 @@ trait SaveActions
     public function setSaveAction($forceSaveAction = null)
     {
         $saveAction = $forceSaveAction ?:
-            \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
+            \Request::input('save_action', $this->getSaveActionDefaultForCurrentOperation());
 
-        if (config('backpack.crud.show_save_action_change', true) &&
-            session('save_action', 'save_and_back') !== $saveAction) {
+        $showBubble = $this->getOperationSetting('showSaveActionChange') ?? config('backpack.crud.operations.'.$this->getCurrentOperation().'.showSaveActionChange') ?? true;
+
+        if ($showBubble &&
+            session($this->getCurrentOperation().'.saveAction', 'save_and_back') !== $saveAction) {
             \Alert::info(trans('backpack::crud.save_action_changed_notification'))->flash();
         }
 
-        session(['save_action' => $saveAction]);
+        session([$this->getCurrentOperation().'.saveAction' => $saveAction]);
     }
 
     /**
@@ -82,7 +95,7 @@ trait SaveActions
      */
     public function performSaveAction($itemId = null)
     {
-        $saveAction = \Request::input('save_action', config('backpack.crud.default_save_action', 'save_and_back'));
+        $saveAction = \Request::input('save_action', $this->getSaveActionDefaultForCurrentOperation());
         $itemId = $itemId ?: \Request::input('id');
 
         switch ($saveAction) {

@@ -104,7 +104,7 @@ trait Settings
     {
         $operation = $operation ?? $this->getCurrentOperation();
 
-        return $this->get($operation.'.'.$key);
+        return $this->get($operation.'.'.$key) ?? config('backpack.crud.operations.'.$this->getCurrentOperation().'.'.$key) ?? null;
     }
 
     /**
@@ -134,5 +134,24 @@ trait Settings
         $operation = $operation ?? $this->getCurrentOperation();
 
         return $this->set($operation.'.'.$key, $value);
+    }
+
+    /**
+     * Automatically set values in config file (config/backpack/crud)
+     * as settings values for that operation.
+     *
+     * @param string $configPath   Config string that leads to where the configs are stored.
+     */
+    public function loadDefaultOperationSettingsFromConfig($configPath = null)
+    {
+        $operation = $this->getCurrentOperation();
+        $configPath = $configPath ?? 'backpack.crud.operations.'.$operation;
+        $configSettings = config($configPath);
+
+        if (is_array($configSettings) && count($configSettings)) {
+            foreach ($configSettings as $key => $value) {
+                $this->setOperationSetting($key, $value);
+            }
+        }
     }
 }

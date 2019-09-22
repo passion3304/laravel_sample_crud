@@ -42,9 +42,7 @@ trait UpdateOperation
         $this->crud->allowAccess('update');
 
         $this->crud->operation('update', function () {
-            $this->crud->set('update.groupedErrors', config('backpack.crud.show_grouped_errors', true));
-            $this->crud->set('update.inlineErrors', config('backpack.crud.show_inline_errors', true));
-            $this->crud->set('update.autoFocusOnFirstField', true);
+            $this->crud->loadDefaultOperationSettingsFromConfig();
 
             if ($this->crud->getModel()->translationEnabled()) {
                 $this->crud->addField([

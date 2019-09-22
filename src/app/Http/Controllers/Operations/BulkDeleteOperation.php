@@ -29,6 +29,10 @@ trait BulkDeleteOperation
     {
         $this->crud->allowAccess('bulkDelete');
 
+        $this->crud->operation('bulkDelete', function () {
+            $this->crud->loadDefaultOperationSettingsFromConfig();
+        });
+
         $this->crud->operation('list', function () {
             $this->crud->enableBulkActions();
             $this->crud->addButton('bottom', 'bulk_delete', 'view', 'crud::buttons.bulk_delete');
