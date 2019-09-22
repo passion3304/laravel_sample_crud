@@ -71,8 +71,8 @@ return [
 
     // Horizontal navbar classes. Helps make the admin panel look similar to your project's design.
     'header_class' => 'app-header bg-transparent border-0 navbar position-relative',
-        // Try adding bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan
-        // You might need to add "navbar-dark" too if the background color is a dark one.
+        // For background colors use: bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan, bg-white
+        // For links to be visible on different background colors use: "navbar-dark", "navbar-light", "navbar-color"
 
     // ----
     // BODY
@@ -83,8 +83,9 @@ return [
         // Try sidebar-hidden, sidebar-fixed, sidebar-compact, sidebar-lg-show
 
     // Sidebar element classes.
-    'sidebar_class' => 'sidebar sidebar-pills sidebar-bg-transparent',
-        // Try removing our sidebar-pills class and adding a background class like bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan
+    'sidebar_class' => 'sidebar sidebar-transparent',
+        // Instead of "sidebar-transparent", try "sidebar-light" or "sidebar-dark"
+        // You can also add a background class like bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan
 
     // ------
     // FOOTER
@@ -92,6 +93,8 @@ return [
 
     // Footer element classes.
     'footer_class' => 'app-footer',
+        // hide it with d-none
+        // change background color with bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan, bg-white
 
     // Developer or company name. Shown in footer.
     'developer_name' => 'Cristian Tabacitu',
