@@ -67,8 +67,8 @@ In short:
 - List operation pictured above.
 - Create/Update operations:
 ![Create or update view for Backpack/CRUD](https://backpackforlaravel.com/uploads/docs-4-0/general/16.png)
-- File manager (elFinder):
-![File manager interface for Backpack/CRUD](https://backpackforlaravel.com/uploads/docs-4-0/media_library.png)
+- Custom menu & sidebar colors:
+![Custom sidebar and menu colours](https://backpackforlaravel.com/uploads/docs-4-0/ui/examples/blue.png)
 
 More screenshots available at [backpackforlaravel.com](https://backpackforlaravel.com).
 
