@@ -101,7 +101,7 @@
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
               "processing":     "<img src='{{ asset('packages/backpack/crud/img/ajax-loader.gif') }}' alt='{{ trans('backpack::crud.processing') }}'>",
-              "search":         "{{ trans('backpack::crud.search') }}",
+              "search":         "<span class='d-none d-sm-inline'>{{ trans('backpack::crud.search') }}</span>",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
               "paginate": {
                   "first":      "{{ trans('backpack::crud.paginate.first') }}",
@@ -131,7 +131,7 @@
           dom:
             "<'row hidden'<'col-sm-6 hidden-xs'i><'col-sm-6 hidden-print'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row mt-2'<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
+            "<'row mt-2 '<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
       }
   }
   </script>
