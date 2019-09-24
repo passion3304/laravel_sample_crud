@@ -15,7 +15,7 @@
 
     @include(backpack_view('inc.sidebar'))
 
-    <main class="main">
+    <main class="main mt-2">
 
        @includeWhen(isset($breadcrumbs), backpack_view('inc.breadcrumbs'))
 
