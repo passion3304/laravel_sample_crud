@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "@coreui/coreui": "^2.1.12",
-        "@digitallyhappy/backstrap": "^0.2.19",
+        "@digitallyhappy/backstrap": "^0.2.20",
         "angular": "^1.7.8",
         "angular-ui-sortable": "^0.19.0",
         "animate.css": "^3.7.2",
