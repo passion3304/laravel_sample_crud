@@ -9,7 +9,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 -----------
 
 
-## 4.0.0 - 2019-08-xx
+## 4.0.0 - 2019-09-24
 
 ### Added
 - merged #1955 - ```image``` field type has a new ```max_file_size``` option; which defaults to the defaults to ```upload_max_filesize``` set in PHP;
