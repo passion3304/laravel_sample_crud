@@ -56,7 +56,7 @@ class Install extends Command
 
         $this->progressBar = $this->output->createProgressBar($steps);
         $this->progressBar->start();
-        $this->info(" Backpack installation started. Please wait...");
+        $this->info(' Backpack installation started. Please wait...');
         $this->progressBar->advance();
 
         $this->line(' Publishing configs, langs, views, js and css files');
