@@ -9,6 +9,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 -----------
 
 
+## 4.0.1 - 2019-09-25
+
+### Fixed
+- installation command used a wrong service provider for Elfinder;
+
+
 ## 4.0.0 - 2019-09-24
 
 ### Added

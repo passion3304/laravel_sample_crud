@@ -35,7 +35,7 @@ class Install extends Command
     public function handle()
     {
         /*
-        * "ask" comes by default, when no option is provided, like: "backpack:crud:install"
+        * "ask" comes by default, when no option is provided, like: "backpack:install"
         * https://laravel.com/docs/6.0/artisan#options
         */
         $install_elfinder = null;
@@ -56,11 +56,11 @@ class Install extends Command
 
         $this->progressBar = $this->output->createProgressBar($steps);
         $this->progressBar->start();
-        $this->info(" Backpack\Base installation started. Please wait...");
+        $this->info(" Backpack installation started. Please wait...");
         $this->progressBar->advance();
 
         $this->line(' Publishing configs, langs, views, js and css files');
-        $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\BackpackServiceProvider" --tag=minimum');
+        $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\BackpackServiceProvider" --tag="minimum"');
 
         $this->line(' Publishing config for notifications - prologue/alerts');
         $this->executeProcess('php artisan vendor:publish --provider="Prologue\Alerts\AlertsServiceProvider"');
@@ -95,7 +95,7 @@ class Install extends Command
             $this->executeProcess('php artisan elfinder:publish');
 
             $this->line(' Publishing custom elfinder views');
-            $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\CrudServiceProvider" --tag="elfinder"');
+            $this->executeProcess('php artisan vendor:publish --provider="Backpack\CRUD\BackpackServiceProvider" --tag="elfinder"');
 
             $this->line(' Adding sidebar menu item for File Manager');
             switch (DIRECTORY_SEPARATOR) {
