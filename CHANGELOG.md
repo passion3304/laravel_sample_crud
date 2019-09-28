@@ -13,6 +13,10 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 ### Fixed
 - YUMMY license text is now more clear; added penalties;
 - delete button shows a modal for longer if the delete failed - it's more useful that way;
+- clearer issue template for github;
+- merged #2087, fixes #2086 - image field type could not be added twice to a CRUD;
+- added link to free license application form to Github auto-reply on merged PR;
+- removed backpack/base version from stats;
 
 
 ## 4.0.1 - 2019-09-25
