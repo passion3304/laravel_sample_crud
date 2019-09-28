@@ -48,7 +48,7 @@
                 var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
                 var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
                 var configurationObject = {
-                    element: $(elementId)[0],
+                    element: $('#'+elementId)[0],
                 };
 
                 configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);

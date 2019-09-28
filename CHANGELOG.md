@@ -7,6 +7,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 # Backpack Version 4
 
 -----------
+## 4.0.4 - 2019-09-28
+
+### Fixed
+- fixes #2089 - simplemde field type could not be used multiple times in one page, and overwrote textarea fields;
+
 
 ## 4.0.3 - 2019-09-28
 
