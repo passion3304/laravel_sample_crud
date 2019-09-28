@@ -82,7 +82,7 @@ trait Columns
 
         // make sure the column has a key
         if (! array_key_exists('key', $column_with_details)) {
-            $column_with_details['key'] = str_replace(".", "__", $column_with_details['name']);
+            $column_with_details['key'] = str_replace('.', '__', $column_with_details['name']);
         }
 
         // check if the column exists in the database table
