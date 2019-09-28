@@ -46,7 +46,6 @@ trait BulkDeleteOperation
      */
     public function bulkDelete()
     {
-        $this->crud->applyConfigurationFromSettings('bulkDelete');
         $this->crud->hasAccessOrFail('bulkDelete');
 
         $entries = $this->request->input('entries');

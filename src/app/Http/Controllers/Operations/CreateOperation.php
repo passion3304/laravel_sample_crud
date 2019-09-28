@@ -39,6 +39,7 @@ trait CreateOperation
      */
     protected function setupCreateDefaults()
     {
+        // dd('got to setupCreateDefaults');
         $this->crud->allowAccess('create');
 
         $this->crud->operation('create', function () {
@@ -47,6 +48,7 @@ trait CreateOperation
 
         $this->crud->operation('list', function () {
             $this->crud->addButton('top', 'create', 'view', 'crud::buttons.create');
+            // dd('got to setupCreateDefaults inside list operation closure');
         });
     }
 
@@ -57,7 +59,6 @@ trait CreateOperation
      */
     public function create()
     {
-        $this->crud->applyConfigurationFromSettings('create');
         $this->crud->hasAccessOrFail('create');
 
         // prepare the fields you need to show
@@ -76,7 +77,6 @@ trait CreateOperation
      */
     public function store()
     {
-        $this->crud->applyConfigurationFromSettings('create');
         $this->crud->hasAccessOrFail('create');
 
         // execute the FormRequest authorization and validation, if one is required

@@ -7,6 +7,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 # Backpack Version 4
 
 -----------
+
+## 4.0.5 - 2019-09-28
+
+### Fixed
+- fixes #2091 - could not overwrite what the operation was doing in its defaults, only if you used operation closures;
+
+
 ## 4.0.4 - 2019-09-28
 
 ### Fixed

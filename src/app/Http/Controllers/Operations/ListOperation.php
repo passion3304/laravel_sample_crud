@@ -53,7 +53,6 @@ trait ListOperation
      */
     public function index()
     {
-        $this->crud->applyConfigurationFromSettings('list');
         $this->crud->hasAccessOrFail('list');
 
         $this->data['crud'] = $this->crud;
@@ -70,7 +69,6 @@ trait ListOperation
      */
     public function search()
     {
-        $this->crud->applyConfigurationFromSettings('list');
         $this->crud->hasAccessOrFail('list');
 
         $totalRows = $this->crud->model->count();
@@ -138,7 +136,6 @@ trait ListOperation
      */
     public function showDetailsRow($id)
     {
-        $this->crud->applyConfigurationFromSettings('list');
         $this->crud->hasAccessOrFail('list');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)

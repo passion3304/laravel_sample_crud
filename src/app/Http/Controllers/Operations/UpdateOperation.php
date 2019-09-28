@@ -67,7 +67,6 @@ trait UpdateOperation
      */
     public function edit($id)
     {
-        $this->crud->applyConfigurationFromSettings('update');
         $this->crud->hasAccessOrFail('update');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
@@ -93,7 +92,6 @@ trait UpdateOperation
      */
     public function update()
     {
-        $this->crud->applyConfigurationFromSettings('update');
         $this->crud->hasAccessOrFail('update');
 
         // execute the FormRequest authorization and validation, if one is required
