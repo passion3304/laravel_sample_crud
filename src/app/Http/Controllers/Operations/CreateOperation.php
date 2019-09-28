@@ -39,7 +39,6 @@ trait CreateOperation
      */
     protected function setupCreateDefaults()
     {
-        // dd('got to setupCreateDefaults');
         $this->crud->allowAccess('create');
 
         $this->crud->operation('create', function () {
@@ -48,7 +47,6 @@ trait CreateOperation
 
         $this->crud->operation('list', function () {
             $this->crud->addButton('top', 'create', 'view', 'crud::buttons.create');
-            // dd('got to setupCreateDefaults inside list operation closure');
         });
     }
 
