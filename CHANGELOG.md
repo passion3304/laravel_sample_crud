@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.3 - 2019-09-28
+
+### Fixed
+- merged #2065 fixes #2084 - ```Route::crud()``` macro now works inside deeply nested route groups;
+
+
 ## 4.0.2 - 2019-09-28
 
 ### Fixed
