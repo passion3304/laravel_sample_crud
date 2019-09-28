@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.2 - 2019-09-28
+
+### Fixed
+- YUMMY license text is now more clear; added penalties;
+- delete button shows a modal for longer if the delete failed - it's more useful that way;
+
 
 ## 4.0.1 - 2019-09-25
 

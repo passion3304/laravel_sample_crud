@@ -58,7 +58,7 @@
 			              	title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
 			              	text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
 			              	icon: "success",
-			              	timer: 2000,
+			              	timer: 4000,
 			              	buttons: false,
 			              });
 
@@ -80,7 +80,7 @@
 		              	title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
 		              	text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
 		              	icon: "error",
-		              	timer: 1000,
+		              	timer: 4000,
 		              	buttons: false,
 		              });
 			      }
