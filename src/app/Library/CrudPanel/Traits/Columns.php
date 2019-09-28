@@ -75,9 +75,6 @@ trait Columns
             $column_with_details['name'] = 'anonymous_column_'.str_random(5);
         }
 
-        // check if the column exists in the database table
-        $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column_with_details['name']);
-
         // make sure the column has a type
         if (! array_key_exists('type', $column_with_details)) {
             $column_with_details['type'] = 'text';
@@ -85,8 +82,11 @@ trait Columns
 
         // make sure the column has a key
         if (! array_key_exists('key', $column_with_details)) {
-            $column_with_details['key'] = $column_with_details['name'];
+            $column_with_details['key'] = str_replace(".", "__", $column_with_details['name']);
         }
+
+        // check if the column exists in the database table
+        $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column_with_details['name']);
 
         // make sure the column has a tableColumn boolean
         if (! array_key_exists('tableColumn', $column_with_details)) {

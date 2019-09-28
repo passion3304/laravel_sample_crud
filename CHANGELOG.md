@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2065 fixes #2084 - ```Route::crud()``` macro now works inside deeply nested route groups;
+- fixes #2088 - could not add column with name or key with dot notation; it got converted by ```getOperationSetting()``` into an array; keys are now dot notation free - dot gets replaced with ```__```;
 
 
 ## 4.0.2 - 2019-09-28
