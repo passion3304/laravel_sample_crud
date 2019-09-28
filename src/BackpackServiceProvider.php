@@ -215,8 +215,9 @@ class BackpackServiceProvider extends ServiceProvider
             $routeName .= $name;
 
             // get an instance of the controller
-            $groupStack = $this->hasGroupStack() && isset($this->getGroupStack()[0]['namespace']) ? $this->getGroupStack()[0]['namespace'].'\\' : 'App\\';
-            $namespacedController = $groupStack.$controller;
+            $groupStack = $this->getGroupStack();
+            $groupNamespace = $groupStack && isset(end($groupStack)['namespace']) ? end($groupStack)['namespace'].'\\' : 'App\\';
+            $namespacedController = $groupNamespace.$controller;
             $controllerInstance = new $namespacedController();
 
             return $controllerInstance->setupRoutes($name, $routeName, $controller);
