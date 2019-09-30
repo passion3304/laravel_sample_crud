@@ -4,72 +4,71 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\Tests\Unit\Models\Article;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 {
     private $fakeFieldsArray = [
         [
-            'name' => 'field',
+            'name'  => 'field',
             'label' => 'Normal Field',
         ],
         [
-            'name' => 'meta_title',
-            'label' => 'Meta Title',
-            'fake' => true,
+            'name'     => 'meta_title',
+            'label'    => 'Meta Title',
+            'fake'     => true,
             'store_in' => 'metas',
         ],
         [
-            'name' => 'meta_description',
-            'label' => 'Meta Description',
-            'fake' => true,
+            'name'     => 'meta_description',
+            'label'    => 'Meta Description',
+            'fake'     => true,
             'store_in' => 'metas',
         ],
         [
-            'name' => 'meta_keywords',
-            'label' => 'Meta Keywords',
-            'fake' => true,
+            'name'     => 'meta_keywords',
+            'label'    => 'Meta Keywords',
+            'fake'     => true,
             'store_in' => 'metas',
         ],
         [
-            'name' => 'tags',
-            'label' => 'Tags',
-            'fake' => true,
+            'name'     => 'tags',
+            'label'    => 'Tags',
+            'fake'     => true,
             'store_in' => 'tags',
         ],
         [
-            'name' => 'extra_details',
+            'name'  => 'extra_details',
             'label' => 'Extra Details',
-            'fake' => true,
+            'fake'  => true,
         ],
         [
-            'name' => 'cast_meta_title',
-            'label' => 'Meta Title',
-            'fake' => true,
+            'name'     => 'cast_meta_title',
+            'label'    => 'Meta Title',
+            'fake'     => true,
             'store_in' => 'cast_metas',
         ],
         [
-            'name' => 'cast_meta_description',
-            'label' => 'Meta Description',
-            'fake' => true,
+            'name'     => 'cast_meta_description',
+            'label'    => 'Meta Description',
+            'fake'     => true,
             'store_in' => 'cast_metas',
         ],
         [
-            'name' => 'cast_meta_keywords',
-            'label' => 'Meta Keywords',
-            'fake' => true,
+            'name'     => 'cast_meta_keywords',
+            'label'    => 'Meta Keywords',
+            'fake'     => true,
             'store_in' => 'cast_metas',
         ],
         [
-            'name' => 'cast_tags',
-            'label' => 'Tags',
-            'fake' => true,
+            'name'     => 'cast_tags',
+            'label'    => 'Tags',
+            'fake'     => true,
             'store_in' => 'cast_tags',
         ],
         [
-            'name' => 'cast_extra_details',
-            'label' => 'Extra Details',
-            'fake' => true,
+            'name'     => 'cast_extra_details',
+            'label'    => 'Extra Details',
+            'fake'     => true,
             'store_in' => 'cast_extras',
         ],
     ];
@@ -81,26 +80,26 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
     ];
 
     private $fakeFieldsInputData = [
-        'value1' => 'Value 1',
-        'value2' => 'Value 2',
-        'value3' => 'Value 3',
-        'meta_title' => 'Meta Title Value',
-        'meta_description' => 'Meta Description Value',
-        'tags' => ['tag1', 'tag2', 'tag3'],
-        'extra_details' => ['detail1', 'detail2', 'detail3'],
-        'cast_meta_title' => 'Meta Title Value',
+        'value1'                => 'Value 1',
+        'value2'                => 'Value 2',
+        'value3'                => 'Value 3',
+        'meta_title'            => 'Meta Title Value',
+        'meta_description'      => 'Meta Description Value',
+        'tags'                  => ['tag1', 'tag2', 'tag3'],
+        'extra_details'         => ['detail1', 'detail2', 'detail3'],
+        'cast_meta_title'       => 'Meta Title Value',
         'cast_meta_description' => 'Meta Description Value',
-        'cast_tags' => ['tag1', 'tag2', 'tag3'],
-        'cast_extra_details' => ['detail1', 'detail2', 'detail3'],
+        'cast_tags'             => ['tag1', 'tag2', 'tag3'],
+        'cast_extra_details'    => ['detail1', 'detail2', 'detail3'],
     ];
 
     private $expectedInputDataWithCompactedFakeFields = [
-        'value1' => 'Value 1',
-        'value2' => 'Value 2',
-        'value3' => 'Value 3',
-        'metas' => '{"meta_title":"Meta Title Value","meta_description":"Meta Description Value"}',
-        'tags' => '{"tags":["tag1","tag2","tag3"]}',
-        'extras' => '{"extra_details":["detail1","detail2","detail3"]}',
+        'value1'      => 'Value 1',
+        'value2'      => 'Value 2',
+        'value3'      => 'Value 3',
+        'metas'       => '{"meta_title":"Meta Title Value","meta_description":"Meta Description Value"}',
+        'tags'        => '{"tags":["tag1","tag2","tag3"]}',
+        'extras'      => '{"extra_details":["detail1","detail2","detail3"]}',
         'cast_metas'  => [
             'cast_meta_title'       => 'Meta Title Value',
             'cast_meta_description' => 'Meta Description Value',
@@ -136,25 +135,23 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
 
     public function testCompactFakeFieldsFromUpdateFormWithoutId()
     {
-        $this->expectException(ModelNotFoundException::class);
-
         $this->crudPanel->setModel(Article::class);
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update');
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData);
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }
 
     public function testCompactFakeFieldsFromUpdateFormWithUnknownId()
     {
-        $this->expectException(ModelNotFoundException::class);
-
         $unknownId = DB::getPdo()->lastInsertId() + 1;
         $this->crudPanel->setModel(Article::class);
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update', $unknownId);
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData);
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }

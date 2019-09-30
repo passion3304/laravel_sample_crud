@@ -11,25 +11,25 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class CrudPanelReadTest extends BaseDBCrudPanelTest
 {
     private $relationshipColumn = [
-        'name' => 'user_id',
-        'type' => 'select',
-        'entity' => 'user',
+        'name'      => 'user_id',
+        'type'      => 'select',
+        'entity'    => 'user',
         'attribute' => 'name',
     ];
 
     private $nonRelationshipColumn = [
-        'name' => 'field1',
+        'name'  => 'field1',
         'label' => 'Field1',
     ];
 
     private $articleFieldsArray = [
         [
-            'name' => 'content',
+            'name'  => 'content',
             'label' => 'The Content',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         [
-            'name' => 'metas',
+            'name'  => 'metas',
             'label' => 'Metas',
         ],
         [
@@ -42,70 +42,70 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     private $expectedCreateFormArticleFieldsArray = [
         'content' => [
-            'name' => 'content',
+            'name'  => 'content',
             'label' => 'The Content',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'metas' => [
-            'name' => 'metas',
+            'name'  => 'metas',
             'label' => 'Metas',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'tags' => [
-            'name' => 'tags',
+            'name'  => 'tags',
             'label' => 'Tags',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'extras' => [
-            'name' => 'extras',
+            'name'  => 'extras',
             'label' => 'Extras',
-            'type' => 'text',
+            'type'  => 'text',
         ],
     ];
 
     private $expectedUpdateFormArticleFieldsArray = [
         'content' => [
-            'name' => 'content',
+            'name'  => 'content',
             'label' => 'The Content',
-            'type' => 'text',
+            'type'  => 'text',
             'value' => 'Some Content',
         ],
         'metas' => [
-            'name' => 'metas',
+            'name'  => 'metas',
             'label' => 'Metas',
-            'type' => 'text',
+            'type'  => 'text',
             'value' => '{"meta_title":"Meta Title Value","meta_description":"Meta Description Value"}',
         ],
         'tags' => [
-            'name' => 'tags',
+            'name'  => 'tags',
             'label' => 'Tags',
-            'type' => 'text',
+            'type'  => 'text',
             'value' => '{"tags":["tag1","tag2","tag3"]}',
         ],
         'extras' => [
-            'name' => 'extras',
+            'name'  => 'extras',
             'label' => 'Extras',
-            'type' => 'text',
+            'type'  => 'text',
             'value' => '{"extra_details":["detail1","detail2","detail3"]}',
         ],
         'id' => [
-            'name' => 'id',
-            'type' => 'hidden',
+            'name'  => 'id',
+            'type'  => 'hidden',
             'value' => 1,
         ],
     ];
 
     private $uploadField = [
-        'name' => 'image',
-        'label' => 'Image',
-        'type' => 'upload',
+        'name'   => 'image',
+        'label'  => 'Image',
+        'type'   => 'upload',
         'upload' => true,
     ];
 
     private $multipleUploadField = [
-        'name' => 'photos',
-        'label' => 'Photos',
-        'type' => 'upload_multiple',
+        'name'   => 'photos',
+        'label'  => 'Photos',
+        'type'   => 'upload_multiple',
         'upload' => true,
     ];
 
@@ -162,6 +162,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     public function testAutoEagerLoadRelationshipColumns()
     {
         $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->setOperation('list');
         $this->crudPanel->addColumn($this->relationshipColumn);
 
         $this->crudPanel->autoEagerLoadRelationshipColumns();
@@ -219,38 +220,13 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     {
         $this->crudPanel->setModel(Article::class);
 
+        $this->crudPanel->setOperation('update');
         $this->crudPanel->addFields($this->articleFieldsArray);
 
         // TODO: update method documentation. the $form parameter does not default to 'both'.
-        $fields = $this->crudPanel->getFields('update', 1);
+        $fields = $this->crudPanel->getUpdateFields(1);
 
         $this->assertEquals($this->expectedUpdateFormArticleFieldsArray, $fields);
-    }
-
-    public function testGetFieldsUpdateFormUnknownId()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $this->crudPanel->setModel(Article::class);
-
-        $this->crudPanel->addFields($this->articleFieldsArray);
-
-        // TODO: update method documentation. the $form parameter does not default to 'both'.
-        $unknownId = DB::getPdo()->lastInsertId() + 1;
-        $this->crudPanel->getFields('update', $unknownId);
-    }
-
-    public function testGetFieldsUnknownForm()
-    {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->crudPanel->addFields($this->articleFieldsArray);
-
-        // TODO: this should throw an invalid argument exception but doesn't because the getFields method returns the
-        //       create fields in case of an unknown form type.
-        $this->crudPanel->getFields('unknownForm');
     }
 
     public function testHasUploadFieldsCreateForm()
@@ -284,29 +260,20 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $this->assertTrue($hasUploadFields);
     }
 
-    public function testHasUploadFieldsUpdateFormUnknownId()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $this->crudPanel->setModel(Article::class);
-        $this->crudPanel->addField($this->uploadField, 'update');
-
-        $unknownId = DB::getPdo()->lastInsertId() + 1;
-        $this->crudPanel->hasUploadFields('update', $unknownId);
-    }
-
     public function testEnableDetailsRow()
     {
+        $this->crudPanel->setOperation('create');
         $this->crudPanel->enableDetailsRow();
 
-        $this->assertTrue($this->crudPanel->details_row);
+        $this->assertTrue($this->crudPanel->getOperationSetting('detailsRow'));
     }
 
     public function testDisableDetailsRow()
     {
+        $this->crudPanel->setOperation('list');
         $this->crudPanel->disableDetailsRow();
 
-        $this->assertFalse($this->crudPanel->details_row);
+        $this->assertFalse($this->crudPanel->get('list.detailsRow'));
     }
 
     public function testSetDefaultPageLength()
@@ -322,20 +289,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $defaultPageLength = $this->crudPanel->getDefaultPageLength();
 
         $this->assertEquals(25, $defaultPageLength);
-    }
-
-    public function testEnableAjaxTable()
-    {
-        $this->crudPanel->enableAjaxTable();
-
-        $this->assertTrue($this->crudPanel->ajaxTable());
-    }
-
-    public function testGetAjaxTable()
-    {
-        $ajaxTable = $this->crudPanel->ajaxTable();
-
-        $this->assertTrue($ajaxTable);
     }
 
     public function testEnableExportButtons()

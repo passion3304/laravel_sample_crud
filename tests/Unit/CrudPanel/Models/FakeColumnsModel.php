@@ -2,11 +2,11 @@
 
 namespace Unit\CrudPanel\Models;
 
-use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\Sluggable;
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
-use Backpack\CRUD\ModelTraits\SpatieTranslatable\SluggableScopeHelpers;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\Sluggable;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\SluggableScopeHelpers;
 
 class FakeColumnsModel extends Model
 {
@@ -47,11 +47,11 @@ class FakeColumnsModel extends Model
     ];
 
     protected $casts = [
-        'fake_object' => 'object',
-        'fake_object_translatable' => 'object',
-        'fake_array' => 'array',
-        'fake_array_translatable' => 'array',
-        'fake_assoc_array' => 'array',
+        'fake_object'                   => 'object',
+        'fake_object_translatable'      => 'object',
+        'fake_array'                    => 'array',
+        'fake_array_translatable'       => 'array',
+        'fake_assoc_array'              => 'array',
         'fake_assoc_array_translatable' => 'array',
     ];
 }

@@ -2,19 +2,19 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-class CrudPanelFieldsTest extends BaseCrudPanelTest
+class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 {
     private $oneTextFieldArray = [
-        'name' => 'field1',
+        'name'  => 'field1',
         'label' => 'Field1',
-        'type' => 'text',
+        'type'  => 'text',
     ];
 
     private $expectedOneTextFieldArray = [
         'field1' => [
-            'name' => 'field1',
+            'name'  => 'field1',
             'label' => 'Field1',
-            'type' => 'text',
+            'type'  => 'text',
         ],
     ];
 
@@ -35,37 +35,37 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     private $twoTextFieldsArray = [
         [
-            'name' => 'field1',
+            'name'  => 'field1',
             'label' => 'Field1',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         [
-            'name' => 'field2',
+            'name'  => 'field2',
             'label' => 'Field2',
         ],
     ];
 
     private $expectedTwoTextFieldsArray = [
         'field1' => [
-            'name' => 'field1',
+            'name'  => 'field1',
             'label' => 'Field1',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'field2' => [
-            'name' => 'field2',
+            'name'  => 'field2',
             'label' => 'Field2',
-            'type' => 'text',
+            'type'  => 'text',
         ],
     ];
 
     private $threeTextFieldsArray = [
         [
-            'name' => 'field1',
+            'name'  => 'field1',
             'label' => 'Field1',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         [
-            'name' => 'field2',
+            'name'  => 'field2',
             'label' => 'Field2',
         ],
         [
@@ -75,25 +75,25 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     private $expectedThreeTextFieldsArray = [
         'field1' => [
-            'name' => 'field1',
+            'name'  => 'field1',
             'label' => 'Field1',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'field2' => [
-            'name' => 'field2',
+            'name'  => 'field2',
             'label' => 'Field2',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'field3' => [
-            'name' => 'field3',
+            'name'  => 'field3',
             'label' => 'Field3',
-            'type' => 'text',
+            'type'  => 'text',
         ],
     ];
 
     private $multipleFieldTypesArray = [
         [
-            'name' => 'field1',
+            'name'  => 'field1',
             'label' => 'Field1',
         ],
         [
@@ -144,105 +144,109 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
     private $expectedMultipleFieldTypesArray = [
         'field1' => [
-            'name' => 'field1',
+            'name'  => 'field1',
             'label' => 'Field1',
-            'type' => 'text',
+            'type'  => 'text',
         ],
         'field2' => [
-            'name' => 'field2',
-            'type' => 'address',
+            'name'  => 'field2',
+            'type'  => 'address',
             'label' => 'Field2',
         ],
         'field3' => [
-            'name' => 'field3',
-            'type' => 'address',
+            'name'  => 'field3',
+            'type'  => 'address',
             'label' => 'Field3',
         ],
         'field4' => [
-            'name' => 'field4',
-            'type' => 'checkbox',
+            'name'  => 'field4',
+            'type'  => 'checkbox',
             'label' => 'Field4',
         ],
         'field5' => [
-            'name' => 'field5',
-            'type' => 'date',
+            'name'  => 'field5',
+            'type'  => 'date',
             'label' => 'Field5',
         ],
         'field6' => [
-            'name' => 'field6',
-            'type' => 'email',
+            'name'  => 'field6',
+            'type'  => 'email',
             'label' => 'Field6',
         ],
         'field7' => [
-            'name' => 'field7',
-            'type' => 'hidden',
+            'name'  => 'field7',
+            'type'  => 'hidden',
             'label' => 'Field7',
         ],
         'field8' => [
-            'name' => 'field8',
-            'type' => 'password',
+            'name'  => 'field8',
+            'type'  => 'password',
             'label' => 'Field8',
         ],
         'field9' => [
-            'name' => 'field9',
-            'type' => 'select2',
+            'name'  => 'field9',
+            'type'  => 'select2',
             'label' => 'Field9',
         ],
         'field10' => [
-            'name' => 'field10',
-            'type' => 'select2_multiple',
+            'name'  => 'field10',
+            'type'  => 'select2_multiple',
             'label' => 'Field10',
         ],
         'field11' => [
-            'name' => 'field11',
-            'type' => 'table',
+            'name'  => 'field11',
+            'type'  => 'table',
             'label' => 'Field11',
         ],
         'field12' => [
-            'name' => 'field12',
-            'type' => 'url',
+            'name'  => 'field12',
+            'type'  => 'url',
             'label' => 'Field12',
         ],
     ];
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->crudPanel->setOperation('create');
+    }
 
     public function testAddFieldByName()
     {
         $this->crudPanel->addField('field1');
 
-        $this->assertEquals(1, count($this->crudPanel->create_fields));
-        $this->assertEquals(1, count($this->crudPanel->update_fields));
-        $this->assertEquals($this->expectedOneTextFieldArray, $this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedOneTextFieldArray, $this->crudPanel->update_fields);
+        $this->assertEquals(1, count($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedOneTextFieldArray, $this->crudPanel->fields());
     }
 
     public function testAddFieldsByName()
     {
         $this->crudPanel->addFields(['field1', 'field2', 'field3']);
 
-        $this->assertEquals(3, count($this->crudPanel->create_fields));
-        $this->assertEquals(3, count($this->crudPanel->update_fields));
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
     }
 
     public function testAddFieldsAsArray()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
 
-        $this->assertEquals(3, count($this->crudPanel->create_fields));
-        $this->assertEquals(3, count($this->crudPanel->update_fields));
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
     }
 
     public function testAddFieldsDifferentTypes()
     {
         $this->crudPanel->addFields($this->multipleFieldTypesArray);
 
-        $this->assertEquals(12, count($this->crudPanel->create_fields));
-        $this->assertEquals(12, count($this->crudPanel->update_fields));
-        $this->assertEquals($this->expectedMultipleFieldTypesArray, $this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedMultipleFieldTypesArray, $this->crudPanel->update_fields);
+        $this->assertEquals(12, count($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedMultipleFieldTypesArray, $this->crudPanel->fields());
     }
 
     public function testAddFieldsInvalidArray()
@@ -265,109 +269,60 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray, 'create');
 
-        $this->assertEquals(3, count($this->crudPanel->create_fields));
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
-        $this->assertEmpty($this->crudPanel->update_fields);
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
     }
 
     public function testAddFieldsForUpdateForm()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray, 'update');
 
-        $this->assertEquals(3, count($this->crudPanel->update_fields));
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
-        $this->assertEmpty($this->crudPanel->create_fields);
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
     }
 
     public function testBeforeField()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
-
         $this->crudPanel->beforeField('field2');
 
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[1]]);
+        $createKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$createKeys[1]]);
         $this->assertEquals(['field1', 'field3', 'field2'], $createKeys);
-
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[1]]);
-        $this->assertEquals(['field1', 'field3', 'field2'], $updateKeys);
     }
 
     public function testBeforeFieldFirstField()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
-
         $this->crudPanel->beforeField('field1');
 
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[0]]);
+        $createKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$createKeys[0]]);
         $this->assertEquals(['field3', 'field1', 'field2'], $createKeys);
 
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[0]]);
+        $updateKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$updateKeys[0]]);
         $this->assertEquals(['field3', 'field1', 'field2'], $updateKeys);
     }
 
     public function testBeforeFieldLastField()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
-
         $this->crudPanel->beforeField('field3');
 
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[2]]);
+        $createKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$createKeys[2]]);
         $this->assertEquals(['field1', 'field2', 'field3'], $createKeys);
-
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[2]]);
-        $this->assertEquals(['field1', 'field2', 'field3'], $updateKeys);
     }
 
     public function testBeforeFieldCreateForm()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
-
-        $this->crudPanel->beforeField('field1', 'create');
-
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[0]]);
-        $this->assertEquals(['field3', 'field1', 'field2'], $createKeys);
-
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[2]]);
-        $this->assertEquals(['field1', 'field2', 'field3'], $updateKeys);
-    }
-
-    public function testBeforeFieldUpdateForm()
-    {
-        $this->crudPanel->addFields($this->threeTextFieldsArray);
-
-        $this->crudPanel->beforeField('field1', 'update');
-
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[2]]);
-        $this->assertEquals(['field1', 'field2', 'field3'], $createKeys);
-
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[0]]);
-        $this->assertEquals(['field3', 'field1', 'field2'], $updateKeys);
-    }
-
-    public function testBeforeFieldForDifferentFieldsInCreateAndUpdate()
-    {
-        $this->crudPanel->addFields($this->threeTextFieldsArray, 'create');
-        $this->crudPanel->addFields($this->twoTextFieldsArray, 'update');
-
         $this->crudPanel->beforeField('field1');
 
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[0]]);
+        $createKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$createKeys[0]]);
         $this->assertEquals(['field3', 'field1', 'field2'], $createKeys);
-
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedTwoTextFieldsArray['field2'], $this->crudPanel->update_fields[$updateKeys[0]]);
-        $this->assertEquals(['field2', 'field1'], $updateKeys);
     }
 
     public function testBeforeUnknownField()
@@ -376,10 +331,8 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->beforeField('field4');
 
-        $this->assertEquals(3, count($this->crudPanel->create_fields));
-        $this->assertEquals(3, count($this->crudPanel->update_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->fields()));
     }
 
     public function testAfterField()
@@ -388,12 +341,12 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->afterField('field1');
 
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[1]]);
+        $createKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$createKeys[1]]);
         $this->assertEquals(['field1', 'field3', 'field2'], $createKeys);
 
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[1]]);
+        $updateKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$updateKeys[1]]);
         $this->assertEquals(['field1', 'field3', 'field2'], $updateKeys);
     }
 
@@ -403,59 +356,22 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->afterField('field3');
 
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[2]]);
+        $createKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$createKeys[2]]);
         $this->assertEquals(['field1', 'field2', 'field3'], $createKeys);
 
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[2]]);
+        $updateKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->fields()[$updateKeys[2]]);
         $this->assertEquals(['field1', 'field2', 'field3'], $updateKeys);
     }
 
-    public function testAfterFieldCreateForm()
+    public function testAfterFieldOnCertainField()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
+        $this->crudPanel->addField('custom')->afterField('field1');
 
-        $this->crudPanel->afterField('field1', 'create');
-
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[1]]);
-        $this->assertEquals(['field1', 'field3', 'field2'], $createKeys);
-
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[2]]);
-        $this->assertEquals(['field1', 'field2', 'field3'], $updateKeys);
-    }
-
-    public function testAfterFieldUpdateForm()
-    {
-        $this->crudPanel->addFields($this->threeTextFieldsArray);
-
-        $this->crudPanel->afterField('field1', 'update');
-
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[2]]);
-        $this->assertEquals(['field1', 'field2', 'field3'], $createKeys);
-
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->update_fields[$updateKeys[1]]);
-        $this->assertEquals(['field1', 'field3', 'field2'], $updateKeys);
-    }
-
-    public function testAfterFieldForDifferentFieldsInCreateAndUpdate()
-    {
-        $this->crudPanel->addFields($this->threeTextFieldsArray, 'create');
-        $this->crudPanel->addFields($this->twoTextFieldsArray, 'update');
-
-        $this->crudPanel->afterField('field1');
-
-        $createKeys = array_keys($this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray['field3'], $this->crudPanel->create_fields[$createKeys[1]]);
-        $this->assertEquals(['field1', 'field3', 'field2'], $createKeys);
-
-        $updateKeys = array_keys($this->crudPanel->update_fields);
-        $this->assertEquals($this->expectedTwoTextFieldsArray['field2'], $this->crudPanel->update_fields[$updateKeys[1]]);
-        $this->assertEquals(['field1', 'field2'], $updateKeys);
+        $createKeys = array_keys($this->crudPanel->fields());
+        $this->assertEquals(['field1', 'custom', 'field2', 'field3'], $createKeys);
     }
 
     public function testAfterUnknownField()
@@ -464,10 +380,8 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->afterField('field4');
 
-        $this->assertEquals(3, count($this->crudPanel->create_fields));
-        $this->assertEquals(3, count($this->crudPanel->update_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->fields()));
     }
 
     public function testRemoveFieldsByName()
@@ -476,10 +390,8 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->removeFields(['field1']);
 
-        $this->assertEquals(2, count($this->crudPanel->create_fields));
-        $this->assertEquals(2, count($this->crudPanel->update_fields));
-        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(2, count($this->crudPanel->fields()));
+        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->fields()));
     }
 
     public function testRemoveFieldsByNameInvalidArray()
@@ -492,34 +404,26 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
         //       because the removeField method will actually work with arrays instead of a string
         $this->crudPanel->removeFields($this->twoTextFieldsArray);
 
-        $this->assertEquals(3, count($this->crudPanel->create_fields));
-        $this->assertEquals(3, count($this->crudPanel->update_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->fields()));
     }
 
     public function testRemoveFieldsFromCreateForm()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
+        $this->crudPanel->removeFields(['field1']);
 
-        $this->crudPanel->removeFields(['field1'], 'create');
-
-        $this->assertEquals(2, count($this->crudPanel->create_fields));
-        $this->assertEquals(3, count($this->crudPanel->update_fields));
-        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(2, count($this->crudPanel->fields()));
+        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->fields()));
     }
 
     public function testRemoveFieldsFromUpdateForm()
     {
         $this->crudPanel->addFields($this->threeTextFieldsArray);
+        $this->crudPanel->removeFields(['field1']);
 
-        $this->crudPanel->removeFields(['field1'], 'update');
-
-        $this->assertEquals(3, count($this->crudPanel->create_fields));
-        $this->assertEquals(2, count($this->crudPanel->update_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(2, count($this->crudPanel->fields()));
+        $this->assertEquals(['field2', 'field3'], array_keys($this->crudPanel->fields()));
     }
 
     public function testRemoveUnknownFields()
@@ -528,10 +432,10 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->removeFields(['field4']);
 
-        $this->assertEquals(3, count($this->crudPanel->create_fields));
-        $this->assertEquals(3, count($this->crudPanel->update_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals(3, count($this->crudPanel->fields()));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->fields()));
+        $this->assertEquals(array_keys($this->expectedThreeTextFieldsArray), array_keys($this->crudPanel->fields()));
     }
 
     public function testOrderFields()
@@ -540,8 +444,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->orderFields(['field2', 'field1', 'field3']);
 
-        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->fields()));
     }
 
     public function testOrderFieldsCreateForm()
@@ -550,8 +453,8 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->orderFields(['field2', 'field1', 'field3'], 'create');
 
-        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->create_fields));
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
     }
 
     public function testOrderFieldsUpdateForm()
@@ -560,8 +463,8 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->orderFields(['field2', 'field1', 'field3'], 'update');
 
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
-        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->update_fields));
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->fields()));
     }
 
     public function testOrderFieldsIncompleteList()
@@ -570,8 +473,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->orderFields(['field2', 'field3']);
 
-        $this->assertEquals(['field2', 'field3', 'field1'], array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(['field2', 'field3', 'field1'], array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(['field2', 'field3', 'field1'], array_keys($this->crudPanel->fields()));
     }
 
     public function testOrderFieldsEmptyList()
@@ -580,8 +482,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->orderFields([]);
 
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
     }
 
     public function testOrderFieldsUnknownList()
@@ -590,8 +491,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->orderFields(['field4', 'field5', 'field6']);
 
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->create_fields);
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->update_fields);
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
     }
 
     public function testOrderColumnsMixedList()
@@ -600,8 +500,7 @@ class CrudPanelFieldsTest extends BaseCrudPanelTest
 
         $this->crudPanel->orderFields(['field2', 'field5', 'field6']);
 
-        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->create_fields));
-        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->update_fields));
+        $this->assertEquals(['field2', 'field1', 'field3'], array_keys($this->crudPanel->fields()));
     }
 
     public function testCheckIfFieldIsFirstOfItsType()

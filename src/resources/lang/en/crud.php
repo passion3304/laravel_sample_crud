@@ -14,9 +14,9 @@ return [
     */
 
     // Forms
-    'save_action_save_and_new' => 'Save and new item',
-    'save_action_save_and_edit' => 'Save and edit this item',
-    'save_action_save_and_back' => 'Save and back',
+    'save_action_save_and_new'         => 'Save and new item',
+    'save_action_save_and_edit'        => 'Save and edit this item',
+    'save_action_save_and_back'        => 'Save and back',
     'save_action_changed_notification' => 'Default behaviour after saving has been changed.',
 
     // Create form
@@ -42,7 +42,7 @@ return [
     'guest_user'           => 'Guest User',
 
     // Translatable models
-    'edit_translations' => 'EDIT TRANSLATIONS',
+    'edit_translations' => 'Translation',
     'language'          => 'Language',
 
     // CRUD table view
@@ -66,15 +66,15 @@ return [
         'delete_confirmation_not_deleted_message'     => 'Nothing happened. Your item is safe.',
 
         // Bulk actions
-        'bulk_no_entries_selected_title' => 'No entries selected',
+        'bulk_no_entries_selected_title'   => 'No entries selected',
         'bulk_no_entries_selected_message' => 'Please select one or more items to perform a bulk action on them.',
 
         // Bulk confirmation
-        'bulk_delete_are_you_sure' => 'Are you sure you want to delete these :number entries?',
-        'bulk_delete_sucess_title' => 'Entries deleted',
+        'bulk_delete_are_you_sure'   => 'Are you sure you want to delete these :number entries?',
+        'bulk_delete_sucess_title'   => 'Entries deleted',
         'bulk_delete_sucess_message' => ' items have been deleted',
-        'bulk_delete_error_title' => 'Delete failed',
-        'bulk_delete_error_message' => 'One or more items could not be deleted',
+        'bulk_delete_error_title'    => 'Delete failed',
+        'bulk_delete_error_message'  => 'One or more items could not be deleted',
 
         // Ajax errors
         'ajax_error_title' => 'Error',
@@ -114,7 +114,7 @@ return [
 
     // global crud - errors
         'unauthorized_access' => 'Unauthorized access - you do not have the necessary permissions to see this page.',
-        'please_fix' => 'Please fix the following errors:',
+        'please_fix'          => 'Please fix the following errors:',
 
     // global crud - success / error notification bubbles
         'insert_success' => 'The item has been added successfully.',
@@ -130,28 +130,28 @@ return [
 
     // CRUD yes/no
         'yes' => 'Yes',
-        'no' => 'No',
+        'no'  => 'No',
 
     // CRUD filters navbar view
-        'filters' => 'Filters',
+        'filters'        => 'Filters',
         'toggle_filters' => 'Toggle filters',
         'remove_filters' => 'Remove filters',
 
     // Fields
-        'browse_uploads' => 'Browse uploads',
-        'select_all' => 'Select All',
-        'select_files' => 'Select files',
-        'select_file' => 'Select file',
-        'clear' => 'Clear',
-        'page_link' => 'Page link',
-        'page_link_placeholder' => 'http://example.com/your-desired-page',
-        'internal_link' => 'Internal link',
+        'browse_uploads'            => 'Browse uploads',
+        'select_all'                => 'Select All',
+        'select_files'              => 'Select files',
+        'select_file'               => 'Select file',
+        'clear'                     => 'Clear',
+        'page_link'                 => 'Page link',
+        'page_link_placeholder'     => 'http://example.com/your-desired-page',
+        'internal_link'             => 'Internal link',
         'internal_link_placeholder' => 'Internal slug. Ex: \'admin/page\' (no quotes) for \':url\'',
-        'external_link' => 'External link',
-        'choose_file' => 'Choose file',
+        'external_link'             => 'External link',
+        'choose_file'               => 'Choose file',
 
     //Table field
-        'table_cant_add' => 'Cannot add new :entity',
+        'table_cant_add'    => 'Cannot add new :entity',
         'table_max_reached' => 'Maximum number of :max reached',
 
     // File manager

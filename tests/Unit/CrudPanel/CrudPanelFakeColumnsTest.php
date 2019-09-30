@@ -10,37 +10,37 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
 
     private $fakeFieldsArray = [
         [
-            'name' => 'field',
+            'name'  => 'field',
             'label' => 'Normal Field',
         ],
         [
-            'name' => 'meta_title',
-            'label' => 'Meta Title',
-            'fake' => true,
+            'name'     => 'meta_title',
+            'label'    => 'Meta Title',
+            'fake'     => true,
             'store_in' => 'metas',
         ],
         [
-            'name' => 'meta_description',
-            'label' => 'Meta Description',
-            'fake' => true,
+            'name'     => 'meta_description',
+            'label'    => 'Meta Description',
+            'fake'     => true,
             'store_in' => 'metas',
         ],
         [
-            'name' => 'meta_keywords',
-            'label' => 'Meta Keywords',
-            'fake' => true,
+            'name'     => 'meta_keywords',
+            'label'    => 'Meta Keywords',
+            'fake'     => true,
             'store_in' => 'metas',
         ],
         [
-            'name' => 'tags',
-            'label' => 'Tags',
-            'fake' => true,
+            'name'     => 'tags',
+            'label'    => 'Tags',
+            'fake'     => true,
             'store_in' => 'tags',
         ],
         [
-            'name' => 'extra_details',
+            'name'  => 'extra_details',
             'label' => 'Extra Details',
-            'fake' => true,
+            'fake'  => true,
         ],
     ];
 
@@ -49,26 +49,22 @@ class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
     public function testGetFakeColumnsAsArrayFromCreateForm()
     {
         $this->crudPanel->setModel(Article::class);
-
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'create');
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
         $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
-        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update', 1);
 
         $this->assertEquals($this->expectedFakeFieldsColumnNames, $createFakeColumnsArray);
-        $this->assertEquals($this->emptyFakeColumnsArray, $updateFakeColumnsArray);
     }
 
     public function testGetFakeColumnsAsArrayFromUpdateForm()
     {
         $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
 
-        $createFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray();
-        $updateFakeColumnsArray = $this->crudPanel->getFakeColumnsAsArray('update', 1);
-
-        $this->assertEquals($this->emptyFakeColumnsArray, $createFakeColumnsArray);
         $this->assertEquals($this->expectedFakeFieldsColumnNames, $updateFakeColumnsArray);
     }
 

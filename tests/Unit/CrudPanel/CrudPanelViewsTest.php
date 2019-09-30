@@ -14,7 +14,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetCreateView()
     {
         $this->crudPanel->setCreateView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'createView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('create.view'));
     }
 
     public function testGetCreateView()
@@ -26,7 +26,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetCreateContentClass()
     {
         $this->crudPanel->setCreateContentClass($this->customContentClass);
-        $this->assertAttributeEquals($this->customContentClass, 'createContentClass', $this->crudPanel);
+        $this->assertEquals($this->customContentClass, $this->crudPanel->get('create.contentClass'));
     }
 
     public function testGetCreateContentClass()
@@ -37,9 +37,9 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
 
     public function testGetCreateContentClassFromConfig()
     {
-        Config::set('backpack.crud.create_content_class', $this->customContentClass);
+        Config::set('backpack.crud.operations.create.contentClass', $this->customContentClass);
 
-        $this->assertEquals(Config::get('backpack.crud.create_content_class'), $this->crudPanel->getCreateContentClass());
+        $this->assertEquals(Config::get('backpack.crud.operations.create.contentClass'), $this->crudPanel->getCreateContentClass());
     }
 
     // UPDATE
@@ -47,7 +47,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetEditView()
     {
         $this->crudPanel->setEditView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'editView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('update.view'));
     }
 
     public function testGetEditView()
@@ -59,7 +59,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetEditContentClass()
     {
         $this->crudPanel->setEditContentClass($this->customContentClass);
-        $this->assertAttributeEquals($this->customContentClass, 'editContentClass', $this->crudPanel);
+        $this->assertEquals($this->customContentClass, $this->crudPanel->get('update.contentClass'));
     }
 
     public function testGetEditContentClass()
@@ -70,15 +70,15 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
 
     public function testGetEditContentClassFromConfig()
     {
-        Config::set('backpack.crud.edit_content_class', $this->customContentClass);
+        Config::set('backpack.crud.operations.update.contentClass', $this->customContentClass);
 
-        $this->assertEquals(Config::get('backpack.crud.edit_content_class'), $this->crudPanel->getEditContentClass());
+        $this->assertEquals(Config::get('backpack.crud.operations.update.contentClass'), $this->crudPanel->getEditContentClass());
     }
 
     public function testSetUpdateView()
     {
         $this->crudPanel->setUpdateView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'editView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('update.view'));
     }
 
     public function testGetUpdateView()
@@ -90,7 +90,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetUpdateContentClass()
     {
         $this->crudPanel->setUpdateContentClass($this->customContentClass);
-        $this->assertAttributeEquals($this->customContentClass, 'editContentClass', $this->crudPanel);
+        $this->assertEquals($this->customContentClass, $this->crudPanel->get('update.contentClass'));
     }
 
     public function testGetUpdateContentClass()
@@ -101,9 +101,9 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
 
     public function testGetUpdateContentClassFromConfig()
     {
-        Config::set('backpack.crud.edit_content_class', $this->customContentClass);
+        Config::set('backpack.crud.operations.update.contentClass', $this->customContentClass);
 
-        $this->assertEquals(Config::get('backpack.crud.edit_content_class'), $this->crudPanel->getUpdateContentClass());
+        $this->assertEquals(Config::get('backpack.crud.operations.update.contentClass'), $this->crudPanel->getUpdateContentClass());
     }
 
     // SHOW
@@ -111,7 +111,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetShowView()
     {
         $this->crudPanel->setShowView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'showView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('show.view'));
     }
 
     public function testGetShowView()
@@ -123,7 +123,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetShowContentClass()
     {
         $this->crudPanel->setShowContentClass($this->customContentClass);
-        $this->assertAttributeEquals($this->customContentClass, 'showContentClass', $this->crudPanel);
+        $this->assertEquals($this->customContentClass, $this->crudPanel->get('show.contentClass'));
     }
 
     public function testGetShowContentClass()
@@ -134,15 +134,15 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
 
     public function testGetShowContentClassFromConfig()
     {
-        Config::set('backpack.crud.show_content_class', $this->customContentClass);
+        Config::set('backpack.crud.operations.show.contentClass', $this->customContentClass);
 
-        $this->assertEquals(Config::get('backpack.crud.show_content_class'), $this->crudPanel->getShowContentClass());
+        $this->assertEquals(Config::get('backpack.crud.operations.show.contentClass'), $this->crudPanel->getShowContentClass());
     }
 
     public function testSetPreviewView()
     {
         $this->crudPanel->setPreviewView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'showView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('show.view'));
     }
 
     public function testGetPreviewView()
@@ -156,7 +156,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetListView()
     {
         $this->crudPanel->setListView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'listView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('list.view'));
     }
 
     public function testGetListView()
@@ -168,7 +168,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetListContentClass()
     {
         $this->crudPanel->setListContentClass($this->customContentClass);
-        $this->assertAttributeEquals($this->customContentClass, 'listContentClass', $this->crudPanel);
+        $this->assertEquals($this->customContentClass, $this->crudPanel->get('list.contentClass'));
     }
 
     public function testGetListContentClass()
@@ -179,9 +179,9 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
 
     public function testGetListContentClassFromConfig()
     {
-        Config::set('backpack.crud.list_content_class', $this->customContentClass);
+        Config::set('backpack.crud.operations.list.contentClass', $this->customContentClass);
 
-        $this->assertEquals(Config::get('backpack.crud.list_content_class'), $this->crudPanel->getListContentClass());
+        $this->assertEquals(Config::get('backpack.crud.operations.list.contentClass'), $this->crudPanel->getListContentClass());
     }
 
     // DETAILS ROW
@@ -189,7 +189,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetDetailsRowView()
     {
         $this->crudPanel->setDetailsRowView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'detailsRowView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('list.detailsRow.view'));
     }
 
     public function testGetDetailsRowView()
@@ -203,7 +203,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetReorderView()
     {
         $this->crudPanel->setReorderView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'reorderView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('reorder.view'));
     }
 
     public function testGetReorderView()
@@ -215,7 +215,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetReorderContentClass()
     {
         $this->crudPanel->setReorderContentClass($this->customContentClass);
-        $this->assertAttributeEquals($this->customContentClass, 'reorderContentClass', $this->crudPanel);
+        $this->assertEquals($this->customContentClass, $this->crudPanel->get('reorder.contentClass'));
     }
 
     public function testGetReorderContentClass()
@@ -226,9 +226,9 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
 
     public function testGetReorderContentClassFromConfig()
     {
-        Config::set('backpack.crud.reorder_content_class', $this->customContentClass);
+        Config::set('backpack.crud.operations.reorder.contentClass', $this->customContentClass);
 
-        $this->assertEquals(Config::get('backpack.crud.reorder_content_class'), $this->crudPanel->getReorderContentClass());
+        $this->assertEquals(Config::get('backpack.crud.operations.reorder.contentClass'), $this->crudPanel->getReorderContentClass());
     }
 
     // REVISIONS
@@ -236,7 +236,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetRevisionsView()
     {
         $this->crudPanel->setRevisionsView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'revisionsView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('revisions.view'));
     }
 
     public function testGetRevisionsView()
@@ -248,7 +248,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetRevisionsTimelineView()
     {
         $this->crudPanel->setRevisionsTimelineView($this->customView);
-        $this->assertAttributeEquals($this->customView, 'revisionsTimelineView', $this->crudPanel);
+        $this->assertEquals($this->customView, $this->crudPanel->get('revisions.timelineView'));
     }
 
     public function testGetRevisionsTimelineView()
@@ -260,7 +260,7 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
     public function testSetRevisionsTimelineContentClass()
     {
         $this->crudPanel->setRevisionsTimelineContentClass($this->customContentClass);
-        $this->assertAttributeEquals($this->customContentClass, 'revisionsTimelineContentClass', $this->crudPanel);
+        $this->assertEquals($this->customContentClass, $this->crudPanel->get('revisions.timelineContentClass'));
     }
 
     public function testGetRevisionsTimelineContentClass()
@@ -271,8 +271,8 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
 
     public function testGetRevisionsTimelineContentClassFromConfig()
     {
-        Config::set('backpack.crud.revisions_timeline_content_class', $this->customContentClass);
+        Config::set('backpack.crud.operations.revisions.timelineContent', $this->customContentClass);
 
-        $this->assertEquals(Config::get('backpack.crud.revisions_timeline_content_class'), $this->crudPanel->getRevisionsTimelineContentClass());
+        $this->assertEquals(Config::get('backpack.crud.operations.revisions.timelineContent'), $this->crudPanel->getRevisionsTimelineContentClass());
     }
 }
