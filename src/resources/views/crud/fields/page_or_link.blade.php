@@ -2,7 +2,11 @@
 <!-- Used in Backpack\MenuCRUD -->
 
 <?php
-    $field['options'] = ['page_link' => trans('backpack::crud.page_link'), 'internal_link' => trans('backpack::crud.internal_link'), 'external_link' => trans('backpack::crud.external_link')];
+    $field['options'] =  [
+        'page_link'     => trans('backpack::crud.page_link'), 
+        'internal_link' => trans('backpack::crud.internal_link'), 
+        'external_link' => trans('backpack::crud.external_link')
+    ];
     $field['allows_null'] = false;
     $page_model = $field['page_model'];
     $active_pages = $page_model::all();
@@ -16,7 +20,7 @@
         <div class="col-sm-3">
             <select
                 data-identifier="page_or_link_select"
-                name="{{ $field['name'] ?? 'type' }}"
+                name="type"
                 @include('crud::inc.field_attributes')
                 >
 
@@ -27,7 +31,7 @@
                     @if (count($field['options']))
                         @foreach ($field['options'] as $key => $value)
                             <option value="{{ $key }}"
-                                @if (isset($field['value']) && $key==$field['value'])
+                                @if (isset($crud->entry) && $key==$crud->entry->type)
                                      selected
                                 @endif
                             >{{ $value }}</option>

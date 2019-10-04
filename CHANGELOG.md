@@ -7,6 +7,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 # Backpack Version 4
 
 -----------
+## 4.0.6 - 2019-10-04
+
+### Fixed
+- fixes #2104 - page_or_link field type;
+
 
 ## 4.0.5 - 2019-09-28
 
