@@ -19,19 +19,19 @@
 		var row = $("#crudTable a[data-route='"+route+"']").closest('tr');
 
 		swal({
-		  title: "{{ trans('backpack::base.warning') }}",
-		  text: "{{ trans('backpack::crud.delete_confirm') }}",
+		  title: "{!! trans('backpack::base.warning') !!}",
+		  text: "{!! trans('backpack::crud.delete_confirm') !!}",
 		  icon: "warning",
 		  buttons: {
 		  	cancel: {
-			  text: "{{ trans('backpack::crud.cancel') }}",
+			  text: "{!! trans('backpack::crud.cancel') !!}",
 			  value: null,
 			  visible: true,
 			  className: "bg-secondary",
 			  closeModal: true,
 			},
 		  	delete: {
-			  text: "{{ trans('backpack::crud.delete') }}",
+			  text: "{!! trans('backpack::crud.delete') !!}",
 			  value: true,
 			  visible: true,
 			  className: "bg-danger",
@@ -46,8 +46,8 @@
 			          if (result != 1) {
 			          	// Show an error alert
 			              swal({
-			              	title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
-			              	text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
+			              	title: "{!! trans('backpack::crud.delete_confirmation_not_title') !!}",
+			              	text: "{!! trans('backpack::crud.delete_confirmation_not_message') !!}",
 			              	icon: "error",
 			              	timer: 2000,
 			              	buttons: false,
@@ -55,8 +55,8 @@
 			          } else {
 			          	  // Show a success message
 			              swal({
-			              	title: "{{ trans('backpack::crud.delete_confirmation_title') }}",
-			              	text: "{{ trans('backpack::crud.delete_confirmation_message') }}",
+			              	title: "{!! trans('backpack::crud.delete_confirmation_title') !!}",
+			              	text: "{!! trans('backpack::crud.delete_confirmation_message') !!}",
 			              	icon: "success",
 			              	timer: 4000,
 			              	buttons: false,
@@ -77,8 +77,8 @@
 			      error: function(result) {
 			          // Show an alert with the result
 			          swal({
-		              	title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
-		              	text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
+		              	title: "{!! trans('backpack::crud.delete_confirmation_not_title') !!}",
+		              	text: "{!! trans('backpack::crud.delete_confirmation_not_message') !!}",
 		              	icon: "error",
 		              	timer: 4000,
 		              	buttons: false,

@@ -7,6 +7,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 # Backpack Version 4
 
 -----------
+
+## 4.0.7 - 2019-10-xx
+
+### Fixed
+- fixes #2114 - delete and clone message texts are overly escaped;
+
+
 ## 4.0.6 - 2019-10-04
 
 ### Fixed
