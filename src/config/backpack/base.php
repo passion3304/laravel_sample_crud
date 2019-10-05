@@ -253,6 +253,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Needs A Better Section Header ("Nitpicky Details" has my vote)
+    |--------------------------------------------------------------------------
+    */
+
+    // Enabling strip save request will allow only fields explicitly defined in your
+    // setupXxxOperation() methods to be sent with a traitStore or traitUpdate request.
+    // Disable this to allow arbitrary fields to be added to a request prior to storage.
+
+    'strip_save_requests' => false,
+
+
+    /*
+    |--------------------------------------------------------------------------
     | License Code
     |--------------------------------------------------------------------------
     |
