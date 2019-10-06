@@ -8,10 +8,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.0.7 - 2019-10-xx
+## 4.0.7 - 2019-10-06
 
 ### Fixed
 - fixes #2114 - delete and clone message texts are overly escaped;
+- ```image``` and ```base64_image``` field types no longer show empty space when empty;
 
 
 ## 4.0.6 - 2019-10-04
