@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.8 - 2019-10-11
+
+### Fixed
+- user menu dropdown was not shown if the default auth routes were disabled;
+
+
 ## 4.0.7 - 2019-10-06
 
 ### Fixed
