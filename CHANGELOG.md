@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.8 - 2019-10-12
+
+### Fixed
+- merged #2144 fixes #2141 and #2140 - checkbox field label did not trigger checkbox;
+
+
 ## 4.0.8 - 2019-10-11
 
 ### Fixed
