@@ -15,7 +15,7 @@ class CrudController extends Controller
     public $request;
 
     /**
-     * @var CrudPanel
+     * @var \Backpack\CRUD\app\Library\CrudPanel\CrudPanel
      */
     public $crud;
 
