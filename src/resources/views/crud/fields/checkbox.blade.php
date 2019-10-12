@@ -16,8 +16,11 @@
     			{{ $attribute }}="{{ $value }}"
         	  @endforeach
           @endif
+          @if (!isset($field['attributes']['id']))
+              id="{{  $field['name'] }}_checkbox"
+          @endif
           >
-    	<label class="form-check-label font-weight-normal" for="{{ $field['name'] }}_checkbox">{!! $field['label'] !!}</label>
+    	<label class="form-check-label font-weight-normal" for="{{ $field['attributes']['id'] ?? $field['name'] . '_checkbox' }}">{!! $field['label'] !!}</label>
 
         {{-- HINT --}}
         @if (isset($field['hint']))
