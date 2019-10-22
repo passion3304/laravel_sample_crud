@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.10 - 2019-10-22
+
+### Fixed
+- fixed #2152 merged #2154 - ckeditor options were not working;
+
+
 ## 4.0.9 - 2019-10-12
 
 ### Fixed
