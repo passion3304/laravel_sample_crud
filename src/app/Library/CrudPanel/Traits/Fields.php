@@ -459,6 +459,10 @@ trait Fields
      */
     public function getStrippedSaveRequest()
     {
-        return $this->request->only($this->getAllFieldNames());
+        if (config('backpack.base.strip_save_requests', TRUE)) {
+            return $this->request->only($this->getAllFieldNames());
+        } else {
+            return $this->request->except('_token', '_method', 'http_referrer', 'current_tab', 'save_action');
+        }
     }
 }
