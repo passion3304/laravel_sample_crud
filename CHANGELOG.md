@@ -8,6 +8,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.11 - 2019-10-23
+
+### Fixed
+- fixed column model_function_attribute - if no function leave empty;
+- fixed column upload_multiple - added prefix attribute so you can prepend something to the URL;
+
+
 ## 4.0.10 - 2019-10-23
 
 ### Fixed
