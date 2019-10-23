@@ -251,7 +251,6 @@ return [
     // You can rename this disk here. Default: root
     'root_disk_name' => 'root',
 
-
     /*
     |--------------------------------------------------------------------------
     | License Code
