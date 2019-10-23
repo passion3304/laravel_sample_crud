@@ -41,7 +41,7 @@
                 element.ckeditor({
                     "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
                     "extraPlugins" : '{{ isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : 'embed,widget' }}',
-            "embed_provider": '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}'
+                    "embed_provider": '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}'
                     @if (isset($field['options']) && count($field['options']))
                         {!! ', '.trim(json_encode($field['options']), "{}") !!}
                     @endif
