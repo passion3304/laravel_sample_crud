@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - fixed #2152 merged #2154 - ckeditor options were not working;
+- fixed #2170 - default columns for autoset table field and table column;
 
 
 ## 4.0.9 - 2019-10-12
