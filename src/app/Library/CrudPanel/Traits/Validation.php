@@ -10,12 +10,12 @@ trait Validation
      * Mark a FormRequest file as required for the current operation, in Settings.
      * Adds the required rules to an array for easy access.
      *
-     * @param FormRequest $formRequest
+     * @param string $class Class that extends FormRequest
      */
-    public function setValidation($formRequest)
+    public function setValidation($class)
     {
-        $this->setFormRequest($formRequest);
-        $this->setRequiredFields($formRequest);
+        $this->setFormRequest($class);
+        $this->setRequiredFields($class);
     }
 
     /**
@@ -37,18 +37,18 @@ trait Validation
     /**
      * Mark a FormRequest file as required for the current operation, in Settings.
      *
-     * @param FormRequest $formRequest
+     * @param string $class Class that extends FormRequest
      */
-    public function setFormRequest($formRequest)
+    public function setFormRequest($class)
     {
-        $this->setOperationSetting('formRequest', $formRequest);
+        $this->setOperationSetting('formRequest', $class);
     }
 
     /**
      * Get the current form request file, in any.
      * Returns null if no FormRequest is required for the current operation.
      *
-     * @return FormRequest
+     * @return string Class that extends FormRequest
      */
     public function getFormRequest()
     {
