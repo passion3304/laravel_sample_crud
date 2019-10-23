@@ -20,8 +20,8 @@
     }
 
     // make sure columns are defined
-    if (!isset($field['columns'])) {
-        $field['columns'] = ['value' => "Value"];
+    if (! isset($field['columns'])) {
+        $field['columns'] = ['value' => 'Value'];
     }
 ?>
 <div data-field-type="table" data-field-name="{{ $field['name'] }}" @include('crud::inc.field_wrapper_attributes') >
