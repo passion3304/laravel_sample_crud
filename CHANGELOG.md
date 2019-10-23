@@ -8,6 +8,40 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.10 - 2019-10-23
+
+### Fixed
+- fixed #2152 merged #2154 - ckeditor options were not working;
+- fixed #2170 - default columns for autoset table field and table column;
+- fixes #2162 - autoSet allows columns to end in AT or ID;
+- merged #2155 - better docblock for Validation trait;
+
+
+## 4.0.9 - 2019-10-12
+
+### Fixed
+- merged #2144 fixes #2141 and #2140 - checkbox field label did not trigger checkbox;
+
+
+## 4.0.8 - 2019-10-11
+
+### Fixed
+- user menu dropdown was not shown if the default auth routes were disabled;
+
+
+## 4.0.7 - 2019-10-06
+
+### Fixed
+- fixes #2114 - delete and clone message texts are overly escaped;
+- ```image``` and ```base64_image``` field types no longer show empty space when empty;
+
+
+## 4.0.6 - 2019-10-04
+
+### Fixed
+- fixes #2104 - page_or_link field type;
+
+
 ## 4.0.5 - 2019-09-28
 
 ### Fixed

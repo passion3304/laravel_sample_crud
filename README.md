@@ -36,8 +36,6 @@ If you have never used Backpack before, the best place to understand it and get 
 
 ## Install
 
-Please note you need to install Backpack\Base before you can use Backpack\CRUD. It will provide you with the AdminLTE design.
-
 Installation guides:
 - [Install Backpack 4.0 on Laravel 6](https://backpackforlaravel.com/docs/4.0/installation) - recommended
 - [Install Backpack 3.6 on Laravel 5.8 or 6.x](https://backpackforlaravel.com/docs/3.6/installation) - last feature update was 17th Sep 2019;

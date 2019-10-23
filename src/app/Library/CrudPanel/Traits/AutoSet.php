@@ -190,7 +190,7 @@ trait AutoSet
             return ($this->autoset['labeller'])($value);
         }
 
-        return trim(preg_replace('/(id|at|\[\])$/i', '', mb_ucfirst(str_replace('_', ' ', $value))));
+        return trim(mb_ucfirst(str_replace('_', ' ', preg_replace('/(_id|_at|\[\])$/i', '', $value))));
     }
 
     /**

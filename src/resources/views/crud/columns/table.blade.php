@@ -1,11 +1,18 @@
 @php
 	$value = data_get($entry, $column['name']);
+
+    // make sure columns are defined
+    if (!isset($column['columns'])) {
+        $column['columns'] = ['value' => "Value"];
+    }
+    
 	$columns = $column['columns'];
 
 	// if this attribute isn't using attribute casting, decode it
 	if (is_string($value)) {
 	    $value = json_decode($value);
 	}
+
 @endphp
 
 <span>

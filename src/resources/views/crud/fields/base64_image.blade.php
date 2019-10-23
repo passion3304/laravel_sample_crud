@@ -16,7 +16,7 @@
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
-        <div class="col-sm-6" style="margin-bottom: 20px;">
+        <div class="col-sm-6" data-handle="previewArea" style="margin-bottom: 20px;">
             @if(!is_null(old(square_brackets_to_dots($field['name']))))
                 <img data-handle="mainImage" src="{{ old(square_brackets_to_dots($field['name'])) }}">
             @elseif(isset($field['src']) && isset($entry))
@@ -30,7 +30,7 @@
             @endif
         </div>
         @if(isset($field['crop']) && $field['crop'])
-        <div class="col-sm-3">
+        <div class="col-sm-3" data-handle="previewArea">
             <div class="docs-preview clearfix">
                 <div id="{{ $field['name'] }}" class="img-preview preview-lg">
                     <img src="" style="display: block; min-width: 0px !important; min-height: 0px !important; max-width: none !important; max-height: none !important; margin-left: -32.875px; margin-top: -18.4922px; transform: none;">
@@ -131,12 +131,13 @@
                     var $uploadImage = element.find("[data-handle=uploadImage]");
                     var $hiddenImage = element.find("[data-handle=hiddenImage]");
                     var $hiddenFilename = element.find("#hiddenFilename");
-                    var $rotateLeft = element.find("[data-handle=rotateLeft]")
-                    var $rotateRight = element.find("[data-handle=rotateRight]")
-                    var $zoomIn = element.find("[data-handle=zoomIn]")
-                    var $zoomOut = element.find("[data-handle=zoomOut]")
-                    var $reset = element.find("[data-handle=reset]")
-                    var $remove = element.find("[data-handle=remove]")
+                    var $rotateLeft = element.find("[data-handle=rotateLeft]");
+                    var $rotateRight = element.find("[data-handle=rotateRight]");
+                    var $zoomIn = element.find("[data-handle=zoomIn]");
+                    var $zoomOut = element.find("[data-handle=zoomOut]");
+                    var $reset = element.find("[data-handle=reset]");
+                    var $remove = element.find("[data-handle=remove]");
+                    var $previews = element.find("[data-handle=previewArea]");
                     // Options either global for all image type fields, or use 'data-*' elements for options passed in via the CRUD controller
                     var options = {
                         viewMode: 2,
@@ -150,6 +151,7 @@
 
                     // Hide 'Remove' button if there is no image saved
                     if (!$mainImage.attr('src')){
+                        $previews.hide();
                         $remove.hide();
                     }
                     // Initialise hidden form input in case we submit with no change
@@ -172,6 +174,7 @@
                             $zoomOut.hide();
                             $reset.hide();
                             $remove.hide();
+                            $previews.hide();
                         });
                     } else {
 
@@ -180,6 +183,7 @@
                             $hiddenImage.val('');
                             $hiddenFilename.val('removed');
                             $remove.hide();
+                            $previews.hide();
                         });
                     }
 
@@ -201,6 +205,7 @@
                             fileReader.readAsDataURL(file);
                             fileReader.onload = function () {
                                 $uploadImage.val("");
+                                $previews.show();
                                 if(crop){
                                     $mainImage.cropper(options).cropper("reset", true).cropper("replace", this.result);
                                     // Override form submit to copy canvas to hidden input before submitting

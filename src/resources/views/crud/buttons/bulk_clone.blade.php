@@ -11,7 +11,7 @@
 	      {
   	        new Noty({
 	          type: "warning",
-	          text: "<strong>{{ trans('backpack::crud.bulk_no_entries_selected_title') }}</strong><br>{{ trans('backpack::crud.bulk_no_entries_selected_message') }}"
+	          text: "<strong>{!! trans('backpack::crud.bulk_no_entries_selected_title') !!}</strong><br>{!! trans('backpack::crud.bulk_no_entries_selected_message') !!}"
 	        }).show();
 
 	      	return;
@@ -22,12 +22,12 @@
 
 	      // show confirm message
 	      swal({
-			  title: "{{ trans('backpack::base.warning') }}",
+			  title: "{!! trans('backpack::base.warning') !!}",
 			  text: message,
 			  icon: "warning",
 			  buttons: {
 			  	cancel: {
-				  text: "{{ trans('backpack::crud.cancel') }}",
+				  text: "{!! trans('backpack::crud.cancel') !!}",
 				  value: null,
 				  visible: true,
 				  className: "bg-secondary",
