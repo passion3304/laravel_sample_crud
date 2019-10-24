@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.12 - 2019-10-24
+
+### Fixed
+- merged #2130 - dropdown filter did not show the active item;
+
+
 ## 4.0.11 - 2019-10-23
 
 ### Fixed

@@ -63,8 +63,8 @@
 				// mark dropdown items active accordingly
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
-					$("li[filter-name={{ $filter->name }}] .dropdown-menu li").removeClass('active');
-					$(this).parent().addClass('active');
+					$("li[filter-name={{ $filter->name }}] .dropdown-menu a").removeClass('active');
+					$(this).addClass('active');
 				}
 				else
 				{
