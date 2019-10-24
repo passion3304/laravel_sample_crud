@@ -64,7 +64,15 @@
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box
-            $('[data-filter-type=select2_ajax]').each(function () {
+            $('#filter_{{ $filter->name }}').each(function () {
+
+            	// if the filter has already been initialised, do nothing
+            	if ($(this).attr('data-initialised')) {
+            		return;
+            	} else {
+	            	$(this).attr('data-initialised', 'true');
+            	}
+
             	var filterName = $(this).attr('data-filter-name');
 
             	$(this).select2({

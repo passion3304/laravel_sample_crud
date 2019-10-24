@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2130 - dropdown filter did not show the active item;
+- fixed #2102 - multiple select2_ajax filters on one CRUD did not work;
 
 
 ## 4.0.11 - 2019-10-23
