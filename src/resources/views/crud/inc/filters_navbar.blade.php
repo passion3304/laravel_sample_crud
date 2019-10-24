@@ -12,7 +12,7 @@
     			@foreach ($crud->filters() as $filter)
     				@include($filter->view)
     			@endforeach
-          <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'hidden' }}"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
+          <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'invisible' }}"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
   </nav>
@@ -33,7 +33,7 @@
               new_url = new_url.addQuery(parameter, value);
             }
 
-            $('#remove_filters_button').removeClass('hidden');
+            $('#remove_filters_button').removeClass('invisible');
 
         return new_url.toString();
 
@@ -73,7 +73,7 @@
           });
 
           if (anyActiveFilters == false) {
-            $('#remove_filters_button').addClass('hidden');
+            $('#remove_filters_button').addClass('invisible');
           }
         });
       });

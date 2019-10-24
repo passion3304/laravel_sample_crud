@@ -72,7 +72,7 @@
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box
-            $('select[data-filter-type=select2_multiple]').not('[data-filter-enabled]').each(function () {
+            $('select[name=filter_{{ $filter->name }}]').not('[data-filter-enabled]').each(function () {
             	var filterName = $(this).attr('data-filter-name');
 
                 $(this).select2({
@@ -126,7 +126,7 @@
 				$("li[filter-name="+filterName+"]").on('filter:clear', function(e) {
 					// console.log('select2 filter cleared');
 					$("li[filter-name="+filterName+"]").removeClass('active');
-	                $('#filter_'+filterName).val(null).trigger('change');
+	                $('#filter_'+filterName).val(null).trigger('change.select2');
 				});
             });
 		});
