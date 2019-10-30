@@ -1,6 +1,6 @@
 # Having trouble using Backpack?
 
-No documentation can be 100% complete and Backpack's is no different, sorry for that. There are plenty of people that follow [the StackOverflow tag "backpack-for-laravel"](stackoverflow.com/questions/tagged/backpack-for-laravel) and are glad to help you out. Post your question there and please include:
+No documentation can be 100% complete and Backpack's is no different, sorry for that. There are plenty of people that follow [the StackOverflow tag "backpack-for-laravel"](https://stackoverflow.com/questions/tagged/backpack-for-laravel) and are glad to help you out. Post your question there and please include:
 - (A) what you did
 - (B) what you expected to happen
 - (C) what happened
