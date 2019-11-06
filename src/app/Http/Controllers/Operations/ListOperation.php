@@ -15,21 +15,21 @@ trait ListOperation
      */
     protected function setupListRoutes($segment, $routeName, $controller)
     {
-        Route::get($segment.'/', [
-            'as'        => $routeName.'.index',
-            'uses'      => $controller.'@index',
+        Route::get($segment . '/', [
+            'as'        => $routeName . '.index',
+            'uses'      => $controller . '@index',
             'operation' => 'list',
         ]);
 
-        Route::post($segment.'/search', [
-            'as'        => $routeName.'.search',
-            'uses'      => $controller.'@search',
+        Route::post($segment . '/search', [
+            'as'        => $routeName . '.search',
+            'uses'      => $controller . '@search',
             'operation' => 'list',
         ]);
 
-        Route::get($segment.'/{id}/details', [
-            'as'        => $routeName.'.showDetailsRow',
-            'uses'      => $controller.'@showDetailsRow',
+        Route::get($segment . '/{id}/details', [
+            'as'        => $routeName . '.showDetailsRow',
+            'uses'      => $controller . '@showDetailsRow',
             'operation' => 'list',
         ]);
     }
@@ -113,13 +113,17 @@ trait ListOperation
         $orderBy = $this->crud->query->getQuery()->orders;
         $hasOrderByPrimaryKey = false;
         collect($orderBy)->each(function ($item, $key) use ($hasOrderByPrimaryKey) {
+            if (isset($item['type']) && $item['type'] == 'Raw') {
+                return false;
+            }
+
             if ($item['column'] == $this->crud->model->getKeyName()) {
                 $hasOrderByPrimaryKey = true;
 
                 return false;
             }
         });
-        if (! $hasOrderByPrimaryKey) {
+        if (!$hasOrderByPrimaryKey) {
             $this->crud->query->orderByDesc($this->crud->model->getKeyName());
         }
 
