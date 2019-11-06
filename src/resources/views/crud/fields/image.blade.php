@@ -198,7 +198,7 @@
                         });
                     } else {
 
-                        $(this).find("#remove").click(function() {
+                        $remove.click(function() {
                             $mainImage.attr('src','');
                             $hiddenImage.val('');
                             $remove.hide();
@@ -221,7 +221,7 @@
 
                             alert(`Please pick an image smaller than ${maxImageSize} bytes.`);
                         } else if (/^image\/\w+$/.test(file.type)) {
-                            
+
                             fileReader.readAsDataURL(file);
                             fileReader.onload = function () {
 
