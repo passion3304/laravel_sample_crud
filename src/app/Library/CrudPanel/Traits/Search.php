@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Validator;
 use Carbon\Carbon;
+use Validator;
 
 trait Search
 {
