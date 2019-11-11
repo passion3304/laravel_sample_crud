@@ -17,7 +17,7 @@
         	  @endforeach
           @endif
           @if (!isset($field['attributes']['id']))
-              id="{{  $field['name'] }}_checkbox"
+              id="{{ $field['name'] }}_checkbox"
           @endif
           >
     	<label class="form-check-label font-weight-normal" for="{{ $field['attributes']['id'] ?? $field['name'] . '_checkbox' }}">{!! $field['label'] !!}</label>
@@ -41,6 +41,9 @@
         <script>
             function bpFieldInitCheckbox(element) {
                 var hidden_element = element.siblings('input[type=hidden]');
+
+                // make sure the value is a boolean (so it will pass validation)
+                if (hidden_element.val() === '') hidden_element.val(0);
 
                 // set the default checked/unchecked state
                 // if the field has been loaded with javascript

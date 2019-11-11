@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.13 - 2019-11-11
+
+### Fixed
+- merged #2156 - checkbox field did not pass boolean validation sometimes;
+
+
 ## 4.0.12 - 2019-10-24
 
 ### Fixed
