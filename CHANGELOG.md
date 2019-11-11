@@ -13,6 +13,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 ### Fixed
 - merged #2156 - checkbox field did not pass boolean validation sometimes;
 - merged #2197, fixes #2198 - image and base64_image fields: remove button did not do anything if crop wasn't set;
+- merged #2174, fixes #2104 - ability to tell the Create and Update operations to save the request using Except instead of Only, using the new operation-level config item ```saveAllInputsExcept```;
 
 
 ## 4.0.12 - 2019-10-24
