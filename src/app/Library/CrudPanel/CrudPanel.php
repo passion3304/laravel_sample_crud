@@ -2,33 +2,33 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Illuminate\Database\Eloquent\Collection;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Access;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Create;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Delete;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Errors;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\AutoFocus;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\AutoSet;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Buttons;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Columns;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Settings;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\AutoFocus;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Create;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Delete;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Errors;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Settings;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
+use Illuminate\Database\Eloquent\Collection;
 
 class CrudPanel
 {

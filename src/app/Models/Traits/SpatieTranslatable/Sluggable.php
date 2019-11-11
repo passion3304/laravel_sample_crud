@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable as OriginalSluggable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 trait Sluggable
 {

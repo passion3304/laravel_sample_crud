@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Http\Requests;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class ChangePasswordRequest extends FormRequest
 {

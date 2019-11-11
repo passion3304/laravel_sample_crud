@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Doctrine\DBAL\DBALException;
 use Backpack\CRUD\Tests\Unit\Models\ColumnType;
+use Doctrine\DBAL\DBALException;
 
 class MyColumnTypeWithOtherConnection extends ColumnType
 {

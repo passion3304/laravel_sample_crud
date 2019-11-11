@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\Eloquent\Model;
 
 class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
 {

@@ -3,10 +3,10 @@
 namespace Backpack\CRUD\app\Http\Controllers;
 
 use Alert;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Hash;
 use Backpack\CRUD\app\Http\Requests\AccountInfoRequest;
 use Backpack\CRUD\app\Http\Requests\ChangePasswordRequest;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class MyAccountController extends Controller
 {

@@ -2,10 +2,10 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Faker\Factory;
-use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\Tests\Unit\Models\User;
+use Faker\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 {
