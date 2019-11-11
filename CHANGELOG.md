@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2156 - checkbox field did not pass boolean validation sometimes;
+- merged #2197, fixes #2198 - image and base64_image fields: remove button did not do anything if crop wasn't set;
 
 
 ## 4.0.12 - 2019-10-24
