@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2206 fixes #2161 - fixes setSubheading typo;
+- merged #2209 - default saveAllInputsExcept to ONLY when saveAllInputsExcept is NULL;
 
 
 ## 4.0.13 - 2019-11-11
