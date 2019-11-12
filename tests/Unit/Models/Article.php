@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {

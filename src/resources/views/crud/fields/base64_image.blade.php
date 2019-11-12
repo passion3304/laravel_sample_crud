@@ -178,7 +178,7 @@
                         });
                     } else {
 
-                        element.find("#remove").click(function() {
+                        $remove.click(function() {
                             $mainImage.attr('src','');
                             $hiddenImage.val('');
                             $hiddenFilename.val('removed');
