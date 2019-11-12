@@ -1,6 +1,34 @@
 @php
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['class']))
-    {
+
+    if (isset($field['wrapperAttributes'])) {
+
+        $dataInitFunction = $field['wrapperAttributes']['data-init-function'] ?? 'bpFieldInitUploadElement';
+        $dataFieldName = $field['wrapperAttributes']['data-field-name'] ?? $field['name'];
+
+        /*
+            If the developer send one of this two keys in field configuration he could want to override,
+            or completely delete them from the field. (Maybe to have some plugin attached to some specific class)
+            So he can override providing a value, or delete them passing empty keys. By default if no otherwise
+            specified the default backpack functions are loaded.
+        */
+
+        if(!empty($dataInitFunction)) { //check for empty (developer sent empty key to delete this from field)
+            $field['wrapperAttributes']['data-init-function'] = $dataInitFunction;
+        }else{
+           unset($field['wrapperAttributes']['data-init-function']);
+        }
+
+        if(!empty($dataFieldName)) {
+            $field['wrapperAttributes']['data-field-name'] = $dataFieldName;
+        }else{
+            unset($field['wrapperAttributes']['data-field-name']);
+        }
+    }else{
+
+        /*
+            We allways ensure that defaults are loaded.
+        */
+
         $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitUploadElement';
         $field['wrapperAttributes']['data-field-name'] = $field['name'];
     }

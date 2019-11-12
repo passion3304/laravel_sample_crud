@@ -1,14 +1,38 @@
 @php
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['class']))
-    {
-        $field['wrapperAttributes']['class'] = "form-group col-sm-12 cropperImage";
+    if (isset($field['wrapperAttributes'])) {
+
+        $dataInitFunction = $field['wrapperAttributes']['data-init-function'] ?? 'bpFieldInitBase64CropperImageElement';
+        $dataFieldName = $field['wrapperAttributes']['data-field-name'] ?? $field['name'];
+
+    /*
+        If the developer send one of this two keys in field configuration he could want to override,
+        or completely delete them from the field. (Maybe to have some plugin attached to some specific class)
+        So he can override providing a value, or delete them passing empty keys. By default if no otherwise
+        specified the default backpack functions are loaded.
+    */
+
+        if(!empty($dataInitFunction)) { //check for empty (developer sent empty key to delete this from field)
+            $field['wrapperAttributes']['data-init-function'] = $dataInitFunction;
+        }else{
+            unset($field['wrapperAttributes']['data-init-function']);
+        }
+
+        if(!empty($dataFieldName)) {
+            $field['wrapperAttributes']['data-field-name'] = $dataFieldName;
+        }else{
+            unset($field['wrapperAttributes']['data-field-name']);
+        }
+    }else{
+            //We allways ensure that defaults are loaded.
+
         $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitBase64CropperImageElement';
+        $field['wrapperAttributes']['data-field-name'] = $field['name'];
     }
 @endphp
 
-  <div  data-preview="#{{ $field['name'] }}" 
-        data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}" 
-        data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}" 
+  <div  data-preview="#{{ $field['name'] }}"
+        data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}"
+        data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}"
         @include('crud::inc.field_wrapper_attributes')>
     <div>
         <label>{!! $field['label'] !!}</label>
