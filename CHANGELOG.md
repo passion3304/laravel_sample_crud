@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.14 - 2019-11-12
+
+### Fixed
+- merged #2206 fixes #2161 - fixes setSubheading typo;
+
+
 ## 4.0.13 - 2019-11-11
 
 ### Fixed
