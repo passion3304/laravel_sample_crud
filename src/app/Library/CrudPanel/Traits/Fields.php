@@ -459,10 +459,10 @@ trait Fields
      */
     public function getStrippedSaveRequest()
     {
-        if ($this->getOperationSetting('saveAllInputsExcept') !== false) {
-            return $this->request->except($this->getOperationSetting('saveAllInputsExcept'));
-        } else {
-            return $this->request->only($this->getAllFieldNames());
+        if (is_array($this->getOperationSetting('saveAllInputsExcept'))) {
+            return $this->request->except($this->getOperationSetting('saveAllInputsExcept'));            
         }
+
+        return $this->request->only($this->getAllFieldNames());
     }
 }
