@@ -462,11 +462,11 @@ trait Fields
         $setting = $this->getOperationSetting('saveAllInputsExcept');
 
         if ($setting == false || $setting == null) {
-            return $this->request->only($this->getAllFieldNames());            
+            return $this->request->only($this->getAllFieldNames());
         }
 
         if (is_array($setting)) {
-            return $this->request->except($this->getOperationSetting('saveAllInputsExcept'));            
+            return $this->request->except($this->getOperationSetting('saveAllInputsExcept'));
         }
 
         return $this->request->only($this->getAllFieldNames());
