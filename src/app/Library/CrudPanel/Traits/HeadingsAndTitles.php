@@ -115,6 +115,6 @@ trait HeadingsAndTitles
             $action = $this->getActionMethod();
         }
 
-        return $this->set($action.'subheading', $string);
+        return $this->set($action.'.subheading', $string);
     }
 }
