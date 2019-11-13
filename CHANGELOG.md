@@ -8,6 +8,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.14 - 2019-11-12
+
+### Fixed
+- merged #2206 fixes #2161 - fixes setSubheading typo;
+- merged #2209 - default saveAllInputsExcept to ONLY when saveAllInputsExcept is NULL;
+- merged #2181 fixes #2145 - missing row class to tabbed fields view;
+
+
 ## 4.0.13 - 2019-11-11
 
 ### Fixed
