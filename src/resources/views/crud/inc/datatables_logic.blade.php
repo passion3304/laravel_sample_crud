@@ -85,6 +85,20 @@
 
         @if ($crud->getPersistentTable())
         stateSave: true,
+        /*
+            if developer forced field into table 'visibleInTable => true' we make sure when saving datatables state
+            that it reflects the developer decision.
+        */
+
+        stateSaveParams: function(settings, data) {
+            data.columns.forEach(function(item, index) {
+                var columnHeading = crud.table.columns().header()[index];
+                      if ($(columnHeading).attr('data-visible-in-table') == 'true') {
+                       return item.visible = true;
+                      }
+
+            });
+        },
         @endif
         autoWidth: false,
         pageLength: {{ $crud->getDefaultPageLength() }},
