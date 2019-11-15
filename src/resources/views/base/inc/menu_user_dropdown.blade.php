@@ -6,4 +6,5 @@
     <a class="dropdown-item" href="{{ route('backpack.account.info') }}"><i class="fa fa-user"></i> {{ trans('backpack::base.my_account') }}</a>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="{{ backpack_url('logout') }}"><i class="fa fa-lock"></i> {{ trans('backpack::base.logout') }}</a>
+  </div>
 </li>
