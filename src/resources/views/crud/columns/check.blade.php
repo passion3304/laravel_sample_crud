@@ -16,4 +16,4 @@ $text = $checkValue == false ? $exportUncheckedText : $exportCheckedText;
     <i class="fa {{ $icon }}"></i>
 </span>
 
-<span class="hidden">{{ $text }}</span>
+<span class="sr-only">{{ $text }}</span>
