@@ -29,6 +29,13 @@ return [
             // whenever the user tries to see that page, backpack loads the previous pagination and filtration
             'persistentTable' => true,
 
+            // the time the table will be persisted in minutes
+            // after this the table info is cleared from localStorage.
+            // use false to never force localStorage clear. (default)
+            // keep in mind: User can clear his localStorage whenever he wants.
+
+            'persistentTableDuration' => false,
+
             // How many items should be shown by default by the Datatable?
             // This value can be overwritten on a specific CRUD by calling
             // $this->crud->setDefaultPageLength(50);

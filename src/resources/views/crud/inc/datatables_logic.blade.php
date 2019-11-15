@@ -10,9 +10,30 @@
     @if ($crud->getPersistentTable())
     // if there's a filtered URL saved for this list view, redirect to that one
     var saved_list_url = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url');
-    if (saved_list_url && saved_list_url!=window.location.href) {
-      window.location.href = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url');
-    }
+
+    @if($crud->getPersistentTableDuration())
+        var saved_list_url_time = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url_time')
+
+        if (saved_list_url_time) {
+            var $current_date = new Date();
+            var $saved_time = new Date(parseInt(saved_list_url_time));
+            $saved_time.setMinutes($saved_time.getMinutes() + {{$crud->getPersistentTableDuration()}});
+
+            //if the save time is not expired we force the filter redirection.
+            if($saved_time > $current_date) {
+                if (saved_list_url && saved_list_url!=window.location.href) {
+                    window.location.href = saved_list_url;
+                }
+            } else {
+            //persistent table expired, let's not redirect the user
+                saved_list_url = false;
+            }
+        }
+
+    @endif
+        if (saved_list_url && saved_list_url!=window.location.href) {
+            window.location.href = saved_list_url;
+        }
     @endif
 
     var crud = {
@@ -91,14 +112,36 @@
         */
 
         stateSaveParams: function(settings, data) {
+
+            //var saved_list_url_time = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+            localStorage.setItem('{{ str_slug($crud->getRoute()) }}_list_url_time', data.time);
+
             data.columns.forEach(function(item, index) {
                 var columnHeading = crud.table.columns().header()[index];
-                      if ($(columnHeading).attr('data-visible-in-table') == 'true') {
-                       return item.visible = true;
-                      }
-
+                    if ($(columnHeading).attr('data-visible-in-table') == 'true') {
+                        return item.visible = true;
+                    }
             });
         },
+        @if($crud->getPersistentTableDuration())
+        stateLoadParams: function(settings, data) {
+            var $saved_time = new Date(data.time);
+            var $current_date = new Date();
+
+            $saved_time.setMinutes($saved_time.getMinutes() + {{$crud->getPersistentTableDuration()}});
+
+            //if the save time as expired we force datatabled to clear localStorage
+            if($saved_time < $current_date) {
+                if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url')) {
+                    localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url');
+                }
+                if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url_time')) {
+                    localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+                }
+               return false;
+            }
+        },
+        @endif
         @endif
         autoWidth: false,
         pageLength: {{ $crud->getDefaultPageLength() }},
