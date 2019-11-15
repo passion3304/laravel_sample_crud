@@ -22,7 +22,7 @@
 @endif
 
 @push('before_scripts')
-  <script type="text/javascript">
+  {{-- <script type="text/javascript">
     /* Recover sidebar state */
     if (Boolean(sessionStorage.getItem('sidebar-collapsed'))) {
       var body = document.getElementsByTagName('body')[0];
@@ -41,25 +41,41 @@
         }
       });
     }
-  </script>
+  </script> --}}
 @endpush
 
 @push('after_scripts')
   <script>
       // Set active state on menu element
       var full_url = "{{ Request::fullUrl() }}";
-      var $navLinks = $("ul.sidebar-menu li a");
+      var $navLinks = $(".sidebar-nav li a");
+
       // First look for an exact match including the search string
       var $curentPageLink = $navLinks.filter(
           function() { return $(this).attr('href') === full_url; }
       );
+
       // If not found, look for the link that starts with the url
       if(!$curentPageLink.length > 0){
-          $curentPageLink = $navLinks.filter(
-              function() { return $(this).attr('href').startsWith(full_url) || full_url.startsWith($(this).attr('href')); }
-          );
+          $curentPageLink = $navLinks.filter( function() {
+            if ($(this).attr('href').startsWith(full_url)) {
+              return true;
+            }
+
+            if (full_url.startsWith($(this).attr('href'))) {
+              return true;
+            }
+
+            return false;
+          });
       }
 
-      $curentPageLink.parents('li').addClass('active');
+      // for the found links that can be considered current, make sure 
+      // - the parent item is open
+      $curentPageLink.parents('li').addClass('open');
+      // - the actual element is active
+      $curentPageLink.each(function() {
+        $(this).addClass('active');
+      });
   </script>
 @endpush
