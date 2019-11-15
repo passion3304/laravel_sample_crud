@@ -25,6 +25,12 @@
 
             new_url = URI(new_url).normalizeQuery();
 
+            // this param is only needed in datatables persistent url redirector
+            // not when applying filters so we remove it.
+            if (new_url.hasQuery('persistent-table')) {
+                new_url.removeQuery('persistent-table');
+            }
+
             if (new_url.hasQuery(parameter)) {
               new_url.removeQuery(parameter);
             }

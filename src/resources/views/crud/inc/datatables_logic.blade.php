@@ -8,11 +8,23 @@
 
   <script>
     @if ($crud->getPersistentTable())
+
     // if there's a filtered URL saved for this list view, redirect to that one
     var saved_list_url = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url');
 
+    var arr =  window.location.href.split('?');
+        //check if url has parameters.
+        if (arr.length > 1 && arr[1] !== '') {
+                // IT HAS! Check if it is our own persistence redirect.
+                if (window.location.search.indexOf('persistent-table=true') < 1) {
+                    // IF NOT: we don't want to redirect the user.
+                    saved_list_url = false;
+                }
+        }
+
     @if($crud->getPersistentTableDuration())
-        var saved_list_url_time = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url_time')
+        var saved_list_url_time = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+        var persistentUrl = saved_list_url+'&persistent-table=true';
 
         if (saved_list_url_time) {
             var $current_date = new Date();
@@ -21,8 +33,8 @@
 
             //if the save time is not expired we force the filter redirection.
             if($saved_time > $current_date) {
-                if (saved_list_url && saved_list_url!=window.location.href) {
-                    window.location.href = saved_list_url;
+                if (saved_list_url && persistentUrl!=window.location.href) {
+                    window.location.href = persistentUrl;
                 }
             } else {
             //persistent table expired, let's not redirect the user
@@ -31,8 +43,8 @@
         }
 
     @endif
-        if (saved_list_url && saved_list_url!=window.location.href) {
-            window.location.href = saved_list_url;
+        if (saved_list_url && persistentUrl!=window.location.href) {
+            window.location.href = persistentUrl;
         }
     @endif
 
