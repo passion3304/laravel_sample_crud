@@ -167,7 +167,7 @@ trait Search
     }
 
     /**
-     * Get duration for persistent table
+     * Get duration for persistent table.
      *
      * @return bool
      */
