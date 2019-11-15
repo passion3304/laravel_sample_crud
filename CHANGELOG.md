@@ -13,6 +13,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 ### Fixed
 - merged 2218 fixes #2142 - check column type always had its label shown; 
 - merged #2216 - user menu dropdown did not have a closing div;
+- merged #2225 fixes #2224 - sidebar menu item was not active when inside Create, Update or Preview operations;
 
 
 ## 4.0.14 - 2019-11-12
