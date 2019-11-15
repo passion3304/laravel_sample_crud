@@ -22,7 +22,7 @@
 @endif
 
 @push('before_scripts')
-  {{-- <script type="text/javascript">
+  <script type="text/javascript">
     /* Recover sidebar state */
     if (Boolean(sessionStorage.getItem('sidebar-collapsed'))) {
       var body = document.getElementsByTagName('body')[0];
@@ -41,7 +41,7 @@
         }
       });
     }
-  </script> --}}
+  </script>
 @endpush
 
 @push('after_scripts')
