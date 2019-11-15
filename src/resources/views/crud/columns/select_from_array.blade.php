@@ -10,7 +10,7 @@
                 $array_of_values = [];
 
                 foreach ($values as $key => $value) {
-                    if (!is_null($value)) {
+                    if (! is_null($value)) {
                         $array_of_values[] = $column['options'][$value];
                     } else {
                         echo '-';
