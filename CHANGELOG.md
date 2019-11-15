@@ -15,6 +15,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 - merged #2216 - user menu dropdown did not have a closing div;
 - merged #2225 fixes #2224 - sidebar menu item was not active when inside Create, Update or Preview operations;
 - merged #2182 - language switch floated wrong;
+- merged #2196 fixes #2195 and #2192 - order logic did not work with orderByRaw and inRandomOrder;
 
 
 ## 4.0.14 - 2019-11-12
