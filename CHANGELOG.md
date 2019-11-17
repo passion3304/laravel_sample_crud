@@ -13,7 +13,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2232 fixes #2233 - setPersistentTable() did not work because it was a getter instead of setter;
-
+- merged #20173 - select_from_array always used the default value;
 
 ## 4.0.15 - 2019-11-15
 
