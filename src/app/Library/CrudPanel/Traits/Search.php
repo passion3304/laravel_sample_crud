@@ -149,7 +149,7 @@ trait Search
      */
     public function setPersistentTable($value = true)
     {
-        return $this->getOperationSetting('persistentTable', $value);
+        return $this->setOperationSetting('persistentTable', $value);
     }
 
     /**
