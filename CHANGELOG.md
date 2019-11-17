@@ -8,6 +8,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+
+## 4.0.16 - 2019-11-17
+
+### Fixed
+- merged #2232 fixes #2233 - setPersistentTable() did not work because it was a getter instead of setter;
+
+
 ## 4.0.15 - 2019-11-15
 
 ### Fixed
