@@ -19,12 +19,12 @@ trait LicenseCheck
         }
 
         // don't show notice bubble on localhost
-        if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+        if (in_array($_SERVER['REMOTE_ADDR'] ?? [], ['127.0.0.1', '::1'])) {
             return;
         }
 
         // don't show notice bubble if debug is true
-        if (config('app.debug') == 'true') {
+        if (config('app.debug') == 'true' && config('app.env') == 'local') {
             return;
         }
 

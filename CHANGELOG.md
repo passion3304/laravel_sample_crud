@@ -8,6 +8,22 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.17 - 2019-11-18
+
+### Fixed
+- merged #2119 - no license check if no remote address is set;
+- no license check if both debug is true and env is local;
+- update all CSS and JS assets but line-awesome;
+
+
+## 4.0.16 - 2019-11-17
+
+### Fixed
+- merged #2232 fixes #2233 - setPersistentTable() did not work because it was a getter instead of setter;
+- merged #2073 - select_from_array always used the default value;
+- merged #2207 - when the sidebar was open on mobile there was a slight chin to the navbar;
+
+
 ## 4.0.15 - 2019-11-15
 
 ### Fixed

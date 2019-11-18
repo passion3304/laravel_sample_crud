@@ -25,7 +25,7 @@
                                                 in_array($key, $field['value'])
                                                 )
                                         )) ||
-                                (isset($field['default']) &&
+                                (!isset($field['value']) && isset($field['default']) &&
                                 ($key == $field['default'] || (
                                                 is_array($field['default']) &&
                                                 in_array($key, $field['default'])
