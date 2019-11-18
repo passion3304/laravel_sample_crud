@@ -1,4 +1,4 @@
-/*!  1.16.5 | © Algolia | github.com/algolia/places */
+/*!  1.17.0 | © Algolia | github.com/algolia/places */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -92,7 +92,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 69);
+/******/ 	return __webpack_require__(__webpack_require__.s = 70);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -442,7 +442,7 @@ function createAutocompleteDataset(options) {
 
 /***/ }),
 
-/***/ 29:
+/***/ 30:
 /***/ (function(module, exports) {
 
 // polyfill for navigator.language (IE <= 10)
@@ -467,30 +467,7 @@ if (!('language' in navigator)) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ('1.16.5');
-
-/***/ }),
-
-/***/ 69:
-/***/ (function(module, exports, __webpack_require__) {
-
-// we need to export using commonjs for ease of usage in all
-// JavaScript environments
-
-/* eslint-disable import/no-commonjs */
-__webpack_require__(29);
-
-var createAutocompleteDataset = __webpack_require__(19)["default"];
-
-var css = __webpack_require__(70)["default"];
-
-var insertCss = __webpack_require__(18);
-
-insertCss(css, {
-  prepend: true
-}); // must use module.exports to be commonJS compatible
-
-module.exports = createAutocompleteDataset;
+/* harmony default export */ __webpack_exports__["default"] = ('1.17.0');
 
 /***/ }),
 
@@ -503,6 +480,29 @@ module.exports = createAutocompleteDataset;
 /***/ }),
 
 /***/ 70:
+/***/ (function(module, exports, __webpack_require__) {
+
+// we need to export using commonjs for ease of usage in all
+// JavaScript environments
+
+/* eslint-disable import/no-commonjs */
+__webpack_require__(30);
+
+var createAutocompleteDataset = __webpack_require__(19)["default"];
+
+var css = __webpack_require__(71)["default"];
+
+var insertCss = __webpack_require__(18);
+
+insertCss(css, {
+  prepend: true
+}); // must use module.exports to be commonJS compatible
+
+module.exports = createAutocompleteDataset;
+
+/***/ }),
+
+/***/ 71:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
