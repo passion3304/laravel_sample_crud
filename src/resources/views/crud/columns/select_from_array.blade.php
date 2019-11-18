@@ -10,13 +10,18 @@
                 $array_of_values = [];
 
                 foreach ($values as $key => $value) {
-                    $array_of_values[] = $column['options'][$value];
+                    if (! is_null($value)) {
+                        $array_of_values[] = $column['options'][$value];
+                    } else {
+                        echo '-';
+                        continue;
+                    }
                 }
 
                 if (count($array_of_values) > 1) {
                     echo implode(', ', $array_of_values);
                 } else {
-                    echo $array_of_values;
+                    echo array_first($array_of_values);
                 }
             } else {
                 echo $column['options'][$values];
