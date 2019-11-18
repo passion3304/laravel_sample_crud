@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.17 - 2019-11-18
+
+### Fixed
+- merged #2119 - no license check if no remote address is set;
+- no license check if both debug is true and env is local;
+
 
 ## 4.0.16 - 2019-11-17
 
