@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2229 fixes #2219 - select_from_array field did not work properly with one or no options;
+- merged #2215 - use translated yes/no strings for check column;
 
 
 ## 4.0.17 - 2019-11-18
