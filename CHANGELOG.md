@@ -8,6 +8,47 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.18 - 2019-11-18
+
+### Fixed
+- merged #2229 fixes #2219 - select_from_array field did not work properly with one or no options;
+- merged #2215 - use translated yes/no strings for check column;
+
+
+## 4.0.17 - 2019-11-18
+
+### Fixed
+- merged #2119 - no license check if no remote address is set;
+- no license check if both debug is true and env is local;
+- update all CSS and JS assets but line-awesome;
+
+
+## 4.0.16 - 2019-11-17
+
+### Fixed
+- merged #2232 fixes #2233 - setPersistentTable() did not work because it was a getter instead of setter;
+- merged #2073 - select_from_array always used the default value;
+- merged #2207 - when the sidebar was open on mobile there was a slight chin to the navbar;
+
+
+## 4.0.15 - 2019-11-15
+
+### Fixed
+- merged 2218 fixes #2142 - check column type always had its label shown; 
+- merged #2216 - user menu dropdown did not have a closing div;
+- merged #2225 fixes #2224 - sidebar menu item was not active when inside Create, Update or Preview operations;
+- merged #2182 - language switch floated wrong;
+- merged #2196 fixes #2195 and #2192 - order logic did not work with orderByRaw and inRandomOrder;
+
+
+## 4.0.14 - 2019-11-12
+
+### Fixed
+- merged #2206 fixes #2161 - fixes setSubheading typo;
+- merged #2209 - default saveAllInputsExcept to ONLY when saveAllInputsExcept is NULL;
+- merged #2181 fixes #2145 - missing row class to tabbed fields view;
+
+
 ## 4.0.13 - 2019-11-11
 
 ### Fixed
