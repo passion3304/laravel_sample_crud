@@ -2,7 +2,7 @@
   "_args": [
     [
       "datatables.net-bs4@1.10.19",
-      "/Users/tabacitu/Sites/v4demo4/vendor/backpack/crud"
+      "/Users/tabacitu/Sites/v4demo7/vendor/backpack/crud"
     ]
   ],
   "_from": "datatables.net-bs4@1.10.19",
@@ -10,7 +10,9 @@
   "_inBundle": false,
   "_integrity": "sha512-pgeP17w4aPR7HIxIwuJghfqXULjdg1K6xMUUKDyCERJRSNNK4MRToFfELtIsluLNN555YBK4Kx8nihX5/ZT1Fw==",
   "_location": "/datatables.net-bs4",
-  "_phantomChildren": {},
+  "_phantomChildren": {
+    "jquery": "3.4.1"
+  },
   "_requested": {
     "type": "version",
     "registry": true,
@@ -28,7 +30,7 @@
   ],
   "_resolved": "https://registry.npmjs.org/datatables.net-bs4/-/datatables.net-bs4-1.10.19.tgz",
   "_spec": "1.10.19",
-  "_where": "/Users/tabacitu/Sites/v4demo4/vendor/backpack/crud",
+  "_where": "/Users/tabacitu/Sites/v4demo7/vendor/backpack/crud",
   "author": {
     "name": "SpryMedia Ltd",
     "url": "http://datatables.net"
