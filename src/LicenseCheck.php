@@ -24,7 +24,7 @@ trait LicenseCheck
         }
 
         // don't show notice bubble if debug is true
-        if (config('app.debug') == 'true') {
+        if (config('app.debug') == 'true' && config('app.env') == 'local') {
             return;
         }
 
