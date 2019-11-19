@@ -8,6 +8,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+
+## 4.0.19 - 2019-11-19
+
+### Fixed
+- merged #2247 - datatables persistentTable bug introduced by #2220;
+
+
 ## 4.0.18 - 2019-11-18
 
 ### Fixed
