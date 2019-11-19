@@ -9,8 +9,15 @@
   <script>
     @if ($crud->getPersistentTable())
 
-    // if there's a filtered URL saved for this list view, redirect to that one
-    var saved_list_url = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url');
+        var saved_list_url = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url');
+
+        //check if saved url has any parameter or is empty after clearing filters.
+
+        if (saved_list_url && saved_list_url.indexOf('?') < 1) {
+            var saved_list_url = false;
+        }else{
+            var persistentUrl = saved_list_url+'&persistent-table=true';
+        }
 
     var arr =  window.location.href.split('?');
         //check if url has parameters.
@@ -24,7 +31,6 @@
 
     @if($crud->getPersistentTableDuration())
         var saved_list_url_time = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
-        var persistentUrl = saved_list_url+'&persistent-table=true';
 
         if (saved_list_url_time) {
             var $current_date = new Date();
@@ -125,7 +131,6 @@
 
         stateSaveParams: function(settings, data) {
 
-            //var saved_list_url_time = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
             localStorage.setItem('{{ str_slug($crud->getRoute()) }}_list_url_time', data.time);
 
             data.columns.forEach(function(item, index) {
