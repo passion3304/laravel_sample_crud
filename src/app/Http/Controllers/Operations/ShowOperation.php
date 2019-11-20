@@ -66,29 +66,30 @@ trait ShowOperation
 
         // cycle through columns
         foreach ($this->crud->columns() as $key => $column) {
+
             // remove any autoset relationship columns
             if (array_key_exists('model', $column) && array_key_exists('autoset', $column) && $column['autoset']) {
-                $this->crud->removeColumn($column['name']);
+                $this->crud->removeColumn($column['key']);
             }
 
             // remove any autoset table columns
             if ($column['type'] == 'table' && array_key_exists('autoset', $column) && $column['autoset']) {
-                $this->crud->removeColumn($column['name']);
+                $this->crud->removeColumn($column['key']);
             }
 
             // remove the row_number column, since it doesn't make sense in this context
             if ($column['type'] == 'row_number') {
-                $this->crud->removeColumn($column['name']);
+                $this->crud->removeColumn($column['key']);
             }
 
             // remove columns that have visibleInShow set as false
             if (isset($column['visibleInShow']) && $column['visibleInShow'] == false) {
-                $this->crud->removeColumn($column['name']);
+                $this->crud->removeColumn($column['key']);
             }
 
             // remove the character limit on columns that take it into account
             if (in_array($column['type'], ['text', 'email', 'model_function', 'model_function_attribute', 'phone', 'row_number', 'select'])) {
-                $this->crud->modifyColumn($column['name'], ['limit' => 999]);
+                $this->crud->modifyColumn($column['key'], ['limit' => 999]);
             }
         }
 
