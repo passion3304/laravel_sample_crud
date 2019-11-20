@@ -169,8 +169,6 @@ return [
         'november' => 'November',
         'december' => 'December',
 
-
-
     // Fields
         'browse_uploads'            => 'Browse uploads',
         'select_all'                => 'Select All',
