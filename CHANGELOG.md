@@ -8,6 +8,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.20 - 2019-11-20
+
+### Fixed
+- merged #2245 fixes #2178 - ShowOperation should use column keys, not column names, when doing stuff to columns;
+
 
 ## 4.0.19 - 2019-11-19
 
