@@ -1,5 +1,17 @@
 {{-- Date Range Backpack CRUD filter --}}
 
+@php
+    $filterOptions = $filter->options['date_range_options'] ?? [];
+
+    if($filter->currentValue) {
+	    $dates = (array)json_decode($filter->currentValue);
+	    $start_date = $dates['from'];
+        $end_date = $dates['to'];
+    }
+
+@endphp
+
+
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
@@ -12,20 +24,8 @@
 		        </div>
 		        <input class="form-control pull-right"
 		        		id="daterangepicker-{{ str_slug($filter->name) }}"
-		        		type="text"
-		        		@if ($filter->currentValue)
-							@php
-								$dates = (array)json_decode($filter->currentValue);
-								$start_date = $dates['from'];
-								$end_date = $dates['to'];
-					        	$date_range = implode(' ~ ', $dates);
-					        	$date_range = str_replace('-', '/', $date_range);
-					        	$date_range = str_replace('~', '-', $date_range);
-
-					        @endphp
-					        placeholder="{{ $date_range }}"
-						@endif
-		        		>
+                        type="text"
+                        >
 		        <div class="input-group-append daterangepicker-{{ str_slug($filter->name) }}-clear-button">
 		          <a class="input-group-text" href=""><i class="fa fa-times"></i></a>
 		        </div>
@@ -64,11 +64,14 @@
 
   		function applyDateRangeFilter{{camel_case($filter->name)}}(start, end) {
   			if (start && end) {
+
   				var dates = {
 					'from': start.format('YYYY-MM-DD'),
 					'to': end.format('YYYY-MM-DD')
-				};
-				var value = JSON.stringify(dates);
+                };
+
+                var value = JSON.stringify(dates);
+
   			} else {
   				//this change to empty string,because addOrUpdateUriParameter method just judgment string
   				var value = '';
@@ -90,9 +93,7 @@
 			// mark this filter as active in the navbar-filters
 			if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 				$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
-			}
-			else
-			{
+			} else {
 				$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
 			}
   		}
@@ -101,20 +102,54 @@
 			var dateRangeInput = $('#daterangepicker-{{ str_slug($filter->name) }}').daterangepicker({
 				timePicker: false,
 		        ranges: {
-		            'Today': [moment().startOf('day'), moment().endOf('day')],
-		            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-		            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		            'This Month': [moment().startOf('month'), moment().endOf('month')],
-		            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		            '{{trans('backpack::crud.today')}}': [moment().startOf('day'), moment().endOf('day')],
+		            '{{trans('backpack::crud.yesterday')}}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		            '{{trans('backpack::crud.last_7_days')}}': [moment().subtract(6, 'days'), moment()],
+		            '{{trans('backpack::crud.last_30_days')}}': [moment().subtract(29, 'days'), moment()],
+		            '{{trans('backpack::crud.this_month')}}': [moment().startOf('month'), moment().endOf('month')],
+		            '{{trans('backpack::crud.last_month')}}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 		        },
 				@if ($filter->currentValue)
 		        startDate: moment("{{ $start_date }}"),
 		        endDate: moment("{{ $end_date }}"),
-				@endif
+                @endif
+                locale: {
+                    "format": {{ var_export($filterOptions['format'] ?? 'YYYY-MM-DD') }},
+                    "applyLabel": "{{trans('backpack::crud.apply')}}",
+                    "cancelLabel": "{{trans('backpack::crud.cancel')}}",
+                    "fromLabel": "{{trans('backpack::crud.from')}}",
+                    "toLabel": "{{trans('backpack::crud.to')}}",
+                    "customRangeLabel": "{{trans('backpack::crud.custom_range')}}",
+                    "weekLabel": "{{trans('backpack::crud.week_label')}}",
+                    "daysOfWeek": [
+                        "{{trans('backpack::crud.short_sunday')}}",
+                        "{{trans('backpack::crud.short_monday')}}",
+                        "{{trans('backpack::crud.short_tuesday')}}",
+                        "{{trans('backpack::crud.short_wednesday')}}",
+                        "{{trans('backpack::crud.short_thursday')}}",
+                        "{{trans('backpack::crud.short_friday')}}",
+                        "{{trans('backpack::crud.short_saturday')}}"
+                    ],
+                    "monthNames": [
+                        "{{trans('backpack::crud.january')}}",
+                        "{{trans('backpack::crud.february')}}",
+                        "{{trans('backpack::crud.march')}}",
+                        "{{trans('backpack::crud.april')}}",
+                        "{{trans('backpack::crud.may')}}",
+                        "{{trans('backpack::crud.june')}}",
+                        "{{trans('backpack::crud.july')}}",
+                        "{{trans('backpack::crud.august')}}",
+                        "{{trans('backpack::crud.september')}}",
+                        "{{trans('backpack::crud.october')}}",
+                        "{{trans('backpack::crud.november')}}",
+                        "{{trans('backpack::crud.december')}}"
+                    ],
+                    "firstDay": {{var_export($filterOptions['weekFirstDay'] ?? 0)}}
+                },
 				alwaysShowCalendars: true,
-				autoUpdateInput: true
-			});
+                autoUpdateInput: true
+            });
+
 
 			dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
 				applyDateRangeFilter{{camel_case($filter->name)}}(picker.startDate, picker.endDate);
@@ -126,7 +161,6 @@
 			});
 
 			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
-				// console.log('daterangepicker filter cleared');
 				//if triggered by remove filters click just remove active class,no need to send ajax
 				$('li[filter-name={{ $filter->name }}]').removeClass('active');
 			});

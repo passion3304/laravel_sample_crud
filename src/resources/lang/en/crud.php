@@ -136,6 +136,40 @@ return [
         'filters'        => 'Filters',
         'toggle_filters' => 'Toggle filters',
         'remove_filters' => 'Remove filters',
+        'apply' => 'Apply',
+
+    //filters language strings
+        'today' => 'Today',
+        'yesterday' => 'Yesterday',
+        'last_7_days' => 'Last 7 Days',
+        'last_30_days' => 'Last 30 Days',
+        'this_month' => 'This Month',
+        'last_month' => 'Last Month',
+        'custom_range' => 'Custom Range',
+        'weekLabel' => 'W',
+
+        'short_sunday' => 'Su',
+        'short_monday' => 'Mo',
+        'short_tuesday' => 'Tu',
+        'short_wednesday' => 'We',
+        'short_thursday' => 'Th',
+        'short_friday' => 'Fr',
+        'short_saturday' => 'Sa',
+
+        'january' => 'January',
+        'february' => 'February',
+        'march' => 'March',
+        'april' => 'April',
+        'may' => 'May',
+        'june' => 'June',
+        'july' => 'July',
+        'august' => 'August',
+        'september' => 'September',
+        'october' => 'October',
+        'november' => 'November',
+        'december' => 'December',
+
+
 
     // Fields
         'browse_uploads'            => 'Browse uploads',
