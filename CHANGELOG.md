@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2245 fixes #2178 - ShowOperation should use column keys, not column names, when doing stuff to columns;
+- merged #2249 - upgrades minimum required version for angular to 1.7.9 to fix a security vulnerability;
 
 
 ## 4.0.19 - 2019-11-19
