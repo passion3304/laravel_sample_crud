@@ -18,7 +18,10 @@
                     name: 'copyHtml5',
                     extend: 'copyHtml5',
                     exportOptions: {
-                       columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
+                        columns: function ( idx, data, node ) {
+                            var $column = crud.table.column( idx );
+                                return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
+                        }
                     },
                     action: function(e, dt, button, config) {
                         crud.responsiveToggle(dt);
@@ -30,7 +33,10 @@
                     name: 'excelHtml5',
                     extend: 'excelHtml5',
                     exportOptions: {
-                       columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
+                        columns: function ( idx, data, node ) {
+                            var $column = crud.table.column( idx );
+                                return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
+                        }
                     },
                     action: function(e, dt, button, config) {
                         crud.responsiveToggle(dt);
@@ -42,7 +48,10 @@
                     name: 'csvHtml5',
                     extend: 'csvHtml5',
                     exportOptions: {
-                       columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
+                        columns: function ( idx, data, node ) {
+                            var $column = crud.table.column( idx );
+                                return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
+                        }
                     },
                     action: function(e, dt, button, config) {
                         crud.responsiveToggle(dt);
@@ -54,7 +63,10 @@
                     name: 'pdfHtml5',
                     extend: 'pdfHtml5',
                     exportOptions: {
-                       columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
+                        columns: function ( idx, data, node ) {
+                            var $column = crud.table.column( idx );
+                                return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
+                        }
                     },
                     orientation: 'landscape',
                     action: function(e, dt, button, config) {
@@ -67,7 +79,10 @@
                     name: 'print',
                     extend: 'print',
                     exportOptions: {
-                       columns: [':visible:not(.not-export-col):not(.hidden):not([data-visible-in-export=false])'],
+                        columns: function ( idx, data, node ) {
+                            var $column = crud.table.column( idx );
+                                return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
+                        }
                     },
                     action: function(e, dt, button, config) {
                         crud.responsiveToggle(dt);
@@ -80,7 +95,9 @@
         {
             extend: 'colvis',
             text: '<i class="fa fa-eye-slash"></i> {{ trans('backpack::crud.export.column_visibility') }}',
-            columns: ':not(.not-export-col):not([data-visible-in-export=false])',
+            columns: function ( idx, data, node ) {
+                return  $(node).attr('data-visible-in-table') == 'false';
+            },
             dropup: true
         }
     ];

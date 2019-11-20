@@ -167,6 +167,20 @@ trait Search
     }
 
     /**
+     * Get duration for persistent table.
+     *
+     * @return bool
+     */
+    public function getPersistentTableDuration()
+    {
+        if ($this->getOperationSetting('persistentTableDuration') !== null) {
+            return $this->getOperationSetting('persistentTableDuration');
+        }
+
+        return config('backpack.crud.operations.list.persistentTableDuration', false);
+    }
+
+    /**
      * Remember to show a persistent table.
      */
     public function enablePersistentTable()
