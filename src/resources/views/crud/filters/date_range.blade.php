@@ -2,6 +2,7 @@
 
 @php
     $filterOptions = $filter->options['date_range_options'] ?? [];
+    $dateFormat = $filterOptions['format'] ?? config('backpack.base.default_date_format');
 
     if($filter->currentValue) {
 	    $dates = (array)json_decode($filter->currentValue);
@@ -114,7 +115,7 @@
 		        endDate: moment("{{ $end_date }}"),
                 @endif
                 locale: {
-                    "format": {{ var_export($filterOptions['format'] ?? 'YYYY-MM-DD') }},
+                    "format": "{{ $dateFormat }}",
                     "applyLabel": "{{trans('backpack::crud.apply')}}",
                     "cancelLabel": "{{trans('backpack::crud.cancel')}}",
                     "fromLabel": "{{trans('backpack::crud.from')}}",
