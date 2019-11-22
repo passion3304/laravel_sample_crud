@@ -145,7 +145,7 @@
                         "{{trans('backpack::crud.november')}}",
                         "{{trans('backpack::crud.december')}}"
                     ],
-                    "firstDay": {{var_export($filterOptions['weekFirstDay'] ?? 0)}}
+                    "firstDay": {{var_export($filterOptions['firstDay'] ?? 0)}}
                 },
 				alwaysShowCalendars: true,
                 autoUpdateInput: true
