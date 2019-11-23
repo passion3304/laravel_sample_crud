@@ -8,11 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.0.20 - 2019-11-20
+## 4.0.20 - 2019-11-23
 
 ### Fixed
 - merged #2245 fixes #2178 - ShowOperation should use column keys, not column names, when doing stuff to columns;
 - merged #2249 - upgrades minimum required version for angular to 1.7.9 to fix a security vulnerability;
+- merged #2211 fixes #2188 - allow custom wrapperAttributes on upload, upload_multiple, image and base64_image fields without breaking stuff;
 
 
 ## 4.0.19 - 2019-11-19
