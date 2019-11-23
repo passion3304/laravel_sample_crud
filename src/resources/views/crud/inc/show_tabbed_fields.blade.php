@@ -26,7 +26,7 @@
 
 @if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
 <div class="card">
-    <div class="card-body">
+    <div class="card-body row">
     @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
     </div>
 </div>

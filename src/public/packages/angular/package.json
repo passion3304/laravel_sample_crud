@@ -1,10 +1,4 @@
 {
-  "_args": [
-    [
-      "angular@1.7.8",
-      "/Users/tabacitu/Sites/v4demo4/vendor/backpack/crud"
-    ]
-  ],
   "_from": "angular@1.7.8",
   "_id": "angular@1.7.8",
   "_inBundle": false,
@@ -22,12 +16,14 @@
     "fetchSpec": "1.7.8"
   },
   "_requiredBy": [
+    "#USER",
     "/",
     "/angular-ui-sortable"
   ],
   "_resolved": "https://registry.npmjs.org/angular/-/angular-1.7.8.tgz",
-  "_spec": "1.7.8",
-  "_where": "/Users/tabacitu/Sites/v4demo4/vendor/backpack/crud",
+  "_shasum": "b77ede272ce1b261e3be30c1451a0b346905a3c9",
+  "_spec": "angular@1.7.8",
+  "_where": "/Users/tabacitu/Sites/v4demo7/vendor/backpack/crud",
   "author": {
     "name": "Angular Core Team",
     "email": "angular-core+npm@google.com"
@@ -35,6 +31,8 @@
   "bugs": {
     "url": "https://github.com/angular/angular.js/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "HTML enhanced for web apps",
   "homepage": "http://angularjs.org",
   "keywords": [

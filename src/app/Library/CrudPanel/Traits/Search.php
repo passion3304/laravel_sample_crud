@@ -149,7 +149,7 @@ trait Search
      */
     public function setPersistentTable($value = true)
     {
-        return $this->getOperationSetting('persistentTable', $value);
+        return $this->setOperationSetting('persistentTable', $value);
     }
 
     /**
@@ -164,6 +164,20 @@ trait Search
         }
 
         return config('backpack.crud.operations.list.persistentTable');
+    }
+
+    /**
+     * Get duration for persistent table.
+     *
+     * @return bool
+     */
+    public function getPersistentTableDuration()
+    {
+        if ($this->getOperationSetting('persistentTableDuration') !== null) {
+            return $this->getOperationSetting('persistentTableDuration');
+        }
+
+        return config('backpack.crud.operations.list.persistentTableDuration', false);
     }
 
     /**
