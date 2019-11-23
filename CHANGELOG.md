@@ -8,6 +8,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.21 - 2019-11-23
+
+### Fixed
+- merged #2257 fixed #2256 - upload field type could not clear the input;
+
 ## 4.0.20 - 2019-11-23
 
 ### Fixed
