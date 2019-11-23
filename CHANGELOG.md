@@ -13,6 +13,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 ### Fixed
 - merged #2257 fixed #2256 - upload field type could not clear the input;
 - merged #2243 fixes #1828 - select_all not working in a second select2_multiple on the same page;
+- merged #2113 - datetime_picker field did not have its locale working;
+
 
 ## 4.0.20 - 2019-11-23
 
