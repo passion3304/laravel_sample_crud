@@ -1,5 +1,6 @@
 @php
 $multiple = array_get($field, 'multiple', true);
+$sortable = array_get($field, 'sortable', false);
 $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
 if (!$multiple && is_array($value)) {
@@ -21,6 +22,10 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
     if ($mimes = array_get($field, 'mime_types')) {
         $field['wrapperAttributes']['data-only-mimes'] = json_encode($mimes);
     }
+
+    if($sortable){
+        $field['wrapperAttributes']['sortable'] = "true";
+    }
 }
 @endphp
 
@@ -29,19 +34,24 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
     <div><label>{!! $field['label'] !!}</label></div>
     @include('crud::inc.field_translatable_icon')
     @if ($multiple)
-        @foreach( (array)$value as $v)
-            @if ($v)
-                <div class="input-group input-group-sm">
-                    <input type="text" name="{{ $field['name'] }}[]" value="{{ $v }}" data-marker="multipleBrowseInput"
-                            @include('crud::inc.field_attributes') readonly>
-                    <div class="input-group-btn">
-                        <button type="button" class="browse remove btn btn-sm btn-light">
-                            <i class="fa fa-trash"></i>
-                        </button>
+        <div class="list">
+            @foreach( (array)$value as $v)
+                @if ($v)
+                    <div class="input-group input-group-sm">
+                        <input type="text" name="{{ $field['name'] }}[]" value="{{ $v }}" data-marker="multipleBrowseInput"
+                                @include('crud::inc.field_attributes') readonly>
+                        <div class="input-group-btn">
+                            <button type="button" class="browse remove btn btn-sm btn-light">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            @if ($sortable)
+                                <span class="browse btn btn-sm btn-light move" type="button"><span class="fa fa-sort"></span></span>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            @endif
-        @endforeach
+                @endif
+            @endforeach
+        </div>
     @else
         <input type="text" name="{{ $field['name'] }}" value="{{ $value }}" @include('crud::inc.field_attributes') readonly>
     @endif
@@ -68,6 +78,9 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                 <button type="button" class="browse remove btn btn-sm btn-light">
                     <i class="fa fa-trash"></i>
                 </button>
+                @if ($sortable)
+                    <span class="browse btn btn-sm btn-light move" type="button"><span class="fa fa-sort"></span></span>
+                @endif
             </div>
         </div>
     </script>
@@ -110,6 +123,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
         <script>
             function bpFieldInitBrowseMultipleElement(element) {
                 var $template = element.find("[data-marker=browse_multiple_template]").html();
+                var $list = element.find(".list");
                 var $popupButton = element.find(".popup");
                 var $clearButton = element.find(".clear");
                 var $removeButton = element.find(".remove");
@@ -117,6 +131,11 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                 var $popupTitle = element.attr('data-popup-title');
                 var $onlyMimesArray = element.attr('data-only-mimes');
                 var $multiple = element.attr('data-multiple');
+                var $sortable = element.attr('sortable');
+
+                if($sortable){
+                    $list.sortable();
+                }
 
                 element.on('click', 'button.popup', function (event) {
                     event.preventDefault();
@@ -147,8 +166,12 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                                 files.forEach(function (file) {
                                     var newInput = $($template);
                                     newInput.find('input').val(file.path);
-                                    $popupButton.parent().before(newInput);
+                                    $list.append(newInput);
                                 });
+
+                                if($sortable){
+                                    $list.sortable("refresh")
+                                }
                             } else {
                                 $input.val(files.path);
                             }
