@@ -8,6 +8,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+
+## 4.0.22 - 2019-11-25
+
+### Fixed
+- merged #2260 - image field type JS function name was wrong;
+
+
 ## 4.0.21 - 2019-11-23
 
 ### Fixed
