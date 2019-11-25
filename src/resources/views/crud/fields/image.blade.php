@@ -1,6 +1,6 @@
 @php
     if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function'])){
-        $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitBase64CropperImageElement';
+        $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitCropperImageElement';
     }
 
     if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-field-name'])) {
