@@ -148,27 +148,6 @@ return [
         'custom_range' => 'Custom Range',
         'weekLabel' => 'W',
 
-        'short_sunday' => 'Su',
-        'short_monday' => 'Mo',
-        'short_tuesday' => 'Tu',
-        'short_wednesday' => 'We',
-        'short_thursday' => 'Th',
-        'short_friday' => 'Fr',
-        'short_saturday' => 'Sa',
-
-        'january' => 'January',
-        'february' => 'February',
-        'march' => 'March',
-        'april' => 'April',
-        'may' => 'May',
-        'june' => 'June',
-        'july' => 'July',
-        'august' => 'August',
-        'september' => 'September',
-        'october' => 'October',
-        'november' => 'November',
-        'december' => 'December',
-
     // Fields
         'browse_uploads'            => 'Browse uploads',
         'select_all'                => 'Select All',
