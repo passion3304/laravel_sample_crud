@@ -2,13 +2,58 @@
 
 @php
     $filterOptions = $filter->options['date_range_options'] ?? [];
-    $dateFormat = $filterOptions['format'] ?? config('backpack.base.default_date_format');
+    $filterOptions['locale'] = $filter->options['date_range_options']['locale'] ?? [];
 
+
+
+
+    //initialize bare default configurations
+    (isset($filterOptions['timePicker'])) ?: $filterOptions['timePicker'] = false;
+    (isset($filterOptions['alwaysShowCalendars'])) ?: $filterOptions['alwaysShowCalendars'] = true;
+    (isset($filterOptions['locale']['firstDay'])) ?: $filterOptions['locale']['firstDay'] = 0;
+    (isset($filterOptions['autoUpdateInput'])) ?: $filterOptions['autoUpdateInput'] = true;
+    (isset($filterOptions['locale']['format'])) ?: $filterOptions['locale']['format'] = config('backpack.base.default_date_format');
+    (isset($filterOptions['ranges'])) ?: $filterOptions['ranges'] = [
+        trans('backpack::crud.today') =>  "[moment().subtract(6, 'days'), moment()]",
+        trans('backpack::crud.yesterday') => "[moment().subtract(1, 'days'), moment().subtract(1, 'days')]",
+		trans('backpack::crud.last_7_days') => "[moment().subtract(6, 'days'), moment()]",
+		trans('backpack::crud.last_30_days') => "[moment().subtract(29, 'days'), moment()]",
+		trans('backpack::crud.this_month') => "[moment().startOf('month'), moment().endOf('month')]",
+		trans('backpack::crud.last_month') => "[moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]"
+
+    ];
+    (isset($filterOptions['locale']['applyLabel'])) ?: $filterOptions['locale']['applyLabel'] = trans('backpack::crud.apply');
+    (isset($filterOptions['locale']['cancelLabel'])) ?: $filterOptions['locale']['cancelLabel'] = trans('backpack::crud.cancel');
+    (isset($filterOptions['locale']['fromLabel'])) ?: $filterOptions['locale']['fromLabel'] = trans('backpack::crud.from');
+    (isset($filterOptions['locale']['toLabel'])) ?: $filterOptions['locale']['toLabel'] = trans('backpack::crud.to');
+    (isset($filterOptions['locale']['customRangeLabel'])) ?: $filterOptions['locale']['customRangeLabel'] = trans('backpack::crud.custom_range');
+    (isset($filterOptions['locale']['weekLabel'])) ?: $filterOptions['locale']['weekLabel'] = trans('backpack::crud.week_label');
+
+
+    //we check if developer forced any start/end on field initialization
+    //if it does he must provide a valid date or a carbon instance so we convert to YYYY-MM-DD
+
+    (!isset($filterOptions['startDate']) || !$filterOptions['startDate'] instanceof \Carbon\CarbonInterface) ?:
+    ($filterOptions['timePicker'] ?
+        $filterOptions['startDate'] = $filterOptions['startDate']->toDateTimeString() :
+            $filterOptions['startDate'] = $filterOptions['startDate']->toDateString());
+
+    (!isset($filterOptions['endDate']) || !$filterOptions['endDate'] instanceof \Carbon\CarbonInterface) ?:
+    ($filterOptions['timePicker'] ?
+        $filterOptions['endDate'] = $filterOptions['endDate']->toDateTimeString() :
+            $filterOptions['endDate'] = $filterOptions['endDate']->toDateString());
+
+    //if filter is active we override developer init values
     if($filter->currentValue) {
 	    $dates = (array)json_decode($filter->currentValue);
-	    $start_date = $dates['from'];
-        $end_date = $dates['to'];
+        $filterOptions['startDate'] = $dates['from'];
+        $filterOptions['endDate'] = $dates['to'];
     }
+
+
+
+
+
 
 @endphp
 
@@ -24,7 +69,8 @@
 		          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
 		        </div>
 		        <input class="form-control pull-right"
-		        		id="daterangepicker-{{ str_slug($filter->name) }}"
+                        id="daterangepicker-{{ str_slug($filter->name) }}"
+                        data-bs-datepicker="{{json_encode($filterOptions)}}"
                         type="text"
                         >
 		        <div class="input-group-append daterangepicker-{{ str_slug($filter->name) }}-clear-button">
@@ -59,12 +105,14 @@
 {{-- push things in the after_scripts section --}}
 
 @push('crud_list_scripts')
-	<script type="text/javascript" src="{{ asset('packages/moment/min/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('packages/moment/min/moment-with-locales.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
   <script>
 
   		function applyDateRangeFilter{{camel_case($filter->name)}}(start, end) {
+
   			if (start && end) {
+
 
   				var dates = {
 					'from': start.format('YYYY-MM-DD'),
@@ -100,57 +148,59 @@
   		}
 
 		jQuery(document).ready(function($) {
-			var dateRangeInput = $('#daterangepicker-{{ str_slug($filter->name) }}').daterangepicker({
-				timePicker: false,
-		        ranges: {
-		            '{{trans('backpack::crud.today')}}': [moment().startOf('day'), moment().endOf('day')],
-		            '{{trans('backpack::crud.yesterday')}}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		            '{{trans('backpack::crud.last_7_days')}}': [moment().subtract(6, 'days'), moment()],
-		            '{{trans('backpack::crud.last_30_days')}}': [moment().subtract(29, 'days'), moment()],
-		            '{{trans('backpack::crud.this_month')}}': [moment().startOf('month'), moment().endOf('month')],
-		            '{{trans('backpack::crud.last_month')}}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-		        },
-				@if ($filter->currentValue)
-		        startDate: moment("{{ $start_date }}"),
-		        endDate: moment("{{ $end_date }}"),
-                @endif
-                locale: {
-                    "format": "{{ $dateFormat }}",
-                    "applyLabel": "{{trans('backpack::crud.apply')}}",
-                    "cancelLabel": "{{trans('backpack::crud.cancel')}}",
-                    "fromLabel": "{{trans('backpack::crud.from')}}",
-                    "toLabel": "{{trans('backpack::crud.to')}}",
-                    "customRangeLabel": "{{trans('backpack::crud.custom_range')}}",
-                    "weekLabel": "{{trans('backpack::crud.week_label')}}",
-                    "daysOfWeek": [
-                        "{{trans('backpack::crud.short_sunday')}}",
-                        "{{trans('backpack::crud.short_monday')}}",
-                        "{{trans('backpack::crud.short_tuesday')}}",
-                        "{{trans('backpack::crud.short_wednesday')}}",
-                        "{{trans('backpack::crud.short_thursday')}}",
-                        "{{trans('backpack::crud.short_friday')}}",
-                        "{{trans('backpack::crud.short_saturday')}}"
-                    ],
-                    "monthNames": [
-                        "{{trans('backpack::crud.january')}}",
-                        "{{trans('backpack::crud.february')}}",
-                        "{{trans('backpack::crud.march')}}",
-                        "{{trans('backpack::crud.april')}}",
-                        "{{trans('backpack::crud.may')}}",
-                        "{{trans('backpack::crud.june')}}",
-                        "{{trans('backpack::crud.july')}}",
-                        "{{trans('backpack::crud.august')}}",
-                        "{{trans('backpack::crud.september')}}",
-                        "{{trans('backpack::crud.october')}}",
-                        "{{trans('backpack::crud.november')}}",
-                        "{{trans('backpack::crud.december')}}"
-                    ],
-                    "firstDay": {{var_export($filterOptions['firstDay'] ?? 0)}}
-                },
-				alwaysShowCalendars: true,
-                autoUpdateInput: true
-            });
+			var dateRangeInput = $('#daterangepicker-{{ str_slug($filter->name) }}');
 
+            $config = dateRangeInput.data('bs-datepicker');
+
+            $ranges = $config.ranges;
+            $config.ranges = {};
+
+            //the use of eval() is not always recommended, but this use case fits
+            //the string beeing eval'd comes from a trusty source because is always hardcoded (dev or us).
+            for (var key in $ranges) {
+                if ($ranges.hasOwnProperty(key)) {
+                    $config.ranges[key] = eval($ranges[key]);
+                }
+            }
+
+            @if(!$filter->currentValue)
+
+            //this is used mainly to avoid converting valid Carbon dates to other formats.
+
+			const regex = /^([12]\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])/;
+
+            if ($config.startDate) {
+                if (regex.exec($config.startDate) !== null) {
+					$config.startDate = moment($config.startDate);
+                }else{
+					$config.startDate = moment($config.startDate, '{{$filterOptions['locale']['format']}}');
+				}
+
+                //start date can't be after end date
+                if (moment().diff($config.startDate) < 0) {
+
+                    $config.endDate = $config.startDate.format('YYYY-MM-DD HH:mm:ss');
+                }
+
+            }
+
+            if ($config.endDate) {
+				if (regex.exec($config.endDate) !== null) {
+					$config.endDate = moment($config.endDate);
+                }else{
+                	$config.endDate = moment($config.endDate, '{{$filterOptions['locale']['format']}}');
+            	}
+			}
+            @else
+                $config.startDate = moment($config.startDate);
+                $config.endDate = moment($config.endDate);
+            @endif
+
+
+            //set calendar localization
+            moment.locale('{{ \App::getLocale() }}');
+
+            dateRangeInput.daterangepicker($config);
 
 			dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
 				applyDateRangeFilter{{camel_case($filter->name)}}(picker.startDate, picker.endDate);
