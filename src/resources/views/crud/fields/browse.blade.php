@@ -8,7 +8,6 @@
 	    <div class="input-group">
 			<input
 				type="text"
-				id="{{ $field['name'] }}-filemanager"
 				name="{{ $field['name'] }}"
 		        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
 		        data-init-function="bpFieldInitBrowseElement"
