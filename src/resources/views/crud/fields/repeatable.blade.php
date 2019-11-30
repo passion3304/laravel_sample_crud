@@ -95,12 +95,14 @@
             // element will be a jQuery wrapped DOM node
             var container = element.siblings('.container-repeatable-elements');
 
+            // make sure the inputs no longer have a "name" attribute, 
+            // so that the form will not send the inputs as request variables;
+            // use a "data-secondary-name" attribute to store the same information;
             container.find('input, select, textarea')
                     .each(function(){
                         if ($(this).data('name')) {
                             var name_attr = $(this).data('name');
                             $(this).removeAttr("data-name");
-
                         } else if ($(this).attr('name')) {
                             var name_attr = $(this).attr('name');
                             $(this).removeAttr("name");
@@ -109,6 +111,9 @@
                                .val('');
                     });
 
+            // make a copy of the group of inputs in their default state
+            // this way we have a clean element we can clone when the user 
+            // wants to add a new group of inputs
             var field_group = container.find('.repeatable-element:first').clone();
             container.find('.repeatable-element').remove();
 
@@ -127,12 +132,10 @@
             }
 
             if (element.closest('.modal-content').length) {
-
                 element.closest('.modal-content').find('.save-block').click(function(){
                     element.val(JSON.stringify(repeatableInputToObj(container)));
                 })
             } else if (element.closest('form').length) {
-
                 element.closest('form').submit(function(){
                     element.val(JSON.stringify(repeatableInputToObj(container)));
                     return true;
@@ -144,12 +147,11 @@
          * Adds a new field group to the repeatable input.
          */
         function newRepeatableElement(container, field_group, values) {
-
             var new_field_group = field_group.clone();
-            new_field_group.find('.delete-element')
-                            .click(function(){
-                                $(this).parent().remove();
-                            })
+            
+            new_field_group.find('.delete-element').click(function(){
+                $(this).parent().remove();
+            });
 
             if (values != null) {
                 new_field_group.find('input, select, textarea').each(function () {
