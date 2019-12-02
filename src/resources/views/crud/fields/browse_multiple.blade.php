@@ -45,7 +45,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                                 <i class="fa fa-trash"></i>
                             </button>
                             @if ($sortable)
-                                <span class="browse btn btn-sm btn-light move" type="button"><span class="fa fa-sort"></span></span>
+                                <button type="button" class="browse move btn btn-sm btn-light"><span class="fa fa-sort"></span></button>
                             @endif
                         </div>
                     </div>
@@ -79,7 +79,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                     <i class="fa fa-trash"></i>
                 </button>
                 @if ($sortable)
-                    <span class="browse btn btn-sm btn-light move" type="button"><span class="fa fa-sort"></span></span>
+                    <button type="button" class="browse move btn btn-sm btn-light"><span class="fa fa-sort"></span></button>
                 @endif
             </div>
         </div>
@@ -134,7 +134,10 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                 var $sortable = element.attr('sortable');
 
                 if($sortable){
-                    $list.sortable();
+                    $list.sortable({
+                        handle: 'button.move',
+                        cancel: ''
+                    });
                 }
 
                 element.on('click', 'button.popup', function (event) {
