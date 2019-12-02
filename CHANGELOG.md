@@ -9,6 +9,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 -----------
 
 
+## 4.0.23 - 2019-12-02
+
+### Fixed
+- merged #2270 - missing ES language translations;
+
+
 ## 4.0.22 - 2019-11-25
 
 ### Fixed
