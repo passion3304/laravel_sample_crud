@@ -10,7 +10,7 @@
   >
 
   <div class="container-repeatable-elements">
-    <div class="col-md-12 well repeatable-element row m-1 p-2 bg-light">
+    <div class="col-md-12 well repeatable-element row m-1 p-2">
       @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
         <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
         @foreach($field['fields'] as $subfield)
@@ -46,8 +46,9 @@
       <!-- no styles -->
       <style type="text/css">
         .repeatable-element {
-          /*border: 1px solid rgba(0,0,0,.1);*/
+          border: 1px solid rgba(0,40,100,.12);
           border-radius: 5px;
+          background-color: #fbfbfb;
         }
         .container-repeatable-elements .delete-element {
           z-index: 99;
@@ -148,7 +149,7 @@
          */
         function newRepeatableElement(container, field_group, values) {
             var new_field_group = field_group.clone();
-            
+
             new_field_group.find('.delete-element').click(function(){
                 $(this).parent().remove();
             });
