@@ -13,6 +13,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2270 - missing ES language translations;
+- merged #2261 - browse_multiple field can now be sortable;
 
 
 ## 4.0.22 - 2019-11-25
