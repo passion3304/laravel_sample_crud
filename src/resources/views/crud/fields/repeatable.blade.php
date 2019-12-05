@@ -1,11 +1,18 @@
 {{-- REPEATABLE FIELD TYPE --}}
+
+@php
+  $field['value'] = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+  // make sure the value is a JSON string (not array, if it's cast in the model)
+  $field['value'] = is_array($field['value']) ? json_encode($field['value']) : $field['value'];
+@endphp
+
 <div @include('crud::inc.field_wrapper_attributes') >
   <label>{!! $field['label'] !!}</label>
   <input
       type="hidden"
       name="{{ $field['name'] }}"
       data-init-function="bpFieldInitRepeatableElement"
-      value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+      value="{{ $field['value'] }}"
       @include('crud::inc.field_attributes')
   >
 
@@ -48,7 +55,7 @@
         .repeatable-element {
           border: 1px solid rgba(0,40,100,.12);
           border-radius: 5px;
-          background-color: #fbfbfb;
+          background-color: #f0f3f94f;
         }
         .container-repeatable-elements .delete-element {
           z-index: 99;
@@ -78,8 +85,8 @@
 
             container.find('.well').each(function () {
                 $(this).find('input, select, textarea').each(function () {
-                    if ($(this).data('secondary-name')) {
-                        obj[$(this).data('secondary-name')] = $(this).val();
+                    if ($(this).data('repeatable-input-name')) {
+                        obj[$(this).data('repeatable-input-name')] = $(this).val();
                     }
                 });
                 arr.push(obj);
@@ -98,7 +105,7 @@
 
             // make sure the inputs no longer have a "name" attribute, 
             // so that the form will not send the inputs as request variables;
-            // use a "data-secondary-name" attribute to store the same information;
+            // use a "data-repeatable-input-name" attribute to store the same information;
             container.find('input, select, textarea')
                     .each(function(){
                         if ($(this).data('name')) {
@@ -108,7 +115,7 @@
                             var name_attr = $(this).attr('name');
                             $(this).removeAttr("name");
                         }
-                        $(this).attr('data-secondary-name', name_attr)
+                        $(this).attr('data-repeatable-input-name', name_attr)
                                .val('');
                     });
 
@@ -156,8 +163,8 @@
 
             if (values != null) {
                 new_field_group.find('input, select, textarea').each(function () {
-                    if ($(this).data('secondary-name')) {
-                        $(this).val(values[$(this).data('secondary-name')]);
+                    if ($(this).data('repeatable-input-name')) {
+                        $(this).val(values[$(this).data('repeatable-input-name')]);
                     }
                 });
             }
