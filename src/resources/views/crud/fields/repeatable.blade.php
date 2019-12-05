@@ -1,11 +1,18 @@
 {{-- REPEATABLE FIELD TYPE --}}
+
+@php
+  $field['value'] = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+  // make sure the value is a JSON string (not array, if it's cast in the model)
+  $field['value'] = is_array($field['value']) ? json_encode($field['value']) : $field['value'];
+@endphp
+
 <div @include('crud::inc.field_wrapper_attributes') >
   <label>{!! $field['label'] !!}</label>
   <input
       type="hidden"
       name="{{ $field['name'] }}"
       data-init-function="bpFieldInitRepeatableElement"
-      value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+      value="{{ $field['value'] }}"
       @include('crud::inc.field_attributes')
   >
 
@@ -27,7 +34,7 @@
     </div>
 
   </div>
-  <button type="button" class="btn btn-primary float-right repeatable-elements">+</button>
+  <button type="button" class="btn btn-primary float-right add-repeatable-element-button">+</button>
 
   {{-- HINT --}}
   @if (isset($field['hint']))
@@ -48,7 +55,7 @@
         .repeatable-element {
           border: 1px solid rgba(0,40,100,.12);
           border-radius: 5px;
-          background-color: #fbfbfb;
+          background-color: #f0f3f94f;
         }
         .container-repeatable-elements .delete-element {
           z-index: 99;
@@ -78,8 +85,8 @@
 
             container.find('.well').each(function () {
                 $(this).find('input, select, textarea').each(function () {
-                    if ($(this).data('secondary-name')) {
-                        obj[$(this).data('secondary-name')] = $(this).val();
+                    if ($(this).data('repeatable-input-name')) {
+                        obj[$(this).data('repeatable-input-name')] = $(this).val();
                     }
                 });
                 arr.push(obj);
@@ -98,7 +105,7 @@
 
             // make sure the inputs no longer have a "name" attribute, 
             // so that the form will not send the inputs as request variables;
-            // use a "data-secondary-name" attribute to store the same information;
+            // use a "data-repeatable-input-name" attribute to store the same information;
             container.find('input, select, textarea')
                     .each(function(){
                         if ($(this).data('name')) {
@@ -108,28 +115,28 @@
                             var name_attr = $(this).attr('name');
                             $(this).removeAttr("name");
                         }
-                        $(this).attr('data-secondary-name', name_attr)
+                        $(this).attr('data-repeatable-input-name', name_attr)
                                .val('');
                     });
 
             // make a copy of the group of inputs in their default state
             // this way we have a clean element we can clone when the user 
             // wants to add a new group of inputs
-            var field_group = container.find('.repeatable-element:first').clone();
+            var field_group_clone = container.find('.repeatable-element:first').clone();
             container.find('.repeatable-element').remove();
 
-            element.parent().find('.repeatable-elements').click(function(){
-                newRepeatableElement(container,field_group);
+            element.parent().find('.add-repeatable-element-button').click(function(){
+                newRepeatableElement(container, field_group_clone);
             });
 
             if (element.val()) {
                 var repeatable_fields_values = JSON.parse(element.val());
 
                 for (var i = 0; i < repeatable_fields_values.length; ++i) {
-                    newRepeatableElement(container,field_group,repeatable_fields_values[i]);
+                    newRepeatableElement(container, field_group_clone, repeatable_fields_values[i]);
                 }
             } else {
-                element.parent().find('.repeatable-elements').trigger('click');
+                element.parent().find('.add-repeatable-element-button').trigger('click');
             }
 
             if (element.closest('.modal-content').length) {
@@ -156,11 +163,12 @@
 
             if (values != null) {
                 new_field_group.find('input, select, textarea').each(function () {
-                    if ($(this).data('secondary-name')) {
-                        $(this).val(values[$(this).data('secondary-name')]);
+                    if ($(this).data('repeatable-input-name')) {
+                        $(this).val(values[$(this).data('repeatable-input-name')]);
                     }
                 });
             }
+            
             container.append(new_field_group);
             initializeFieldsWithJavascript(container);
         }
