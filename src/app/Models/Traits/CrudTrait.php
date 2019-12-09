@@ -71,6 +71,7 @@ trait CrudTrait
         try {
             //check if column exists in database
             $conn->getDoctrineColumn($table, $column_name);
+
             return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
         } catch (Exception $e) {
             return true;
