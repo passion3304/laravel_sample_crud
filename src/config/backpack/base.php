@@ -26,6 +26,9 @@ return [
     // Project name. Shown in the window title.
     'project_name' => 'Backpack Admin Panel',
 
+    // Project logo URL. Shown in the header.
+    'project_logo_url' => env('APP_URL') . '/admin',
+
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
 
