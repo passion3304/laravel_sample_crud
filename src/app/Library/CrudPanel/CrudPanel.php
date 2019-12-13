@@ -69,7 +69,7 @@ class CrudPanel
      */
     public function setRequest($request = null)
     {
-        if (!$request) {
+        if (! $request) {
             $request = \Request::instance();
         }
         $this->request = $request;

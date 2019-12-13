@@ -2,10 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\Http;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\Tests\BaseTest;
-use Backpack\CRUD\Tests\Unit\Models\User;
 
 class CrudControllerTest extends BaseTest
 {
@@ -35,7 +33,7 @@ class CrudControllerTest extends BaseTest
 
         $this->assertSame($app->get('crud')->request, $firstRequest);
 
-        $secondRequest = $app->get('request')->create('/users/1', 'PUT', [ 'name' => 'foo' ]);
+        $secondRequest = $app->get('request')->create('/users/1', 'PUT', ['name' => 'foo']);
         $app->handle($secondRequest);
 
         $this->assertSame($app->get('crud')->request, $secondRequest);
