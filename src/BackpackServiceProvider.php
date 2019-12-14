@@ -217,7 +217,7 @@ class BackpackServiceProvider extends ServiceProvider
             // get an instance of the controller
             if ($this->hasGroupStack()) {
                 $groupStack = $this->getGroupStack();
-                $groupNamespace = $groupStack && isset(end($groupStack)['namespace']) ? end($groupStack)['namespace'].'\\' : 'App\\';
+                $groupNamespace = $groupStack && isset(end($groupStack)['namespace']) ? end($groupStack)['namespace'].'\\' : '';
             } else {
                 $groupNamespace = '';
             }
