@@ -68,8 +68,14 @@ trait CrudTrait
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json_array');
+        try {
+            //check if column exists in database
+            $conn->getDoctrineColumn($table, $column_name);
 
-        return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
+            return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
+        } catch (Exception $e) {
+            return true;
+        }
     }
 
     /*

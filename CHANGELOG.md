@@ -8,6 +8,20 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.24 - 2019-12-14
+
+### Fixed
+- merged #2287 - CrudTrait's ```isColumnNullable``` should not throw error if the column does not exist; that way you can use it on non-existing columns;
+- merged #2292 fixes #2289 - config for changing the URL for the top-left logo to something else;
+- merged #2101 - Don't force the default controller namespace;
+
+
+## 4.0.23 - 2019-12-02
+
+### Fixed
+- merged #2270 - missing ES language translations;
+- merged #2261 - browse_multiple field can now be sortable;
+
 
 ## 4.0.22 - 2019-11-25
 
