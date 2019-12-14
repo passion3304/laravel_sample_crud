@@ -8,6 +8,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.24 - 2019-12-14
+
+### Fixed
+- merged #2287 - CrudTrait's ```isColumnNullable``` should not throw error if the column does not exist; that way you can use it on non-existing columns;
+
 
 ## 4.0.23 - 2019-12-02
 
