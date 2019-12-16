@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.25 - 2019-12-16
+
+### Fixed
+- #2292 - admin panel home link broke the installation because it used url() inside config files;
+
+
 ## 4.0.24 - 2019-12-14
 
 ### Fixed
