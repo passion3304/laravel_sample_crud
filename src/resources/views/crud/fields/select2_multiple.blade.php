@@ -82,7 +82,7 @@
                         var options = [];
                         @if (count($options))
                             @foreach ($options as $option)
-                                options.push({{ $option->getKey() }});
+                                options.push('{{ $option->getKey() }}');
                             @endforeach
                         @endif
 

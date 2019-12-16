@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.26 - 2019-12-16
+
+### Fixed
+- #2149 - select2_multiple field support for UUIDs;
+
+
 ## 4.0.25 - 2019-12-16
 
 ### Fixed
