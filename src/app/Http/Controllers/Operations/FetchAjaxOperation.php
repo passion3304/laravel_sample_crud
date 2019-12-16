@@ -36,7 +36,7 @@ trait FetchAjaxOperation
 
     public function setupFetchAjaxOperationDefaults()
     {
-        if(isset($this->fetch)) {
+        if (isset($this->fetch)) {
             $this->crud->setOperationSetting('ajaxEntities', $this->fetch);
         }
     }
