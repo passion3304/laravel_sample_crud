@@ -58,7 +58,7 @@ trait FetchAjaxOperation
 
         if ($search_term) {
             foreach ($whereToSearch as $searchColumn) {
-                $conn = $model::getPreparedConnection();
+                $conn = $model::getPreparedConnection($instance);
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
 
                 if (! isset($isFirst)) {
