@@ -22,7 +22,6 @@ trait Fields
      * Add a field to the create/update form or both.
      *
      * @param string|array $field The new field.
-     * @param string       $form  The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      *
      * @return self
      */
@@ -71,7 +70,6 @@ trait Fields
      * Add multiple fields to the create/update form or both.
      *
      * @param array  $fields The new fields.
-     * @param string $form   The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
     public function addFields($fields)
     {
@@ -86,7 +84,6 @@ trait Fields
      * Move the most recently added field after the given target field.
      *
      * @param string $targetFieldName The target field name.
-     * @param string $form            The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
     public function afterField($targetFieldName)
     {
@@ -99,7 +96,6 @@ trait Fields
      * Move the most recently added field before the given target field.
      *
      * @param string $targetFieldName The target field name.
-     * @param string $form            The CRUD form. Can be 'create', 'update' or 'both'. Default is 'both'.
      */
     public function beforeField($targetFieldName)
     {
@@ -142,7 +138,6 @@ trait Fields
      * Remove a certain field from the create/update/both forms by its name.
      *
      * @param string $name Field name (as defined with the addField() procedure)
-     * @param string $form update/create/both
      */
     public function removeField($name)
     {
