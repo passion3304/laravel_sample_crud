@@ -3,12 +3,15 @@
 namespace Backpack\CRUD\app\Models\Traits;
 
 use DB;
+use Doctrine\DBAL\Schema\Schema;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Traversable;
 
 trait CrudTrait
 {
+
     public static function hasCrudTrait()
     {
         return true;
@@ -51,23 +54,42 @@ trait CrudTrait
         return $array;
     }
 
+    /**
+     * Register aditional types in doctrine schema manager for the current connection.
+     *
+     * @param Model $instance
+     * @return DB
+     */
+    public static function getPreparedConnection($instance)
+    {
+        $conn = DB::connection($instance->getConnectionName());
+        // register the enum, json and jsonb column type, because Doctrine doesn't support it
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json_array');
+
+        return $conn;
+    }
+
+    /**
+     * Checks if the given column name is nullable.
+     *
+     * @param [string] $column_name
+     * @return bool
+     */
     public static function isColumnNullable($column_name)
     {
         // create an instance of the model to be able to get the table name
         $instance = new static();
 
-        $conn = DB::connection($instance->getConnectionName());
+        $conn = self::getPreparedConnection($instance);
+
         $table = Config::get('database.connections.'.Config::get('database.default').'.prefix').$instance->getTable();
 
         // MongoDB columns are alway nullable
         if ($conn->getConfig()['driver'] === 'mongodb') {
             return true;
         }
-
-        // register the enum, json and jsonb column type, because Doctrine doesn't support it
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json_array');
         try {
             //check if column exists in database
             $conn->getDoctrineColumn($table, $column_name);
@@ -295,5 +317,63 @@ trait CrudTrait
         }
 
         return false;
+    }
+
+    public static function getIdentifiableName()
+    {
+        $model = (new self);
+        if (method_exists($model, 'identifiableName')) {
+            return $model->identifiableName();
+        }
+
+        return static::getIdentifiableNameFromDatabase();
+    }
+
+    public static function getIdentifiableNameFromDatabase()
+    {
+        $instance = new static();
+
+        $conn = self::getPreparedConnection($instance);
+
+        $table = Config::get('database.connections.'.Config::get('database.default').'.prefix').$instance->getTable();
+
+        $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
+        $indexes = $conn->getDoctrineSchemaManager()->listTableIndexes($table);
+
+        // this column names are sensible defaults for lots of use cases.
+        $sensibleDefaultNames = ['name', 'title', 'description', 'label'];
+
+        $columnsNames = array_keys($columns);
+
+        //we check if any of the sensible defaults exists in columns.
+        foreach ($sensibleDefaultNames as $defaultName) {
+            if (in_array($defaultName, $columnsNames)) {
+                return [$defaultName];
+            }
+        }
+
+        //get indexed columns in database table
+        $indexedColumns = [];
+        foreach ($indexes as $index) {
+            $indexColumns = $index->getColumns();
+            foreach ($indexColumns as $ic) {
+                array_push($indexedColumns, $ic);
+            }
+        }
+
+        //if non of the sensible defaults exists we get the first column from database that is not indexed (usually primary, foreign keys).
+        foreach ($columns as $columnName => $columnProperties) {
+            if (! in_array($columnName, $indexedColumns)) {
+
+                //check for convention "field<_id>" in case developer didn't add foreign key constraints.
+                if (strpos($columnName, '_id') !== false) {
+                    continue;
+                }
+
+                return [$columnName];
+            }
+        }
+        //in case everything fails we just return the first column in database
+        return array_first($columnsNames);
     }
 }
