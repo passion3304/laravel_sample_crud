@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Models\Traits;
 
 use DB;
-use Doctrine\DBAL\Schema\Schema;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
