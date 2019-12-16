@@ -11,7 +11,6 @@ use Traversable;
 
 trait CrudTrait
 {
-
     public static function hasCrudTrait()
     {
         return true;
