@@ -7,18 +7,17 @@
 
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
-    <?php $entity_model = $crud->model; ?>
 
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2FromAjaxElement"
-        data-column-nullable="{{ $entity_model::isColumnNullable($field['name'])?'true':'false' }}"
+        data-column-nullable="{{ $crud->model::isColumnNullable($field['name'])?'true':'false' }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
-        data-placeholder="{{ $field['placeholder'] }}"
-        data-minimum-input-length="{{ $field['minimum_input_length'] }}"
-        data-data-source="{{ $field['data_source'] }}"
+        data-placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : 'Select a ' . $field['entity'] }}"
+        data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
         data-method="{{ $field['method'] ?? 'GET' }}"
+        data-data-source="{{isset($field['data_source']) ? $field['data_source'] : url($crud->route . '/fetch/' . $field['response_entity'])}}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
@@ -32,7 +31,7 @@
             @if ($item)
 
             {{-- allow clear --}}
-            @if ($entity_model::isColumnNullable($field['name']))
+            @if ($crud->model::isColumnNullable($field['name']))
             <option value="" selected>
                 {{ $field['placeholder'] }}
             </option>
@@ -65,7 +64,7 @@
     <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     {{-- allow clear --}}
-    @if ($entity_model::isColumnNullable($field['name']))
+    @if ($crud->model::isColumnNullable($field['name']))
     <style type="text/css">
         .select2-selection__clear::after {
             content: ' {{ trans('backpack::crud.clear') }}';
