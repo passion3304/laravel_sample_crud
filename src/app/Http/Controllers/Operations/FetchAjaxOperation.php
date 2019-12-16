@@ -36,6 +36,9 @@ trait FetchAjaxOperation
 
     public function setupFetchAjaxOperationDefaults()
     {
+        if(isset($this->fetch)) {
+            $this->crud->setOperationSetting('ajaxEntities', $this->fetch);
+        }
     }
 
     //fetch items from database based on search term

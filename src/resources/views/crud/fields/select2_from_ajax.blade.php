@@ -3,6 +3,8 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
     $old_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
+    $response_entity = isset($field['response_entity']) ? $field['response_entity'] : $crud->hasOperationSetting('ajaxEntities') ? array_has($crud->getOperationSetting('ajaxEntities'), $field['entity']) ? $field['entity'] : array_key_first($crud->getOperationSetting('ajaxEntities')) : '';
+
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
