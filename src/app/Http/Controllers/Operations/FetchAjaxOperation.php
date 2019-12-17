@@ -37,17 +37,17 @@ trait FetchAjaxOperation
 
     public function setupFetchAjaxOperationDefaults()
     {
-       $this->setupBareCrud();
-
+        $this->setupBareCrud();
     }
 
     /*
         Setting up a bare CRUD. No session variables available here.
     */
 
-    public function setupBareCrud() {
+    public function setupBareCrud()
+    {
         $entityRoutes = $this->getAjaxEntityRoutes();
-        $this->crud->setOperationSetting('ajaxEntities',$entityRoutes);
+        $this->crud->setOperationSetting('ajaxEntities', $entityRoutes);
     }
 
     /**
@@ -74,15 +74,13 @@ trait FetchAjaxOperation
         $instanceKey = $instance->getKeyName();
         $conn = $model::getPreparedConnection($instance);
 
-        if($request->has('q')) {
-            if(empty($request->input('q'))) {
+        if ($request->has('q')) {
+            if (empty($request->input('q'))) {
                 $search_term = false;
-            }else{
+            } else {
                 $search_term = $request->input('q');
             }
-
         }
-
 
         $query = $entityRoutes[$routeSegment]['query'] ? $entityRoutes[$routeSegment]['query'] : $model;
 
@@ -91,24 +89,22 @@ trait FetchAjaxOperation
         }
 
         if (isset($search_term)) {
-
-            if($search_term === false) {
+            if ($search_term === false) {
                 return $instance->latest()->orderByDesc($instanceKey)->first();
             }
             foreach ($whereToSearch as $searchColumn) {
-
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
 
                 if (! isset($isFirst)) {
                     $operation = 'where';
-                }else{
+                } else {
                     $operation = 'orWhere';
                 }
-                    if ($columnType == 'string') {
-                        $instance->{$operation}($searchColumn, 'LIKE', '%'.$search_term.'%');
-                    } else {
-                        $instance->{$operation}($searchColumn, $search_term);
-                    }
+                if ($columnType == 'string') {
+                    $instance->{$operation}($searchColumn, 'LIKE', '%'.$search_term.'%');
+                } else {
+                    $instance->{$operation}($searchColumn, $search_term);
+                }
 
                 $isFirst = true;
             }
@@ -120,10 +116,11 @@ trait FetchAjaxOperation
 
         return $results;
     }
+
     /**
-     * Fetches a single item from database
+     * Fetches a single item from database.
      *
-     * @param integer $id
+     * @param int $id
      * @return void
      */
     public function fetchSingleItem($id)
@@ -137,7 +134,7 @@ trait FetchAjaxOperation
     }
 
     /**
-     * Get url segment from uri
+     * Get url segment from uri.
      *
      * @param string $uri
      * @return string
@@ -150,15 +147,16 @@ trait FetchAjaxOperation
     }
 
     /**
-     * Gets developer defined endpoints
+     * Gets developer defined endpoints.
      *
      * @return array
      */
-    public function getAjaxEntityRoutes() {
-        if(method_exists($this,'ajaxEntityRoutes')) {
+    public function getAjaxEntityRoutes()
+    {
+        if (method_exists($this, 'ajaxEntityRoutes')) {
             return $this->ajaxEntityRoutes();
         }
-        return [];
 
+        return [];
     }
 }
