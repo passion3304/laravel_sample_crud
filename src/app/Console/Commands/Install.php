@@ -41,7 +41,7 @@ class Install extends Command
         $shouldInstallElfinder = false;
 
         if ($this->option('elfinder') == 'ask') {
-            $shouldInstallElfinder = $this->confirm("Install barryvdh/laravel-elfinder to provide an admin interface for File Management?", false);
+            $shouldInstallElfinder = $this->confirm('Install barryvdh/laravel-elfinder to provide an admin interface for File Management?', false);
         } elseif ($this->option('elfinder') == 'no') {
             $shouldInstallElfinder = false;
         } elseif ($this->option('elfinder') == 'yes') {
