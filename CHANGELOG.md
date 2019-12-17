@@ -12,6 +12,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - #2306 - pt-BR translation fixes;
+- changed default "install elFinder" answer to "false" when installing Backpack;
+- fixed installation progress bar;
+- fixed ScrutinizerCI warnings on installation process;
 
 
 ## 4.0.26 - 2019-12-16
