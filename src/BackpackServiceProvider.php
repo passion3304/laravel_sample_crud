@@ -227,6 +227,7 @@ class BackpackServiceProvider extends ServiceProvider
                 $controllerInstance->crud = app()->make('crud');
                 $controllerInstance->setupBareCrud();
             }
+
             return $controllerInstance->setupRoutes($name, $routeName, $controller);
         });
     }

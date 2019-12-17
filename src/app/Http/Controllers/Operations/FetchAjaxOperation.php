@@ -39,17 +39,17 @@ trait FetchAjaxOperation
 
     public function setupFetchAjaxOperationDefaults()
     {
-       $this->setupBareCrud();
-
+        $this->setupBareCrud();
     }
 
     /*
         Setting up a bare CRUD. No session variables available here.
     */
 
-    public function setupBareCrud() {
+    public function setupBareCrud()
+    {
         $entityRoutes = $this->getAjaxEntityRoutes();
-        $this->crud->setOperationSetting('ajaxEntities',$entityRoutes);
+        $this->crud->setOperationSetting('ajaxEntities', $entityRoutes);
     }
 
     //fetch items from database based on search term
@@ -71,15 +71,13 @@ trait FetchAjaxOperation
         $instanceKey = $instance->getKeyName();
         $conn = $model::getPreparedConnection($instance);
 
-        if($request->has('q')) {
-            if(empty($request->input('q'))) {
+        if ($request->has('q')) {
+            if (empty($request->input('q'))) {
                 $search_term = false;
-            }else{
+            } else {
                 $search_term = $request->input('q');
             }
-
         }
-
 
         $query = $entityRoutes[$routeSegment]['query'] ? $entityRoutes[$routeSegment]['query'] : $model;
 
@@ -88,12 +86,10 @@ trait FetchAjaxOperation
         }
 
         if (isset($search_term)) {
-
-            if($search_term == false) {
+            if ($search_term == false) {
                 return $instance->latest()->orderByDesc($instanceKey)->first();
             }
             foreach ($whereToSearch as $searchColumn) {
-
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
 
                 if (! isset($isFirst)) {
@@ -135,11 +131,12 @@ trait FetchAjaxOperation
         return end($routeSegments);
     }
 
-    public function getAjaxEntityRoutes() {
-        if(method_exists($this,'ajaxEntityRoutes')) {
+    public function getAjaxEntityRoutes()
+    {
+        if (method_exists($this, 'ajaxEntityRoutes')) {
             return $this->ajaxEntityRoutes();
         }
-        return [];
 
+        return [];
     }
 }
