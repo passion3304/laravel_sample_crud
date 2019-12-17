@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.28 - 2019-12-xx
+
+### Fixed
+- merged #2136 - fixed Create operation with foreign keys that are not inside the form;
+
+
 ## 4.0.27 - 2019-12-17
 
 ### Fixed
