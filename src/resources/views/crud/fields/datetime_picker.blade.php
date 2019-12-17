@@ -42,12 +42,14 @@ if (isset($field['value']) && ($field['value'] instanceof \Carbon\CarbonInterfac
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
     <link rel="stylesheet" href="{{ asset('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}">
     <link rel="stylesheet" href="{{ asset('packages/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
     <script type="text/javascript" src="{{ asset('packages/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('packages/pc-bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
     @if ($field_language !== 'en')

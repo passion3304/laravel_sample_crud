@@ -31,12 +31,6 @@ trait OnTheFlyOperation
             'uses'      => $controller.'@refreshOptions',
             'operation' => 'OnTheFlyOperation',
         ]);
-
-        Route::get($segment.'/on-the-fly/update', [
-            'as'        => $segment.'-on-the-fly-update',
-            'uses'      => $controller.'@getInstantUpdateModal',
-            'operation' => 'InstantFieldsOperation',
-        ]);
     }
 
     public function setupOnTheFlyDefaults()
@@ -47,25 +41,26 @@ trait OnTheFlyOperation
     public function getInstantCreateModal()
     {
         if (request()->has('entity')) {
-            $this->setupCreateOperation();
+
+            $this->setupOperationSettings();
 
             return $this->getInstantModal(request()->get('entity'), 'create', $this->crud->getCreateFields());
         }
     }
 
-    public function getInstantUpdateModal()
-    {
-        if (request()->has('entity')) {
-            $this->setupUpdateOperation();
-
-            return $this->getInstantModal(request()->get('entity'), 'update', $this->crud->getUpdateFields());
+    public function setupOperationSettings() {
+        if(method_exists($this,'setupCreateOperation')) {
+            $this->setupCreateOperation();
+        }else{
+            $this->setup();
         }
-    }
 
+        $this->crud->applyConfigurationFromSettings('create');
+    }
     public function getInstantModal($entity, $action, $fields)
     {
         return view(
-                'crud::inc.on-the-fly',
+                'crud::inc.on_the_fly_modal',
                 [
                     'fields' => $fields,
                     'action' => $action,
@@ -77,7 +72,7 @@ trait OnTheFlyOperation
 
     public function refreshOptions()
     {
-        $this->setupCreateOperation();
+        $this->setupOperationSettings();
 
         if (request()->has('field')) {
             $field = $this->crud->fields()[request()->get('field')];
@@ -96,8 +91,7 @@ trait OnTheFlyOperation
 
     public function storeOnTheFly()
     {
-        $this->setupCreateOperation();
-
+        $this->setupOperationSettings();
         return $this->store();
     }
 }

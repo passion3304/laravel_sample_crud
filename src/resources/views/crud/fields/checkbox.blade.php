@@ -38,6 +38,7 @@
     @endphp
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <script>
             function bpFieldInitCheckbox(element) {
                 var hidden_element = element.siblings('input[type=hidden]');

@@ -121,10 +121,12 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <script>
             function bpFieldInitPageOrLinkElement(element) {
                 $wrapper = element;

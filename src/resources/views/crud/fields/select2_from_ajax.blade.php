@@ -61,6 +61,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
     <!-- include select2 css-->
     <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -87,6 +88,7 @@
 
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
+@stack('on_the_fly_scripts')
 <script>
     function bpFieldInitSelect2FromAjaxElement(element) {
         var form = element.closest('form');

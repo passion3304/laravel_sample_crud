@@ -105,6 +105,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
         <link href="{{ asset('packages/cropperjs/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
         <style>
             .hide {
@@ -155,6 +156,7 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <script src="{{ asset('packages/cropperjs/dist/cropper.min.js') }}"></script>
         <script src="{{ asset('packages/jquery-cropper/dist/jquery-cropper.min.js') }}"></script>
         <script>

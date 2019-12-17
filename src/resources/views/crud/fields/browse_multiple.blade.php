@@ -10,7 +10,7 @@ if (!$multiple && is_array($value)) {
 if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function']))
 {
     $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitBrowseMultipleElement';
-    
+
     if ($multiple) {
         $field['wrapperAttributes']['data-popup-title'] = trans('backpack::crud.select_files');
         $field['wrapperAttributes']['data-multiple'] = "true";
@@ -97,6 +97,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
         <!-- include browse server css -->
         <link rel="stylesheet" type="text/css" href="{{ asset('packages/jquery-ui-dist/jquery-ui.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('packages/barryvdh/elfinder/css/elfinder.min.css') }}">
@@ -110,6 +111,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
     @endpush
 
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <!-- include browse server js -->
         <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
         <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
@@ -118,6 +120,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
         @if ( ($locale = \App::getLocale()) != 'en' )
             @php
             <script type="text/javascript" src="{{ asset("packages/barryvdh/elfinder/js/i18n/elfinder.{$locale}.js") }}"></script>
+            @endphp
         @endif
 
         <script>
@@ -178,7 +181,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                             } else {
                                 $input.val(files.path);
                             }
-                            
+
                             $.colorbox.close();
                         }
                     }).elfinder('instance');
@@ -196,7 +199,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                     event.preventDefault();
 
                     if ($multiple) {
-                        $input.parents('.input-group').remove();    
+                        $input.parents('.input-group').remove();
                     } else {
                         $input.val('');
                     }

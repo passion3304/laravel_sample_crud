@@ -29,8 +29,8 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
 
-    <input class="array-json" 
-            type="hidden" 
+    <input class="array-json"
+            type="hidden"
             data-init-function="bpFieldInitTableElement"
             name="{{ $field['name'] }}">
 
@@ -92,6 +92,7 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         {{-- YOUR JS HERE --}}
         <script type="text/javascript" src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
 

@@ -24,7 +24,7 @@
 
         case 'meterialdesign':
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/material-design-1.1.1/css)/material-design-iconic-font.min.css');
-        
+
         default:
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/font-awesome-5.10.1/css/all.min.css');
             break;
@@ -63,6 +63,7 @@
 
     {{-- FIELD EXTRA CSS  --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
         {{-- The chosen font --}}
         <link rel="stylesheet" type="text/css" href="{{ $fontIconFilePath }}">
         <!-- Bootstrap-Iconpicker -->
@@ -71,6 +72,7 @@
 
     {{-- FIELD EXTRA JS --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <!-- Bootstrap-Iconpicker -->
         <script type="text/javascript" src="{{ asset('packages/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js') }}"></script>
 

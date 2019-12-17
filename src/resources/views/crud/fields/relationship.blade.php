@@ -42,14 +42,12 @@ if($activeOnTheFlyCreate) {
 if(!isset($onTheFly)) {
     $createRoute = route($onTheFlyEntity."-on-the-fly-create");
 
-    $updateRoute = route($onTheFlyEntity."-on-the-fly-update");
     $createRouteEntity = explode('/',$crud->route)[1];
 
     $refreshRoute = route($createRouteEntity."-on-the-fly-refresh-options");
 
 }else{
     $activeOnTheFlyCreate = false;
-    $activeOnTheFlyUpdate = false;
 }
 }
 @endphp
@@ -95,6 +93,7 @@ if(!isset($onTheFly)) {
 
         {{-- FIELD CSS - will be loaded in the after_styles section --}}
         @push('crud_fields_styles')
+        @stack('on_the_fly_styles')
             <!-- include select2 css-->
             <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
             <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -102,6 +101,7 @@ if(!isset($onTheFly)) {
 
         {{-- FIELD JS - will be loaded in the after_scripts section --}}
         @push('crud_fields_scripts')
+        @stack('on_the_fly_scripts')
             <!-- include select2 js-->
             <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
             @if (app()->getLocale() !== 'en')
@@ -247,7 +247,7 @@ function setupOnTheFlyButtons(element) {
             type: 'GET',
             success: function (result) {
                 $('body').append(result);
-                triggerModal(element, urls);
+                triggerModal(element);
 
             },
             error: function (result) {
@@ -274,7 +274,7 @@ function triggerModal(element) {
     var $onTheFlyCreateRoute = element.attr('data-on-the-fly-create-route');
     var $modal = $(modalName);
 
-    $modal.modal({ backdrop: 'static', keyboard: false });
+    $modal.modal({ backdrop: 'static', keyboard: false, focus: false });
     var $modalSaveButton = $modal.find('#saveButton');
     var $form = $(document.getElementById($fieldName+"-on-the-fly-create-form"));
 
@@ -283,7 +283,10 @@ function triggerModal(element) {
 
     //when you hit save on modal save button.
     $modalSaveButton.on('click', function () {
-        var $formData = new FormData(document.getElementById($fieldName+"-on-the-fly-create-form"));
+        $form = document.getElementById($fieldName+"-on-the-fly-create-form");
+        //this is needed otherwise fields like ckeditor don't post their value.
+        $($form).trigger('form-pre-serialize');
+        var $formData = new FormData($form);
 
         var loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> loading...';
         if ($modalSaveButton.html() !== loadingText) {

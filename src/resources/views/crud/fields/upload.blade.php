@@ -60,6 +60,7 @@
     @endphp
 
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
         <style type="text/css">
             .existing-file {
                 border: 1px solid rgba(0,40,100,.12);
@@ -143,6 +144,7 @@
     @endpush
 
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <!-- no scripts -->
         <script>
             function bpFieldInitUploadElement(element) {
@@ -159,7 +161,7 @@
                     fileInput.parent().removeClass('d-none');
                     fileInput.attr("value", "").replaceWith(fileInput.clone(true));
 
-                    // redo the selector, so we can use the same fileInput variable going forward 
+                    // redo the selector, so we can use the same fileInput variable going forward
                     fileInput = element.find(".file_input");
 
                     // add a hidden input with the same name, so that the setXAttribute method is triggered

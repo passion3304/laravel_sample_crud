@@ -26,17 +26,19 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <script src="{{ asset('packages/ckeditor/ckeditor.js') }}"></script>
         <script src="{{ asset('packages/ckeditor/adapters/jquery.js') }}"></script>
         <script>
             function bpFieldInitCKEditorElement(element) {
                 // remove any previous CKEditors from right next to the textarea
                 element.siblings("[id^='cke_ckeditor']").remove();
-
+                //console.log('ckeditor init');
                 // trigger a new CKEditor
                 element.ckeditor({
                     "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
@@ -46,6 +48,10 @@
                         {!! ', '.trim(json_encode($field['options']), "{}") !!}
                     @endif
                 });
+
+                for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+    }
             }
         </script>
     @endpush

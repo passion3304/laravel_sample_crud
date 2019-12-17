@@ -28,6 +28,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
         <link rel="stylesheet" href="{{ asset('packages/simplemde/dist/simplemde.min.css') }}">
         <style type="text/css">
         .CodeMirror-fullscreen, .editor-toolbar.fullscreen {
@@ -41,6 +42,7 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <script src="{{ asset('packages/simplemde/dist/simplemde.min.js') }}"></script>
         <script>
             function bpFieldInitSimpleMdeElement(element) {
@@ -54,7 +56,7 @@
                 configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
 
                 var smdeObject = new SimpleMDE(configurationObject);
-            
+
                 smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
                 smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

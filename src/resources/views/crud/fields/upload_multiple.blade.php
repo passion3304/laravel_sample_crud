@@ -67,6 +67,7 @@
     @endphp
 
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <!-- no scripts -->
         <script>
         	function bpFieldInitUploadMultipleElement(element) {

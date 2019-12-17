@@ -25,12 +25,14 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
         <!-- include summernote css-->
         <link href="{{ asset('packages/summernote/dist/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <!-- include summernote js-->
         {{-- <script src="{{ asset('packages/summernote/dist/summernote.min.js') }}"></script> --}}
         <script src="{{ asset('packages/summernote/dist/summernote-bs4.min.js') }}"></script>

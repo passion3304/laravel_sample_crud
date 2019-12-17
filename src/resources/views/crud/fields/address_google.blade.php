@@ -59,6 +59,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @stack('on_the_fly_styles')
         <style>
             .ap-input-icon.ap-icon-pin {
                 right: 5px !important;
@@ -72,6 +73,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+    @stack('on_the_fly_scripts')
         <script>
 
             function bpFieldInitAddressGoogleElement(element) {
