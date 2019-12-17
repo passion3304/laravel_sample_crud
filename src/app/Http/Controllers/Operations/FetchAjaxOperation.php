@@ -17,8 +17,6 @@ trait FetchAjaxOperation
      */
     protected function setupFetchAjaxOperationRoutes($segment, $routeName, $controller)
     {
-
-//dd($this);
         if ($this->crud->hasOperationSetting('ajaxEntities')) {
             $ajaxEntities = $this->crud->getOperationSetting('ajaxEntities');
             foreach ($ajaxEntities as $relatedSegment => $entiyToFetch) {
@@ -29,7 +27,7 @@ trait FetchAjaxOperation
                     'operation' => 'FetchAjaxOperation',
                 ]);
 
-                Route::get($segment.'/fetch/'.$routeSegment.'/{id}', [
+                Route::get($segment.'/fetch/{id}/'.$routeSegment, [
                     'uses'      => $controller.'@fetchSingleItem',
                     'operation' => 'FetchAjaxOperation',
                 ]);
@@ -39,20 +37,25 @@ trait FetchAjaxOperation
 
     public function setupFetchAjaxOperationDefaults()
     {
-        $this->setupBareCrud();
+       $this->setupBareCrud();
+
     }
 
     /*
         Setting up a bare CRUD. No session variables available here.
     */
 
-    public function setupBareCrud()
-    {
+    public function setupBareCrud() {
         $entityRoutes = $this->getAjaxEntityRoutes();
-        $this->crud->setOperationSetting('ajaxEntities', $entityRoutes);
+        $this->crud->setOperationSetting('ajaxEntities',$entityRoutes);
     }
 
-    //fetch items from database based on search term
+    /**
+     * Gets items from database and returns to selects.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function fetchMultipleItems(Request $request)
     {
         $entityRoutes = $this->crud->getOperationSetting('ajaxEntities');
@@ -71,13 +74,15 @@ trait FetchAjaxOperation
         $instanceKey = $instance->getKeyName();
         $conn = $model::getPreparedConnection($instance);
 
-        if ($request->has('q')) {
-            if (empty($request->input('q'))) {
+        if($request->has('q')) {
+            if(empty($request->input('q'))) {
                 $search_term = false;
-            } else {
+            }else{
                 $search_term = $request->input('q');
             }
+
         }
+
 
         $query = $entityRoutes[$routeSegment]['query'] ? $entityRoutes[$routeSegment]['query'] : $model;
 
@@ -86,27 +91,28 @@ trait FetchAjaxOperation
         }
 
         if (isset($search_term)) {
-            if ($search_term == false) {
+
+            if($search_term === false) {
                 return $instance->latest()->orderByDesc($instanceKey)->first();
             }
             foreach ($whereToSearch as $searchColumn) {
+
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
 
                 if (! isset($isFirst)) {
-                    if ($columnType == 'string') {
-                        $instance->where($searchColumn, 'LIKE', '%'.$search_term.'%');
-                    } else {
-                        $instance->where($searchColumn, $search_term);
-                    }
-                } else {
-                    if ($columnType == 'string') {
-                        $instance->orWhere($searchColumn, 'LIKE', '%'.$search_term.'%');
-                    } else {
-                        $instance->orWhere($searchColumn, $search_term);
-                    }
+                    $operation = 'where';
+                }else{
+                    $operation = 'orWhere';
                 }
+                    if ($columnType == 'string') {
+                        $instance->{$operation}($searchColumn, 'LIKE', '%'.$search_term.'%');
+                    } else {
+                        $instance->{$operation}($searchColumn, $search_term);
+                    }
+
                 $isFirst = true;
             }
+
             $results = $instance->paginate($itemsPerPage);
         } else {
             $results = $instance->paginate($itemsPerPage);
@@ -114,16 +120,28 @@ trait FetchAjaxOperation
 
         return $results;
     }
-
+    /**
+     * Fetches a single item from database
+     *
+     * @param integer $id
+     * @return void
+     */
     public function fetchSingleItem($id)
     {
         $request = request()->instance();
         $routeSegment = $this->getRouteSegment($request->route()->uri);
-        $model = $this->fetch[$routeSegment]['model'];
+        $entityRoutes = $this->crud->getOperationSetting('ajaxEntities');
+        $model = $entityRoutes[$routeSegment]['model'];
 
         return $model::findOrFail($id);
     }
 
+    /**
+     * Get url segment from uri
+     *
+     * @param string $uri
+     * @return string
+     */
     public function getRouteSegment($uri)
     {
         $routeSegments = explode('/', $uri);
@@ -131,12 +149,16 @@ trait FetchAjaxOperation
         return end($routeSegments);
     }
 
-    public function getAjaxEntityRoutes()
-    {
-        if (method_exists($this, 'ajaxEntityRoutes')) {
+    /**
+     * Gets developer defined endpoints
+     *
+     * @return array
+     */
+    public function getAjaxEntityRoutes() {
+        if(method_exists($this,'ajaxEntityRoutes')) {
             return $this->ajaxEntityRoutes();
         }
-
         return [];
+
     }
 }

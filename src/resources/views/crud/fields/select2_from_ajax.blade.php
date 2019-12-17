@@ -82,6 +82,8 @@
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
 <script>
+document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
+
   // this function is responsible for fetching some default option when developer don't allow null on field
 let fetchDefaultEntry = function (element) {
     var $fetchUrl = element.attr('data-data-source');
@@ -120,7 +122,6 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
         var $fieldAttribute = element.attr('data-field-attribute');
         var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
         var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
-        var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
     if(element.attr('data-column-nullable') != 'true') {
             fetchDefaultEntry(element).then(result => {
@@ -130,7 +131,8 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
 
         var $item = JSON.parse(element.attr('data-item'));
 
-        var $allowClear = (element.attr('data-column-nullable') == true && !$item == false) ? true : false;
+        var $allowClear = (element.attr('data-column-nullable') == 'true' && !$item == false) ? true : false;
+
         var $select2Settings = {
                 theme: 'bootstrap',
                 multiple: false,
@@ -189,9 +191,8 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
                    $(element).trigger('change');
                 });
 
-            if($allowClear && !$item) {
-                document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
-            }
+
+
             // if any dependencies have been declared
             // when one of those dependencies changes value
             // reset the select2 value
