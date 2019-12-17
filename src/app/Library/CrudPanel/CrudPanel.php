@@ -150,12 +150,13 @@ class CrudPanel
         $this->route = route($complete_route, $parameters);
         $this->initButtons();
     }
-/**
- * Based on relation type returns if relation allows multiple entities
- *
- * @param string $relationType
- * @return bool
- */
+
+    /**
+     * Based on relation type returns if relation allows multiple entities.
+     *
+     * @param string $relationType
+     * @return bool
+     */
     public function relationAllowsMultiple($relationType)
     {
         switch ($relationType) {

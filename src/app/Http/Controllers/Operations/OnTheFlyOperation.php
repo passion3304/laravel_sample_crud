@@ -41,22 +41,23 @@ trait OnTheFlyOperation
     public function getInstantCreateModal()
     {
         if (request()->has('entity')) {
-
             $this->setupOperationSettings();
 
             return $this->getInstantModal(request()->get('entity'), 'create', $this->crud->getCreateFields());
         }
     }
 
-    public function setupOperationSettings() {
-        if(method_exists($this,'setupCreateOperation')) {
+    public function setupOperationSettings()
+    {
+        if (method_exists($this, 'setupCreateOperation')) {
             $this->setupCreateOperation();
-        }else{
+        } else {
             $this->setup();
         }
 
         $this->crud->applyConfigurationFromSettings('create');
     }
+
     public function getInstantModal($entity, $action, $fields)
     {
         return view(
@@ -92,6 +93,7 @@ trait OnTheFlyOperation
     public function storeOnTheFly()
     {
         $this->setupOperationSettings();
+
         return $this->store();
     }
 }
