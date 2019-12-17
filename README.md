@@ -27,7 +27,7 @@ Features:
 > ### Security updates and breaking changes
 > Please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email every 1-2 months.
 
-![List / table view for Backpack/CRUD](https://backpackforlaravel.com/uploads/docs-4-0/general/4.png)
+![List / table view for Backpack/CRUD](https://backpackforlaravel.com/uploads/docs-4-0/general/clickthrough.gif)
 
 
 ## Getting started
