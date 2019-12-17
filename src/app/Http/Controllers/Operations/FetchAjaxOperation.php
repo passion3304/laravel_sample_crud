@@ -17,8 +17,11 @@ trait FetchAjaxOperation
      */
     protected function setupFetchAjaxOperationRoutes($segment, $routeName, $controller)
     {
-        if (isset($this->fetch)) {
-            foreach ($this->fetch as $relatedSegment => $entiyToFetch) {
+
+//dd($this);
+        if ($this->crud->hasOperationSetting('ajaxEntities')) {
+            $ajaxEntities = $this->crud->getOperationSetting('ajaxEntities');
+            foreach ($ajaxEntities as $relatedSegment => $entiyToFetch) {
                 $routeSegment = isset($entiyToFetch['routeSegment']) ? $entiyToFetch['routeSegment'] : $relatedSegment;
 
                 Route::get($segment.'/fetch/'.$routeSegment, [
@@ -36,32 +39,61 @@ trait FetchAjaxOperation
 
     public function setupFetchAjaxOperationDefaults()
     {
-        if (isset($this->fetch)) {
-            $this->crud->setOperationSetting('ajaxEntities', $this->fetch);
-        }
+       $this->setupBareCrud();
+
+    }
+
+    /*
+        Setting up a bare CRUD. No session variables available here.
+    */
+
+    public function setupBareCrud() {
+        $entityRoutes = $this->getAjaxEntityRoutes();
+        $this->crud->setOperationSetting('ajaxEntities',$entityRoutes);
     }
 
     //fetch items from database based on search term
     public function fetchMultipleItems(Request $request)
     {
+        $entityRoutes = $this->crud->getOperationSetting('ajaxEntities');
         $routeSegment = $this->getRouteSegment($request->route()->uri);
 
-        $model = $this->fetch[$routeSegment]['model'];
-        $itemsPerPage = $this->fetch[$routeSegment]['itemsPerPage'] ? $this->fetch[$routeSegment]['itemsPerPage'] : 10;
+        $model = $entityRoutes[$routeSegment]['model'];
+        $instance = new $model;
+
+        $itemsPerPage = $entityRoutes[$routeSegment]['itemsPerPage'] ? $entityRoutes[$routeSegment]['itemsPerPage'] : 10;
 
         //get searchable attributes if defined otherwise get identifiable attributes from model
-        $whereToSearch = isset($this->fetch[$routeSegment]['searchableAttributes']) ?
-        $this->fetch[$routeSegment]['searchableAttributes'] : $model::getIdentifiableName();
-
-        $search_term = $request->input('q');
-        $instance = new $model;
-        $page = $request->input('page');
+        $whereToSearch = isset($entityRoutes[$routeSegment]['searchableAttributes']) ?
+        $entityRoutes[$routeSegment]['searchableAttributes'] : $model::getIdentifiableName();
 
         $table = Config::get('database.connections.'.Config::get('database.default').'.prefix').$instance->getTable();
+        $instanceKey = $instance->getKeyName();
+        $conn = $model::getPreparedConnection($instance);
 
-        if ($search_term) {
+        if($request->has('q')) {
+            if(empty($request->input('q'))) {
+                $search_term = false;
+            }else{
+                $search_term = $request->input('q');
+            }
+
+        }
+
+
+        $query = $entityRoutes[$routeSegment]['query'] ? $entityRoutes[$routeSegment]['query'] : $model;
+
+        if (is_callable($query)) {
+            $instance = $query($instance);
+        }
+
+        if (isset($search_term)) {
+
+            if($search_term == false) {
+                return $instance->latest()->orderByDesc($instanceKey)->first();
+            }
             foreach ($whereToSearch as $searchColumn) {
-                $conn = $model::getPreparedConnection($instance);
+
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
 
                 if (! isset($isFirst)) {
@@ -101,5 +133,13 @@ trait FetchAjaxOperation
         $routeSegments = explode('/', $uri);
 
         return end($routeSegments);
+    }
+
+    public function getAjaxEntityRoutes() {
+        if(method_exists($this,'ajaxEntityRoutes')) {
+            return $this->ajaxEntityRoutes();
+        }
+        return [];
+
     }
 }

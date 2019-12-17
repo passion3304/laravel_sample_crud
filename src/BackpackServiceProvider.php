@@ -223,7 +223,10 @@ class BackpackServiceProvider extends ServiceProvider
             }
             $namespacedController = $groupNamespace.$controller;
             $controllerInstance = new $namespacedController();
-
+            if (method_exists($controllerInstance, 'setupBareCrud')) {
+                $controllerInstance->crud = app()->make('crud');
+                $controllerInstance->setupBareCrud();
+            }
             return $controllerInstance->setupRoutes($name, $routeName, $controller);
         });
     }
