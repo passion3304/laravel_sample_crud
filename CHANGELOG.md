@@ -8,10 +8,19 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.0.27 - 2019-12-xx
+## 4.0.28 - 2019-12-xx
+
+### Fixed
+- merged #2136 - fixed Create operation with foreign keys that are not inside the form;
+
+
+## 4.0.27 - 2019-12-17
 
 ### Fixed
 - #2306 - pt-BR translation fixes;
+- changed default "install elFinder" answer to "false" when installing Backpack;
+- fixed installation progress bar;
+- fixed ScrutinizerCI warnings on installation process;
 
 
 ## 4.0.26 - 2019-12-16
