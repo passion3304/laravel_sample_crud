@@ -382,8 +382,10 @@ trait Fields
         } else {
             $fieldType = $field;
         }
+
         return $fieldType;
     }
+
     /**
      * Add a new field type to the loadedFieldTypes array.
      *
