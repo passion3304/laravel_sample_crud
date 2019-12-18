@@ -48,10 +48,6 @@
                         {!! ', '.trim(json_encode($field['options']), "{}") !!}
                     @endif
                 });
-
-                for (instance in CKEDITOR.instances) {
-        CKEDITOR.instances[instance].updateElement();
-    }
             }
         </script>
     @endpush
