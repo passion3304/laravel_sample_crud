@@ -369,20 +369,21 @@ trait Fields
      * Get a namespaced version of the field type name.
      * Appends the 'view_namespace' attribute of the field to the `type', using dot notation.
      *
-     * @param  array $field Field array
+     * @param  mixed $field
      * @return string Namespaced version of the field type name. Ex: 'text', 'custom.view.path.text'
      */
     public function getFieldTypeWithNamespace($field)
     {
-        $fieldType = $field['type'];
-
-        if (isset($field['view_namespace'])) {
-            $fieldType = implode('.', [$field['view_namespace'], $field['type']]);
+        if (is_array($field)) {
+            $fieldType = $field['type'];
+            if (isset($field['view_namespace'])) {
+                $fieldType = implode('.', [$field['view_namespace'], $field['type']]);
+            }
+        } else {
+            $fieldType = $field;
         }
-
         return $fieldType;
     }
-
     /**
      * Add a new field type to the loadedFieldTypes array.
      *

@@ -1,14 +1,17 @@
 <!--  relationship  -->
 
 @php
-   $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
-   $field['ajax'] = $field['ajax'] ?? config('backpack.crud.relationships.default_ajax');
-   //dd($field);
-   $fieldOnTheFlyConfiguration = $field['on_the_fly'] ?? [];
+    $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
+    $field['ajax'] = $field['ajax'] ?? config('backpack.crud.relationships.default_ajax');
 
-   $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+    $fieldOnTheFlyConfiguration = $field['on_the_fly'] ?? [];
 
-$related_model_instance = new $field['model']();
+    $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+
+    $related_model_instance = new $field['model']();
+
+    $response_entity = isset($field['response_entity']) ? $field['response_entity'] : $crud->hasOperationSetting('ajaxEntities') ? array_has($crud->getOperationSetting('ajaxEntities'), $field['entity']) ? $field['entity'] : array_key_first($crud->getOperationSetting('ajaxEntities')) : '';
+    $placeholder = isset($field['placeholder']) ? $field['placeholder'] : 'Select a ' . $field['entity'];
 
 
 
@@ -65,10 +68,21 @@ if(!isset($onTheFly)) {
         style="width: 100%"
         data-init-function="bpFieldInitRelationshipElement"
         data-is-on-the-fly="{{ $onTheFly ?? 'false' }}"
-        data-field-multiple=""
+        data-field-multiple="{{var_export($field['multiple'])}}"
         data-options-for-select="{{json_encode($options)}}"
         data-allows-null="{{var_export($allows_null)}}"
+        data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
+        data-model-local-key="{{$crud->model->getKeyName()}}"
+        data-placeholder="{{ $placeholder }}"
+        data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
+        data-data-source="{{isset($field['data_source']) ? $field['data_source'] : url($crud->route . '/fetch/' . $response_entity)}}"
+        data-method="{{ $field['method'] ?? 'GET' }}"
+        data-field-attribute="{{ $field['attribute'] }}"
+        data-connected-entity-key-name="{{ $related_model_instance->getKeyName() }}"
+        data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         data-current-value="{{$current_value}}"
+        data-field-ajax="{{var_export($field['ajax'])}}"
+        data-item="{{ (isset($item) && !is_null($item)) ? '{ "id":"'.$item->getKey().'","text":"'.$item->{$field['attribute']} .'"}' : json_encode(false) }}"
         @if($activeOnTheFlyCreate)
         @include('crud::inc.on_the_fly_field_attributes')
         @endif
@@ -108,7 +122,7 @@ if(!isset($onTheFly)) {
             <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
             @endif
             <script>
-
+document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 
 // this function is responsible for reloading the option list uppon on-the-fly creation.
 let refreshOptionList = function (element, $field, $refreshUrl) {
@@ -132,6 +146,32 @@ let refreshOptionList = function (element, $field, $refreshUrl) {
 };
 
 
+  // this function is responsible for fetching some default option when developer don't allow null on field
+let fetchDefaultEntry = function (element) {
+    var $fetchUrl = element.attr('data-data-source');
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: $fetchUrl,
+            data: {
+                'q': ''
+            },
+            type: 'GET',
+            success: function (result) {
+                $(element).attr('data-item', JSON.stringify(result));
+                resolve(result);
+            },
+            error: function (result) {
+                reject(result);
+            }
+        });
+    });
+};
+function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
+     var $item = JSON.parse(element.attr('data-item'));
+     $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
+}
+
+
 // this is the function responsible for displaying the select options.
 
 function fillSelectOptions(element, $created = false, $multiple = false) {
@@ -140,7 +180,7 @@ function fillSelectOptions(element, $created = false, $multiple = false) {
 
     var $allows_null = element.attr('data-allows-null');
 
-    var $relatedKey = element.attr('data-on-the-fly-related-key');
+    var $relatedKey = element.attr('data-connected-entity-key-name');
 
     //used to check if after a related creation the created entity is still available in options
     var $createdIsOnOptions = false;
@@ -269,7 +309,7 @@ function setupOnTheFlyButtons(element) {
 
 function triggerModal(element) {
     var $fieldName = element.attr('data-field-related-name');
-    var $multiple = (element.attr('data-field-multiple') === 'true');
+    var $multiple = element.attr('data-field-multiple');
     var modalName = '#'+$fieldName+'-on-the-fly-create-dialog';
     var $onTheFlyCreateRoute = element.attr('data-on-the-fly-create-route');
     var $modal = $(modalName);
@@ -351,17 +391,32 @@ function triggerModal(element) {
 
 
 
-
-
-
-
                 function bpFieldInitRelationshipElement(element) {
-                    // element will be a jQuery wrapped DOM node
-                    var $onTheFlyField = element.attr('data-is-on-the-fly');
+
+
+                var $onTheFlyField = element.attr('data-is-on-the-fly');
+                var $ajax = element.attr('data-field-ajax') == 'true' ? true : false;
+                var $placeholder = element.attr('data-placeholder');
+                var $minimumInputLength = element.attr('data-minimum-input-length');
+                var $dataSource = element.attr('data-data-source');
+                var $method = element.attr('data-method');
+                var $fieldAttribute = element.attr('data-field-attribute');
+                var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
+                var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
+                var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
+                var $dependencies = JSON.parse(element.attr('data-dependencies'));
+                var $modelKey = element.attr('data-model-local-key');
 
                 var $selectOptions = element.attr('data-options-for-select');
-
+                if(!$ajax) {
                 triggerSelectOptions(element);
+                }else{
+                    if(element.attr('data-column-nullable') != 'true') {
+            fetchDefaultEntry(element).then(result => {
+                refreshDefaultOption(element, $fieldAttribute, $modelKey);
+            });
+        }
+                }
 
                 //Checks if field is not beeing inserted in one on-the-fly modal and setup buttons
                 if($onTheFlyField == "false") {
@@ -370,9 +425,57 @@ function triggerModal(element) {
 
                 }
                     if (!element.hasClass("select2-hidden-accessible")) {
+                        if(!$ajax) {
                         element.select2({
                             theme: "bootstrap"
                         });
+                        }else{
+                            element.select2({
+                            theme: "bootstrap",
+                            placeholder: $placeholder,
+                            minimumInputLength: $minimumInputLength,
+                            allowClear: $allowClear,
+                            ajax: {
+                    url: $dataSource,
+                    type: $method,
+                    dataType: 'json',
+                    quietMillis: 250,
+                    data: function (params) {
+                        if ($includeAllFormFields) {
+                            return {
+                                q: params.term, // search term
+                                page: params.page, // pagination
+                                form: form.serializeArray() // all other form inputs
+                            };
+                        } else {
+                            return {
+                                q: params.term, // search term
+                                page: params.page, // pagination
+                            };
+                        }
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+
+                        var result = {
+                            results: $.map(data.data, function (item) {
+                                textField = $fieldAttribute;
+                                return {
+                                    text: item[textField],
+                                    id: item[$connectedEntityKeyName]
+                                }
+                            }),
+                           pagination: {
+                                 more: data.current_page < data.last_page
+                           }
+                        };
+
+                        return result;
+                    },
+                    cache: true
+                },
+                        });
+                        }
                     }
                 }
             </script>
