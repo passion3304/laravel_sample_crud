@@ -6,21 +6,38 @@
 
     $fieldOnTheFlyConfiguration = $field['on_the_fly'] ?? [];
 
+
+    if(!$field['multiple']) {
     $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+    }else{
+        $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+    }
 
     $related_model_instance = new $field['model']();
 
     $response_entity = isset($field['response_entity']) ? $field['response_entity'] : $crud->hasOperationSetting('ajaxEntities') ? array_has($crud->getOperationSetting('ajaxEntities'), $field['entity']) ? $field['entity'] : array_key_first($crud->getOperationSetting('ajaxEntities')) : '';
     $placeholder = isset($field['placeholder']) ? $field['placeholder'] : 'Select a ' . $field['entity'];
 
+    if ($current_value) {
+        if(!is_object($current_value)) {
+            $item = $related_model_instance->find($current_value);
+        }else{
+            if(!$current_value->isEmpty()) {
+                //dd($current_value);
+                $current_value = $current_value->map(function ($item, $key) use ($related_model_instance) {
+                    //dd($item);
+                    return $item->{$related_model_instance->getKeyName()};
+                });
+
+            }
+        }
+    }
 
 
-
-if ($crud->model::isColumnNullable($field['name'])) {
-    $allows_null = isset($field['allows_null']) ? $field['allows_null'] : true;
-}else {
-    $allows_null = isset($field['allows_null']) ? $field['allows_null'] : false;
-}
+//this checks if column is nullable on database by default, but developer might overriden that property
+$allows_null = $crud->model::isColumnNullable($field['name']) ?
+        ((isset($field['allows_null']) && $field['allows_null'] != false) || !isset($field['allows_null']) ? true : false) :
+        ((isset($field['allows_null']) && $field['allows_null'] != true) || !isset($field['allows_null']) ? false : true);
 
 
 $options = [];
@@ -63,7 +80,11 @@ if(!isset($onTheFly)) {
             @include('crud::inc.on_the_fly_create_button', ['name' => $field['name'], 'onTheFlyEntity' => $onTheFlyEntity])
         @endif
 <select
+@if(!$field['multiple'])
         name="{{ $field['name'] }}"
+        @else
+        name="{{ $field['name'] }}[]"
+        @endif
         data-original-name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitRelationshipElement"
@@ -74,15 +95,18 @@ if(!isset($onTheFly)) {
         data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
         data-placeholder="{{ $placeholder }}"
-        data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
+
+        @if($field['ajax'])
         data-data-source="{{isset($field['data_source']) ? $field['data_source'] : url($crud->route . '/fetch/' . $response_entity)}}"
         data-method="{{ $field['method'] ?? 'GET' }}"
+        data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
+        @endif
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $related_model_instance->getKeyName() }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         data-current-value="{{$current_value}}"
         data-field-ajax="{{var_export($field['ajax'])}}"
-        data-item="{{ (isset($item) && !is_null($item)) ? '{ "id":"'.$item->getKey().'","text":"'.$item->{$field['attribute']} .'"}' : json_encode(false) }}"
+        data-item="{{ (isset($item) && !is_null($item) && !empty($item)) ? '{ "id":"'.$item->getKey().'","text":"'.$item->{$field['attribute']} .'"}' : json_encode(false) }}"
         @if($activeOnTheFlyCreate)
         @include('crud::inc.on_the_fly_field_attributes')
         @endif
@@ -157,7 +181,15 @@ let fetchDefaultEntry = function (element) {
             },
             type: 'GET',
             success: function (result) {
-                $(element).attr('data-item', JSON.stringify(result));
+                //if data is available here it means developer returned a collection and we want only the first.
+                //when using the AjaxFetchOperation we will have here a single entity.
+                if(result.data) {
+                    var $return = result.data[0];
+                }else{
+                    $return = result;
+                }
+
+                $(element).attr('data-item', JSON.stringify($return));
                 resolve(result);
             },
             error: function (result) {
@@ -166,6 +198,7 @@ let fetchDefaultEntry = function (element) {
         });
     });
 };
+//this function is responsible by setting up a default option in ajax fields
 function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
      var $item = JSON.parse(element.attr('data-item'));
      $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
@@ -174,8 +207,9 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
 
 // this is the function responsible for displaying the select options.
 
-function fillSelectOptions(element, $created = false, $multiple = false) {
+function fillSelectOptions(element, $created = false) {
 
+    var $multiple = element.attr('data-field-multiple') == 'true' ? true : false;
     var $options = JSON.parse(element.attr('data-options-for-select'));
 
     var $allows_null = element.attr('data-allows-null');
@@ -184,18 +218,26 @@ function fillSelectOptions(element, $created = false, $multiple = false) {
 
     //used to check if after a related creation the created entity is still available in options
     var $createdIsOnOptions = false;
-
+    var selectedOptions = [];
     //if this field is a select multiple we json parse the current value
-    if ($multiple == true) {
-
-        var $currentValue = JSON.parse(element.attr('data-current-value'));
-
-        var selectedOptions = [];
-
+    if ($multiple === true) {
         //if there are any selected options we re-select them
-        for (const [key, value] of Object.entries($currentValue)) {
-        selectedOptions.push(key);
-    }
+        $value = element.attr('data-current-value');
+        if($value.length) {
+            var $currentValue = JSON.parse(element.attr('data-current-value'));
+        }else{
+            var $currentValue = '';
+        }
+
+        console.log($currentValue);
+        if(!Array.isArray($currentValue)) {
+            selectedOptions.push($currentValue);
+        }else{
+
+            $currentValue.forEach(function(value) {
+                selectedOptions.push(value);
+            });
+        }
 
     //we add the options to the select and check if we have some created, if yes we append to selected options
     for (const [key, value] of Object.entries($options)) {
@@ -212,7 +254,6 @@ function fillSelectOptions(element, $created = false, $multiple = false) {
     }
 
     $(element).val(selectedOptions);
-
     }else{
         var $currentValue = element.attr('data-current-value');
 
@@ -228,11 +269,15 @@ function fillSelectOptions(element, $created = false, $multiple = false) {
                 if(key == $created[$relatedKey]) {
                     $createdIsOnOptions = true;
                     $(element).val(key);
+
                 }
 
          }
     }
     }
+
+    $(element).attr('data-current-value',JSON.stringify(selectedOptions));
+
     if ($allows_null == 'true' && $multiple == false && ($currentValue == '' || (Array.isArray($currentValue) && $currentValue.length)) && $createdIsOnOptions == false) {
         var $option = new Option('-', '');
         $(element).prepend($option);
@@ -249,11 +294,8 @@ function fillSelectOptions(element, $created = false, $multiple = false) {
 }
 
 //this is just a trigger function that put's things in place, it checks if it is needed to refresh options or only display them.
-function triggerSelectOptions(element, $created = false, $multiple = false) {
+function triggerSelectOptions(element, $created = false) {
     var $fieldName = element.attr('data-original-name');
-
-
-
 
     var $onTheFlyRefreshRoute = element.attr('data-on-the-fly-refresh-route');
 
@@ -262,12 +304,12 @@ function triggerSelectOptions(element, $created = false, $multiple = false) {
     if ($created) {
         refreshOptionList(element, $fieldName, $onTheFlyRefreshRoute).then(result => {
 
-            fillSelectOptions(element, $created, $multiple);
+            fillSelectOptions(element, $created);
         }, result => {
 
         });
     } else {
-        fillSelectOptions(element, $created, $multiple);
+        fillSelectOptions(element, $created);
     }
 }
 
@@ -309,7 +351,7 @@ function setupOnTheFlyButtons(element) {
 
 function triggerModal(element) {
     var $fieldName = element.attr('data-field-related-name');
-    var $multiple = element.attr('data-field-multiple');
+
     var modalName = '#'+$fieldName+'-on-the-fly-create-dialog';
     var $onTheFlyCreateRoute = element.attr('data-on-the-fly-create-route');
     var $modal = $(modalName);
@@ -345,7 +387,7 @@ function triggerModal(element) {
             success: function (result) {
 
                 $createdEntity = result.data;
-                triggerSelectOptions(element, $createdEntity,$multiple);
+                triggerSelectOptions(element, $createdEntity);
 
                 $modal.modal('hide');
                 swal({
@@ -393,7 +435,7 @@ function triggerModal(element) {
 
                 function bpFieldInitRelationshipElement(element) {
 
-
+                var form = element.closest('form');
                 var $onTheFlyField = element.attr('data-is-on-the-fly');
                 var $ajax = element.attr('data-field-ajax') == 'true' ? true : false;
                 var $placeholder = element.attr('data-placeholder');
@@ -403,19 +445,20 @@ function triggerModal(element) {
                 var $fieldAttribute = element.attr('data-field-attribute');
                 var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
                 var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
-                var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
                 var $dependencies = JSON.parse(element.attr('data-dependencies'));
                 var $modelKey = element.attr('data-model-local-key');
-
+                var $item = JSON.parse(element.attr('data-item'));
                 var $selectOptions = element.attr('data-options-for-select');
+                var $allowClear = (element.attr('data-allows-null') == 'true' && !$item == false) ? true : false;
+
                 if(!$ajax) {
-                triggerSelectOptions(element);
+                    triggerSelectOptions(element);
                 }else{
-                    if(element.attr('data-column-nullable') != 'true') {
-            fetchDefaultEntry(element).then(result => {
-                refreshDefaultOption(element, $fieldAttribute, $modelKey);
-            });
-        }
+                    if(element.attr('data-allows-null') != 'true' && !$item) {
+                        fetchDefaultEntry(element).then(result => {
+                            refreshDefaultOption(element, $fieldAttribute, $modelKey);
+                        });
+                    }
                 }
 
                 //Checks if field is not beeing inserted in one on-the-fly modal and setup buttons
@@ -426,10 +469,13 @@ function triggerModal(element) {
                 }
                     if (!element.hasClass("select2-hidden-accessible")) {
                         if(!$ajax) {
+
                         element.select2({
-                            theme: "bootstrap"
+                            theme: "bootstrap",
+                            allowClear: $allowClear,
                         });
                         }else{
+
                             element.select2({
                             theme: "bootstrap",
                             placeholder: $placeholder,
@@ -477,6 +523,28 @@ function triggerModal(element) {
                         });
                         }
                     }
+                    if($item) {
+                $(element).append('<option value="'+$item.id+'">'+$item.text+'</option>');
+            }else if ($allowClear && !$item) {
+                $(element).append('<option value="" >{{ $placeholder }}</option>');
+            }
+                element.on('select2:unselect', function(e) {
+                   e.preventDefault();
+                    $elementVal = $(element).val();
+                    if($elementVal == "") {
+
+                   $(element).append('<option value="" >{{ $placeholder }}</option>');
+                   $(element).trigger('change');
+                    }
+                    $(element).attr('data-current-value',JSON.stringify($elementVal));
+                });
+
+                for (var i=0; i < $dependencies.length; i++) {
+                $dependency = $dependencies[i];
+                $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
+                    element.val(null).trigger("change");
+                });
+            }
                 }
             </script>
         @endpush
