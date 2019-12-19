@@ -10,6 +10,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ## 4.0.28 - 2019-12-xx
 
+### Added
+- Persian language added;
+
 ### Fixed
 - merged #2136 - fixed Create operation with foreign keys that are not inside the form;
 - reversed Laravel composer requirement - first 6, then 5.8;
