@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2136 - fixed Create operation with foreign keys that are not inside the form;
+- reversed Laravel composer requirement - first 6, then 5.8;
 
 
 ## 4.0.27 - 2019-12-17
