@@ -61,7 +61,7 @@ return [
         'delete_confirmation_title'                   => 'مورد حذف شد',
         'delete_confirmation_message'                 => 'مورد مورد نظر با موفقیت حذف شد.',
         'delete_confirmation_not_title'               => 'حذف نشد',
-        'delete_confirmation_not_message'             => "خطایی وجود داشت. مورد مورد نظر ممکن است حذف نشده باشد.",
+        'delete_confirmation_not_message'             => 'خطایی وجود داشت. مورد مورد نظر ممکن است حذف نشده باشد.',
         'delete_confirmation_not_deleted_title'       => 'حذف نشد',
         'delete_confirmation_not_deleted_message'     => 'هیچ اتفاقی نیفتاده مورد شما ایمن است.',
 
