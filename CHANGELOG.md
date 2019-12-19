@@ -8,7 +8,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.0.29 - 2019-12-xx
+## 4.0.29 - 2019-12-19
 
 ### Added
 - support for PHP 7.4;
