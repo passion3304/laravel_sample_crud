@@ -216,7 +216,7 @@ trait Fields
         $fields_array = $this->getCurrentFields();
         $first_field = $this->getFirstOfItsTypeInArray($field['type'], $fields_array);
 
-        if ($field['name'] == $first_field['name']) {
+        if ($first_field && $field['name'] == $first_field['name']) {
             return true;
         }
 
