@@ -13,6 +13,9 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 ### Added
 - support for PHP 7.4;
 
+### Fixed
+- merged #2183 fixes #1797 - columns weren't orderable in MSSQL;
+
 
 ## 4.0.28 - 2019-12-19
 
