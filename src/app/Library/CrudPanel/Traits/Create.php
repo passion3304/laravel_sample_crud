@@ -176,13 +176,11 @@ trait Create
                     $item->{$relationMethod}->update($relationData['values']);
                     $modelInstance = $item->{$relationMethod};
                 } else {
-                    $relationModel = new $model();
-                    $modelInstance = $relationModel->create($relationData['values']);
+                    $modelInstance = new $model($relationData['values']);
                     $relation->save($modelInstance);
                 }
             } else {
-                $relationModel = new $model();
-                $modelInstance = $relationModel->create($relationData['values']);
+                $modelInstance = new $model($relationData['values']);
                 $relation->save($modelInstance);
             }
 

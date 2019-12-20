@@ -8,6 +8,67 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.30 - 2019-12-xx
+
+### Fixed
+- merged #2324 fixes #2323 - multiple summernote fields on page with different options;
+
+
+## 4.0.29 - 2019-12-19
+
+### Added
+- support for PHP 7.4;
+
+### Fixed
+- merged #2183 fixes #1797 - columns weren't orderable in MSSQL;
+
+
+## 4.0.28 - 2019-12-19
+
+### Added
+- Persian language added;
+
+### Fixed
+- merged #2136 - fixed Create operation with foreign keys that are not inside the form;
+- reversed Laravel composer requirement - first 6, then 5.8;
+
+
+## 4.0.27 - 2019-12-17
+
+### Fixed
+- #2306 - pt-BR translation fixes;
+- changed default "install elFinder" answer to "false" when installing Backpack;
+- fixed installation progress bar;
+- fixed ScrutinizerCI warnings on installation process;
+
+
+## 4.0.26 - 2019-12-16
+
+### Fixed
+- #2149 - select2_multiple field support for UUIDs;
+
+
+## 4.0.25 - 2019-12-16
+
+### Fixed
+- #2292 - admin panel home link broke the installation because it used url() inside config files;
+
+
+## 4.0.24 - 2019-12-14
+
+### Fixed
+- merged #2287 - CrudTrait's ```isColumnNullable``` should not throw error if the column does not exist; that way you can use it on non-existing columns;
+- merged #2292 fixes #2289 - config for changing the URL for the top-left logo to something else;
+- merged #2101 - Don't force the default controller namespace;
+- merged #2268 - video field's input should be type url not text;
+
+
+## 4.0.23 - 2019-12-02
+
+### Fixed
+- merged #2270 - missing ES language translations;
+- merged #2261 - browse_multiple field can now be sortable;
+
 
 ## 4.0.22 - 2019-11-25
 

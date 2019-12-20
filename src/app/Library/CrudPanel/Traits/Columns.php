@@ -239,7 +239,7 @@ trait Columns
     /**
      * Remove a column from the CRUD panel by name.
      *
-     * @param string $column The column key.
+     * @param string $columnKey The column key.
      */
     public function removeColumn($columnKey)
     {

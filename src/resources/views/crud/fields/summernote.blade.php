@@ -5,6 +5,7 @@
     <textarea
         name="{{ $field['name'] }}"
         data-init-function="bpFieldInitSummernoteElement"
+        data-options="{{ json_encode($field['options'] ?? []) }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control summernote'])
         >{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
@@ -36,7 +37,7 @@
         <script src="{{ asset('packages/summernote/dist/summernote-bs4.min.js') }}"></script>
         <script>
             function bpFieldInitSummernoteElement(element) {
-                element.summernote(@json($field['options'] ?? []));
+                element.summernote(element.data('options'));
             }
         </script>
     @endpush

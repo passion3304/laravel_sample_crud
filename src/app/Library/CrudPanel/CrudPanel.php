@@ -106,7 +106,7 @@ class CrudPanel
      */
     private function getSchema()
     {
-        return \Schema::setConnection($this->getModel()->getConnection());
+        return $this->getModel()->getConnection()->getSchemaBuilder();
     }
 
     /**

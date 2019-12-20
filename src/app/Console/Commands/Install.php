@@ -30,7 +30,7 @@ class Install extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return mixed Command-line output
      */
     public function handle()
     {
@@ -38,24 +38,27 @@ class Install extends Command
         * "ask" comes by default, when no option is provided, like: "backpack:install"
         * https://laravel.com/docs/6.0/artisan#options
         */
-        $install_elfinder = null;
+        $shouldInstallElfinder = false;
 
         if ($this->option('elfinder') == 'ask') {
-            $install_elfinder = $this->confirm("Install & set up the File Manager (elFinder)? The admin will be able to browse the 'uploads' folder and create/read/modify files and folders there.", 'yes');
+            $shouldInstallElfinder = $this->confirm('Install barryvdh/laravel-elfinder to provide an admin interface for File Management?', false);
         } elseif ($this->option('elfinder') == 'no') {
-            $install_elfinder = false;
+            $shouldInstallElfinder = false;
         } elseif ($this->option('elfinder') == 'yes') {
-            $install_elfinder = true;
+            $shouldInstallElfinder = true;
         } else {
-            $this->error('Option not recognized: '.$elfinderOption);
+            $this->error('Option not recognized: '.$this->option('elfinder'));
 
             return false;
         }
 
-        $steps = $install_elfinder ? 11 : 6;
+        $this->progressBar = $this->output->createProgressBar($shouldInstallElfinder ? 11 : 6);
+        $this->progressBar->minSecondsBetweenRedraws(0);
+        $this->progressBar->maxSecondsBetweenRedraws(120);
+        $this->progressBar->setRedrawFrequency(1);
 
-        $this->progressBar = $this->output->createProgressBar($steps);
         $this->progressBar->start();
+
         $this->info(' Backpack installation started. Please wait...');
         $this->progressBar->advance();
 
@@ -75,21 +78,24 @@ class Install extends Command
         $this->executeProcess('php artisan backpack:publish-middleware');
 
         // elFinder steps
-        if ($install_elfinder) {
+        if ($shouldInstallElfinder) {
             $this->line(' Installing barryvdh/laravel-elfinder');
             $this->executeProcess('composer require barryvdh/laravel-elfinder');
 
             $this->line(' Creating uploads directory');
             switch (DIRECTORY_SEPARATOR) {
                 case '/': // unix
-                    $this->executeProcess('mkdir -p public/uploads');
+                    $createUploadDirectoryCommand = 'mkdir -p public/uploads';
                     break;
                 case '\\': // windows
                     if (! file_exists('public\uploads')) {
-                        $this->executeProcess('mkdir public\uploads');
+                        $createUploadDirectoryCommand = 'mkdir public\uploads';
+                    } else {
+                        $createUploadDirectoryCommand = '';
                     }
                     break;
             }
+            $this->executeProcess($createUploadDirectoryCommand);
 
             $this->line(' Publishing elFinder assets');
             $this->executeProcess('php artisan elfinder:publish');
@@ -126,7 +132,7 @@ class Install extends Command
     {
         $this->echo('info', $beforeNotice ? ' '.$beforeNotice : $command);
 
-        $process = new Process($command, null, null, null, $this->option('timeout'), null);
+        $process = new Process($command, null, null, null, $this->option('timeout'));
         $process->run(function ($type, $buffer) {
             if (Process::ERR === $type) {
                 $this->echo('comment', $buffer);
@@ -152,8 +158,8 @@ class Install extends Command
     /**
      * Write text to the screen for the user to see.
      *
-     * @param [string] $type    line, info, comment, question, error
-     * @param [string] $content
+     * @param string $type    line, info, comment, question, error
+     * @param string $content
      */
     public function echo($type, $content)
     {
