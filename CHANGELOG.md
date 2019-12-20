@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.30 - 2019-12-xx
+
+### Fixed
+- merged #2324 fixes #2323 - multiple summernote fields on page with different options;
+
+
 ## 4.0.29 - 2019-12-19
 
 ### Added
