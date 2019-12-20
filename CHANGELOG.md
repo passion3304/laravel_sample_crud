@@ -8,10 +8,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.0.30 - 2019-12-xx
+## 4.0.30 - 2019-12-20
 
 ### Fixed
 - merged #2324 fixes #2323 - multiple summernote fields on page with different options;
+- merged #2294 fixes #2293 - request inconsistency between Controller and CrudPanel object;
 
 
 ## 4.0.29 - 2019-12-19
