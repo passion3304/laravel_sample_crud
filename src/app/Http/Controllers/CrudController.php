@@ -30,6 +30,8 @@ class CrudController extends Controller
         $this->middleware(function ($request, $next) {
             // make a new CrudPanel object, from the one stored in Laravel's service container
             $this->crud = app()->make('crud');
+            // ensure crud has the latest request
+            $this->crud->setRequest($request);
             $this->request = $request;
             $this->setupDefaults();
             $this->setup();
