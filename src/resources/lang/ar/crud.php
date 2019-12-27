@@ -1,6 +1,6 @@
 <?php
 
-    /*
+/*
     |--------------------------------------------------------------------------
     | Backpack Crud Language Lines - Arabic
     |--------------------------------------------------------------------------
@@ -13,7 +13,7 @@
     |
     */
 
- return [
+return [
     'infoFiltered'                            => '(filtered from _MAX_ total entries)',
     'thousands'                               => ',',
     'admin'                                   => 'المشرف',
@@ -55,6 +55,9 @@
     'delete_confirmation_message'             => 'تم حذف العنصر بنجاح.',
     'insert_success'                          => 'تمت إضافة العنصر بنجاح.',
     'revision_restored'                       => 'تمت استعادة المراجعة بنجاح',
+    'clone' => 'استنساخ',
+    'clone_success' => '<strong>تم إستنساخ العنصر</strong><br>تم إضافة عنصر جديد بنفس معلومات هذا العنصر.',
+    'clone_failure' => '<strong>حدث خطأ</strong><br>لم يتم استنساخ العنصر. الرجاء اعادة المحاولة.',
     'loadingRecords'                          => 'جار التحميل...',
     'infoPostFix'                             => 'جميع السجلات',
     'details_row_loading_error'               => 'حدث خطأ أثناء تحميل التفاصيل. الرجاء اعادة المحاولة.',
