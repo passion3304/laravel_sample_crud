@@ -64,7 +64,7 @@ trait FetchAjaxOperation
         $model = $entityRoutes[$routeSegment]['model'];
         $instance = new $model;
 
-        $itemsPerPage = $entityRoutes[$routeSegment]['itemsPerPage'] ? $entityRoutes[$routeSegment]['itemsPerPage'] : 10;
+        $itemsPerPage = isset($entityRoutes[$routeSegment]['itemsPerPage']) ? $entityRoutes[$routeSegment]['itemsPerPage'] : 10;
 
         //get searchable attributes if defined otherwise get identifiable attributes from model
         $whereToSearch = isset($entityRoutes[$routeSegment]['searchableAttributes']) ?
@@ -82,7 +82,7 @@ trait FetchAjaxOperation
             }
         }
 
-        $query = $entityRoutes[$routeSegment]['query'] ? $entityRoutes[$routeSegment]['query'] : $model;
+        $query = isset($entityRoutes[$routeSegment]['query']) ? $entityRoutes[$routeSegment]['query'] : $model;
 
         if (is_callable($query)) {
             $instance = $query($instance);

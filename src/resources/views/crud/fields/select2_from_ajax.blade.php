@@ -13,11 +13,15 @@
         ((isset($field['allows_null']) && $field['allows_null'] != true) || !isset($field['allows_null']) ? false : true);
 
     if ($old_value) {
+        //dd($old_value);
         if(!is_object($old_value)) {
             $item = $connected_entity->find($old_value);
         }else{
-            $item = $old_value;
+            if(!$old_value->isEmpty()) {
+                $item = $old_value;
+            }
         }
+
 
     }
 @endphp
@@ -37,7 +41,7 @@
         data-method="{{ $field['method'] ?? 'GET' }}"
         data-data-source="{{isset($field['data_source']) ? $field['data_source'] : url($crud->route . '/fetch/' . $response_entity)}}"
         data-field-attribute="{{ $field['attribute'] }}"
-        data-item="{{ (isset($item) && !is_null($item)) ? '{ "id":"'.$item->getKey().'","text":"'.$item->{$field['attribute']} .'"}' : json_encode(false) }}"
+        data-item="{{ (isset($item) && !is_null($item) && !empty($item)) ? '{ "id":"'.$item->getKey().'","text":"'.$item->{$field['attribute']} .'"}' : json_encode(false) }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
@@ -84,6 +88,7 @@
 <script>
 document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 
+if (!window.fetchDefaultEntry) {
   // this function is responsible for fetching some default option when developer don't allow null on field
 let fetchDefaultEntry = function (element) {
     var $fetchUrl = element.attr('data-data-source');
@@ -107,10 +112,13 @@ let fetchDefaultEntry = function (element) {
         });
     });
 };
+}
 
 function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
      var $item = JSON.parse(element.attr('data-item'));
      $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
+     $(element).val($item[$modelKey]);
+     $(element).trigger('change');
 }
     function bpFieldInitSelect2FromAjaxElement(element) {
         var form = element.closest('form');
