@@ -55,73 +55,73 @@ return [
     'details_row'               => 'Dit is de detail rij. Bewerk als gewenst.',
     'details_row_loading_error' => 'Er is een fout opgetreden bij het laden van de details. Probeer het opnieuw.',
 
-        // Confirmation messages and bubbles
-        'delete_confirm'                              => 'Weet je zeker dat je dit item wilt verwijderen?',
-        'delete_confirmation_title'                   => 'Item verwijderd',
-        'delete_confirmation_message'                 => 'Het item is succesvol verwijderd.',
-        'delete_confirmation_not_title'               => 'NIET verwijderd',
-        'delete_confirmation_not_message'             => 'Er is een fout opgetreden. Het item is misschien niet verwijderd.',
-        'delete_confirmation_not_deleted_title'       => 'Niet verwijderd',
-        'delete_confirmation_not_deleted_message'     => 'Er is niks gebeurd. Je item is veilig.',
+    // Confirmation messages and bubbles
+    'delete_confirm'                              => 'Weet je zeker dat je dit item wilt verwijderen?',
+    'delete_confirmation_title'                   => 'Item verwijderd',
+    'delete_confirmation_message'                 => 'Het item is succesvol verwijderd.',
+    'delete_confirmation_not_title'               => 'NIET verwijderd',
+    'delete_confirmation_not_message'             => 'Er is een fout opgetreden. Het item is misschien niet verwijderd.',
+    'delete_confirmation_not_deleted_title'       => 'Niet verwijderd',
+    'delete_confirmation_not_deleted_message'     => 'Er is niks gebeurd. Je item is veilig.',
 
-        // DataTables translation
-        'emptyTable'     => 'Geen data beschikbaar in de tabel',
-        'info'           => 'Toon _START_ tot _END_ van _TOTAL_ items',
-        'infoEmpty'      => 'Toon 0 tot 0 van 0 items',
-        'infoFiltered'   => '(gefilterd van _MAX_ totale items)',
-        'infoPostFix'    => '',
-        'thousands'      => ',',
-        'lengthMenu'     => '_MENU_ items per pagina',
-        'loadingRecords' => 'Laden...',
-        'processing'     => 'Verwerken...',
-        'search'         => 'Zoeken: ',
-        'zeroRecords'    => 'Geen overeenkomend item gevonden',
-        'paginate'       => [
-            'first'    => 'Eerste',
-            'last'     => 'Laatste',
-            'next'     => 'Volgende',
-            'previous' => 'Vorige',
-        ],
-        'aria' => [
-            'sortAscending'  => ': activeer om kolom oplopend te sorteren',
-            'sortDescending' => ': activeer om kolom aflopend te sorteren',
-        ],
+    // DataTables translation
+    'emptyTable'     => 'Geen data beschikbaar in de tabel',
+    'info'           => 'Toon _START_ tot _END_ van _TOTAL_ items',
+    'infoEmpty'      => 'Toon 0 tot 0 van 0 items',
+    'infoFiltered'   => '(gefilterd van _MAX_ totale items)',
+    'infoPostFix'    => '',
+    'thousands'      => ',',
+    'lengthMenu'     => '_MENU_ items per pagina',
+    'loadingRecords' => 'Laden...',
+    'processing'     => 'Verwerken...',
+    'search'         => 'Zoeken: ',
+    'zeroRecords'    => 'Geen overeenkomend item gevonden',
+    'paginate'       => [
+        'first'    => 'Eerste',
+        'last'     => 'Laatste',
+        'next'     => 'Volgende',
+        'previous' => 'Vorige',
+    ],
+    'aria' => [
+        'sortAscending'  => ': activeer om kolom oplopend te sorteren',
+        'sortDescending' => ': activeer om kolom aflopend te sorteren',
+    ],
 
     // global crud - errors
-        'unauthorized_access' => 'Geen toegang - je hebt niet de benodigde rechten om deze pagina te bekijken.',
-        'please_fix'          => 'Los de volgende fouten op:',
+    'unauthorized_access' => 'Geen toegang - je hebt niet de benodigde rechten om deze pagina te bekijken.',
+    'please_fix'          => 'Los de volgende fouten op:',
 
     // global crud - success / error notification bubbles
-        'insert_success' => 'Het item is succesvol toegevoegd.',
-        'update_success' => 'Het item is succesvol bewerkt.',
+    'insert_success' => 'Het item is succesvol toegevoegd.',
+    'update_success' => 'Het item is succesvol bewerkt.',
 
     // CRUD reorder view
-        'reorder'                      => 'Rangschik',
-        'reorder_text'                 => 'Gebruik drag&drop om te rangschikken.',
-        'reorder_success_title'        => 'Klaar',
-        'reorder_success_message'      => 'De rangschikking is opgeslagen.',
-        'reorder_error_title'          => 'Fout',
-        'reorder_error_message'        => 'De rangschikking is niet opgeslagen.',
+    'reorder'                      => 'Rangschik',
+    'reorder_text'                 => 'Gebruik drag&drop om te rangschikken.',
+    'reorder_success_title'        => 'Klaar',
+    'reorder_success_message'      => 'De rangschikking is opgeslagen.',
+    'reorder_error_title'          => 'Fout',
+    'reorder_error_message'        => 'De rangschikking is niet opgeslagen.',
 
     // CRUD yes/no
-        'yes' => 'Ja',
-        'no'  => 'Nee',
+    'yes' => 'Ja',
+    'no'  => 'Nee',
 
     // Fields
-        'browse_uploads'            => 'Blader uploads',
-        'select_files'              => 'Selecteer bestanden',
-        'select_file'               => 'Selecteer bestand',
-        'clear'                     => 'Wissen',
-        'page_link'                 => 'Pagina link',
-        'page_link_placeholder'     => 'http://example.com/your-desired-page',
-        'internal_link'             => 'Interne link',
-        'internal_link_placeholder' => 'Interne slug. B.v.: \'admin/page\' (geen quotes) voor \':url\'',
-        'external_link'             => 'Externe link',
-        'choose_file'               => 'Kies bestand',
+    'browse_uploads'            => 'Blader uploads',
+    'select_files'              => 'Selecteer bestanden',
+    'select_file'               => 'Selecteer bestand',
+    'clear'                     => 'Wissen',
+    'page_link'                 => 'Pagina link',
+    'page_link_placeholder'     => 'http://example.com/your-desired-page',
+    'internal_link'             => 'Interne link',
+    'internal_link_placeholder' => 'Interne slug. B.v.: \'admin/page\' (geen quotes) voor \':url\'',
+    'external_link'             => 'Externe link',
+    'choose_file'               => 'Kies bestand',
 
     //Table field
-        'table_cant_add'    => 'Kan nieuwe :entity niet toevoegen',
-        'table_max_reached' => 'Maximale grootte van :max bereikt',
+    'table_cant_add'    => 'Kan nieuwe :entity niet toevoegen',
+    'table_max_reached' => 'Maximale grootte van :max bereikt',
 
     // File manager
     'file_manager' => 'Bestandsbeheer',

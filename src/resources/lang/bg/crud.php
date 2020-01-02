@@ -25,11 +25,11 @@ return [
     'cancel'              => 'Отказ',
     'add_a_new'           => 'Добави нов запис ',
 
-        // Create form - advanced options
-        'after_saving'            => 'След запис',
-        'go_to_the_table_view'    => 'Върни се към записите',
-        'let_me_add_another_item' => 'Нека добавя отново',
-        'edit_the_new_item'       => 'Поправи току що направеният запис',
+    // Create form - advanced options
+    'after_saving'            => 'След запис',
+    'go_to_the_table_view'    => 'Върни се към записите',
+    'let_me_add_another_item' => 'Нека добавя отново',
+    'edit_the_new_item'       => 'Поправи току що направеният запис',
 
     // Edit form
     'edit'                 => 'Поправи',
@@ -57,37 +57,37 @@ return [
     'details_row'               => 'Това е колонката с детайли. Променяи както желаеш.',
     'details_row_loading_error' => 'Възникна грешка при зареджането на детайлите. Моля опитайте отново.',
 
-        // Confirmation messages and bubbles
-        'delete_confirm'                              => 'Сигурни ли сте, че искате да изтриете този запис ?',
-        'delete_confirmation_title'                   => 'Запис изтрит',
-        'delete_confirmation_message'                 => 'Записът беше успешно изтрит.',
-        'delete_confirmation_not_title'               => 'НЕ Е ИЗТРИТ',
-        'delete_confirmation_not_message'             => 'Възникна грешка. Записът не бе изтрит.',
-        'delete_confirmation_not_deleted_title'       => 'Не е изтрит',
-        'delete_confirmation_not_deleted_message'     => 'Споко :). Записът е на сигурно място.',
+    // Confirmation messages and bubbles
+    'delete_confirm'                              => 'Сигурни ли сте, че искате да изтриете този запис ?',
+    'delete_confirmation_title'                   => 'Запис изтрит',
+    'delete_confirmation_message'                 => 'Записът беше успешно изтрит.',
+    'delete_confirmation_not_title'               => 'НЕ Е ИЗТРИТ',
+    'delete_confirmation_not_message'             => 'Възникна грешка. Записът не бе изтрит.',
+    'delete_confirmation_not_deleted_title'       => 'Не е изтрит',
+    'delete_confirmation_not_deleted_message'     => 'Споко :). Записът е на сигурно място.',
 
-        // DataTables translation
-        'emptyTable'     => 'Няма намерени резултати',
-        'info'           => 'Показване на резултати от _START_ до _END_ от общо _TOTAL_',
-        'infoEmpty'      => 'Показване на резултати от 0 до 0 от общо 0',
-        'infoFiltered'   => '(филтрирани от общо _MAX_ резултата))',
-        'infoPostFix'    => '',
-        'thousands'      => ',',
-        'lengthMenu'     => '_MENU_ records per page',
-        'loadingRecords' => 'Зареждам...',
-        'processing'     => 'Обработка на резултатите...',
-        'search'         => 'Търсене: ',
-        'zeroRecords'    => 'Няма намерени резултати',
-        'paginate'       => [
-            'first'    => 'Първа',
-            'last'     => 'Последна',
-            'next'     => 'Следваща',
-            'previous' => 'Предишна',
-        ],
-        'aria' => [
-            'sortAscending'  => ': Възходящ ред',
-            'sortDescending' => ': Низходящ ред',
-        ],
+    // DataTables translation
+    'emptyTable'     => 'Няма намерени резултати',
+    'info'           => 'Показване на резултати от _START_ до _END_ от общо _TOTAL_',
+    'infoEmpty'      => 'Показване на резултати от 0 до 0 от общо 0',
+    'infoFiltered'   => '(филтрирани от общо _MAX_ резултата))',
+    'infoPostFix'    => '',
+    'thousands'      => ',',
+    'lengthMenu'     => '_MENU_ records per page',
+    'loadingRecords' => 'Зареждам...',
+    'processing'     => 'Обработка на резултатите...',
+    'search'         => 'Търсене: ',
+    'zeroRecords'    => 'Няма намерени резултати',
+    'paginate'       => [
+        'first'    => 'Първа',
+        'last'     => 'Последна',
+        'next'     => 'Следваща',
+        'previous' => 'Предишна',
+    ],
+    'aria' => [
+        'sortAscending'  => ': Възходящ ред',
+        'sortDescending' => ': Низходящ ред',
+    ],
 
     // global crud - errors
     'unauthorized_access' => 'Неразрешен достъп - нямате необходимите разрешения, за да видите тази страница.',
