@@ -10,8 +10,8 @@
         </button>
 
         <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <button id="bpSaveButtonsGroup" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
+            <div class="dropdown-menu" aria-labelledby="bpSaveButtonsGroup">
                 @foreach( $saveAction['options'] as $value => $label)
                 <a class="dropdown-item" href="#" data-value="{{ $value }}">{{ $label }}</a>
                 @endforeach
@@ -25,9 +25,10 @@
 
 @push('after_scripts')
 <script>
-
-     jQuery(document).ready(function($) {
-     var selector = $('#btnGroupDrop1').next();
+    
+    // make Save Buttons that are anchors behave like Submit buttons (trigger HTML5 validation)
+    jQuery(document).ready(function($) {
+        var selector = $('#bpSaveButtonsGroup').next();
         $(selector).find('a').each(function() {
             $(this).click(function(e) {
                 e.stopPropagation()

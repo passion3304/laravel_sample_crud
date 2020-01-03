@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.31 - 2020-01-03
+
+### Fixed
+- merged #2330 - translation strings for clone button;
+ 
+
 ## 4.0.30 - 2019-12-20
 
 ### Fixed
