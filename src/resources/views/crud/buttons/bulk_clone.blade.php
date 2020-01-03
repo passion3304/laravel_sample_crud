@@ -1,5 +1,5 @@
 @if ($crud->hasAccess('bulkClone') && $crud->get('list.bulkActions'))
-	<a href="javascript:void(0)" onclick="bulkCloneEntries(this)" class="btn btn-sm btn-secondary bulk-button"><i class="fa fa-clone"></i> Clone</a>
+	<a href="javascript:void(0)" onclick="bulkCloneEntries(this)" class="btn btn-sm btn-secondary bulk-button"><i class="fa fa-clone"></i> {{ trans('backpack::crud.clone') }}</a>
 @endif
 
 @push('after_scripts')
@@ -34,7 +34,7 @@
 				  closeModal: true,
 				},
 			  	delete: {
-				  text: "Clone",
+				  text: "{{ trans('backpack::crud.clone') }}",
 				  value: true,
 				  visible: true,
 				  className: "bg-primary",
