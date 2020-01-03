@@ -1,5 +1,5 @@
 @if ($crud->hasAccess('clone'))
-	<a href="javascript:void(0)" onclick="cloneEntry(this)" data-route="{{ url($crud->route.'/'.$entry->getKey().'/clone') }}" class="btn btn-sm btn-link" data-button-type="clone"><i class="fa fa-clone"></i> Clone</a>
+	<a href="javascript:void(0)" onclick="cloneEntry(this)" data-route="{{ url($crud->route.'/'.$entry->getKey().'/clone') }}" class="btn btn-sm btn-link" data-button-type="clone"><i class="fa fa-clone"></i> {{ trans('backpack::crud.clone') }}</a>
 @endif
 
 {{-- Button Javascript --}}
@@ -23,7 +23,7 @@
                   // Show an alert with the result
                   new Noty({
                     type: "success",
-                    text: "<strong>Entry cloned</strong><br>A new entry has been added, with the same information as this one."
+                    text: "{!! trans('backpack::crud.clone_success') !!}"
                   }).show();
 
                   // Hide the modal, if any
@@ -37,7 +37,7 @@
                   // Show an alert with the result
                   new Noty({
                     type: "warning",
-                    text: "<strong>Cloning failed</strong><br>The new entry could not be created. Please try again."
+                    text: "{!! trans('backpack::crud.clone_failure') !!}"
                   }).show();
               }
           });
