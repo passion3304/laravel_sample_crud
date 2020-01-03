@@ -141,8 +141,8 @@ return [
     'choose_file'               => 'Dosya seç',
 
     //Table field
-        'table_cant_add'    => 'Yeni :entity eklenemez',
-        'table_max_reached' => 'Maksimum :max kadar',
+    'table_cant_add'    => 'Yeni :entity eklenemez',
+    'table_max_reached' => 'Maksimum :max kadar',
 
     // File manager
     'file_manager' => 'Dosya yöneticisi',
