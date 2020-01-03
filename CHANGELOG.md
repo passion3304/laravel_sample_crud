@@ -12,7 +12,8 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2330 - translation strings for clone button;
- 
+- merged #2343 fixes #2338 - installation on windows failed if the public/uploads directory existed; 
+
 
 ## 4.0.30 - 2019-12-20
 
