@@ -21,9 +21,7 @@
         $current_value = json_encode($current_value);
     }
 
-$allows_null = $crud->model::isColumnNullable($field['name']) ?
-        ((isset($field['allows_null']) && $field['allows_null'] != false) || !isset($field['allows_null']) ? true : false) :
-        ((isset($field['allows_null']) && $field['allows_null'] != true) || !isset($field['allows_null']) ? false : true);
+    $allows_null = isset($field['allows_null']) ? (bool)$field['allows_null'] : $crud->model::isColumnNullable($field['name']);
 
 @endphp
 
@@ -90,43 +88,43 @@ $allows_null = $crud->model::isColumnNullable($field['name']) ?
 <script>
 document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 // this function is responsible for fetching some default option when developer don't allow null on field
-    if (!window.fetchDefaultEntry) {
-var fetchDefaultEntry = function (element) {
-    var $fetchUrl = element.attr('data-data-source');
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: $fetchUrl,
-            data: {
-                'q': ''
-            },
-            type: 'GET',
-            success: function (result) {
-                //if data is available here it means developer returned a collection and we want only the first.
-                //when using the AjaxFetchOperation we will have here a single entity.
-                if(result.data) {
-                    var $return = result.data[0];
-                }else{
-                    $return = result;
+if (!window.fetchDefaultEntry) {
+    var fetchDefaultEntry = function (element) {
+        var $fetchUrl = element.attr('data-data-source');
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: $fetchUrl,
+                data: {
+                    'q': ''
+                },
+                type: 'GET',
+                success: function (result) {
+                    //if data is available here it means developer returned a collection and we want only the first.
+                    //when using the AjaxFetchOperation we will have here a single entity.
+                    if(result.data) {
+                        var $return = result.data[0];
+                    }else{
+                        $return = result;
+                    }
+                    $(element).attr('data-item', JSON.stringify($return));
+                    resolve(result);
+                },
+                error: function (result) {
+                    reject(result);
                 }
-                $(element).attr('data-item', JSON.stringify($return));
-                resolve(result);
-            },
-            error: function (result) {
-                reject(result);
-            }
+            });
         });
-    });
-};
-    }
-    //this function is responsible by setting up a default option in ajax fields
-    if (typeof refreshDefaultOption !== "function") {
-function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
-     var $item = JSON.parse(element.attr('data-item'));
-     $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
-     $(element).val($item[$modelKey]);
-     $(element).trigger('change');
+    };
 }
+    //this function is responsible by setting up a default option in ajax fields
+if (typeof refreshDefaultOption !== "function") {
+    function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
+        var $item = JSON.parse(element.attr('data-item'));
+        $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
+        $(element).val($item[$modelKey]);
+        $(element).trigger('change');
     }
+}
 
     function bpFieldInitSelect2FromAjaxMultipleElement(element) {
         var form = element.closest('form');
@@ -156,6 +154,7 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
             var $currentValue = '';
         }
 
+        //we reselect the previously selected options if any.
         for (const [key, value] of Object.entries($currentValue)) {
             selectedOptions.push(key);
             var $option = new Option(value, key);
@@ -163,6 +162,7 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
         }
         $(element).val(selectedOptions);
 
+        //if field does not allow null, and there is nothing previously selected we get the first entry as default.
         if(element.attr('data-allows-null') != 'true' && !$item) {
             fetchDefaultEntry(element).then(result => {
                 refreshDefaultOption(element, $fieldAttribute, $modelKey);

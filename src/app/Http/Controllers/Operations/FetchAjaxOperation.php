@@ -93,7 +93,7 @@ trait FetchAjaxOperation
 
         if (isset($search_term)) {
             if ($search_term === false) {
-                return $instance->latest()->orderByDesc($instanceKey)->first();
+                return $instance->first();
             }
             foreach ($whereToSearch as $searchColumn) {
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
