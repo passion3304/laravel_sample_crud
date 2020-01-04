@@ -11,26 +11,16 @@
     $placeholder = isset($field['placeholder']) ? $field['placeholder'] : 'Select a ' . $field['entity'];
 
     if ($current_value !== false) {
-
-        if(!is_object($current_value) && !is_array($current_value)) {
-            $item = $connected_entity->find($current_value);
+        if(is_array($current_value)) {
+            $current_value = $connected_entity->whereIn($connected_entity_key_name,$current_value)->pluck($field['attribute'],$connected_entity_key_name);
         }else{
-            if(is_array($current_value)) {
-               $current_value = $connected_entity->whereIn($connected_entity_key_name,$current_value)->pluck($field['attribute'],$connected_entity_key_name);
-            }else{
-                if(!$current_value->isEmpty()) {
-
-                    $current_value = $current_value->pluck($field['attribute'],$connected_entity_key_name)->toArray();
-                }
-
+            if(!$current_value->isEmpty()) {
+                $current_value = $current_value->pluck($field['attribute'],$connected_entity_key_name)->toArray();
             }
         }
         $current_value = json_encode($current_value);
     }
 
-
-    //this checks if column is nullable on database by default, but developer might overriden that property
-    //dd($crud->model::isColumnNullable($field['name']));
 $allows_null = $crud->model::isColumnNullable($field['name']) ?
         ((isset($field['allows_null']) && $field['allows_null'] != false) || !isset($field['allows_null']) ? true : false) :
         ((isset($field['allows_null']) && $field['allows_null'] != true) || !isset($field['allows_null']) ? false : true);
@@ -98,7 +88,7 @@ $allows_null = $crud->model::isColumnNullable($field['name']) ?
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
 <script>
-
+document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 // this function is responsible for fetching some default option when developer don't allow null on field
     if (!window.fetchDefaultEntry) {
 var fetchDefaultEntry = function (element) {
@@ -144,19 +134,23 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
         var $minimumInputLength = element.attr('data-minimum-input-length');
         var $dataSource = element.attr('data-data-source');
         var $method = element.attr('data-method');
+        var $value = element.attr('data-current-value');
+        var $item = false;
+        if($value.length) {
+            $item = true;
+        }
         var $fieldAttribute = element.attr('data-field-attribute');
         var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
         var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
-        var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
+        var $allowClear = (element.attr('data-allows-null') == 'true' && $item) ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
-        var $value = element.attr('data-current-value');
-        var $item = false;
+
+
         var $modelKey = element.attr('data-model-local-key');
 
         var selectedOptions = [];
 
-        if($value.length) {
-            $item = true;
+        if($item) {
             var $currentValue = JSON.parse(element.attr('data-current-value'));
         }else{
             var $currentValue = '';
@@ -181,6 +175,7 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
                 theme: 'bootstrap',
                 multiple: true,
                 placeholder: $placeholder,
+                allowClear: $allowClear,
                 minimumInputLength: $minimumInputLength,
                 ajax: {
                     url: $dataSource,
@@ -226,8 +221,8 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
                    e.preventDefault();
                     $elementVal = $(element).val();
                     if($elementVal == "") {
-                   $(element).append('<option value="" >{{ $placeholder }}</option>');
-                   $(element).trigger('change');
+                        $(element).append('<option value="" >{{ $placeholder }}</option>');
+                        $(element).trigger('change');
                     }
                     $(element).attr('data-current-value',JSON.stringify($elementVal));
                 });
