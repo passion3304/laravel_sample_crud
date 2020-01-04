@@ -98,7 +98,7 @@ trait FetchAjaxOperation
             foreach ($whereToSearch as $searchColumn) {
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
 
-                $operation = !isset($isFirst) ? 'where' : 'orWhere';
+                $operation = ! isset($isFirst) ? 'where' : 'orWhere';
 
                 if ($columnType == 'string') {
                     $instance->{$operation}($searchColumn, 'LIKE', '%'.$search_term.'%');
