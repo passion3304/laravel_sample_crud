@@ -62,6 +62,7 @@ trait FetchAjaxOperation
         $routeSegment = $this->getRouteSegment($request->route()->uri);
 
         $model = $entityRoutes[$routeSegment]['model'];
+
         $instance = new $model;
 
         $itemsPerPage = isset($entityRoutes[$routeSegment]['itemsPerPage']) ? $entityRoutes[$routeSegment]['itemsPerPage'] : 10;
@@ -71,7 +72,9 @@ trait FetchAjaxOperation
         $entityRoutes[$routeSegment]['searchableAttributes'] : $model::getIdentifiableName();
 
         $table = Config::get('database.connections.'.Config::get('database.default').'.prefix').$instance->getTable();
+
         $instanceKey = $instance->getKeyName();
+
         $conn = $model::getPreparedConnection($instance);
 
         if ($request->has('q')) {
@@ -95,24 +98,18 @@ trait FetchAjaxOperation
             foreach ($whereToSearch as $searchColumn) {
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
 
-                if (! isset($isFirst)) {
-                    $operation = 'where';
-                } else {
-                    $operation = 'orWhere';
-                }
+                $operation = !isset($isFirst) ? 'where' : 'orWhere';
+
                 if ($columnType == 'string') {
                     $instance->{$operation}($searchColumn, 'LIKE', '%'.$search_term.'%');
                 } else {
                     $instance->{$operation}($searchColumn, $search_term);
                 }
-
                 $isFirst = true;
             }
-
-            $results = $instance->paginate($itemsPerPage);
-        } else {
-            $results = $instance->paginate($itemsPerPage);
         }
+
+        $results = $instance->paginate($itemsPerPage);
 
         return $results;
     }
