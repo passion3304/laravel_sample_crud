@@ -3,17 +3,14 @@
 
     $connected_entity_key_name = $connected_entity->getKeyName();
     $old_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
-    //dd($crud->hasOperationSetting('ajaxEntities'));
+
     $response_entity = isset($field['response_entity']) ? $field['response_entity'] : $crud->hasOperationSetting('ajaxEntities') ? array_has($crud->getOperationSetting('ajaxEntities'), $field['entity']) ? $field['entity'] : array_key_first($crud->getOperationSetting('ajaxEntities')) : '';
     $placeholder = isset($field['placeholder']) ? $field['placeholder'] : 'Select a ' . $field['entity'];
 
     //this checks if column is nullable on database by default, but developer might overriden that property
-    $allows_null = $crud->model::isColumnNullable($field['name']) ?
-        ((isset($field['allows_null']) && $field['allows_null'] != false) || !isset($field['allows_null']) ? true : false) :
-        ((isset($field['allows_null']) && $field['allows_null'] != true) || !isset($field['allows_null']) ? false : true);
+    $allows_null = isset($field['allows_null']) ? (bool)$field['allows_null'] : $crud->model::isColumnNullable($field['name']);
 
     if ($old_value) {
-        //dd($old_value);
         if(!is_object($old_value)) {
             $item = $connected_entity->find($old_value);
         }else{
@@ -21,8 +18,6 @@
                 $item = $old_value;
             }
         }
-
-
     }
 @endphp
 
@@ -87,38 +82,43 @@
 @push('crud_fields_scripts')
 <script>
 document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
-
+// this function is responsible for fetching some default option when developer don't allow null on field
 if (!window.fetchDefaultEntry) {
-  // this function is responsible for fetching some default option when developer don't allow null on field
-let fetchDefaultEntry = function (element) {
-    var $fetchUrl = element.attr('data-data-source');
-
-    return new Promise(function (resolve, reject) {
-
-        $.ajax({
-            url: $fetchUrl,
-            data: {
-                'q': ''
-            },
-            type: 'GET',
-            success: function (result) {
-                $(element).attr('data-item', JSON.stringify(result));
-                resolve(result);
-            },
-            error: function (result) {
-
-                reject(result);
-            }
+    var fetchDefaultEntry = function (element) {
+        var $fetchUrl = element.attr('data-data-source');
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: $fetchUrl,
+                data: {
+                    'q': ''
+                },
+                type: 'GET',
+                success: function (result) {
+                    //if data is available here it means developer returned a collection and we want only the first.
+                    //when using the AjaxFetchOperation we will have here a single entity.
+                    if(result.data) {
+                        var $return = result.data[0];
+                    }else{
+                        $return = result;
+                    }
+                    $(element).attr('data-item', JSON.stringify($return));
+                    resolve(result);
+                },
+                error: function (result) {
+                    reject(result);
+                }
+            });
         });
-    });
-};
+    };
 }
-
-function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
-     var $item = JSON.parse(element.attr('data-item'));
-     $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
-     $(element).val($item[$modelKey]);
-     $(element).trigger('change');
+    //this function is responsible by setting up a default option in ajax fields
+if (typeof refreshDefaultOption !== "function") {
+    function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
+        var $item = JSON.parse(element.attr('data-item'));
+        $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
+        $(element).val($item[$modelKey]);
+        $(element).trigger('change');
+    }
 }
     function bpFieldInitSelect2FromAjaxElement(element) {
         var form = element.closest('form');
@@ -139,7 +139,7 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
 
         var $item = JSON.parse(element.attr('data-item'));
 
-        var $allowClear = (element.attr('data-column-nullable') == 'true' && !$item == false) ? true : false;
+        var $allowClear = (element.attr('data-column-nullable') == 'true') ? true : false;
 
         var $select2Settings = {
                 theme: 'bootstrap',
@@ -188,20 +188,7 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2($select2Settings);
-            if($item) {
-                $(element).append('<option value="'+$item.id+'">'+$item.text+'</option>');
-            }else if ($allowClear && !$item) {
-                $(element).append('<option value="" >{{ $placeholder }}</option>');
-            }
-                element.on('select2:unselect', function(e) {
-                   e.preventDefault();
-                   $(element).append(new Option('{{ $placeholder }}', '',true,true));
-                   $(element).trigger('change');
-                });
-
-
-
-            // if any dependencies have been declared
+             // if any dependencies have been declared
             // when one of those dependencies changes value
             // reset the select2 value
             for (var i=0; i < $dependencies.length; i++) {
@@ -209,8 +196,13 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
                 $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
                     element.val(null).trigger("change");
                 });
+
             }
         }
+            if($item) {
+                $(element).append('<option value="'+$item.id+'">'+$item.text+'</option>');
+                $(element).trigger('change');
+            }
     }
 </script>
 @endpush

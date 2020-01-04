@@ -215,18 +215,6 @@ if (typeof refreshDefaultOption !== "function") {
                 },
             });
         }
-
-
-                element.on('select2:unselect', function(e) {
-                   e.preventDefault();
-                    $elementVal = $(element).val();
-                    if($elementVal == "") {
-                        $(element).append('<option value="" >{{ $placeholder }}</option>');
-                        $(element).trigger('change');
-                    }
-                    $(element).attr('data-current-value',JSON.stringify($elementVal));
-                });
-
         // if any dependencies have been declared
         // when one of those dependencies changes value
         // reset the select2 value
