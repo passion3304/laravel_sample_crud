@@ -25,21 +25,68 @@
 
 @push('after_scripts')
 <script>
-    
+    function checkFormValidity(form) {
+        if (!form[0].checkValidity || form[0].checkValidity()) {
+            return true;
+        }
+        return false;
+    }
+
+    function checkReportValidity(form) {
+        if (form[0].reportValidity) {
+            $('#saveActions').find('.dropdown-menu').removeClass('show');
+            form[0].reportValidity();
+        }
+    }
+
+    function changeTabIfNeeded(form) {
+        //we get the first erroed field
+        var $firstErrorField = form.find(":invalid").first();
+        //we find the closest tab
+        var $closest = $($firstErrorField).closest('.tab-pane');
+        //if we found the tab we will change to that tab before reporting validity of form
+        if($closest.length) {
+            var id = $closest.attr('id');
+                // switch tabs
+                $('.nav a[href="#' + id + '"]').tab('show');
+        }
+    }
+
     // make Save Buttons that are anchors behave like Submit buttons (trigger HTML5 validation)
     jQuery(document).ready(function($) {
+
         var selector = $('#bpSaveButtonsGroup').next();
+        var form = $(selector).closest('form');
+        var saveActionField = $('[name="save_action"]');
+        var $defaultSubmitButton = $(form).find(':submit');
+
+        //we need to also emulate for the default button that's not on anchor list.
+        $($defaultSubmitButton).on('click', function(e) {
+            e.preventDefault();
+            $saveAction = $(this).children('span').eq(1);
+            if(checkFormValidity(form)) {
+                saveActionField.val( $saveAction.attr('data-value') );
+                form.submit();
+            }else{
+                changeTabIfNeeded(form);
+                checkReportValidity(form);
+            }
+        });
+
+        //this is for the anchors
         $(selector).find('a').each(function() {
             $(this).click(function(e) {
-                e.stopPropagation()
-                let form = $(this).closest('form');
-                if (!form[0].checkValidity || form[0].checkValidity()) {
+                //we check if form is valid
+                if (checkFormValidity(form)) {
+                    //if everything is validated we proceed with the submission
+                    var saveAction = $(this).data('value');
+                    saveActionField.val( saveAction );
                     form.submit();
                 }else{
-                    if (form[0].reportValidity) {
-                        form[0].reportValidity();
-                    }
+                    changeTabIfNeeded(form);
+                    checkReportValidity(form);
                 }
+                e.stopPropagation();
             });
         });
     });
