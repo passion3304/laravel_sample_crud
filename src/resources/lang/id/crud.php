@@ -61,7 +61,7 @@ return [
     'delete_confirmation_title'                   => 'Item Dihapus',
     'delete_confirmation_message'                 => 'Item telah berhasil dihapus.',
     'delete_confirmation_not_title'               => 'TIDAK dihapus',
-    'delete_confirmation_not_message'             => "Terjadi kesalahan. Item Anda mungkin belum dihapus.",
+    'delete_confirmation_not_message'             => 'Terjadi kesalahan. Item Anda mungkin belum dihapus.',
     'delete_confirmation_not_deleted_title'       => 'Tidak dihapus',
     'delete_confirmation_not_deleted_message'     => 'Tidak ada yang terjadi. Item Anda aman.',
 
