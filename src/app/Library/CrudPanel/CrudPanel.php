@@ -60,6 +60,8 @@ class CrudPanel
         if ($this->getCurrentOperation()) {
             $this->setOperation($this->getCurrentOperation());
         }
+
+        $this->setupBackpackDefaultSaveActions();
     }
 
     /**
