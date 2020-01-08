@@ -87,7 +87,7 @@ return [
     'infoFiltered'   => '(difilter dari _MAX_ jumlah masukan)',
     'infoPostFix'    => '',
     'thousands'      => ',',
-    'lengthMenu'     => '_MENU_ catatan per halaman',
+    'lengthMenu'     => '_MENU_ masukan per halaman',
     'loadingRecords' => 'Memuat...',
     'processing'     => 'Memproses...',
     'search'         => 'Cari: ',
