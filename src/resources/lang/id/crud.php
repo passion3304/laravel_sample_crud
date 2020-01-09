@@ -55,6 +55,9 @@ return [
     'admin'                     => 'Admin',
     'details_row'               => 'Ini adalah baris rincian. Ubah sesuka Anda.',
     'details_row_loading_error' => 'Terjadi kesalahan saat memuat detail. Silakan coba lagi.',
+    'clone'                     => 'Duplikat',
+    'clone_success'             => '<strong>Entri telah diduplikat</strong><br>Entri baru telah ditambahkan, dengan informasi yang sama.',
+    'clone_failure'             => '<strong>Proses duplikat gagal</strong><br>Entri baru tidak dapat dibuat. Silakan coba lagi.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Anda yakin ingin menghapus item ini?',
