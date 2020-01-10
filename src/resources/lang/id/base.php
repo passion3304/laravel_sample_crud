@@ -12,7 +12,7 @@ return [
     'no_email_column'        => 'Pengguna tidak memiliki alamat email terkait.',
     'first_page_you_see'     => 'Halaman pertama yang Anda lihat setelah login',
     'login_status'           => 'Status Masuk',
-    'logged_in'              => 'Anda sudah login!',
+    'logged_in'              => 'Anda sudah masuk!',
     'toggle_navigation'      => 'Navigasi beralih',
     'administration'         => 'Administrasi',
     'user'                   => 'Pengguna',
