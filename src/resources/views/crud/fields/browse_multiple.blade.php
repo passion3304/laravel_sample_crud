@@ -118,6 +118,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
         @if ( ($locale = \App::getLocale()) != 'en' )
             @php
             <script type="text/javascript" src="{{ asset("packages/barryvdh/elfinder/js/i18n/elfinder.{$locale}.js") }}"></script>
+            @endphp
         @endif
 
         <script>
