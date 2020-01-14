@@ -4,6 +4,7 @@
 <p>
 
 <p align="center">
+    <br>
     <a href="https://packagist.org/packages/backpack/crud" title="Latest Version on Packagist"><img src="https://img.shields.io/packagist/v/backpack/crud.svg?style=flat-square"></a>
     <a href="https://packagist.org/packages/backpack/crud" title="Total Downloads"><img src="https://img.shields.io/packagist/dt/backpack/crud.svg?style=flat-square"></a>
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud" title="Quality Score"><img src="https://img.shields.io/scrutinizer/g/laravel-backpack/crud.svg?style=flat-square"></a>
@@ -26,29 +27,39 @@
     <a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://backpackforlaravel.com/uploads/github/Screenshots_Spread.png"></a>
 </p>
 
+Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its features:
 
-Quickly build an admin interface for your Eloquent models. Then customize every little detail.
+- List operation
+   - 24+ column types
+   - 1-1, 1-n and n-n relationships
+   - table view with search, pagination
+   - click column header to sort by it
+   - custom buttons
+   - details row
+   - bulk actions
+   - easily create new column types
+   - easily overwrite an existing column type
+- Create / Update operations
+   - 50+ field types
+   - back-end validation using Laravel Form Requests
+   - translatable models (multi-language)
+   - have multiple fields per line
+   - split fields into tabs
+- Delete / Bulk Delete operations
+- Clone / Bulk Clone operations
+- Reorder operation
+- Revisions operation (audit log)
 
-Features:
-- 50+ field types
-- 24+ column types
-- 1-1, 1-n and n-n relationships
-- Table view with search, pagination, click column to sort by it
-- Reordering (nested sortable)
-- Back-end validation using Requests
-- Translatable models (multi-language)
-- Easily extend fields/columns/filters/buttons (customising a field type or adding a new one is as easy as creating a new view with a particular name)
-- Easily overwrite functionality (customising how the create/update/delete/reorder process works is as easy as creating a new function with the proper name in your EntityCrudController)
-
-> ### Security updates and breaking changes
-> If you're using Backpack in production, please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We rarely send emails (1-4 emails per year).
-
+But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to overwrite a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
 
 ## Getting started
 
 Start with the ["Getting Started" series](https://backpackforlaravel.com/docs/4.0/introduction) in our docs. We try to nudge you towards creating a Backpack acccount, but you don't _need_ one, if you're just trying it out.
 
 Alternatively, if you don't have 20 minutes right now, subscribe to our [drip email tutorial](https://backpackforlaravel.com/getting-started-emails). You'll receive one email per day, for 5 days, 5 minutes each. By the end, you'll be familiar with how Backpack works, and be able to create admin panels for your Laravel apps.
+
+> ### Security updates and breaking changes
+> If you're using Backpack in production, please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We never _ever_ share your email with anyone & we try to send as few emails as possible (1-4 emails per year). We hate unsolicited email too. But... you know... you're building an admin panel, security _should_ be something you're up-to-date with.
 
 ## Install
 
@@ -60,39 +71,9 @@ Installation guides:
 - [Install Backpack 3.x on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
 - [Install Backpack 3.x on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
 
-## Features
-
-Check out [the about page in the documentation](https://backpackforlaravel.com/docs/4.0/getting-started-crud-operations) to get familiar with most Backpack features.
-
-
-## Usage
-
-If you've already checked out the features link above, take a look at how you can create a CRUD for a model in [this example](https://backpackforlaravel.com/docs/4.0/getting-started-crud-operations). At the end of the page you'll also find a way you can do everything in 1-2 minutes, using the command line and [backpack/generators](https://github.com/laravel-backpack/generators).
-
-In short:
-
-1. Make your model use the CrudTrait.
-
-2. Create a controller that extends CrudController, route and menu item.
-
-3. **(optional)** Define your validation rules in a Request files.
-
-
 ## Screenshots
 
-- List operation:
-
-![List / table view for Backpack/CRUD](https://backpackforlaravel.com/uploads/docs-4-0/general/4.png)
-
-- Create/Update operations:
-
-![Create or update view for Backpack/CRUD](https://backpackforlaravel.com/uploads/docs-4-0/general/16.png)
-
-- Custom menu & sidebar colors:
-
-![Custom sidebar and menu colours](https://backpackforlaravel.com/uploads/docs-4-0/ui/examples/blue.png)
-
-More screenshots available at [backpackforlaravel.com](https://backpackforlaravel.com).
+See [backpackforlaravel.com](https://backpackforlaravel.com).
 
 ## Change log
 
@@ -130,7 +111,7 @@ Backpack is dual-license:
 - free for non-commercial use
 - 69 EUR/project for commercial use
 
-Please see the [License File](LICENSE.md) and [backpackforlaravel.com](https://backpackforlaravel.com/#pricing) for more information.
+Please see the [License File](LICENSE.md) and [Pricing](https://backpackforlaravel.com/pricing) for more information.
 
 <a name="versioning"></a>
 # Versioning
