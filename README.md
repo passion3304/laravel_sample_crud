@@ -89,6 +89,7 @@ In short:
 ![Create or update view for Backpack/CRUD](https://backpackforlaravel.com/uploads/docs-4-0/general/16.png)
 
 - Custom menu & sidebar colors:
+
 ![Custom sidebar and menu colours](https://backpackforlaravel.com/uploads/docs-4-0/ui/examples/blue.png)
 
 More screenshots available at [backpackforlaravel.com](https://backpackforlaravel.com).
