@@ -8,6 +8,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+
+## 4.0.32 - 2020-01-14
+
+### Added
+- merged #2351 & #2352 - Indonesian language file;
+- merged #2369 - fixes #2365 and #2366 - browse_multiple field type had an extra php tag;
+
+
 ## 4.0.31 - 2020-01-03
 
 ### Fixed
