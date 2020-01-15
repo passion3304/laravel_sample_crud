@@ -8,6 +8,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.33 - 2020-01-15
+
+### Fixed
+- merged #2353 - markdown column does not show error when null on Laravel 6.10+;
+
 
 ## 4.0.32 - 2020-01-14
 
