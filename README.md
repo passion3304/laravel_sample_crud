@@ -96,10 +96,7 @@ Please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/ne
 - [All Contributors][link-contributors]
 
 Special thanks go to:
-- [Owen Melbourne](https://github.com/OwenMelbz) - new features, bug fixing and support;
-- [Oliver Ziegler](https://github.com/OliverZiegler) - new features, bug fixing and support;
-- [Thomas Swonke](https://github.com/tswonke) - new features, bug fixing and support;
-- [Catalin Tudorache](https://github.com/tumf87) - new features, bug fixing and support;
+- [Owen Melbourne](https://github.com/OwenMelbz), [Oliver Ziegler](https://github.com/OliverZiegler), [Thomas Swonke](https://github.com/tswonke), [Catalin Tudorache](https://github.com/tumf87), [Abby Janke](https://github.com/AbbyJanke), [David Lloyd](https://github.com/lloy0076), [António Almeida](https://github.com/promatik) - A LOT of new features, bug fixing, support, feedback and code review;
 - [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was a big inspiration for this package;
 - [Łukasz Holeczek](https://coreui.io/) - creator of CoreUI (used in Backpack v4);
 - [Abdullah Almsaeed](https://adminlte.io/) - creator of AdminLTE (used in Backpack v3);
