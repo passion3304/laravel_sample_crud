@@ -16,8 +16,8 @@
     <a href="https://backpackforlaravel.com/">Website</a> | 
     <a href="https://backpackforlaravel.com/docs/">Documentation</a> | 
     <a href="https://stackoverflow.com/questions/tagged/backpack-for-laravel">Stack Overflow</a> | 
+    <a href="https://www.reddit.com/r/BackpackForLaravel/">Reddit</a> | 
     <a href="https://backpackforlaravel.com/articles">Blog</a> | 
-    <a href="https://www.reddit.com/r/BackpackForLaravel/">Forum</a> | 
     <a href="https://backpackforlaravel.com/newsletter">Newsletter</a> | 
     <a href="https://backpackforlaravel.com/pricing">Pricing</a> |
     <a href="https://backpackforlaravel.com/need-freelancer-or-development-team">Hire Us</a>
