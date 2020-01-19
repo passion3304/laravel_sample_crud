@@ -13,17 +13,17 @@ return [
     |
     */
 
+    // Forms
+    'save_action_save_and_new'         => '保存并新增',
+    'save_action_save_and_edit'        => '保存并继续编辑',
+    'save_action_save_and_back'        => '保存并返回',
+    'save_action_changed_notification' => '保存后的默认行为已更改.',
+
     // Create form
     'add'                 => '新增',
     'back_to_all'         => '回到所有 ',
     'cancel'              => '取消',
     'add_a_new'           => '新增一个 ',
-
-    // Create form - advanced options
-    'after_saving'            => '新增后',
-    'go_to_the_table_view'    => '回到总表',
-    'let_me_add_another_item' => '新增另一个记录',
-    'edit_the_new_item'       => '编辑这个记录',
 
     // Edit form
     'edit'                 => '编辑',
@@ -39,10 +39,15 @@ return [
     'to'                   => '到',
     'undo'                 => '撤销',
     'revision_restored'    => '成功恢复修订版本',
+    'guest_user'           => '访客',
+
+    // Translatable models
+    'edit_translations' => '翻译',
+    'language'          => '语言',
 
     // CRUD table view
     'all'                       => '全部 ',
-    'in_the_database'           => '',
+    'in_the_database'           => '在数据库中',
     'list'                      => '列表',
     'actions'                   => '操作',
     'preview'                   => '预览',
@@ -50,6 +55,9 @@ return [
     'admin'                     => '管理員',
     'details_row'               => '这是详情列。你可以在这里做出编辑。',
     'details_row_loading_error' => '加载详情时出错。请重试。',
+    'clone' => '复制',
+    'clone_success' => '<strong>记录复制成功</strong><br>与此记录内容一致的新记录已被添加。',
+    'clone_failure' => '<strong>复制失败</strong><br>新的记录没有被创建，请重试。',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => '你确定要删除这条记录吗？',
@@ -59,6 +67,21 @@ return [
     'delete_confirmation_not_message'             => '尝试删除时发生错误。这项记录或未被成功删除。',
     'delete_confirmation_not_deleted_title'       => '记录未被删除',
     'delete_confirmation_not_deleted_message'     => '沒有任何事情发生过。你的这条记录纹丝未动。',
+
+    // Bulk actions
+    'bulk_no_entries_selected_title'   => '没有选中任何记录',
+    'bulk_no_entries_selected_message' => '执行批量操作前，请选择一条或多条记录.',
+
+    // Bulk confirmation
+    'bulk_delete_are_you_sure'   => '确定要删除这 :number 条记录吗?',
+    'bulk_delete_sucess_title'   => '删除记录',
+    'bulk_delete_sucess_message' => ' 记录已经被删除',
+    'bulk_delete_error_title'    => '删除失败',
+    'bulk_delete_error_message'  => '无法删除一条或多条记录',
+
+    // Ajax errors
+    'ajax_error_title' => '错误',
+    'ajax_error_text'  => '加载页面时出错，请刷新页面。',
 
     // DataTables translation
     'emptyTable'     => '数据库中没有相关记录',
@@ -82,6 +105,15 @@ return [
         'sortAscending'  => ': 增序排列',
         'sortDescending' => ': 降序排列',
     ],
+    'export' => [
+        'export'            => '导出',
+        'copy'              => '复制',
+        'excel'             => 'Excel',
+        'csv'               => 'CSV',
+        'pdf'               => 'PDF',
+        'print'             => '打印',
+        'column_visibility' => '列可见性',
+    ],
 
     // global crud - errors
     'unauthorized_access' => '您沒有权限浏览此页面。',
@@ -103,8 +135,16 @@ return [
     'yes' => 'Yes',
     'no'  => 'No',
 
+    // CRUD filters navbar view
+    'filters'        => '筛选条件',
+    'toggle_filters' => '切换筛选条件',
+    'remove_filters' => '移除筛选条件',
+
     // Fields
     'browse_uploads'            => '查看已上传的文档',
+    'select_all'                => '选择全部',
+    'select_files'              => '选择文件（多个）',
+    'select_file'               => '选择文件（单个）',
     'clear'                     => '清除',
     'page_link'                 => '页面链接',
     'page_link_placeholder'     => 'http://example.com/your-desired-page',
@@ -116,5 +156,8 @@ return [
     //Table field
     'table_cant_add'    => '不能再增加 :entity',
     'table_max_reached' => '已达到 :max 条记录的上限',
+
+    // File manager
+    'file_manager' => '文件管理器',
 
 ];
