@@ -77,6 +77,8 @@ trait OnTheFlyOperation
 
         if (request()->has('field')) {
             $field = $this->crud->fields()[request()->get('field')];
+            $field['entity'] = $field['entity'] ?? $field['name'];
+            $field['model'] = $field['model'] ?? $this->crud->getRelationModel($field['entity']);
             $relatedModelInstance = new $field['model']();
             if ($field) {
                 if (! isset($field['options'])) {

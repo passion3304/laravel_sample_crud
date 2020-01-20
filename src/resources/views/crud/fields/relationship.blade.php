@@ -1,11 +1,14 @@
 <!--  relationship  -->
 
 @php
-    $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
-    $field['ajax'] = $field['ajax'] ?? config('backpack.crud.relationships.default_ajax');
+    $field['entity'] = $field['entity'] ?? $field['name'];
+
+    $relation_type = $field['relation_type'] ?? $crud->getRelationTypeFromModel($crud->model,$field['entity'])['type'];
+    $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($relation_type);
+    $field['ajax'] = $field['ajax'] ?? config('backpack.crud.relationships.default_ajax', false);
+
 
     $fieldOnTheFlyConfiguration = $field['on_the_fly'] ?? [];
-
 
     if(!$field['multiple']) {
     $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
@@ -13,9 +16,12 @@
         $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
     }
 
+    $field['model'] = $field['model'] ?? $crud->getRelationModel($field['entity']);
+
     $related_model_instance = new $field['model']();
 
     $response_entity = isset($field['response_entity']) ? $field['response_entity'] : $crud->hasOperationSetting('ajaxEntities') ? array_has($crud->getOperationSetting('ajaxEntities'), $field['entity']) ? $field['entity'] : array_key_first($crud->getOperationSetting('ajaxEntities')) : '';
+
     $placeholder = isset($field['placeholder']) ? $field['placeholder'] : 'Select a ' . $field['entity'];
 
     if ($current_value) {
@@ -23,9 +29,8 @@
             $item = $related_model_instance->find($current_value);
         }else{
             if(!$current_value->isEmpty()) {
-                //dd($current_value);
+
                 $current_value = $current_value->map(function ($item, $key) use ($related_model_instance) {
-                    //dd($item);
                     return $item->{$related_model_instance->getKeyName()};
                 });
 
@@ -35,16 +40,14 @@
 
 
 //this checks if column is nullable on database by default, but developer might overriden that property
-$allows_null = $crud->model::isColumnNullable($field['name']) ?
-        ((isset($field['allows_null']) && $field['allows_null'] != false) || !isset($field['allows_null']) ? true : false) :
-        ((isset($field['allows_null']) && $field['allows_null'] != true) || !isset($field['allows_null']) ? false : true);
+$allows_null = isset($field['allows_null']) ? (bool)$field['allows_null'] : $crud->model::isColumnNullable($field['name']);
 
 
 $options = [];
    if($field['ajax'] != true) {
     if (!isset($field['options'])) {
 
-    $options = $field['model']::all()->pluck($field['attribute'],$related_model_instance->getKeyName());
+    $options = $related_model_instance::all()->pluck($field['attribute'],$related_model_instance->getKeyName());
 } else {
     $options = call_user_func($field['options'], $field['model']::query()->pluck($field['attribute'],$related_model_instance->getKeyName()));
 }

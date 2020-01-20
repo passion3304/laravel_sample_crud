@@ -29,6 +29,8 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
 use Illuminate\Database\Eloquent\Collection;
+use Exception;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class CrudPanel
 {
@@ -390,5 +392,37 @@ class CrudPanel
         }
 
         return $results;
+    }
+
+
+    public function getRelationTypeFromModel($model, $relationString)
+    {
+        $model = new $model;
+        $type = null;
+
+        $method = (new \ReflectionClass($model))->getMethod($relationString);
+
+        if ($method->class != get_class($model) ||
+                ! empty($method->getParameters()) ||
+                $method->getName() == __FUNCTION__) {
+            return $type;
+        }
+
+        try {
+            $return = $method->invoke($model);
+            if ($return instanceof Relation) {
+                $relationship['type'] = (new \ReflectionClass($return))->getShortName();
+                if ($relationship['type'] == 'BelongsTo') {
+                    $relationship['connect_key'] = $return->getForeignKeyName();
+                }
+
+                if ($relationship['type'] == 'HasMany' || $relationship['type'] == 'BelongsToMany') {
+                    $relationship['pivot'] = true;
+                }
+            }
+        } catch (Exception $e) {
+        }
+
+        return $relationship;
     }
 }
