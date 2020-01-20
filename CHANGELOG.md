@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2377 - updated Chinese translation;
+- merged #2359 - fix field label generation when name is an array;
 
 
 ## 4.0.33 - 2020-01-15
