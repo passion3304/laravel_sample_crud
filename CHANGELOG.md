@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.34 - 2020-01-20
+
+### Fixed
+- merged #2377 - updated Chinese translation;
+
+
 ## 4.0.33 - 2020-01-15
 
 ### Fixed
