@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.35 - 2020-01-21
+
+### Fixed
+- merged #2389 - print button on Show operation (aka Preview);
+
+
 ## 4.0.34 - 2020-01-20
 
 ### Fixed
