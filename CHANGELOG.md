@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2389 - print button on Show operation (aka Preview);
+- merged #2386 - overwrite new loggedOut() method in LoginController instead of logout();
 
 
 ## 4.0.34 - 2020-01-20
