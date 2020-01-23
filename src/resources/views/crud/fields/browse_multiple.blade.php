@@ -10,7 +10,7 @@ if (!$multiple && is_array($value)) {
 if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function']))
 {
     $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitBrowseMultipleElement';
-    
+
     if ($multiple) {
         $field['wrapperAttributes']['data-popup-title'] = trans('backpack::crud.select_files');
         $field['wrapperAttributes']['data-multiple'] = "true";
@@ -33,8 +33,9 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
 
     <div><label>{!! $field['label'] !!}</label></div>
     @include('crud::inc.field_translatable_icon')
+    <div class="list" data-field-name="{{ $field['name'] }}">
     @if ($multiple)
-        <div class="list">
+
             @foreach( (array)$value as $v)
                 @if ($v)
                     <div class="input-group input-group-sm">
@@ -51,11 +52,11 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                     </div>
                 @endif
             @endforeach
-        </div>
-    @else
-        <input type="text" name="{{ $field['name'] }}" value="{{ $value }}" @include('crud::inc.field_attributes') readonly>
-    @endif
 
+    @else
+        <input type="text" data-marker="multipleBrowseInput" name="{{ $field['name'] }}" value="{{ $value }}" @include('crud::inc.field_attributes') readonly>
+    @endif
+</div>
     <div class="btn-group" role="group" aria-label="..." style="margin-top: 3px;">
         <button type="button" class="browse popup btn btn-sm btn-light">
             <i class="fa fa-cloud-upload"></i>
@@ -78,7 +79,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                 <button type="button" class="browse remove btn btn-sm btn-light">
                     <i class="fa fa-trash"></i>
                 </button>
-                @if ($sortable)
+                @if($sortable)
                     <button type="button" class="browse move btn btn-sm btn-light"><span class="fa fa-sort"></span></button>
                 @endif
             </div>
@@ -127,6 +128,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                 var $clearButton = element.find(".clear");
                 var $removeButton = element.find(".remove");
                 var $input = element.find('input[data-marker=multipleBrowseInput]');
+                var $inputName = $list.attr('data-field-name');
                 var $popupTitle = element.attr('data-popup-title');
                 var $onlyMimesArray = element.attr('data-only-mimes');
                 var $multiple = element.attr('data-multiple');
@@ -164,7 +166,9 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                             }
                         },
                         getFileCallback: function (files) {
-                            if ($multiple) {
+
+                            if ($multiple === 'true') {
+
                                 files.forEach(function (file) {
                                     var newInput = $($template);
                                     newInput.find('input').val(file.path);
@@ -175,9 +179,13 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                                     $list.sortable("refresh")
                                 }
                             } else {
-                                $input.val(files.path);
+
+                                $input.val(files[0].path);
+
                             }
-                            
+                            //after submit a file we delete the hidden input if it exists.
+                            deleteHiddenInput($inputName, $list);
+
                             $.colorbox.close();
                         }
                     }).elfinder('instance');
@@ -194,19 +202,53 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                 element.on('click', 'button.clear', function (event) {
                     event.preventDefault();
 
-                    if ($multiple) {
-                        $input.parents('.input-group').remove();    
-                    } else {
+                    if($multiple === 'true') {
+
+                        $('.input-group',$list).remove();
+                        //when clearing all files we create an hidden input to be submited with the form empty
+                        if($('.hidden_browse_multiple_'+$inputName,$list).length < 1) {
+                            createHiddenInput($list,$inputName,$multiple);
+                        }
+                    }else{
+
                         $input.val('');
+
                     }
                 });
 
-                if ($multiple) {
+                if ($multiple === 'true') {
                     element.on('click', 'button.remove', function (event) {
                         event.preventDefault();
-                        $(this).parents('.input-group').remove();
+                        $(this).closest('.input-group').remove();
+
+                        //if we remove the last file we create an hidden input to be submited with the form empty.
+                        if($('.input-group',$list).length < 1) {
+                            createHiddenInput($list, $inputName, $multiple)
+                        }
                     });
                 }
+            }
+
+            //removes the hidden input from the field
+            function deleteHiddenInput($fieldName, $list) {
+                $('.hidden_browse_multiple_'+$fieldName,$list).remove()
+            }
+
+            //creates the hidden input and appends to field.
+            function createHiddenInput($list, $fieldName, $multiple) {
+                var input = document.createElement("input");
+
+                input.setAttribute("type", "hidden");
+                input.setAttribute("class", "hidden_browse_multiple_"+$fieldName);
+                if($multiple === 'true') {
+                    input.setAttribute("name", $fieldName+'[]');
+                }else{
+                    input.setAttribute("name", $fieldName);
+                }
+
+                input.setAttribute("value", '');
+
+                $list.append(input);
             }
         </script>
     @endpush
