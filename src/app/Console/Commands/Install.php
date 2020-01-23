@@ -90,12 +90,12 @@ class Install extends Command
                 case '\\': // windows
                     if (! file_exists('public\uploads')) {
                         $createUploadDirectoryCommand = 'mkdir public\uploads';
-                    } else {
-                        $createUploadDirectoryCommand = '';
                     }
                     break;
             }
-            $this->executeProcess($createUploadDirectoryCommand);
+            if (isset($createUploadDirectoryCommand)) {
+                $this->executeProcess($createUploadDirectoryCommand);
+            }
 
             $this->line(' Publishing elFinder assets');
             $this->executeProcess('php artisan elfinder:publish');

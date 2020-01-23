@@ -55,11 +55,24 @@ class CrudPanel
 
     public function __construct()
     {
-        $this->request = \Request::instance();
+        $this->setRequest();
 
         if ($this->getCurrentOperation()) {
             $this->setOperation($this->getCurrentOperation());
         }
+    }
+
+    /**
+     * Set the request instance for this CRUD.
+     *
+     * @param \Illuminate\Http\Request $request
+     */
+    public function setRequest($request = null)
+    {
+        if (! $request) {
+            $request = \Request::instance();
+        }
+        $this->request = $request;
     }
 
     // ------------------------------------------------------
@@ -106,7 +119,7 @@ class CrudPanel
      */
     private function getSchema()
     {
-        return \Schema::setConnection($this->getModel()->getConnection());
+        return $this->getModel()->getConnection()->getSchemaBuilder();
     }
 
     /**

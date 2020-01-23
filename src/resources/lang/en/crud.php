@@ -55,6 +55,9 @@ return [
     'admin'                     => 'Admin',
     'details_row'               => 'This is the details row. Modify as you please.',
     'details_row_loading_error' => 'There was an error loading the details. Please retry.',
+    'clone' => 'Clone',
+    'clone_success' => '<strong>Entry cloned</strong><br>A new entry has been added, with the same information as this one.',
+    'clone_failure' => '<strong>Cloning failed</strong><br>The new entry could not be created. Please try again.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Are you sure you want to delete this item?',

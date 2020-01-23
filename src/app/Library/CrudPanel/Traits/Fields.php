@@ -43,7 +43,8 @@ trait Fields
 
         // if the label is missing, we should set it
         if (! isset($newField['label'])) {
-            $newField['label'] = mb_ucfirst(str_replace('_', ' ', $newField['name']));
+            $label = is_array($newField['name']) ? $newField['name'][0] : $newField['name'];
+            $newField['label'] = mb_ucfirst(str_replace('_', ' ', $label));
         }
 
         // if the field type is missing, we should set it
@@ -216,7 +217,7 @@ trait Fields
         $fields_array = $this->getCurrentFields();
         $first_field = $this->getFirstOfItsTypeInArray($field['type'], $fields_array);
 
-        if ($field['name'] == $first_field['name']) {
+        if ($first_field && $field['name'] == $first_field['name']) {
             return true;
         }
 
