@@ -8,11 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.0.35 - 2020-01-21
+## 4.0.35 - 2020-01-23
 
 ### Fixed
 - merged #2389 - print button on Show operation (aka Preview);
 - merged #2386 - overwrite new loggedOut() method in LoginController instead of logout();
+- merged #2395 - simplemde field should not download FontAwesome;
 
 
 ## 4.0.34 - 2020-01-20
