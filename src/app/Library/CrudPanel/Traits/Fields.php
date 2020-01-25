@@ -37,12 +37,12 @@ trait Fields
 
         //we set this up exclusive for relationship type field. in future we hope we can figure out this automatically from field name
         //atm we avoid any breaking changes while developing the guessing habilities for crud panel
-        if(isset($newField['type']) && $newField['type'] == 'relationship') {
+        if (isset($newField['type']) && $newField['type'] == 'relationship') {
             $relationData = $this->getRelationWithFieldName($newField['name']);
             if ($relationData) {
-               $newField = array_merge($newField, $relationData);
-            }else{
-                abort(500,'Unable to process relationship field: ' . $field['name']);
+                $newField = array_merge($newField, $relationData);
+            } else {
+                abort(500, 'Unable to process relationship field: '.$field['name']);
             }
         }
 

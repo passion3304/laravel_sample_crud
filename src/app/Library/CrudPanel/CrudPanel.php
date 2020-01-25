@@ -19,6 +19,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
@@ -28,8 +29,6 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -394,5 +393,4 @@ class CrudPanel
 
         return $results;
     }
-
 }
