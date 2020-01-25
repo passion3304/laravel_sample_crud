@@ -28,6 +28,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -35,7 +36,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings;
+    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships;
     // allow developers to add their own closures to this object
     use Macroable;
 
@@ -394,34 +395,4 @@ class CrudPanel
         return $results;
     }
 
-    public function getRelationTypeFromModel($model, $relationString)
-    {
-        $model = new $model;
-        $type = null;
-
-        $method = (new \ReflectionClass($model))->getMethod($relationString);
-
-        if ($method->class != get_class($model) ||
-                ! empty($method->getParameters()) ||
-                $method->getName() == __FUNCTION__) {
-            return $type;
-        }
-
-        try {
-            $return = $method->invoke($model);
-            if ($return instanceof Relation) {
-                $relationship['type'] = (new \ReflectionClass($return))->getShortName();
-                if ($relationship['type'] == 'BelongsTo') {
-                    $relationship['connect_key'] = $return->getForeignKeyName();
-                }
-
-                if ($relationship['type'] == 'HasMany' || $relationship['type'] == 'BelongsToMany') {
-                    $relationship['pivot'] = true;
-                }
-            }
-        } catch (Exception $e) {
-        }
-
-        return $relationship;
-    }
 }
