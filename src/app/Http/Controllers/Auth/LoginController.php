@@ -63,18 +63,14 @@ class LoginController extends Controller
     }
 
     /**
-     * Log the user out and redirect him to specific location.
+     * The user has logged out of the application.
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function logout(Request $request)
+    protected function loggedOut(Request $request)
     {
-        // Do the default logout procedure
-        $this->guard()->logout();
-
-        // And redirect to custom location
         return redirect($this->redirectAfterLogout);
     }
 

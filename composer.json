@@ -32,7 +32,7 @@
         }
     ],
     "require": {
-        "laravel/framework": "5.8.*|^6.0",
+        "laravel/framework": "^6.0|5.8.*",
         "prologue/alerts": "^0.4.1",
         "creativeorange/gravatar": "~1.0",
         "nesbot/carbon": "^2.14.0",

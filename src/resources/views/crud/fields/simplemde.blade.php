@@ -55,6 +55,11 @@
 
                 configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
 
+                //by default we prevent the loading of fontawesome
+                if(!configurationObject.autoDownloadFontAwesome) {
+                    configurationObject.autoDownloadFontAwesome = false;
+                }
+
                 var smdeObject = new SimpleMDE(configurationObject);
 
                 smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
