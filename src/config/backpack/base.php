@@ -175,8 +175,10 @@ return [
     // You can make sure all your URLs use this prefix by using the backpack_url() helper instead of url()
     'route_prefix' => 'admin',
 
-    // The middleware (group) used in all base routes
-    'route_middleware' => 'web',
+    // The web middleware (group) used in all base & CRUD routes
+    // Change to a different middleware group if you've modified your "web" middleware group
+    // (ex: removed sessions)
+    'web_middleware' => 'web',
 
     // Set this to false if you would like to use your own AuthController and PasswordController
     // (you then need to setup your auth routes manually in your routes.php file)
