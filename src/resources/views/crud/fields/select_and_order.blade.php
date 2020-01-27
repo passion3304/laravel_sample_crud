@@ -69,7 +69,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    @stack('on_the_fly_styles')
+
     <style>
         .select_and_order_all,
         .select_and_order_selected {
@@ -123,7 +123,6 @@
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-@stack('on_the_fly_scripts')
 <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
 <script>
     function bpFieldInitSelectAndOrderElement(element) {

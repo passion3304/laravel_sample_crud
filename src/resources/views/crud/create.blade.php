@@ -54,6 +54,3 @@
 
 @endsection
 
-@section('after_scripts')
-  @stack('crud_create_scripts')
-@endsection

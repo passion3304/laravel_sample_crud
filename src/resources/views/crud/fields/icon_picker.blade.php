@@ -63,7 +63,6 @@
 
     {{-- FIELD EXTRA CSS  --}}
     @push('crud_fields_styles')
-    @stack('on_the_fly_styles')
         {{-- The chosen font --}}
         <link rel="stylesheet" type="text/css" href="{{ $fontIconFilePath }}">
         <!-- Bootstrap-Iconpicker -->
@@ -72,7 +71,6 @@
 
     {{-- FIELD EXTRA JS --}}
     @push('crud_fields_scripts')
-    @stack('on_the_fly_scripts')
         <!-- Bootstrap-Iconpicker -->
         <script type="text/javascript" src="{{ asset('packages/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js') }}"></script>
 

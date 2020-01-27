@@ -5,7 +5,7 @@ namespace Backpack\CRUD\app\Http\Controllers\Operations;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Support\Facades\Route;
 
-trait OnTheFlyOperation
+trait InlineCreateOperation
 {
     /**
      * Define which routes are needed for this operation.
@@ -14,36 +14,36 @@ trait OnTheFlyOperation
      * @param string $routeName  Prefix of the route name.
      * @param string $controller Name of the current CrudController.
      */
-    protected function setupOnTheFlyRoutes($segment, $routeName, $controller)
+    protected function setupInlineCreateOperationRoutes($segment, $routeName, $controller)
     {
-        Route::get($segment.'/on-the-fly/create', [
-            'as'        => $segment.'-on-the-fly-create',
-            'uses'      => $controller.'@getInstantCreateModal',
-            'operation' => 'OnTheFlyOperation',
+        Route::get($segment.'/inline/create', [
+            'as'        => $segment.'-inline-create',
+            'uses'      => $controller.'@getInlineCreateModal',
+            'operation' => 'InlineCreateOperation',
         ]);
-        Route::post($segment.'/on-the-fly/create', [
-            'as'        => $segment.'-on-the-fly-create',
-            'uses'      => $controller.'@storeOnTheFly',
-            'operation' => 'OnTheFlyOperation',
+        Route::post($segment.'/inline/create', [
+            'as'        => $segment.'-inline-create-save',
+            'uses'      => $controller.'@storeInlineCreate',
+            'operation' => 'InlineCreateOperation',
         ]);
-        Route::get($segment.'/on-the-fly/refresh', [
-            'as'        => $segment.'-on-the-fly-refresh-options',
-            'uses'      => $controller.'@refreshOptions',
-            'operation' => 'OnTheFlyOperation',
+        Route::get($segment.'/inline/refresh', [
+            'as'        => $segment.'-inline-refresh-options',
+            'uses'      => $controller.'@inlineRefreshOptions',
+            'operation' => 'InlineCreateOperation',
         ]);
     }
 
-    public function setupOnTheFlyDefaults()
+    public function setupInlineCreateDefaults()
     {
-        $this->crud->setOperationSetting('on_the_fly', true);
+        $this->crud->setOperationSetting('inline_create', true);
     }
 
-    public function getInstantCreateModal()
+    public function getInlineCreateModal()
     {
         if (request()->has('entity')) {
             $this->setupOperationSettings();
 
-            return $this->getInstantModal(request()->get('entity'), 'create', $this->crud->getCreateFields());
+            return $this->getModalContent(request()->get('entity'), 'create', $this->crud->getCreateFields());
         }
     }
 
@@ -58,10 +58,10 @@ trait OnTheFlyOperation
         $this->crud->applyConfigurationFromSettings('create');
     }
 
-    public function getInstantModal($entity, $action, $fields)
+    public function getModalContent($entity, $action, $fields)
     {
         return view(
-                'crud::inc.on_the_fly_modal',
+                'crud::fields.relationship.modal',
                 [
                     'fields' => $fields,
                     'action' => $action,
@@ -71,7 +71,7 @@ trait OnTheFlyOperation
                 );
     }
 
-    public function refreshOptions()
+    public function InlineRefreshOptions()
     {
         $this->setupOperationSettings();
 
@@ -92,7 +92,7 @@ trait OnTheFlyOperation
         }
     }
 
-    public function storeOnTheFly()
+    public function storeInlineCreate()
     {
         $this->setupOperationSettings();
 

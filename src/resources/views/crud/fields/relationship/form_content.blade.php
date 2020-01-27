@@ -2,19 +2,14 @@
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled() && count($crud->getTabs()))
-    @include('crud::inc.show_tabbed_fields_on_the_fly', ['onTheFly' => 'true'])
+    @include('crud::fields.relationship.show_tabbed_fields')
     <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
   <div class="card">
     <div class="card-body row">
-      @include('crud::inc.show_fields', ['fields' => $crud->fields(), 'onTheFly' => 'true'])
+      @include('crud::fields.relationship.show_fields', ['fields' => $crud->fields(), 'inlineCreate' => 'true'])
     </div>
   </div>
 @endif
-@push('modal_loaded_fields_scripts')
-@stack('crud_scripts_pre')
-@endpush
 
-@push('modal_loaded_fields_styles')
-@stack('crud_styles_pre')
-@endpush
+

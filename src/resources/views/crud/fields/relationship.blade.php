@@ -6,7 +6,7 @@
     $field['ajax'] = $field['ajax'] ?? config('backpack.crud.relationships.default_ajax', false);
 
 
-    $fieldOnTheFlyConfiguration = $field['on_the_fly'] ?? [];
+    $fieldInlineConfiguration = $field['inline_create'] ?? [];
 
     if(!$field['multiple']) {
     $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
@@ -52,26 +52,26 @@ $options = [];
 }
    }
 
-
 //we make sure on_the_fly operation is setup and that user wants to allow field creation
-if($crud->has($crud->getOperation().'.on_the_fly')) {
+if($crud->has($crud->getOperation().'.inline_create')) {
 
-$activeOnTheFlyCreate = isset($fieldOnTheFlyConfiguration['create']) ? $fieldOnTheFlyConfiguration['create'] : false;
-if($activeOnTheFlyCreate) {
+$activeInlineCreate = !empty($fieldInlineConfiguration) ? true : false;
+
+if($activeInlineCreate) {
     //if user don't specify 'entity_route' we assume it's the same from $field['entity']
-    $onTheFlyEntity = isset($fieldOnTheFlyConfiguration['entity_route']) ? $fieldOnTheFlyConfiguration['entity_route'] : $field['entity'];
+    $inlineCreateEntity = isset($fieldInlineConfiguration['entity']) ? $fieldInlineConfiguration['entity'] : $field['entity'];
 
-if(!isset($onTheFly)) {
-    $createRoute = route($onTheFlyEntity."-on-the-fly-create");
+if(!isset($inlineCreate)) {
+    $createRoute = route($inlineCreateEntity."-inline-create");
 
-    $createRouteEntity = end(explode('/', $crud->route));
+    $createRouteEntity = last(explode('/', $crud->route));
 
-    $refreshRoute = route($createRouteEntity."-on-the-fly-refresh-options");
+    $refreshRoute = route($createRouteEntity."-inline-refresh-options");
 
 }
 }
 }else{
-    $activeOnTheFlyCreate = false;
+    $activeInlineCreate = false;
 }
 
 @endphp
@@ -81,8 +81,8 @@ if(!isset($onTheFly)) {
         <label>{!! $field['label'] !!}</label>
         @include('crud::inc.field_translatable_icon')
 
-        @if($activeOnTheFlyCreate)
-            @include('crud::inc.on_the_fly_create_button', ['name' => $field['name'], 'onTheFlyEntity' => $onTheFlyEntity])
+        @if($activeInlineCreate)
+            @include('crud::fields.relationship.create_button', ['name' => $field['name'], 'inlineCreateEntity' => $inlineCreateEntity])
         @endif
 <select
 @if(!$field['multiple'])
@@ -93,7 +93,7 @@ if(!isset($onTheFly)) {
         data-original-name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitRelationshipElement"
-        data-is-on-the-fly="{{ $onTheFly ?? 'false' }}"
+        data-is-inline="{{ $inlineCreate ?? 'false' }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-options-for-select="{{json_encode($options)}}"
         data-allows-null="{{var_export($allows_null)}}"
@@ -112,8 +112,8 @@ if(!isset($onTheFly)) {
         data-current-value="{{$current_value}}"
         data-field-ajax="{{var_export($field['ajax'])}}"
         data-item="{{ (isset($item) && !is_null($item) && !empty($item)) ? '{ "id":"'.$item->getKey().'","text":"'.$item->{$field['attribute']} .'"}' : json_encode(false) }}"
-        @if($activeOnTheFlyCreate)
-        @include('crud::inc.on_the_fly_field_attributes')
+        @if($activeInlineCreate)
+        @include('crud::fields.relationship.field_attributes')
         @endif
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
         @if($field['multiple'])
@@ -136,7 +136,7 @@ if(!isset($onTheFly)) {
 
         {{-- FIELD CSS - will be loaded in the after_styles section --}}
         @push('crud_fields_styles')
-        @stack('on_the_fly_styles')
+
             <!-- include select2 css-->
             <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
             <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -144,7 +144,7 @@ if(!isset($onTheFly)) {
 
         {{-- FIELD JS - will be loaded in the after_scripts section --}}
         @push('crud_fields_scripts')
-        @stack('on_the_fly_scripts')
+
             <!-- include select2 js-->
             <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
             @if (app()->getLocale() !== 'en')
@@ -154,7 +154,7 @@ if(!isset($onTheFly)) {
 
 document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 
-// this function is responsible for reloading the option list uppon on-the-fly creation.
+// this function is responsible for reloading the option list uppon inline creation.
 if (!window.refreshOptionList) {
 var refreshOptionList = function (element, $field, $refreshUrl) {
     return new Promise(function (resolve, reject) {
@@ -213,7 +213,6 @@ var fetchDefaultEntry = function (element) {
 if (typeof refreshDefaultOption !== "function") {
 function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
      var $item = JSON.parse(element.attr('data-item'));
-     console.log($item);
      $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
      $(element).val($item[$modelKey]);
      $(element).trigger('change');
@@ -240,14 +239,12 @@ function fillSelectOptions(element, $created = false) {
         //if there are any selected options we re-select them
 
         $value = element.attr('data-current-value');
-        //console.log($value);
         if($value.length) {
             var $currentValue = JSON.parse(element.attr('data-current-value'));
         }else{
             var $currentValue = '';
         }
 
-        //console.log($currentValue);
         if(!Array.isArray($currentValue) && (typeof $currentValue !== 'object' && $currentValue !== null)) {
 
             selectedOptions.push($currentValue);
@@ -298,22 +295,9 @@ function fillSelectOptions(element, $created = false) {
          }
     }
     }
-    console.log($(element).val());
 
     $(element).attr('data-current-value',JSON.stringify(selectedOptions));
 
-   /* if ($allows_null == 'true' && $multiple == false && ($currentValue == '' || (Array.isArray($currentValue) && $currentValue.length)) && $createdIsOnOptions == false) {
-        var $option = new Option('-', '');
-        $(element).prepend($option);
-        if (($currentValue == '' || (Array.isArray($currentValue) && $currentValue.length))) {
-            $(element).val('');
-        }
-    }
-    if($allows_null == 'false' && ($currentValue == '' || (Array.isArray($currentValue) && $currentValue.length)) && $createdIsOnOptions == false) {
-        $(element).val(Object.keys($options)[0]);
-
-    }*/
-    console.log('triggering change')
     $(element).trigger('change')
 }
 }
@@ -323,12 +307,12 @@ if (typeof triggerSelectOptions !== "function") {
 function triggerSelectOptions(element, $created = false) {
     var $fieldName = element.attr('data-original-name');
 
-    var $onTheFlyRefreshRoute = element.attr('data-on-the-fly-refresh-route');
+    var $inlineRefreshRoute = element.attr('data-inline-refresh-route');
 
     $(element).empty();
 
     if ($created) {
-        refreshOptionList(element, $fieldName, $onTheFlyRefreshRoute).then(result => {
+        refreshOptionList(element, $fieldName, $inlineRefreshRoute).then(result => {
 
             fillSelectOptions(element, $created);
         }, result => {
@@ -340,16 +324,16 @@ function triggerSelectOptions(element, $created = false) {
 }
 }
 
-function setupOnTheFlyButtons(element) {
-    var $onTheFlyCreateButton = element.attr('data-on-the-fly-create-button');
+function setupInlineCreateButtons(element) {
+    var $inlineCreateButton = element.attr('data-inline-create-button');
     var $fieldEntity = element.attr('data-field-related-name');
-    var $onTheFlyCreateButtonElement = $(document.getElementById($onTheFlyCreateButton));
-    var $onTheFlyCreateRoute = element.attr('data-on-the-fly-create-route');
+    var $inlineCreateButtonElement = $(document.getElementById($inlineCreateButton));
+    var $inlineCreateRoute = element.attr('data-inline-create-route');
 
-    $onTheFlyCreateButtonElement.on('click', function () {
+    $inlineCreateButtonElement.on('click', function () {
         $(".loading_modal_dialog").show();
         $.ajax({
-            url: $onTheFlyCreateRoute,
+            url: $inlineCreateRoute,
             data: {
                 'entity': $fieldEntity
             },
@@ -379,20 +363,20 @@ function setupOnTheFlyButtons(element) {
 function triggerModal(element) {
     var $fieldName = element.attr('data-field-related-name');
 
-    var modalName = '#'+$fieldName+'-on-the-fly-create-dialog';
-    var $onTheFlyCreateRoute = element.attr('data-on-the-fly-create-route');
+    var modalName = '#'+$fieldName+'-inline-create-dialog';
+    var $inlineCreateRoute = element.attr('data-inline-create-route');
     var $modal = $(modalName);
 
     $modal.modal({ backdrop: 'static', keyboard: false, focus: false });
     var $modalSaveButton = $modal.find('#saveButton');
-    var $form = $(document.getElementById($fieldName+"-on-the-fly-create-form"));
+    var $form = $(document.getElementById($fieldName+"-inline-create-form"));
 
 
     initializeFieldsWithJavascript($form);
 
     //when you hit save on modal save button.
     $modalSaveButton.on('click', function () {
-        $form = document.getElementById($fieldName+"-on-the-fly-create-form");
+        $form = document.getElementById($fieldName+"-inline-create-form");
         //this is needed otherwise fields like ckeditor don't post their value.
         $($form).trigger('form-pre-serialize');
         var $formData = new FormData($form);
@@ -406,7 +390,7 @@ function triggerModal(element) {
 
 
         $.ajax({
-            url: $onTheFlyCreateRoute,
+            url: $inlineCreateRoute,
             data: $formData,
             processData: false,
             contentType: false,
@@ -463,7 +447,7 @@ function triggerModal(element) {
                 function bpFieldInitRelationshipElement(element) {
 
                 var form = element.closest('form');
-                var $onTheFlyField = element.attr('data-is-on-the-fly');
+                var $inlineField = element.attr('data-is-inline');
                 var $ajax = element.attr('data-field-ajax') == 'true' ? true : false;
                 var $placeholder = element.attr('data-placeholder');
                 var $minimumInputLength = element.attr('data-minimum-input-length');
@@ -476,22 +460,26 @@ function triggerModal(element) {
                 var $modelKey = element.attr('data-model-local-key');
                 var $selectOptions = element.attr('data-options-for-select');
                 var $value = element.attr('data-current-value');
-                var $allowClear = (element.attr('data-allows-null') == 'true' && $item) ? true : false;
+
+
+
 
                 if(!$ajax) {
                     triggerSelectOptions(element);
                 }else{
                     var $item = false;
-                    if($value.length) {
+
+                    if(Array.isArray($value) && $value.length) {
                         $item = true;
                     }
 
                     var selectedOptions = [];
                     if($item) {
-                        var $currentValue = JSON.parse(element.attr('data-current-value'));
+                        var $currentValue = JSON.parse($value);
                     }else{
                         var $currentValue = '';
                     }
+
         //we reselect the previously selected options if any.
         for (const [key, value] of Object.entries($currentValue)) {
             selectedOptions.push(key);
@@ -499,23 +487,23 @@ function triggerModal(element) {
             $(element).append($option);
         }
         $(element).val(selectedOptions);
-        console.log($item);
-                    if(element.attr('data-allows-null') != 'true' && $item === true) {
-                        console.log('here');
+                    if(element.attr('data-allows-null') != 'true' && $item === false) {
+
                         fetchDefaultEntry(element).then(result => {
                             refreshDefaultOption(element, $fieldAttribute, $modelKey);
                         });
                     }
         }
 
-                var $item = JSON.parse(element.attr('data-item'));
+                //var $item = JSON.parse(element.attr('data-item'));
+                var $allowClear = (element.attr('data-allows-null') == 'true') ? true : false;
+                //Checks if field is not beeing inserted in one inline create modal and setup buttons
+                if($inlineField == "false") {
 
-                //Checks if field is not beeing inserted in one on-the-fly modal and setup buttons
-                if($onTheFlyField == "false") {
-
-                    setupOnTheFlyButtons(element);
+                    setupInlineCreateButtons(element);
 
                 }
+
                     if (!element.hasClass("select2-hidden-accessible")) {
                         if(!$ajax) {
 
@@ -572,33 +560,14 @@ function triggerModal(element) {
                         });
                         }
                     }
-                    /*if($item) {
-                $(element).append('<option value="'+$item.id+'">'+$item.text+'</option>');
-            }else if ($allowClear && !$item) {
-                $(element).append('<option value="" >{{ $placeholder }}</option>');
-            }*/
-               /* element.on('select2:unselect', function(e) {
-                   e.preventDefault();
-                    $elementVal = $(element).val();
-                    if($elementVal == "") {
 
-                   $(element).append('<option value="" >{{ $placeholder }}</option>');
-                   $(element).trigger('change');
-                    }
-                    $(element).attr('data-current-value',JSON.stringify($elementVal));
-                });
-*/
                 for (var i=0; i < $dependencies.length; i++) {
                 $dependency = $dependencies[i];
                 $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
                     element.val(null).trigger("change");
                 });
             }
-            /*if($item) {
-                $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
-                $(element).val($item[$modelKey]);
-                $(element).trigger('change');
-            }*/
+
                 }
             </script>
         @endpush

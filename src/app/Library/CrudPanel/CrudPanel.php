@@ -167,26 +167,6 @@ class CrudPanel
     }
 
     /**
-     * Based on relation type returns if relation allows multiple entities.
-     *
-     * @param string $relationType
-     * @return bool
-     */
-    public function relationAllowsMultiple($relationType)
-    {
-        switch ($relationType) {
-            case 'HasMany':
-            case 'BelongsToMany':
-            case 'HasManyThrough':
-            case 'MorphMany':
-            return true;
-            break;
-            default:
-            return false;
-        }
-    }
-
-    /**
      * Get the current CrudController route.
      *
      * Can be defined in the CrudController with:

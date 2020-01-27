@@ -12,15 +12,15 @@
     }
 
 @endphp
-<div class="modal fade" id="{{$entity}}-on-the-fly-create-dialog" tabindex="-1" role="dialog" aria-labelledby="{{$entity}}-on-the-fly-create-dialog-label" aria-hidden="true">
+<div class="modal fade" id="{{$entity}}-inline-create-dialog" tabindex="-1" role="dialog" aria-labelledby="{{$entity}}-inline-create-dialog-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="{{$entity}}-on-the-fly-create-dialog-label">New {{$entity}}</h5>
+        <h5 class="modal-title" id="{{$entity}}-inline-create-dialog-label">New {{$entity}}</h5>
         </div>
         <div class="modal-body">
             <form method="post"
-            id="{{$entity}}-on-the-fly-create-form"
+            id="{{$entity}}-inline-create-form"
             action="#"
           @if ($crud->hasUploadFields('create'))
           enctype="multipart/form-data"
@@ -29,10 +29,10 @@
         {!! csrf_field() !!}
 
         <!-- load the view from the application if it exists, otherwise load the one in the package -->
-        @if(view()->exists('vendor.backpack.crud.on_the_fly_form_content'))
-            @include('vendor.backpack.crud.on_the_fly_form_content', [ 'fields' => $fields, 'action' => $action])
+        @if(view()->exists('vendor.backpack.crud.fields.relationship.form_content'))
+            @include('vendor.backpack.crud.fields.relationship.form_content', [ 'fields' => $fields, 'action' => $action])
         @else
-            @include('crud::on_the_fly_form_content', [ 'fields' => $fields, 'action' => $action])
+            @include('crud::fields.relationship.form_content', [ 'fields' => $fields, 'action' => $action])
         @endif
 
 
@@ -45,10 +45,9 @@
       </div>
     </div>
   </div>
-  @stack('modal_loaded_fields_styles')
-  @stack('modal_loaded_fields_scripts')
 
+  @stack('crud_field_styles')
+  @stack('crud_field_scripts')
 
-        {{-- YOUR JS HERE --}}
 
 

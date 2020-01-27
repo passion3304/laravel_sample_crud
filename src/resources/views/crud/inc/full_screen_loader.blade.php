@@ -1,4 +1,4 @@
-@push('loading_styles')
+@push('crud_field_styles')
 <style>
     .loading_modal_dialog {
         position: fixed;
@@ -129,10 +129,10 @@
     </style>
 @endpush
 
-@push('loading_scripts')
+@push('crud_field_scripts')
 <script>
             jQuery(document).ready(function($) {
-                $( "body" ).prepend('<div class="loading_modal_dialog">Loading related entity form ...</div>');
+                $( "body" ).prepend('<div class="loading_modal_dialog"></div>');
             });
 </script>
 @endpush

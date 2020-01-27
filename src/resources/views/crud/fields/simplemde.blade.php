@@ -28,7 +28,6 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    @stack('on_the_fly_styles')
         <link rel="stylesheet" href="{{ asset('packages/simplemde/dist/simplemde.min.css') }}">
         <style type="text/css">
         .CodeMirror-fullscreen, .editor-toolbar.fullscreen {
@@ -42,7 +41,6 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-    @stack('on_the_fly_scripts')
         <script src="{{ asset('packages/simplemde/dist/simplemde.min.js') }}"></script>
         <script>
             function bpFieldInitSimpleMdeElement(element) {

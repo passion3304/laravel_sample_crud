@@ -92,7 +92,6 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-    @stack('on_the_fly_scripts')
         {{-- YOUR JS HERE --}}
         <script type="text/javascript" src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
 

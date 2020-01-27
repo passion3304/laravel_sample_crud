@@ -97,7 +97,6 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    @stack('on_the_fly_styles')
         <!-- include browse server css -->
         <link rel="stylesheet" type="text/css" href="{{ asset('packages/jquery-ui-dist/jquery-ui.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('packages/barryvdh/elfinder/css/elfinder.min.css') }}">
@@ -111,7 +110,6 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
     @endpush
 
     @push('crud_fields_scripts')
-    @stack('on_the_fly_scripts')
         <!-- include browse server js -->
         <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
         <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>

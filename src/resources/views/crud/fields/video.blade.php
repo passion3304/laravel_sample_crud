@@ -55,7 +55,6 @@ if (is_array($value)) {
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    @stack('on_the_fly_styles')
     {{-- @push('crud_fields_styles')
         {{-- YOUR CSS HERE --}}
         <style media="screen">
@@ -89,7 +88,6 @@ if (is_array($value)) {
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-    @stack('on_the_fly_scripts')
         {{-- YOUR JS HERE --}}
         <script>
 

@@ -190,7 +190,6 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-    @stack('on_the_fly_scripts')
     <!-- include checklist_dependency js-->
     <script>
       function bpFieldInitChecklistDependencyElement(element) {
