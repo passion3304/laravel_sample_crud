@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
+
 use Exception;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -13,22 +14,24 @@ trait Relationships
      * Check if the given method exists in current crud model.
      *
      * @param string $methodName
-     * @return ReflectionMethod|boolean
+     * @return ReflectionMethod|bool
      */
     public function checkIfMethodExistsInModel($methodName)
     {
         try {
             $method = (new \ReflectionClass($this->model))->getMethod($methodName);
+
             return $method;
         } catch (Exception $e) {
             return false;
         }
     }
+
     /**
      * Get the relation from field name.
      *
      * @param string $fieldName
-     * @return array|boolean
+     * @return array|bool
      */
     public function getRelationFromFieldName($fieldName)
     {
@@ -44,22 +47,25 @@ trait Relationships
      * If the field name is not a relationship method e.g: article_id, we try to find if this field has a relation defined.
      *
      * @param string $fieldName
-     * @return array|boolean
+     * @return array|bool
      */
     public function checkIfFieldNameBelongsToAnyRelation($fieldName)
     {
         $relations = $this->getAvailableRelationsInModel();
-        if(!empty($relations)) {
-            if(in_array($fieldName, array_column($relations,'name'))) {
-                return array_filter($relations, function($arr) use ($fieldName) {
+        if (! empty($relations)) {
+            if (in_array($fieldName, array_column($relations, 'name'))) {
+                return array_filter($relations, function ($arr) use ($fieldName) {
                     if (isset($arr['name'])) {
                         return $arr['name'] == $fieldName;
                     }
+
                     return false;
                 })[0];
             }
+
             return false;
         }
+
         return false;
     }
 
@@ -71,17 +77,17 @@ trait Relationships
     public function getAvailableRelationsInModel()
     {
         $reflect = new \ReflectionClass($this->model);
-        $relations = array();
+        $relations = [];
         foreach ($reflect->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-
             if ($method->hasReturnType()) {
                 $returnType = $method->getReturnType();
-                    if (in_array(class_basename($returnType->getName()), $this->eloquentRelationships)) {
+                if (in_array(class_basename($returnType->getName()), $this->eloquentRelationships)) {
                     $relations[] = $this->getRelationData($method);
+                }
             }
         }
-            }
-            return $relations;
+
+        return $relations;
     }
 
     /**
@@ -106,8 +112,10 @@ trait Relationships
                 if ($relationship['relation_type'] == 'HasMany' || $relationship['relation_type'] == 'BelongsToMany') {
                     $relationship['pivot'] = true;
                 }
+
                 return $relationship;
             }
+
             return false;
         } catch (Exception $e) {
             return false;
