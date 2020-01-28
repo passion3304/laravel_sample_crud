@@ -16,7 +16,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="{{$entity}}-inline-create-dialog-label">New {{$entity}}</h5>
+        <h5 class="modal-title" id="{{$entity}}-inline-create-dialog-label">{{trans('backpack::crud.add')}} {{$entity}}</h5>
         </div>
         <div class="modal-body">
             <form method="post"
@@ -39,8 +39,8 @@
     </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="cancelButton" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="saveButton">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelButton" data-dismiss="modal">{{trans('backpack::crud.cancel')}}</button>
+          <button type="button" class="btn btn-primary" id="saveButton">{{trans('backpack::crud.save')}}</button>
         </div>
       </div>
     </div>

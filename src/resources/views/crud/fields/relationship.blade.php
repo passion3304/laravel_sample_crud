@@ -9,18 +9,27 @@
     $fieldInlineConfiguration = $field['inline_create'] ?? [];
 
     if(!$field['multiple']) {
-    $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+        $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
     }else{
         $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
     }
 
-    $field['model'] = $field['model'] ?? $crud->getRelationModel($field['entity']);
-
     $related_model_instance = new $field['model']();
 
+    //this is to provide access to FetchOperation, it probably gona change as FetchOperation changes, does not break the field if not using the operation
     $response_entity = isset($field['response_entity']) ? $field['response_entity'] : $crud->hasOperationSetting('ajaxEntities') ? array_has($crud->getOperationSetting('ajaxEntities'), $field['entity']) ? $field['entity'] : array_key_first($crud->getOperationSetting('ajaxEntities')) : '';
 
-    $placeholder = isset($field['placeholder']) ? $field['placeholder'] : 'Select a ' . $field['entity'];
+    /*
+     * if developer does not provide a placeholder we set one. If field is not nullable and developer did not setup the placeholder
+     * we will get some default option for the select.
+    */
+    $autoFetch = false;
+    if(!isset($field['placeholder'])) {
+        $field['placeholder'] = 'Select an ' . $field['entity'];
+        $autoFetch = true;
+    }
+
+
 
     if ($current_value !== false) {
         if(is_array($current_value)) {
@@ -92,6 +101,7 @@ if(!isset($inlineCreate)) {
         @endif
         data-original-name="{{ $field['name'] }}"
         style="width: 100%"
+        data-auto-fetch="{{var_export($autoFetch)}}"
         data-init-function="bpFieldInitRelationshipElement"
         data-is-inline="{{ $inlineCreate ?? 'false' }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
@@ -99,7 +109,7 @@ if(!isset($inlineCreate)) {
         data-allows-null="{{var_export($allows_null)}}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
-        data-placeholder="{{ $placeholder }}"
+        data-placeholder="{{ $field['placeholder'] }}"
 
         @if($field['ajax'])
         data-data-source="{{isset($field['data_source']) ? $field['data_source'] : url($crud->route . '/fetch/' . $response_entity)}}"
@@ -228,16 +238,14 @@ function fillSelectOptions(element, $created = false) {
     var $options = JSON.parse(element.attr('data-options-for-select'));
 
     var $allows_null = element.attr('data-allows-null');
+    var $autoFetch = element.attr('data-auto-fetch') == 'true' ? true : false;
 
     var $relatedKey = element.attr('data-connected-entity-key-name');
 
-    //used to check if after a related creation the created entity is still available in options
-    var $createdIsOnOptions = false;
     var selectedOptions = [];
     //if this field is a select multiple we json parse the current value
     if ($multiple === true) {
         //if there are any selected options we re-select them
-
         $value = element.attr('data-current-value');
         if($value.length) {
             var $currentValue = JSON.parse(element.attr('data-current-value'));
@@ -246,15 +254,13 @@ function fillSelectOptions(element, $created = false) {
         }
 
         if(!Array.isArray($currentValue) && (typeof $currentValue !== 'object' && $currentValue !== null)) {
-
             selectedOptions.push($currentValue);
         }else{
 
            for (let [key, value] of Object.entries($currentValue)) {
 
                 selectedOptions.push(key);
-
-        }
+            }
         }
 
     //we add the options to the select and check if we have some created, if yes we append to selected options
@@ -264,7 +270,6 @@ function fillSelectOptions(element, $created = false) {
 
         if ($created) {
             if(key == $created[$relatedKey]) {
-                $createdIsOnOptions = true;
                 selectedOptions.push(key);
             }
         }
@@ -273,6 +278,8 @@ function fillSelectOptions(element, $created = false) {
     }
 
     $(element).val(selectedOptions);
+
+    $(element).attr('data-current-value',JSON.stringify(selectedOptions));
 
     }else{
         var $currentValue = element.attr('data-current-value');
@@ -285,18 +292,15 @@ function fillSelectOptions(element, $created = false) {
                 $(element).val(key);
             }
             if ($created) {
-                //we check if created is presented in the available options, might not be based on some model constrain (like active() scope)
+                //we select the created if it is on options
                 if(key == $created[$relatedKey]) {
-                    $createdIsOnOptions = true;
                     $(element).val(key);
 
                 }
-
-         }
+            }
+        }
+        $(element).attr('data-current-value',$(element).val());
     }
-    }
-
-    $(element).attr('data-current-value',JSON.stringify(selectedOptions));
 
     $(element).trigger('change')
 }
@@ -319,7 +323,7 @@ function triggerSelectOptions(element, $created = false) {
 
         });
     } else {
-        fillSelectOptions(element, $created);
+        fillSelectOptions(element);
     }
 }
 }
@@ -405,7 +409,7 @@ function triggerModal(element) {
                     title: "Related entity creation",
                     text: "Related entity created with success.",
                     icon: "success",
-                    timer: 4000,
+                    timer: 3000,
                     buttons: false,
                 });
             },
@@ -459,43 +463,45 @@ function triggerModal(element) {
                 var $dependencies = JSON.parse(element.attr('data-dependencies'));
                 var $modelKey = element.attr('data-model-local-key');
                 var $selectOptions = element.attr('data-options-for-select');
-                var $value = element.attr('data-current-value');
+
+                var $autoFetch = element.attr('data-auto-fetch') == 'true' ? true : false;
 
 
 
-
+                    //console.log($ajax);
                 if(!$ajax) {
                     triggerSelectOptions(element);
                 }else{
                     var $item = false;
 
-                    if(Array.isArray($value) && $value.length) {
+                    var $value = JSON.parse(element.attr('data-current-value'))
+
+                    if(Object.keys($value).length > 0) {
                         $item = true;
                     }
-
                     var selectedOptions = [];
                     if($item) {
-                        var $currentValue = JSON.parse($value);
+                        var $currentValue = $value;
                     }else{
                         var $currentValue = '';
                     }
+                    //we reselect the previously selected options if any.
+                    for (const [key, value] of Object.entries($currentValue)) {
+                        selectedOptions.push(key);
+                        var $option = new Option(value, key);
+                        $(element).append($option);
+                    }
 
-        //we reselect the previously selected options if any.
-        for (const [key, value] of Object.entries($currentValue)) {
-            selectedOptions.push(key);
-            var $option = new Option(value, key);
-            $(element).append($option);
-        }
-        $(element).val(selectedOptions);
-                    if(element.attr('data-allows-null') != 'true' && $item === false) {
+                    $(element).val(selectedOptions);
 
+                    //if null not allowed, there is no item and developer did not provide a placeholder
+                    if(element.attr('data-allows-null') != 'true' && $item === false && $autoFetch) {
                         fetchDefaultEntry(element).then(result => {
                             refreshDefaultOption(element, $fieldAttribute, $modelKey);
                         });
                     }
-        }
+                }
 
-                //var $item = JSON.parse(element.attr('data-item'));
                 var $allowClear = (element.attr('data-allows-null') == 'true') ? true : false;
                 //Checks if field is not beeing inserted in one inline create modal and setup buttons
                 if($inlineField == "false") {
@@ -509,6 +515,7 @@ function triggerModal(element) {
 
                         element.select2({
                             theme: "bootstrap",
+                            placeholder: $placeholder,
                             allowClear: $allowClear,
                         });
                         }else{
@@ -519,12 +526,12 @@ function triggerModal(element) {
                             minimumInputLength: $minimumInputLength,
                             allowClear: $allowClear,
                             ajax: {
-                    url: $dataSource,
-                    type: $method,
-                    dataType: 'json',
-                    quietMillis: 250,
-                    data: function (params) {
-                        if ($includeAllFormFields) {
+                            url: $dataSource,
+                            type: $method,
+                            dataType: 'json',
+                            quietMillis: 500,
+                            data: function (params) {
+                            if ($includeAllFormFields) {
                             return {
                                 q: params.term, // search term
                                 page: params.page, // pagination

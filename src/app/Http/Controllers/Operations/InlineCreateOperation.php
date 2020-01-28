@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Support\Facades\Route;
 
 trait InlineCreateOperation
@@ -14,73 +13,74 @@ trait InlineCreateOperation
      * @param string $routeName  Prefix of the route name.
      * @param string $controller Name of the current CrudController.
      */
-    protected function setupInlineCreateOperationRoutes($segment, $routeName, $controller)
+    protected function setupInlineCreateRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/inline/create', [
             'as'        => $segment.'-inline-create',
             'uses'      => $controller.'@getInlineCreateModal',
-            'operation' => 'InlineCreateOperation',
+            'operation' => 'InlineCreate',
         ]);
         Route::post($segment.'/inline/create', [
             'as'        => $segment.'-inline-create-save',
             'uses'      => $controller.'@storeInlineCreate',
-            'operation' => 'InlineCreateOperation',
+            'operation' => 'InlineCreate',
         ]);
         Route::get($segment.'/inline/refresh', [
             'as'        => $segment.'-inline-refresh-options',
             'uses'      => $controller.'@inlineRefreshOptions',
-            'operation' => 'InlineCreateOperation',
+            'operation' => 'InlineCreate',
         ]);
     }
 
-    public function setupInlineCreateDefaults()
+    /**
+     * Setup operation default settings. We run setup() and setupCreateOperation() because those are run in middleware
+     * and to get the fields we need them earlier in application lifecycle
+     */
+    protected function setupInlineCreateDefaults()
     {
         $this->crud->setOperationSetting('inline_create', true);
-    }
-
-    public function getInlineCreateModal()
-    {
-        if (request()->has('entity')) {
-            $this->setupOperationSettings();
-
-            return $this->getModalContent(request()->get('entity'), 'create', $this->crud->getCreateFields());
-        }
-    }
-
-    public function setupOperationSettings()
-    {
         if (method_exists($this, 'setupCreateOperation')) {
+            if (method_exists($this, 'setup')) {
+                $this->setup();
+            }
             $this->setupCreateOperation();
         } else {
             $this->setup();
         }
-
         $this->crud->applyConfigurationFromSettings('create');
     }
 
-    public function getModalContent($entity, $action, $fields)
+    /**
+     * Returns the HTML of the create form. It's used by the CreateInline operation, to show that form
+     * inside a popup (aka modal).
+     */
+    public function getInlineCreateModal()
     {
-        return view(
+        if (request()->has('entity')) {
+            return view(
                 'crud::fields.relationship.modal',
                 [
-                    'fields' => $fields,
-                    'action' => $action,
+                    'fields' => $this->crud->getCreateFields(),
+                    'action' => 'create',
                     'crud' => $this->crud,
-                    'entity' => $entity,
+                    'entity' => request()->get('entity'),
                 ]
                 );
+        }
     }
 
-    public function InlineRefreshOptions()
+    /**
+     * This function is called after a related entity is added so we refresh the options in the select. By query constrains the newly
+     * added option might not be available to select
+     */
+    public function inlineRefreshOptions()
     {
-        $this->setupOperationSettings();
-
         if (request()->has('field')) {
             $field = $this->crud->fields()[request()->get('field')];
-            $field['entity'] = $field['entity'] ?? $field['name'];
-            $field['model'] = $field['model'] ?? $this->crud->getRelationModel($field['entity']);
-            $relatedModelInstance = new $field['model']();
-            if ($field) {
+
+            if (! empty($field)) {
+                $relatedModelInstance = new $field['model']();
+
                 if (! isset($field['options'])) {
                     $options = $field['model']::all()->pluck($field['attribute'], $relatedModelInstance->getKeyName());
                 } else {
@@ -92,10 +92,13 @@ trait InlineCreateOperation
         }
     }
 
+    /**
+     * Runs the store() function in controller like a regular crud create form
+     *
+     * @return void
+     */
     public function storeInlineCreate()
     {
-        $this->setupOperationSettings();
-
         return $this->store();
     }
 }

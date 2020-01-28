@@ -1,4 +1,4 @@
-@push('crud_field_styles')
+@push('after_styles')
 <style>
     .loading_modal_dialog {
         position: fixed;
@@ -129,7 +129,7 @@
     </style>
 @endpush
 
-@push('crud_field_scripts')
+@push('after_scripts')
 <script>
             jQuery(document).ready(function($) {
                 $( "body" ).prepend('<div class="loading_modal_dialog"></div>');

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait Relationships
 {
-    //this is the currently supported, we should be able to add more in future.
-    protected $eloquentRelationships = ['HasOne', 'BelongsTo', 'HasMany', 'BelongsToMany'];
 
     /**
      * Check if the given method exists in current crud model.
@@ -16,28 +14,21 @@ trait Relationships
      * @param string $methodName
      * @return ReflectionMethod|bool
      */
-    public function checkIfMethodExistsInModel($methodName)
+    public function modelHasMethod($methodName)
     {
-        try {
-            $method = (new \ReflectionClass($this->model))->getMethod($methodName);
-
-            return $method;
-        } catch (Exception $e) {
-            return false;
-        }
+       return method_exists($this->model,$methodName);
     }
 
     /**
-     * Get the relation from field name.
+     * Provided a field name we try to figure if the name is a relation name or it's a database table field that points to any relation
      *
      * @param string $fieldName
      * @return array|bool
      */
     public function getRelationFromFieldName($fieldName)
     {
-        $method = $this->checkIfMethodExistsInModel($fieldName);
-        if ($method) {
-            return $this->getRelationData($method);
+        if ($this->modelHasMethod($fieldName)) {
+            return $this->getRelationData($fieldName);
         } else {
             return $this->checkIfFieldNameBelongsToAnyRelation($fieldName);
         }
@@ -76,18 +67,25 @@ trait Relationships
      */
     public function getAvailableRelationsInModel()
     {
-        $reflect = new \ReflectionClass($this->model);
-        $relations = [];
-        foreach ($reflect->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->hasReturnType()) {
-                $returnType = $method->getReturnType();
-                if (in_array(class_basename($returnType->getName()), $this->eloquentRelationships)) {
-                    $relations[] = $this->getRelationData($method);
+        //this is the currently supported, we should be able to add more in future.
+        $eloquentRelationships = ['HasOne', 'BelongsTo', 'HasMany', 'BelongsToMany'];
+
+        try {
+            $reflect = new \ReflectionClass($this->model);
+            $relations = [];
+            foreach ($reflect->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                if ($method->hasReturnType()) {
+                    $returnType = $method->getReturnType();
+                    if (in_array(class_basename($returnType->getName()), $eloquentRelationships)) {
+                        $relations[] = $this->getRelationData($method);
+                    }
                 }
             }
-        }
 
-        return $relations;
+            return $relations;
+        }catch(Exception $e) {
+            return;
+        }
     }
 
     /**
@@ -99,6 +97,9 @@ trait Relationships
     public function getRelationData($method)
     {
         try {
+
+            $method = (new \ReflectionClass($this->model))->getMethod($method);
+
             $relation = $method->invoke($this->model);
 
             if ($relation instanceof Relation) {
