@@ -34,7 +34,7 @@ trait InlineCreateOperation
 
     /**
      * Setup operation default settings. We run setup() and setupCreateOperation() because those are run in middleware
-     * and to get the fields we need them earlier in application lifecycle
+     * and to get the fields we need them earlier in application lifecycle.
      */
     protected function setupInlineCreateDefaults()
     {
@@ -71,7 +71,7 @@ trait InlineCreateOperation
 
     /**
      * This function is called after a related entity is added so we refresh the options in the select. By query constrains the newly
-     * added option might not be available to select
+     * added option might not be available to select.
      */
     public function inlineRefreshOptions()
     {
@@ -93,7 +93,7 @@ trait InlineCreateOperation
     }
 
     /**
-     * Runs the store() function in controller like a regular crud create form
+     * Runs the store() function in controller like a regular crud create form.
      *
      * @return void
      */

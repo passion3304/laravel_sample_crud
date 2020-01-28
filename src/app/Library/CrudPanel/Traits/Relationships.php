@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait Relationships
 {
-
     /**
      * Check if the given method exists in current crud model.
      *
@@ -16,11 +15,11 @@ trait Relationships
      */
     public function modelHasMethod($methodName)
     {
-       return method_exists($this->model,$methodName);
+        return method_exists($this->model, $methodName);
     }
 
     /**
-     * Provided a field name we try to figure if the name is a relation name or it's a database table field that points to any relation
+     * Provided a field name we try to figure if the name is a relation name or it's a database table field that points to any relation.
      *
      * @param string $fieldName
      * @return array|bool
@@ -83,7 +82,7 @@ trait Relationships
             }
 
             return $relations;
-        }catch(Exception $e) {
+        } catch (Exception $e) {
             return;
         }
     }
@@ -97,7 +96,6 @@ trait Relationships
     public function getRelationData($method)
     {
         try {
-
             $method = (new \ReflectionClass($this->model))->getMethod($method);
 
             $relation = $method->invoke($this->model);
