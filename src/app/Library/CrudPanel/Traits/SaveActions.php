@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 
 trait SaveActions
 {
-
     /**
      * Get the developer's preference on what save action is the default one
      * for the current operation.
@@ -40,7 +39,7 @@ trait SaveActions
     }
 
     /**
-     * Gets the save action that has the desired order
+     * Gets the save action that has the desired order.
      *
      * @param int $order
      * @return array
@@ -75,8 +74,7 @@ trait SaveActions
      */
     public function addSaveAction(array $saveAction)
     {
-
-        $orderCounter = $this->getOperationSetting('save_actions') !== null ? (count($this->getOperationSetting('save_actions'))+1) : 1;
+        $orderCounter = $this->getOperationSetting('save_actions') !== null ? (count($this->getOperationSetting('save_actions')) + 1) : 1;
         //check for some mandatory fields
         $saveAction['name'] ?? abort(500, 'Please define save action name.');
         $saveAction['redirect'] = $saveAction['redirect'] ?? function ($crud, $request, $itemId) {
@@ -88,7 +86,7 @@ trait SaveActions
 
         $actions = $this->getOperationSetting('save_actions') ?? [];
 
-        if (!in_array($saveAction['name'], $actions)) {
+        if (! in_array($saveAction['name'], $actions)) {
             $actions[$saveAction['name']] = $saveAction;
         }
 
@@ -106,7 +104,7 @@ trait SaveActions
     {
         $actions = $this->getOperationSetting('save_actions') ?? [];
         if (! empty($actions)) {
-            $replaceOrder = isset($actions[$saveAction]) ? $actions[$saveAction]['order'] : count($actions)+1;
+            $replaceOrder = isset($actions[$saveAction]) ? $actions[$saveAction]['order'] : count($actions) + 1;
 
             foreach ($actions as $key => $sv) {
                 if ($wantedOrder == $sv['order']) {
@@ -128,23 +126,23 @@ trait SaveActions
     public function replaceSaveActions($saveActions)
     {
         //we reset all save actions
-        $this->setOperationSetting('save_actions',[]);
+        $this->setOperationSetting('save_actions', []);
 
         if (count($saveActions) != count($saveActions, COUNT_RECURSIVE)) {
-
             $this->addSaveActions($saveActions);
-        }else{
+        } else {
             $this->addSaveAction($saveActions);
         }
     }
 
     /**
-     * Alias function of replaceSaveActions() for CRUD consistency
+     * Alias function of replaceSaveActions() for CRUD consistency.
      *
      * @param array $saveActions
      * @return void
      */
-    public function setSaveActions($saveActions) {
+    public function setSaveActions($saveActions)
+    {
         return $this->replaceSaveActions($saveActions);
     }
 
@@ -167,9 +165,10 @@ trait SaveActions
      * @param string $saveAction
      * @return void
      */
-    public function removeSaveAction(string $saveAction) {
+    public function removeSaveAction(string $saveAction)
+    {
         $actions = $this->getOperationSetting('save_actions') ?? [];
-        if(isset($actions[$saveAction])) {
+        if (isset($actions[$saveAction])) {
             $actions[$saveAction] = null;
         }
         $this->setOperationSetting('save_actions', array_filter($actions));
@@ -187,7 +186,7 @@ trait SaveActions
     }
 
     /**
-     * Allows the developer to set save actions order. It could be ['action1','action2'] or ['action1' => 1, 'action2' => 2]
+     * Allows the developer to set save actions order. It could be ['action1','action2'] or ['action1' => 1, 'action2' => 2].
      *
      * @param array $saveActions
      * @return void
@@ -195,14 +194,13 @@ trait SaveActions
     public function orderSaveActions(array $saveActions)
     {
         foreach ($saveActions as $sv => $order) {
-            if(!is_int($order)) {
-                $this->orderSaveAction($order, $sv+1);
-            }else{
-                $this->orderSaveAction($sv,$order);
+            if (! is_int($order)) {
+                $this->orderSaveAction($order, $sv + 1);
+            } else {
+                $this->orderSaveAction($sv, $order);
             }
         }
     }
-
 
     /**
      * Get save actions, with pre-selected action from stored session variable or config fallback.
