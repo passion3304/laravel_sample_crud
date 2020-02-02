@@ -8,6 +8,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.37 - 2020-02-02
+
+### Fixed
+- (fixed in Backstrap) when closing the sidebar, the content is centered left-to-right;
+- on mobile and tablet, the hamburger menu is no longer out of the container, we have the same margin left-to-right;
+- updated Backstrap to 0.2.22, updated all JS dependencies, re-published all CSS and JS assets;
+
 
 ## 4.0.36 - 2020-01-28
 
