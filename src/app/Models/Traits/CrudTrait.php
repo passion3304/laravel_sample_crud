@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Traversable;
+
 //use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
 
 trait CrudTrait
@@ -319,6 +320,4 @@ trait CrudTrait
 
         return false;
     }
-
-
 }

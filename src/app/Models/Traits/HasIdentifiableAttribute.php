@@ -1,8 +1,9 @@
 <?php
+
 namespace Backpack\CRUD\app\Models\Traits;
 
-trait HasIdentifiableAttribute {
-
+trait HasIdentifiableAttribute
+{
     public static function getIdentifiableName()
     {
         $model = (new self);
@@ -60,5 +61,4 @@ trait HasIdentifiableAttribute {
         //in case everything fails we just return the first column in database
         return array_first($columnsNames);
     }
-
 }

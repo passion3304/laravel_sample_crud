@@ -34,8 +34,6 @@ trait FetchOperation
                     'uses'      => $controller.'@fetchSingleItem',
                     'operation' => 'FetchOperation',
                 ]);
-
-
             }
         }
     }
@@ -45,20 +43,21 @@ trait FetchOperation
      *
      * @return void
      */
-    public function operationFetch() {
+    public function operationFetch()
+    {
         $request = \Request::instance();
-        $routeSegment = last(explode('/',$request->route()->uri));
+        $routeSegment = last(explode('/', $request->route()->uri));
 
         //rebuild function name from url segment
         $methodName = str_replace('-', '', ucwords($routeSegment, '-'));
 
         ucfirst($methodName);
 
-
-        if(method_exists($this,'fetch'.$methodName)) {
+        if (method_exists($this, 'fetch'.$methodName)) {
             return $this->{'fetch'.$methodName}();
         }
-        return response()->json(['error' => 'You must define fetch'.$methodName.'() in your crud controller.'],500);
+
+        return response()->json(['error' => 'You must define fetch'.$methodName.'() in your crud controller.'], 500);
     }
 
     /**
@@ -70,14 +69,14 @@ trait FetchOperation
     public function fetch($arg)
     {
         $request = \Request::instance();
-        $fetchConfig = array();
+        $fetchConfig = [];
 
-        if(!is_array($arg)) {
-            if(!class_exists($arg)) {
-                return response()->json(['error' => 'Class: ' . $arg . ' does not exists'],500);
+        if (! is_array($arg)) {
+            if (! class_exists($arg)) {
+                return response()->json(['error' => 'Class: '.$arg.' does not exists'], 500);
             }
             $fetchConfig['model'] = $arg;
-        }else{
+        } else {
             $fetchConfig = $arg;
         }
 
