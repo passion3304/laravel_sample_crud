@@ -128,15 +128,15 @@ class BackpackServiceProvider extends ServiceProvider
 
         // establish the minimum amount of files that need to be published, for Backpack to work; there are the files that will be published by the install command
         $minimum = array_merge(
-            $error_views,
             // $backpack_views,
-            $backpack_public_assets,
             // $backpack_lang_files,
+            // $elfinder_files,
+            $error_views,
+            $backpack_public_assets,
             $backpack_config_files,
             $backpack_menu_contents_view,
             $backpack_custom_routes_file,
-            $gravatar_assets,
-            $elfinder_files
+            $gravatar_assets
         );
 
         // register all possible publish commands and assign tags to each
@@ -223,10 +223,6 @@ class BackpackServiceProvider extends ServiceProvider
             }
             $namespacedController = $groupNamespace.$controller;
             $controllerInstance = new $namespacedController();
-            if (method_exists($controllerInstance, 'setupBareCrud')) {
-                $controllerInstance->crud = app()->make('crud');
-                $controllerInstance->setupBareCrud();
-            }
 
             return $controllerInstance->setupRoutes($name, $routeName, $controller);
         });
