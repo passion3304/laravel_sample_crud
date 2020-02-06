@@ -8,6 +8,32 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.39 - 2020-02-06
+
+### Fixed
+- merged #2426 - select2_from_ajax field did not save empty array when Clear button was pressed;
+
+
+## 4.0.38 - 2020-02-04
+
+### Fixed
+- merged #2428 - bug in installation process published elfinder files even when not necessary;
+
+
+## 4.0.37 - 2020-02-02
+
+### Fixed
+- (fixed in Backstrap) when closing the sidebar, the content is centered left-to-right;
+- on mobile and tablet, the hamburger menu is no longer out of the container, we have the same margin left-to-right;
+- updated Backstrap to 0.2.22, updated all JS dependencies, re-published all CSS and JS assets;
+
+
+## 4.0.36 - 2020-01-28
+
+### Fixed
+- merged #2401 fixes #2390 - dropdown filter did not properly reset when clearing filters;
+
+
 ## 4.0.35 - 2020-01-23
 
 ### Fixed
