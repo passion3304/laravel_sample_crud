@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.39 - 2020-02-06
+
+### Fixed
+- merged #2426 - select2_from_ajax field did not save empty array when Clear button was pressed;
+
+
 ## 4.0.38 - 2020-02-04
 
 ### Fixed
