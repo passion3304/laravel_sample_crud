@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.38 - 2020-02-04
+
+### Fixed
+- merged #2428 - bug in installation process published elfinder files even when not necessary;
+
+
 ## 4.0.37 - 2020-02-02
 
 ### Fixed
