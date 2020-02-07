@@ -16,22 +16,18 @@ trait FetchOperation
      */
     protected function setupFetchOperationRoutes($segment, $routeName, $controller)
     {
+        // get all method names on the current model that start with "fetch" (ex: fetchCategory)
+        // if a method that looks like that is present, it means we need to add the routes that fetch that entity
         preg_match_all('/(?<=^|;)fetch([^;]+?)(;|$)/', implode(';', get_class_methods($this)), $matches);
 
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
-                //De-capitalize first letter.
-                lcfirst($methodName);
+
                 //Replace capitals with lowers and add hifens. (WhatEver will return what-ever)
                 $methodName = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $methodName));
 
                 Route::get($segment.'/fetch/'.$methodName, [
                     'uses'      => $controller.'@operationFetch',
-                    'operation' => 'FetchOperation',
-                ]);
-
-                Route::get($segment.'/fetch/{id}/'.$methodName, [
-                    'uses'      => $controller.'@fetchSingleItem',
                     'operation' => 'FetchOperation',
                 ]);
             }
@@ -48,9 +44,10 @@ trait FetchOperation
         $request = \Request::instance();
         $routeSegment = last(explode('/', $request->route()->uri));
 
-        //rebuild function name from url segment
+        //rebuild function name from url segment, example: super-news become superNews.
         $methodName = str_replace('-', '', ucwords($routeSegment, '-'));
 
+        //capitalize first letter
         ucfirst($methodName);
 
         if (method_exists($this, 'fetch'.$methodName)) {
@@ -112,20 +109,20 @@ trait FetchOperation
             if ($search_term === false) {
                 return $instance->first();
             }
+
             foreach ($whereToSearch as $searchColumn) {
+                //we grab the column type
                 $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
 
                 $operation = ! isset($isFirst) ? 'where' : 'orWhere';
-
                 if ($columnType == 'string') {
-                    $instance->{$operation}($searchColumn, 'LIKE', '%'.$search_term.'%');
+                    $instance = $instance->{$operation}($searchColumn, 'LIKE', '%'.$search_term.'%');
                 } else {
-                    $instance->{$operation}($searchColumn, $search_term);
+                    $instance = $instance->{$operation}($searchColumn, $search_term);
                 }
                 $isFirst = true;
             }
         }
-
         $results = $instance->paginate($itemsPerPage);
 
         return $results;
