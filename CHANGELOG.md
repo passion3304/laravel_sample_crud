@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.40 - 2020-02-10
+
+### Fixed
+- merged #2438 - exception class for isColumnNullable();
+
+
 ## 4.0.39 - 2020-02-06
 
 ### Fixed
