@@ -37,67 +37,44 @@ trait FetchOperation
      * @param string|array $arg
      * @return void
      */
-    public function fetch($arg)
+    private function fetch($arg)
     {
-        $fetchConfig = [];
+        // get the actual words that were used to search for an item (the search term / search string)
+        $searchString = request()->input('q') ?? false;
+
+        // if the Class was passed as the sole argument, use that as the configured Model
+        // otherwise assume the arguments are actually the configuration array
+        $config = [];
 
         if (! is_array($arg)) {
             if (! class_exists($arg)) {
                 return response()->json(['error' => 'Class: '.$arg.' does not exists'], 500);
             }
-            $fetchConfig['model'] = $arg;
+            $config['model'] = $arg;
         } else {
-            $fetchConfig = $arg;
+            $config = $arg;
         }
 
-        $model = $fetchConfig['model'];
+        // set configuration defaults
+        $config['itemsPerPage'] = $config['itemsPerPage'] ?? 10;
+        $config['searchableAttributes'] = $config['searchableAttributes'] ?? array($config['model']::getIdentifiableName());
+        $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : new $config['model']; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
-        $instance = new $model;
+        if ($searchString === false) {
+            return $config['model']->first();
+        }
 
-        $itemsPerPage = isset($fetchConfig['itemsPerPage']) ? $fetchConfig['itemsPerPage'] : 10;
+        foreach ($config['searchableAttributes'] as $k => $searchColumn) {
+            $operation = ($k == 0) ? 'where' : 'orWhere';
+            $columnType = $config['query']->getColumnType($searchColumn);
 
-        //get searchable attributes if defined otherwise get identifiable attributes from model
-        $whereToSearch = isset($fetchConfig['searchableAttributes']) ?
-        $fetchConfig['searchableAttributes'] : [$model::getIdentifiableName()];
-
-        $table = Config::get('database.connections.'.$instance->getConnectionName().'.prefix').$instance->getTable();
-
-        $conn = $model::getConnectionWithExtraTypeMappings($instance);
-
-        if (request()->has('q')) {
-            if (empty(request()->input('q'))) {
-                $search_term = false;
+            if ($columnType == 'string') {
+                $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$searchString.'%');
             } else {
-                $search_term = request()->input('q');
+                $config['query'] = $config['query']->{$operation}($searchColumn, $searchString);
             }
         }
 
-        $query = isset($fetchConfig['query']) ? $fetchConfig['query'] : $model;
-
-        if (is_callable($query)) {
-            $instance = $query($instance);
-        }
-
-        if (isset($search_term)) {
-            if ($search_term === false) {
-                return $instance->first();
-            }
-
-            foreach ($whereToSearch as $searchColumn) {
-                //we grab the column type
-                $columnType = $conn->getSchemaBuilder()->getColumnType($table, $searchColumn);
-
-                $operation = ! isset($isFirst) ? 'where' : 'orWhere';
-                if ($columnType == 'string') {
-                    $instance = $instance->{$operation}($searchColumn, 'LIKE', '%'.$search_term.'%');
-                } else {
-                    $instance = $instance->{$operation}($searchColumn, $search_term);
-                }
-                $isFirst = true;
-            }
-        }
-        $results = $instance->paginate($itemsPerPage);
-
-        return $results;
+        return $config['query']->paginate($config['itemsPerPage']);
     }
 }
