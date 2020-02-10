@@ -73,7 +73,7 @@ trait CrudTrait
             $conn->getDoctrineColumn($table, $column_name);
 
             return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return true;
         }
     }
