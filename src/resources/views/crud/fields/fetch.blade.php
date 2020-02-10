@@ -49,9 +49,9 @@
         data-model-local-key="{{$crud->model->getKeyName()}}"
         data-placeholder="{{ $placeholder }}"
         data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
-        data-method="{{ $field['method'] ?? 'GET' }}"
+        data-method="{{ $field['method'] ?? 'POST' }}"
         data-data-source="{{ $field['data_source']}}"
-        data-field-attribute="{{ $field['attribute'] }}"
+        data-field-attribute="{{ $field['attribute'] ?? $field['model']::getIdentifiableName() }}"
         data-item="{{ (isset($item) && !is_null($item) && !empty($item)) ? '{ "id":"'.$item->getKey().'","text":"'.$item->{$field['attribute']} .'"}' : json_encode(false) }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
@@ -112,7 +112,7 @@ if (!window.fetchDefaultEntry) {
                 data: {
                     'q': ''
                 },
-                type: 'GET',
+                type: 'POST',
                 success: function (result) {
                     //if data is available here it means developer returned a collection and we want only the first.
                     //when using the AjaxFetchOperation we will have here a single entity.

@@ -33,7 +33,7 @@ trait HasIdentifiableAttribute
         //we check if any of the sensible defaults exists in columns.
         foreach ($sensibleDefaultNames as $defaultName) {
             if (in_array($defaultName, $columnsNames)) {
-                return [$defaultName];
+                return $defaultName;
             }
         }
 
@@ -55,7 +55,7 @@ trait HasIdentifiableAttribute
                     continue;
                 }
 
-                return [$columnName];
+                return $columnName;
             }
         }
         //in case everything fails we just return the first column in database

@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 trait FetchOperation
 {
@@ -22,39 +23,12 @@ trait FetchOperation
 
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
-
-                //Replace capitals with lowers and add hifens. (WhatEver will return what-ever)
-                $methodName = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $methodName));
-
-                Route::get($segment.'/fetch/'.$methodName, [
-                    'uses'      => $controller.'@operationFetch',
+                Route::post($segment.'/fetch/'.Str::kebab($methodName), [
+                    'uses'      => $controller.'@fetch'.$methodName,
                     'operation' => 'FetchOperation',
                 ]);
             }
         }
-    }
-
-    /**
-     * This is the public endpoint that receives the request and parses which entity we would like to fetch.
-     *
-     * @return void
-     */
-    public function operationFetch()
-    {
-        $request = \Request::instance();
-        $routeSegment = last(explode('/', $request->route()->uri));
-
-        //rebuild function name from url segment, example: super-news become superNews.
-        $methodName = str_replace('-', '', ucwords($routeSegment, '-'));
-
-        //capitalize first letter
-        ucfirst($methodName);
-
-        if (method_exists($this, 'fetch'.$methodName)) {
-            return $this->{'fetch'.$methodName}();
-        }
-
-        return response()->json(['error' => 'You must define fetch'.$methodName.'() in your crud controller.'], 500);
     }
 
     /**
@@ -65,7 +39,6 @@ trait FetchOperation
      */
     public function fetch($arg)
     {
-        $request = \Request::instance();
         $fetchConfig = [];
 
         if (! is_array($arg)) {
@@ -85,17 +58,17 @@ trait FetchOperation
 
         //get searchable attributes if defined otherwise get identifiable attributes from model
         $whereToSearch = isset($fetchConfig['searchableAttributes']) ?
-        $fetchConfig['searchableAttributes'] : $model::getIdentifiableName();
+        $fetchConfig['searchableAttributes'] : [$model::getIdentifiableName()];
 
         $table = Config::get('database.connections.'.$instance->getConnectionName().'.prefix').$instance->getTable();
 
         $conn = $model::getConnectionWithExtraTypeMappings($instance);
 
-        if ($request->has('q')) {
-            if (empty($request->input('q'))) {
+        if (request()->has('q')) {
+            if (empty(request()->input('q'))) {
                 $search_term = false;
             } else {
-                $search_term = $request->input('q');
+                $search_term = request()->input('q');
             }
         }
 
