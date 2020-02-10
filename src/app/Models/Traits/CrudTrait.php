@@ -78,25 +78,24 @@ trait CrudTrait
 
     /**
      * Get the model's table name, with the prefix added from the configuration file.
-     * 
+     *
      * @return string Table name with prefix
      */
     public function getTableWithPrefix()
     {
         $prefix = Config::get('database.connections.'.$this->getConnectionName().'.prefix');
-        
+
         return $prefix.$this->getTable();
     }
 
     /**
      * Get the column type for a certain db column.
-     * 
+     *
      * @param  string $columnName Name of the column in the db table.
      * @return string             Db column type.
      */
     public function getColumnType($columnName)
     {
-
         $conn = self::getConnectionWithExtraTypeMappings();
         $table = $this->getTableWithPrefix();
 

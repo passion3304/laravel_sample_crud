@@ -6,12 +6,12 @@ trait HasIdentifiableAttribute
 {
     /**
      * Get the name of the attribute that best defines the entry, from the user perspective.
-     * 
-     * Rephrased: In most cases a user will NOT identify an Article because its ID is "4", but 
-     * because its name is "10 Ways to Burn Fat". This method returns the column in the database 
+     *
+     * Rephrased: In most cases a user will NOT identify an Article because its ID is "4", but
+     * because its name is "10 Ways to Burn Fat". This method returns the column in the database
      * that represents that is better to show to the user as an identifier rather than the ID.
      * Ex: name, title, label, description etc.
-     * 
+     *
      * @return string The name of the column that best defines this entry from the user perspective.
      */
     public static function getIdentifiableName()
@@ -26,7 +26,7 @@ trait HasIdentifiableAttribute
 
     /**
      * Get the most likely column in the db table that could be used as an identifiable attribute.
-     * 
+     *
      * @return string The name of the column in the database that is most likely to be a good indentifying attribute.
      */
     public static function guessIdentifiableColumnName()
@@ -58,8 +58,8 @@ trait HasIdentifiableAttribute
             }
         }
 
-        // if none of the sensible defaults exists 
-        // we get the first column from database 
+        // if none of the sensible defaults exists
+        // we get the first column from database
         // that is NOT indexed (usually primary, foreign keys)
         foreach ($columns as $columnName => $columnProperties) {
             if (! in_array($columnName, $indexedColumns)) {

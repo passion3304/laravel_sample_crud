@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
@@ -57,7 +56,7 @@ trait FetchOperation
 
         // set configuration defaults
         $config['itemsPerPage'] = $config['itemsPerPage'] ?? 10;
-        $config['searchableAttributes'] = $config['searchableAttributes'] ?? array($config['model']::getIdentifiableName());
+        $config['searchableAttributes'] = $config['searchableAttributes'] ?? [$config['model']::getIdentifiableName()];
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : new $config['model']; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
         if ($searchString === false) {
