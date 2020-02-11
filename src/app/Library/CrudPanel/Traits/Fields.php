@@ -43,7 +43,8 @@ trait Fields
 
         // if the label is missing, we should set it
         if (! isset($newField['label'])) {
-            $newField['label'] = mb_ucfirst(str_replace('_', ' ', $newField['name']));
+            $label = is_array($newField['name']) ? $newField['name'][0] : $newField['name'];
+            $newField['label'] = mb_ucfirst(str_replace('_', ' ', $label));
         }
 
         // if the field type is missing, we should set it
