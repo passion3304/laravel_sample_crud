@@ -13,6 +13,7 @@
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
+    // calculate the current value of this field, in JSON format (so that the select2 can parse it)
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
     if ($current_value != false) {
@@ -41,12 +42,7 @@
     <label>{!! $field['label'] !!}</label>
 
     <select
-    @if(!$field['multiple'])
-        name="{{ $field['name'] }}"
-        @else
-        name="{{ $field['name'] }}[]"
-        @endif
-
+        name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitFetchElement"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
@@ -60,13 +56,13 @@
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         data-current-value="{{$current_value}}"
         data-field-multiple="{{var_export($field['multiple'])}}"
+
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
+
         @if($field['multiple'])
         multiple
         @endif
         >
-
-
     </select>
 
     {{-- HINT --}}
@@ -105,45 +101,58 @@
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
 <script>
-document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
-// this function is responsible for fetching some default option when developer don't allow null on field
-if (!window.fetchDefaultEntry) {
-    var fetchDefaultEntry = function (element) {
-        var $fetchUrl = element.attr('data-data-source');
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: $fetchUrl,
-                data: {
-                    'q': ''
-                },
-                type: 'POST',
-                success: function (result) {
-                    //if data is available here it means developer returned a collection and we want only the first.
-                    //when using the AjaxFetchOperation we will have here a single entity.
-                    if(result.data) {
-                        var $return = result.data[0];
-                    }else{
-                        $return = result;
+    // if nullable, make sure the Clear button uses the translated string
+    document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
+
+    // if not nullable, this fetches the default option
+    if (!window.fetchDefaultEntry) {
+        var fetchDefaultEntry = function (element) {
+            var $fetchUrl = element.attr('data-data-source');
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: $fetchUrl,
+                    data: {
+                        'q': ''
+                    },
+                    type: 'POST',
+                    success: function (result) {
+                        //if data is available here it means developer returned a collection and we want only the first.
+                        //when using the AjaxFetchOperation we will have here a single entity.
+                        if(result.data) {
+                            var $return = result.data[0];
+                        }else{
+                            $return = result;
+                        }
+                        $(element).attr('data-item', JSON.stringify($return));
+                        resolve(result);
+                    },
+                    error: function (result) {
+                        reject(result);
                     }
-                    $(element).attr('data-item', JSON.stringify($return));
-                    resolve(result);
-                },
-                error: function (result) {
-                    reject(result);
-                }
+                });
             });
-        });
-    };
-}
-    //this function is responsible by setting up a default option in ajax fields
-if (typeof refreshDefaultOption !== "function") {
-    function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
-        var $item = JSON.parse(element.attr('data-item'));
-        $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
-        $(element).val($item[$modelKey]);
-        $(element).trigger('change');
+        };
     }
-}
+
+    // this function is responsible of setting up a default option in ajax fields
+    if (typeof refreshDefaultOption !== "function") {
+        function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
+            var $item = JSON.parse(element.attr('data-item'));
+            $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
+            $(element).val($item[$modelKey]);
+            $(element).trigger('change');
+        }
+    }
+
+    /**
+     * Initialize Select2 on an element that wants the "Fetch" functionality.
+     * This method gets called automatically by Backpack:
+     * - after the Create/Update page loads
+     * - after a Fetch is inserted with JS somewhere (ex: in a modal)
+     * 
+     * @param  node element The jQuery-wrapped "select" element.
+     * @return void
+     */
     function bpFieldInitFetchElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');

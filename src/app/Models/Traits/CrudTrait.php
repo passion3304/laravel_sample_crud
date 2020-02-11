@@ -82,8 +82,9 @@ trait CrudTrait
     public function getTableWithPrefix()
     {
         $prefix = Config::get('database.connections.'.$this->getConnectionName().'.prefix');
+        $tableName = $this->getTable();
 
-        return $prefix.$this->getTable();
+        return $prefix.$tableName;
     }
 
     /**
@@ -103,7 +104,7 @@ trait CrudTrait
     /**
      * Checks if the given column name is nullable.
      *
-     * @param [string] $column_name
+     * @param string $column_name The name of the db column.
      * @return bool
      */
     public static function isColumnNullable($column_name)
@@ -118,11 +119,14 @@ trait CrudTrait
         if ($conn->getConfig()['driver'] === 'mongodb') {
             return true;
         }
-        try {
-            //check if column exists in database
-            $conn->getDoctrineColumn($table, $column_name);
 
-            return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
+        try {
+            // check if the column exists in the database
+            $column = $conn->getDoctrineColumn($table, $column_name);
+            // check for NOT NULL
+            $notNull = $column->getNotnull();
+            // return the value of nullable (aka the inverse of NOT NULL)
+            return ! $notNull; 
         } catch (\Exception $e) {
             return true;
         }
