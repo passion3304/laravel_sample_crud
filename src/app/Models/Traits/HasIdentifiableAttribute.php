@@ -32,8 +32,8 @@ trait HasIdentifiableAttribute
     public static function guessIdentifiableColumnName()
     {
         $instance = new static();
-        $conn = self::getConnectionWithExtraTypeMappings();
-        $table = $this->getTableWithPrefix();
+        $conn = $instance->getConnectionWithExtraTypeMappings();
+        $table = $instance->getTableWithPrefix();
         $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
         $indexes = $conn->getDoctrineSchemaManager()->listTableIndexes($table);
         $columnsNames = array_keys($columns);

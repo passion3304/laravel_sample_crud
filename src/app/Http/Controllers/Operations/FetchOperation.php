@@ -59,10 +59,12 @@ trait FetchOperation
         $config['searchableAttributes'] = $config['searchableAttributes'] ?? [$config['model']::getIdentifiableName()];
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : new $config['model']; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
+        // TODO: explain why this is here
         if ($searchString === false) {
             return $config['model']->first();
         }
 
+        // for each searchable attribute, add a WHERE clause
         foreach ($config['searchableAttributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
             $columnType = $config['query']->getColumnType($searchColumn);
@@ -74,6 +76,7 @@ trait FetchOperation
             }
         }
 
+        // return the paginated results
         return $config['query']->paginate($config['itemsPerPage']);
     }
 }

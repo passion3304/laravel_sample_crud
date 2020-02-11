@@ -4,36 +4,36 @@
     $routeEntity = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $field['entity']));
 
     $connected_entity = new $field['model'];
-
     $connected_entity_key_name = $connected_entity->getKeyName();
 
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
-
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
+    $field['attribute'] = $field['attribute'] ?? $connected_entity->getIdentifiableName();
+    $field['placeholder'] = $field['placeholder'] ?? $field['multiple'] ? 'Select entities' : 'Select an entity';
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
-    $field['attribute'] = $field['attribute'] ?? $connected_entity->getIdentifiableName();
-
-    $field['placeholder'] = $field['placeholder'] ?? $field['multiple'] ? 'Select entities' : 'Select an entity';
-
-    //isColumnNullable returns true if column is nullable in database, also true if column does not exist.
-    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
-
     if ($current_value != false) {
         if(is_array($current_value)) {
-            $current_value = $connected_entity->whereIn($connected_entity_key_name,$current_value)->pluck($field['attribute'],$connected_entity_key_name);
-        }else{
-            if(is_object($current_value)) {
-            if(!$current_value->isEmpty()) {
-                $current_value = $current_value->pluck($field['attribute'],$connected_entity_key_name)->toArray();
+            $current_value = $connected_entity
+                                    ->whereIn($connected_entity_key_name, $current_value)
+                                    ->pluck($field['attribute'], $connected_entity_key_name);
+        } elseif (is_object($current_value)) {
+            if(! $current_value->isEmpty()) 
+            {
+                $current_value = $current_value
+                                    ->pluck($field['attribute'], $connected_entity_key_name)
+                                    ->toArray();
             }
-        }else{
-            $current_value = $connected_entity->where($connected_entity_key_name,$current_value)->pluck($field['attribute'],$connected_entity_key_name);
+        } else {
+            $current_value = $connected_entity
+                                ->where($connected_entity_key_name, $current_value)
+                                ->pluck($field['attribute'], $connected_entity_key_name);
         }
-        }
-
     }
+
     $current_value = json_encode($current_value);
 @endphp
 

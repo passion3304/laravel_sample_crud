@@ -58,10 +58,9 @@ trait CrudTrait
     /**
      * Register aditional types in doctrine schema manager for the current connection.
      *
-     * @param Model $instance
      * @return DB
      */
-    public static function getConnectionWithExtraTypeMappings()
+    public function getConnectionWithExtraTypeMappings()
     {
         $instance = new self;
 
@@ -95,7 +94,7 @@ trait CrudTrait
      */
     public function getColumnType($columnName)
     {
-        $conn = self::getConnectionWithExtraTypeMappings();
+        $conn = $this->getConnectionWithExtraTypeMappings();
         $table = $this->getTableWithPrefix();
 
         return $conn->getSchemaBuilder()->getColumnType($table, $columnName);
@@ -112,8 +111,7 @@ trait CrudTrait
         // create an instance of the model to be able to get the table name
         $instance = new static();
 
-        $conn = self::getConnectionWithExtraTypeMappings();
-
+        $conn = $instance->getConnectionWithExtraTypeMappings();
         $table = $instance->getTableWithPrefix();
 
         // MongoDB columns are alway nullable
