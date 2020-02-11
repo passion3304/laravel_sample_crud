@@ -13,29 +13,35 @@
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
-    // calculate the current value of this field, in JSON format (so that the select2 can parse it)
+    // make sure the $field['value'] takes the proper value 
+    // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
     if ($current_value != false) {
-        if(is_array($current_value)) {
-            $current_value = $connected_entity
+        switch (gettype($current_value)) {
+            case 'array':
+                $current_value = $connected_entity
                                     ->whereIn($connected_entity_key_name, $current_value)
                                     ->pluck($field['attribute'], $connected_entity_key_name);
-        } elseif (is_object($current_value)) {
-            if(! $current_value->isEmpty()) 
-            {
-                $current_value = $current_value
+                break;
+
+            case 'object':
+                if(! $current_value->isEmpty())  {
+                    $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
-            }
-        } else {
-            $current_value = $connected_entity
+                }
+                break;
+            
+            default:
+                $current_value = $connected_entity
                                 ->where($connected_entity_key_name, $current_value)
                                 ->pluck($field['attribute'], $connected_entity_key_name);
+                break;
         }
     }
 
-    $current_value = json_encode($current_value);
+    $field['value'] = json_encode($current_value);
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -54,7 +60,7 @@
         data-field-attribute="{{ $field['attribute'] ?? $field['model']::getIdentifiableName() }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
-        data-current-value="{{$current_value}}"
+        data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
 
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
