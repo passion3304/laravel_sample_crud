@@ -13,7 +13,7 @@
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
-    // make sure the $field['value'] takes the proper value 
+    // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
@@ -32,7 +32,7 @@
                                     ->toArray();
                 }
                 break;
-            
+
             default:
                 $current_value = $connected_entity
                                 ->where($connected_entity_key_name, $current_value)
@@ -48,6 +48,7 @@
     <label>{!! $field['label'] !!}</label>
 
     <select
+        style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitFetchElement"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
@@ -155,7 +156,7 @@
      * This method gets called automatically by Backpack:
      * - after the Create/Update page loads
      * - after a Fetch is inserted with JS somewhere (ex: in a modal)
-     * 
+     *
      * @param  node element The jQuery-wrapped "select" element.
      * @return void
      */
