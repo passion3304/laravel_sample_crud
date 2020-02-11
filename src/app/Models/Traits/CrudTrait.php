@@ -126,7 +126,7 @@ trait CrudTrait
             // check for NOT NULL
             $notNull = $column->getNotnull();
             // return the value of nullable (aka the inverse of NOT NULL)
-            return ! $notNull; 
+            return ! $notNull;
         } catch (\Exception $e) {
             return true;
         }
