@@ -2,76 +2,85 @@
 
 @php
 
+    //in case entity is superNews we want the url friendly super-news
+    $routeEntity = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $field['entity']));
+
+    if(isset($field['inline_create']) && !is_array($field['inline_create'])) {
+        $field['inline_create'] = [true];
+    }
+
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
-    $field['ajax'] = $field['ajax'] ?? config('backpack.crud.relationships.default_ajax', false);
+    $field['ajax'] = $field['ajax'] ?? $crud->getOperationSetting('ajax_relationships', false, $crud->getOperation());
+    $field['placeholder'] = $field['placeholder'] ?? $field['multiple'] ? 'Select entries' : 'Select entry';
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
+    $connected_entity = new $field['model'];
+    $connected_entity_key_name = $connected_entity->getKeyName();
 
-    $fieldInlineConfiguration = $field['inline_create'] ?? [];
+    // make sure the $field['value'] takes the proper value
+    // and format it to JSON, so that select2 can parse it
+    $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
-    if(!$field['multiple']) {
-        $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+    if ($current_value != false) {
+        switch (gettype($current_value)) {
+            case 'array':
+                $current_value = $connected_entity
+                                    ->whereIn($connected_entity_key_name, $current_value)
+                                    ->pluck($field['attribute'], $connected_entity_key_name);
+                break;
+            case 'object':
+                if(! $current_value->isEmpty())  {
+                    $current_value = $current_value
+                                    ->pluck($field['attribute'], $connected_entity_key_name)
+                                    ->toArray();
+                }
+                break;
+            default:
+                $current_value = $connected_entity
+                                ->where($connected_entity_key_name, $current_value)
+                                ->pluck($field['attribute'], $connected_entity_key_name);
+                break;
+        }
+    }
+    $field['value'] = json_encode($current_value);
+
+    //make sure we provide select options in case field is not an ajax field
+    //or setup the url for fetching those options in ajax
+    $field['options'] = $field['options'] ?? [];
+
+    if($field['ajax'] != true) {
+        if (empty($field['options'])) {
+            $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name);
+        } else {
+            $field['options'] = call_user_func($field['options'], $field['model']::query()->pluck($field['attribute'],$connected_entity_key_name));
+        }
     }else{
-        $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
-    }
-
-    $related_model_instance = new $field['model']();
-
-    //this is to provide access to FetchOperation, it probably gona change as FetchOperation changes, does not break the field if not using the operation
-    $response_entity = isset($field['response_entity']) ? $field['response_entity'] : $crud->hasOperationSetting('ajaxEntities') ? array_has($crud->getOperationSetting('ajaxEntities'), $field['entity']) ? $field['entity'] : array_key_first($crud->getOperationSetting('ajaxEntities')) : '';
-
-    /*
-     * if developer does not provide a placeholder we set one. If field is not nullable and developer did not setup the placeholder
-     * we will get some default option for the select.
-    */
-    $autoFetch = false;
-    if(!isset($field['placeholder'])) {
-        $field['placeholder'] = 'Select an ' . $field['entity'];
-        $autoFetch = true;
-    }
-
-
-
-    if ($current_value !== false) {
-        if(is_array($current_value)) {
-            $current_value = $related_model_instance->whereIn($related_model_instance->getKeyName(),$current_value)->pluck($field['attribute'],$related_model_instance->getKeyName());
-        }else{
-            if(is_object($current_value)) {
-            if(!$current_value->isEmpty()) {
-                $current_value = $current_value->pluck($field['attribute'],$related_model_instance->getKeyName())->toArray();
-            }
+        //case field is ajax we check if FetchOperation is setup
+        //and provide the data_source accordingly
+        if(method_exists('fetch'.ucfirst($field['entity']))) {
+            $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
         }
 
-        }
-        $current_value = json_encode($current_value);
+        $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
     }
 
-
-//this checks if column is nullable on database by default, but developer might overriden that property
-$allows_null = isset($field['allows_null']) ? (bool)$field['allows_null'] : $crud->model::isColumnNullable($field['name']);
-
-//dd($allows_null);
-
-$options = [];
-   if($field['ajax'] != true) {
-    if (!isset($field['options'])) {
-
-    $options = $related_model_instance::all()->pluck($field['attribute'],$related_model_instance->getKeyName());
-} else {
-    $options = call_user_func($field['options'], $field['model']::query()->pluck($field['attribute'],$related_model_instance->getKeyName()));
-}
-   }
-
-//we make sure on_the_fly operation is setup and that user wants to allow field creation
+// InlineCreateOperation set this setting to true, we then
+// check if user configured inline create for this field.
 if($crud->has($crud->getOperation().'.inline_create')) {
 
-$activeInlineCreate = !empty($fieldInlineConfiguration) ? true : false;
+$activeInlineCreate = !empty($field['inline_create']) ? true : false;
 
 if($activeInlineCreate) {
-    //if user don't specify 'entity_route' we assume it's the same from $field['entity']
-    $inlineCreateEntity = isset($fieldInlineConfiguration['entity']) ? $fieldInlineConfiguration['entity'] : $field['entity'];
+    //if user don't specify a different entity in inline_create we assume it's the same from $field['entity']
+    $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $field['entity'];
 
+    //we check if this field is not beeing requested in some InlineCreate operation.
+    //this variable is setup by InlineCreate modal when loading the fields.
 if(!isset($inlineCreate)) {
-    $createRoute = route($inlineCreateEntity."-inline-create");
+
+    //route to create a new entity
+    $createRoute = route($field['inline_create']['entity']."-inline-create");
 
     $createRouteEntity = last(explode('/', $crud->route));
 
@@ -91,41 +100,38 @@ if(!isset($inlineCreate)) {
         @include('crud::inc.field_translatable_icon')
 
         @if($activeInlineCreate)
-            @include('crud::fields.relationship.create_button', ['name' => $field['name'], 'inlineCreateEntity' => $inlineCreateEntity])
+            @include('crud::fields.relationship.create_button', ['name' => $field['name'], 'inlineCreateEntity' => $field['inline_create']['entity']])
         @endif
 <select
-@if(!$field['multiple'])
-        name="{{ $field['name'] }}"
-        @else
-        name="{{ $field['name'] }}[]"
-        @endif
+        name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-original-name="{{ $field['name'] }}"
         style="width: 100%"
-        data-auto-fetch="{{var_export($autoFetch)}}"
         data-init-function="bpFieldInitRelationshipElement"
         data-is-inline="{{ $inlineCreate ?? 'false' }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
-        data-options-for-select="{{json_encode($options)}}"
-        data-allows-null="{{var_export($allows_null)}}"
+        data-options-for-select="{{json_encode($field['options'])}}"
+        data-allows-null="{{var_export($field['allows_null'])}}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
         data-placeholder="{{ $field['placeholder'] }}"
 
         @if($field['ajax'])
-        data-data-source="{{isset($field['data_source']) ? $field['data_source'] : url($crud->route . '/fetch/' . $response_entity)}}"
-        data-method="{{ $field['method'] ?? 'GET' }}"
-        data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
+        data-data-source="{{ $field['data_source'] }}"
+        data-method="{{ $field['method'] ?? 'POST' }}"
+        data-minimum-input-length="{{ $field['minimum_input_length'] }}"
         @endif
         data-field-attribute="{{ $field['attribute'] }}"
-        data-connected-entity-key-name="{{ $related_model_instance->getKeyName() }}"
+        data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
-        data-current-value="{{$current_value}}"
+        data-current-value="{{ $field['value'] }}"
         data-field-ajax="{{var_export($field['ajax'])}}"
-        data-item="{{ (isset($item) && !is_null($item) && !empty($item)) ? '{ "id":"'.$item->getKey().'","text":"'.$item->{$field['attribute']} .'"}' : json_encode(false) }}"
+
         @if($activeInlineCreate)
         @include('crud::fields.relationship.field_attributes')
         @endif
+
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
+
         @if($field['multiple'])
         multiple
         @endif
@@ -208,7 +214,7 @@ var fetchDefaultEntry = function (element) {
                     $return = result;
                 }
 
-                $(element).attr('data-item', JSON.stringify($return));
+                $(element).attr('data-current-value', JSON.stringify($return));
                 resolve(result);
             },
             error: function (result) {
@@ -222,7 +228,7 @@ var fetchDefaultEntry = function (element) {
 //this function is responsible by setting up a default option in ajax fields
 if (typeof refreshDefaultOption !== "function") {
 function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
-     var $item = JSON.parse(element.attr('data-item'));
+     var $item = JSON.parse(element.attr('data-current-value'));
      $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
      $(element).val($item[$modelKey]);
      $(element).trigger('change');
@@ -230,40 +236,37 @@ function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
 }
 
 
-// this is the function responsible for displaying the select options.
+// This function is responsible for filling the select options when select is not ajax.
 if (typeof fillSelectOptions !== "function") {
 function fillSelectOptions(element, $created = false) {
 
     var $multiple = element.attr('data-field-multiple') == 'true' ? true : false;
     var $options = JSON.parse(element.attr('data-options-for-select'));
-
-    var $allows_null = element.attr('data-allows-null');
-    var $autoFetch = element.attr('data-auto-fetch') == 'true' ? true : false;
-
+    var $placeholder = element.attr('data-field-placeholder');
+    var $allows_null = element.attr('data-allows-null') == 'true' ? true : false;
     var $relatedKey = element.attr('data-connected-entity-key-name');
+    var $currentValue = JSON.parse(element.attr('data-current-value'));
 
-    var selectedOptions = [];
-    //if this field is a select multiple we json parse the current value
+
     if ($multiple === true) {
-        //if there are any selected options we re-select them
-        $value = element.attr('data-current-value');
-        if($value.length) {
-            var $currentValue = JSON.parse(element.attr('data-current-value'));
-        }else{
-            var $currentValue = '';
-        }
-
-        if(!Array.isArray($currentValue) && (typeof $currentValue !== 'object' && $currentValue !== null)) {
+        var selectedOptions = [];
+        //we parse the current value to append those options values to the selected options.
+        if(Number.isInteger($currentValue)) {
             selectedOptions.push($currentValue);
         }else{
 
            for (let [key, value] of Object.entries($currentValue)) {
+                if(!Number.isInteger(+value)) {
+                    selectedOptions.push(key);
+                }else{
+                    selectedOptions.push(value);
+                }
 
-                selectedOptions.push(key);
             }
         }
 
-    //we add the options to the select and check if we have some created, if yes we append to selected options
+
+    //we add the options to the select and check if there is an created option, if yes, we add it to selected options.
     for (const [key, value] of Object.entries($options)) {
 
         var $option = new Option(value, key);
@@ -277,18 +280,27 @@ function fillSelectOptions(element, $created = false) {
         $(element).append($option);
     }
 
-    $(element).val(selectedOptions);
+    //if there is no selected options and field does not allows null, we select the first option
+    if(selectedOptions.length < 1 && !$allows_null) {
+            selectedOptions.push(Object.keys($options)[0]);
+    }
 
+    $(element).val(selectedOptions);
     $(element).attr('data-current-value',JSON.stringify(selectedOptions));
 
     }else{
-        var $currentValue = element.attr('data-current-value');
 
+        //if there is no current value and the field allows null, we add the placeholder first.
+        if($currentValue.length < 1 && $allows_null) {
+            var $option = new Option('', '', true, true);
+            $(element).append($option);
+        }
         for (const [key, value] of Object.entries($options)) {
 
             var $option = new Option(value, key);
             $(element).append($option);
-            if (key == $currentValue) {
+            //if option key is the same of current value we reselect it
+            if (key == Object.keys($currentValue)[0]) {
                 $(element).val(key);
             }
             if ($created) {
@@ -306,27 +318,30 @@ function fillSelectOptions(element, $created = false) {
 }
 }
 
-//this is just a trigger function that put's things in place, it checks if it is needed to refresh options or only display them.
+// this function responsability is to check if we should refresh the options before select
+// and trigger the composition of the select.
 if (typeof triggerSelectOptions !== "function") {
 function triggerSelectOptions(element, $created = false) {
     var $fieldName = element.attr('data-original-name');
-
     var $inlineRefreshRoute = element.attr('data-inline-refresh-route');
-
     $(element).empty();
 
+    //if some entity was created we want to refresh the option list before adding it
+    //developer could have some constrains and the current added option might not be
+    //available to select after creation.
     if ($created) {
         refreshOptionList(element, $fieldName, $inlineRefreshRoute).then(result => {
-
             fillSelectOptions(element, $created);
         }, result => {
-
         });
     } else {
         fillSelectOptions(element);
     }
 }
 }
+
+//this setup the "+Add" button in page with corresponding click handler.
+//when clicked, fetches the html for the modal to show
 
 function setupInlineCreateButtons(element) {
     var $inlineCreateButton = element.attr('data-inline-create-button');
@@ -362,7 +377,8 @@ function setupInlineCreateButtons(element) {
 
 }
 
-//this is the function called when button to add is pressed.
+//this is the function called when button to add is pressed,
+//it triggers the modal on page and initialize the fields
 
 function triggerModal(element) {
     var $fieldName = element.attr('data-field-related-name');
@@ -381,10 +397,14 @@ function triggerModal(element) {
     //when you hit save on modal save button.
     $modalSaveButton.on('click', function () {
         $form = document.getElementById($fieldName+"-inline-create-form");
+
         //this is needed otherwise fields like ckeditor don't post their value.
         $($form).trigger('form-pre-serialize');
+
         var $formData = new FormData($form);
 
+        //we change button state so users know something is happening.
+        //we also disable it to prevent double form submition
         var loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> loading...';
         if ($modalSaveButton.html() !== loadingText) {
             $modalSaveButton.data('original-text', $(this).html());
@@ -402,9 +422,11 @@ function triggerModal(element) {
             success: function (result) {
 
                 $createdEntity = result.data;
+                //we trigger the select options to change.
                 triggerSelectOptions(element, $createdEntity);
 
                 $modal.modal('hide');
+                //TODO: We should create translation string for this ?
                 swal({
                     title: "Related entity creation",
                     text: "Related entity created with success.",
@@ -414,7 +436,6 @@ function triggerModal(element) {
                 });
             },
             error: function (result) {
-                // Show an alert with the result
 
                 var $errors = result.responseJSON.errors;
 
@@ -430,6 +451,8 @@ function triggerModal(element) {
                     timer: 4000,
                     buttons: false,
                 });
+
+                //revert save button back to normal
                 $modalSaveButton.prop('disabled', false);
                 $modalSaveButton.html($modalSaveButton.data('original-text'));
             }
@@ -463,12 +486,14 @@ function triggerModal(element) {
                 var $dependencies = JSON.parse(element.attr('data-dependencies'));
                 var $modelKey = element.attr('data-model-local-key');
                 var $selectOptions = element.attr('data-options-for-select');
+                var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
 
-                var $autoFetch = element.attr('data-auto-fetch') == 'true' ? true : false;
+                element.on('select2:select', function (e) {
+                    $(element).attr('data-current-value', JSON.stringify(element.val()));
+                });
 
 
-
-                    //console.log($ajax);
+                //if field is not ajax we trigger usual select options.
                 if(!$ajax) {
                     triggerSelectOptions(element);
                 }else{
@@ -494,20 +519,18 @@ function triggerModal(element) {
 
                     $(element).val(selectedOptions);
 
-                    //if null not allowed, there is no item and developer did not provide a placeholder
-                    if(element.attr('data-allows-null') != 'true' && $item === false && $autoFetch) {
+                    //null is not allowed we fetch some default entry
+                    if($allows_null && !$item) {
                         fetchDefaultEntry(element).then(result => {
                             refreshDefaultOption(element, $fieldAttribute, $modelKey);
                         });
                     }
                 }
 
-                var $allowClear = (element.attr('data-allows-null') == 'true') ? true : false;
+
                 //Checks if field is not beeing inserted in one inline create modal and setup buttons
                 if($inlineField == "false") {
-
                     setupInlineCreateButtons(element);
-
                 }
 
                     if (!element.hasClass("select2-hidden-accessible")) {
@@ -516,7 +539,7 @@ function triggerModal(element) {
                         element.select2({
                             theme: "bootstrap",
                             placeholder: $placeholder,
-                            allowClear: $allowClear,
+                            allowClear: $allows_null,
                         });
                         }else{
 
@@ -524,7 +547,7 @@ function triggerModal(element) {
                             theme: "bootstrap",
                             placeholder: $placeholder,
                             minimumInputLength: $minimumInputLength,
-                            allowClear: $allowClear,
+                            allowClear: $allows_null,
                             ajax: {
                             url: $dataSource,
                             type: $method,
