@@ -59,6 +59,9 @@ trait SaveActions
      */
     public function addSaveActions($saveActions)
     {
+        // count vs count recursive will be diferent when counting single dimension vs multiple dimension arrays.
+        // count([1,2]) = 2, count([1,[2,3]]) = 2 with recursive it's 3. so if counts are different we have a
+        // multi dimensional array
         if (count($saveActions) != count($saveActions, COUNT_RECURSIVE)) {
             foreach ($saveActions as $saveAction) {
                 $this->addSaveAction($saveAction);
@@ -203,46 +206,74 @@ trait SaveActions
     }
 
     /**
-     * Get save actions, with pre-selected action from stored session variable or config fallback.
+     * Return the ordered save actions.
      *
-     * @return array
+     * @return void
      */
-    public function getSaveAction()
-    {
-        $saveAction = session($this->getCurrentOperation().'.saveAction', $this->getFallBackSaveAction());
+    public function getOrderedSaveActions() {
+        $actions = $this->getOperationSetting('save_actions') ?? [];
 
-        $availableSaveActions = $this->getOperationSetting('save_actions') ?? [];
-        //run save actions visible callback
-        foreach ($availableSaveActions as $actionName => $action) {
-            $visible = $action['visible'];
-            if (is_callable($visible)) {
-                $availableSaveActions[$actionName]['visible'] = $visible($this);
-            }
-        }
-
-        //get only passed visibility callback
-        $saveOptions = array_filter($availableSaveActions, function ($saveOption) {
-            return $saveOption['visible'] == true;
-        }, ARRAY_FILTER_USE_BOTH);
-
-        //sort by order
-        uasort($saveOptions, function ($a, $b) {
+        uasort($actions, function ($a, $b) {
             return $a['order'] <=> $b['order'];
         });
 
-        //get the current action
+        return $actions;
+    }
+/**
+ * Returns the save actions that passed the visible callback.
+ *
+ * @return void
+ */
+    public function getVisibleSaveActions() {
+        $actions = $this->getOrderedSaveActions();
+        foreach ($actions as $actionName => $action) {
+            $visible = $action['visible'];
+            if (is_callable($visible)) {
+                $actions[$actionName]['visible'] = $visible($this);
+            }
+        }
+
+        return array_filter($actions, function ($action) {
+            return $action['visible'] == true;
+        }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    /**
+     * Gets the current save action for this crud
+     *
+     * @param array $saveOptions
+     * @return array
+     */
+    public function getCurrentSaveAction($saveOptions) {
+
+        //get save action from session if exists, or get the developer defined order
+        $saveAction = session($this->getCurrentOperation().'.saveAction', $this->getFallBackSaveAction());
         if (isset($saveOptions[$saveAction])) {
             $currentAction = $saveOptions[$saveAction];
         } else {
             $currentAction = Arr::first($saveOptions);
         }
 
-        $saveCurrent = [
+        return [
             'value' => $currentAction['name'],
             'label' => $currentAction['button_text'],
         ];
+    }
 
-        //we get the dropdown options
+    /**
+     * Here we check for save action visibility and prepare the actions array for display
+     *
+     * @return array
+     */
+    public function getSaveAction()
+    {
+        //get only the save actions that pass visibility callback
+        $saveOptions =  $this->getVisibleSaveActions();
+
+        //get the current action
+        $saveCurrent = $this->getCurrentSaveAction($saveOptions);
+
+        //get the dropdown options
         $dropdownOptions = [];
         foreach ($saveOptions as $key => $option) {
             if ($option['name'] != $saveCurrent['value']) {
@@ -292,16 +323,17 @@ trait SaveActions
         $request = \Request::instance();
         $saveAction = $request->input('save_action', $this->getFallBackSaveAction());
         $itemId = $itemId ?: $request->input('id');
+        $actions = $this->getOperationSetting('save_actions');
 
-        if (isset($this->availableSaveActions[$saveAction])) {
-            if (is_callable($this->availableSaveActions[$saveAction]['redirect'])) {
-                $redirectUrl = $this->availableSaveActions[$saveAction]['redirect']($this, $request, $itemId);
+        if (isset($actions[$saveAction])) {
+            if (is_callable($actions[$saveAction]['redirect'])) {
+                $redirectUrl = $actions[$saveAction]['redirect']($this, $request, $itemId);
             }
 
             //allow the save action to define default http_referrer (url for the save_and_back button)
-            if (isset($this->availableSaveActions[$saveAction]['referrer_url'])) {
-                if (is_callable($this->availableSaveActions[$saveAction]['referrer_url'])) {
-                    $referrer_url = $this->availableSaveActions[$saveAction]['referrer_url']($this, $request, $itemId);
+            if (isset($actions[$saveAction]['referrer_url'])) {
+                if (is_callable($actions[$saveAction]['referrer_url'])) {
+                    $referrer_url = $actions[$saveAction]['referrer_url']($this, $request, $itemId);
                 }
             }
         }
@@ -375,28 +407,6 @@ trait SaveActions
             ],
         ];
 
-        foreach ($defaultSaveActions as $sv) {
-            $this->addSaveAction($sv);
-        }
-    }
-
-    /**
-     * Get first save action name in the list.
-     *
-     * @return string
-     */
-    public function getFirstSaveActionName()
-    {
-        return array_key_first($this->availableSaveActions);
-    }
-
-    /**
-     * Get first save action config.
-     *
-     * @return void
-     */
-    public function getFirstSaveAction()
-    {
-        return Arr::first($this->availableSaveActions);
+            $this->addSaveActions($defaultSaveActions);
     }
 }
