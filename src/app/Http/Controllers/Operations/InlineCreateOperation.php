@@ -38,7 +38,9 @@ trait InlineCreateOperation
      */
     protected function setupInlineCreateDefaults()
     {
+        // this only mark this operation as active
         $this->crud->setOperationSetting('inline_create', true);
+
         if (method_exists($this, 'setupCreateOperation')) {
             if (method_exists($this, 'setup')) {
                 $this->setup();
@@ -70,15 +72,17 @@ trait InlineCreateOperation
     }
 
     /**
-     * This function is called after a related entity is added so we refresh the options in the select. By query constrains the newly
-     * added option might not be available to select.
+     * This function is called after a related entity is added so we refresh the options in the select.
+     * By query constrains the newly added option might not be available to select.
+     *
+     * This is not run by ajax fields.
      */
     public function inlineRefreshOptions()
     {
         if (request()->has('field')) {
             $field = $this->crud->fields()[request()->get('field')];
 
-            if (! empty($field)) {
+            if (! empty($field) && !$field['ajax']) {
                 $relatedModelInstance = new $field['model']();
 
                 if (! isset($field['options'])) {
@@ -94,6 +98,7 @@ trait InlineCreateOperation
 
     /**
      * Runs the store() function in controller like a regular crud create form.
+     * Developer might overwrite this if he wants some custom save behaviour when added on the fly.
      *
      * @return void
      */

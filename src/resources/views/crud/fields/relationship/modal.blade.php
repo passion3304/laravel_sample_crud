@@ -1,4 +1,8 @@
 @php
+
+    // in parent form_content we added those fields to the session,
+    // here we check if there are any, and mark them as loaded
+    // so we don't get assets that are already on page from parent crud
     if (session()->has('current_crud_loaded_fields')) {
         $loadedFields = session('current_crud_loaded_fields');
         session()->forget('current_crud_loaded_fields');
@@ -6,7 +10,7 @@
 
     $loadedFields = $loadedFields ?? [];
 
-    //mark parent crud fields as loaded in DOM.
+    //mark parent crud fields as loaded.
     foreach($loadedFields as $loadedField) {
         $crud->markFieldTypeAsLoaded($loadedField);
     }

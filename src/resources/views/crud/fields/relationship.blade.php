@@ -488,10 +488,15 @@ function triggerModal(element) {
                 var $selectOptions = element.attr('data-options-for-select');
                 var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
 
+                // we catch select/unselect events so we don't lose our selections
+                // if we create a related entity before saving the actual selection
                 element.on('select2:select', function (e) {
                     $(element).attr('data-current-value', JSON.stringify(element.val()));
                 });
 
+                element.on('select2:unselect', function (e) {
+                    $(element).attr('data-current-value', JSON.stringify(element.val()));
+                });
 
                 //if field is not ajax we trigger usual select options.
                 if(!$ajax) {
