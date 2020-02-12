@@ -210,7 +210,8 @@ trait SaveActions
      *
      * @return void
      */
-    public function getOrderedSaveActions() {
+    public function getOrderedSaveActions()
+    {
         $actions = $this->getOperationSetting('save_actions') ?? [];
 
         uasort($actions, function ($a, $b) {
@@ -219,12 +220,14 @@ trait SaveActions
 
         return $actions;
     }
-/**
- * Returns the save actions that passed the visible callback.
- *
- * @return void
- */
-    public function getVisibleSaveActions() {
+
+    /**
+     * Returns the save actions that passed the visible callback.
+     *
+     * @return void
+     */
+    public function getVisibleSaveActions()
+    {
         $actions = $this->getOrderedSaveActions();
         foreach ($actions as $actionName => $action) {
             $visible = $action['visible'];
@@ -239,12 +242,13 @@ trait SaveActions
     }
 
     /**
-     * Gets the current save action for this crud
+     * Gets the current save action for this crud.
      *
      * @param array $saveOptions
      * @return array
      */
-    public function getCurrentSaveAction($saveOptions) {
+    public function getCurrentSaveAction($saveOptions)
+    {
 
         //get save action from session if exists, or get the developer defined order
         $saveAction = session($this->getCurrentOperation().'.saveAction', $this->getFallBackSaveAction());
@@ -261,14 +265,14 @@ trait SaveActions
     }
 
     /**
-     * Here we check for save action visibility and prepare the actions array for display
+     * Here we check for save action visibility and prepare the actions array for display.
      *
      * @return array
      */
     public function getSaveAction()
     {
         //get only the save actions that pass visibility callback
-        $saveOptions =  $this->getVisibleSaveActions();
+        $saveOptions = $this->getVisibleSaveActions();
 
         //get the current action
         $saveCurrent = $this->getCurrentSaveAction($saveOptions);
@@ -407,6 +411,6 @@ trait SaveActions
             ],
         ];
 
-            $this->addSaveActions($defaultSaveActions);
+        $this->addSaveActions($defaultSaveActions);
     }
 }
