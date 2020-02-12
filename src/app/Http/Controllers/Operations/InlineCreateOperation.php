@@ -82,7 +82,7 @@ trait InlineCreateOperation
         if (request()->has('field')) {
             $field = $this->crud->fields()[request()->get('field')];
 
-            $options = array();
+            $options = [];
 
             if (! empty($field)) {
                 $relatedModelInstance = new $field['model']();
