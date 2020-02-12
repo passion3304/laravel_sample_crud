@@ -82,7 +82,9 @@ trait InlineCreateOperation
         if (request()->has('field')) {
             $field = $this->crud->fields()[request()->get('field')];
 
-            if (! empty($field) && !$field['ajax']) {
+            $options = array();
+
+            if (! empty($field)) {
                 $relatedModelInstance = new $field['model']();
 
                 if (! isset($field['options'])) {

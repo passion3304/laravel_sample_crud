@@ -58,7 +58,7 @@
     }else{
         //case field is ajax we check if FetchOperation is setup
         //and provide the data_source accordingly
-        if(method_exists('fetch'.ucfirst($field['entity']))) {
+        if(method_exists('fetch'.ucfirst($field['entity']), $crud->model)) {
             $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
         }
 
@@ -170,7 +170,8 @@ if(!isset($inlineCreate)) {
 
 document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 
-// this function is responsible for reloading the option list uppon inline creation.
+// this function is responsible for query the refresh endpoint after the creation of a new entity
+// in a non-ajax fields
 if (!window.refreshOptionList) {
 var refreshOptionList = function (element, $field, $refreshUrl) {
     return new Promise(function (resolve, reject) {
@@ -193,6 +194,42 @@ var refreshOptionList = function (element, $field, $refreshUrl) {
 };
 }
 
+// this is the function responsible for querying the ajax endpoint with our query string, emulating the select2
+// ajax search mechanism.
+var performAjaxSearch = function (element, $searchString) {
+    var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
+    var $refreshUrl = element.attr('data-data-source');
+    var $method = element.attr('data-method');
+    var form = element.closest('form')
+
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: $refreshUrl,
+            data: (function() {
+                if ($includeAllFormFields) {
+                            return {
+                                q: $searchString, // search term
+                                form: form.serializeArray() // all other form inputs
+                            };
+                        } else {
+                            return {
+                                q: $searchString, // search term
+                            };
+                        }
+            })(),
+            type: $method,
+            success: function (result) {
+
+                resolve(result);
+            },
+            error: function (result) {
+
+                reject(result);
+            }
+        });
+    });
+};
+
 
   // this function is responsible for fetching some default option when developer don't allow null on field
   if (!window.fetchDefaultEntry) {
@@ -204,7 +241,7 @@ var fetchDefaultEntry = function (element) {
             data: {
                 'q': ''
             },
-            type: 'GET',
+            type: 'POST',
             success: function (result) {
                 //if data is available here it means developer returned a collection and we want only the first.
                 //when using the AjaxFetchOperation we will have here a single entity.
@@ -225,14 +262,25 @@ var fetchDefaultEntry = function (element) {
 };
   }
 
-//this function is responsible by setting up a default option in ajax fields
-if (typeof refreshDefaultOption !== "function") {
-function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
-     var $item = JSON.parse(element.attr('data-current-value'));
-     $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
-     $(element).val($item[$modelKey]);
-     $(element).trigger('change');
-}
+//parses the current value for multiple selects. we can have a single, multiple { key : attr } or multiple ids [1,2,3,4]
+function parseValueForMultipleSelectOptions(element) {
+    var $currentValue = JSON.parse(element.attr('data-current-value'));
+    var selectedOptions = [];
+        //we parse the current value to append those options values to the selected options.
+        if(Number.isInteger($currentValue)) {
+            selectedOptions.push($currentValue);
+        }else{
+
+           for (let [key, value] of Object.entries($currentValue)) {
+                if(!Number.isInteger(+value)) {
+                    selectedOptions.push(key);
+                }else{
+                    selectedOptions.push(value);
+                }
+
+            }
+        }
+        return selectedOptions;
 }
 
 
@@ -249,22 +297,8 @@ function fillSelectOptions(element, $created = false) {
 
 
     if ($multiple === true) {
-        var selectedOptions = [];
-        //we parse the current value to append those options values to the selected options.
-        if(Number.isInteger($currentValue)) {
-            selectedOptions.push($currentValue);
-        }else{
 
-           for (let [key, value] of Object.entries($currentValue)) {
-                if(!Number.isInteger(+value)) {
-                    selectedOptions.push(key);
-                }else{
-                    selectedOptions.push(value);
-                }
-
-            }
-        }
-
+    var selectedOptions = parseValueForMultipleSelectOptions(element);
 
     //we add the options to the select and check if there is an created option, if yes, we add it to selected options.
     for (const [key, value] of Object.entries($options)) {
@@ -329,7 +363,7 @@ function triggerSelectOptions(element, $created = false) {
     //if some entity was created we want to refresh the option list before adding it
     //developer could have some constrains and the current added option might not be
     //available to select after creation.
-    if ($created) {
+    if ($created ) {
         refreshOptionList(element, $fieldName, $inlineRefreshRoute).then(result => {
             fillSelectOptions(element, $created);
         }, result => {
@@ -377,25 +411,45 @@ function setupInlineCreateButtons(element) {
 
 }
 
+// when an entity is created we query the ajax endpoint to check if the created option is returned.
+function ajaxSearch(element, created) {
+    var $relatedAttribute = element.attr('data-field-attribute');
+    var $relatedKeyName = element.attr('data-connected-entity-key-name');
+    var $searchString = created[$relatedAttribute];
+
+    //we run the promise with ajax call to search endpoint to check if we got the created entity back
+    //in case we do, we add it to the selected options.
+    performAjaxSearch(element, $searchString).then(result => {
+                            if(result.data[0][$relatedAttribute] == $searchString) {
+                                var $option = new Option($searchString, result.data[0][$relatedKeyName]);
+                                $(element).append($option);
+                                var selectedOptions = parseValueForMultipleSelectOptions(element);
+                                selectedOptions.push(result.data[0][$relatedKeyName]);
+                                $(element).val(selectedOptions);
+                                $(element).trigger('change');
+                            }
+                    });
+    }
+
 //this is the function called when button to add is pressed,
 //it triggers the modal on page and initialize the fields
 
 function triggerModal(element) {
     var $fieldName = element.attr('data-field-related-name');
-
-    var modalName = '#'+$fieldName+'-inline-create-dialog';
-    var $inlineCreateRoute = element.attr('data-inline-create-route');
-    var $modal = $(modalName);
-
-    $modal.modal({ backdrop: 'static', keyboard: false, focus: false });
+    var $modal = $('#'+$fieldName+'-inline-create-dialog');
     var $modalSaveButton = $modal.find('#saveButton');
     var $form = $(document.getElementById($fieldName+"-inline-create-form"));
+    var $inlineCreateRoute = element.attr('data-inline-create-route');
+    var $ajax = element.attr('data-field-ajax') == 'true' ? true : false;
+
+    $modal.modal({ backdrop: 'static', keyboard: false, focus: false });
 
 
     initializeFieldsWithJavascript($form);
 
     //when you hit save on modal save button.
     $modalSaveButton.on('click', function () {
+
         $form = document.getElementById($fieldName+"-inline-create-form");
 
         //this is needed otherwise fields like ckeditor don't post their value.
@@ -423,7 +477,11 @@ function triggerModal(element) {
 
                 $createdEntity = result.data;
                 //we trigger the select options to change.
-                triggerSelectOptions(element, $createdEntity);
+                if(!$ajax) {
+                    triggerSelectOptions(element, $createdEntity);
+                }else{
+                    ajaxSearch(element, result.data);
+                }
 
                 $modal.modal('hide');
                 //TODO: We should create translation string for this ?
@@ -525,9 +583,12 @@ function triggerModal(element) {
                     $(element).val(selectedOptions);
 
                     //null is not allowed we fetch some default entry
-                    if($allows_null && !$item) {
+
+                    if(!$allows_null && !$item) {
                         fetchDefaultEntry(element).then(result => {
-                            refreshDefaultOption(element, $fieldAttribute, $modelKey);
+                            $(element).append('<option value="'+result.data[0][$modelKey]+'">'+result.data[0][$fieldAttribute]+'</option>');
+                            $(element).val(result.data[0][$modelKey]);
+                            $(element).trigger('change');
                         });
                     }
                 }
