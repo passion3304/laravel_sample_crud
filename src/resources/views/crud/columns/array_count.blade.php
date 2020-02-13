@@ -11,10 +11,17 @@
     if (! is_array($array)) {
         $array = json_decode($array, true);
     }
-    if ($array && count($array)) {
-        echo count($array).' '.$suffix;
-    } else {
-        echo '-';
-    }
     ?>
+    @if($array && count($array))
+
+        @php($text = count($array).' '.$suffix)
+
+        @if(isset($column['anchor']['href']))
+            @include('crud::inc.column_anchors',['text' => $text])
+        @else
+            {{ $text }}
+        @endif
+    @else
+        -
+    @endif
 </span>

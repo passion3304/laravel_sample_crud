@@ -85,6 +85,10 @@ trait Columns
             $column_with_details['key'] = str_replace('.', '__', $column_with_details['name']);
         }
 
+        //check if column has anchor
+        $column_with_details['anchor'] = $column_with_details['anchor'] ?? false;
+
+
         // check if the column exists in the database table
         $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column_with_details['name']);
 

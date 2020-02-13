@@ -4,7 +4,15 @@
 
 	if (is_array($value)) {
 		$value = json_encode($value);
-	}
+    }
+    $text = (array_key_exists('prefix', $column) ? $column['prefix'] : '').str_limit(strip_tags($value), array_key_exists('limit', $column) ? $column['limit'] : 40, "[...]").(array_key_exists('suffix', $column) ? $column['suffix'] : '');
 @endphp
 
-<span>{{ (array_key_exists('prefix', $column) ? $column['prefix'] : '').str_limit(strip_tags($value), array_key_exists('limit', $column) ? $column['limit'] : 40, "[...]").(array_key_exists('suffix', $column) ? $column['suffix'] : '') }}</span>
+<span>
+    @if(isset($column['anchor']['href']))
+        @include('crud::inc.column_anchors',['text' => $text])
+    @else
+        {{$text}}
+    @endif
+
+</span>
