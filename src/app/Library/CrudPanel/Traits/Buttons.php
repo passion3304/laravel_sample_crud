@@ -16,10 +16,10 @@ trait Buttons
      * @param string      $stack           Stack where the buttons belongs. Options: top, line, bottom.
      * @param array       $buttons         Name of the buttons. ['update', 'delete', 'show']
      */
-    public function reorderButtons($stack, $buttons) 
+    public function reorderButtons($stack, $buttons)
     {
         $newBtns = collect([]);
-        
+
         $this->buttons()->each(function ($btn) use ($stack, $newBtns) {
             if ($btn->stack != $stack) {
                 $newBtns->push($btn);
