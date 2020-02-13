@@ -10,7 +10,38 @@ trait Buttons
     // BUTTONS
     // ------------
 
-    // TODO: $this->crud->reorderButtons('stack_name', ['one', 'two']);
+/**
+     * Reorder buttons to the CRUD table view.
+     *
+     * @param string      $stack           Stack where the buttons belongs. Options: top, line, bottom.
+     * @param array       $buttons         Name of the buttons. ['update', 'delete', 'show']
+     */
+    public function reorderButtons($stack, $buttons)
+    {
+        $newBtns = collect([]);
+        
+        $this->buttons()->each(function($btn) use($stack, $newBtns) {
+            if($btn->stack != $stack) {
+                $newBtns->push($btn);
+            }
+        });
+
+        collect($buttons)->each(function($btnKey) use($newBtns) {
+
+            $btnInstance = $this->buttons()->filter(function($btn) use($btnKey) {
+                return $btn->name == $btnKey;
+            })->first();
+            
+            if (!$btnInstance) {
+                abort(500, "Sorry, button cannot be found");
+            }
+
+            $newBtns->push($btnInstance);
+
+        });
+
+        $this->setOperationSetting('buttons', $newBtns);
+    }
 
     /**
      * Add a button to the CRUD table view.
