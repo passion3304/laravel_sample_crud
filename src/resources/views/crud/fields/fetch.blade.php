@@ -103,7 +103,7 @@
     @endif
     @endpush
 
-@endif
+
 
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
@@ -269,5 +269,6 @@
     }
 </script>
 @endpush
+@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
