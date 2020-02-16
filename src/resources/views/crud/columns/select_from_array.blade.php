@@ -11,7 +11,7 @@
 
                 foreach ($values as $key => $value) {
                     if (! is_null($value)) {
-                        $array_of_values[] = $column['options'][$value] ?? $values;
+                        $array_of_values[] = $column['options'][$value] ?? $value;
                     } else {
                         echo '-';
                         continue;
