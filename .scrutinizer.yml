@@ -10,6 +10,12 @@ filter:
         - 'resources/*'
         - 'vendor/*'
         - 'views/*'
+build:
+  nodes:
+    my-tests:
+      environment:
+        php:
+          version: 7.2
 tools:
     php_analyzer: true
     php_mess_detector: true
