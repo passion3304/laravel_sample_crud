@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.41 - 2020-02-16
+
+### Fixed
+- merged #2450 - video field now has customizable youtube api key;
+
+
 ## 4.0.40 - 2020-02-10
 
 ### Fixed
