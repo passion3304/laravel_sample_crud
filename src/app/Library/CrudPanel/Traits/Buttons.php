@@ -30,7 +30,7 @@ trait Buttons
             $btnInstance = $this->buttons()->filter(function ($btn) use ($btnKey) {
                 return $btn->name == $btnKey;
             })->first();
-            
+
             if (! $btnInstance) {
                 abort(500, 'Sorry, button cannot be found');
             }
