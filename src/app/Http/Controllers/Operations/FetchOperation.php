@@ -61,7 +61,7 @@ trait FetchOperation
 
         // FetchOperation sends an empty query to retrieve the default entry for select when field is not nullable.
         if ($searchString === false) {
-            return $config['model']->first();
+            return $config['query']->first();
         }
 
         // for each searchable attribute, add a WHERE clause
