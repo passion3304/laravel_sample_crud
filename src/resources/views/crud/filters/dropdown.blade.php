@@ -76,7 +76,7 @@
 			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
 				// console.log('dropdown filter cleared');
 				$("li[filter-name={{ $filter->name }}]").removeClass('active');
-				$("li[filter-name={{ $filter->name }}] .dropdown-menu li").removeClass('active');
+				$("li[filter-name={{ $filter->name }}] .dropdown-menu a").removeClass('active');
 			});
 		});
 	</script>

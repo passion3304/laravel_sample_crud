@@ -76,19 +76,19 @@ Installation guides:
 
 See [backpackforlaravel.com](https://backpackforlaravel.com).
 
-## Change log
+## Change Log
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+Please see [CHANGELOG](CHANGELOG.md).
 
-## Contributing
+## Contributing Guidelines
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Security
 
 If you discover any security related issues, please email hello@tabacitu.ro instead of using the issue tracker.
 
-Please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email every 1-2 months.
+Please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email every 3-6 months. Sometimes less.
 
 ## Credits
 
@@ -112,7 +112,7 @@ Backpack is dual-license:
 Please see the [License File](LICENSE.md) and [Pricing](https://backpackforlaravel.com/pricing) for more information.
 
 <a name="versioning"></a>
-# Versioning
+## Versioning
 
 When installing Backpack, require its minor version (currently ```4.0.*```). For us, this is what ```major.minor.patch``` means:
 
