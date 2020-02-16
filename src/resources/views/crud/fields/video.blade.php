@@ -12,7 +12,7 @@ if (is_array($value)) {
     $value = $value;
 }
 
-$field['youtube_api_key'] = $field['youtube_api_key'] ?? 'AIzaSyDQa76EpdNPzfeTAoZUut2AnvBA0jkx3FI';
+$field['youtube_api_key'] = $field['youtube_api_key'] ?? 'AIzaSyBLRoVYovRmbIf_BH3X12IcTCudAEDRlCE';
 
 ?>
 
