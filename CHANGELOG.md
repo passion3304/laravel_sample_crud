@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - merged #2450 - video field now has customizable youtube api key;
+- merged #2453 - radio field can have attributes even if inline;
 
 
 ## 4.0.40 - 2020-02-10
