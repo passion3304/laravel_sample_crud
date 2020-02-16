@@ -11,8 +11,10 @@ filter:
         - 'vendor/*'
         - 'views/*'
 build:
-    php:
-        version: 7.2
+  nodes:
+    environment:
+        php:
+            version: 7.2
 tools:
     php_analyzer: true
     php_mess_detector: true
