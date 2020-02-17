@@ -80,6 +80,9 @@ return [
             // for the fact that the default save action has been changed?
             'showSaveActionChange' => true, //options: true, false
 
+            // Should we show a cancel button to the user?
+            'showCancelButton' => true,
+
             // Before saving the entry, how would you like the request to be stripped?
             // - false - ONLY save inputs that have fields (safest)
             // - [x, y, z] - save ALL inputs, EXCEPT the ones given in this array
@@ -112,6 +115,9 @@ return [
             // When the user chooses "save and back" or "save and new", show a bubble
             // for the fact that the default save action has been changed?
             'showSaveActionChange' => true, //options: true, false
+
+            // Should we show a cancel button to the user?
+            'showCancelButton' => true,
 
             // Before saving the entry, how would you like the request to be stripped?
             // - false - Save ONLY inputs that have a field (safest, default);
