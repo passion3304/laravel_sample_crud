@@ -8,6 +8,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.41 - 2020-02-16
+
+### Fixed
+- merged #2450 - video field now has customizable youtube api key;
+- merged #2453 - radio field can have attributes even if inline;
+- merged #2455 - select_from_array column fallback if value not in options array;
+
+
 ## 4.0.40 - 2020-02-10
 
 ### Fixed
