@@ -46,7 +46,7 @@ trait Fields
             }
         }
 
-        // if this is a relation type field and no corresponding model was specified, 
+        // if this is a relation type field and no corresponding model was specified,
         // get it from the relation method defined in the main model
         if (isset($newField['entity']) && ! isset($newField['model'])) {
             $newField['model'] = $this->getRelationModel($newField['entity']);

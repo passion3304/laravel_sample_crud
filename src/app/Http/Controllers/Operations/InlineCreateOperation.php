@@ -57,7 +57,7 @@ trait InlineCreateOperation
      */
     public function getInlineCreateModal()
     {
-        if (!request()->has('entity')) {
+        if (! request()->has('entity')) {
             abort(400, 'No "entity" inside the request.');
         }
 
@@ -80,7 +80,7 @@ trait InlineCreateOperation
      */
     public function inlineRefreshOptions()
     {
-        if (!request()->has('field')) {
+        if (! request()->has('field')) {
             abort(400, 'No "field" inside the request.');
         }
 
