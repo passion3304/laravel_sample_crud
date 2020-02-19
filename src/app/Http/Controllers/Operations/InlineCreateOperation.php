@@ -41,14 +41,13 @@ trait InlineCreateOperation
         // this only mark this operation as active
         $this->crud->setOperationSetting('inline_create', true);
 
-        if (method_exists($this, 'setupCreateOperation')) {
-            if (method_exists($this, 'setup')) {
-                $this->setup();
-            }
-            $this->setupCreateOperation();
-        } else {
+        if (method_exists($this, 'setup')) {
             $this->setup();
         }
+        if (method_exists($this, 'setupCreateOperation')) {
+            $this->setupCreateOperation();
+        }
+
         $this->crud->applyConfigurationFromSettings('create');
     }
 
@@ -58,17 +57,19 @@ trait InlineCreateOperation
      */
     public function getInlineCreateModal()
     {
-        if (request()->has('entity')) {
-            return view(
-                'crud::fields.relationship.modal',
-                [
-                    'fields' => $this->crud->getCreateFields(),
-                    'action' => 'create',
-                    'crud' => $this->crud,
-                    'entity' => request()->get('entity'),
-                ]
-                );
+        if (!request()->has('entity')) {
+            abort(400, 'No "entity" inside the request.');
         }
+
+        return view(
+            'crud::fields.relationship.modal',
+            [
+                'fields' => $this->crud->getCreateFields(),
+                'action' => 'create',
+                'crud' => $this->crud,
+                'entity' => request()->get('entity'),
+            ]
+        );
     }
 
     /**
@@ -79,23 +80,24 @@ trait InlineCreateOperation
      */
     public function inlineRefreshOptions()
     {
-        if (request()->has('field')) {
-            $field = $this->crud->fields()[request()->get('field')];
-
-            $options = [];
-
-            if (! empty($field)) {
-                $relatedModelInstance = new $field['model']();
-
-                if (! isset($field['options'])) {
-                    $options = $field['model']::all()->pluck($field['attribute'], $relatedModelInstance->getKeyName());
-                } else {
-                    $options = call_user_func($field['options'], $field['model']::query()->pluck($field['attribute'], $relatedModelInstance->getKeyName()));
-                }
-            }
-
-            return response()->json($options);
+        if (!request()->has('field')) {
+            abort(400, 'No "field" inside the request.');
         }
+
+        $field = $this->crud->fields()[request()->get('field')];
+        $options = [];
+
+        if (! empty($field)) {
+            $relatedModelInstance = new $field['model']();
+
+            if (! isset($field['options'])) {
+                $options = $field['model']::all()->pluck($field['attribute'], $relatedModelInstance->getKeyName());
+            } else {
+                $options = call_user_func($field['options'], $field['model']::query()->pluck($field['attribute'], $relatedModelInstance->getKeyName()));
+            }
+        }
+
+        return response()->json($options);
     }
 
     /**

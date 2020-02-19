@@ -35,8 +35,8 @@ trait Fields
             $newField = $field;
         }
 
-        //we set this up exclusive for relationship type field. in future we hope we can figure out this automatically from field name
-        //atm we avoid any breaking changes while developing the guessing habilities for crud panel
+        // we set this up exclusive for relationship type field
+        // atm we avoid any breaking changes while developing the guessing abilities for crud panel
         if (isset($newField['type']) && $newField['type'] == 'relationship') {
             $relationData = $this->getRelationFromFieldName($newField['name']);
             if ($relationData) {
@@ -46,8 +46,8 @@ trait Fields
             }
         }
 
-        // if this is a relation type field and no corresponding model was specified, get it from the relation method
-        // defined in the main model
+        // if this is a relation type field and no corresponding model was specified, 
+        // get it from the relation method defined in the main model
         if (isset($newField['entity']) && ! isset($newField['model'])) {
             $newField['model'] = $this->getRelationModel($newField['entity']);
         }
