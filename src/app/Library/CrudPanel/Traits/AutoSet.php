@@ -95,8 +95,6 @@ trait AutoSet
      */
     protected function inferFieldTypeFromDbColumnType($fieldName)
     {
-        $dbColumnTypes = $this->getDbColumnTypes();
-
         if ($fieldName == 'password') {
             return 'password';
         }
@@ -104,6 +102,8 @@ trait AutoSet
         if ($fieldName == 'email') {
             return 'email';
         }
+        
+        $dbColumnTypes = $this->getDbColumnTypes();
 
         if (! isset($dbColumnTypes[$fieldName])) {
             return 'text';
@@ -116,52 +116,42 @@ trait AutoSet
             case 'mediumint':
             case 'longint':
                 return 'number';
-                break;
 
             case 'string':
             case 'varchar':
             case 'set':
                 return 'text';
-                break;
 
             // case 'enum':
             //     return 'enum';
             // break;
 
             case 'boolean':
-                   return 'boolean';
-                   break;
+                return 'boolean';
 
             case 'tinyint':
                 return 'active';
-                break;
 
             case 'text':
             case 'mediumtext':
             case 'longtext':
                 return 'textarea';
-                break;
 
             case 'date':
                 return 'date';
-                break;
 
             case 'datetime':
             case 'timestamp':
                 return 'datetime';
-                break;
 
             case 'time':
                 return 'time';
-                break;
 
             case 'json':
                 return 'table';
-                break;
 
             default:
                 return 'text';
-                break;
         }
 
         return 'text';
