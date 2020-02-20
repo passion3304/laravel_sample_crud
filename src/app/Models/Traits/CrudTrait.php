@@ -226,17 +226,15 @@ trait CrudTrait
      *     - if the value is null, deletes the file and sets null in the DB
      *     - if the value is different, stores the different file and updates DB value.
      *
-     * @param [type] $value            Value for that column sent from the input.
-     * @param [type] $attribute_name   Model attribute name (and column in the db).
-     * @param [type] $disk             Filesystem disk used to store files.
-     * @param [type] $destination_path Path in disk where to store the files.
+     * @param string $value            Value for that column sent from the input.
+     * @param string $attribute_name   Model attribute name (and column in the db).
+     * @param string $disk             Filesystem disk used to store files.
+     * @param string $destination_path Path in disk where to store the files.
      */
     public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path)
     {
-        $request = \Request::instance();
-
         // if a new file is uploaded, delete the file from the disk
-        if ($request->hasFile($attribute_name) &&
+        if (request()->hasFile($attribute_name) &&
             $this->{$attribute_name} &&
             $this->{$attribute_name} != null) {
             \Storage::disk($disk)->delete($this->{$attribute_name});
@@ -250,9 +248,9 @@ trait CrudTrait
         }
 
         // if a new file is uploaded, store it on disk and its filename in the database
-        if ($request->hasFile($attribute_name) && $request->file($attribute_name)->isValid()) {
+        if (request()->hasFile($attribute_name) && request()->file($attribute_name)->isValid()) {
             // 1. Generate a new file name
-            $file = $request->file($attribute_name);
+            $file = request()->file($attribute_name);
             $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
 
             // 2. Move the new file to the correct path
@@ -273,20 +271,19 @@ trait CrudTrait
      *     - deletes the file
      *     - removes that file from the DB.
      *
-     * @param [type] $value            Value for that column sent from the input.
-     * @param [type] $attribute_name   Model attribute name (and column in the db).
-     * @param [type] $disk             Filesystem disk used to store files.
-     * @param [type] $destination_path Path in disk where to store the files.
+     * @param string $value            Value for that column sent from the input.
+     * @param string $attribute_name   Model attribute name (and column in the db).
+     * @param string $disk             Filesystem disk used to store files.
+     * @param string $destination_path Path in disk where to store the files.
      */
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {
-        $request = \Request::instance();
         if (! is_array($this->{$attribute_name})) {
             $attribute_value = json_decode($this->{$attribute_name}, true) ?? [];
         } else {
             $attribute_value = $this->{$attribute_name};
         }
-        $files_to_clear = $request->get('clear_'.$attribute_name);
+        $files_to_clear = request()->get('clear_'.$attribute_name);
 
         // if a file has been marked for removal,
         // delete it from the disk and from the db
@@ -300,8 +297,8 @@ trait CrudTrait
         }
 
         // if a new file is uploaded, store it on disk and its filename in the database
-        if ($request->hasFile($attribute_name)) {
-            foreach ($request->file($attribute_name) as $file) {
+        if (request()->hasFile($attribute_name)) {
+            foreach (request()->file($attribute_name) as $file) {
                 if ($file->isValid()) {
                     // 1. Generate a new file name
                     $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
@@ -329,7 +326,7 @@ trait CrudTrait
      * Used for translations because Spatie/Laravel-Translatable
      * overwrites the getCasts() method.
      *
-     * @return [type] [description]
+     * @return self
      */
     public function getCastedAttributes()
     {
