@@ -37,6 +37,10 @@ trait FieldsProtectedMethods
             return ['name' => $field];
         }
 
+        if (is_array($field) && !isset($field['name'])) {
+            abort(500, 'All fields must have their name defined');
+        }
+
         return $field;
     }
 
@@ -67,20 +71,32 @@ trait FieldsProtectedMethods
         return $field;
     }
 
+    /**
+     * Set the label of a field, if it's missing, by capitalizing the name and replacing
+     * underscores with spaces.
+     * 
+     * @param  array $field Field definition array.
+     * @return array        Field definition array that contains label too.
+     */
     protected function makeSureFieldHasLabel($field)
     {
-        // if the label is missing, we should set it
         if (! isset($field['label'])) {
-            $label = is_array($field['name']) ? $field['name'][0] : $field['name'];
-            $field['label'] = mb_ucfirst(str_replace('_', ' ', $label));
+            $name = is_array($field['name']) ? $field['name'][0] : $field['name'];
+            $field['label'] = mb_ucfirst(str_replace('_', ' ', $name));
         }
 
         return $field;
     }
 
+    /**
+     * Set the type of a field, if it's missing, by inferring it from the
+     * db column type.
+     * 
+     * @param  array $field Field definition array.
+     * @return array        Field definition array that contains type too.
+     */
     protected function makeSureFieldHasType($field)
     {
-        // if the field type is missing, we should set it
         if (! isset($field['type'])) {
             $field['type'] = $this->getFieldTypeFromDbColumnType($field['name']);
         }
@@ -88,6 +104,12 @@ trait FieldsProtectedMethods
         return $field;
     }
 
+    /**
+     * Enable the tabs functionality, if a field has a tab defined.
+     * 
+     * @param  array $field Field definition array.
+     * @return array        The exact same field definition array.
+     */
     protected function makeSureFieldEnablesTabs($field)
     {
         // if a tab was mentioned, we should enable it
@@ -100,6 +122,11 @@ trait FieldsProtectedMethods
         return $field;
     }
 
+    /**
+     * Add a field to the current operation, using the Settings API.
+     * 
+     * @param  array $field Field definition array.
+     */
     protected function addFieldToOperationSettings($field)
     {
         $fieldKey = $this->getFieldKey($field);
@@ -110,9 +137,17 @@ trait FieldsProtectedMethods
         $this->setOperationSetting('fields', $allFields);
     }
 
-    // the array key for the field should be:
-    // - name (if the name is a string)
-    // - name1_name2_name3 (if the name is an array)
+    /**
+     * Get the string that should be used as an array key, for the attributive array
+     * where the fields are stored for the current operation.
+     *
+     * The array key for the field should be:
+     * - name (if the name is a string)
+     * - name1_name2_name3 (if the name is an array)
+     * 
+     * @param  array $field Field definition array.
+     * @return string       The string that should be used as array key.
+     */
     protected function getFieldKey($field)
     {
         if (is_array($field['name'])) {
