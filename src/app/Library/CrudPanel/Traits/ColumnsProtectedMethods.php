@@ -2,6 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+
 trait ColumnsProtectedMethods
 {
     /**
@@ -41,7 +44,7 @@ trait ColumnsProtectedMethods
     protected function addColumnToOperationSettings($column)
     {
         $allColumns = $this->columns();
-        $allColumns = array_add($allColumns, $column['key'], $column);
+        $allColumns = Arr::add($allColumns, $column['key'], $column);
 
         $this->setOperationSetting('columns', $allColumns);
 
@@ -69,7 +72,7 @@ trait ColumnsProtectedMethods
         }
 
         if (is_array($column) && ! isset($column['name'])) {
-            $column['name'] = 'anonymous_column_'.str_random(5);
+            $column['name'] = 'anonymous_column_'.Str::random(5);
         }
 
         return $column;
@@ -79,7 +82,7 @@ trait ColumnsProtectedMethods
      * If a column array is missing the "label" attribute, an ugly error would be show.
      * So we add the field Name as a label - it's better than nothing.
      *
-     * @param array     $array  Column definition array.
+     * @param array     $column  Column definition array.
      * @return array            Proper array defining the column.
      */
     protected function makeSureColumnHasLabel($column)
