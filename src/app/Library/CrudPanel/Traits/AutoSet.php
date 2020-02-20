@@ -102,7 +102,7 @@ trait AutoSet
         if ($fieldName == 'email') {
             return 'email';
         }
-        
+
         $dbColumnTypes = $this->getDbColumnTypes();
 
         if (! isset($dbColumnTypes[$fieldName])) {
