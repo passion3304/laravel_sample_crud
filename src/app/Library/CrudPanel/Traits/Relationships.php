@@ -14,7 +14,7 @@ trait Relationships
      * @return array|bool
      */
     public function getRelationFromFieldName($fieldName)
-    { 
+    {
         // if the "name" is the same as a relationship on the model
         if (method_exists($this->model, $fieldName)) {
             return $this->getRelationData($fieldName);
@@ -24,7 +24,7 @@ trait Relationships
     }
 
     /**
-     * If the field name is not a relationship method e.g: article_id, 
+     * If the field name is not a relationship method e.g: article_id,
      * we try to find if this field has a relation defined.
      *
      * @param string $fieldName
@@ -88,7 +88,7 @@ trait Relationships
      */
     public function getRelationData($method)
     {
-        if (!method_exists($this->model, $method)) {
+        if (! method_exists($this->model, $method)) {
             return false;
         }
 

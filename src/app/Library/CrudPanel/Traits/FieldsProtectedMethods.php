@@ -46,7 +46,7 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasRelationshipData($field)
     {
         // only do this if "entity" is defined on the field
-        if (!isset($field['entity'])) {
+        if (! isset($field['entity'])) {
             return $field;
         }
 
@@ -56,13 +56,13 @@ trait FieldsProtectedMethods
         // - select fields require name to be "category_id"
         // - relationship fields require name to be "category"
         // Once the relationship field is made to work both with "category" and "category_id" for 1-n relationships,
-        // the conditional below can be removed. 
+        // the conditional below can be removed.
         if ($field['type'] != 'relationship') {
             return $field;
         }
 
         $relationData = $this->getRelationFromFieldName($field['name']);
-        
+
         if ($relationData) {
             $field = array_merge($relationData, $field);
         } else {
