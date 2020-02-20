@@ -15,11 +15,10 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasNecessaryAttributes($field)
     {
         $field = $this->makeSureFieldHasName($field);
-        $field = $this->makeSureFieldHasRelationshipData($field);
         $field = $this->makeSureFieldHasModel($field);
         $field = $this->makeSureFieldHasLabel($field);
+        $field = $this->makeSureFieldHasRelationshipData($field);
         $field = $this->makeSureFieldHasType($field);
-        $field = $this->makeSureFieldEnablesTabs($field);
 
         return $field;
     }
@@ -98,7 +97,7 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasType($field)
     {
         if (! isset($field['type'])) {
-            $field['type'] = $this->getFieldTypeFromDbColumnType($field['name']);
+            $field['type'] = $this->inferFieldTypeFromDbColumnType($field['name']);
         }
 
         return $field;
@@ -108,9 +107,9 @@ trait FieldsProtectedMethods
      * Enable the tabs functionality, if a field has a tab defined.
      *
      * @param  array $field Field definition array.
-     * @return array        The exact same field definition array.
+     * @return void
      */
-    protected function makeSureFieldEnablesTabs($field)
+    protected function enableTabsIfFieldUsesThem($field)
     {
         // if a tab was mentioned, we should enable it
         if (isset($field['tab'])) {
@@ -118,8 +117,6 @@ trait FieldsProtectedMethods
                 $this->enableTabs();
             }
         }
-
-        return $field;
     }
 
     /**

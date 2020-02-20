@@ -13,7 +13,6 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Errors;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
@@ -36,7 +35,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, FieldsProtectedMethods, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships;
+    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships;
     // allow developers to add their own closures to this object
     use Macroable;
 

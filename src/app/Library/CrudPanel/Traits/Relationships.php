@@ -8,17 +8,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 trait Relationships
 {
     /**
-     * Check if the given method exists in current crud model.
-     *
-     * @param string $methodName
-     * @return ReflectionMethod|bool
-     */
-    public function modelHasMethod($methodName)
-    {
-        return method_exists($this->model, $methodName);
-    }
-
-    /**
      * Provided a field name we try to figure if the name is a relation name or it's a database table field that points to any relation.
      *
      * @param string $fieldName
@@ -26,7 +15,7 @@ trait Relationships
      */
     public function getRelationFromFieldName($fieldName)
     {
-        if ($this->modelHasMethod($fieldName)) {
+        if (method_exists($this->model, $fieldName)) {
             return $this->getRelationData($fieldName);
         } else {
             return $this->checkIfFieldNameBelongsToAnyRelation($fieldName);

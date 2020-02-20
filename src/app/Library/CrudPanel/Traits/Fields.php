@@ -4,6 +4,9 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 trait Fields
 {
+    use FieldsProtectedMethods;
+    use FieldsPrivateMethods;
+
     // ------------
     // FIELDS
     // ------------
@@ -29,6 +32,7 @@ trait Fields
     {
         $field = $this->makeSureFieldHasNecessaryAttributes($field);
 
+        $this->enableTabsIfFieldUsesThem($field);
         $this->addFieldToOperationSettings($field);
 
         return $this;

@@ -1,9 +1,10 @@
 <!--  relationship  -->
 
 @php
-
+    use Illuminate\Support\Str;
+    
     //in case entity is superNews we want the url friendly super-news
-    $routeEntity = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $field['entity']));
+    $routeEntity = Str::kebab($field['entity']);
 
     if(isset($field['inline_create']) && !is_array($field['inline_create'])) {
         $field['inline_create'] = [true];
