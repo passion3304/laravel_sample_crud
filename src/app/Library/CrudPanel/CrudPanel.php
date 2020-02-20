@@ -13,7 +13,6 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Errors;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsPrivateMethods;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;

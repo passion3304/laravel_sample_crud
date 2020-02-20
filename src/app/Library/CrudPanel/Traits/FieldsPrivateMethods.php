@@ -59,7 +59,6 @@ trait FieldsPrivateMethods
 
         return array_merge($orderedFields, $remaining);
     }
-    
 
     /**
      * Apply the given callback to the form fields.

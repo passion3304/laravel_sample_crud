@@ -6,9 +6,9 @@ trait FieldsProtectedMethods
 {
     /**
      * The only REALLY MANDATORY attribute when defining a field is the 'name'.
-     * Everything else Backpack can probably guess. This method makes sure  the 
+     * Everything else Backpack can probably guess. This method makes sure  the
      * field definition array is complete, by guessing missing attributes.
-     * 
+     *
      * @param  string|array $field  The definition of a field (string or array).
      * @return array                The correct definition of that field.
      */
@@ -25,9 +25,9 @@ trait FieldsProtectedMethods
     }
 
     /**
-     * If the field_definition_array array is a string, it means the programmer was lazy 
+     * If the field_definition_array array is a string, it means the programmer was lazy
      * and has only passed the name of the field. Turn that into a proper array.
-     * 
+     *
      * @param  string|array $field The field definition array (or string).
      * @return array
      */
@@ -100,7 +100,7 @@ trait FieldsProtectedMethods
         return $field;
     }
 
-    protected function addFieldToOperationSettings($field) 
+    protected function addFieldToOperationSettings($field)
     {
         $fieldKey = $this->getFieldKey($field);
 
