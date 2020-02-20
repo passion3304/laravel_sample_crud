@@ -50,7 +50,7 @@ trait FieldsProtectedMethods
      * If entity is not present, but it looks like the field SHOULD be a relationship field,
      * try to determine the method on the model that defines the relationship, and pass it to
      * the field as 'entity'.
-     * 
+     *
      * @param  [type] $field [description]
      * @return [type]        [description]
      */
@@ -63,16 +63,18 @@ trait FieldsProtectedMethods
         // if there's a method on the model with this name
         if (method_exists($this->model, $field['name'])) {
             $field['entity'] = $field['name'];
+
             return $field;
         } // TODO: also check if that method is a relationship (returns Relation)
 
-        // if the name ends with _id and that method exists, 
+        // if the name ends with _id and that method exists,
         // we can probably use it as an entity
         if (Str::endsWith($field['name'], '_id')) {
             $possibleMethodName = Str::replaceLast('_id', '', $field['name']);
 
             if (method_exists($this->model, $possibleMethodName)) {
                 $field['entity'] = $possibleMethodName;
+
                 return $field;
             } // TODO: also check if that method is a relationship (returns Relation)
         }
