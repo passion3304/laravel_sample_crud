@@ -113,7 +113,7 @@ trait SaveActions
                 if ($wantedOrder == $sv['order']) {
                     $actions[$key]['order'] = $replaceOrder;
                 }
-                if($key == $saveAction) {
+                if ($key == $saveAction) {
                     $actions[$key]['order'] = $wantedOrder;
                 }
             }
