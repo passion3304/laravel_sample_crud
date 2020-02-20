@@ -27,53 +27,9 @@ trait Fields
      */
     public function addField($field)
     {
-        // if the field_definition_array array is a string, it means the programmer was lazy and has only passed the name
-        // set some default values, so the field will still work
-        if (is_string($field)) {
-            $newField['name'] = $field;
-        } else {
-            $newField = $field;
-        }
+        $field = $this->makeSureFieldHasNecessaryAttributes($field);
 
-        // we set this up exclusive for relationship type field
-        // atm we avoid any breaking changes while developing the guessing abilities for crud panel
-        if (isset($newField['type']) && $newField['type'] == 'relationship') {
-            $relationData = $this->getRelationFromFieldName($newField['name']);
-            if ($relationData) {
-                $newField = array_merge($newField, $relationData);
-            } else {
-                abort(500, 'Unable to process relationship field: '.$field['name']);
-            }
-        }
-
-        // if this is a relation type field and no corresponding model was specified,
-        // get it from the relation method defined in the main model
-        if (isset($newField['entity']) && ! isset($newField['model'])) {
-            $newField['model'] = $this->getRelationModel($newField['entity']);
-        }
-
-        // if the label is missing, we should set it
-        if (! isset($newField['label'])) {
-            $label = is_array($newField['name']) ? $newField['name'][0] : $newField['name'];
-            $newField['label'] = mb_ucfirst(str_replace('_', ' ', $label));
-        }
-
-        // if the field type is missing, we should set it
-        if (! isset($newField['type'])) {
-            $newField['type'] = $this->getFieldTypeFromDbColumnType($newField['name']);
-        }
-
-        // if a tab was mentioned, we should enable it
-        if (isset($newField['tab'])) {
-            if (! $this->tabsEnabled()) {
-                $this->enableTabs();
-            }
-        }
-
-        $fields = $this->getOperationSetting('fields');
-        $fieldKey = is_array($newField['name']) ? implode('_', $newField['name']) : $newField['name'];
-        $fields = array_add($this->fields(), $fieldKey, $newField);
-        $this->setOperationSetting('fields', $fields);
+        $this->addFieldToOperationSettings($field);
 
         return $this;
     }
@@ -114,36 +70,6 @@ trait Fields
         $this->transformFields(function ($fields) use ($targetFieldName) {
             return $this->moveField($fields, $targetFieldName, true);
         });
-    }
-
-    /**
-     * Move the most recently added field before or after the given target field. Default is before.
-     *
-     * @param array  $fields          The form fields.
-     * @param string $targetFieldName The target field name.
-     * @param bool   $before          If true, the field will be moved before the target field, otherwise it will be moved after it.
-     *
-     * @return array
-     */
-    private function moveField($fields, $targetFieldName, $before = true)
-    {
-        if (array_key_exists($targetFieldName, $fields)) {
-            $targetFieldPosition = $before ? array_search($targetFieldName, array_keys($fields))
-                : array_search($targetFieldName, array_keys($fields)) + 1;
-
-            if ($targetFieldPosition >= (count($fields) - 1)) {
-                // target field name is same as element
-                return $fields;
-            }
-
-            $element = array_pop($fields);
-            $beginningArrayPart = array_slice($fields, 0, $targetFieldPosition, true);
-            $endingArrayPart = array_slice($fields, $targetFieldPosition, null, true);
-
-            $fields = array_merge($beginningArrayPart, [$element['name'] => $element], $endingArrayPart);
-        }
-
-        return $fields;
     }
 
     /**
@@ -286,42 +212,6 @@ trait Fields
         $this->transformFields(function ($fields) use ($order) {
             return $this->applyOrderToFields($fields, $order);
         });
-    }
-
-    /**
-     * Apply the given order to the fields and return the new array.
-     *
-     * @param array $fields The fields array.
-     * @param array $order  The desired field order array.
-     *
-     * @return array The ordered fields array.
-     */
-    private function applyOrderToFields($fields, $order)
-    {
-        $orderedFields = [];
-        foreach ($order as $fieldName) {
-            if (array_key_exists($fieldName, $fields)) {
-                $orderedFields[$fieldName] = $fields[$fieldName];
-            }
-        }
-
-        if (empty($orderedFields)) {
-            return $fields;
-        }
-
-        $remaining = array_diff_key($fields, $orderedFields);
-
-        return array_merge($orderedFields, $remaining);
-    }
-
-    /**
-     * Apply the given callback to the form fields.
-     *
-     * @param callable $callback The callback function to run for the given form fields.
-     */
-    private function transformFields(callable $callback)
-    {
-        $this->setOperationSetting('fields', $callback($this->fields()));
     }
 
     /**
