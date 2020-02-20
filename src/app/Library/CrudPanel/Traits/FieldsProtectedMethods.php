@@ -17,8 +17,8 @@ trait FieldsProtectedMethods
         $field = $this->makeSureFieldHasName($field);
         $field = $this->makeSureFieldHasModel($field);
         $field = $this->makeSureFieldHasLabel($field);
-        $field = $this->makeSureFieldHasRelationshipData($field);
         $field = $this->makeSureFieldHasType($field);
+        $field = $this->makeSureFieldHasRelationshipData($field);
 
         return $field;
     }
@@ -45,15 +45,28 @@ trait FieldsProtectedMethods
 
     protected function makeSureFieldHasRelationshipData($field)
     {
-        // we set this up exclusive for relationship type field
-        // atm we avoid any breaking changes while developing the guessing abilities for crud panel
-        if (isset($field['type']) && $field['type'] == 'relationship') {
-            $relationData = $this->getRelationFromFieldName($field['name']);
-            if ($relationData) {
-                $field = array_merge($field, $relationData);
-            } else {
-                abort(500, 'Unable to process relationship field: '.$field['name']);
-            }
+        // only do this if "entity" is defined on the field
+        if (!isset($field['entity'])) {
+            return $field;
+        }
+
+        // TODO: make this work for ALL field types that have entity (condition above)
+        // Right now it's limited to "relationship" for backwards compatibility reasons
+        // The difference being that:
+        // - select fields require name to be "category_id"
+        // - relationship fields require name to be "category"
+        // Once the relationship field is made to work both with "category" and "category_id" for 1-n relationships,
+        // the conditional below can be removed. 
+        if ($field['type'] != 'relationship') {
+            return $field;
+        }
+
+        $relationData = $this->getRelationFromFieldName($field['name']);
+        
+        if ($relationData) {
+            $field = array_merge($relationData, $field);
+        } else {
+            abort(500, 'Unable to process relationship data: '.$field['name']);
         }
 
         return $field;

@@ -10,8 +10,8 @@
         $field['inline_create'] = [true];
     }
 
-    $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
-    $field['ajax'] = $field['ajax'] ?? $crud->getOperationSetting('ajax_relationships', false, $crud->getOperation());
+    $field['multiple'] = $field['multiple'] ?? false;
+    $field['ajax'] = $field['ajax'] ?? false;
     $field['placeholder'] = $field['placeholder'] ?? $field['multiple'] ? 'Select entries' : 'Select entry';
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.

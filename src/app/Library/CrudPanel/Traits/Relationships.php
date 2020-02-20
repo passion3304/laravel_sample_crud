@@ -14,16 +14,18 @@ trait Relationships
      * @return array|bool
      */
     public function getRelationFromFieldName($fieldName)
-    {
+    { 
+        // if the "name" is the same as a relationship on the model
         if (method_exists($this->model, $fieldName)) {
             return $this->getRelationData($fieldName);
-        } else {
-            return $this->checkIfFieldNameBelongsToAnyRelation($fieldName);
         }
+
+        return $this->checkIfFieldNameBelongsToAnyRelation($fieldName);
     }
 
     /**
-     * If the field name is not a relationship method e.g: article_id, we try to find if this field has a relation defined.
+     * If the field name is not a relationship method e.g: article_id, 
+     * we try to find if this field has a relation defined.
      *
      * @param string $fieldName
      * @return array|bool
@@ -31,18 +33,19 @@ trait Relationships
     public function checkIfFieldNameBelongsToAnyRelation($fieldName)
     {
         $relations = $this->getAvailableRelationsInModel();
-        if (! empty($relations)) {
-            if (in_array($fieldName, array_column($relations, 'name'))) {
-                return array_filter($relations, function ($arr) use ($fieldName) {
-                    if (isset($arr['name'])) {
-                        return $arr['name'] == $fieldName;
-                    }
 
-                    return false;
-                })[0];
-            }
-
+        if (empty($relations)) {
             return false;
+        }
+
+        if (in_array($fieldName, array_column($relations, 'name'))) {
+            return array_filter($relations, function ($arr) use ($fieldName) {
+                if (isset($arr['name'])) {
+                    return $arr['name'] == $fieldName;
+                }
+
+                return false;
+            })[0];
         }
 
         return false;
@@ -61,6 +64,7 @@ trait Relationships
         try {
             $reflect = new \ReflectionClass($this->model);
             $relations = [];
+
             foreach ($reflect->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
                 if ($method->hasReturnType()) {
                     $returnType = $method->getReturnType();
@@ -84,15 +88,22 @@ trait Relationships
      */
     public function getRelationData($method)
     {
+        if (!method_exists($this->model, $method)) {
+            return false;
+        }
+
         try {
             $method = (new \ReflectionClass($this->model))->getMethod($method);
 
             $relation = $method->invoke($this->model);
 
             if ($relation instanceof Relation) {
+                $relationship['type'] = 'relationship';
                 $relationship['entity'] = $method->getName();
                 $relationship['relation_type'] = (new \ReflectionClass($relation))->getShortName();
+                $relationship['multiple'] = $this->relationAllowsMultiple($relationship['relation_type']);
                 $relationship['model'] = get_class($relation->getRelated());
+
                 if ($relationship['relation_type'] == 'BelongsTo' || $relationship['relation_type'] == 'HasOne') {
                     $relationship['name'] = $relation->getForeignKeyName();
                 }
@@ -123,10 +134,10 @@ trait Relationships
             case 'BelongsToMany':
             case 'HasManyThrough':
             case 'MorphMany':
-            return true;
-            break;
+                return true;
+
             default:
-            return false;
+                return false;
         }
     }
 }
