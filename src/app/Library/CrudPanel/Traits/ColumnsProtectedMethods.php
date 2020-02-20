@@ -10,11 +10,12 @@ trait ColumnsProtectedMethods
      *
      * This method checks that all necessary attributes are set.
      * If not, it tries to guess them.
-     * 
+     *
      * @param  string|array $column The column definition array OR column name as string.
      * @return array                Proper column definition array.
      */
-    protected function makeSureColumnHasNeededAttributes($column) {
+    protected function makeSureColumnHasNeededAttributes($column)
+    {
         $column = $this->makeSureColumnHasName($column);
         $column = $this->makeSureColumnHasLabel($column);
         $column = $this->makeSureColumnHasType($column);
@@ -34,10 +35,11 @@ trait ColumnsProtectedMethods
 
     /**
      * Add a column to the current operation, using the Setting API.
-     * 
+     *
      * @param array $column Column definition array.
      */
-    protected function addColumnToOperationSettings($column) {
+    protected function addColumnToOperationSettings($column)
+    {
         $allColumns = $this->columns();
         $allColumns = array_add($allColumns, $column['key'], $column);
 
@@ -56,7 +58,7 @@ trait ColumnsProtectedMethods
     /**
      * If the field definition array is actually a string, it means the programmer was lazy
      * and has only passed the name of the column. Turn that into a proper array.
-     * 
+     *
      * @param array $column Column definition array.
      * @return array         Proper array defining the column.
      */
@@ -66,7 +68,7 @@ trait ColumnsProtectedMethods
             $column = ['name' => $column];
         }
 
-        if (is_array($column) && !isset($column['name'])) {
+        if (is_array($column) && ! isset($column['name'])) {
             $column['name'] = 'anonymous_column_'.str_random(5);
         }
 
@@ -91,7 +93,7 @@ trait ColumnsProtectedMethods
 
     /**
      * If a column definition is missing the type, set a default.
-     * 
+     *
      * @param array $column Column definition array.
      * @return array        Column definition array with type.
      */
@@ -108,7 +110,7 @@ trait ColumnsProtectedMethods
      * If a column definition is missing the key, set the default.
      * The key is used when storing all columns using the Settings API,
      * it is used as the "key" of the associative array that holds all columns.
-     * 
+     *
      * @param array $column Column definition array.
      * @return array        Column definition array with key.
      */
@@ -124,13 +126,13 @@ trait ColumnsProtectedMethods
     /**
      * If an entity has been defined for the column, but no model,
      * determine the model from that relationship.
-     * 
+     *
      * @param array $column Column definition array.
      * @return array        Column definition array with model.
      */
     protected function makeSureColumnHasModel($column)
     {
-        // if this is a relation type field and no corresponding model was specified, 
+        // if this is a relation type field and no corresponding model was specified,
         // get it from the relation method defined in the main model
         if (isset($column['entity']) && ! isset($column['model'])) {
             $column['model'] = $this->getRelationModel($column['entity']);
@@ -167,7 +169,7 @@ trait ColumnsProtectedMethods
 
     /**
      * Check if the column exists in the database, as a DB column.
-     * 
+     *
      * @param string $table
      * @param string $name
      *
