@@ -113,6 +113,9 @@ trait SaveActions
                 if ($wantedOrder == $sv['order']) {
                     $actions[$key]['order'] = $replaceOrder;
                 }
+                if($key == $saveAction) {
+                    $actions[$key]['order'] = $wantedOrder;
+                }
             }
             $this->setOperationSetting('save_actions', $actions);
         }
@@ -206,7 +209,7 @@ trait SaveActions
     }
 
     /**
-     * Return the ordered save actions.
+     * Return the ordered save actions to use in the crud panel.
      *
      * @return void
      */
