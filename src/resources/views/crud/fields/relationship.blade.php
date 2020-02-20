@@ -118,7 +118,7 @@ if(!isset($inlineCreate)) {
         @if($field['ajax'])
         data-data-source="{{ $field['data_source'] }}"
         data-method="{{ $field['method'] ?? 'POST' }}"
-        data-minimum-input-length="{{ $field['minimum_input_length'] }}"
+        data-minimum-input-length="{{ $field['minimum_input_length'] ?? 2 }}"
         @endif
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
@@ -485,13 +485,10 @@ function triggerModal(element) {
 
                 $modal.modal('hide');
                 //TODO: We should create translation string for this ?
-                swal({
-                    title: "Related entity creation",
-                    text: "Related entity created with success.",
-                    icon: "success",
-                    timer: 3000,
-                    buttons: false,
-                });
+                new Noty({
+                    type: "info",
+                    text: 'Related entry created & selected.',
+                }).show();
             },
             error: function (result) {
 
