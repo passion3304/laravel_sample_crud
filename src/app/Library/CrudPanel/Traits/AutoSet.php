@@ -105,7 +105,7 @@ trait AutoSet
             return 'email';
         }
 
-        if (!isset($dbColumnTypes[$fieldName])) {
+        if (! isset($dbColumnTypes[$fieldName])) {
             return 'text';
         }
 
