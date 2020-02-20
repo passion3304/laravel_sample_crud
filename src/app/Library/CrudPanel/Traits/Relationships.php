@@ -8,22 +8,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 trait Relationships
 {
     /**
-     * Provided a field name we try to figure if the name is a relation name or it's a database table field that points to any relation.
-     *
-     * @param string $fieldName
-     * @return array|bool
-     */
-    public function getRelationFromFieldName($fieldName)
-    {
-        // if the "name" is the same as a relationship on the model
-        if (method_exists($this->model, $fieldName)) {
-            return $this->getRelationData($fieldName);
-        }
-
-        return $this->checkIfFieldNameBelongsToAnyRelation($fieldName);
-    }
-
-    /**
      * If the field name is not a relationship method e.g: article_id,
      * we try to find if this field has a relation defined.
      *
@@ -69,7 +53,7 @@ trait Relationships
                 if ($method->hasReturnType()) {
                     $returnType = $method->getReturnType();
                     if (in_array(class_basename($returnType->getName()), $eloquentRelationships)) {
-                        $relations[] = $this->getRelationData($method);
+                        $relations[] = $this->inferFieldAttributesFromRelationship($method);
                     }
                 }
             }
@@ -86,7 +70,7 @@ trait Relationships
      * @param ReflectionMethod $method
      * @return array
      */
-    public function getRelationData($method)
+    public function inferFieldAttributesFromRelationship($method)
     {
         if (! method_exists($this->model, $method)) {
             return false;

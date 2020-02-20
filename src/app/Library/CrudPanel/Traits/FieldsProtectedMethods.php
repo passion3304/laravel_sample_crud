@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Str;
+
 trait FieldsProtectedMethods
 {
     /**
@@ -17,8 +19,9 @@ trait FieldsProtectedMethods
         $field = $this->makeSureFieldHasName($field);
         $field = $this->makeSureFieldHasModel($field);
         $field = $this->makeSureFieldHasLabel($field);
-        $field = $this->makeSureFieldHasType($field);
+        $field = $this->makeSureFieldHasEntity($field);
         $field = $this->makeSureFieldHasRelationshipData($field);
+        $field = $this->makeSureFieldHasType($field);
 
         return $field;
     }
@@ -43,6 +46,47 @@ trait FieldsProtectedMethods
         return $field;
     }
 
+    /**
+     * If entity is not present, but it looks like the field SHOULD be a relationship field,
+     * try to determine the method on the model that defines the relationship, and pass it to
+     * the field as 'entity'.
+     * 
+     * @param  [type] $field [description]
+     * @return [type]        [description]
+     */
+    protected function makeSureFieldHasEntity($field)
+    {
+        if (isset($field['entity'])) {
+            return $field;
+        }
+
+        // if there's a method on the model with this name
+        if (method_exists($this->model, $field['name'])) {
+            $field['entity'] = $field['name'];
+            return $field;
+        } // TODO: also check if that method is a relationship (returns Relation)
+
+        // if the name ends with _id and that method exists, 
+        // we can probably use it as an entity
+        if (Str::endsWith($field['name'], '_id')) {
+            $possibleMethodName = Str::replaceLast('_id', '', $field['name']);
+
+            if (method_exists($this->model, $possibleMethodName)) {
+                $field['entity'] = $possibleMethodName;
+                return $field;
+            } // TODO: also check if that method is a relationship (returns Relation)
+        }
+
+        // if there's a column in the db for this field name
+        // most likely it doesn't need 'entity', UNLESS it's a foreign key
+        // TODO: make this work
+        // if ($this->checkIfFieldNameBelongsToAnyRelation($field['name'])) {
+        //     $field['entity'] = RELATIONSHIP_METHOD;
+        // }
+
+        return $field;
+    }
+
     protected function makeSureFieldHasRelationshipData($field)
     {
         // only do this if "entity" is defined on the field
@@ -50,21 +94,10 @@ trait FieldsProtectedMethods
             return $field;
         }
 
-        // TODO: make this work for ALL field types that have entity (condition above)
-        // Right now it's limited to "relationship" for backwards compatibility reasons
-        // The difference being that:
-        // - select fields require name to be "category_id"
-        // - relationship fields require name to be "category"
-        // Once the relationship field is made to work both with "category" and "category_id" for 1-n relationships,
-        // the conditional below can be removed.
-        if ($field['type'] != 'relationship') {
-            return $field;
-        }
+        $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field['entity']);
 
-        $relationData = $this->getRelationFromFieldName($field['name']);
-
-        if ($relationData) {
-            $field = array_merge($relationData, $field);
+        if ($extraFieldAttributes) {
+            $field = array_merge($extraFieldAttributes, $field);
         } else {
             abort(500, 'Unable to process relationship data: '.$field['name']);
         }
@@ -94,6 +127,7 @@ trait FieldsProtectedMethods
     {
         if (! isset($field['label'])) {
             $name = is_array($field['name']) ? $field['name'][0] : $field['name'];
+            $name = str_replace('_id', '', $name);
             $field['label'] = mb_ucfirst(str_replace('_', ' ', $name));
         }
 
