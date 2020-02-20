@@ -37,7 +37,7 @@ trait FieldsProtectedMethods
             return ['name' => $field];
         }
 
-        if (is_array($field) && !isset($field['name'])) {
+        if (is_array($field) && ! isset($field['name'])) {
             abort(500, 'All fields must have their name defined');
         }
 
@@ -74,7 +74,7 @@ trait FieldsProtectedMethods
     /**
      * Set the label of a field, if it's missing, by capitalizing the name and replacing
      * underscores with spaces.
-     * 
+     *
      * @param  array $field Field definition array.
      * @return array        Field definition array that contains label too.
      */
@@ -91,7 +91,7 @@ trait FieldsProtectedMethods
     /**
      * Set the type of a field, if it's missing, by inferring it from the
      * db column type.
-     * 
+     *
      * @param  array $field Field definition array.
      * @return array        Field definition array that contains type too.
      */
@@ -106,7 +106,7 @@ trait FieldsProtectedMethods
 
     /**
      * Enable the tabs functionality, if a field has a tab defined.
-     * 
+     *
      * @param  array $field Field definition array.
      * @return array        The exact same field definition array.
      */
@@ -124,7 +124,7 @@ trait FieldsProtectedMethods
 
     /**
      * Add a field to the current operation, using the Settings API.
-     * 
+     *
      * @param  array $field Field definition array.
      */
     protected function addFieldToOperationSettings($field)
@@ -144,7 +144,7 @@ trait FieldsProtectedMethods
      * The array key for the field should be:
      * - name (if the name is a string)
      * - name1_name2_name3 (if the name is an array)
-     * 
+     *
      * @param  array $field Field definition array.
      * @return string       The string that should be used as array key.
      */
