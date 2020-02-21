@@ -145,7 +145,12 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
+  <style type="text/css">
+    .unstyled-anchor {
+        pointer-events: none;
+    }
 
+  </style>
   <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css') }}">
   <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/form.css') }}">
   <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/list.css') }}">
@@ -155,8 +160,22 @@
 @endsection
 
 @section('after_scripts')
-	@include('crud::inc.datatables_logic')
+    @include('crud::inc.datatables_logic')
 
+  <script type="text/javascript">
+
+  // this code is used to disable clicks on datatables columns anchors in case
+  // developer did not provide an href.
+  jQuery(document).ready(function($) {
+    $(document).on('init.dt', function (event) {
+        $('.unstyled-anchor').each(function(i,el) {
+            $(el).on('click', function(event) {
+                event.preventDefault();
+            });
+        });
+    });
+});
+  </script>
   <script src="{{ asset('packages/backpack/crud/js/crud.js') }}"></script>
   <script src="{{ asset('packages/backpack/crud/js/form.js') }}"></script>
   <script src="{{ asset('packages/backpack/crud/js/list.js') }}"></script>

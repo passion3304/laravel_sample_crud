@@ -9,7 +9,7 @@
 @endphp
 
 @if($column['anchor'] !== false)
-<a href="{{ $column['anchor']['href'] }}" target="{{$column['anchor']['target']}}" class="{{$column['anchor']['class']}}">
+<a href="{{ $column['anchor']['href'] }}" target="{{$column['anchor']['target']}}" class="{{$column['anchor']['class']}} @if($column['anchor']['href'] == '') unstyled-anchor @endif">
     @if(isset($escaped) && $escaped === false)
     {!! $text !!}
     @else
