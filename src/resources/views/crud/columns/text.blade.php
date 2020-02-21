@@ -9,10 +9,6 @@
 @endphp
 
 <span>
-    @if(isset($column['anchor']['href']))
         @include('crud::inc.column_anchors',['text' => $text])
-    @else
-        {{$text}}
-    @endif
 
 </span>

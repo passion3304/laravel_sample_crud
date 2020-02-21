@@ -8,11 +8,8 @@
     @php($text = \Carbon\Carbon::parse($value)
                     ->locale(App::getLocale())
                     ->isoFormat($column['format'] ?? config('backpack.base.default_date_format')))
-        @if(isset($column['anchor']['href']))
+
             @include('crud::inc.column_anchors',['text' => $text])
-        @else
-            {{ $text }}
-        @endif
     @else
         -
     @endif

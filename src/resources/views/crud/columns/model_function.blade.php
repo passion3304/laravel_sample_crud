@@ -5,10 +5,5 @@
 @endphp
 
 <span>
-    @if(isset($column['anchor']['href']))
-        @include('crud::inc.column_anchors',['text' => $text])
-    @else
-        {!! $text !!}
-    @endif
-
+        @include('crud::inc.column_anchors',['text' => $text, 'escaped' => false])
 </span>

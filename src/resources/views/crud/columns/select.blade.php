@@ -1,18 +1,18 @@
 {{-- single relationships (1-1, 1-n) --}}
 
 <span>
-    @php($attributes = $crud->getModelAttributeFromRelation($entry, $column['entity'], $column['attribute']))
-
+    @php
+    $attributes = $crud->getModelAttributeFromRelation($entry, $column['entity'], $column['attribute']);
+    @endphp
 
         @if(count($attributes))
 
-            @php($text = e(str_limit(strip_tags(implode(', ', $attributes)), array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]')))
+        @php($lastKey = array_key_last($attributes))
+        @foreach($attributes as $key => $attribute)
 
-            @if(isset($column['anchor']['href']))
-                @include('crud::inc.column_anchors',['text' => $text])
-            @else
-                {{ $text }}
-            @endif
+            @php($text = str_limit($attribute, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]'))
+            @include('crud::inc.column_anchors',['text' => $text, 'related_model_key' => $key])@if($lastKey != $key),@endif
+        @endforeach
         @else
             -
         @endif

@@ -16,11 +16,8 @@
 
         @php($text = count($array).' '.$suffix)
 
-        @if(isset($column['anchor']['href']))
-            @include('crud::inc.column_anchors',['text' => $text])
-        @else
-            {{ $text }}
-        @endif
+        @include('crud::inc.column_anchors',['text' => $text])
+
     @else
         -
     @endif
