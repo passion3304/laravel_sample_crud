@@ -6,25 +6,25 @@
     switch ($field['iconset']) {
         case 'ionicon':
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/ionicons-1.5.2/css/ionicons.min.css');
-
+            break;
         case 'weathericon':
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/weather-icons-1.2.0/css/weather-icons.min.css');
-
+            break;
         case 'mapicon':
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/map-icons-2.1.0/css/map-icons.min.css');
-
+            break;
         case 'octicon':
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/octicons-2.1.2/css/octicons.min.css');
-
+            break;
         case 'typicon':
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/typicons-2.0.6/css/typicons.min.css');
-
+            break;
         case 'elusiveicon':
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/elusive-icons-2.0.0/css/elusive-icons.min.css');
-
+            break;
         case 'meterialdesign':
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/material-design-1.1.1/css)/material-design-iconic-font.min.css');
-        
+            break;
         default:
             $fontIconFilePath = asset('packages/bootstrap-iconpicker/icon-fonts/font-awesome-5.10.1/css/all.min.css');
             break;
