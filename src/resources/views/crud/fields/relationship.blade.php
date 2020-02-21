@@ -500,13 +500,10 @@ function triggerModal(element) {
                     message += $errors[i] + ' \n';
                 }
 
-                swal({
-                    title: "Creating related entity error",
-                    text: message,
-                    icon: "error",
-                    timer: 4000,
-                    buttons: false,
-                });
+                new Noty({
+                    type: "error",
+                    text: '<strong>Error creating related entry.</strong><br> '+message,
+                }).show();
 
                 //revert save button back to normal
                 $modalSaveButton.prop('disabled', false);
