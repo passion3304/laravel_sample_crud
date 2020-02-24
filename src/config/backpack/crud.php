@@ -28,7 +28,7 @@ return [
             // stores pagination and filters in localStorage for two hours
             // whenever the user tries to see that page, backpack loads the previous pagination and filtration
             'persistentTable' => true,
-            
+
             // show search bar in the top-right corner?
             'searchableTable' => true,
 
