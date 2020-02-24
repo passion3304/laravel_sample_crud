@@ -149,15 +149,6 @@
                 },
             });
 
-            // show a clear button if the column is nullable
-            if ($allowClear) {
-                element.on('select2:unselecting', function(e) {
-                    $(this).val('').trigger('change');
-                    // console.log('cleared! '+$(this).val());
-                    e.preventDefault();
-                });
-            }
-
             // if any dependencies have been declared
             // when one of those dependencies changes value
             // reset the select2 value
