@@ -14,9 +14,9 @@ return [
     */
 
     // Forms
-    'save_action_save_and_new' => 'Speichern und neu',
-    'save_action_save_and_edit' => 'Speichern und bearbeiten',
-    'save_action_save_and_back' => 'Speichern und zurück',
+    'save_action_save_and_new'         => 'Speichern und neu',
+    'save_action_save_and_edit'        => 'Speichern und bearbeiten',
+    'save_action_save_and_back'        => 'Speichern und zurück',
     'save_action_changed_notification' => 'Standardverhalten nach dem Speichern wurde geändert.',
 
     // Create form
@@ -30,16 +30,16 @@ return [
     'save'                 => 'Speichern',
 
     // Revisions
-    'revisions'            => 'Revisionen',
-    'no_revisions'         => 'Keine Revisionen gefunden',
+    'revisions'             => 'Revisionen',
+    'no_revisions'          => 'Keine Revisionen gefunden',
     'created_this'          => 'hat das erstellt',
-    'changed_the'          => 'hat das geändert: ',
-    'restore_this_value'   => 'Wiederherstellen',
-    'from'                 => 'von',
-    'to'                   => 'nach',
-    'undo'                 => 'Rückgängig',
-    'revision_restored'    => 'Revision erfolgreich wiederhergestellt',
-    'guest_user'           => 'Gast',
+    'changed_the'           => 'hat das geändert: ',
+    'restore_this_value'    => 'Wiederherstellen',
+    'from'                  => 'von',
+    'to'                    => 'nach',
+    'undo'                  => 'Rückgängig',
+    'revision_restored'     => 'Revision erfolgreich wiederhergestellt',
+    'guest_user'            => 'Gast',
 
     // Translatable models
     'edit_translations'    => 'ÜBERSETZUNG BEARBEITEN',
@@ -88,17 +88,17 @@ return [
         'sortDescending' => ': aktivieren um absteigend zu Sortieren',
     ],
     'export' => [
-        'copy' => 'Kopieren',
-        'excel' => 'Excel',
-        'csv' => 'CSV',
-        'pdf' => 'PDF',
-        'print' => 'Drucken',
+        'copy'              => 'Kopieren',
+        'excel'             => 'Excel',
+        'csv'               => 'CSV',
+        'pdf'               => 'PDF',
+        'print'             => 'Drucken',
         'column_visibility' => 'Sichtbarkeit der Spalte',
     ],
 
     // global crud - errors
     'unauthorized_access' => 'Unbefugter Zugriff - Sie haben nicht die notwendigen Rechte um diese Seite anzuzeigen.',
-    'please_fix' => 'Bitte beheben Sie die folgenden Fehler:',
+    'please_fix'          => 'Bitte beheben Sie die folgenden Fehler:',
 
     // global crud - success / error notification bubbles
     'insert_success' => 'Der Eintrag wurde erfolgreich angelegt.',
@@ -114,25 +114,25 @@ return [
 
     // CRUD yes/no
     'yes' => 'Ja',
-    'no' => 'Nein',
+    'no'  => 'Nein',
 
     // CRUD filters navbar view
-    'filters' => 'Filter',
+    'filters'        => 'Filter',
     'toggle_filters' => 'Filter umschalten',
     'remove_filters' => 'Filter entfernen',
 
     // Fields
-    'browse_uploads' => 'Uploads durchsuchen',
-    'clear' => 'Löschen',
-    'page_link' => 'Link zur Seite',
-    'page_link_placeholder' => 'http://example.com/ihre-gewuenschte-seite',
-    'internal_link' => 'Interner Link',
+    'browse_uploads'            => 'Uploads durchsuchen',
+    'clear'                     => 'Löschen',
+    'page_link'                 => 'Link zur Seite',
+    'page_link_placeholder'     => 'http://example.com/ihre-gewuenschte-seite',
+    'internal_link'             => 'Interner Link',
     'internal_link_placeholder' => 'URL-sicherer Name ("Slug"). Bsp: \'admin/page\' (ohne Anführungszeichen) für \':url\'',
-    'external_link' => 'Externer Link',
-    'choose_file' => 'Datei auswählen',
+    'external_link'             => 'Externer Link',
+    'choose_file'               => 'Datei auswählen',
 
     //Table field
-    'table_cant_add' => 'Kann :entity nicht hinzufügen',
+    'table_cant_add'    => 'Kann :entity nicht hinzufügen',
     'table_max_reached' => 'Maximale Anzahl von :max erreicht',
 
     // File manager

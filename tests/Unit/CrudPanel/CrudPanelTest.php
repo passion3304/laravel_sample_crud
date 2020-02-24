@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Illuminate\Database\Eloquent\Builder;
 use Backpack\CRUD\Tests\Unit\Models\TestModel;
+use Illuminate\Database\Eloquent\Builder;
 
 class CrudPanelTest extends BaseCrudPanelTest
 {

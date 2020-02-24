@@ -2,10 +2,62 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-use Illuminate\Http\Request as UpdateRequest;
+use Illuminate\Support\Facades\Route;
 
 trait UpdateOperation
 {
+    /**
+     * Define which routes are needed for this operation.
+     *
+     * @param string $name       Name of the current entity (singular). Used as first URL segment.
+     * @param string $routeName  Prefix of the route name.
+     * @param string $controller Name of the current CrudController.
+     */
+    protected function setupUpdateRoutes($segment, $routeName, $controller)
+    {
+        Route::get($segment.'/{id}/edit', [
+            'as'        => $routeName.'.edit',
+            'uses'      => $controller.'@edit',
+            'operation' => 'update',
+        ]);
+
+        Route::put($segment.'/{id}', [
+            'as'        => $routeName.'.update',
+            'uses'      => $controller.'@update',
+            'operation' => 'update',
+        ]);
+
+        Route::get($segment.'/{id}/translate/{lang}', [
+            'as'        => $routeName.'.translateItem',
+            'uses'      => $controller.'@translateItem',
+            'operation' => 'update',
+        ]);
+    }
+
+    /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupUpdateDefaults()
+    {
+        $this->crud->allowAccess('update');
+
+        $this->crud->operation('update', function () {
+            $this->crud->loadDefaultOperationSettingsFromConfig();
+
+            if ($this->crud->getModel()->translationEnabled()) {
+                $this->crud->addField([
+                    'name' => 'locale',
+                    'type' => 'hidden',
+                    'value' => $this->request->input('locale') ?? app()->getLocale(),
+                ]);
+            }
+        });
+
+        $this->crud->operation(['list', 'show'], function () {
+            $this->crud->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
+        });
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -16,16 +68,15 @@ trait UpdateOperation
     public function edit($id)
     {
         $this->crud->hasAccessOrFail('update');
-        $this->crud->setOperation('update');
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
 
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
-        $this->data['saveAction'] = $this->getSaveAction();
-        $this->data['fields'] = $this->crud->getUpdateFields($id);
+        $this->data['saveAction'] = $this->crud->getSaveAction();
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
 
         $this->data['id'] = $id;
@@ -37,31 +88,26 @@ trait UpdateOperation
     /**
      * Update the specified resource in the database.
      *
-     * @param UpdateRequest $request - type injection used for validation using Requests
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return Response
      */
-    public function updateCrud(UpdateRequest $request = null)
+    public function update()
     {
         $this->crud->hasAccessOrFail('update');
-        $this->crud->setOperation('update');
 
-        // fallback to global request instance
-        if (is_null($request)) {
-            $request = \Request::instance();
-        }
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
 
         // update the row in the db
         $item = $this->crud->update($request->get($this->crud->model->getKeyName()),
-                            $request->except('save_action', '_token', '_method', 'current_tab', 'http_referrer'));
+                            $this->crud->getStrippedSaveRequest());
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
         \Alert::success(trans('backpack::crud.update_success'))->flash();
 
         // save the redirect choice for next time
-        $this->setSaveAction();
+        $this->crud->setSaveAction();
 
-        return $this->performSaveAction($item->getKey());
+        return $this->crud->performSaveAction($item->getKey());
     }
 }

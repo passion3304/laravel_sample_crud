@@ -1,8 +1,16 @@
 {
     "name": "backpack/crud",
-    "description": "Quickly build an admin interface for your Eloquent models, using Laravel 5. Build a CMS in a matter of minutes.",
+    "type": "library",
+    "description": "Quickly build an admin interfaces using Laravel 6, CoreUI, Boostrap 4 and jQuery.",
     "keywords": [
+        "backpack",
+        "base",
+        "admin panel for laravel",
+        "coreui for laravel",
+        "bootstrap 4 admin panel laravel",
+        "laravel admin",
         "CRUD",
+        "BREAD",
         "create",
         "update",
         "delete",
@@ -14,17 +22,22 @@
         "content management framework"
     ],
     "homepage": "https://github.com/laravel-backpack/CRUD",
-    "license": "MIT",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Cristian Tabacitu",
             "email": "hello@tabacitu.ro",
             "homepage": "http://www.tabacitu.ro",
-            "role": "Chief Architect & Lead Developer"
+            "role": "Creator & Maintainer"
         }
     ],
     "require": {
-        "backpack/base": "1.1.*",
+        "laravel/framework": "^6.0|5.8.*",
+        "prologue/alerts": "^0.4.1",
+        "creativeorange/gravatar": "~1.0",
+        "nesbot/carbon": "^2.14.0",
+        "ocramius/package-versions": "^1.4",
+        "laravel/helpers": "^1.1",
         "doctrine/dbal": "^2.5",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "^2.3",
@@ -46,24 +59,24 @@
         "psr-4": {
             "Backpack\\CRUD\\Tests\\": "tests"
         },
-        "files": ["vendor/backpack/base/src/helpers.php"],
+        "files": ["src/helpers.php"],
         "exclude-from-classmap": [
             "**/config"
         ]
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "vendor/bin/phpunit --testdox"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "4.0-dev"
         },
         "laravel": {
             "providers": [
-                "Backpack\\CRUD\\CrudServiceProvider"
+                "Backpack\\CRUD\\BackpackServiceProvider"
             ],
             "aliases": {
-                "CRUD": "Backpack\\CRUD\\CrudServiceProvider"
+                "CRUD": "Backpack\\CRUD\\app\\Library\\CrudPanel\\CrudPanelFacade"
             }
         }
     }

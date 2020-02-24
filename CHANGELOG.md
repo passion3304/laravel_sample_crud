@@ -1,26 +1,437 @@
 # Changelog
 
-All Notable changes to `Backpack CRUD` will be documented in this file
+All Notable changes to `Backpack CRUD` will be documented in this file.
 
-## NEXT - YYYY-MM-DD
-
-### Added
-- Nothing
-
-### Deprecated
-- Nothing
-
-### Fixed
-- Nothing
-
-### Removed
-- Nothing
-
-### Security
-- Nothing
 -----------
 
-## [3.6.25] - 2019-08-xx
+# Backpack Version 4
+
+-----------
+
+## 4.0.41 - 2020-02-16
+
+### Fixed
+- merged #2450 - video field now has customizable youtube api key;
+- merged #2453 - radio field can have attributes even if inline;
+- merged #2455 - select_from_array column fallback if value not in options array;
+
+
+## 4.0.40 - 2020-02-10
+
+### Fixed
+- merged #2438 - exception class for isColumnNullable();
+
+
+## 4.0.39 - 2020-02-06
+
+### Fixed
+- merged #2426 - select2_from_ajax field did not save empty array when Clear button was pressed;
+
+
+## 4.0.38 - 2020-02-04
+
+### Fixed
+- merged #2428 - bug in installation process published elfinder files even when not necessary;
+
+
+## 4.0.37 - 2020-02-02
+
+### Fixed
+- (fixed in Backstrap) when closing the sidebar, the content is centered left-to-right;
+- on mobile and tablet, the hamburger menu is no longer out of the container, we have the same margin left-to-right;
+- updated Backstrap to 0.2.22, updated all JS dependencies, re-published all CSS and JS assets;
+
+
+## 4.0.36 - 2020-01-28
+
+### Fixed
+- merged #2401 fixes #2390 - dropdown filter did not properly reset when clearing filters;
+
+
+## 4.0.35 - 2020-01-23
+
+### Fixed
+- merged #2389 - print button on Show operation (aka Preview);
+- merged #2386 - overwrite new loggedOut() method in LoginController instead of logout();
+- merged #2395 - simplemde field should not download FontAwesome;
+
+
+## 4.0.34 - 2020-01-20
+
+### Fixed
+- merged #2377 - updated Chinese translation;
+- merged #2359 - fix field label generation when name is an array;
+
+
+## 4.0.33 - 2020-01-15
+
+### Fixed
+- merged #2353 - markdown column does not show error when null on Laravel 6.10+;
+
+
+## 4.0.32 - 2020-01-14
+
+### Added
+- merged #2351 & #2352 - Indonesian language file;
+- merged #2369 - fixes #2365 and #2366 - browse_multiple field type had an extra php tag;
+
+
+## 4.0.31 - 2020-01-03
+
+### Fixed
+- merged #2330 - translation strings for clone button;
+- merged #2343 fixes #2338 - installation on windows failed if the public/uploads directory existed; 
+
+
+## 4.0.30 - 2019-12-20
+
+### Fixed
+- merged #2324 fixes #2323 - multiple summernote fields on page with different options;
+- merged #2294 fixes #2293 - request inconsistency between Controller and CrudPanel object;
+
+
+## 4.0.29 - 2019-12-19
+
+### Added
+- support for PHP 7.4;
+
+### Fixed
+- merged #2183 fixes #1797 - columns weren't orderable in MSSQL;
+
+
+## 4.0.28 - 2019-12-19
+
+### Added
+- Persian language added;
+
+### Fixed
+- merged #2136 - fixed Create operation with foreign keys that are not inside the form;
+- reversed Laravel composer requirement - first 6, then 5.8;
+
+
+## 4.0.27 - 2019-12-17
+
+### Fixed
+- #2306 - pt-BR translation fixes;
+- changed default "install elFinder" answer to "false" when installing Backpack;
+- fixed installation progress bar;
+- fixed ScrutinizerCI warnings on installation process;
+
+
+## 4.0.26 - 2019-12-16
+
+### Fixed
+- #2149 - select2_multiple field support for UUIDs;
+
+
+## 4.0.25 - 2019-12-16
+
+### Fixed
+- #2292 - admin panel home link broke the installation because it used url() inside config files;
+
+
+## 4.0.24 - 2019-12-14
+
+### Fixed
+- merged #2287 - CrudTrait's ```isColumnNullable``` should not throw error if the column does not exist; that way you can use it on non-existing columns;
+- merged #2292 fixes #2289 - config for changing the URL for the top-left logo to something else;
+- merged #2101 - Don't force the default controller namespace;
+- merged #2268 - video field's input should be type url not text;
+
+
+## 4.0.23 - 2019-12-02
+
+### Fixed
+- merged #2270 - missing ES language translations;
+- merged #2261 - browse_multiple field can now be sortable;
+
+
+## 4.0.22 - 2019-11-25
+
+### Fixed
+- merged #2260 - image field type JS function name was wrong;
+
+
+## 4.0.21 - 2019-11-23
+
+### Fixed
+- merged #2257 fixed #2256 - upload field type could not clear the input;
+- merged #2243 fixes #1828 - select_all not working in a second select2_multiple on the same page;
+- merged #2113 - datetime_picker field did not have its locale working;
+
+
+## 4.0.20 - 2019-11-23
+
+### Fixed
+- merged #2245 fixes #2178 - ShowOperation should use column keys, not column names, when doing stuff to columns;
+- merged #2249 - upgrades minimum required version for angular to 1.7.9 to fix a security vulnerability;
+- merged #2211 fixes #2188 - allow custom wrapperAttributes on upload, upload_multiple, image and base64_image fields without breaking stuff;
+
+
+## 4.0.19 - 2019-11-19
+
+### Fixed
+- merged #2247 - datatables persistentTable bug introduced by #2220;
+
+
+## 4.0.18 - 2019-11-18
+
+### Fixed
+- merged #2229 fixes #2219 - select_from_array field did not work properly with one or no options;
+- merged #2215 - use translated yes/no strings for check column;
+- merged #2220 fixes #2193 #2165 #2231 - various datatable issues with persistentTable and Export Buttons;
+
+
+## 4.0.17 - 2019-11-18
+
+### Fixed
+- merged #2119 - no license check if no remote address is set;
+- no license check if both debug is true and env is local;
+- update all CSS and JS assets but line-awesome;
+
+
+## 4.0.16 - 2019-11-17
+
+### Fixed
+- merged #2232 fixes #2233 - setPersistentTable() did not work because it was a getter instead of setter;
+- merged #2073 - select_from_array always used the default value;
+- merged #2207 - when the sidebar was open on mobile there was a slight chin to the navbar;
+
+
+## 4.0.15 - 2019-11-15
+
+### Fixed
+- merged 2218 fixes #2142 - check column type always had its label shown; 
+- merged #2216 - user menu dropdown did not have a closing div;
+- merged #2225 fixes #2224 - sidebar menu item was not active when inside Create, Update or Preview operations;
+- merged #2182 - language switch floated wrong;
+- merged #2196 fixes #2195 and #2192 - order logic did not work with orderByRaw and inRandomOrder;
+
+
+## 4.0.14 - 2019-11-12
+
+### Fixed
+- merged #2206 fixes #2161 - fixes setSubheading typo;
+- merged #2209 - default saveAllInputsExcept to ONLY when saveAllInputsExcept is NULL;
+- merged #2181 fixes #2145 - missing row class to tabbed fields view;
+
+
+## 4.0.13 - 2019-11-11
+
+### Fixed
+- merged #2156 - checkbox field did not pass boolean validation sometimes;
+- merged #2197, fixes #2198 - image and base64_image fields: remove button did not do anything if crop wasn't set;
+- merged #2174, fixes #2104 - ability to tell the Create and Update operations to save the request using Except instead of Only, using the new operation-level config item ```saveAllInputsExcept```;
+
+
+## 4.0.12 - 2019-10-24
+
+### Fixed
+- merged #2130 - dropdown filter did not show the active item;
+- fixed #2102 - multiple select2_ajax filters on one CRUD did not work;
+- fixed #2075 - select2_multiple filter couldn't be used twice on one crud;
+
+
+## 4.0.11 - 2019-10-23
+
+### Fixed
+- fixed column model_function_attribute - if no function leave empty;
+- fixed column upload_multiple - added prefix attribute so you can prepend something to the URL;
+
+
+## 4.0.10 - 2019-10-23
+
+### Fixed
+- fixed #2152 merged #2154 - ckeditor options were not working;
+- fixed #2170 - default columns for autoset table field and table column;
+- fixes #2162 - autoSet allows columns to end in AT or ID;
+- merged #2155 - better docblock for Validation trait;
+
+
+## 4.0.9 - 2019-10-12
+
+### Fixed
+- merged #2144 fixes #2141 and #2140 - checkbox field label did not trigger checkbox;
+
+
+## 4.0.8 - 2019-10-11
+
+### Fixed
+- user menu dropdown was not shown if the default auth routes were disabled;
+
+
+## 4.0.7 - 2019-10-06
+
+### Fixed
+- fixes #2114 - delete and clone message texts are overly escaped;
+- ```image``` and ```base64_image``` field types no longer show empty space when empty;
+
+
+## 4.0.6 - 2019-10-04
+
+### Fixed
+- fixes #2104 - page_or_link field type;
+
+
+## 4.0.5 - 2019-09-28
+
+### Fixed
+- fixes #2091 - could not overwrite what the operation was doing in its defaults, only if you used operation closures;
+
+
+## 4.0.4 - 2019-09-28
+
+### Fixed
+- fixes #2089 - simplemde field type could not be used multiple times in one page, and overwrote textarea fields;
+
+
+## 4.0.3 - 2019-09-28
+
+### Fixed
+- merged #2065 fixes #2084 - ```Route::crud()``` macro now works inside deeply nested route groups;
+- fixes #2088 - could not add column with name or key with dot notation; it got converted by ```getOperationSetting()``` into an array; keys are now dot notation free - dot gets replaced with ```__```;
+
+
+## 4.0.2 - 2019-09-28
+
+### Fixed
+- YUMMY license text is now more clear; added penalties;
+- delete button shows a modal for longer if the delete failed - it's more useful that way;
+- clearer issue template for github;
+- merged #2087, fixes #2086 - image field type could not be added twice to a CRUD;
+- added link to free license application form to Github auto-reply on merged PR;
+- removed backpack/base version from stats;
+
+
+## 4.0.1 - 2019-09-25
+
+### Fixed
+- installation command used a wrong service provider for Elfinder;
+
+
+## 4.0.0 - 2019-09-24
+
+### Added
+- merged #1955 - ```image``` field type has a new ```max_file_size``` option; which defaults to the defaults to ```upload_max_filesize``` set in PHP;
+- merged #1913 - new design based on CoreUI, instead of AdminLTE; 
+- developers can now add widgets to the top/bottom of the operation views;
+- ```CRUD``` facade, so developers can now do ```CRUD::addField()``` instead of ```$this->crud->addField()```;
+- the ability for developers to use a different CrudPanel object instead of the one in the package; this way, they can customize/overwrite how anything works inside the CrudPanel object;
+- routes are now defined inside operations; you no longer need to edit the route file to add routes to one controller; you can now re-use an operation on different controllers and it will also add the necessary routes;
+- merged #2012 - phone column type;
+- merged #1997 - settings API;
+- when specifying a route to an EntityCrudController, an "operation" is specified for each action; that "operation" is used as the string name of the operation (basically doing setOperation() automatically); there are currently two ways to set the current operation: (1) by defining the operation when defining the route, and (2) by doing setOperation()
+- inside each operation action, it's no longer required to run ```setOperation()```; but IT IS required to run ```setConfigurationFromSettings()``` so that anything that was inside operation closures gets run;
+- All Backpack/Base functionality inside Backpack\CRUD;
+- Laravel-Backpack/Base#384 - Ability to toggle breadcrumbs on/off;
+- Laravel-Backpack/Base#385 - NPM and Laravel Mix for CSS & JS dependencies;
+- Laravel-Backpack/Base#385 - By default Backpack\Base no longer loads anything from CDNs;
+- Laravel-Backpack/Base#387 - Easily add scripts/style to all admin panes, using asset() or mix();
+- Laravel-Backpack/Base#387 - Easily remove the bundled js and css and use CDNs if you want to;
+- Laravel-Backpack/Base#380 - New design - Backstrap, based on CoreUI;
+- [Webfactor/Laravel-Generators](https://github.com/webfactor/laravel-generatorssu) to the installation command;
+- the Create and Update operations only save the values of the fields (determined using the name attribute); anything else it ignores; this is for security reasons - to prevent saving fields that have been inserted in the front-end maliciously; 
+- field types can now have arrays for names, instead of strings; when a field type wants to save multiple attributes, it should have all of them as array in the "name" field attribute; this makes sure that they will get saved in the database;
+- support for Right-to-Left languages (just change a variable in the base config file);
+
+
+### Fixed
+- merged #1984 fixes #1952 and #1981 - ```table``` fied type has been rewritten using JQuery instead of Angular, for consistency;
+- merged #1977 - fields, filters and operations now use LOCAL assets, instead of CDNs; Backpack can now be used on intranets;
+- merged #1947 fixes #1927 - package version was often incorrect, due to maintainers not updating the number on each patch release; fixed by using ocramius/package-versions to determine the package version;
+- merged #1950 - reorder operation is now twice as fast;
+- merged #1994 - moved SaveActions to the CrudPanel object, since they're not an operation;
+- delete button now shows up (and works) in the Show operation view;
+- for the List operation, the default order is now by primary key DESC (instead of ASC); backwards-compatible, in that if a different order has been set for the primary key, that one will be used instead;
+- we've reduced the default character limit for a all columns that had it - previously if ```text```, ```email```, ```model_function```, ```model_function_attribute```, ```phone```, ```row_number```, ```select``` column had its contents bigger than 50 characters, it got shortened (_Something some[...]_); we've reduced this limit to 40 characters, so that more columns can fit into one screen by default; you can overwrite this default with ```'limit' => 50``` in your column;
+- checklist_dependency field now uses array for name;
+- date_range field now uses array for names;
+
+
+### Removed
+- CrudControllers now come with zero operations and zero routes by default; old EntityCrudControllers should now specifically mention which operations should be loaded, using operation traits;
+- ```CRUD::route()``` is no longer the way to load routes for a CrudController, but ```Route::crud()```;
+- merged #1994 - moved SaveActions methods to the CrudPanel object;
+- no CRUD access is provided by defaul; access is automatically given when using an operation trait on an EntityCrudController;
+- Backpack/Base as a separate package; It's now included in Backpack/CRUD;
+- AdminLTE dependency;
+- Backpack/Generators from the installation command;
+- Laracasts/Laravel-Generators from the installation command;
+- Since all Backpack/Base/app classes have been moved to Backpack/CRUD/app, when upgrading to 4.0 you need to do a search-and-replace in all your application files; search for "Backpack/Base/app" and replace with "Backpack/CRUD/app"; make sure you include the following folders: app, config, resources/views, routes;
+- If you're importing or extending our BaseController (```Backpack/Base/app/Http/Controllers/BaseController``` or ```Backpack/CRUD/app/Http/Controllers/BaseController```) anywhere inside your app, know that that controller is no longer needed. It's identical to ```Illuminate\Routing\Controller```, so you can use that instead. We haven't removed the file in this version yet, but it's considered deprecated and will be removed in the next version; 
+
+
+-----------
+
+# Backpack Version 3
+
+-----------
+
+## [3.6.33] - 2019-09-17
+
+### Added
+- japanese translation;
+
+
+## [3.6.32] - 2019-09-17
+
+### Added
+- boolean field type, as an alias to the checkbox field type;
+
+
+### Fixed
+- merged #2058 - autoset generates boolean column/field type from boolean/tinyint db columns;
+
+
+## [3.6.31] - 2019-09-01
+
+### Fixed
+- fixes #2010 - number column should show null when null, not zero;
+
+
+## [3.6.30] - 2019-09-01
+
+### Fixed
+- fixes #1982 merged #1983 - AutoSet uses model connection instead of default connection;
+- French language fixes;
+- fixes #2006 merged #2007 - Create/Update forms not opening the correct tab when Saving and Editing an item multiple times;
+
+
+## [3.6.29] - 2019-08-23
+
+### Fixed
+- fixes #1972 - removed var_dump from select2_from_array field;
+
+
+## [3.6.28] - 2019-08-20
+
+### Added
+- merged #1750 - localization for select2 filters;
+
+### Fixed
+- fixed #1762 - uploaded have unique file names even if the same file is submitted twice in the same form;
+- fixed #1652 - small ```table``` field and ```table``` column bugs when inserting empty last rows;
+- adresses #1224 - ```select2_from_array``` with multiple now shows empty option when all are unselected;
+
+
+## [3.6.27] - 2019-08-17
+
+### Fixed
+- merged #1634 - using closest instead of parents for datetime_picker field type;
+- merged #1594 - fixes ```upload_multiple``` field error when casting to array;
+
+
+## [3.6.26] - 2019-08-17
+
+### Added
+- merged #1795 - adds a ```removeButtons()``` method to the CRUD API, which allows developers to remove multiple buttons in one go;
+- merged #1965 - adds a ```multiple``` attribute for ```select2_multiple``` field, which allows developers to force the user to only select one item, even though the relationship is n-n;
+
+### Fixed
+- merged #1964, fixes #1836 - allows carbon immutable dates;
+
+
+## [3.6.25] - 2019-08-17
 
 ### Added
 - merged #1952 - ```json``` column type;
@@ -1129,6 +1540,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ### Fixed
 - excluded _method from massAssignment, so create/update errors will be more useful;
 
+
 ## [3.1.60] - 2017-02-13
 
 ### Fixed
@@ -1689,9 +2101,11 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - issue #58 where select_from_array automatically selected an item with value zero;
 - custom html attributes are now given to the field in a separate array, 'attributes';
 
+-----------
 
-## ----------------------------------------------------------------------------
+# Backpack Version 2
 
+-----------
 
 ## [2.0.24] - 2016-07-13
 
