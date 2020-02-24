@@ -29,6 +29,9 @@ return [
             // whenever the user tries to see that page, backpack loads the previous pagination and filtration
             'persistentTable' => true,
 
+            // show search bar in the top-right corner?
+            'searchableTable' => true,
+
             // the time the table will be persisted in minutes
             // after this the table info is cleared from localStorage.
             // use false to never force localStorage clear. (default)

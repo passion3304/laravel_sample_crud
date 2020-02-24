@@ -198,6 +198,7 @@
           },
           processing: true,
           serverSide: true,
+          searching: @json($crud->getOperationSetting('searchableTable') ?? true),
           ajax: {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
               "type": "POST"
