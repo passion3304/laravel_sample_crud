@@ -38,7 +38,13 @@
             @else
 
             <div class="form-check">
-                <input class="form-check-input" type="radio" id="{{$field['name']}}_{{$optionPointer}}" name="{{$field['name']}}" value="{{$value}}" {{$optionValue == $value ? ' checked': ''}}>
+                <input  type="radio"
+                		class="form-check-input"
+                		id="{{$field['name']}}_{{$optionPointer}}"
+                		name="{{$field['name']}}"
+                		value="{{$value}}"
+                		@include('crud::inc.field_attributes')
+                		{{$optionValue == $value ? ' checked': ''}}>
                 <label class="form-check-label font-weight-normal" for="{{$field['name']}}_{{$optionPointer}}">{!! $label !!}</label>
             </div>
 

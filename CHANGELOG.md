@@ -8,10 +8,86 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.0.30 - 2019-12-xx
+## 4.0.41 - 2020-02-16
+
+### Fixed
+- merged #2450 - video field now has customizable youtube api key;
+- merged #2453 - radio field can have attributes even if inline;
+- merged #2455 - select_from_array column fallback if value not in options array;
+
+
+## 4.0.40 - 2020-02-10
+
+### Fixed
+- merged #2438 - exception class for isColumnNullable();
+
+
+## 4.0.39 - 2020-02-06
+
+### Fixed
+- merged #2426 - select2_from_ajax field did not save empty array when Clear button was pressed;
+
+
+## 4.0.38 - 2020-02-04
+
+### Fixed
+- merged #2428 - bug in installation process published elfinder files even when not necessary;
+
+
+## 4.0.37 - 2020-02-02
+
+### Fixed
+- (fixed in Backstrap) when closing the sidebar, the content is centered left-to-right;
+- on mobile and tablet, the hamburger menu is no longer out of the container, we have the same margin left-to-right;
+- updated Backstrap to 0.2.22, updated all JS dependencies, re-published all CSS and JS assets;
+
+
+## 4.0.36 - 2020-01-28
+
+### Fixed
+- merged #2401 fixes #2390 - dropdown filter did not properly reset when clearing filters;
+
+
+## 4.0.35 - 2020-01-23
+
+### Fixed
+- merged #2389 - print button on Show operation (aka Preview);
+- merged #2386 - overwrite new loggedOut() method in LoginController instead of logout();
+- merged #2395 - simplemde field should not download FontAwesome;
+
+
+## 4.0.34 - 2020-01-20
+
+### Fixed
+- merged #2377 - updated Chinese translation;
+- merged #2359 - fix field label generation when name is an array;
+
+
+## 4.0.33 - 2020-01-15
+
+### Fixed
+- merged #2353 - markdown column does not show error when null on Laravel 6.10+;
+
+
+## 4.0.32 - 2020-01-14
+
+### Added
+- merged #2351 & #2352 - Indonesian language file;
+- merged #2369 - fixes #2365 and #2366 - browse_multiple field type had an extra php tag;
+
+
+## 4.0.31 - 2020-01-03
+
+### Fixed
+- merged #2330 - translation strings for clone button;
+- merged #2343 fixes #2338 - installation on windows failed if the public/uploads directory existed; 
+
+
+## 4.0.30 - 2019-12-20
 
 ### Fixed
 - merged #2324 fixes #2323 - multiple summernote fields on page with different options;
+- merged #2294 fixes #2293 - request inconsistency between Controller and CrudPanel object;
 
 
 ## 4.0.29 - 2019-12-19

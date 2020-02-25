@@ -1,1 +1,1 @@
-{!! Illuminate\Mail\Markdown::parse($entry->{$column['name']}) !!}
+{!! Illuminate\Mail\Markdown::parse($entry->{$column['name']} ?? '') !!}
