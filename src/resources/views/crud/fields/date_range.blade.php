@@ -25,10 +25,8 @@
         $end_value = formatDate($entry, $field['name'][1]);
     }
 
-    if (isset($field['default'])) {
-        $start_default = $field['default'][0];
-        $end_default = $field['default'][1];
-    }
+    $start_default = $field['default'][0] ?? date("Y-m-d H:i:s");
+    $end_default = $field['default'][1] ?? date("Y-m-d H:i:s");
 
     // make sure the datepicker configuration has at least these defaults
     $field['date_range_options'] = array_merge([
