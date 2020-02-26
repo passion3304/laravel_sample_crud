@@ -66,7 +66,7 @@
           width: 30px;
           border-radius: 15px;
           text-align: center;
-          background-color: #c0d0ed!important;
+          background-color: #e8ebf0!important;;
         }
       </style>
   @endpush
