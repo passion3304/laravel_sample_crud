@@ -29,6 +29,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 
 class CrudPanel
 {
@@ -257,7 +258,7 @@ class CrudPanel
      */
     public function getFirstOfItsTypeInArray($type, $array)
     {
-        return array_first($array, function ($item) use ($type) {
+        return Arr::first($array, function ($item) use ($type) {
             return $item['type'] == $type;
         });
     }
@@ -333,9 +334,9 @@ class CrudPanel
      *
      * @return array An array containing a list of attributes from the resulting model.
      */
-    public function getModelAttributeFromRelation($model, $relationString, $attribute)
+    public function getRelatedEntriesAttributes($model, $relationString, $attribute)
     {
-        $endModels = $this->getRelationModelInstances($model, $relationString);
+        $endModels = $this->getRelatedEntries($model, $relationString);
         $attributes = [];
         foreach ($endModels as $model => $entries) {
             $modelKey = (new $model())->getKeyName();
@@ -362,10 +363,10 @@ class CrudPanel
      *
      * @return array An array of the associated model instances defined by the relation string.
      */
-    private function getRelationModelInstances($model, $relationString)
+    private function getRelatedEntries($model, $relationString)
     {
         $relationArray = explode('.', $relationString);
-        $firstRelationName = array_first($relationArray);
+        $firstRelationName = Arr::first($relationArray);
         $relation = $model->{$firstRelationName};
         $currentResults = [];
 
@@ -386,7 +387,7 @@ class CrudPanel
 
             if (! empty($relationArray)) {
                 foreach ($currentResults as $model => $currentResult) {
-                    $results[$model] = array_merge($results[$model], $this->getRelationModelInstances($currentResult, implode('.', $relationArray)));
+                    $results[$model] = array_merge($results[$model], $this->getRelatedEntries($currentResult, implode('.', $relationArray)));
                 }
             } else {
                 $results = $currentResults;

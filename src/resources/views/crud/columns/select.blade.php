@@ -1,6 +1,6 @@
 {{-- single relationships (1-1, 1-n) --}}
 @php
-    $attributes = $crud->getModelAttributeFromRelation($entry, $column['entity'], $column['attribute']);
+    $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
 @endphp
 
 <span>
