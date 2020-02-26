@@ -1,7 +1,10 @@
 {{-- closure function column type --}}
+@php
+    $column['escaped'] = $column['escaped'] ?? false;
+    $text = $column['function']($entry);
+@endphp
 <span>
-    @php($text = $column['function']($entry))
 
-    @include('crud::inc.column_anchors',['text' => $text, 'escaped' => false])
+    @include('crud::columns.inc.column_wrapper',['text' => $text])
 
 </span>

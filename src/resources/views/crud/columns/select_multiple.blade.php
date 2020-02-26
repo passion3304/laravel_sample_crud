@@ -14,7 +14,7 @@
             @php($lastKey = array_key_last($results_array))
             @foreach ($results_array as $key => $result)
 
-            @include('crud::inc.column_anchors',['text' => $result, 'related_model_key' => $key])@if($lastKey != $key),@endif
+            @include('crud::columns.inc.column_wrapper',['text' => $result, 'related_model_key' => $key])@if($lastKey != $key),@endif
             @endforeach
             @else
             -

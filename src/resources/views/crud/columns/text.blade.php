@@ -9,6 +9,6 @@
 @endphp
 
 <span>
-        @include('crud::inc.column_anchors',['text' => $text])
+        @include('crud::columns.inc.column_wrapper',['text' => $text])
 
 </span>

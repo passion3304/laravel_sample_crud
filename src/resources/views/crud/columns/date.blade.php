@@ -9,7 +9,7 @@
                     ->locale(App::getLocale())
                     ->isoFormat($column['format'] ?? config('backpack.base.default_date_format')))
 
-            @include('crud::inc.column_anchors',['text' => $text])
+            @include('crud::columns.inc.column_wrapper',['text' => $text])
     @else
         -
     @endif

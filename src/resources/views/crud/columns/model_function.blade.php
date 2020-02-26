@@ -5,5 +5,5 @@
 @endphp
 
 <span>
-        @include('crud::inc.column_anchors',['text' => $text, 'escaped' => false])
+        @include('crud::columns.inc.column_wrapper',['text' => $text, 'escaped' => false])
 </span>

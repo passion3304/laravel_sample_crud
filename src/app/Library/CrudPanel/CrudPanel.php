@@ -337,11 +337,8 @@ class CrudPanel
     {
         $endModels = $this->getRelationModelInstances($model, $relationString);
         $attributes = [];
-        //dd($endModels);
         foreach ($endModels as $model => $entries) {
-            //if (!$model instanceof Collection) {
             $modelKey = (new $model())->getKeyName();
-            //}
             if (is_array($entries) && ! isset($entries[$attribute])) {
                 foreach ($entries as $entry) {
                     $attributes[$entry[$modelKey]] = $entry[$attribute];
