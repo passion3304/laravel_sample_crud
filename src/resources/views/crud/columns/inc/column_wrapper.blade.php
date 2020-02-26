@@ -14,9 +14,9 @@
 @endphp
 
 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapperStart')
-    @if(isset($column['escaped']) && $column['escaped'] === false)
-         {!! $text !!}
-     @else
-         {{ $text }}
-     @endif
+    @if($column['escaped'])
+        {{ $text }}
+    @else
+        {!! $text !!}
+    @endif
 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapperEnd')
