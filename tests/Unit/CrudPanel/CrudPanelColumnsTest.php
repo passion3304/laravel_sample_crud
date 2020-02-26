@@ -20,7 +20,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'priority'    => 1,
             'wrapper' => [],
-            'escaped' => true
+            'escaped' => true,
         ],
     ];
 
@@ -51,7 +51,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'priority'    => 1,
             'wrapper' => [],
-            'escaped' => true
+            'escaped' => true,
 
         ],
         'column2' => [
@@ -64,7 +64,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'priority'    => 2,
             'wrapper' => [],
-            'escaped' => true
+            'escaped' => true,
         ],
     ];
 
@@ -94,7 +94,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'priority'    => 1,
             'wrapper' => [],
-            'escaped' => true
+            'escaped' => true,
         ],
         'column2' => [
             'name'        => 'column2',
@@ -106,7 +106,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'priority'    => 2,
             'wrapper' => [],
-            'escaped' => true
+            'escaped' => true,
         ],
         'column3' => [
             'name'        => 'column3',
@@ -118,7 +118,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'priority'    => 3,
             'wrapper' => [],
-            'escaped' => true
+            'escaped' => true,
         ],
     ];
 
