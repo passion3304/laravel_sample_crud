@@ -8,15 +8,21 @@
         $column['wrapper'][$attribute] = $attributeValue;
     }
 
-    //setup defaults
-    $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    //setup defaults if wrapper is not empty, case empty we just want to display the text.
+    if(!empty($column['wrapper'])) {
+        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    }
+
+    //we need this $text variable in case column is a select, because we include the wrapper in
+    //all selected entries and not only once in the column.
+    $column['text'] = $text ?? ($column['text'] ?? '-');
 
 @endphp
 
 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapperStart')
     @if($column['escaped'])
-        {{ $text }}
+        {{ $column['text'] }}
     @else
-        {!! $text !!}
+        {!! $column['text'] !!}
     @endif
 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapperEnd')
