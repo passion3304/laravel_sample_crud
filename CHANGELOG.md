@@ -12,6 +12,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 ### Fixed
 - updated npm dependencies;
+- CSS assets inside elFinder views;
 
 
 ## 4.0.41 - 2020-02-16
