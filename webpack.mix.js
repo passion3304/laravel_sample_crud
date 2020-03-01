@@ -12,7 +12,7 @@ const mix = require('laravel-mix');
  | All JS will be bundled into one file (see bundle.js).
  |
  | How to use (for maintainers only):
- | - cd vendor/backpack/base
+ | - cd vendor/backpack/crud
  | - npm install
  | - npm run prod
  | (this will also publish the assets for you to test, so no need to do that too)
