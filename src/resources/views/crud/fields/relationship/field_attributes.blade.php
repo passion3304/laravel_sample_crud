@@ -1,5 +1,4 @@
-data-inline-create-route="{{$createRoute ?? false}}"
-data-inline-refresh-route="{{$refreshRoute ?? false}}"
+data-inline-create-route="{{$field['inline_create']['create_route'] ?? false}}"
 
 data-field-related-name="{{$field['inline_create']['entity']}}"
 data-inline-create-button="{{ $field['inline_create']['entity'] }}-inline-create-{{$field['name']}}"

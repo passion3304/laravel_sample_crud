@@ -25,11 +25,6 @@ trait InlineCreateOperation
             'uses'      => $controller.'@storeInlineCreate',
             'operation' => 'InlineCreate',
         ]);
-        Route::get($segment.'/inline/refresh', [
-            'as'        => $segment.'-inline-refresh-options',
-            'uses'      => $controller.'@inlineRefreshOptions',
-            'operation' => 'InlineCreate',
-        ]);
     }
 
     /**
@@ -38,9 +33,6 @@ trait InlineCreateOperation
      */
     protected function setupInlineCreateDefaults()
     {
-        // this only mark this operation as active
-        $this->crud->setOperationSetting('inline_create', true);
-
         if (method_exists($this, 'setup')) {
             $this->setup();
         }
@@ -70,34 +62,6 @@ trait InlineCreateOperation
                 'entity' => request()->get('entity'),
             ]
         );
-    }
-
-    /**
-     * This function is called after a related entity is added so we refresh the options in the select.
-     * By query constrains the newly added option might not be available to select.
-     *
-     * This is not run by ajax fields.
-     */
-    public function inlineRefreshOptions()
-    {
-        if (! request()->has('field')) {
-            abort(400, 'No "field" inside the request.');
-        }
-
-        $field = $this->crud->fields()[request()->get('field')];
-        $options = [];
-
-        if (! empty($field)) {
-            $relatedModelInstance = new $field['model']();
-
-            if (! isset($field['options'])) {
-                $options = $field['model']::all()->pluck($field['attribute'], $relatedModelInstance->getKeyName());
-            } else {
-                $options = call_user_func($field['options'], $field['model']::query()->pluck($field['attribute'], $relatedModelInstance->getKeyName()));
-            }
-        }
-
-        return response()->json($options);
     }
 
     /**
