@@ -24,7 +24,7 @@
         @include('crud::fields.relationship.fetch_or_create')
     @else
         @if($field['ajax'])
-            @include('crud::fields.relationship.fetch')
+            @include('crud::fields.fetch')
         @else
             @include('crud::fields.relationship.select')
         @endif

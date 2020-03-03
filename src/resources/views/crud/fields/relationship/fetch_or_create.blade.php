@@ -179,6 +179,7 @@ var performAjaxSearch = function (element, $searchString) {
 
 
   // this function is responsible for fetching some default option when developer don't allow null on field
+if (!window.fetchDefaultEntry) {
 var fetchDefaultEntry = function (element) {
     console.log('fetching entry');
     var $relatedAttribute = element.attr('data-field-attribute');
@@ -215,6 +216,7 @@ var fetchDefaultEntry = function (element) {
         });
     });
 };
+}
 
 
 //parses the current value for selects. we can have a single, multiple { key : attr } or multiple ids [1,2,3,4]
@@ -391,9 +393,7 @@ function triggerModal(element) {
 
 //function responsible for adding an option to the select
 function selectOption(element, option) {
-    console.log('selection option');
     var $currentValue = JSON.parse(element.attr('data-current-value'));
-    console.log($currentValue);
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
@@ -464,13 +464,8 @@ function selectOption(element, option) {
                     $(element).val(selectedOptions);
 
                     //null is not allowed we fetch some default entry
-
                     if(!$allows_null && !$item) {
-                        console.log('should not be here');
-                        console.log($allows_null);
-                        console.log($item);
                         fetchDefaultEntry(element).then(result => {
-                            console.log(result);
                             $(element).append('<option value="'+result[$modelKey]+'">'+result[$fieldAttribute]+'</option>');
                             $(element).val(result[$modelKey]);
                             $(element).trigger('change');
