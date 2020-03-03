@@ -181,7 +181,6 @@ var performAjaxSearch = function (element, $searchString) {
   // this function is responsible for fetching some default option when developer don't allow null on field
 if (!window.fetchDefaultEntry) {
 var fetchDefaultEntry = function (element) {
-    console.log('fetching entry');
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $fetchUrl = element.attr('data-data-source');
@@ -199,14 +198,14 @@ var fetchDefaultEntry = function (element) {
                 if (typeof result.data !== "undefined"){
                     $key = result.data[0][$relatedKeyName];
                     $value = result.data[0][$relatedAttribute];
-                    $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
-                    $return = {...$return, ...$pair};
                 }else{
                     $key = result[0][$relatedKeyName];
                     $value = result[0][$relatedAttribute];
-                    $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
-                    $return = {...$return, ...$pair};
                 }
+
+                $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
+                $return = {...$return, ...$pair};
+
                 $(element).attr('data-current-value', JSON.stringify($return));
                 resolve($return);
             },
@@ -452,7 +451,7 @@ function selectOption(element, option) {
                         $item = true;
                     }
                     var selectedOptions = [];
-                    var $currentValue = ($item ? $value : '');
+                    var $currentValue = $item ? $value : '';
 
                     //we reselect the previously selected options if any.
                     for (const [key, value] of Object.entries($currentValue)) {
