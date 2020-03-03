@@ -60,8 +60,13 @@ trait FetchOperation
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : new $config['model']; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
         // FetchOperation sends an empty query to retrieve the default entry for select when field is not nullable.
+        // also sends an empty query in case we want to load all entities to emulate non-ajax fields
+        // when using InlineCreate with options we want visible in select when opening
+
         if ($searchString === false) {
-            return $config['query']->first();
+            return ($config['paginate'] !== false) ?
+            $config['query']->paginate($config['paginate']) :
+            $config['query']->get();
         }
 
         // for each searchable attribute, add a WHERE clause

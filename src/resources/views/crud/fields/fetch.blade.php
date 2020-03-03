@@ -6,6 +6,10 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
 
+    // we need to re-ensure field type here because relationship is a `switchboard` and not actually
+    // a crud field like this one.
+    $field['type'] = 'fetch';
+
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
     $field['attribute'] = $field['attribute'] ?? $connected_entity->getIdentifiableName();
@@ -16,7 +20,6 @@
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
-
     if ($current_value != false) {
         switch (gettype($current_value)) {
             case 'array':
@@ -40,7 +43,6 @@
                 break;
         }
     }
-
     $field['value'] = json_encode($current_value);
 @endphp
 
@@ -111,10 +113,16 @@
     // if nullable, make sure the Clear button uses the translated string
     document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 
-    // if not nullable, this fetches the default option
+    // if this function is not already on page, for example in fetch_create we add it.
+    // this function is responsible for query the ajax endpoint and fetch a default entry
+    // in case the field does not allow null
     if (!window.fetchDefaultEntry) {
         var fetchDefaultEntry = function (element) {
             var $fetchUrl = element.attr('data-data-source');
+            var $relatedAttribute = element.attr('data-field-attribute');
+            var $relatedKeyName = element.attr('data-connected-entity-key-name');
+            var $return = {};
+
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     url: $fetchUrl,
@@ -123,14 +131,22 @@
                     },
                     type: 'POST',
                     success: function (result) {
-                        //if data is available here it means developer returned a collection and we want only the first.
-                        //when using the AjaxFetchOperation we will have here a single entity.
-                        if(result.data) {
-                            var $return = result.data[0];
+                        // if data is available here it means a paginated collection has been returned.
+                        // we want only the first as default.
+                        if (typeof result.data !== "undefined") {
+                            $key = result.data[0][$relatedKeyName];
+                            $value = result.data[0][$relatedAttribute];
                         }else{
-                            $return = result;
+
+                            $key = result[0][$relatedKeyName];
+                            $value = result[0][$relatedAttribute];
                         }
-                        $(element).attr('data-item', JSON.stringify($return));
+
+                        $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
+                        $return = {...$return, ...$pair};
+
+                        $(element).attr('data-current-value', JSON.stringify($return));
+
                         resolve(result);
                     },
                     error: function (result) {
@@ -139,16 +155,6 @@
                 });
             });
         };
-    }
-
-    // this function is responsible of setting up a default option in ajax fields
-    if (typeof refreshDefaultOption !== "function") {
-        function refreshDefaultOption(element, $fieldAttribute, $modelKey) {
-            var $item = JSON.parse(element.attr('data-item'));
-            $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
-            $(element).val($item[$modelKey]);
-            $(element).trigger('change');
-        }
     }
 
     /**
@@ -172,6 +178,7 @@
         var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
+        var $allows_null = element.attr('data-column-nullable') == 'true' ? true : false;
 
         var $item = false;
 
@@ -181,12 +188,7 @@
             $item = true;
         }
 
-
-        if($item) {
-            var $currentValue = $value;
-        }else{
-            var $currentValue = '';
-        }
+        var $currentValue = $item ? $value : '';
 
         //we reselect the previously selected options if any.
         var selectedOptions = [];
@@ -200,20 +202,22 @@
         $(element).val(selectedOptions);
 
 
-        if(element.attr('data-column-nullable') != 'true' && $item === false) {
+        if (!$allows_null && $item === false) {
             fetchDefaultEntry(element).then(result => {
-                refreshDefaultOption(element, $fieldAttribute, $modelKey);
+                var $item = JSON.parse(element.attr('data-current-value'));
+                $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
+                $(element).val($item[$modelKey]);
+                $(element).trigger('change');
             });
         }
 
-        var $allowClear = (element.attr('data-column-nullable') == 'true') ? true : false;
 
         var $select2Settings = {
                 theme: 'bootstrap',
                 multiple: $multiple,
                 placeholder: $placeholder,
                 minimumInputLength: $minimumInputLength,
-                allowClear: $allowClear,
+                allowClear: $allows_null,
                 ajax: {
                     url: $dataSource,
                     type: $method,
@@ -235,11 +239,11 @@
                     },
                     processResults: function (data, params) {
                         params.page = params.page || 1;
+                        if(data.data) {
                         var result = {
                             results: $.map(data.data, function (item) {
-                                textField = $fieldAttribute;
                                 return {
-                                    text: item[textField],
+                                    text: item[$fieldAttribute],
                                     id: item[$connectedEntityKeyName]
                                 }
                             }),
@@ -247,6 +251,19 @@
                                  more: data.current_page < data.last_page
                            }
                         };
+                        }else {
+                            var result = {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item[$fieldAttribute],
+                                        id: item[$connectedEntityKeyName]
+                                    }
+                                }),
+                                pagination: {
+                                    more: false,
+                                }
+                            }
+                        }
                         return result;
                     },
                     cache: true
