@@ -55,7 +55,7 @@ trait FetchOperation
         }
 
         // set configuration defaults
-        $config['itemsPerPage'] = $config['itemsPerPage'] ?? 10;
+        $config['paginate'] = isset($config['paginate']) ? $config['paginate'] : 10;
         $config['searchableAttributes'] = $config['searchableAttributes'] ?? [$config['model']::getIdentifiableName()];
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : new $config['model']; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
@@ -76,7 +76,9 @@ trait FetchOperation
             }
         }
 
-        // return the paginated results
-        return $config['query']->paginate($config['itemsPerPage']);
+        // return the results with or without pagination
+        return ($config['paginate'] !== false) ?
+                    $config['query']->paginate($config['paginate']) :
+                    $config['query']->get();
     }
 }
