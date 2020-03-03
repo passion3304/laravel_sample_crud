@@ -37,7 +37,7 @@
         "creativeorange/gravatar": "~1.0",
         "nesbot/carbon": "^2.14.0",
         "ocramius/package-versions": "^1.4",
-        "laravel/helpers": "^1.1",
+        "laravel/helpers": "^1.1|dev-master",
         "doctrine/dbal": "^2.5",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "^2.3",
