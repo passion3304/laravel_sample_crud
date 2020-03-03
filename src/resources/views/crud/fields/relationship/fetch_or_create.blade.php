@@ -9,6 +9,11 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
 
+    //we need to explicitly define field type to load correct assets
+    //this is needed because the field type `relationship` is a switch to
+    //other field types like fetch_or_create
+    $field['type'] = 'fetch_or_create';
+
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
@@ -18,7 +23,8 @@
             case 'array':
                 $current_value = $connected_entity
                                     ->whereIn($connected_entity_key_name, $current_value)
-                                    ->pluck($field['attribute'], $connected_entity_key_name);
+                                    ->pluck($field['attribute'], $connected_entity_key_name)
+                                    ->toArray();
                 break;
             case 'object':
                 if(! $current_value->isEmpty())  {
@@ -30,7 +36,8 @@
             default:
                 $current_value = $connected_entity
                                 ->where($connected_entity_key_name, $current_value)
-                                ->pluck($field['attribute'], $connected_entity_key_name);
+                                ->pluck($field['attribute'], $connected_entity_key_name)
+                                ->toArray();
                 break;
         }
     }
@@ -174,7 +181,10 @@ var performAjaxSearch = function (element, $searchString) {
   // this function is responsible for fetching some default option when developer don't allow null on field
 var fetchDefaultEntry = function (element) {
     console.log('fetching entry');
+    var $relatedAttribute = element.attr('data-field-attribute');
+    var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $fetchUrl = element.attr('data-data-source');
+    var $return = {};
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: $fetchUrl,
@@ -183,11 +193,18 @@ var fetchDefaultEntry = function (element) {
             },
             type: 'POST',
             success: function (result) {
-                //if data is available here it means a collection has been returned and we want only the first.
+                // if data is available here it means a paginated collection has been returned.
+                // we want only the first to be default.
                 if (typeof result.data !== "undefined"){
-                    var $return = result.data[0];
+                    $key = result.data[0][$relatedKeyName];
+                    $value = result.data[0][$relatedAttribute];
+                    $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
+                    $return = {...$return, ...$pair};
                 }else{
-                    var $return = result[0];
+                    $key = result[0][$relatedKeyName];
+                    $value = result[0][$relatedAttribute];
+                    $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
+                    $return = {...$return, ...$pair};
                 }
                 $(element).attr('data-current-value', JSON.stringify($return));
                 resolve($return);
@@ -202,22 +219,16 @@ var fetchDefaultEntry = function (element) {
 
 //parses the current value for selects. we can have a single, multiple { key : attr } or multiple ids [1,2,3,4]
 // we allways return [1,2,3,4]
-function parseValueSelectOptions(element) {
+function parseValueForSelectMultipleOptions(element) {
     var $currentValue = JSON.parse(element.attr('data-current-value'));
-    console.log($currentValue);
     var selectedOptions = [];
         //we parse the current value to append those options values to the selected options.
-        if(Number.isInteger($currentValue)) {
+        if(Number.isInteger(+$currentValue)) {
             selectedOptions.push($currentValue);
         }else{
 
            for (let [key, value] of Object.entries($currentValue)) {
-                if(!Number.isInteger(+value)) {
                     selectedOptions.push(key);
-                }else{
-                    selectedOptions.push(value);
-                }
-
             }
         }
         return selectedOptions;
@@ -380,14 +391,23 @@ function triggerModal(element) {
 
 //function responsible for adding an option to the select
 function selectOption(element, option) {
+    console.log('selection option');
+    var $currentValue = JSON.parse(element.attr('data-current-value'));
+    console.log($currentValue);
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
+    var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
     var $option = new Option(option[$relatedAttribute], option[$relatedKeyName]);
         $(element).append($option);
+
+        if($multiple) {
         //we check if any options are previously selected
-        var selectedOptions = parseValueSelectOptions(element);
+        var selectedOptions = parseValueForSelectMultipleOptions(element);
         selectedOptions.push(option[$relatedKeyName]);
-        $(element).val(selectedOptions);
+            $(element).val(selectedOptions);
+        }else{
+            $(element).val(option[$relatedKeyName]);
+        }
         $(element).trigger('change');
 
 }
@@ -422,7 +442,7 @@ function selectOption(element, option) {
                 });
 
                 //if field is not ajax we fetch the defaults for select.
-                if($ajax) {
+
 
                     var $item = false;
 
@@ -432,11 +452,8 @@ function selectOption(element, option) {
                         $item = true;
                     }
                     var selectedOptions = [];
-                    if($item) {
-                        var $currentValue = $value;
-                    }else{
-                        var $currentValue = '';
-                    }
+                    var $currentValue = ($item ? $value : '');
+
                     //we reselect the previously selected options if any.
                     for (const [key, value] of Object.entries($currentValue)) {
                         selectedOptions.push(key);
@@ -445,11 +462,15 @@ function selectOption(element, option) {
                     }
 
                     $(element).val(selectedOptions);
-                }
+
                     //null is not allowed we fetch some default entry
 
                     if(!$allows_null && !$item) {
+                        console.log('should not be here');
+                        console.log($allows_null);
+                        console.log($item);
                         fetchDefaultEntry(element).then(result => {
+                            console.log(result);
                             $(element).append('<option value="'+result[$modelKey]+'">'+result[$fieldAttribute]+'</option>');
                             $(element).val(result[$modelKey]);
                             $(element).trigger('change');

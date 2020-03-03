@@ -10,7 +10,7 @@
 
     $field['multiple'] = $field['multiple'] ?? false;
     $field['ajax'] = $field['ajax'] ?? false;
-    $field['placeholder'] = $field['placeholder'] ?? $field['multiple'] ? 'Select entries' : 'Select entry';
+    $field['placeholder'] = $field['placeholder'] ?? ($field['multiple'] ? 'Select entries' : 'Select entry');
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
@@ -44,8 +44,7 @@
 
         {{-- FIELD JS - will be loaded in the after_scripts section --}}
         @push('crud_fields_scripts')
-
-
+        @stack('crud_fields_scripts')
 
         @endpush
 
