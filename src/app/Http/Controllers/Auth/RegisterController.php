@@ -3,7 +3,7 @@
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Backpack\CRUD\app\Library\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Validator;
