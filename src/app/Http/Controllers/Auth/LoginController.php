@@ -83,21 +83,4 @@ class LoginController extends Controller
     {
         return backpack_auth();
     }
-
-    // -------------------------------------------------------
-    // Laravel overwrites for loading backpack views
-    // -------------------------------------------------------
-
-    /**
-     * Show the application login form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showLoginForm()
-    {
-        $this->data['title'] = trans('backpack::base.login'); // set the page title
-        $this->data['username'] = $this->username();
-
-        return view(backpack_view('auth.login'), $this->data);
-    }
 }

@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
-use Backpack\CRUD\app\Auth\SendsPasswordResetEmails;
+use Backpack\CRUD\app\Library\Auth\SendsPasswordResetEmails;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Password;
 

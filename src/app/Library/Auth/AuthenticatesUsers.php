@@ -18,7 +18,10 @@ trait AuthenticatesUsers
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        $this->data['title'] = trans('backpack::base.login'); // set the page title
+        $this->data['username'] = $this->username();
+
+        return view(backpack_view('auth.login'), $this->data);
     }
 
     /**
