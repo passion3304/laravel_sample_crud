@@ -8,6 +8,15 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.43 - 2020-03-04
+
+### Added
+- support for Laravel 7;
+
+### Fixed
+- #2501 - Backpack is no longer using the Auth services from Laravel (5.8-7); because Laravel moved its services in a different package in Laravel 7, but we want to support L5.8, L6 and L7 at the same time, we've been forced to move those classes inside Backpack, and we've done so, inside app\Library\Auth; Backpack is now completely indepenendent from Laravel's authentication;
+
+
 ## 4.0.42 - 2020-03-01
 
 ### Fixed
