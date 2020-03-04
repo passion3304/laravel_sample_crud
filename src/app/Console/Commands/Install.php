@@ -132,6 +132,8 @@ class Install extends Command
     {
         $this->echo('info', $beforeNotice ? ' '.$beforeNotice : $command);
 
+        $command = is_string($command) ? explode(' ', $command) : $command;
+
         $process = new Process($command, null, null, null, $this->option('timeout'));
         $process->run(function ($type, $buffer) {
             if (Process::ERR === $type) {
