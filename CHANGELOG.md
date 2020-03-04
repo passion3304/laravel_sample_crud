@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.44 - 2020-03-04
+
+### Fixed
+- installation command on Laravel 7;
+
+
 ## 4.0.43 - 2020-03-04
 
 ### Added

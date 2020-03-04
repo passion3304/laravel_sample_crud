@@ -132,6 +132,7 @@ class Install extends Command
     {
         $this->echo('info', $beforeNotice ? ' '.$beforeNotice : $command);
 
+        // make sure the command is an array as per Symphony 4.3+ requirement
         $command = is_string($command) ? explode(' ', $command) : $command;
 
         $process = new Process($command, null, null, null, $this->option('timeout'));
