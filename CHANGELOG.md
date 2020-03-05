@@ -8,6 +8,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.47 - 2020-03-05
+
+### Fixed
+- Delete operation can respond with Notification Bubbles @tabacitu (#2477)
+- Elfinder mime type filter. @pxpm (#2505)
+- Implement orderButtons @tabacitu (#2457)
+- Allow delay on AJAX calls for select2_from_ajax fields @pxpm (#2504)
+
 ## 4.0.46 - 2020-03-05
 
 ### Fixed
