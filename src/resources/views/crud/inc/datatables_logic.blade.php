@@ -223,6 +223,23 @@
 
       // move "showing x out of y" info to header
       $("#datatable_info_stack").html($('#crudTable_info'));
+      //apply inline-flex to element.
+      $("#datatable_info_stack").css('display','inline-flex');
+
+        // create the reset button
+      var resetButton = '<a href="{{url($crud->route)}}" style="padding-left:5px;" id="table_reset_button">Reset</a>';
+
+      $('#datatable_info_stack').append(resetButton);
+
+        // when clicking in reset button we clear the localStorage for datatables.
+      $('#table_reset_button').on('click', function() {
+        if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url')) {
+            localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url');
+        }
+        if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url_time')) {
+            localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+        }
+      });
 
       // move the bottom buttons before pagination
       $("#bottom_buttons").insertBefore($('#crudTable_wrapper .row:last-child' ));
