@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.45 - 2020-03-05
+
+### Fixed
+- installation command did not correctly use the new version of Symphony Process;
+
+
 ## 4.0.44 - 2020-03-04
 
 ### Fixed
