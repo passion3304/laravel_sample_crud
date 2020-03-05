@@ -53,7 +53,7 @@ class AddSidebarContent extends Command
                 $this->error('Could not write to sidebar_content file.');
             }
         } else {
-            $this->error("The sidebar_content file does not exist. Make sure Backpack is properly installed.");
+            $this->error('The sidebar_content file does not exist. Make sure Backpack is properly installed.');
         }
     }
 }

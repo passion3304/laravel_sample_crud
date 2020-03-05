@@ -2,10 +2,10 @@
 
 namespace Backpack\CRUD\app\Console\Commands;
 
+use Artisan;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Artisan;
 
 class Install extends Command
 {
@@ -65,13 +65,13 @@ class Install extends Command
 
         $this->line(' Publishing configs, langs, views, js and css files');
         $this->executeArtisanProcess('vendor:publish', [
-                '--provider' => 'Backpack\CRUD\BackpackServiceProvider', 
-                '--tag' => 'minimum'
+            '--provider' => 'Backpack\CRUD\BackpackServiceProvider',
+            '--tag' => 'minimum',
         ]);
 
         $this->line(' Publishing config for notifications - prologue/alerts');
         $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Prologue\Alerts\AlertsServiceProvider'
+            '--provider' => 'Prologue\Alerts\AlertsServiceProvider',
         ]);
 
         $this->line(" Generating users table (using Laravel's default migrations)");
@@ -108,19 +108,19 @@ class Install extends Command
 
             $this->line(' Publishing custom elfinder views');
             $this->executeArtisanProcess('vendor:publish', [
-                '--provider' => 'Backpack\CRUD\BackpackServiceProvider', 
-                '--tag' => 'elfinder'
+                '--provider' => 'Backpack\CRUD\BackpackServiceProvider',
+                '--tag' => 'elfinder',
             ]);
 
             $this->line(' Adding sidebar menu item for File Manager');
             switch (DIRECTORY_SEPARATOR) {
                 case '/': // unix
-                    $this->executeArtisanProcess('backpack:add-sidebar-content', [ 
-                        'code' => '<li class="nav-item"><a class="nav-link" href="{{ backpack_url(\'elfinder\') }}\"><i class="nav-icon fa fa-files-o"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>']);
+                    $this->executeArtisanProcess('backpack:add-sidebar-content', [
+                        'code' => '<li class="nav-item"><a class="nav-link" href="{{ backpack_url(\'elfinder\') }}\"><i class="nav-icon fa fa-files-o"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>', ]);
                     break;
                 case '\\': // windows
                     $this->executeArtisanProcess('backpack:add-sidebar-content', [
-                        'code' => '<li class="nav-item"><a class="nav-link" href=""{{ backpack_url(\'elfinder\') }}""><i class=""nav-icon fa fa-files-o""></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>']);
+                        'code' => '<li class="nav-item"><a class="nav-link" href=""{{ backpack_url(\'elfinder\') }}""><i class=""nav-icon fa fa-files-o""></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>', ]);
                     break;
             }
         }
@@ -171,7 +171,7 @@ class Install extends Command
 
     /**
      * Run an artisan command.
-     * 
+     *
      * @param  string  $command      The artisan command to be run.
      * @param  array   $arguments    Key-value array of arguments to the artisan command.
      * @param  bool    $beforeNotice Information for the user before the command is run
@@ -184,7 +184,7 @@ class Install extends Command
         $beforeNotice = $beforeNotice ? ' '.$beforeNotice : 'php artisan '.$command.' '.implode(' ', $arguments);
 
         $this->echo('info', $beforeNotice);
- 
+
         try {
             Artisan::call($command, $arguments);
         } catch (Exception $e) {
