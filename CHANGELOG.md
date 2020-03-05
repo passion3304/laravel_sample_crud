@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.46 - 2020-03-05
+
+### Fixed
+- added back revisionable as a dependency;
+
+
 ## 4.0.45 - 2020-03-05
 
 ### Fixed
