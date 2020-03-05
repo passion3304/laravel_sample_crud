@@ -18,7 +18,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
         $field['wrapperAttributes']['data-popup-title'] = trans('backpack::crud.select_file');
         $field['wrapperAttributes']['data-multiple'] = "false";
     }
-        $field['wrapperAttributes']['data-only-mimes'] = json_encode($mimes ?? []);
+        $field['wrapperAttributes']['data-only-mimes'] = json_encode($field['mime_types'] ?? []);
 
     if($sortable){
         $field['wrapperAttributes']['sortable'] = "true";
