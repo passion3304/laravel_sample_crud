@@ -32,6 +32,7 @@ return [
     // Revisions
     'revisions'            => 'Revisions',
     'no_revisions'         => 'No revisions found',
+    'revisions_for'        => 'Revisions for',
     'created_this'         => 'created this',
     'changed_the'          => 'changed the',
     'restore_this_value'   => 'Restore this value',
