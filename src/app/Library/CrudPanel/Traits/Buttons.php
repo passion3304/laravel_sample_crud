@@ -11,34 +11,47 @@ trait Buttons
     // ------------
 
     /**
-     * Reorder buttons to the CRUD table view.
+     * Order the CRUD buttons. If certain button names are missing from the given order array
+     * they will be pushed to the end of the button collection.
+     *
      *
      * @param string      $stack           Stack where the buttons belongs. Options: top, line, bottom.
-     * @param array       $buttons         Name of the buttons. ['update', 'delete', 'show']
+     * @param array       $order           Ordered name of the buttons. ['update', 'delete', 'show']
      */
-    public function reorderButtons($stack, $buttons)
+    public function orderButtons(string $stack, array $order)
     {
-        $newBtns = collect([]);
+        $newButtons = collect([]);
+        $otherButtons = collect([]);
 
-        $this->buttons()->each(function ($btn) use ($stack, $newBtns) {
-            if ($btn->stack != $stack) {
-                $newBtns->push($btn);
+        // we get the buttons that belong to the specified stack
+        $stackButtons = $this->buttons()->reject(function ($item) use ($stack, $otherButtons) {
+            if($item->stack != $stack) {
+                // if the button does not belong to this stack we just add it for merging later
+                $otherButtons->push($item);
+                return true;
             }
+            return false;
         });
 
-        collect($buttons)->each(function ($btnKey) use ($newBtns) {
-            $btnInstance = $this->buttons()->filter(function ($btn) use ($btnKey) {
-                return $btn->name == $btnKey;
-            })->first();
-
-            if (! $btnInstance) {
-                abort(500, 'Sorry, button cannot be found');
+        // we parse the ordered buttons
+        collect($order)->each(function ($btnKey) use ($newButtons, $stackButtons) {
+            if (!$button = $stackButtons->where('name', $btnKey)->first()) {
+                abort(500, 'Button name [«' . $btnKey . '»] not found.');
             }
-
-            $newBtns->push($btnInstance);
+            $newButtons->push($button);
         });
 
-        $this->setOperationSetting('buttons', $newBtns);
+        // if the ordered buttons are less than the total number of buttons in the stack
+        // we add the remaining buttons to the end of the ordered ones
+        if (count($newButtons) < count($stackButtons)) {
+            foreach ($stackButtons as $button) {
+                if (!$newButtons->where('name', $button->name)->first()) {
+                    $newButtons->push($button);
+                }
+            }
+        }
+
+        $this->setOperationSetting('buttons', $newButtons->merge($otherButtons));
     }
 
     /**

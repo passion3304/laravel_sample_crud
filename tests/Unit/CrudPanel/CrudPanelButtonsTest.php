@@ -245,13 +245,13 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
         $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons()));
     }
 
-    public function testReorderButtons()
+    public function testOrderButtons()
     {
         $this->crudPanel->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
         $this->crudPanel->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
-        $this->crudPanel->addButton('line', 'test', 'view', 'crud::buttons.update', 'end');
+        $this->crudPanel->addButton('line', 'test', 'view', 'crud::buttons.test', 'end');
 
-        $this->crudPanel->reorderButtons('line', ['show', 'test']);
+        $this->crudPanel->orderButtons('line', ['show', 'test']);
 
         $this->assertEquals(['show', 'test', 'update'], $this->crudPanel->buttons()->pluck('name')->toArray());
     }
