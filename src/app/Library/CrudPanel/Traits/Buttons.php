@@ -25,18 +25,20 @@ trait Buttons
 
         // we get the buttons that belong to the specified stack
         $stackButtons = $this->buttons()->reject(function ($item) use ($stack, $otherButtons) {
-            if($item->stack != $stack) {
+            if ($item->stack != $stack) {
                 // if the button does not belong to this stack we just add it for merging later
                 $otherButtons->push($item);
+
                 return true;
             }
+
             return false;
         });
 
         // we parse the ordered buttons
         collect($order)->each(function ($btnKey) use ($newButtons, $stackButtons) {
-            if (!$button = $stackButtons->where('name', $btnKey)->first()) {
-                abort(500, 'Button name [«' . $btnKey . '»] not found.');
+            if (! $button = $stackButtons->where('name', $btnKey)->first()) {
+                abort(500, 'Button name [«'.$btnKey.'»] not found.');
             }
             $newButtons->push($button);
         });
@@ -45,7 +47,7 @@ trait Buttons
         // we add the remaining buttons to the end of the ordered ones
         if (count($newButtons) < count($stackButtons)) {
             foreach ($stackButtons as $button) {
-                if (!$newButtons->where('name', $button->name)->first()) {
+                if (! $newButtons->where('name', $button->name)->first()) {
                     $newButtons->push($button);
                 }
             }
