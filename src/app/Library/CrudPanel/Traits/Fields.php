@@ -473,27 +473,29 @@ trait Fields
 
     /**
      * Check if a field exists, by any given attribute.
-     * 
+     *
      * @param  string  $attribute   Attribute name on that field definition array.
      * @param  string  $value       Value of that attribute on that field definition array.
-     * @return boolean
+     * @return bool
      */
-    public function hasFieldWhere($attribute, $value) {
+    public function hasFieldWhere($attribute, $value)
+    {
         $match = Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
             return isset($field[$attribute]) && $field[$attribute] == $value;
         });
 
-        return (bool)$match;
+        return (bool) $match;
     }
 
     /**
      * Get the first field where a given attribute has the given value.
-     * 
+     *
      * @param  string  $attribute   Attribute name on that field definition array.
      * @param  string  $value       Value of that attribute on that field definition array.
-     * @return boolean
+     * @return bool
      */
-    public function firstFieldWhere($attribute, $value) {
+    public function firstFieldWhere($attribute, $value)
+    {
         return Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
             return isset($field[$attribute]) && $field[$attribute] == $value;
         });
@@ -509,7 +511,7 @@ trait Fields
      *
      * And if the developer uses the CrudField object as Field in his CrudController:
      * - Field::name('price')->type('number');
-     * 
+     *
      * @param  string $name The name of the column in the db, or model attribute.
      * @return CrudField
      */

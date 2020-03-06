@@ -430,27 +430,29 @@ trait Columns
 
     /**
      * Check if a column exists, by any given attribute.
-     * 
+     *
      * @param  string  $attribute   Attribute name on that column definition array.
      * @param  string  $value       Value of that attribute on that column definition array.
-     * @return boolean
+     * @return bool
      */
-    public function hasColumnWhere($attribute, $value) {
+    public function hasColumnWhere($attribute, $value)
+    {
         $match = Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
             return isset($column[$attribute]) && $column[$attribute] == $value;
         });
 
-        return (bool)$match;
+        return (bool) $match;
     }
 
     /**
      * Get the first column where a given attribute has the given value.
-     * 
+     *
      * @param  string  $attribute   Attribute name on that column definition array.
      * @param  string  $value       Value of that attribute on that column definition array.
-     * @return boolean
+     * @return bool
      */
-    public function firstColumnWhere($attribute, $value) {
+    public function firstColumnWhere($attribute, $value)
+    {
         return Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
             return isset($column[$attribute]) && $column[$attribute] == $value;
         });
@@ -466,7 +468,7 @@ trait Columns
      *
      * And if the developer uses the CrudColumn object as Column in his CrudController:
      * - Column::name('price')->type('number');
-     * 
+     *
      * @param  string $name The name of the column in the db, or model attribute.
      * @return CrudColumn
      */
