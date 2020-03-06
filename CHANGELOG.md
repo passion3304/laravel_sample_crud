@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.48 - 2020-03-06
+
+### Fixed
+- Create/Update operation tabs no longer worked because of Str::slug() helper;
+
+
 ## 4.0.47 - 2020-03-05
 
 ### Fixed
