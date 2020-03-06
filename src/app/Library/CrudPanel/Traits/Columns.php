@@ -380,34 +380,6 @@ trait Columns
     }
 
     /**
-     * Check if a column exists, by any given attribute.
-     * 
-     * @param  string  $attribute   Attribute name on that column definition array.
-     * @param  string  $value       Value of that attribute on that column definition array.
-     * @return boolean
-     */
-    public function hasColumnWhere($attribute, $value) {
-        $match = Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
-            return isset($column[$attribute]) && $column[$attribute] == $value;
-        });
-
-        return (bool)$match;
-    }
-
-    /**
-     * Get the first column where a given attribute has the given value.
-     * 
-     * @param  string  $attribute   Attribute name on that column definition array.
-     * @param  string  $value       Value of that attribute on that column definition array.
-     * @return boolean
-     */
-    public function firstColumnWhere($attribute, $value) {
-        return Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
-            return isset($column[$attribute]) && $column[$attribute] == $value;
-        });
-    }
-
-    /**
      * @param string $table
      * @param string $name
      *
@@ -456,6 +428,33 @@ trait Columns
         return $this;
     }
 
+    /**
+     * Check if a column exists, by any given attribute.
+     * 
+     * @param  string  $attribute   Attribute name on that column definition array.
+     * @param  string  $value       Value of that attribute on that column definition array.
+     * @return boolean
+     */
+    public function hasColumnWhere($attribute, $value) {
+        $match = Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
+            return isset($column[$attribute]) && $column[$attribute] == $value;
+        });
+
+        return (bool)$match;
+    }
+
+    /**
+     * Get the first column where a given attribute has the given value.
+     * 
+     * @param  string  $attribute   Attribute name on that column definition array.
+     * @param  string  $value       Value of that attribute on that column definition array.
+     * @return boolean
+     */
+    public function firstColumnWhere($attribute, $value) {
+        return Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
+            return isset($column[$attribute]) && $column[$attribute] == $value;
+        });
+    }
 
     /**
      * Create and return a CrudColumn object for that column name.
@@ -468,7 +467,7 @@ trait Columns
      * And if the developer uses the CrudColumn object as Column in his CrudController:
      * - Column::name('price')->type('number');
      * 
-     * @param  string $name [description]
+     * @param  string $name The name of the column in the db, or model attribute.
      * @return CrudColumn
      */
     public function column($name)
