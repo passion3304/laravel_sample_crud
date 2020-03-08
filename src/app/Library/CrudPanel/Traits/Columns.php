@@ -2,6 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+
 trait Columns
 {
     // ------------
@@ -72,7 +75,7 @@ trait Columns
 
         // make sure the column has a name
         if (! array_key_exists('name', $column_with_details)) {
-            $column_with_details['name'] = 'anonymous_column_'.str_random(5);
+            $column_with_details['name'] = 'anonymous_column_'.Str::random(5);
         }
 
         // make sure the column has a type
@@ -103,7 +106,7 @@ trait Columns
             $column_with_details['searchLogic'] = $columnExistsInDb ? true : false;
         }
 
-        $columnsArray = array_add($this->columns(), $column_with_details['key'], $column_with_details);
+        $columnsArray = Arr::add($this->columns(), $column_with_details['key'], $column_with_details);
         $this->setOperationSetting('columns', $columnsArray);
 
         // make sure the column has a priority in terms of visibility
@@ -244,7 +247,7 @@ trait Columns
     public function removeColumn($columnKey)
     {
         $columnsArray = $this->columns();
-        array_forget($columnsArray, $columnKey);
+        Arr::forget($columnsArray, $columnKey);
         $this->setOperationSetting('columns', $columnsArray);
     }
 

@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
+
 trait Fields
 {
     // ------------
@@ -61,7 +63,7 @@ trait Fields
 
         $fields = $this->getOperationSetting('fields');
         $fieldKey = is_array($newField['name']) ? implode('_', $newField['name']) : $newField['name'];
-        $fields = array_add($this->fields(), $fieldKey, $newField);
+        $fields = Arr::add($this->fields(), $fieldKey, $newField);
         $this->setOperationSetting('fields', $fields);
 
         return $this;
@@ -143,7 +145,7 @@ trait Fields
     public function removeField($name)
     {
         $this->transformFields(function ($fields) use ($name) {
-            array_forget($fields, $name);
+            Arr::forget($fields, $name);
 
             return $fields;
         });
@@ -335,7 +337,7 @@ trait Fields
     public function hasUploadFields()
     {
         $fields = $this->getFields();
-        $upload_fields = array_where($fields, function ($value, $key) {
+        $upload_fields = Arr::where($fields, function ($value, $key) {
             return isset($value['upload']) && $value['upload'] == true;
         });
 
@@ -446,7 +448,7 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        return array_flatten(array_pluck($this->getCurrentFields(), 'name'));
+        return Arr::flatten(Arr::pluck($this->getCurrentFields(), 'name'));
     }
 
     /**
