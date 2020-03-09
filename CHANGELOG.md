@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.51 - 2020-03-09
+
+### Fixed
+- #2528 fix installation problem - ```elfinder:publish``` command didn't work on Windows; 
+
+
 ## 4.0.50 - 2020-03-09
 
 ### Fixed
