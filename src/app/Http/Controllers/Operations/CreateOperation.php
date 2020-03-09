@@ -20,13 +20,7 @@ trait CreateOperation
             'uses'      => $controller.'@create',
             'operation' => 'create',
         ]);
-
-        Route::put($segment.'/create', [
-            'as'        => $routeName.'.store',
-            'uses'      => $controller.'@store',
-            'operation' => 'create',
-        ]);
-
+        
         Route::post($segment, [
             'as'        => $routeName.'.store',
             'uses'      => $controller.'@store',
