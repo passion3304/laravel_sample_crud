@@ -2,6 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+
 trait Columns
 {
     use ColumnsProtectedMethods;
@@ -146,7 +149,7 @@ trait Columns
     public function removeColumn($columnKey)
     {
         $columnsArray = $this->columns();
-        array_forget($columnsArray, $columnKey);
+        Arr::forget($columnsArray, $columnKey);
         $this->setOperationSetting('columns', $columnsArray);
     }
 

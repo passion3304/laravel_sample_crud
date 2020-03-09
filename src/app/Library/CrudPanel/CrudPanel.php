@@ -29,6 +29,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 
 class CrudPanel
 {
@@ -257,7 +258,7 @@ class CrudPanel
      */
     public function getFirstOfItsTypeInArray($type, $array)
     {
-        return array_first($array, function ($item) use ($type) {
+        return Arr::first($array, function ($item) use ($type) {
             return $item['type'] == $type;
         });
     }
@@ -360,7 +361,7 @@ class CrudPanel
     private function getRelationModelInstances($model, $relationString)
     {
         $relationArray = explode('.', $relationString);
-        $firstRelationName = array_first($relationArray);
+        $firstRelationName = Arr::first($relationArray);
         $relation = $model->{$firstRelationName};
 
         $results = [];

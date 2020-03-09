@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Models\Traits;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Traversable;
 
@@ -290,7 +291,7 @@ trait CrudTrait
         if ($files_to_clear) {
             foreach ($files_to_clear as $key => $filename) {
                 \Storage::disk($disk)->delete($filename);
-                $attribute_value = array_where($attribute_value, function ($value, $key) use ($filename) {
+                $attribute_value = Arr::where($attribute_value, function ($value, $key) use ($filename) {
                     return $value != $filename;
                 });
             }
