@@ -181,7 +181,7 @@ class Install extends Command
      */
     public function executeArtisanProcess($command, $arguments = [], $beforeNotice = false, $afterNotice = false)
     {
-        $beforeNotice = $beforeNotice ? ' '.$beforeNotice : 'php artisan '.implode(' ', (array)$command).' '.implode(' ', $arguments);
+        $beforeNotice = $beforeNotice ? ' '.$beforeNotice : 'php artisan '.implode(' ', (array) $command).' '.implode(' ', $arguments);
 
         $this->echo('info', $beforeNotice);
 
