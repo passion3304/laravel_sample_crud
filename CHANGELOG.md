@@ -8,6 +8,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.50 - 2020-03-09
+
+### Fixed
+- #2524 - Change include_all_form_fields data attribute to explicitly output string true/false;
+- #2526 - debug flag in installation command;
+
+
 ## 4.0.49 - 2020-03-08
 
 ### Fixed
