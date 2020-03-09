@@ -120,7 +120,7 @@ class Install extends Command
                     break;
                 case '\\': // windows
                     $this->executeArtisanProcess('backpack:add-sidebar-content', [
-                        'code' => '<li class="nav-item"><a class="nav-link" href=""{{ backpack_url(\'elfinder\') }}""><i class=""nav-icon fa fa-files-o""></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>', ]);
+                        'code' => '<li class="nav-item"><a class="nav-link" href="{{ backpack_url(\'elfinder\') }}"><i class="nav-icon fa fa-files-o"></i> <span>{{ trans(\'backpack::crud.file_manager\') }}</span></a></li>', ]);
                     break;
             }
         }
