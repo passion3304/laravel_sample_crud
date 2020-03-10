@@ -251,7 +251,7 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 
     public function testAddFieldsInvalidArray()
     {
-        $this->expectException(\ErrorException::class);
+        $this->expectException(\Exception::class);
 
         $this->crudPanel->addFields($this->invalidTwoFieldsArray);
     }
