@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.53 - 2020-03-10
+
+### Fixed
+- #2532 during installation, the published elFinder menu item had its quotes doubled;
+
+
 ## 4.0.52 - 2020-03-09
 
 ### Fixed
