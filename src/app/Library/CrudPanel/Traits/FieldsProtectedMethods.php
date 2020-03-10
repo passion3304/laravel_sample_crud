@@ -98,7 +98,7 @@ trait FieldsProtectedMethods
 
         $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field['entity']);
 
-        if ($extraFieldAttributes) {
+        if ($extraFieldAttributes !== false) {
             $field = array_merge($extraFieldAttributes, $field);
         } else {
             abort(500, 'Unable to process relationship data: '.$field['name']);

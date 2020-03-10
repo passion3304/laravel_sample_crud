@@ -72,14 +72,28 @@ trait Relationships
      */
     public function inferFieldAttributesFromRelationship($method)
     {
-        if (! method_exists($this->model, $method)) {
-            return false;
+        // get the parent of the last relation if using dot notation
+        // eg: user.account.address -> Return model for account and the relation address in account model.
+        $relationModel = $this->getRelationModel($method, -1);
+        $relatedMethod = array_last(explode('.', $method));
+
+        if ($relationModel != get_class($this->model)) {
+            $relationModel = new $relationModel();
+            if (method_exists($relationModel, $relatedMethod)) {
+                return $this->getFieldAttributesFromRelationship($relationModel, $relatedMethod);
+            }
         }
+        if (method_exists($this->model, $relatedMethod)) {
+            return $this->getFieldAttributesFromRelationship($this->model, $relatedMethod);
+        }
+        return false;
+    }
 
+    public function getFieldAttributesFromRelationship($model, $method) {
         try {
-            $method = (new \ReflectionClass($this->model))->getMethod($method);
+            $method = (new \ReflectionClass($model))->getMethod($method);
 
-            $relation = $method->invoke($this->model);
+            $relation = $method->invoke($model);
 
             if ($relation instanceof Relation) {
                 $relationship['type'] = 'relationship';
@@ -92,7 +106,7 @@ trait Relationships
                     $relationship['name'] = $relation->getForeignKeyName();
                 }
 
-                if ($relationship['relation_type'] == 'HasMany' || $relationship['relation_type'] == 'BelongsToMany') {
+                if ($relationship['relation_type'] == 'hasManyThrough' || $relationship['relation_type'] == 'BelongsToMany' || $relationship['relation_type'] == 'morphMany') {
                     $relationship['pivot'] = true;
                 }
 
