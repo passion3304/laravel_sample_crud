@@ -104,7 +104,7 @@ class Install extends Command
             }
 
             $this->line(' Publishing elFinder assets');
-            $this->executeArtisanProcess('elfinder:publish');
+            $this->executeProcess(['php', 'artisan', 'elfinder:publish']);
 
             $this->line(' Publishing custom elfinder views');
             $this->executeArtisanProcess('vendor:publish', [
@@ -141,7 +141,7 @@ class Install extends Command
      */
     public function executeProcess($command, $beforeNotice = false, $afterNotice = false)
     {
-        $this->echo('info', $beforeNotice ? ' '.$beforeNotice : $command);
+        $this->echo('info', $beforeNotice ? ' '.$beforeNotice : implode(' ', $command));
 
         // make sure the command is an array as per Symphony 4.3+ requirement
         $command = is_string($command) ? explode(' ', $command) : $command;
@@ -181,7 +181,7 @@ class Install extends Command
      */
     public function executeArtisanProcess($command, $arguments = [], $beforeNotice = false, $afterNotice = false)
     {
-        $beforeNotice = $beforeNotice ? ' '.$beforeNotice : 'php artisan '.$command.' '.implode(' ', $arguments);
+        $beforeNotice = $beforeNotice ? ' '.$beforeNotice : 'php artisan '.implode(' ', (array) $command).' '.implode(' ', $arguments);
 
         $this->echo('info', $beforeNotice);
 

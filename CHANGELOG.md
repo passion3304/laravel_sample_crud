@@ -24,6 +24,25 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.52 - 2020-03-09
+
+### Fixed
+- #2529 fixes #2525 and #2523 - removed PUT route for the Create operation, which didn't serve any direct purpose but caused errors when running ```php artisan optimize``` for some, under Laravel 7;
+
+
+## 4.0.51 - 2020-03-09
+
+### Fixed
+- #2528 fix installation problem - ```elfinder:publish``` command didn't work on Windows; 
+
+
+## 4.0.50 - 2020-03-09
+
+### Fixed
+- #2524 - Change include_all_form_fields data attribute to explicitly output string true/false;
+- #2526 - debug flag in installation command;
+
+
 ## 4.0.49 - 2020-03-08
 
 ### Fixed
