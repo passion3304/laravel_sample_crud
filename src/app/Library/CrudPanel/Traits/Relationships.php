@@ -86,10 +86,12 @@ trait Relationships
         if (method_exists($this->model, $relatedMethod)) {
             return $this->getFieldAttributesFromRelationship($this->model, $relatedMethod);
         }
+
         return false;
     }
 
-    public function getFieldAttributesFromRelationship($model, $method) {
+    public function getFieldAttributesFromRelationship($model, $method)
+    {
         try {
             $method = (new \ReflectionClass($model))->getMethod($method);
 

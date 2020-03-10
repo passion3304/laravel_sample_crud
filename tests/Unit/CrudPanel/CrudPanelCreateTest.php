@@ -209,7 +209,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->getRelationFields('unknownForm');
     }
 
-
     public function testGetRelationFieldsDotNotation()
     {
         $this->crudPanel->setModel(User::class);
@@ -241,7 +240,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     }
 
     /**
-     *
      * @group failing
      */
     public function testGetRelationFieldsWithPivot()
