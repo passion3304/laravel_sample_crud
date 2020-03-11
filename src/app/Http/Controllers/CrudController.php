@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Http\Controllers;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -17,17 +16,31 @@ class CrudController extends Controller
      */
     public $crud;
     public $data = [];
-    public $request;
 
-    public function __construct(CrudPanel $crud, Request $request)
+    public function __construct()
     {
-        $this->request = $request;
-        $this->crud = $crud;
-        $this->crud->setRequest($request);
+        if ($this->crud) {
+            return;
+        }
 
-        $this->setupDefaults();
-        $this->setup();
-        $this->setupConfigurationForCurrentOperation();
+        // ---------------------------
+        // Create the CrudPanel object
+        // ---------------------------
+        // Used by developers inside their ProductCrudControllers as
+        // $this->crud or using the CRUD facade.
+        //  
+        // It's done inside a middleware closure in order to have
+        // the complete request inside the CrudPanel object.
+        $this->middleware(function ($request, $next) {
+            $this->crud = app()->make('crud');
+            $this->crud->setRequest($request);
+
+            $this->setupDefaults();
+            $this->setup();
+            $this->setupConfigurationForCurrentOperation();
+
+            return $next($request);
+        });
     }
 
     /**

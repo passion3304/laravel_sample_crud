@@ -17,8 +17,10 @@ class CrudControllerTest extends BaseTest
     {
         parent::getEnvironmentSetUp($app);
         $controller = '\Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController';
+
         $app['router']->get('users/{id}/edit', "$controller@edit");
         $app['router']->put('users/{id}', "$controller@update");
+
         $app->singleton('crud', function ($app) {
             return new CrudPanel($app);
         });
@@ -26,18 +28,23 @@ class CrudControllerTest extends BaseTest
 
     public function testCrudRequestUpdatesOnEachRequest()
     {
-        $app = $this->app;
+        $crud = app('crud');
 
-        $firstRequest = $app->get('request')->create('/users/1/edit', 'GET');
-        $app->handle($firstRequest);
+        // create a first request
+        $firstRequest = request()->create('/users/1/edit', 'GET');
+        app()->handle($firstRequest);
 
-        $this->assertSame($app->get('crud')->request, $firstRequest);
+        // see if the first global request has been passed to the CRUD object
+        $this->assertSame($crud->getRequest(), $firstRequest);
 
-        $secondRequest = $app->get('request')->create('/users/1', 'PUT', ['name' => 'foo']);
-        $app->handle($secondRequest);
+        // create a second request
+        $secondRequest = request()->create('/users/1', 'PUT', ['name' => 'foo']);
+        app()->handle($secondRequest);
 
-        $this->assertSame($app->get('crud')->request, $secondRequest);
+        // see if the second global requesst has been passed to the CRUD object
+        $this->assertSame($crud->getRequest(), $secondRequest);
 
-        $this->assertNotSame($app->get('crud')->request, $firstRequest);
+        // the CRUD object's request should no longer hold the first request, but the second one
+        $this->assertNotSame($crud->getRequest(), $firstRequest);
     }
 }

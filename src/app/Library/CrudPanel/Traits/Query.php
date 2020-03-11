@@ -5,7 +5,6 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 trait Query
 {
     public $query;
-    public $request;
 
     // ----------------
     // ADVANCED QUERIES
@@ -54,7 +53,7 @@ trait Query
      */
     public function orderBy($field, $order = 'asc')
     {
-        if ($this->request->has('order')) {
+        if ($this->getRequest()->has('order')) {
             return $this->query;
         }
 

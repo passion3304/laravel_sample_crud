@@ -118,7 +118,7 @@ trait SaveActions
         }
 
         // if the request is AJAX, return a JSON response
-        if ($this->request->ajax()) {
+        if ($this->getRequest()->ajax()) {
             return [
                 'success'      => true,
                 'data'         => $this->entry,
