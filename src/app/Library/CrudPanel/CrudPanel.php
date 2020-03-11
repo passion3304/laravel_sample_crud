@@ -75,7 +75,7 @@ class CrudPanel
     }
 
     /**
-     * [getRequest description]
+     * [getRequest description].
      * @return [type] [description]
      */
     public function getRequest()

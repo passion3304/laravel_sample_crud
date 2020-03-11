@@ -28,7 +28,7 @@ class CrudController extends Controller
         // ---------------------------
         // Used by developers inside their ProductCrudControllers as
         // $this->crud or using the CRUD facade.
-        //  
+        //
         // It's done inside a middleware closure in order to have
         // the complete request inside the CrudPanel object.
         $this->middleware(function ($request, $next) {
