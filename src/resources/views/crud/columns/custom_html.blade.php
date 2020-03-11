@@ -1,3 +1,7 @@
+@php
+    $column['text'] = $column['value']?? ' ';
+    $column['escaped'] = false;
+@endphp
 <span>
-	{!! $column['value']?? ' ' !!}
+	@include('crud::columns.inc.column_wrapper')
 </span>

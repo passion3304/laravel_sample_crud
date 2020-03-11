@@ -9,11 +9,11 @@ $exportCheckedText = data_get($column, 'labels.checked', trans('backpack::crud.y
 $exportUncheckedText = data_get($column, 'labels.unchecked', trans('backpack::crud.no'));
 
 $icon = $checkValue == false ? $uncheckedIcon : $checkedIcon;
-$text = $checkValue == false ? $exportUncheckedText : $exportCheckedText;
+$column['text'] = $checkValue == false ? $exportUncheckedText : $exportCheckedText;
 @endphp
 
 <span>
     <i class="fa {{ $icon }}"></i>
 </span>
 
-<span class="sr-only">{{ $text }}</span>
+<span class="sr-only">@include('crud::columns.inc.column_wrapper')</span>

@@ -8,5 +8,9 @@
 		    array_key_exists('thousands_sep', $column) ? $column['thousands_sep'] : ','
 		 );
     }
+    $column['text'] = !is_null($value) ?
+    (array_key_exists('prefix', $column) ? $column['prefix'] : '').$value.(array_key_exists('suffix', $column) ? $column['suffix'] : '') : '';
 @endphp
-<span>{{ (array_key_exists('prefix', $column) ? $column['prefix'] : '').$value.(array_key_exists('suffix', $column) ? $column['suffix'] : '') }}</span>
+<span>
+    @include('crud::columns.inc.column_wrapper')
+</span>

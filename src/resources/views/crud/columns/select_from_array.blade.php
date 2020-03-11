@@ -1,33 +1,26 @@
 {{-- select_from_array column --}}
 @php
     $values = data_get($entry, $column['name']);
+    $list = [];
+    if ($values !== null) {
+            if (is_array($values)) {
+                foreach ($values as $key => $value) {
+                    if (! is_null($value)) {
+                        $list[$key] = $column['options'][$value] ?? $value;
+                    }
+                }
+            } else {
+                $value = $column['options'][$values] ?? $values;
+                $list[$values] = $value;
+            }
+            $lastKey = array_key_last($list);
+        }
 @endphp
 
 <span>
-	<?php
-        if ($values !== null) {
-            if (is_array($values)) {
-                $array_of_values = [];
-
-                foreach ($values as $key => $value) {
-                    if (! is_null($value)) {
-                        $array_of_values[] = $column['options'][$value] ?? $value;
-                    } else {
-                        echo '-';
-                        continue;
-                    }
-                }
-
-                if (count($array_of_values) > 1) {
-                    echo implode(', ', $array_of_values);
-                } else {
-                    echo array_first($array_of_values);
-                }
-            } else {
-                echo $column['options'][$values] ?? $values;
-            }
-        } else {
-            echo '-';
-        }
-    ?>
+    @if(!empty($list))
+        @foreach($list as $key => $text)
+            @include('crud::columns.inc.column_wrapper',['text' => $text, 'related_key' => $key])@if($lastKey != $key),@endif
+        @endforeach
+    @endif
 </span>
