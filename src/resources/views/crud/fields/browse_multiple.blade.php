@@ -18,10 +18,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
         $field['wrapperAttributes']['data-popup-title'] = trans('backpack::crud.select_file');
         $field['wrapperAttributes']['data-multiple'] = "false";
     }
-
-    if ($mimes = array_get($field, 'mime_types')) {
-        $field['wrapperAttributes']['data-only-mimes'] = json_encode($mimes);
-    }
+    $field['wrapperAttributes']['data-only-mimes'] = json_encode($field['mime_types'] ?? []);
 
     if($sortable){
         $field['wrapperAttributes']['sortable'] = "true";
@@ -78,7 +75,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                 <button type="button" class="browse remove btn btn-sm btn-light">
                     <i class="fa fa-trash"></i>
                 </button>
-                @if ($sortable)
+                @if($sortable)
                     <button type="button" class="browse move btn btn-sm btn-light"><span class="fa fa-sort"></span></button>
                 @endif
             </div>
@@ -128,7 +125,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                 var $removeButton = element.find(".remove");
                 var $input = element.find('input[data-marker=multipleBrowseInput]');
                 var $popupTitle = element.attr('data-popup-title');
-                var $onlyMimesArray = element.attr('data-only-mimes');
+                var $onlyMimesArray = JSON.parse(element.attr('data-only-mimes'));
                 var $multiple = element.attr('data-multiple');
                 var $sortable = element.attr('sortable');
 

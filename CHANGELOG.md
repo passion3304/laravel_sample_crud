@@ -8,6 +8,55 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.48 - 2020-03-06
+
+### Fixed
+- Create/Update operation tabs no longer worked because of Str::slug() helper;
+
+
+
+## 4.0.47 - 2020-03-05
+
+### Fixed
+- Delete operation can respond with Notification Bubbles @tabacitu (#2477)
+- Elfinder mime type filter. @pxpm (#2505)
+- Implement orderButtons @tabacitu (#2457)
+- Allow delay on AJAX calls for select2_from_ajax fields @pxpm (#2504)
+
+## 4.0.46 - 2020-03-05
+
+### Fixed
+- added back revisionable as a dependency;
+
+
+## 4.0.45 - 2020-03-05
+
+### Fixed
+- installation command did not correctly use the new version of Symphony Process;
+
+
+## 4.0.44 - 2020-03-04
+
+### Fixed
+- installation command on Laravel 7;
+
+
+## 4.0.43 - 2020-03-04
+
+### Added
+- support for Laravel 7;
+
+### Fixed
+- #2501 - Backpack is no longer using the Auth services from Laravel (5.8-7); because Laravel moved its services in a different package in Laravel 7, but we want to support L5.8, L6 and L7 at the same time, we've been forced to move those classes inside Backpack, and we've done so, inside app\Library\Auth; Backpack is now completely indepenendent from Laravel's authentication;
+
+
+## 4.0.42 - 2020-03-01
+
+### Fixed
+- updated npm dependencies;
+- CSS assets inside elFinder views;
+
+
 ## 4.0.41 - 2020-02-16
 
 ### Fixed
