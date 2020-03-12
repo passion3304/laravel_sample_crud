@@ -59,11 +59,11 @@ if($activeInlineCreate) {
 
     //we check if this field is not beeing requested in some InlineCreate operation.
     //this variable is setup by InlineCreate modal when loading the fields.
-if(!isset($inlineCreate)) {
+    if(!isset($inlineCreate)) {
 
-    //route to create a new entity
-    $field['inline_create']['create_route'] = route($field['inline_create']['entity']."-inline-create");
-}
+        //route to create a new entity
+        $field['inline_create']['create_route'] = route($field['inline_create']['entity']."-inline-create");
+    }
 }
 
 @endphp
@@ -80,7 +80,7 @@ if(!isset($inlineCreate)) {
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-original-name="{{ $field['name'] }}"
         style="width: 100%"
-        data-force-select={{var_export($field['inline_create']['force_select'])}}
+        data-force-select="{{ var_export($field['inline_create']['force_select']) }}"
         data-init-function="bpFieldInitRelationshipElement"
         data-is-inline="{{ $inlineCreate ?? 'false' }}"
         data-field-multiple="{{var_export($field['multiple'])}}"

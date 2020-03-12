@@ -1,7 +1,6 @@
 @php
 
     //in case entity is superNews we want the url friendly super-news
-
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
 

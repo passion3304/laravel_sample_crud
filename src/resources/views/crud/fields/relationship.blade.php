@@ -14,8 +14,8 @@
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
-    //if field is not ajax but user wants to use InlineCreate
-    //we make minimum_input_length = 0 so when user open we show the entries like a regular select
+    // if field is not ajax but user wants to use InlineCreate
+    // we make minimum_input_length = 0 so when user open we show the entries like a regular select
     $field['minimum_input_length'] = ($field['ajax'] !== true) ? 0 : ($field['minimum_input_length'] ?? 2);
 
    @endphp
@@ -31,7 +31,7 @@
    @endif
 
 
-        @if ($crud->fieldTypeNotLoaded($field))
+    @if ($crud->fieldTypeNotLoaded($field))
         @php
             $crud->markFieldTypeAsLoaded($field);
         @endphp

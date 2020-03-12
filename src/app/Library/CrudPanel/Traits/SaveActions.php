@@ -351,7 +351,7 @@ trait SaveActions
                 'success'      => true,
                 'data'         => $this->entry,
                 'redirect_url' => $redirectUrl,
-                'referrer_url' => $referrer_url,
+                'referrer_url' => $referrer_url ?? false,
             ];
         }
 
