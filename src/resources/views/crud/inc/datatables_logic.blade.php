@@ -233,11 +233,18 @@
 
         // when clicking in reset button we clear the localStorage for datatables.
       $('#table_reset_button').on('click', function() {
+
+        //clear the filters
         if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url')) {
             localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url');
         }
         if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url_time')) {
             localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+        }
+
+        //clear the table sorting/ordering/visibility
+        if(localStorage.getItem('DataTables_crudTable_/{{ $crud->getRoute() }}')) {
+            localStorage.removeItem('DataTables_crudTable_/{{ $crud->getRoute() }}');
         }
       });
 
