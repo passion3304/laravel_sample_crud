@@ -89,7 +89,7 @@ return [
     'info'           => 'Showing _START_ to _END_ of _TOTAL_ entries',
     'infoEmpty'      => 'Showing 0 to 0 of 0 entries',
     'infoFiltered'   => '(filtered from _MAX_ total entries)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ records per page',
     'loadingRecords' => 'Loading...',
