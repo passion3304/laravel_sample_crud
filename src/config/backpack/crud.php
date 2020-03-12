@@ -52,6 +52,13 @@ return [
             // - 2-3 - more important than the rest of the columns
             // - 4 - less important than most columns
             'actionsColumnPriority' => 1,
+
+            // Show a "Reset" button next to the List operation subheading
+            // (Showing 1 to 25 of 9999 entries. Reset)
+            // that allows the user to erase local storage for that datatable,
+            // thus clearing any searching, filtering or pagination that has been
+            // remembered and persisted using persistentTable
+            'resetButton' => true,
         ],
 
         /*
