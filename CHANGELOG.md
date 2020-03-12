@@ -8,6 +8,54 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.53 - 2020-03-10
+
+### Fixed
+- #2532 during installation, the published elFinder menu item had its quotes doubled;
+
+
+## 4.0.52 - 2020-03-09
+
+### Fixed
+- #2529 fixes #2525 and #2523 - removed PUT route for the Create operation, which didn't serve any direct purpose but caused errors when running ```php artisan optimize``` for some, under Laravel 7;
+
+
+## 4.0.51 - 2020-03-09
+
+### Fixed
+- #2528 fix installation problem - ```elfinder:publish``` command didn't work on Windows; 
+
+
+## 4.0.50 - 2020-03-09
+
+### Fixed
+- #2524 - Change include_all_form_fields data attribute to explicitly output string true/false;
+- #2526 - debug flag in installation command;
+
+
+## 4.0.49 - 2020-03-08
+
+### Fixed
+- Symmetry alignment and window widening for password reset view @urlportal (#2516)
+- Actualisation of Russian localisation @urlportal (#2515)
+- Update @onurmutlu (#2514)
+- Fixed ```php artisan backpack:version``` command @tabacitu (#2520)
+
+
+## 4.0.48 - 2020-03-06
+
+### Fixed
+- Create/Update operation tabs no longer worked because of Str::slug() helper;
+
+
+## 4.0.47 - 2020-03-05
+
+### Fixed
+- Delete operation can respond with Notification Bubbles @tabacitu (#2477)
+- Elfinder mime type filter. @pxpm (#2505)
+- Implement orderButtons @tabacitu (#2457)
+- Allow delay on AJAX calls for select2_from_ajax fields @pxpm (#2504)
+
 ## 4.0.46 - 2020-03-05
 
 ### Fixed

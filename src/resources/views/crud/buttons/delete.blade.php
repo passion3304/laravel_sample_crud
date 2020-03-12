@@ -43,24 +43,12 @@
 			      url: route,
 			      type: 'DELETE',
 			      success: function(result) {
-			          if (result != 1) {
-			          	// Show an error alert
-			              swal({
-			              	title: "{!! trans('backpack::crud.delete_confirmation_not_title') !!}",
-			              	text: "{!! trans('backpack::crud.delete_confirmation_not_message') !!}",
-			              	icon: "error",
-			              	timer: 2000,
-			              	buttons: false,
-			              });
-			          } else {
-			          	  // Show a success message
-			              swal({
-			              	title: "{!! trans('backpack::crud.delete_confirmation_title') !!}",
-			              	text: "{!! trans('backpack::crud.delete_confirmation_message') !!}",
-			              	icon: "success",
-			              	timer: 4000,
-			              	buttons: false,
-			              });
+			          if (result == 1) {
+			          	  // Show a success notification bubble
+			              new Noty({
+		                    type: "success",
+		                    text: "{!! '<strong>'.trans('backpack::crud.delete_confirmation_title').'</strong><br>'.trans('backpack::crud.delete_confirmation_message') !!}"
+		                  }).show();
 
 			              // Hide the modal, if any
 			              $('.modal').modal('hide');
@@ -72,13 +60,36 @@
 
 			              // Remove the row from the datatable
 			              row.remove();
+			          } else {
+			              // if the result is an array, it means 
+			              // we have notification bubbles to show
+			          	  if (result instanceof Object) {
+			          	  	// trigger one or more bubble notifications 
+			          	  	Object.entries(result).forEach(function(entry, index) {
+			          	  	  var type = entry[0];
+			          	  	  entry[1].forEach(function(message, i) {
+					          	  new Noty({
+				                    type: type,
+				                    text: message
+				                  }).show();
+			          	  	  });
+			          	  	});
+			          	  } else {// Show an error alert
+				              swal({
+				              	title: "{!! trans('backpack::crud.delete_confirmation_not_title') !!}",
+	                            text: "{!! trans('backpack::crud.delete_confirmation_not_message') !!}",
+				              	icon: "error",
+				              	timer: 4000,
+				              	buttons: false,
+				              });
+			          	  }			          	  
 			          }
 			      },
 			      error: function(result) {
 			          // Show an alert with the result
 			          swal({
 		              	title: "{!! trans('backpack::crud.delete_confirmation_not_title') !!}",
-		              	text: "{!! trans('backpack::crud.delete_confirmation_not_message') !!}",
+                        text: "{!! trans('backpack::crud.delete_confirmation_not_message') !!}",
 		              	icon: "error",
 		              	timer: 4000,
 		              	buttons: false,
