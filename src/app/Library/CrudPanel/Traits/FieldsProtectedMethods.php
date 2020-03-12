@@ -60,6 +60,11 @@ trait FieldsProtectedMethods
             return $field;
         }
 
+        // if the name is an array it's definitely not a relationship
+        if (is_array($field['name'])) {
+            return $field;
+        }
+
         // if there's a method on the model with this name
         if (method_exists($this->model, $field['name'])) {
             $field['entity'] = $field['name'];
