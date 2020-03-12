@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\Article;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class CrudPanelTabsTest extends BaseDBCrudPanelTest
@@ -171,7 +172,7 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
 
         $lastTab = $this->crudPanel->getLastTab();
 
-        $this->assertEquals(array_last($this->expectedTabNames), $lastTab);
+        $this->assertEquals(Arr::last($this->expectedTabNames), $lastTab);
     }
 
     public function testGetLastTabNoTabs()

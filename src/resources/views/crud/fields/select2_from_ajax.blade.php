@@ -18,14 +18,14 @@
         style="width: 100%"
         data-init-function="bpFieldInitSelect2FromAjaxElement"
         data-column-nullable="{{ $entity_model::isColumnNullable($field['name'])?'true':'false' }}"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
+        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-placeholder="{{ $field['placeholder'] }}"
         data-minimum-input-length="{{ $field['minimum_input_length'] }}"
         data-data-source="{{ $field['data_source'] }}"
         data-method="{{ $field['method'] ?? 'GET' }}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
+        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
         data-ajax-delay="{{ $field['delay'] }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
         >

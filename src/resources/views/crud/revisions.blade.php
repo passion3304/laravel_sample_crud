@@ -9,13 +9,16 @@
 
   // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
   $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
+
+  $heading = $crud->getHeading() ?? $crud->entity_name_plural;
+  $subheading = $crud->getSubheading() ?? method_exists($entry, 'identifiableName') ? trans('backpack::crud.revisions_for').' "'.$entry->identifiableName().'"' : trans('backpack::crud.revisions');
 @endphp
 
 @section('header')
   <div class="container-fluid">
     <h2>
-        <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-        <small>{!! $crud->getSubheading() ?? trans('backpack::crud.revisions') !!}.</small>
+        <span class="text-capitalize">{!! $heading !!}</span>
+        <small>{!! $subheading !!}.</small>
 
         @if ($crud->hasAccess('list'))
           <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>

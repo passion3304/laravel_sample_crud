@@ -4,11 +4,16 @@ namespace Backpack\CRUD\app\Models\Traits;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Traversable;
 
+//use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
+
 trait CrudTrait
 {
+    use HasIdentifiableAttribute;
+
     public static function hasCrudTrait()
     {
         return true;
@@ -51,28 +56,78 @@ trait CrudTrait
         return $array;
     }
 
+    /**
+     * Register aditional types in doctrine schema manager for the current connection.
+     *
+     * @return DB
+     */
+    public function getConnectionWithExtraTypeMappings()
+    {
+        $instance = new self;
+
+        $conn = DB::connection($instance->getConnectionName());
+
+        // register the enum, json and jsonb column type, because Doctrine doesn't support it
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json_array');
+
+        return $conn;
+    }
+
+    /**
+     * Get the model's table name, with the prefix added from the configuration file.
+     *
+     * @return string Table name with prefix
+     */
+    public function getTableWithPrefix()
+    {
+        $prefix = Config::get('database.connections.'.$this->getConnectionName().'.prefix');
+        $tableName = $this->getTable();
+
+        return $prefix.$tableName;
+    }
+
+    /**
+     * Get the column type for a certain db column.
+     *
+     * @param  string $columnName Name of the column in the db table.
+     * @return string             Db column type.
+     */
+    public function getColumnType($columnName)
+    {
+        $conn = $this->getConnectionWithExtraTypeMappings();
+        $table = $this->getTableWithPrefix();
+
+        return $conn->getSchemaBuilder()->getColumnType($table, $columnName);
+    }
+
+    /**
+     * Checks if the given column name is nullable.
+     *
+     * @param string $column_name The name of the db column.
+     * @return bool
+     */
     public static function isColumnNullable($column_name)
     {
         // create an instance of the model to be able to get the table name
         $instance = new static();
 
-        $conn = DB::connection($instance->getConnectionName());
-        $table = Config::get('database.connections.'.Config::get('database.default').'.prefix').$instance->getTable();
+        $conn = $instance->getConnectionWithExtraTypeMappings();
+        $table = $instance->getTableWithPrefix();
 
         // MongoDB columns are alway nullable
         if ($conn->getConfig()['driver'] === 'mongodb') {
             return true;
         }
 
-        // register the enum, json and jsonb column type, because Doctrine doesn't support it
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json_array');
         try {
-            //check if column exists in database
-            $conn->getDoctrineColumn($table, $column_name);
-
-            return ! $conn->getDoctrineColumn($table, $column_name)->getNotnull();
+            // check if the column exists in the database
+            $column = $conn->getDoctrineColumn($table, $column_name);
+            // check for NOT NULL
+            $notNull = $column->getNotnull();
+            // return the value of nullable (aka the inverse of NOT NULL)
+            return ! $notNull;
         } catch (\Exception $e) {
             return true;
         }
@@ -236,7 +291,7 @@ trait CrudTrait
         if ($files_to_clear) {
             foreach ($files_to_clear as $key => $filename) {
                 \Storage::disk($disk)->delete($filename);
-                $attribute_value = array_where($attribute_value, function ($value, $key) use ($filename) {
+                $attribute_value = Arr::where($attribute_value, function ($value, $key) use ($filename) {
                     return $value != $filename;
                 });
             }
