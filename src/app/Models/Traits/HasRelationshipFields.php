@@ -4,10 +4,7 @@ namespace Backpack\CRUD\app\Models\Traits;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
-use Traversable;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +12,7 @@ use Traversable;
 |--------------------------------------------------------------------------
 */
 trait HasRelationshipFields
-{    
+{
     /**
      * Register aditional types in doctrine schema manager for the current connection.
      *
