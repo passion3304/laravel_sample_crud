@@ -20,6 +20,7 @@ trait FieldsProtectedMethods
         $field = $this->makeSureFieldHasModel($field);
         $field = $this->makeSureFieldHasLabel($field);
         $field = $this->makeSureFieldHasEntity($field);
+        $field = $this->makeSureFieldHasAttribute($field);
         $field = $this->makeSureFieldHasRelationshipData($field);
         $field = $this->makeSureFieldHasType($field);
 
@@ -118,6 +119,17 @@ trait FieldsProtectedMethods
         // get it from the relation method defined in the main model
         if (isset($field['entity']) && ! isset($field['model'])) {
             $field['model'] = $this->getRelationModel($field['entity']);
+        }
+
+        return $field;
+    }
+
+    protected function makeSureFieldHasAttribute($field)
+    {
+        // if there's a model defined, but no attribute
+        // guess an attribute using the indentifiableAttribute functionality in CrudTrait
+        if (isset($field['model']) && !isset($field['attribute'])) {
+            $field['attribute'] = call_user_func([$field['model'], 'getIdentifiableName']);
         }
 
         return $field;
