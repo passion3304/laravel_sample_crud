@@ -69,7 +69,7 @@ return [
     'info'           => 'Toon _START_ tot _END_ van _TOTAL_ items',
     'infoEmpty'      => 'Toon 0 tot 0 van 0 items',
     'infoFiltered'   => '(gefilterd van _MAX_ totale items)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ items per pagina',
     'loadingRecords' => 'Laden...',

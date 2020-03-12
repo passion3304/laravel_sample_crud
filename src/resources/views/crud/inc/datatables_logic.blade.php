@@ -223,7 +223,31 @@
       $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
-      $("#datatable_info_stack").html($('#crudTable_info'));
+      $("#datatable_info_stack").html($('#crudTable_info')).css('display','inline-flex');
+
+      @if($crud->getOperationSetting('resetButton') ?? true)
+        // create the reset button
+        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1" id="crudTable_reset_button">Reset</a>';
+
+        $('#datatable_info_stack').append(crudTableResetButton);
+
+          // when clicking in reset button we clear the localStorage for datatables.
+        $('#crudTable_reset_button').on('click', function() {
+
+          //clear the filters
+          if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url')) {
+              localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url');
+          }
+          if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url_time')) {
+              localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+          }
+
+          //clear the table sorting/ordering/visibility
+          if(localStorage.getItem('DataTables_crudTable_/{{ $crud->getRoute() }}')) {
+              localStorage.removeItem('DataTables_crudTable_/{{ $crud->getRoute() }}');
+          }
+        });
+      @endif
 
       // move the bottom buttons before pagination
       $("#bottom_buttons").insertBefore($('#crudTable_wrapper .row:last-child' ));

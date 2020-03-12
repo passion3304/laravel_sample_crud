@@ -72,7 +72,7 @@ return [
     'info'                                    => 'Sunt afișate intrările _START_-_END_ din _TOTAL_',
     'infoEmpty'                               => 'Sunt afișate toate intrarile. Adică niciuna.',
     'infoFiltered'                            => '(filtrate din totalul de _MAX_ )',
-    'infoPostFix'                             => '',
+    'infoPostFix'                             => '.',
     'thousands'                               => ',',
     'lengthMenu'                              => '_MENU_ pe pagină',
     'loadingRecords'                          => 'Se încarcă...',
