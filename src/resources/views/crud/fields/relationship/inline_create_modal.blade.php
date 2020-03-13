@@ -50,8 +50,5 @@
     </div>
   </div>
 
-  @stack('crud_field_styles')
-  @stack('crud_field_scripts')
-
 
 

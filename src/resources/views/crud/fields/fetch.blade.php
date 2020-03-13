@@ -6,10 +6,6 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
 
-    // we need to re-ensure field type here because relationship is a `switchboard` and not actually
-    // a crud field like this one.
-    $field['type'] = 'fetch';
-
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
     $field['attribute'] = $field['attribute'] ?? $connected_entity->getIdentifiableName();
@@ -24,16 +20,14 @@
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
-                                    ->whereIn($connected_entity_key_name, $current_value)
-                                    ->pluck($field['attribute'], $connected_entity_key_name);
+                                ->whereIn($connected_entity_key_name, $current_value)
+                                ->pluck($field['attribute'], $connected_entity_key_name);
                 break;
 
             case 'object':
-                if(! $current_value->isEmpty())  {
-                    $current_value = $current_value
-                                    ->pluck($field['attribute'], $connected_entity_key_name)
-                                    ->toArray();
-                }
+                $current_value = $current_value
+                                ->pluck($field['attribute'], $connected_entity_key_name)
+                                ->toArray();
                 break;
 
             default:

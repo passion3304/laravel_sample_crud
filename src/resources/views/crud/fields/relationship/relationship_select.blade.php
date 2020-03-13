@@ -4,11 +4,6 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
 
-    //we need to explicitly define field type to load correct assets
-    //this is needed because the field type `relationship` is a switch to
-    //other field types like select2
-    $field['type'] = 'select2';
-
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
     $field['attribute'] = $field['attribute'] ?? $connected_entity->getIdentifiableName();
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
@@ -34,11 +29,9 @@
                 break;
 
             case 'object':
-                if(! $current_value->isEmpty())  {
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
-                }
                 break;
 
             default:
@@ -135,8 +128,8 @@
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
         var $optionsForSelect = JSON.parse(element.attr('data-options-for-select'));
-        var $allowsNull = (element.attr('data-column-nullable') == 'true') ? true : false;
-        var $allowClear = $allowsNull;
+        var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
+        var $allowClear = $allows_null;
 
         var $item = false;
 
@@ -147,47 +140,30 @@
         }
 
 
-        if($item) {
-            var $currentValue = $value;
-        }else{
-            var $currentValue = '';
-        }
-
-        if ($multiple === true) {
         var selectedOptions = [];
-        //we parse the current value to append those options values to the selected options.
-        if(Number.isInteger($currentValue)) {
-            selectedOptions.push($currentValue);
-        }else{
-           Object.entries($currentValue).forEach(function(item) {
-            selectedOptions.push(item);
-           });
-
-        }
-    //we add the options to the select and check if there is an created option, if yes, we add it to selected options.
-    for (let [key, value] of Object.entries($optionsForSelect)) {
-        var $option = new Option(value, key);
-        $(element).append($option);
-    }
-
-    $(element).val(selectedOptions);
-    $(element).attr('data-current-value',JSON.stringify(selectedOptions));
-
-    }else{
+        var $currentValue = $item ? $value : '';
 
 
         for (const [key, value] of Object.entries($optionsForSelect)) {
             var $option = new Option(value, key);
             $(element).append($option);
             //if option key is the same of current value we reselect it
-            if (key == Object.keys($currentValue)[0]) {
-                $(element).val(key);
+            if(!$multiple) {
+                if (key == Object.keys($currentValue)[0]) {
+                    $(element).val(key);
+                }
+            }else{
+                for (const [key, value] of Object.entries($currentValue)) {
+                        selectedOptions.push(key);
+                    }
+
+                    $(element).val(selectedOptions);
             }
 
         }
 
         //if there is no current value and the field allows null, we add the placeholder first.
-        if($allowsNull && $item === false) {
+       /* if($allowsNull && $item === false) {
             var $option = new Option('', '', true, true);
             $(element).prepend($option);
         //if element does not allow null we select the first available option
@@ -200,11 +176,18 @@
                 var $option = new Option('', '', true, true);
                 $(element).prepend($option);
             }
+        }*/
+        if (!$allows_null && $item === false) {
+            if(Object.keys($optionsForSelect).length > 0) {
+                $(element).val(Object.keys($optionsForSelect)[0]);
+            }else{
+                $(element).val(null);
+            }
         }
+
         $(element).attr('data-current-value',$(element).val());
         $(element).trigger('change');
 
-    }
         var $select2Settings = {
                 theme: 'bootstrap',
                 multiple: $multiple,

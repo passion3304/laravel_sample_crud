@@ -12,10 +12,6 @@
   </div>
 @endif
 
-@php
-    // Store the loaded field types in a Session, so that if the same fields are loaded in a Modal, their assets are not loaded twice
-    session(['current_crud_loaded_fields' => $crud->getLoadedFieldTypes()]);
-@endphp
 
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
 

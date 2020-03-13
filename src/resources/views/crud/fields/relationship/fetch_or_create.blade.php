@@ -1,18 +1,12 @@
 <!--  relationship  -->
 
 @php
-    use Illuminate\Support\Str;
 
     //in case entity is superNews we want the url friendly super-news
     $routeEntity = Str::kebab($field['entity']);
 
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
-
-    //we need to explicitly define field type to load correct assets
-    //this is needed because the field type `relationship` is a switch to
-    //other field types like fetch_or_create
-    $field['type'] = 'fetch_or_create';
 
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
@@ -27,11 +21,9 @@
                                     ->toArray();
                 break;
             case 'object':
-                if(! $current_value->isEmpty())  {
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
-                }
                 break;
             default:
                 $current_value = $connected_entity
@@ -74,7 +66,7 @@ if($activeInlineCreate) {
         @include('crud::inc.field_translatable_icon')
 
         @if($activeInlineCreate)
-            @include('crud::fields.relationship.create_button', ['name' => $field['name'], 'inlineCreateEntity' => $field['inline_create']['entity']])
+            @include('crud::fields.relationship.inline_create_button', ['name' => $field['name'], 'inlineCreateEntity' => $field['inline_create']['entity']])
         @endif
 <select
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
@@ -215,24 +207,6 @@ var fetchDefaultEntry = function (element) {
         });
     });
 };
-}
-
-
-//parses the current value for selects. we can have a single, multiple { key : attr } or multiple ids [1,2,3,4]
-// we allways return [1,2,3,4]
-function parseValueForSelectMultipleOptions(element) {
-    var $currentValue = JSON.parse(element.attr('data-current-value'));
-    var selectedOptions = [];
-        //we parse the current value to append those options values to the selected options.
-        if(Number.isInteger(+$currentValue)) {
-            selectedOptions.push($currentValue);
-        }else{
-
-           for (let [key, value] of Object.entries($currentValue)) {
-                    selectedOptions.push(key);
-            }
-        }
-        return selectedOptions;
 }
 
 //this setup the "+Add" button in page with corresponding click handler.
@@ -391,8 +365,8 @@ function triggerModal(element) {
 }
 
 //function responsible for adding an option to the select
+//it parses any previous options in case of select multiple.
 function selectOption(element, option) {
-    var $currentValue = JSON.parse(element.attr('data-current-value'));
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
@@ -400,13 +374,17 @@ function selectOption(element, option) {
         $(element).append($option);
 
         if($multiple) {
-        //we check if any options are previously selected
-        var selectedOptions = parseValueForSelectMultipleOptions(element);
-        selectedOptions.push(option[$relatedKeyName]);
+            //we get any options previously selected
+            var selectedOptions = $(element).val();
+
+            //we add the option to the already selected array.
+            selectedOptions.push(option[$relatedKeyName]);
             $(element).val(selectedOptions);
+
         }else{
             $(element).val(option[$relatedKeyName]);
         }
+
         $(element).trigger('change');
 
 }
@@ -428,19 +406,6 @@ function selectOption(element, option) {
                 var $dependencies = JSON.parse(element.attr('data-dependencies'));
                 var $modelKey = element.attr('data-model-local-key');
                 var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
-
-
-                // we catch select/unselect events so we don't lose our selections
-                // if we create a related entity before saving the actual selection
-                element.on('select2:select', function (e) {
-                    $(element).attr('data-current-value', JSON.stringify(element.val()));
-                });
-
-                element.on('select2:unselect', function (e) {
-                    $(element).attr('data-current-value', JSON.stringify(element.val()));
-                });
-
-                //if field is not ajax we fetch the defaults for select.
 
 
                     var $item = false;
