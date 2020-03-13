@@ -27,7 +27,7 @@
         @endif
             {{ $field['value'] }}
         </a>
-    	<a href="#" class="file_clear_button btn btn-light btn-sm float-right" title="Clear file"><i class="fa fa-remove"></i></a>
+    	<a href="#" class="file_clear_button btn btn-light btn-sm float-right" title="Clear file"><i class="la la-remove"></i></a>
     	<div class="clearfix"></div>
     </div>
     @endif

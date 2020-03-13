@@ -39,10 +39,10 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
                                 @include('crud::inc.field_attributes') readonly>
                         <div class="input-group-btn">
                             <button type="button" class="browse remove btn btn-sm btn-light">
-                                <i class="fa fa-trash"></i>
+                                <i class="la la-trash"></i>
                             </button>
                             @if ($sortable)
-                                <button type="button" class="browse move btn btn-sm btn-light"><span class="fa fa-sort"></span></button>
+                                <button type="button" class="browse move btn btn-sm btn-light"><span class="la la-sort"></span></button>
                             @endif
                         </div>
                     </div>
@@ -55,11 +55,11 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
 
     <div class="btn-group" role="group" aria-label="..." style="margin-top: 3px;">
         <button type="button" class="browse popup btn btn-sm btn-light">
-            <i class="fa fa-cloud-upload"></i>
+            <i class="la la-cloud-upload"></i>
             {{ trans('backpack::crud.browse_uploads') }}
         </button>
         <button type="button" class="browse clear btn btn-sm btn-light">
-            <i class="fa fa-eraser"></i>
+            <i class="la la-eraser"></i>
             {{ trans('backpack::crud.clear') }}
         </button>
     </div>
@@ -73,10 +73,10 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
             <input type="text" name="{{ $field['name'] }}[]" @include('crud::inc.field_attributes') readonly>
             <div class="input-group-btn">
                 <button type="button" class="browse remove btn btn-sm btn-light">
-                    <i class="fa fa-trash"></i>
+                    <i class="la la-trash"></i>
                 </button>
                 @if($sortable)
-                    <button type="button" class="browse move btn btn-sm btn-light"><span class="fa fa-sort"></span></button>
+                    <button type="button" class="browse move btn btn-sm btn-light"><span class="la la-sort"></span></button>
                 @endif
             </div>
         </div>
