@@ -39,7 +39,7 @@ trait Relationships
      * Get the user defined methods in model that return any type of relation.
      * Only returns methods that have their return type explicitly specified. For example:
      * public function article() : BelongsTo { return $this->belongsTo(...); }
-     * public function tags() : HasMany {}
+     * public function tags() : HasMany {}.
      */
     public function getAvailableRelationsInModel()
     {
