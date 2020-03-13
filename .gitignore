@@ -9,3 +9,4 @@ composer.lock
 # forget some files and folders inside the published CSS and JS assets, 
 # since they're not actually used anywhere
 src/public/packages/ckeditor/samples/
+src/public/packages/**/package.json
