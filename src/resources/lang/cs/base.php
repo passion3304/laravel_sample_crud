@@ -63,7 +63,7 @@ return [
     ],
 
     'step'                 => 'Krok',
-    'confirm_email'        => 'Potvrďte váž e-mail',
+    'confirm_email'        => 'Potvrďte váš e-mail',
     'choose_new_password'  => 'Vyberte nové heslo',
     'confirm_new_password' => 'Zopakujte nové heslo',
 
