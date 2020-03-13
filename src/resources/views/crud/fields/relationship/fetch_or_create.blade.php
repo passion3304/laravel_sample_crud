@@ -35,9 +35,10 @@
     }
 
     $field['value'] = json_encode($current_value);
-
     //by default, when creating an entity we want it to be selected/added to selection.
     $field['inline_create']['force_select'] = $field['inline_create']['force_select'] ?? true;
+
+    $field['inline_create']['modal_class'] = $field['inline_create']['modal_class'] ?? 'modal-dialog';
 
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
 
@@ -52,9 +53,10 @@ if($activeInlineCreate) {
     //we check if this field is not beeing requested in some InlineCreate operation.
     //this variable is setup by InlineCreate modal when loading the fields.
     if(!isset($inlineCreate)) {
-
         //route to create a new entity
-        $field['inline_create']['create_route'] = route($field['inline_create']['entity']."-inline-create");
+        $field['inline_create']['create_route'] = route($field['inline_create']['entity']."-inline-create-save");
+        //route to modal
+        $field['inline_create']['modal_route'] = route($field['inline_create']['entity']."-inline-create");
     }
 }
 
@@ -66,7 +68,7 @@ if($activeInlineCreate) {
         @include('crud::inc.field_translatable_icon')
 
         @if($activeInlineCreate)
-            @include('crud::fields.relationship.inline_create_button', ['name' => $field['name'], 'inlineCreateEntity' => $field['inline_create']['entity']])
+            @include('crud::fields.relationship.inline_create_button', ['field' => $field])
         @endif
 <select
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
@@ -88,6 +90,7 @@ if($activeInlineCreate) {
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         data-current-value="{{ $field['value'] }}"
         data-field-ajax="{{var_export($field['ajax'])}}"
+        data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -216,16 +219,20 @@ function setupInlineCreateButtons(element) {
     var $inlineCreateButton = element.attr('data-inline-create-button');
     var $fieldEntity = element.attr('data-field-related-name');
     var $inlineCreateButtonElement = $(document.getElementById($inlineCreateButton));
-    var $inlineCreateRoute = element.attr('data-inline-create-route');
+    var $inlineModalRoute = element.attr('data-inline-modal-route');
+    var $inlineModalClass = element.attr('data-inline-modal-class');
+    var $parentLoadedFields = element.attr('data-parent-loaded-fields');
 
     $inlineCreateButtonElement.on('click', function () {
         $(".loading_modal_dialog").show();
         $.ajax({
-            url: $inlineCreateRoute,
+            url: $inlineModalRoute,
             data: {
-                'entity': $fieldEntity
+                'entity': $fieldEntity,
+                'modal_class' : $inlineModalClass,
+                'parent_loaded_fields' : $parentLoadedFields,
             },
-            type: 'GET',
+            type: 'POST',
             success: function (result) {
                 $('body').append(result);
                 triggerModal(element);
@@ -370,7 +377,16 @@ function selectOption(element, option) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
-    var $option = new Option(option[$relatedAttribute], option[$relatedKeyName]);
+
+    //if we have an object here it means the attribute is translatable.
+    if(typeof option[$relatedAttribute] === 'object' && option[$relatedAttribute] !== null) {
+        var $optionText = Object.values(option[$relatedAttribute])[0];
+    }else{
+        var $optionText = option[$relatedAttribute];
+    }
+
+    var $option = new Option($optionText, option[$relatedKeyName]);
+
         $(element).append($option);
 
         if($multiple) {

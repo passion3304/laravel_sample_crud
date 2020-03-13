@@ -1,14 +1,6 @@
 @php
 
-    // in parent form_content we added those fields to the session,
-    // here we check if there are any, and mark them as loaded
-    // so we don't get assets that are already on page from parent crud
-    if (session()->has('current_crud_loaded_fields')) {
-        $loadedFields = session('current_crud_loaded_fields');
-        session()->forget('current_crud_loaded_fields');
-    }
-
-    $loadedFields = $loadedFields ?? [];
+    $loadedFields = json_decode($parentLoadedFields);
 
     //mark parent crud fields as loaded.
     foreach($loadedFields as $loadedField) {
@@ -17,7 +9,7 @@
 
 @endphp
 <div class="modal fade" id="{{$entity}}-inline-create-dialog" tabindex="-1" role="dialog" aria-labelledby="{{$entity}}-inline-create-dialog-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="{{ $modalClass }}" role="document">
       <div class="modal-content">
         <div class="modal-header">
         <h5 class="modal-title" id="{{$entity}}-inline-create-dialog-label">{{trans('backpack::crud.add')}} {{$entity}}</h5>

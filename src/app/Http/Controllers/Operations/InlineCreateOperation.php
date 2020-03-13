@@ -15,7 +15,7 @@ trait InlineCreateOperation
      */
     protected function setupInlineCreateRoutes($segment, $routeName, $controller)
     {
-        Route::get($segment.'/inline/create', [
+        Route::post($segment.'/inline/create/modal', [
             'as'        => $segment.'-inline-create',
             'uses'      => $controller.'@getInlineCreateModal',
             'operation' => 'InlineCreate',
@@ -60,6 +60,8 @@ trait InlineCreateOperation
                 'action' => 'create',
                 'crud' => $this->crud,
                 'entity' => request()->get('entity'),
+                'modalClass' => request()->get('modal_class'),
+                'parentLoadedFields' => request()->get('parent_loaded_fields')
             ]
         );
     }

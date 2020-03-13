@@ -20,10 +20,6 @@
         // if the field is beeing inserted in an inline create modal
         // we don't allow modal over modal (for now ...) so we load fetch or select accordingly to field type.
         if(!isset($inlineCreate)) {
-            // Store the current crud field types in session, so that if the same field types
-            // are loaded in an Inline Modal, their assets are not loaded twice
-            session(['current_crud_loaded_fields' => array_unique(array_column($crud->fields(),'type'))]);
-
             $field['type'] = 'fetch_or_create';
         }else{
             if($field['ajax']) {
