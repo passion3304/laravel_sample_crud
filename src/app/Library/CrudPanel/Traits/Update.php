@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Support\Arr;
 
 trait Update
 {
@@ -29,8 +30,8 @@ trait Update
         $this->createRelations($item, $data);
 
         // omit the n-n relationships when updating the eloquent item
-        $nn_relationships = array_pluck($this->getRelationFieldsWithPivot(), 'name');
-        $data = array_except($data, $nn_relationships);
+        $nn_relationships = Arr::pluck($this->getRelationFieldsWithPivot(), 'name');
+        $data = Arr::except($data, $nn_relationships);
         $updated = $item->update($data);
 
         return $item;

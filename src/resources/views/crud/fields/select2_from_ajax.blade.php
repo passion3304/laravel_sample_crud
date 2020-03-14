@@ -18,7 +18,7 @@
         style="width: 100%"
         data-init-function="bpFieldInitSelect2FromAjaxElement"
         data-column-nullable="{{ $entity_model::isColumnNullable($field['name'])?'true':'false' }}"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
+        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-placeholder="{{ $field['placeholder'] }}"
         data-minimum-input-length="{{ $field['minimum_input_length'] }}"
         data-data-source="{{ $field['data_source'] }}"

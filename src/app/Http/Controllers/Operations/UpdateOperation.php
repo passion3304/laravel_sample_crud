@@ -51,6 +51,8 @@ trait UpdateOperation
                     'value' => request()->input('locale') ?? app()->getLocale(),
                 ]);
             }
+
+            $this->crud->setupDefaultSaveActions();
         });
 
         $this->crud->operation(['list', 'show'], function () {

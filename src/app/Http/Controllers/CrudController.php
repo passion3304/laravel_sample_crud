@@ -6,6 +6,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
 
 class CrudController extends Controller
 {
@@ -94,7 +95,7 @@ class CrudController extends Controller
     protected function setupConfigurationForCurrentOperation()
     {
         $operationName = $this->crud->getCurrentOperation();
-        $setupClassName = 'setup'.studly_case($operationName).'Operation';
+        $setupClassName = 'setup'.Str::studly($operationName).'Operation';
 
         /*
          * FIRST, run all Operation Closures for this operation.

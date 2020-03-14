@@ -69,7 +69,7 @@ return [
     'info'           => 'Viser fra _START_ til _END_ ud af _TOTAL_ emner',
     'infoEmpty'      => 'viser fra 0 til 0 ud af 0 emner',
     'infoFiltered'   => '(filtreret efter max _MAX_ emner)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ felter pr side',
     'loadingRecords' => 'Indlæser...',
