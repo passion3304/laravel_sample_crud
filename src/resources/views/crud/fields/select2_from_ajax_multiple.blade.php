@@ -17,7 +17,7 @@
         style="width: 100%"
         id="select2_ajax_multiple_{{ $field['name'] }}"
         data-init-function="bpFieldInitSelect2FromAjaxMultipleElement"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
+        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-placeholder="{{ $field['placeholder'] }}"
         data-minimum-input-length="{{ $field['minimum_input_length'] }}"
         data-data-source="{{ $field['data_source'] }}"

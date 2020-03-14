@@ -37,6 +37,7 @@ trait CreateOperation
 
         $this->crud->operation('create', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
+            $this->crud->setupDefaultSaveActions();
         });
 
         $this->crud->operation('list', function () {

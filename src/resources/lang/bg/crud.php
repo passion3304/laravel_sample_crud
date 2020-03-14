@@ -71,7 +71,7 @@ return [
     'info'           => 'Показване на резултати от _START_ до _END_ от общо _TOTAL_',
     'infoEmpty'      => 'Показване на резултати от 0 до 0 от общо 0',
     'infoFiltered'   => '(филтрирани от общо _MAX_ резултата))',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ records per page',
     'loadingRecords' => 'Зареждам...',

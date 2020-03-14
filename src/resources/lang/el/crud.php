@@ -71,7 +71,7 @@ return [
     'info'                                    => 'Εμφάνιση _START_ έως _END_ από _TOTAL_ εγγραφές',
     'infoEmpty'                               => 'Εμφάνιση 0 έως 0 από 0 εγγραφές',
     'infoFiltered'                            => '(Επιστράφηκαν από _MAX_ συνολικές εγγραφές)',
-    'infoPostFix'                             => '',
+    'infoPostFix'                             => '.',
     'thousands'                               => ',',
     'lengthMenu'                              => '_MENU_ εγγραφές ανά σελίδα',
     'loadingRecords'                          => 'Loading...',
