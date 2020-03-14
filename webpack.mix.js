@@ -31,7 +31,7 @@ mix.sass('src/resources/assets/scss/bundle.scss', 'src/public/packages/backpack/
 mix.copy('node_modules/@digitallyhappy/backstrap/dist/css', 'src/public/packages/@digitallyhappy/backstrap/css');
 
 // copy fonts and other assets
-mix.copy('node_modules/line-awesome/dist', 'src/public/packages/line-awesome/dist')
+mix.copy('node_modules/line-awesome/dist/line-awesome', 'src/public/packages/line-awesome')
 	.copy('node_modules/source-sans-pro', 'src/public/packages/source-sans-pro')
 	.copy('node_modules/animate.css/animate.min.css', 'src/public/packages/animate.css/animate.min.css')
 	.copy('node_modules/noty/lib', 'src/public/packages/noty');
