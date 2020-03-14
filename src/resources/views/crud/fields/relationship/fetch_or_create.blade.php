@@ -35,10 +35,7 @@
     }
 
     $field['value'] = json_encode($current_value);
-    //by default, when creating an entity we want it to be selected/added to selection.
-    $field['inline_create']['force_select'] = $field['inline_create']['force_select'] ?? true;
 
-    $field['inline_create']['modal_class'] = $field['inline_create']['modal_class'] ?? 'modal-dialog';
 
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
 
@@ -47,14 +44,22 @@
 $activeInlineCreate = !empty($field['inline_create']) ? true : false;
 
 if($activeInlineCreate) {
-    //if user don't specify a different entity in inline_create we assume it's the same from $field['entity'] kebabed
-    $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $routeEntity;
+
 
     //we check if this field is not beeing requested in some InlineCreate operation.
     //this variable is setup by InlineCreate modal when loading the fields.
     if(!isset($inlineCreate)) {
+        //by default, when creating an entity we want it to be selected/added to selection.
+        $field['inline_create']['force_select'] = $field['inline_create']['force_select'] ?? true;
+
+        $field['inline_create']['modal_class'] = $field['inline_create']['modal_class'] ?? 'modal-dialog';
+
+        //if user don't specify a different entity in inline_create we assume it's the same from $field['entity'] kebabed
+        $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $routeEntity;
+
         //route to create a new entity
         $field['inline_create']['create_route'] = route($field['inline_create']['entity']."-inline-create-save");
+
         //route to modal
         $field['inline_create']['modal_route'] = route($field['inline_create']['entity']."-inline-create");
     }
@@ -91,6 +96,7 @@ if($activeInlineCreate) {
         data-current-value="{{ $field['value'] }}"
         data-field-ajax="{{var_export($field['ajax'])}}"
         data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
+        data-app-current-lang="{{ app()->getLocale() }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -179,6 +185,7 @@ var fetchDefaultEntry = function (element) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $fetchUrl = element.attr('data-data-source');
+    var $appLang = element.attr('data-app-current-lang');
     var $return = {};
     return new Promise(function (resolve, reject) {
         $.ajax({
@@ -192,10 +199,10 @@ var fetchDefaultEntry = function (element) {
                 // we want only the first to be default.
                 if (typeof result.data !== "undefined"){
                     $key = result.data[0][$relatedKeyName];
-                    $value = result.data[0][$relatedAttribute];
+                    $value = processItemText(result.data[0], $relatedAttribute, $appLang);
                 }else{
                     $key = result[0][$relatedKeyName];
-                    $value = result[0][$relatedAttribute];
+                    $value = processItemText(result[0], $relatedAttribute, $appLang);
                 }
 
                 $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
@@ -258,14 +265,17 @@ function ajaxSearch(element, created) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $searchString = created[$relatedAttribute];
+    var $appLang = element.attr('data-app-current-lang');
 
     //we run the promise with ajax call to search endpoint to check if we got the created entity back
     //in case we do, we add it to the selected options.
     performAjaxSearch(element, $searchString).then(result => {
         var inCreated = $.map(result.data, function (item) {
-            if(item[$relatedKeyName] == created[$relatedKeyName]) {
+            var $itemText = processItemText(item, $relatedAttribute, $appLang);
+            var $createdText = processItemText(created, $relatedAttribute, $appLang);
+            if($itemText == $createdText) {
                                 return {
-                                    text: item[$relatedAttribute],
+                                    text: $itemText,
                                     id: item[$relatedKeyName]
                                 }
             }
@@ -377,13 +387,9 @@ function selectOption(element, option) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
+    var $appLang = element.attr('data-app-current-lang');
 
-    //if we have an object here it means the attribute is translatable.
-    if(typeof option[$relatedAttribute] === 'object' && option[$relatedAttribute] !== null) {
-        var $optionText = Object.values(option[$relatedAttribute])[0];
-    }else{
-        var $optionText = option[$relatedAttribute];
-    }
+    var $optionText = processItemText(option, $relatedAttribute, $appLang);
 
     var $option = new Option($optionText, option[$relatedKeyName]);
 
@@ -422,6 +428,7 @@ function selectOption(element, option) {
                 var $dependencies = JSON.parse(element.attr('data-dependencies'));
                 var $modelKey = element.attr('data-model-local-key');
                 var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
+                var $appLang = element.attr('data-app-current-lang');
 
 
                     var $item = false;
@@ -493,8 +500,10 @@ function selectOption(element, option) {
                         if(data.data) {
                         var result = {
                             results: $.map(data.data, function (item) {
+                                var $itemText = processItemText(item, $fieldAttribute, $appLang);
+
                                 return {
-                                    text: item[$fieldAttribute],
+                                    text: $itemText,
                                     id: item[$connectedEntityKeyName]
                                 }
                             }),
@@ -505,8 +514,10 @@ function selectOption(element, option) {
                         }else {
                             var result = {
                                 results: $.map(data, function (item) {
+                                    var $itemText = processItemText(item, $fieldAttribute, $appLang);
+
                                     return {
-                                        text: item[$fieldAttribute],
+                                        text: $itemText,
                                         id: item[$connectedEntityKeyName]
                                     }
                                 }),
@@ -530,6 +541,18 @@ function selectOption(element, option) {
                 });
             }
 
+                }
+
+                function processItemText(item, $fieldAttribute, $appLang) {
+                    if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
+                                    if(item[$fieldAttribute][$appLang] != 'undefined') {
+                                        return item[$fieldAttribute][$appLang];
+                                    }else{
+                                        return item[$fieldAttribute][0];
+                                    }
+                                }else{
+                                    return item[$fieldAttribute];
+                                }
                 }
             </script>
         @endpush
