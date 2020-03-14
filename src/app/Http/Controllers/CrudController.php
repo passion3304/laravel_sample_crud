@@ -12,13 +12,11 @@ class CrudController extends Controller
 {
     use DispatchesJobs, ValidatesRequests;
 
-    public $data = [];
-    public $request;
-
     /**
      * @var \Backpack\CRUD\app\Library\CrudPanel\CrudPanel
      */
     public $crud;
+    public $data = [];
 
     public function __construct()
     {
@@ -26,14 +24,18 @@ class CrudController extends Controller
             return;
         }
 
-        // call the setup function inside this closure to also have the request there
-        // this way, developers can use things stored in session (auth variables, etc)
+        // ---------------------------
+        // Create the CrudPanel object
+        // ---------------------------
+        // Used by developers inside their ProductCrudControllers as
+        // $this->crud or using the CRUD facade.
+        //
+        // It's done inside a middleware closure in order to have
+        // the complete request inside the CrudPanel object.
         $this->middleware(function ($request, $next) {
-            // make a new CrudPanel object, from the one stored in Laravel's service container
             $this->crud = app()->make('crud');
-            // ensure crud has the latest request
             $this->crud->setRequest($request);
-            $this->request = $request;
+
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
