@@ -54,6 +54,8 @@ class CrudPanel
 
     public $entry;
 
+    protected $request;
+
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 
     public function __construct()
@@ -72,10 +74,16 @@ class CrudPanel
      */
     public function setRequest($request = null)
     {
-        if (! $request) {
-            $request = \Request::instance();
-        }
-        $this->request = $request;
+        $this->request = $request ?? \Request::instance();
+    }
+
+    /**
+     * [getRequest description].
+     * @return [type] [description]
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     // ------------------------------------------------------
@@ -208,7 +216,7 @@ class CrudPanel
      */
     public function getAction()
     {
-        return $this->request->route()->getAction();
+        return $this->getRequest()->route()->getAction();
     }
 
     /**
@@ -219,7 +227,7 @@ class CrudPanel
      */
     public function getActionName()
     {
-        return $this->request->route()->getActionName();
+        return $this->getRequest()->route()->getActionName();
     }
 
     /**
@@ -230,7 +238,7 @@ class CrudPanel
      */
     public function getActionMethod()
     {
-        return $this->request->route()->getActionMethod();
+        return $this->getRequest()->route()->getActionMethod();
     }
 
     /**

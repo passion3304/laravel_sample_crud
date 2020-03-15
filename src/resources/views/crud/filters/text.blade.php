@@ -15,7 +15,7 @@
 						@endif
 		        		>
 		        <div class="input-group-append text-filter-{{ Str::slug($filter->name) }}-clear-button">
-		          <a class="input-group-text" href=""><i class="fa fa-times"></i></a>
+		          <a class="input-group-text" href=""><i class="la la-times"></i></a>
 		        </div>
 		    </div>
 		</div>

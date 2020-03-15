@@ -48,7 +48,7 @@ trait UpdateOperation
                 $this->crud->addField([
                     'name' => 'locale',
                     'type' => 'hidden',
-                    'value' => $this->request->input('locale') ?? app()->getLocale(),
+                    'value' => request()->input('locale') ?? app()->getLocale(),
                 ]);
             }
 

@@ -86,7 +86,7 @@ trait Filters
             $input = new ParameterBag($input);
         }
 
-        $input = $input ?? new ParameterBag($this->request->all());
+        $input = $input ?? new ParameterBag($this->getRequest()->all());
 
         if ($input->has($filter->options['name'])) {
             // if a closure was passed as "filterLogic"
@@ -112,7 +112,7 @@ trait Filters
      */
     public function addDefaultFilterLogic($name, $operator, $input = null)
     {
-        $input = $input ?? $this->request->all();
+        $input = $input ?? $this->getRequest()->all();
 
         // if this filter is active (the URL has it as a GET parameter)
         switch ($operator) {

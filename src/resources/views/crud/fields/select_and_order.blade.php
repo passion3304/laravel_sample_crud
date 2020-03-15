@@ -15,14 +15,14 @@
                 @if(is_array(old($field["name"])))
                     @foreach (old($field["name"]) as $key)
                         @if(array_key_exists($key,$field['options']))
-                            <li value="{{$key}}"><i class="fa fa-arrows"></i> {{ $field['options'][$key] }}</li>
+                            <li value="{{$key}}"><i class="la la-arrows"></i> {{ $field['options'][$key] }}</li>
                         @endif
                     @endforeach
                 @endif
             @elseif (is_array($values))
                 @foreach ($values as $key)
                     @if(array_key_exists($key,$field['options']))
-                    <li value="{{$key}}"><i class="fa fa-arrows"></i> {{ $field['options'][$key] }}</li>
+                    <li value="{{$key}}"><i class="la la-arrows"></i> {{ $field['options'][$key] }}</li>
                     @endif
                 @endforeach
             @endif
@@ -31,13 +31,13 @@
             @if(old($field["name"]))
                 @foreach ($field['options'] as $key => $value)
                     @if(!is_array(old($field["name"])) || !in_array($key, old($field["name"])))
-                        <li value="{{ $key}}"><i class="fa fa-arrows"></i> {{ $value }}</li>
+                        <li value="{{ $key}}"><i class="la la-arrows"></i> {{ $value }}</li>
                     @endif
                 @endforeach
             @elseif (isset($field['options']))
                 @foreach ($field['options'] as $key => $value)
                     @if(is_array($values) && !in_array($key, $values))
-                        <li value="{{ $key}}"><i class="fa fa-arrows"></i> {{ $value }}</li>
+                        <li value="{{ $key}}"><i class="la la-arrows"></i> {{ $value }}</li>
                     @endif
                 @endforeach
             @endif

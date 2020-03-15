@@ -8,7 +8,7 @@
 		<div class="form-group backpack-filter mb-0">
 			<div class="input-group date">
 		        <div class="input-group-prepend">
-		          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+		          <span class="input-group-text"><i class="la la-calendar"></i></span>
 		        </div>
 		        <input class="form-control pull-right"
 		        		id="daterangepicker-{{ Str::slug($filter->name) }}"
@@ -27,7 +27,7 @@
 						@endif
 		        		>
 		        <div class="input-group-append daterangepicker-{{ Str::slug($filter->name) }}-clear-button">
-		          <a class="input-group-text" href=""><i class="fa fa-times"></i></a>
+		          <a class="input-group-text" href=""><i class="la la-times"></i></a>
 		        </div>
 		    </div>
 		</div>

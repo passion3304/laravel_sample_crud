@@ -22,7 +22,7 @@ if (isset($field['value']) && ($field['value'] instanceof \Carbon\CarbonInterfac
             @include('crud::inc.field_attributes')
             >
         <div class="input-group-append">
-            <span class="input-group-text"><span class="fa fa-calendar"></span></span>
+            <span class="input-group-text"><span class="la la-calendar"></span></span>
         </div>
     </div>
 
