@@ -3,8 +3,8 @@
 namespace Backpack\CRUD;
 
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
