@@ -8,6 +8,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.54 - 2020-03-15
+
+### Fixed
+- Deleted obsolete line about cheaper licences @genesiscz (#2556)
+- Added a Czech translation for base @genesiscz (#2557)
+- Fixed switch icon_picker @adriallongarriu (#2476)
+
+
 ## 4.0.53 - 2020-03-10
 
 ### Fixed
