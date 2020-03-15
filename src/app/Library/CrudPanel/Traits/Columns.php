@@ -282,29 +282,6 @@ trait Columns
     }
 
     /**
-     * @param string $table
-     * @param string $name
-     *
-     * @return bool
-     */
-    protected function hasDatabaseColumn($table, $name)
-    {
-        static $cache = [];
-
-        if ($this->driverIsMongoDb()) {
-            return true;
-        }
-
-        if (isset($cache[$table])) {
-            $columns = $cache[$table];
-        } else {
-            $columns = $cache[$table] = $this->getSchema()->getColumnListing($table);
-        }
-
-        return in_array($name, $columns);
-    }
-
-    /**
      * Get the visibility priority for the actions column
      * in the CRUD table view.
      *
