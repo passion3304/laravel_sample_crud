@@ -274,18 +274,18 @@ function ajaxSearch(element, created) {
             var $itemText = processItemText(item, $relatedAttribute, $appLang);
             var $createdText = processItemText(created, $relatedAttribute, $appLang);
             if($itemText == $createdText) {
-                                return {
-                                    text: $itemText,
-                                    id: item[$relatedKeyName]
-                                }
-            }
-                            });
+                    return {
+                        text: $itemText,
+                        id: item[$relatedKeyName]
+                    }
+                }
+        });
 
-                            if(inCreated.length) {
-                                selectOption(element, created);
-                            }
-                    });
-    }
+        if(inCreated.length) {
+            selectOption(element, created);
+        }
+    });
+}
 
 //this is the function called when button to add is pressed,
 //it triggers the modal on page and initialize the fields
@@ -347,7 +347,7 @@ function triggerModal(element) {
                 //TODO: We should create translation string for this ?
                 new Noty({
                     type: "info",
-                    text: 'Related entry created.',
+                    text: '{{ trans('backpack::crud.related_entry_created_success') }}',
                 }).show();
             },
             error: function (result) {
@@ -361,7 +361,7 @@ function triggerModal(element) {
 
                 new Noty({
                     type: "error",
-                    text: '<strong>Error creating related entry.</strong><br> '+message,
+                    text: '<strong>{{ trans('backpack::crud.related_entry_created_error') }}</strong><br> '+message,
                 }).show();
 
                 //revert save button back to normal

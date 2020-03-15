@@ -160,4 +160,8 @@ return [
 
     // File manager
     'file_manager' => 'File Manager',
+
+    // InlineCreateOperation
+    'related_entry_created_success' => 'Related entry has been created and selected.',
+    'related_entry_created_error' => 'Could not create related entry.', 
 ];
