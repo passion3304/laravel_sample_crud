@@ -344,7 +344,7 @@ function triggerModal(element) {
                 }
 
                 $modal.modal('hide');
-                //TODO: We should create translation string for this ?
+                
                 new Noty({
                     type: "info",
                     text: '{{ trans('backpack::crud.related_entry_created_success') }}',
