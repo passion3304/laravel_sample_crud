@@ -30,13 +30,15 @@ class Version extends Command
     public function handle()
     {
         $this->comment('### PHP VERSION:');
-        $this->runConsoleCommand('php -v');
+        $this->runConsoleCommand(['php', '-v']);
 
         $this->comment('### LARAVEL VERSION:');
-        $this->runConsoleCommand('composer show | grep "laravel/framework"');
+        $this->line(\PackageVersions\Versions::getVersion('laravel/framework'));
+        $this->line('');
 
         $this->comment('### BACKPACK VERSION:');
-        $this->runConsoleCommand('composer show | grep "backpack"');
+        $this->line(\PackageVersions\Versions::getVersion('backpack/crud'));
+        $this->line('');
     }
 
     /**
