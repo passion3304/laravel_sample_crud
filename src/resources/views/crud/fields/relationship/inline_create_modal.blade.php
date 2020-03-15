@@ -12,9 +12,14 @@
 <div class="{{ $modalClass }}" role="document">
       <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="{{$entity}}-inline-create-dialog-label">{{trans('backpack::crud.add')}} {{$entity}}</h5>
+          <h5 class="modal-title" id="{{ $entity }}-inline-create-dialog-label">
+            {!! $crud->getSubheading() ?? trans('backpack::crud.add').' '.$crud->entity_name !!}
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-light">
             <form method="post"
             id="{{$entity}}-inline-create-form"
             action="#"

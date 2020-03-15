@@ -299,7 +299,7 @@ function triggerModal(element) {
     var $ajax = element.attr('data-field-ajax') == 'true' ? true : false;
     var $force_select = (element.attr('data-force-select') == 'true') ? true : false;
 
-    $modal.modal({ backdrop: 'static', keyboard: false, focus: false });
+    $modal.modal();
 
 
     initializeFieldsWithJavascript($form);
