@@ -50,6 +50,33 @@ class CrudColumn
     }
 
     /**
+     * Remove the current column from the current operation.
+     * 
+     * @return void
+     */
+    public function remove()
+    {
+        $this->crud->removeColumn($this->attributes['name']);
+    }
+
+    /**
+     * Remove an attribute from the column definition array.
+     * 
+     * @param  string $attribute  Name of the attribute being removed
+     * @return CrudColumn
+     */
+    public function forget($attribute)
+    {
+        $this->crud->removeColumnAttribute($this->attributes['name'], $attribute);
+
+        return $this;
+    }
+
+    // ---------------
+    // PRIVATE METHODS
+    // ---------------
+
+    /**
      * Set the value for a certain attribute on the CrudColumn object.
      *
      * @param string $attribute Name of the attribute.

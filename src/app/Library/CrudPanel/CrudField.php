@@ -50,6 +50,33 @@ class CrudField
     }
 
     /**
+     * Remove the current field from the current operation.
+     * 
+     * @return void
+     */
+    public function remove()
+    {
+        $this->crud->removeField($this->attributes['name']);
+    }
+
+    /**
+     * Remove an attribute from the current field definition array.
+     * 
+     * @param  string $attribute Name of the attribute being removed.
+     * @return CrudField
+     */
+    public function forget($attribute)
+    {
+        $this->crud->removeFieldAttribute($this->attributes['name'], $attribute);
+
+        return $this;
+    }
+
+    // ---------------
+    // PRIVATE METHODS
+    // ---------------
+
+    /**
      * Set the value for a certain attribute on the CrudField object.
      *
      * @param string $attribute Name of the attribute.

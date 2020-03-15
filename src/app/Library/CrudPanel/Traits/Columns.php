@@ -176,6 +176,20 @@ trait Columns
     }
 
     /**
+     * Remove an attribute from one column's definition array.
+     * @param  string $column     The name of the column.
+     * @param  string $attribute The name of the attribute being removed.
+     */
+    public function removeColumnAttribute($column, $attribute)
+    {
+        $columns = $this->columns();
+
+        unset($columns[$column][$attribute]);
+
+        $this->setOperationSetting('columns', $columns);
+    }
+
+    /**
      * Change attributes for multiple columns.
      *
      * @param array $columns

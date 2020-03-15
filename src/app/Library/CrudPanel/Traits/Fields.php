@@ -121,6 +121,20 @@ trait Fields
     }
 
     /**
+     * Remove an attribute from one field's definition array.
+     * @param  string $field     The name of the field.
+     * @param  string $attribute The name of the attribute being removed.
+     */
+    public function removeFieldAttribute($field, $attribute)
+    {
+        $fields = $this->fields();
+
+        unset($fields[$field][$attribute]);
+
+        $this->setOperationSetting('fields', $fields);
+    }
+
+    /**
      * Update value of a given key for a current field.
      *
      * @param string $field         The field
