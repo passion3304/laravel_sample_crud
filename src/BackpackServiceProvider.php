@@ -4,6 +4,7 @@ namespace Backpack\CRUD;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
@@ -222,7 +223,7 @@ class BackpackServiceProvider extends ServiceProvider
                 $groupNamespace = '';
             }
             $namespacedController = $groupNamespace.$controller;
-            $controllerInstance = new $namespacedController();
+            $controllerInstance = App::make($namespacedController);
 
             return $controllerInstance->setupRoutes($name, $routeName, $controller);
         });
