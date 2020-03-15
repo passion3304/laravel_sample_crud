@@ -51,7 +51,7 @@ class CrudColumn
 
     /**
      * Remove the current column from the current operation.
-     * 
+     *
      * @return void
      */
     public function remove()
@@ -61,7 +61,7 @@ class CrudColumn
 
     /**
      * Remove an attribute from the column definition array.
-     * 
+     *
      * @param  string $attribute  Name of the attribute being removed
      * @return CrudColumn
      */
