@@ -380,12 +380,12 @@ trait Fields
     }
 
     /**
-    * Check if a field exists, by any given attribute.
-    *
-    * @param  string  $attribute   Attribute name on that field definition array.
-    * @param  string  $value       Value of that attribute on that field definition array.
-    * @return bool
-    */
+     * Check if a field exists, by any given attribute.
+     *
+     * @param  string  $attribute   Attribute name on that field definition array.
+     * @param  string  $value       Value of that attribute on that field definition array.
+     * @return bool
+     */
     public function hasFieldWhere($attribute, $value)
     {
         $match = Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
@@ -396,12 +396,12 @@ trait Fields
     }
 
     /**
-    * Get the first field where a given attribute has the given value.
-    *
-    * @param  string  $attribute   Attribute name on that field definition array.
-    * @param  string  $value       Value of that attribute on that field definition array.
-    * @return bool
-    */
+     * Get the first field where a given attribute has the given value.
+     *
+     * @param  string  $attribute   Attribute name on that field definition array.
+     * @param  string  $value       Value of that attribute on that field definition array.
+     * @return bool
+     */
     public function firstFieldWhere($attribute, $value)
     {
         return Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
@@ -410,19 +410,19 @@ trait Fields
     }
 
     /**
-    * Create and return a CrudField object for that field name.
-    *
-    * Enables developers to use a fluent syntax to declare their fields,
-    * in addition to the existing options:
-    * - CRUD::addField(['name' => 'price', 'type' => 'number']);
-    * - CRUD::field('price')->type('number');
-    *
-    * And if the developer uses the CrudField object as Field in his CrudController:
-    * - Field::name('price')->type('number');
-    *
-    * @param  string $name The name of the column in the db, or model attribute.
-    * @return CrudField
-    */
+     * Create and return a CrudField object for that field name.
+     *
+     * Enables developers to use a fluent syntax to declare their fields,
+     * in addition to the existing options:
+     * - CRUD::addField(['name' => 'price', 'type' => 'number']);
+     * - CRUD::field('price')->type('number');
+     *
+     * And if the developer uses the CrudField object as Field in his CrudController:
+     * - Field::name('price')->type('number');
+     *
+     * @param  string $name The name of the column in the db, or model attribute.
+     * @return CrudField
+     */
     public function field($name)
     {
         return new CrudField($this, $name);
