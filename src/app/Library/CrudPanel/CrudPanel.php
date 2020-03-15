@@ -19,6 +19,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
@@ -29,11 +30,13 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Arr;
 
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings;
+    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships;
     // allow developers to add their own closures to this object
     use Macroable;
 
@@ -50,6 +53,8 @@ class CrudPanel
     public $entity_name_plural = 'entries'; // what name will show up on the buttons, in plural (ex: Delete 5 entities)
 
     public $entry;
+
+    protected $request;
 
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 
@@ -69,10 +74,16 @@ class CrudPanel
      */
     public function setRequest($request = null)
     {
-        if (! $request) {
-            $request = \Request::instance();
-        }
-        $this->request = $request;
+        $this->request = $request ?? \Request::instance();
+    }
+
+    /**
+     * [getRequest description].
+     * @return [type] [description]
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     // ------------------------------------------------------
@@ -205,7 +216,7 @@ class CrudPanel
      */
     public function getAction()
     {
-        return $this->request->route()->getAction();
+        return $this->getRequest()->route()->getAction();
     }
 
     /**
@@ -216,7 +227,7 @@ class CrudPanel
      */
     public function getActionName()
     {
-        return $this->request->route()->getActionName();
+        return $this->getRequest()->route()->getActionName();
     }
 
     /**
@@ -227,7 +238,7 @@ class CrudPanel
      */
     public function getActionMethod()
     {
-        return $this->request->route()->getActionMethod();
+        return $this->getRequest()->route()->getActionMethod();
     }
 
     /**
@@ -257,7 +268,7 @@ class CrudPanel
      */
     public function getFirstOfItsTypeInArray($type, $array)
     {
-        return array_first($array, function ($item) use ($type) {
+        return Arr::first($array, function ($item) use ($type) {
             return $item['type'] == $type;
         });
     }
@@ -360,7 +371,7 @@ class CrudPanel
     private function getRelationModelInstances($model, $relationString)
     {
         $relationArray = explode('.', $relationString);
-        $firstRelationName = array_first($relationArray);
+        $firstRelationName = Arr::first($relationArray);
         $relation = $model->{$firstRelationName};
 
         $results = [];

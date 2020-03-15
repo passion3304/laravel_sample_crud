@@ -2,6 +2,22 @@
 
 All Notable changes to `Backpack CRUD` will be documented in this file.
 
+
+-----------
+
+# Backpack Version 4.1
+
+-----------
+
+## 4.1.0 - 2020-02-xx
+
+### Added
+- support for Laravel 7;
+
+### Removed
+- support for Laravel 5.8;
+- support for PHP 7.1;
+
 -----------
 
 # Backpack Version 4

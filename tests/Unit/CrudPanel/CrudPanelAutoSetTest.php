@@ -733,8 +733,9 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
         $this->crudPanel->setFromDb();
 
         $fieldTypesFromColumnType = [];
+
         foreach ($this->crudPanel->fields() as $field) {
-            $fieldTypesFromColumnType[] = $this->crudPanel->getFieldTypeFromDbColumnType($field['name']);
+            $fieldTypesFromColumnType[] = $this->invokeMethod($this->crudPanel, 'inferFieldTypeFromDbColumnType', [$field['name']]);
         }
 
         $this->assertEquals(array_values($this->expectedFieldTypeFromColumnType), $fieldTypesFromColumnType);
@@ -760,7 +761,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
 
     public function testGetFieldTypeFromDbColumnTypeUnknownField()
     {
-        $fieldType = $this->crudPanel->getFieldTypeFromDbColumnType('someFieldName1');
+        $fieldType = $this->invokeMethod($this->crudPanel, 'inferFieldTypeFromDbColumnType', ['someUnknowField1']);
 
         $this->assertEquals($this->expectedUnknownFieldType, $fieldType);
     }
@@ -835,5 +836,15 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
 
         $type = $new_model_db_platform->getDoctrineTypeMapping('enum');
         $this->assertEquals('string', $type);
+    }
+
+    // allow us to run crud panel private/protected methods like `inferFieldTypeFromDbColumnType`
+    public function invokeMethod(&$object, $methodName, array $parameters = [])
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
     }
 }
