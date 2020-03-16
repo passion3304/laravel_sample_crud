@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Exception;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Arr;
 
 trait Relationships
 {
@@ -76,7 +77,7 @@ trait Relationships
         // get the parent of the last relation if using dot notation
         // eg: user.account.address -> Return model for account and the relation address in account model.
         $relationModel = $this->getRelationModel($method, -1);
-        $relatedMethod = array_last(explode('.', $method));
+        $relatedMethod = Arr::last(explode('.', $method));
 
         if ($relationModel != get_class($this->model)) {
             $relationModel = new $relationModel();

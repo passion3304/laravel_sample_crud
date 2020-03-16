@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait FieldsProtectedMethods
@@ -195,7 +196,7 @@ trait FieldsProtectedMethods
         $fieldKey = $this->getFieldKey($field);
 
         $allFields = $this->getOperationSetting('fields');
-        $allFields = array_add($this->fields(), $fieldKey, $field);
+        $allFields = Arr::add($this->fields(), $fieldKey, $field);
 
         $this->setOperationSetting('fields', $allFields);
     }
