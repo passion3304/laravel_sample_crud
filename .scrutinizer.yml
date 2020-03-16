@@ -25,6 +25,7 @@ tools:
             - vendor
             - tests
     external_code_coverage: true
+        timeout: 600
 checks:
     php:
         code_rating: true
