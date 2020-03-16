@@ -11,8 +11,14 @@ filter:
         - 'vendor/*'
         - 'views/*'
 build:
+build:
     environment:
         php: 7.4.0
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
 tools:
     php_analyzer: true
     php_mess_detector: true
