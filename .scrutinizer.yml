@@ -10,6 +10,9 @@ filter:
         - 'resources/*'
         - 'vendor/*'
         - 'views/*'
+build:
+    environment:
+        php: 7.4.0
 tools:
     php_analyzer: true
     php_mess_detector: true
@@ -24,7 +27,8 @@ tools:
         excluded_dirs:
             - vendor
             - tests
-    external_code_coverage: true
+    external_code_coverage:
+        timeout: 600
 checks:
     php:
         code_rating: true
