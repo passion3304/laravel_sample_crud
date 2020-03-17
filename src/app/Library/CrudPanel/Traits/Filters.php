@@ -167,7 +167,7 @@ trait Filters
 
     public function replaceFilter($name, $newFilter)
     {
-        $newFilters = $this->filters()->map(function($filter, $key) use ($name, $newFilter) {
+        $newFilters = $this->filters()->map(function ($filter, $key) use ($name, $newFilter) {
             if ($filter->name != $name) {
                 return $filter;
             }
@@ -247,22 +247,22 @@ trait Filters
      * @param string|array $destination The destination filter name or array.
      * @param bool         $before      If true, the filter will be moved before the target filter, otherwise it will be moved after it.
      */
-    public function moveFilter($target, $where = 'before', $destination)
+    public function moveFilter($target, $where, $destination)
     {
         $targetFilter = $this->firstFilterWhere('name', $target);
         $destinationFilter = $this->firstFilterWhere('name', $destination);
-        $destinationKey =  $this->getFilterKey($destination);
+        $destinationKey = $this->getFilterKey($destination);
         $newDestinationKey = ($where == 'before' ? $destinationKey : $destinationKey + 1);
         $newFilters = $this->filters()->filter(function ($value, $key) use ($target) {
             return $value->name != $target;
         });
 
-        if (!$targetFilter) {
-            return ;
+        if (! $targetFilter) {
+            return;
         }
 
-        if (!$destinationFilter) {
-            return ;
+        if (! $destinationFilter) {
+            return;
         }
 
         $firstSlice = $newFilters->slice(0, $newDestinationKey);
