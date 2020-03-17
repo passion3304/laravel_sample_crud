@@ -86,7 +86,7 @@ return [
     // DataTables translation
     'emptyTable'     => '数据库中没有相关记录',
     'info'           => '正在显示 _TOTAL_ 个记录中的 _START_ 至 _END_ 项',
-    'infoEmpty'      => '正在显示 0 个记录中的 0 至 0 项',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(自 _TOTAL_ 个记录中筛选出来的记录)',
     'infoPostFix'    => '',
     'thousands'      => ',',

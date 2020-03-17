@@ -83,7 +83,7 @@ return [
     // DataTables translation
     'emptyTable'                              => 'テーブルにデータが存在しません',
     'info'                                    => '_TOTAL_ 件中 _START_ から _END_ を表示',
-    'infoEmpty'                               => '0 件中 0 から 0 を表示',
+    'infoEmpty'                               => '',
     'infoFiltered'                            => '(全 _MAX_ 件からフィルター)',
     'infoPostFix'                             => '',
     'thousands'                               => ',',
