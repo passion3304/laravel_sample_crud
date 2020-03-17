@@ -74,7 +74,7 @@ class CrudField
 
     /**
      * Move the current field after another field.
-     * 
+     *
      * @param  string $destinationField Name of the destination field.
      * @return CrudField
      */
@@ -88,7 +88,7 @@ class CrudField
 
     /**
      * Move the current field before another field.
-     * 
+     *
      * @param  string $destinationField Name of the destination field.
      * @return CrudField
      */
@@ -96,13 +96,13 @@ class CrudField
     {
         $this->crud->removeField($this->attributes['name']);
         $this->crud->addField($this->attributes)->beforeField($destinationField);
-        
+
         return $this;
     }
 
     /**
      * Make the current field the first one in the fields list.
-     * 
+     *
      * @return CrudPanel
      */
     public function makeFirst()
@@ -115,7 +115,7 @@ class CrudField
 
     /**
      * Make the current field the last one in the fields list.
-     * 
+     *
      * @return CrudPanel
      */
     public function makeLast()
@@ -173,7 +173,7 @@ class CrudField
     // -------------
     // MAGIC METHODS
     // -------------
-    
+
     /**
      * If a developer calls a method that doesn't exist, assume they want:
      * - the CrudField object to have an attribute with that value;
