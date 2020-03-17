@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
+use Exception;
+
 trait HasIdentifiableAttribute
 {
     /**
@@ -9,19 +11,22 @@ trait HasIdentifiableAttribute
      *
      * Rephrased: In most cases a user will NOT identify an Article because its ID is "4", but
      * because its name is "10 Ways to Burn Fat". This method returns the column in the database
-     * that represents that is better to show to the user as an identifier rather than the ID.
+     * that represents what is better to show to the user as an identifier rather than the ID.
      * Ex: name, title, label, description etc.
      *
      * @return string The name of the column that best defines this entry from the user perspective.
      */
-    public static function getIdentifiableName()
+    public function identifiableAttribute()
     {
-        $model = (new self);
-        if (method_exists($model, 'identifiableName')) {
-            return $model->identifiableName();
+        // When having a property and a method with same name, Laravel expects that method return an Relation instance.
+        // To avoid the exception when developer did not explicitly defined: public $identifiableAttribute = 'attribute';
+        // in model we use this try/catch block. If the property exists we return it, if not (exception raised)
+        // we return the result of our column name guessing.
+        try {
+            return !is_array($this->identifiableAttribute) ? [$this->identifiableAttribute] : $this->identifiableAttribute;
+        }catch(Exception $e) {
+            return [static::guessIdentifiableColumnName()];
         }
-
-        return static::guessIdentifiableColumnName();
     }
 
     /**
@@ -29,7 +34,7 @@ trait HasIdentifiableAttribute
      *
      * @return string The name of the column in the database that is most likely to be a good indentifying attribute.
      */
-    public static function guessIdentifiableColumnName()
+    private static function guessIdentifiableColumnName()
     {
         $instance = new static();
         $conn = $instance->getConnectionWithExtraTypeMappings();
@@ -74,6 +79,6 @@ trait HasIdentifiableAttribute
         }
 
         // in case everything fails we just return the first column in database
-        return \Arr::first($columnsNames);
+        return Arr::first($columnsNames);
     }
 }

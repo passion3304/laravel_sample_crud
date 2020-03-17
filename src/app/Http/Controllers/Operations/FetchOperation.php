@@ -39,7 +39,7 @@ trait FetchOperation
     private function fetch($arg)
     {
         // get the actual words that were used to search for an item (the search term / search string)
-        $searchString = request()->input('q') ?? false;
+        $search_string = request()->input('q') ?? false;
 
         // if the Class was passed as the sole argument, use that as the configured Model
         // otherwise assume the arguments are actually the configuration array
@@ -54,30 +54,32 @@ trait FetchOperation
             $config = $arg;
         }
 
+        $model_instance = new $config['model'];
         // set configuration defaults
         $config['paginate'] = isset($config['paginate']) ? $config['paginate'] : 10;
-        $config['searchableAttributes'] = $config['searchableAttributes'] ?? [$config['model']::getIdentifiableName()];
-        $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : new $config['model']; // if a closure that has been passed as "query", use the closure - otherwise use the model
+        $config['searchableAttributes'] = $config['searchableAttributes'] ?? $model_instance->identifiableAttribute();
+        $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : $model_instance; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
         // FetchOperation sends an empty query to retrieve the default entry for select when field is not nullable.
-        // also sends an empty query in case we want to load all entities to emulate non-ajax fields
-        // when using InlineCreate with options we want visible in select when opening
+        // Also sends an empty query in case we want to load all entities to emulate non-ajax fields
+        // when using InlineCreate.
 
-        if ($searchString === false) {
+        if ($search_string === false) {
             return ($config['paginate'] !== false) ?
             $config['query']->paginate($config['paginate']) :
             $config['query']->get();
         }
 
+        $textColumnTypes = ['string', 'json_string', 'text'];
         // for each searchable attribute, add a WHERE clause
         foreach ($config['searchableAttributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
             $columnType = $config['query']->getColumnType($searchColumn);
 
-            if ($columnType == 'string') {
-                $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$searchString.'%');
+            if (in_array($columnType, $textColumnTypes)) {
+                $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$search_string.'%');
             } else {
-                $config['query'] = $config['query']->{$operation}($searchColumn, $searchString);
+                $config['query'] = $config['query']->{$operation}($searchColumn, $search_string);
             }
         }
 
