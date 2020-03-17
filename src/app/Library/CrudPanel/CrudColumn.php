@@ -74,7 +74,7 @@ class CrudColumn
 
     /**
      * Move the current column after another column.
-     * 
+     *
      * @param  string $destinationColumn Name of the destination column.
      * @return CrudColumn
      */
@@ -88,7 +88,7 @@ class CrudColumn
 
     /**
      * Move the current column before another column.
-     * 
+     *
      * @param  string $destinationColumn Name of the destination column.
      * @return CrudColumn
      */
@@ -96,13 +96,13 @@ class CrudColumn
     {
         $this->crud->removeColumn($this->attributes['name']);
         $this->crud->addColumn($this->attributes)->beforeColumn($destinationColumn);
-        
+
         return $this;
     }
 
     /**
      * Make the current column the first one in the columns list.
-     * 
+     *
      * @return CrudPanel
      */
     public function makeFirst()
@@ -115,7 +115,7 @@ class CrudColumn
 
     /**
      * Make the current column the last one in the columns list.
-     * 
+     *
      * @return CrudPanel
      */
     public function makeLast()
@@ -173,7 +173,7 @@ class CrudColumn
     // -------------
     // MAGIC METHODS
     // -------------
-    
+
     /**
      * If a developer calls a method that doesn't exist, assume they want:
      * - the CrudColumn object to have an attribute with that value;

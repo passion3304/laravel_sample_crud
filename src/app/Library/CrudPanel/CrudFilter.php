@@ -60,7 +60,7 @@ class CrudFilter
 
     public function wasNotApplied()
     {
-        return !$this->applied;
+        return ! $this->applied;
     }
 
     public function apply($input = null)
@@ -74,13 +74,13 @@ class CrudFilter
 
         $input = $input ?? new ParameterBag($this->crud->getRequest()->all());
 
-        if (!$input->has($this->name)) {
+        if (! $input->has($this->name)) {
             return;
         }
 
         // if a closure was passed as "filterLogic"
         if (is_callable($this->logic)) {
-            return ($this->logic)($input->get($this->name));   
+            return ($this->logic)($input->get($this->name));
         } else {
             return $this->applyDefaultLogic($this->name, false);
         }
@@ -89,14 +89,12 @@ class CrudFilter
         if (is_callable($this->fallbackLogic)) {
             return ($this->fallbackLogic)();
         }
-
     }
-
 
     // ---------------------
     // FLUENT SYNTAX METHODS
     // ---------------------
-    
+
     /**
      * Create a CrudFilter object with the parameter as its name.
      *
@@ -134,7 +132,7 @@ class CrudFilter
     /**
      * TODO: create afterFilter() method to make this work.
      * Move the current filter after another filter.
-     * 
+     *
      * @param  string $destinationFilter Name of the destination filter.
      * @return CrudFilter
      */
@@ -149,7 +147,7 @@ class CrudFilter
     /**
      * TODO: create beforeFilter() method to make this work.
      * Move the current field before another field.
-     * 
+     *
      * @param  string $destinationFilter Name of the destination field.
      * @return CrudFilter
      */
@@ -157,14 +155,14 @@ class CrudFilter
     // {
     //     $this->crud->removeFilter($this->name);
     //     $this->crud->addCrudFilter($this)->beforeFilter($destinationFilter);
-        
+
     //     return $this;
     // }
 
     /**
      * TODO: create makeFirstFilter() method to make this work.
      * Make the current field the first one in the fields list.
-     * 
+     *
      * @return CrudPanel
      */
     public function makeFirst()
@@ -177,7 +175,7 @@ class CrudFilter
 
     /**
      * Make the current field the last one in the fields list.
-     * 
+     *
      * @return CrudPanel
      */
     public function makeLast()
@@ -191,7 +189,7 @@ class CrudFilter
     // -----------------------
     // FILTER-SPECIFIC SETTERS
     // -----------------------
-    
+
     public function type($value)
     {
         $this->type = $value;
@@ -239,7 +237,7 @@ class CrudFilter
 
         return $this->save();
     }
-    
+
     public function fallbackLogic($value)
     {
         $this->fallbackLogic = $value;
@@ -259,17 +257,43 @@ class CrudFilter
     /**
      * Aliases of the logic() method.
      */
-    public function whenActive($value) { return $this->logic($value); }
-    public function ifActive($value) { return $this->logic($value); }
+    public function whenActive($value)
+    {
+        return $this->logic($value);
+    }
+
+    public function ifActive($value)
+    {
+        return $this->logic($value);
+    }
 
     /**
      * Alises of the fallbackLogic() method.
      */
-    public function whenInactive($value) { return $this->fallbackLogic($value); }
-    public function whenNotActive($value) { return $this->fallbackLogic($value); }
-    public function ifInactive($value) { return $this->fallbackLogic($value); }
-    public function ifNotActive($value) { return $this->fallbackLogic($value); }
-    public function else($value) { return $this->fallbackLogic($value); }
+    public function whenInactive($value)
+    {
+        return $this->fallbackLogic($value);
+    }
+
+    public function whenNotActive($value)
+    {
+        return $this->fallbackLogic($value);
+    }
+
+    public function ifInactive($value)
+    {
+        return $this->fallbackLogic($value);
+    }
+
+    public function ifNotActive($value)
+    {
+        return $this->fallbackLogic($value);
+    }
+
+    public function else($value)
+    {
+        return $this->fallbackLogic($value);
+    }
 
     // ---------------
     // PRIVATE METHODS
@@ -370,7 +394,7 @@ class CrudFilter
     // -------------
     // MAGIC METHODS
     // -------------
-    
+
     /**
      * If a developer calls a method that doesn't exist, assume they want:
      * - the CrudFilter object to have an attribute with that value;
