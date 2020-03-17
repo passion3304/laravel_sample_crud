@@ -2,10 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Backpack\CRUD\app\Library\CrudPanel\CrudFilter;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Arr;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait Filters
 {
@@ -90,7 +89,7 @@ trait Filters
     /**
      * Add a filter by specifying the entire CrudFilter object.
      * The filter logic does NOT get applied.
-     * 
+     *
      * @param CrudFilter $object
      */
     public function addCrudFilter($object)
