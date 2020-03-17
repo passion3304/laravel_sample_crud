@@ -5,6 +5,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Backpack\CRUD\app\Library\CrudPanel\CrudFilter;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Arr;
 
 trait Filters
 {
@@ -51,6 +52,23 @@ trait Filters
      */
     public function addFilter($options, $values = false, $filterLogic = false, $fallbackLogic = false)
     {
+        $filter = $this->addFilterToCollection($options, $values, $filterLogic, $fallbackLogic);
+
+        // apply the filter logic
+        $this->applyFilter($filter);
+    }
+
+    /**
+     * Add a filter to the CrudPanel object using the Settings API.
+     * The filter will NOT get applied.
+     *
+     * @param array               $options       Name, type, label, etc.
+     * @param bool|array|\Closure $values        The HTML for the filter.
+     * @param bool|\Closure       $filterLogic   Query modification (filtering) logic when filter is active.
+     * @param bool|\Closure       $fallbackLogic Query modification (filtering) logic when filter is not active.
+     */
+    protected function addFilterToCollection($options, $values = false, $filterLogic = false, $fallbackLogic = false)
+    {
         // if a closure was passed as "values"
         if (is_callable($values)) {
             // get its results
@@ -69,11 +87,21 @@ trait Filters
         }
 
         // add a new filter to the interface
-        $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic);
+        $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic, $this);
         $this->setOperationSetting('filters', $this->filters()->push($filter));
 
-        // apply the filter logic
-        $this->applyFilter($filter);
+        return $filter;
+    }
+
+    /**
+     * Add a filter by specifying the entire CrudFilter object.
+     * The filter logic does NOT get applied.
+     * 
+     * @param CrudFilter $object
+     */
+    public function addCrudFilter($object)
+    {
+        return $this->addFilterToCollection($object->options, $object->values, $object->logic, $object->fallbackLogic);
     }
 
     /**
@@ -84,79 +112,7 @@ trait Filters
      */
     public function applyFilter(CrudFilter $filter, $input = null)
     {
-        if (\is_array($input)) {
-            $input = new ParameterBag($input);
-        }
-
-        $input = $input ?? new ParameterBag($this->getRequest()->all());
-
-        if ($input->has($filter->options['name'])) {
-            // if a closure was passed as "filterLogic"
-            if (is_callable($filter->logic)) {
-                // apply it
-                ($filter->logic)($input->get($filter->options['name']));
-            } else {
-                $this->addDefaultFilterLogic($filter->name, $filter->logic, $input->all());
-            }
-        } else {
-            //if the filter is not active, but fallback logic was supplied
-            if (is_callable($filter->fallbackLogic)) {
-                // apply the fallback logic
-                ($filter->fallbackLogic)();
-            }
-        }
-    }
-
-    /**
-     * @param string $name
-     * @param string $operator
-     * @param array  $input
-     */
-    public function addDefaultFilterLogic($name, $operator, $input = null)
-    {
-        $input = $input ?? $this->getRequest()->all();
-
-        // if this filter is active (the URL has it as a GET parameter)
-        switch ($operator) {
-            // if no operator was passed, just use the equals operator
-            case false:
-                $this->addClause('where', $name, $input[$name]);
-                break;
-
-            case 'scope':
-                $this->addClause($operator);
-                break;
-
-            // TODO:
-            // whereBetween
-            // whereNotBetween
-            // whereIn
-            // whereNotIn
-            // whereNull
-            // whereNotNull
-            // whereDate
-            // whereMonth
-            // whereDay
-            // whereYear
-            // whereColumn
-            // like
-
-            // sql comparison operators
-            case '=':
-            case '<=>':
-            case '<>':
-            case '!=':
-            case '>':
-            case '>=':
-            case '<':
-            case '<=':
-                $this->addClause('where', $name, $operator, $input[$name]);
-                break;
-
-            default:
-                abort(500, 'Unknown filter operator.');
-                break;
-        }
+        $filter->apply($input);
     }
 
     /**
@@ -164,7 +120,7 @@ trait Filters
      */
     public function filters()
     {
-        return $this->getOperationSetting('filters');
+        return $this->getOperationSetting('filters') ?? collect();
     }
 
     /**
@@ -228,5 +184,48 @@ trait Filters
     public function removeAllFilters()
     {
         $this->setOperationSetting('filters', new Collection());
+    }
+
+    /**
+     * Check if a filter exists, by any given attribute.
+     *
+     * @param  string  $attribute   Attribute name on that filter definition array.
+     * @param  string  $value       Value of that attribute on that filter definition array.
+     * @return bool
+     */
+    public function hasFilterWhere($attribute, $value)
+    {
+        return $this->filters()->contains($attribute, $value);
+    }
+
+    /**
+     * Get the first filter where a given attribute has the given value.
+     *
+     * @param  string  $attribute   Attribute name on that filter definition array.
+     * @param  string  $value       Value of that attribute on that filter definition array.
+     * @return bool
+     */
+    public function firstFilterWhere($attribute, $value)
+    {
+        return $this->filters()->firstWhere($attribute, $value);
+    }
+
+    /**
+     * Create and return a CrudFilter object for that attribute.
+     *
+     * Enables developers to use a fluent syntax to declare their filters,
+     * in addition to the existing options:
+     * - CRUD::addFilter(['name' => 'price', 'type' => 'range'], false, function($value) {});
+     * - CRUD::filter('price')->type('range')->whenActive(function($value) {});
+     *
+     * And if the developer uses the CrudField object as Field in his CrudController:
+     * - Filter::name('price')->type('range')->whenActive(function($value) {});
+     *
+     * @param  string $name The name of the column in the db, or model attribute.
+     * @return CrudField
+     */
+    public function filter($name)
+    {
+        return new CrudFilter(compact('name'), null, null, null, $this);
     }
 }
