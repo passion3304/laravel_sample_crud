@@ -69,12 +69,6 @@ trait Filters
      */
     protected function addFilterToCollection($options, $values = false, $filterLogic = false, $fallbackLogic = false)
     {
-        // if a closure was passed as "values"
-        if (is_callable($values)) {
-            // get its results
-            $values = $values();
-        }
-
         // enable the filters functionality
         $this->enableFilters();
 
@@ -172,6 +166,19 @@ trait Filters
         return $filter;
     }
 
+    public function replaceFilter($name, $newFilter)
+    {
+        $newFilters = $this->filters()->map(function($filter, $key) use ($name, $newFilter) {
+            if ($filter->name != $name) {
+                return $filter;
+            }
+
+            return $newFilter;
+        });
+
+        $this->setOperationSetting('filters', $newFilters);
+    }
+
     public function removeFilter($name)
     {
         $strippedCollection = $this->filters()->reject(function ($filter) use ($name) {
@@ -184,6 +191,90 @@ trait Filters
     public function removeAllFilters()
     {
         $this->setOperationSetting('filters', new Collection());
+    }
+
+    /**
+     * Move the most recently added filter after the given target filter.
+     *
+     * @param string|array $destination The target filter name or array.
+     */
+    public function afterFilter($destination)
+    {
+        $target = $this->filters()->last()->name;
+
+        $this->moveFilter($target->name, 'after', $destination);
+    }
+
+    /**
+     * Move the most recently added filter before the given target filter.
+     *
+     * @param string|array $destination The target filter name or array.
+     */
+    public function beforeFilter($destination)
+    {
+        $target = $this->filters()->last()->name;
+
+        $this->moveFilter($target, 'before', $destination);
+    }
+
+    /**
+     * Move this filter to be first in the columns list.
+     *
+     * @return bool|null
+     */
+    public function makeFirstFilter()
+    {
+        if (! $this->filters()) {
+            return false;
+        }
+
+        $firstFilter = $this->filters()->first();
+        $this->beforeFilter($firstFilter);
+    }
+
+    public function getFilterKey($filterName)
+    {
+        foreach ($this->filters() as $key => $value) {
+            if ($value->name == $filterName) {
+                return $key;
+            }
+        }
+    }
+
+    /**
+     * Move the most recently added filter before or after the given target filter. Default is before.
+     *
+     * @param string|array $target      The target filter name or array.
+     * @param string|array $destination The destination filter name or array.
+     * @param bool         $before      If true, the filter will be moved before the target filter, otherwise it will be moved after it.
+     */
+    public function moveFilter($target, $where = 'before', $destination)
+    {
+        $targetFilter = $this->firstFilterWhere('name', $target);
+        $destinationFilter = $this->firstFilterWhere('name', $destination);
+        $destinationKey =  $this->getFilterKey($destination);
+        $newDestinationKey = ($where == 'before' ? $destinationKey : $destinationKey + 1);
+        $newFilters = $this->filters()->filter(function ($value, $key) use ($target) {
+            return $value->name != $target;
+        });
+
+        if (!$targetFilter) {
+            return ;
+        }
+
+        if (!$destinationFilter) {
+            return ;
+        }
+
+        $firstSlice = $newFilters->slice(0, $newDestinationKey);
+        $lastSlice = $newFilters->slice($newDestinationKey, null);
+
+        $newFilters = $firstSlice->push($targetFilter);
+        $lastSlice->each(function ($item, $key) use ($newFilters) {
+            $newFilters->push($item);
+        });
+
+        $this->setOperationSetting('filters', $newFilters);
     }
 
     /**

@@ -24,17 +24,26 @@ class CrudFilter
     {
         $this->crud = $crud;
 
-        $this->name = $options['name'];
-        $this->type = $options['type'] ?? $this->type;
-        $this->label = $options['label'] ?? $crud->makeLabel($this->name);
-        $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
-        $this->view = $this->viewNamespace.'.'.$this->type;
-        $this->placeholder = $options['placeholder'] ?? '';
+        // if filter exists
+        if ($this->crud->hasFilterWhere('name', $options['name'])) {
+            $properties = get_object_vars($this->crud->firstFilterWhere('name', $options['name']));
+            foreach ($properties as $property => $value) {
+                $this->{$property} = $value;
+            }
+        } else {
+            // it means we're creating the filter now,
+            $this->name = $options['name'];
+            $this->type = $options['type'] ?? $this->type;
+            $this->label = $options['label'] ?? $crud->makeLabel($this->name);
+            $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
+            $this->view = $this->viewNamespace.'.'.$this->type;
+            $this->placeholder = $options['placeholder'] ?? '';
 
-        $this->values = $values;
-        $this->options = $options;
-        $this->logic = $logic;
-        $this->fallbackLogic = $fallbackLogic;
+            $this->values = is_callable($values) ? $values() : $values;
+            $this->options = $options;
+            $this->logic = $logic;
+            $this->fallbackLogic = $fallbackLogic;
+        }
 
         if (\Request::has($this->name)) {
             $this->currentValue = \Request::input($this->name);
@@ -126,51 +135,67 @@ class CrudFilter
      */
     public function forget($attribute)
     {
-        $this->crud->removeFilterAttribute($this->name, $attribute);
+        if (property_exists($this, $attribute)) {
+            $this->{$attribute} = false;
+        }
+
+        if (isset($this->options[$attribute])) {
+            unset($this->options[$attribute]);
+        }
+
+        $this->crud->replaceFilter($this->name, $this);
 
         return $this;
     }
 
     /**
-     * TODO: create afterFilter() method to make this work.
+     * Remove an attribute from one field's definition array.
+     * @param  string $field     The name of the field.
+     * @param  string $attribute The name of the attribute being removed.
+     */
+    public function removeFilterAttribute($filter, $attribute)
+    {
+        $fields = $this->fields();
+
+        unset($fields[$field][$attribute]);
+
+        $this->setOperationSetting('fields', $fields);
+    }
+
+    /**
      * Move the current filter after another filter.
      * 
-     * @param  string $destinationFilter Name of the destination filter.
+     * @param  string $destination Name of the destination filter.
      * @return CrudFilter
      */
-    // public function after($destinationFilter)
-    // {
-    //     $this->crud->removeFilter($this->name);
-    //     $this->crud->addCrudFilter($this)->afterFilter($destinationFilter);
+    public function after($destination)
+    {
+        $this->crud->moveFilter($this->name, 'after', $destination);
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
     /**
-     * TODO: create beforeFilter() method to make this work.
      * Move the current field before another field.
      * 
-     * @param  string $destinationFilter Name of the destination field.
+     * @param  string $destination Name of the destination field.
      * @return CrudFilter
      */
-    // public function before($destinationFilter)
-    // {
-    //     $this->crud->removeFilter($this->name);
-    //     $this->crud->addCrudFilter($this)->beforeFilter($destinationFilter);
-        
-    //     return $this;
-    // }
+    public function before($destination)
+    {
+        $this->crud->moveFilter($this->name, 'before', $destination);
+
+        return $this;
+    }
 
     /**
-     * TODO: create makeFirstFilter() method to make this work.
      * Make the current field the first one in the fields list.
      * 
      * @return CrudPanel
      */
     public function makeFirst()
     {
-        $this->crud->removeFilter($this->name);
-        $this->crud->addCrudFilter($this)->makeFirstFilter();
+        $this->crud->moveFilter($this->name, 'before', $this->crud->filters()->first()->name);
 
         return $this;
     }
