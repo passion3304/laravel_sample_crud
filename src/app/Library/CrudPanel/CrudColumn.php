@@ -72,6 +72,60 @@ class CrudColumn
         return $this;
     }
 
+    /**
+     * Move the current column after another column.
+     * 
+     * @param  string $destinationColumn Name of the destination column.
+     * @return CrudColumn
+     */
+    public function after($destinationColumn)
+    {
+        $this->crud->removeColumn($this->attributes['name']);
+        $this->crud->addColumn($this->attributes)->afterColumn($destinationColumn);
+
+        return $this;
+    }
+
+    /**
+     * Move the current column before another column.
+     * 
+     * @param  string $destinationColumn Name of the destination column.
+     * @return CrudColumn
+     */
+    public function before($destinationColumn)
+    {
+        $this->crud->removeColumn($this->attributes['name']);
+        $this->crud->addColumn($this->attributes)->beforeColumn($destinationColumn);
+        
+        return $this;
+    }
+
+    /**
+     * Make the current column the first one in the columns list.
+     * 
+     * @return CrudPanel
+     */
+    public function makeFirst()
+    {
+        $this->crud->removeColumn($this->attributes['name']);
+        $this->crud->addColumn($this->attributes)->makeFirstColumn();
+
+        return $this;
+    }
+
+    /**
+     * Make the current column the last one in the columns list.
+     * 
+     * @return CrudPanel
+     */
+    public function makeLast()
+    {
+        $this->crud->removeColumn($this->attributes['name']);
+        $this->crud->addColumn($this->attributes);
+
+        return $this;
+    }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------
@@ -116,6 +170,10 @@ class CrudColumn
         return $this;
     }
 
+    // -------------
+    // MAGIC METHODS
+    // -------------
+    
     /**
      * If a developer calls a method that doesn't exist, assume they want:
      * - the CrudColumn object to have an attribute with that value;
@@ -128,7 +186,7 @@ class CrudColumn
      *
      * @return CrudColumn
      */
-    private function __call($method, $parameters)
+    public function __call($method, $parameters)
     {
         $this->setAttributeValue($method, $parameters[0]);
 

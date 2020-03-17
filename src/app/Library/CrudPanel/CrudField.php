@@ -72,6 +72,60 @@ class CrudField
         return $this;
     }
 
+    /**
+     * Move the current field after another field.
+     * 
+     * @param  string $destinationField Name of the destination field.
+     * @return CrudField
+     */
+    public function after($destinationField)
+    {
+        $this->crud->removeField($this->attributes['name']);
+        $this->crud->addField($this->attributes)->afterField($destinationField);
+
+        return $this;
+    }
+
+    /**
+     * Move the current field before another field.
+     * 
+     * @param  string $destinationField Name of the destination field.
+     * @return CrudField
+     */
+    public function before($destinationField)
+    {
+        $this->crud->removeField($this->attributes['name']);
+        $this->crud->addField($this->attributes)->beforeField($destinationField);
+        
+        return $this;
+    }
+
+    /**
+     * Make the current field the first one in the fields list.
+     * 
+     * @return CrudPanel
+     */
+    public function makeFirst()
+    {
+        $this->crud->removeField($this->attributes['name']);
+        $this->crud->addField($this->attributes)->makeFirstField();
+
+        return $this;
+    }
+
+    /**
+     * Make the current field the last one in the fields list.
+     * 
+     * @return CrudPanel
+     */
+    public function makeLast()
+    {
+        $this->crud->removeField($this->attributes['name']);
+        $this->crud->addField($this->attributes);
+
+        return $this;
+    }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------
@@ -116,6 +170,10 @@ class CrudField
         return $this;
     }
 
+    // -------------
+    // MAGIC METHODS
+    // -------------
+    
     /**
      * If a developer calls a method that doesn't exist, assume they want:
      * - the CrudField object to have an attribute with that value;
@@ -128,7 +186,7 @@ class CrudField
      *
      * @return CrudField
      */
-    private function __call($method, $parameters)
+    public function __call($method, $parameters)
     {
         $this->setAttributeValue($method, $parameters[0]);
 

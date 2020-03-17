@@ -80,6 +80,21 @@ trait Fields
     }
 
     /**
+     * Move this field to be first in the fields list.
+     *
+     * @return bool|null
+     */
+    public function makeFirstField()
+    {
+        if (! $this->fields()) {
+            return false;
+        }
+
+        $firstField = array_keys(array_slice($this->fields(), 0, 1))[0];
+        $this->beforeField($firstField);
+    }
+
+    /**
      * Remove a certain field from the create/update/both forms by its name.
      *
      * @param string $name Field name (as defined with the addField() procedure)
