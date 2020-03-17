@@ -23,8 +23,8 @@ trait HasIdentifiableAttribute
         // in model we use this try/catch block. If the property exists we return it, if not (exception raised)
         // we return the result of our column name guessing.
         try {
-            return !is_array($this->identifiableAttribute) ? [$this->identifiableAttribute] : $this->identifiableAttribute;
-        }catch(Exception $e) {
+            return ! is_array($this->identifiableAttribute) ? [$this->identifiableAttribute] : $this->identifiableAttribute;
+        } catch (Exception $e) {
             return [static::guessIdentifiableColumnName()];
         }
     }
