@@ -71,7 +71,7 @@ return [
     // DataTables translation
     'emptyTable'     => '資料庫中沒有相關紀錄',
     'info'           => '正在顯示 _TOTAL_ 個紀錄中的 _START_ 至 _END_ 項',
-    'infoEmpty'      => '正在顯示 0 個紀錄中的 0 至 0 項',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(自 _TOTAL_ 個紀錄中篩選出來的紀錄)',
     'infoPostFix'    => '',
     'thousands'      => ',',
