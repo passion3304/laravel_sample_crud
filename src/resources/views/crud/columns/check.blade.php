@@ -9,11 +9,25 @@ $exportCheckedText = data_get($column, 'labels.checked', trans('backpack::crud.y
 $exportUncheckedText = data_get($column, 'labels.unchecked', trans('backpack::crud.no'));
 
 $icon = $checkValue == false ? $uncheckedIcon : $checkedIcon;
+
 $column['text'] = $checkValue == false ? $exportUncheckedText : $exportCheckedText;
+$column['escaped'] = $column['escaped'] ?? true;
+
+    if(!empty($column['wrapper'])) {
+        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    }
 @endphp
 
 <span>
     <i class="fa {{ $icon }}"></i>
 </span>
 
-<span class="sr-only">@include('crud::columns.inc.column_wrapper')</span>
+<span class="sr-only">
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+        @if($column['escaped'])
+            {{ $column['text'] }}
+        @else
+            {!! $column['text'] !!}
+        @endif
+@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+</span>

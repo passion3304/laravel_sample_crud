@@ -15,12 +15,29 @@
             }
             $lastKey = array_key_last($list);
         }
+
+    $column['escaped'] = $column['escaped'] ?? true;
+
+     // if the wrapper "element" is not defined, set it to the default - an anchor
+    if(!empty($column['wrapper'])) {
+        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    }
 @endphp
 
 <span>
     @if(!empty($list))
         @foreach($list as $key => $text)
-            @include('crud::columns.inc.column_wrapper',['text' => $text, 'related_key' => $key])@if($lastKey != $key),@endif
+        @php
+            $related_key = $key;
+        @endphp
+        @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+            @if($column['escaped'])
+                {{ $text }}
+            @else
+                {!! $text !!}
+            @endif
+        @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+        @if($lastKey != $key),@endif
         @endforeach
     @endif
 </span>

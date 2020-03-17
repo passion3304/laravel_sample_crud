@@ -18,11 +18,26 @@ if (is_array($array) && count($array)) {
     }
     $lastKey = array_key_last($list[$column['visible_key']]);
 }
+if(!empty($column['wrapper'])) {
+        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    }
+
+    $column['escaped'] = $column['escaped'] ?? true;
 ?>
 <span>
     @if(!empty($list))
         @foreach($list[$column['visible_key']] as $key => $text)
-            @include('crud::columns.inc.column_wrapper',['text' => $text, 'related_key' => $text])@if($lastKey != $key),@endif
+            @php
+                $related_key = $text;
+            @endphp
+            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+                @if($column['escaped'])
+                    {{ $text }}
+                @else
+                    {!! $text !!}
+                @endif
+            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+        @if($lastKey != $key),@endif
         @endforeach
     @else
         -

@@ -14,18 +14,22 @@
   } else { // plain-old image, from a local disk
     $href = $src = asset( $prefix . $value);
   }
+
+    $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    $column['wrapper']['href'] = $column['wrapper']['href'] ?? $href;
+    $column['wrapper']['target'] = $column['wrapper']['target'] ?? '_blank';
 @endphp
 
 <span>
   @if( empty($value) )
     -
   @else
-    <a href="{{ $href }}" target="_blank">
-      <img src="{{ $src }}" style="
-          max-height: {{ isset($column['height']) ? $column['height'] : "25px" }};
-          width: {{ isset($column['width']) ? $column['width'] : "auto" }};
-          border-radius: 3px;"
-      />
-    </a>
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+        <img src="{{ $src }}" style="
+        max-height: {{ isset($column['height']) ? $column['height'] : "25px" }};
+        width: {{ isset($column['width']) ? $column['width'] : "auto" }};
+        border-radius: 3px;"
+        />
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
   @endif
 </span>

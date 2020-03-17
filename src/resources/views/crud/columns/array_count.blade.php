@@ -10,9 +10,19 @@
     if($array && count($array))
 
     $column['text'] = count($array).' '.$suffix);
+    $column['escaped'] = $column['escaped'] ?? false;
 
+    if(!empty($column['wrapper'])) {
+        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    }
 @endphp
 
 <span>
-        @include('crud::columns.inc.column_wrapper')
+	@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+        @if($column['escaped'])
+            {{ $column['text'] }}
+        @else
+            {!! $column['text'] !!}
+        @endif
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 </span>

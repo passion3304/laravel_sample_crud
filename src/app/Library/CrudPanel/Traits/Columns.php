@@ -88,9 +88,6 @@ trait Columns
         //check if column has wrapper
         $column_with_details['wrapper'] = $column_with_details['wrapper'] ?? [];
 
-        //check if column text should be escaped
-        $column_with_details['escaped'] = $column_with_details['escaped'] ?? true;
-
         // check if the column exists in the database table
         $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column_with_details['name']);
 
