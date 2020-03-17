@@ -51,7 +51,7 @@ class CrudField
 
     /**
      * Remove the current field from the current operation.
-     * 
+     *
      * @return void
      */
     public function remove()
@@ -61,7 +61,7 @@ class CrudField
 
     /**
      * Remove an attribute from the current field definition array.
-     * 
+     *
      * @param  string $attribute Name of the attribute being removed.
      * @return CrudField
      */
