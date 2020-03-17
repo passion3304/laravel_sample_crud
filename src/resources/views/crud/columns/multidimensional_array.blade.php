@@ -18,9 +18,9 @@ if (is_array($array) && count($array)) {
     }
     $lastKey = array_key_last($list[$column['visible_key']]);
 }
-if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
+if (! empty($column['wrapper'])) {
+    $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+}
 
     $column['escaped'] = $column['escaped'] ?? true;
 ?>
