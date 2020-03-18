@@ -37,5 +37,5 @@
     }
 @endphp
 
-@include('crud::fields.'.($field['type'] != 'fetch' ? 'relationship.' : '').$field['type'])
+@include('crud::fields.relationship.'.$field['type'])
 
