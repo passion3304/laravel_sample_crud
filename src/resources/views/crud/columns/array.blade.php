@@ -1,6 +1,7 @@
 {{-- enumerate the values in an array  --}}
 @php
     $value = data_get($entry, $column['name']);
+    $column['escaped'] = $column['escaped'] ?? true;
 
     // the value should be an array wether or not attribute casting is used
     if (!is_array($value)) {

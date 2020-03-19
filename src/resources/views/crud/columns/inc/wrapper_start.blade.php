@@ -7,7 +7,6 @@
     foreach($column['wrapper'] as $attribute => $value) {
         $column['wrapper'][$attribute] = is_callable($value) ? $value($crud, $column, $entry, $related_key) : $value ?? '';
     }
-
 @endphp
 
 <{{ $column['wrapper']['element'] ?? 'a' }}
