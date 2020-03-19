@@ -1,10 +1,7 @@
 {{-- regular object attribute --}}
 @php
 	$value = data_get($entry, $column['name']);
-
-	if (is_array($value)) {
-		$value = json_encode($value);
-    }
+    $value = is_array($value) ? json_encode($value) : $value;
 
     $column['escaped'] = $column['escaped'] ?? true;
     $column['limit'] = $column['limit'] ?? 40;

@@ -1,11 +1,9 @@
 @php
     $value = data_get($entry, $column['name']);
     $column['prefix'] = $column['prefix'] ?? '';
-
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
     $column['wrapper']['target'] = $column['wrapper']['target'] ?? '_blank';
-
-    $column['escaped'] = $column['escaped'] ?? true;
 @endphp
 
 <span>

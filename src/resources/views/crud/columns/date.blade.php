@@ -1,11 +1,11 @@
 {{-- localized date using nesbot carbon --}}
 @php
     $value = data_get($entry, $column['name']);
-    $column['text'] = !empty($value) ? \Carbon\Carbon::parse($value)
-                    ->locale(App::getLocale())
-                    ->isoFormat($column['format'] ?? config('backpack.base.default_date_format')) : '';
 
     $column['escaped'] = $column['escaped'] ?? true;
+    $column['text'] = empty($value) ? '' : \Carbon\Carbon::parse($value)
+                    ->locale(App::getLocale())
+                    ->isoFormat($column['format'] ?? config('backpack.base.default_date_format'));
 @endphp
 
 <span data-order="{{ $value ?? '' }}">

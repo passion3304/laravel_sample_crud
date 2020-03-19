@@ -1,7 +1,7 @@
 {{-- regular object attribute --}}
 @php
     $value = data_get($entry, $column['name']);
-    $column['text'] = is_string($value) ? $value : ''; // don't try to show arrays/object if the column was autoSet
+    $column['text'] = is_string($value) ? $value : '';
     $column['escaped'] = $column['escaped'] ?? false;
 @endphp
 

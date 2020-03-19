@@ -2,11 +2,11 @@
 @php
     $value = data_get($entry, $column['name']);
 
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['text'] = empty($value) ? '' : 
         \Carbon\Carbon::parse($value)
             ->locale(App::getLocale())
             ->isoFormat($column['format'] ?? config('backpack.base.default_datetime_format'));
-    $column['escaped'] = $column['escaped'] ?? true;
 @endphp
 
 <span data-order="{{ $value ?? '' }}">
