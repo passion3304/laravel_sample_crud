@@ -223,7 +223,7 @@ trait Search
 
         // add the details_row button to the first column
         if ($this->getOperationSetting('detailsRow')) {
-            $details_row_button = \View::make('crud::columns.details_row_button')
+            $details_row_button = \View::make('crud::columns.inc.details_row_button')
                                            ->with('crud', $this)
                                            ->with('entry', $entry)
                                            ->with('row_number', $rowNumber)

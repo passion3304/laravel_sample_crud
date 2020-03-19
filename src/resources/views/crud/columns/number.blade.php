@@ -12,10 +12,6 @@
     (array_key_exists('prefix', $column) ? $column['prefix'] : '').$value.(array_key_exists('suffix', $column) ? $column['suffix'] : '') : '';
 
     $column['escaped'] = $column['escaped'] ?? true;
-
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
 @endphp
 <span>
 	@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')

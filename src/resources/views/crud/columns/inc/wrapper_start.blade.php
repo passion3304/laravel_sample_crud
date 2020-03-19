@@ -11,7 +11,7 @@
 
 @endphp
 
-<{{ $column['wrapper']['element'] }}
+<{{ $column['wrapper']['element'] ?? 'a' }}
 @foreach(Arr::where($column['wrapper'],function($value, $key) { return $key != 'element'; }) as $element => $value)
     {{$element}}="{{$value}}"
 @endforeach

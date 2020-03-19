@@ -2,9 +2,6 @@
 @php
     $column['escaped'] = $column['escaped'] ?? false;
     $column['text'] = $column['function']($entry);
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
 @endphp
 <span>
 	@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')

@@ -6,9 +6,6 @@
         $lastKey = array_key_last($attributes);
     }
     $column['escaped'] = $column['escaped'] ?? true;
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
 @endphp
 
 <span>

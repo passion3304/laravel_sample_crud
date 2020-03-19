@@ -1,12 +1,6 @@
 @php
 	$column['key'] = $column['key'] ?? $column['name'];
-	$entryValue = data_get($entry, $column['key']);
-    $column['text'] = $column['options'][$entryValue] ?? '';
-
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
-
+    $column['text'] = $column['options'][data_get($entry, $column['key'])] ?? '';
     $column['escaped'] = $column['escaped'] ?? true;
 @endphp
 

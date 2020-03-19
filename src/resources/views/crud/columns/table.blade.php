@@ -12,11 +12,6 @@
 	if (is_string($value)) {
 	    $value = json_decode($value);
     }
-
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
-
 @endphp
 
 <span>

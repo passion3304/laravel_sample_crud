@@ -6,10 +6,6 @@
 		$value = json_encode($value);
     }
 
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
-
     $column['escaped'] = $column['escaped'] ?? true;
     $column['text'] = str_limit($value, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]');
 @endphp

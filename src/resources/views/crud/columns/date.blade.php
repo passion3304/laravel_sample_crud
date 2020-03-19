@@ -6,11 +6,6 @@
                     ->isoFormat($column['format'] ?? config('backpack.base.default_date_format')) : '';
 
     $column['escaped'] = $column['escaped'] ?? true;
-
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
-
 @endphp
 
 <span data-order="{{ $value ?? '' }}">

@@ -8,10 +8,6 @@
 		$value = '';
     }
 
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
-
     $column['escaped'] = $column['escaped'] ?? false;
     $column['text'] = (array_key_exists('prefix', $column) ? $column['prefix'] : '').str_limit($value, array_key_exists('limit', $column) ? $column['limit'] : 40, "[...]").(array_key_exists('suffix', $column) ? $column['suffix'] : '');
 @endphp

@@ -2,26 +2,22 @@
 @php
     $value = data_get($entry, $column['name']);
 
-    if($value === true || $value === 1 || $value === '1') {
+    if ($value === true || $value === 1 || $value === '1') {
         if ( isset( $column['options'][1] ) ) {
             $column['text'] = $column['options'][1];
             $column['escaped'] = false;
-        }else{
+        } else {
             $column['text'] = Lang::has('backpack::crud.yes')?trans('backpack::crud.yes'):'Yes';
         }
     }else {
         if ( isset( $column['options'][0] ) ) {
             $column['text'] = $column['options'][0];
             $column['escaped'] = false;
-        }else{
+        } else {
             $column['text'] = Lang::has('backpack::crud.no')?trans('backpack::crud.no'):'No';
         }
     }
     $column['escaped'] = $column['escaped'] ?? true;
-
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
 
 @endphp
 

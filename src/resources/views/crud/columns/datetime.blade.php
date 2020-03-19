@@ -2,15 +2,11 @@
 @php
     $value = data_get($entry, $column['name']);
 
-        $column['text'] = !empty($value) ? \Carbon\Carbon::parse($value)
-                        ->locale(App::getLocale())
-                        ->isoFormat($column['format'] ?? config('backpack.base.default_datetime_format')) : '';
-    }
+    $column['text'] = empty($value) ? '' : 
+        \Carbon\Carbon::parse($value)
+            ->locale(App::getLocale())
+            ->isoFormat($column['format'] ?? config('backpack.base.default_datetime_format'));
     $column['escaped'] = $column['escaped'] ?? true;
-
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
 @endphp
 
 <span data-order="{{ $value ?? '' }}">

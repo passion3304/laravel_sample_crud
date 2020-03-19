@@ -7,14 +7,14 @@
     if (! is_array($array)) {
         $array = json_decode($array, true);
     }
-    if($array && count($array))
 
-    $column['text'] = count($array).' '.$suffix);
-    $column['escaped'] = $column['escaped'] ?? false;
-
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    if($array && count($array)) {
+        $column['text'] = count($array).' '.$suffix;        
+    } else {
+        $column['text'] = '-';
     }
+    
+    $column['escaped'] = $column['escaped'] ?? false;
 @endphp
 
 <span>

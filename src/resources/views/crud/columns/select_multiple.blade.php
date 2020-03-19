@@ -8,11 +8,6 @@
         $lastKey = array_key_last($results_array);
     }
     $column['escaped'] = $column['escaped'] ?? true;
-
-     // if the wrapper "element" is not defined, set it to the default - an anchor
-    if(!empty($column['wrapper'])) {
-        $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    }
 @endphp
 
 <span>
