@@ -69,7 +69,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Няма намерени резултати',
     'info'           => 'Показване на резултати от _START_ до _END_ от общо _TOTAL_',
-    'infoEmpty'      => 'Показване на резултати от 0 до 0 от общо 0',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(филтрирани от общо _MAX_ резултата))',
     'infoPostFix'    => '.',
     'thousands'      => ',',

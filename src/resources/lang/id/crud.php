@@ -86,7 +86,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Tak ada data yang tersedia pada tabel ini',
     'info'           => 'Menampilkan _START_ dari _END_ dari _TOTAL_ masukan',
-    'infoEmpty'      => 'Menampilkan 0 dari 0 dari 0 masukan',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(difilter dari _MAX_ jumlah masukan)',
     'infoPostFix'    => '.',
     'thousands'      => ',',

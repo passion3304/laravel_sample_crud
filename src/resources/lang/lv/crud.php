@@ -71,7 +71,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Dati nav pieejami',
     'info'           => 'Rādot no _START_ līdz _END_ no kopumā _TOTAL_ ierakstiem',
-    'infoEmpty'      => 'Rādot 0 no 0 no kopumā 0 ierakstiem',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtrēts no _MAX_ kopējiem ierakstiem)',
     'infoPostFix'    => '.',
     'thousands'      => ',',

@@ -82,7 +82,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Nessun record da visualizzare',
     'info'           => 'Visualizzando da _START_ a _END_ record di _TOTAL_',
-    'infoEmpty'      => 'Visualizzando da 0 a 0 record di 0',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtrati da _MAX_ record totali)',
     'infoPostFix'    => '.',
     'thousands'      => ',',

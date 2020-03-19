@@ -71,7 +71,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Nenhum dado cadastrado na tabela',
     'info'           => 'Exibindo _START_ a _END_ de _TOTAL_ registros',
-    'infoEmpty'      => 'Exibindo 0 a 0 de 0 registros',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtrados de _MAX_ registros)',
     'infoPostFix'    => '.',
     'thousands'      => ',',

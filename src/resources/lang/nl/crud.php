@@ -67,7 +67,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Geen data beschikbaar in de tabel',
     'info'           => 'Toon _START_ tot _END_ van _TOTAL_ items',
-    'infoEmpty'      => 'Toon 0 tot 0 van 0 items',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(gefilterd van _MAX_ totale items)',
     'infoPostFix'    => '.',
     'thousands'      => ',',

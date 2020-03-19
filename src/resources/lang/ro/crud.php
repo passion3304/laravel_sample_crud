@@ -70,7 +70,7 @@ return [
     // DataTables translation
     'emptyTable'                              => 'Nu există intrări în baza de date',
     'info'                                    => 'Sunt afișate intrările _START_-_END_ din _TOTAL_',
-    'infoEmpty'                               => 'Sunt afișate toate intrarile. Adică niciuna.',
+    'infoEmpty'                               => '',
     'infoFiltered'                            => '(filtrate din totalul de _MAX_ )',
     'infoPostFix'                             => '.',
     'thousands'                               => ',',

@@ -69,7 +69,7 @@ return [
     // DataTables translation
     'emptyTable'                              => 'Δεν υπάρχουν διαθέσιμα δεδομένα στον πίνακα',
     'info'                                    => 'Εμφάνιση _START_ έως _END_ από _TOTAL_ εγγραφές',
-    'infoEmpty'                               => 'Εμφάνιση 0 έως 0 από 0 εγγραφές',
+    'infoEmpty'                               => '',
     'infoFiltered'                            => '(Επιστράφηκαν από _MAX_ συνολικές εγγραφές)',
     'infoPostFix'                             => '.',
     'thousands'                               => ',',

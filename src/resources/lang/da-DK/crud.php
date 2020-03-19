@@ -67,7 +67,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Ingen data tilgængelig',
     'info'           => 'Viser fra _START_ til _END_ ud af _TOTAL_ emner',
-    'infoEmpty'      => 'viser fra 0 til 0 ud af 0 emner',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtreret efter max _MAX_ emner)',
     'infoPostFix'    => '.',
     'thousands'      => ',',

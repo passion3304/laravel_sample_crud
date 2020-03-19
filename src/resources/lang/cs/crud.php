@@ -83,7 +83,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'V tabulce nejsou k dispozici žádná data',
     'info'           => 'Zobrazeno _START_ až _END_ z celkových _TOTAL_ záznamů',
-    'infoEmpty'      => 'Zobrazeno 0 až 0 z celkových 0 záznamů',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtrováno z _MAX_ celkových záznamů)',
     'infoPostFix'    => '.',
     'thousands'      => ',',
