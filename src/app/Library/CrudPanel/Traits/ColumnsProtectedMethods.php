@@ -129,7 +129,7 @@ trait ColumnsProtectedMethods
 
     /**
      * If a column definition is missing the wrapper element, set the default (empty).
-     * The wrapper is the HTML element that wrappes around the column text. 
+     * The wrapper is the HTML element that wrappes around the column text.
      * By defining this array a developer can wrap the text into an anchor (link),
      * span, div or whatever they want.
      *

@@ -69,7 +69,6 @@ trait Columns
         $column = $this->makeSureColumnHasNeededAttributes($column);
         $this->addColumnToOperationSettings($column);
 
-
         return $this;
     }
 
