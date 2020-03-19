@@ -2,20 +2,19 @@
 @php
     $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
 
-    if(count($attributes)) {
-        $lastKey = array_key_last($attributes);
-    }
     $column['escaped'] = $column['escaped'] ?? true;
 @endphp
 
 <span>
-        @if(count($attributes))
+    @if(count($attributes))
+        @php
+            $lastKey = array_key_last($attributes)
+        @endphp
 
         @foreach($attributes as $key => $attribute)
             @php
-
-            $related_key = $key;
-            $text = str_limit($attribute, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]');
+                $related_key = $key;
+                $text = str_limit($attribute, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]');
             @endphp
 
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
@@ -25,9 +24,9 @@
                     {!! $text !!}
                 @endif
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
-                @if($lastKey != $key),@endif
+                @if($lastKey != $key), @endif
         @endforeach
-        @else
-            -
-        @endif
+    @else
+        -
+    @endif
 </span>

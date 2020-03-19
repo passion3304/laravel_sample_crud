@@ -1,1 +1,1 @@
-</{{$column['wrapper']['element']}}>
+</{{$column['wrapper']['element'] ?? 'a'}}>

@@ -25,5 +25,5 @@
         @else
             {!! $column['text'] !!}
         @endif
-@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 </span>

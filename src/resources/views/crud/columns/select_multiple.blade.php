@@ -11,26 +11,24 @@
 @endphp
 
 <span>
-
     @if (!empty($results_array))
         @foreach ($results_array as $key => $attribute)
-        @php
-            $related_key = $key;
-            $text = str_limit($attribute, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]');
-        @endphp
+            @php
+                $related_key = $key;
+                $text = str_limit($attribute, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]');
+            @endphp
+
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
                 @if($column['escaped'])
                     {{ $text }}
                 @else
                     {!! $text !!}
                 @endif
-
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 
-            @if($lastKey != $key),@endif
+            @if($lastKey != $key), @endif
         @endforeach
     @else
         -
     @endif
-
 </span>

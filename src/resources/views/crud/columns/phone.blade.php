@@ -6,6 +6,7 @@
     $column['text'] =  str_limit(strip_tags($value), array_key_exists('limit', $column) ? $column['limit'] : 40, "[...]");
     $column['escaped'] = $column['escaped'] ?? true;
 @endphp
+
 <span>
 	@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         @if($column['escaped'])

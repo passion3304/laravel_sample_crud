@@ -22,6 +22,7 @@
 
     $column['escaped'] = $column['escaped'] ?? true;
 @endphp
+
 <span>
     @if(!empty($list))
         @foreach($list[$column['visible_key']] as $key => $text)
