@@ -24,7 +24,6 @@ trait ColumnsProtectedMethods
         $column = $this->makeSureColumnHasType($column);
         $column = $this->makeSureColumnHasKey($column);
         $column = $this->makeSureColumnHasModel($column);
-        $column = $this->makeSureColumnHasWrapper($column);
 
         // check if the column exists in the database (as a db column)
         $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column['name']);
