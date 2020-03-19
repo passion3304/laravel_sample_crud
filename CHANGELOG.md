@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.56 - 2020-03-19
+
+### Fixed
+- #2217 - odd bump when opening/closing the sidebar-pills;
+
+
 ## 4.0.55 - 2020-03-19
 
 ### Fixed
