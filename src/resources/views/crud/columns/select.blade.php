@@ -1,8 +1,12 @@
 {{-- single relationships (1-1, 1-n) --}}
 @php
-    $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
-
     $column['escaped'] = $column['escaped'] ?? true;
+    $column['limit'] = $column['limit'] ?? 40;
+
+    $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
+    foreach ($attributes as $key => $text) {
+        $text = str_limit($text, $column['limit'], '[...]');
+    }
 @endphp
 
 <span>
@@ -11,10 +15,9 @@
             $lastKey = array_key_last($attributes)
         @endphp
 
-        @foreach($attributes as $key => $attribute)
+        @foreach($attributes as $key => $text)
             @php
                 $related_key = $key;
-                $text = str_limit($attribute, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]');
             @endphp
 
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')

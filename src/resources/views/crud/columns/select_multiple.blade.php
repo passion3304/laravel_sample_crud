@@ -1,21 +1,27 @@
 {{-- relationships with pivot table (n-n) --}}
 @php
+    $column['escaped'] = $column['escaped'] ?? true;
+    $column['limit'] = $column['limit'] ?? 40;
+
     $results = data_get($entry, $column['name']);
     $results_array = [];
+
     if(!$results->isEmpty()) {
         $related_key = $results->first()->getKeyName();
         $results_array = $results->pluck($column['attribute'],$related_key)->toArray();
         $lastKey = array_key_last($results_array);
     }
-    $column['escaped'] = $column['escaped'] ?? true;
+
+    foreach ($results_array as $key => $text) {
+        $text = str_limit($text, $column['limit'], '[...]');
+    }
 @endphp
 
 <span>
     @if (!empty($results_array))
-        @foreach ($results_array as $key => $attribute)
+        @foreach ($results_array as $key => $text)
             @php
                 $related_key = $key;
-                $text = str_limit($attribute, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]');
             @endphp
 
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
