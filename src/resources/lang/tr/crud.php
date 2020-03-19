@@ -76,7 +76,7 @@ return [
     'info'           => '_START_ ile _END_ arası Toplam _TOTAL_ kayıt',
     'infoEmpty'      => '0 - 0 arası 0 Kayıt',
     'infoFiltered'   => '(Toplam _MAX_ kayıt filtrelendi)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ kayıt sayfa başına',
     'loadingRecords' => 'Yükleniyor...',

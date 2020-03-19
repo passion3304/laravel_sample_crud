@@ -29,8 +29,8 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
 
-    <input class="array-json" 
-            type="hidden" 
+    <input class="array-json"
+            type="hidden"
             data-init-function="bpFieldInitTableElement"
             name="{{ $field['name'] }}">
 
@@ -45,8 +45,8 @@
                         {{ $column }}
                     </th>
                     @endforeach
-                    <th class="text-center"> {{-- <i class="fa fa-sort"></i> --}} </th>
-                    <th class="text-center"> {{-- <i class="fa fa-trash"></i> --}} </th>
+                    <th class="text-center"> {{-- <i class="la la-sort"></i> --}} </th>
+                    <th class="text-center"> {{-- <i class="la la-trash"></i> --}} </th>
                 </tr>
             </thead>
 
@@ -59,10 +59,10 @@
                     </td>
                     @endforeach
                     <td>
-                        <span class="btn btn-sm btn-light sort-handle pull-right"><span class="sr-only">sort item</span><i class="fa fa-sort" role="presentation" aria-hidden="true"></i></span>
+                        <span class="btn btn-sm btn-light sort-handle pull-right"><span class="sr-only">sort item</span><i class="la la-sort" role="presentation" aria-hidden="true"></i></span>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-light removeItem" type="button"><span class="sr-only">delete item</span><i class="fa fa-trash" role="presentation" aria-hidden="true"></i></button>
+                        <button class="btn btn-sm btn-light removeItem" type="button"><span class="sr-only">delete item</span><i class="la la-trash" role="presentation" aria-hidden="true"></i></button>
                     </td>
                 </tr>
 
@@ -71,7 +71,7 @@
         </table>
 
         <div class="array-controls btn-group m-t-10">
-            <button class="btn btn-sm btn-light" type="button" data-button-type="addItem"><i class="fa fa-plus"></i> {{trans('backpack::crud.add')}} {{ $item_name }}</button>
+            <button class="btn btn-sm btn-light" type="button" data-button-type="addItem"><i class="la la-plus"></i> {{trans('backpack::crud.add')}} {{ $item_name }}</button>
         </div>
 
     </div>

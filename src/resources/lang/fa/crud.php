@@ -85,7 +85,7 @@ return [
     'info'           => 'نمایش  _START_ تا _END_ از _TOTAL_ مورد',
     'infoEmpty'      => 'نمایش ۰ تا ۰ از ۰ مورد',
     'infoFiltered'   => '(فیلتر شده از _MAX_ مورد)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => '،',
     'lengthMenu'     => '_MENU_ رکورد در صفحه',
     'loadingRecords' => 'درحال بارگذاری...',

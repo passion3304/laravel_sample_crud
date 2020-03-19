@@ -10,7 +10,51 @@ trait Buttons
     // BUTTONS
     // ------------
 
-    // TODO: $this->crud->reorderButtons('stack_name', ['one', 'two']);
+    /**
+     * Order the CRUD buttons. If certain button names are missing from the given order array
+     * they will be pushed to the end of the button collection.
+     *
+     *
+     * @param string      $stack           Stack where the buttons belongs. Options: top, line, bottom.
+     * @param array       $order           Ordered name of the buttons. ['update', 'delete', 'show']
+     */
+    public function orderButtons(string $stack, array $order)
+    {
+        $newButtons = collect([]);
+        $otherButtons = collect([]);
+
+        // we get the buttons that belong to the specified stack
+        $stackButtons = $this->buttons()->reject(function ($item) use ($stack, $otherButtons) {
+            if ($item->stack != $stack) {
+                // if the button does not belong to this stack we just add it for merging later
+                $otherButtons->push($item);
+
+                return true;
+            }
+
+            return false;
+        });
+
+        // we parse the ordered buttons
+        collect($order)->each(function ($btnKey) use ($newButtons, $stackButtons) {
+            if (! $button = $stackButtons->where('name', $btnKey)->first()) {
+                abort(500, 'Button name [«'.$btnKey.'»] not found.');
+            }
+            $newButtons->push($button);
+        });
+
+        // if the ordered buttons are less than the total number of buttons in the stack
+        // we add the remaining buttons to the end of the ordered ones
+        if (count($newButtons) < count($stackButtons)) {
+            foreach ($stackButtons as $button) {
+                if (! $newButtons->where('name', $button->name)->first()) {
+                    $newButtons->push($button);
+                }
+            }
+        }
+
+        $this->setOperationSetting('buttons', $newButtons->merge($otherButtons));
+    }
 
     /**
      * Add a button to the CRUD table view.

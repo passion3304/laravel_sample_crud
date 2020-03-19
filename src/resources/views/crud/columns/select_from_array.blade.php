@@ -11,7 +11,7 @@
 
                 foreach ($values as $key => $value) {
                     if (! is_null($value)) {
-                        $array_of_values[] = $column['options'][$value];
+                        $array_of_values[] = $column['options'][$value] ?? $value;
                     } else {
                         echo '-';
                         continue;
@@ -21,10 +21,10 @@
                 if (count($array_of_values) > 1) {
                     echo implode(', ', $array_of_values);
                 } else {
-                    echo array_first($array_of_values);
+                    echo Arr::first($array_of_values);
                 }
             } else {
-                echo $column['options'][$values];
+                echo $column['options'][$values] ?? $values;
             }
         } else {
             echo '-';

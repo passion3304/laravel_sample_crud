@@ -29,6 +29,9 @@ return [
             // whenever the user tries to see that page, backpack loads the previous pagination and filtration
             'persistentTable' => true,
 
+            // show search bar in the top-right corner?
+            'searchableTable' => true,
+
             // the time the table will be persisted in minutes
             // after this the table info is cleared from localStorage.
             // use false to never force localStorage clear. (default)
@@ -52,6 +55,13 @@ return [
             // - 2-3 - more important than the rest of the columns
             // - 4 - less important than most columns
             'actionsColumnPriority' => 1,
+
+            // Show a "Reset" button next to the List operation subheading
+            // (Showing 1 to 25 of 9999 entries. Reset)
+            // that allows the user to erase local storage for that datatable,
+            // thus clearing any searching, filtering or pagination that has been
+            // remembered and persisted using persistentTable
+            'resetButton' => true,
         ],
 
         /*
@@ -79,6 +89,9 @@ return [
             // When the user chooses "save and back" or "save and new", show a bubble
             // for the fact that the default save action has been changed?
             'showSaveActionChange' => true, //options: true, false
+
+            // Should we show a cancel button to the user?
+            'showCancelButton' => true,
 
             // Before saving the entry, how would you like the request to be stripped?
             // - false - ONLY save inputs that have fields (safest)
@@ -112,6 +125,9 @@ return [
             // When the user chooses "save and back" or "save and new", show a bubble
             // for the fact that the default save action has been changed?
             'showSaveActionChange' => true, //options: true, false
+
+            // Should we show a cancel button to the user?
+            'showCancelButton' => true,
 
             // Before saving the entry, how would you like the request to be stripped?
             // - false - Save ONLY inputs that have a field (safest, default);

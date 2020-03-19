@@ -319,7 +319,7 @@ trait Search
         }
 
         return [
-            'draw'            => (isset($this->request['draw']) ? (int) $this->request['draw'] : 0),
+            'draw'            => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
             'recordsTotal'    => $totalRows,
             'recordsFiltered' => $filteredRows,
             'data'            => $rows,
