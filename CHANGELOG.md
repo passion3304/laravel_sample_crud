@@ -24,6 +24,19 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.56 - 2020-03-19
+
+### Fixed
+- #2217 - odd bump when opening/closing the sidebar-pills;
+
+
+## 4.0.55 - 2020-03-19
+
+### Fixed
+- In datatabes, when zero records, only show that inside the table, not as a subheading too;
+- Updated npm dependencies to update minimist;
+
+
 ## 4.0.54 - 2020-03-15
 
 ### Fixed
