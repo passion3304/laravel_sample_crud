@@ -121,6 +121,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}

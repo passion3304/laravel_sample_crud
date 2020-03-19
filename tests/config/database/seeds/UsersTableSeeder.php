@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
 {
@@ -20,7 +21,7 @@ class UsersTableSeeder extends Seeder
             'name'           => $faker->name,
             'email'          => $faker->safeEmail,
             'password'       => bcrypt('secret'),
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
             'created_at'     => $now,
             'updated_at'     => $now,
         ]]);

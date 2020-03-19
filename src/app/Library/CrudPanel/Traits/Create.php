@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
 
 trait Create
 {
@@ -26,8 +27,8 @@ trait Create
         $data = $this->compactFakeFields($data);
 
         // omit the n-n relationships when updating the eloquent item
-        $nn_relationships = array_pluck($this->getRelationFieldsWithPivot(), 'name');
-        $item = $this->model->create(array_except($data, $nn_relationships));
+        $nn_relationships = Arr::pluck($this->getRelationFieldsWithPivot(), 'name');
+        $item = $this->model->create(Arr::except($data, $nn_relationships));
 
         // if there are any relationships available, also sync those
         $this->createRelations($item, $data);
@@ -81,7 +82,7 @@ trait Create
     {
         $all_relation_fields = $this->getRelationFields();
 
-        return array_where($all_relation_fields, function ($value, $key) {
+        return Arr::where($all_relation_fields, function ($value, $key) {
             return isset($value['pivot']) && $value['pivot'];
         });
     }
@@ -209,7 +210,7 @@ trait Create
             $attributeKey = $relationField['name'];
             if (array_key_exists($attributeKey, $data) && empty($relationField['pivot'])) {
                 $key = implode('.relations.', explode('.', $relationField['entity']));
-                $fieldData = array_get($relationData, 'relations.'.$key, []);
+                $fieldData = Arr::get($relationData, 'relations.'.$key, []);
 
                 if (! array_key_exists('model', $fieldData)) {
                     $fieldData['model'] = $relationField['model'];
@@ -221,7 +222,7 @@ trait Create
 
                 $fieldData['values'][$attributeKey] = $data[$attributeKey];
 
-                array_set($relationData, 'relations.'.$key, $fieldData);
+                Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
 

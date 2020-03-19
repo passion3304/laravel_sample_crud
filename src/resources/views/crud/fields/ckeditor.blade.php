@@ -26,6 +26,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
@@ -36,7 +37,7 @@
             function bpFieldInitCKEditorElement(element) {
                 // remove any previous CKEditors from right next to the textarea
                 element.siblings("[id^='cke_ckeditor']").remove();
-
+                //console.log('ckeditor init');
                 // trigger a new CKEditor
                 element.ckeditor({
                     "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",

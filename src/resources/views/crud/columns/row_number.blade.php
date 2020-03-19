@@ -1,7 +1,12 @@
 {{-- row number --}}
 @php
-	$column['text'] = (array_key_exists('prefix', $column) ? $column['prefix'] : '').str_limit(strip_tags($rowNumber), array_key_exists('limit', $column) ? $column['limit'] : 40, "[...]").(array_key_exists('suffix', $column) ? $column['suffix'] : '');
     $column['escaped'] = $column['escaped'] ?? true;
+    $column['limit'] = $column['limit'] ?? 40;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
+	$column['text'] = 	$column['prefix'].
+						Str::limit(strip_tags($rowNumber), $column['limit'], "[...]").
+						$column['suffix'];
 @endphp
 
 <span>

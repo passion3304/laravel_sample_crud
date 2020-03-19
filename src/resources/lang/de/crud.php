@@ -70,7 +70,7 @@ return [
     'info'           => 'Zeigt _START_ bis _END_ von _TOTAL_ Einträgen',
     'infoEmpty'      => '',
     'infoFiltered'   => '(gefiltert von insgesamt _MAX_ Einträgen)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => '.',
     'lengthMenu'     => '_MENU_ Einträge pro Seite',
     'loadingRecords' => 'Laden...',

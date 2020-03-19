@@ -1,5 +1,5 @@
 <!-- dependencyJson -->
-<div class="form-group col-sm-12 checklist_dependency"  
+<div class="form-group col-sm-12 checklist_dependency"
      data-entity="{{ $field['field_unique_name'] }}"
      data-init-function="bpFieldInitChecklistDependencyElement"
      @include('crud::inc.field_wrapper_attributes')>
@@ -267,7 +267,7 @@
             }
           });
 
-      } 
+      }
     </script>
     @endpush
 

@@ -85,7 +85,7 @@ return [
     'info'           => 'Zobrazeno _START_ až _END_ z celkových _TOTAL_ záznamů',
     'infoEmpty'      => '',
     'infoFiltered'   => '(filtrováno z _MAX_ celkových záznamů)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ záznamů na stránku',
     'loadingRecords' => 'Načítání...',

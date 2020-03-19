@@ -73,7 +73,7 @@ return [
     'info'           => 'Rādot no _START_ līdz _END_ no kopumā _TOTAL_ ierakstiem',
     'infoEmpty'      => '',
     'infoFiltered'   => '(filtrēts no _MAX_ kopējiem ierakstiem)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ ieraksti uz lapu',
     'loadingRecords' => 'Ielādē...',

@@ -19,8 +19,8 @@
 			>
 
 			<span class="input-group-append">
-			  	<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm popup_selector"><i class="fa fa-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
-				<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm clear_elfinder_picker"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
+			  	<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm popup_selector"><i class="la la-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
+				<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm clear_elfinder_picker"><i class="la la-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
 			</span>
 		</div>
 	</div>
@@ -40,7 +40,7 @@
 	@endphp
 
 	{{-- FIELD CSS - will be loaded in the after_styles section --}}
-	@push('crud_fields_styles')
+    @push('crud_fields_styles')
 		<!-- include browse server css -->
 		<link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
 		<style>
@@ -50,7 +50,7 @@
 		</style>
 	@endpush
 
-	@push('crud_fields_scripts')
+    @push('crud_fields_scripts')
 		<!-- include browse server js -->
 		<script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
 		<script type="text/javascript">

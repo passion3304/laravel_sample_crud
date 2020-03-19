@@ -85,7 +85,7 @@ return [
     'info'                                    => '_TOTAL_ 件中 _START_ から _END_ を表示',
     'infoEmpty'                               => '',
     'infoFiltered'                            => '(全 _MAX_ 件からフィルター)',
-    'infoPostFix'                             => '',
+    'infoPostFix'                             => '.',
     'thousands'                               => ',',
     'lengthMenu'                              => '_MENU_ 件表示',
     'loadingRecords'                          => '読み込み中...',

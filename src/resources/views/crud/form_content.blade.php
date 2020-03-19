@@ -1,9 +1,9 @@
-<input type="hidden" name="http_referrer" value={{ old('http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
+<input type="hidden" name="http_referrer" value={{ session('referrer_url_override') ?? old('http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled() && count($crud->getTabs()))
     @include('crud::inc.show_tabbed_fields')
-    <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0]) }}" />
+    <input type="hidden" name="current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
 @else
   <div class="card">
     <div class="card-body row">
@@ -11,6 +11,7 @@
     </div>
   </div>
 @endif
+
 
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
 
@@ -85,7 +86,7 @@
       // Place the focus on the first element in the form
       @if( $crud->getAutoFocusOnFirstField() )
         @php
-          $focusField = array_first($fields, function($field) {
+          $focusField = Arr::first($fields, function($field) {
               return isset($field['auto_focus']) && $field['auto_focus'] == true;
           });
         @endphp

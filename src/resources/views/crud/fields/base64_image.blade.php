@@ -57,13 +57,13 @@
             <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
-        <button class="btn btn-light btn-sm" data-handle="rotateLeft" type="button" style="display: none;"><i class="fa fa-rotate-left"></i></button>
-        <button class="btn btn-light btn-sm" data-handle="rotateRight" type="button" style="display: none;"><i class="fa fa-rotate-right"></i></button>
-        <button class="btn btn-light btn-sm" data-handle="zoomIn" type="button" style="display: none;"><i class="fa fa-search-plus"></i></button>
-        <button class="btn btn-light btn-sm" data-handle="zoomOut" type="button" style="display: none;"><i class="fa fa-search-minus"></i></button>
-        <button class="btn btn-light btn-sm" data-handle="reset" type="button" style="display: none;"><i class="fa fa-times"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="rotateLeft" type="button" style="display: none;"><i class="la la-rotate-left"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="rotateRight" type="button" style="display: none;"><i class="la la-rotate-right"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="zoomIn" type="button" style="display: none;"><i class="la la-search-plus"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="zoomOut" type="button" style="display: none;"><i class="la la-search-minus"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="reset" type="button" style="display: none;"><i class="la la-times"></i></button>
         @endif
-        <button class="btn btn-light btn-sm" data-handle="remove" type="button"><i class="fa fa-trash"></i></button>
+        <button class="btn btn-light btn-sm" data-handle="remove" type="button"><i class="la la-trash"></i></button>
     </div>
 
     {{-- HINT --}}

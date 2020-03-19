@@ -5,7 +5,7 @@
 
     $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
     foreach ($attributes as $key => $text) {
-        $text = str_limit($text, $column['limit'], '[...]');
+        $text = Str::limit($text, $column['limit'], '[...]');
     }
 @endphp
 

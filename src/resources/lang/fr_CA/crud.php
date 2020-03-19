@@ -73,7 +73,7 @@ return [
     'info'           => 'Affichage des éléments _START_ à _END_ sur _TOTAL_',
     'infoEmpty'      => '',
     'infoFiltered'   => '(filtré à partir de _MAX_ éléments au total)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ enregistrements par page',
     'loadingRecords' => 'Chargement...',

@@ -88,7 +88,7 @@ return [
     'info'                                    => 'Показано _START_ до _END_ из _TOTAL_ совпадений',
     'infoEmpty'                               => '',
     'infoFiltered'                            => '(отфильтровано из _MAX_ совпадений)',
-    'infoPostFix'                             => '',
+    'infoPostFix'                             => '.',
     'thousands'                               => ',',
     'lengthMenu'                              => '_MENU_ записей на странице',
     'loadingRecords'                          => 'Загрузка...',

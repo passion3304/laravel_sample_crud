@@ -7,7 +7,8 @@
     }
 
     $column['escaped'] = $column['escaped'] ?? true;
-    $column['text'] = str_limit($value, array_key_exists('limit', $column) ? $column['limit'] : 40, '[...]');
+    $column['limit'] = $column['limit'] ?? 40;
+    $column['text'] = Str::limit($value, $column['limit'], '[...]');
 @endphp
 
 <span>
