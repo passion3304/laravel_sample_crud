@@ -8,6 +8,28 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.56 - 2020-03-19
+
+### Fixed
+- #2217 - odd bump when opening/closing the sidebar-pills;
+
+
+## 4.0.55 - 2020-03-19
+
+### Fixed
+- In datatabes, when zero records, only show that inside the table, not as a subheading too;
+- Updated npm dependencies to update minimist;
+
+
+## 4.0.54 - 2020-03-15
+
+### Fixed
+- Deleted obsolete line about cheaper licences @genesiscz (#2556)
+- Added a Czech translation for base @genesiscz (#2557)
+- Fixed switch icon_picker @adriallongarriu (#2476)
+- Updated acorn dependency @tabacitu (#2559)
+
+
 ## 4.0.53 - 2020-03-10
 
 ### Fixed

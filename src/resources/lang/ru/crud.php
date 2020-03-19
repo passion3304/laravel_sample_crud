@@ -86,7 +86,7 @@ return [
     // DataTables translation
     'emptyTable'                              => 'В таблице нет доступных данных',
     'info'                                    => 'Показано _START_ до _END_ из _TOTAL_ совпадений',
-    'infoEmpty'                               => 'Показано 0 до 0 из 0 совпадений',
+    'infoEmpty'                               => '',
     'infoFiltered'                            => '(отфильтровано из _MAX_ совпадений)',
     'infoPostFix'                             => '',
     'thousands'                               => ',',

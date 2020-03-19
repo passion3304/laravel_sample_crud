@@ -74,7 +74,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Tabloda veri yok',
     'info'           => '_START_ ile _END_ arası Toplam _TOTAL_ kayıt',
-    'infoEmpty'      => '0 - 0 arası 0 Kayıt',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(Toplam _MAX_ kayıt filtrelendi)',
     'infoPostFix'    => '',
     'thousands'      => ',',
