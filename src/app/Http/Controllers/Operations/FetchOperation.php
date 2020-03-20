@@ -57,7 +57,7 @@ trait FetchOperation
         $model_instance = new $config['model'];
         // set configuration defaults
         $config['paginate'] = isset($config['paginate']) ? $config['paginate'] : 10;
-        $config['searchableAttributes'] = $config['searchableAttributes'] ?? $model_instance->identifiableAttribute();
+        $config['searchable_attributes'] = $config['searchable_attributes'] ?? $model_instance->identifiableAttribute();
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : $model_instance; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
         // FetchOperation sends an empty query to retrieve the default entry for select when field is not nullable.
@@ -72,7 +72,7 @@ trait FetchOperation
 
         $textColumnTypes = ['string', 'json_string', 'text'];
         // for each searchable attribute, add a WHERE clause
-        foreach ($config['searchableAttributes'] as $k => $searchColumn) {
+        foreach ((array)$config['searchable_attributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
             $columnType = $config['query']->getColumnType($searchColumn);
 
