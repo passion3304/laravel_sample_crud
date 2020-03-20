@@ -72,7 +72,7 @@ trait FetchOperation
 
         $textColumnTypes = ['string', 'json_string', 'text'];
         // for each searchable attribute, add a WHERE clause
-        foreach ((array)$config['searchable_attributes'] as $k => $searchColumn) {
+        foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
             $columnType = $config['query']->getColumnType($searchColumn);
 

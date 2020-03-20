@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
-use Exception;
 use Illuminate\Support\Arr;
 
 trait HasIdentifiableAttribute
