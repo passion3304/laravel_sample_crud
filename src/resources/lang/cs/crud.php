@@ -29,18 +29,6 @@ return [
     'edit'                 => 'Upravit',
     'save'                 => 'Uložit',
 
-    // Revisions
-    'revisions'            => 'Změny',
-    'no_revisions'         => 'Žádné změny nebyly nalezeny',
-    'created_this'         => 'vytvořil',
-    'changed_the'          => 'upravil',
-    'restore_this_value'   => 'Obnovit tuto hodnotu',
-    'from'                 => 'z',
-    'to'                   => 'na',
-    'undo'                 => 'Vrátit',
-    'revision_restored'    => 'Změny úspěšně obnoveny',
-    'guest_user'           => 'Host uživatel',
-
     // Translatable models
     'edit_translations' => 'UPRAVIT PŘEKLADY',
     'language'          => 'Jazyk',

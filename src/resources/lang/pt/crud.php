@@ -29,18 +29,6 @@ return [
     'edit'                 => 'Editar',
     'save'                 => 'Gravar',
 
-    // Revisions
-    'revisions'            => 'Revisões',
-    'no_revisions'         => 'Não foram encontradas revisões',
-    'created_this'         => 'criou este',
-    'changed_the'          => 'alterou este',
-    'restore_this_value'   => 'Restaurou este valor',
-    'from'                 => 'de',
-    'to'                   => 'para',
-    'undo'                 => 'Desfazer',
-    'revision_restored'    => 'Revisão restaurada com sucesso',
-    'guest_user'           => 'Convidado',
-
     // Translatable models
     'edit_translations' => 'EDITAR TRADUÇÕES',
     'language'          => 'Idioma',

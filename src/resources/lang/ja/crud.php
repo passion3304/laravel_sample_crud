@@ -29,18 +29,6 @@ return [
     'edit'                                    => '編集',
     'save'                                    => '保存',
 
-    // Revisions
-    'revisions'                               => 'リビジョン',
-    'no_revisions'                            => 'リビジョンは見つかりません',
-    'created_this'                            => 'が作成した',
-    'changed_the'                             => 'が変更した',
-    'restore_this_value'                      => 'この値を復元',
-    'from'                                    => '旧',
-    'to'                                      => '新',
-    'undo'                                    => '復元',
-    'revision_restored'                       => 'リビジョンを復元しました',
-    'guest_user'                              => 'ゲストユーザー',
-
     // Translatable models
     'edit_translations'                       => '翻訳を編集',
     'language'                                => '言語',

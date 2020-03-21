@@ -29,18 +29,6 @@ return [
     'edit'                 => 'Ubah',
     'save'                 => 'Simpan',
 
-    // Revisions
-    'revisions'            => 'Revisi',
-    'no_revisions'         => 'Tidak ada revisi yang ditemukan',
-    'created_this'         => 'telah dibuat',
-    'changed_the'          => 'mengubah',
-    'restore_this_value'   => 'Kembalikan nilai ini',
-    'from'                 => 'dari',
-    'to'                   => 'ke',
-    'undo'                 => 'Batalkan',
-    'revision_restored'    => 'Revisi berhasil dipulihkan',
-    'guest_user'           => 'Pengguna Tamu',
-
     // Translatable models
     'edit_translations' => 'Terjemahan',
     'language'          => 'Bahasa',

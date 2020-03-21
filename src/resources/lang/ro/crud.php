@@ -29,18 +29,6 @@ return [
     'edit'                                    => 'Editează',
     'save'                                    => 'Salvează',
 
-    // Revisions
-    'revisions'                               => 'Revizii',
-    'no_revisions'                            => 'Nici o revizie',
-    'created_this'                            => 'a generat înregistrarea',
-    'changed_the'                             => 'a schimbat câmpul',
-    'restore_this_value'                      => 'restabilește valoare',
-    'from'                                    => 'valoare veche',
-    'to'                                      => 'valoare nouă',
-    'undo'                                    => 'Restabilește valoare anterioară',
-    'revision_restored'                       => 'Revizie restaurată cu succes',
-    'guest_user'                              => 'Vizitator',
-
     // Translatable models
     'edit_translations'                       => 'EDITEAZĂ TRADUCERILE',
     'language'                                => 'Limbă',
