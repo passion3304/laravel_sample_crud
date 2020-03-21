@@ -29,18 +29,6 @@ return [
     'edit'                 => '编辑',
     'save'                 => '存储',
 
-    // Revisions
-    'revisions'            => '修顶版本',
-    'no_revisions'         => '找不到修订版本',
-    'created_this'         => '建立的',
-    'changed_the'          => '更改了',
-    'restore_this_value'   => '还原这个值',
-    'from'                 => '由',
-    'to'                   => '到',
-    'undo'                 => '撤销',
-    'revision_restored'    => '成功恢复修订版本',
-    'guest_user'           => '访客',
-
     // Translatable models
     'edit_translations' => '翻译',
     'language'          => '语言',

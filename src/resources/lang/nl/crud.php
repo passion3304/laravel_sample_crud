@@ -29,17 +29,6 @@ return [
     'edit'                 => 'Bewerken',
     'save'                 => 'Opslaan',
 
-    // Revisions
-    'revisions'             => 'Revisies',
-    'no_revisions'          => 'Geen revisies gevonden',
-    'created_this'          => 'heeft dit aangemaakt',
-    'changed_the'           => 'heeft aangepast',
-    'restore_this_value'    => 'Herstel deze waarde',
-    'from'                  => 'van',
-    'to'                    => 'naar',
-    'undo'                  => 'Ongedaan maken',
-    'revision_restored'     => 'Revisie succesvol hersteld',
-
     // Translatable models
     'edit_translations' => 'VERTALING WIJZIGEN',
     'language'          => 'Taal',

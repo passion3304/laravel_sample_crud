@@ -29,18 +29,6 @@ return [
     'edit' => 'Rediģēt',
     'save' => 'Saglabāt',
 
-    // Revisions
-    'revisions'          => 'Revīzijas',
-    'no_revisions'       => 'Revīzijas nav atrastas',
-    'created_this'       => 'izveidoja',
-    'changed_the'        => 'izmainīja',
-    'restore_this_value' => 'Atjaunot vērtību',
-    'from'               => 'no',
-    'to'                 => 'līdz',
-    'undo'               => 'Atgriezt atpakaļ',
-    'revision_restored'  => 'Revīzija veiksmīgi atjaunota',
-    'guest_user'         => 'Lietotājs: viesis',
-
     // Translatable models
     'edit_translations' => 'LABOT TULKOJUMUS',
     'language'          => 'Valoda',
