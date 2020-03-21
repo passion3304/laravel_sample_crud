@@ -3,7 +3,7 @@
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled() && count($crud->getTabs()))
     @include('crud::fields.relationship.show_tabbed_fields')
-    <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
+    <input type="hidden" name="current_tab" value="{{ Str::slug($crud->getTabs()[0], "") }}" />
 @else
   <div class="card">
     <div class="card-body row">

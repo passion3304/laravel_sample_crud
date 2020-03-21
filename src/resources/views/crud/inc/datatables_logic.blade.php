@@ -235,11 +235,11 @@
         $('#crudTable_reset_button').on('click', function() {
 
           //clear the filters
-          if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url')) {
-              localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url');
+          if (localStorage.getItem('{{ Str::slug($crud->getRoute())}}_list_url')) {
+              localStorage.removeItem('{{ Str::slug($crud->getRoute()) }}_list_url');
           }
-          if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url_time')) {
-              localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+          if (localStorage.getItem('{{ Str::slug($crud->getRoute())}}_list_url_time')) {
+              localStorage.removeItem('{{ Str::slug($crud->getRoute()) }}_list_url_time');
           }
 
           //clear the table sorting/ordering/visibility
