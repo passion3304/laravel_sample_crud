@@ -2,7 +2,7 @@
 @php
     $array = data_get($entry, $column['name']);
     $list[$column['visible_key']] = [];
-    
+
     // if the isn't using attribute casting, decode it
     if (is_string($array)) {
         $array = json_decode($array);

@@ -1,7 +1,7 @@
 {{-- enumerate the values in an array  --}}
 @php
     $value = data_get($entry, $column['name']);
-    $column['escaped'] = $column['escaped'] ?? true;
+    $column['escaped'] = $column['escaped'] ?? false;
 
     // the value should be an array wether or not attribute casting is used
     if (!is_array($value)) {
@@ -18,9 +18,8 @@
 
         @foreach($value as $key => $text)
             @php
-                $related_key = $key;
+                $related_key = $text;
             @endphp
-
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
                 @if($column['escaped'])
                     {{ $text }}

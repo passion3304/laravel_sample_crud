@@ -10,14 +10,14 @@
     @if ($value && count($value))
         @foreach ($value as $file_path)
         @php
-            $column['wrapper']['href'] = $column['wrapper']['href'] ?? isset($column['disk'])?asset(\Storage::disk($column['disk'])->url($file_path)):asset($prefix.$file_path);
-            $text = $prefix.$file_path;
+            $column['wrapper']['href'] = $column['wrapper']['href'] ?? ( isset($column['disk'])?asset(\Storage::disk($column['disk'])->url($file_path)):asset($column['prefix'].$file_path) );
+            $text = $column['prefix'].$file_path;
         @endphp
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
             @if($column['escaped'])
-                - {{ $text }}
+                - {{ $text }} <br/>
             @else
-                - {!! $text !!}
+                - {!! $text !!} <br/>
             @endif
         @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
         @endforeach
