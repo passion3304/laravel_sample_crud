@@ -26,11 +26,7 @@ class ChartController
 			$this->data();
 		}
 
-		if ($this->chart) {
-			return $this->chart->api();
-		}
-
-		return $this->api();
+		return $this->chart->api();
 	}
 
 	/**
@@ -67,35 +63,37 @@ class ChartController
 		// load the appropriate JS Library from CDN
 		switch ($dataset) {
 			case 'ConsoleTVs\Charts\Classes\Chartjs\Dataset':
-				$this->library = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js'; 
+				$file = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js'; 
 				break;
 
 			case 'ConsoleTVs\Charts\Classes\Highcharts\Dataset':
-				$this->library = 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.6/highcharts.js'; 
+				$file = 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.6/highcharts.js'; 
 				break;
 
 			case 'ConsoleTVs\Charts\Classes\Fusioncharts\Dataset':
-				$this->library = 'https://cdn.jsdelivr.net/npm/fusioncharts@3.12.2/fusioncharts.js'; 
+				$file = 'https://cdn.jsdelivr.net/npm/fusioncharts@3.12.2/fusioncharts.js'; 
 				break;
 
 			case 'ConsoleTVs\Charts\Classes\Echarts\Dataset':
-				$this->library = 'https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.2/echarts-en.min.js'; 
+				$file = 'https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.2/echarts-en.min.js'; 
 				break;
 
 			case 'ConsoleTVs\Charts\Classes\Frappe\Dataset':
-				$this->library = 'https://cdn.jsdelivr.net/npm/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js'; 
+				$file = 'https://cdn.jsdelivr.net/npm/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js'; 
 				break;
 
 			case 'ConsoleTVs\Charts\Classes\C3\Dataset':
-				$this->library = [
-									'https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js',
-									'https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.7/c3.min.js',
-								 ];
+				$file = [
+					'https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js',
+					'https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.7/c3.min.js',
+				 ];
 				break;
 			
 			default:
-				$this->library = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js'; 
+				$file = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js'; 
 				break;
 		}
+
+		$this->library = $file;
 	}
 }

@@ -7,13 +7,9 @@
   // - https://github.com/ConsoleTVs/Charts
   // - https://github.com/chartjs/Chart.js
 
-  if (isset($widget['controller'])) {
-    $controller = new $widget['controller'];
-    $chart = $controller->chart;
-    $path = $controller->getLibraryFilePath();
-  } else {
-    abort(500, 'Chart controller has not been configured.');
-  }
+  $controller = new $widget['controller'];
+  $chart = $controller->chart;
+  $path = $controller->getLibraryFilePath();
 @endphp
 
 <div class="{{ $widget['wrapperClass'] ?? 'col-sm-6 col-md-4' }}">
