@@ -3,23 +3,17 @@
   // Backpack ChartJS Widget
   // -----------------------
   // Uses:
+  // - Backpack\CRUD\app\Http\Controllers\ChartController
   // - https://github.com/ConsoleTVs/Charts
   // - https://github.com/chartjs/Chart.js
 
-  // $chart = new \App\Charts\Chart;
-
-  // if (isset($widget['content']['configuration']) && is_callable($widget['content']['configuration'])) {
-  //   $chart = $widget['content']['configuration']($chart);
-  // } else {
-  //   abort(500, 'Chart widget not configured.');
-  // }
-
-  if (isset($widget['content']['chart'])) {
-    $chart = new $widget['content']['chart'];
+  if (isset($widget['controller'])) {
+    $controller = new $widget['controller'];
+    $chart = $controller->chart;
+    $path = $controller->getLibraryFilePath();
   } else {
-    abort(500, 'Chart widget not configured.');
+    abort(500, 'Chart controller has not been configured.');
   }
-
 @endphp
 
 <div class="{{ $widget['wrapperClass'] ?? 'col-sm-6 col-md-4' }}">
@@ -40,7 +34,14 @@
 </div>
 
 @push('after_scripts')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+  @if (is_array($path))
+    @foreach ($path as $string)
+      <script src="{{ $string }}" charset="utf-8"></script>
+    @endforeach
+  @elseif (is_string($path))
+    <script src="{{ $path }}" charset="utf-8"></script>
+  @endif
+
   {!! $chart->script() !!}
 
 @endpush
