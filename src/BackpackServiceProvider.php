@@ -2,11 +2,11 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 
 class BackpackServiceProvider extends ServiceProvider
 {
