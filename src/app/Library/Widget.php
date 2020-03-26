@@ -21,6 +21,15 @@ class Widget extends Fluent
         $this->save();
     }
 
+    /**
+     * Add a new widget to the widgets collection in the Laravel Service Container.
+     * If a widget with the same name exists, it will update the attributes of that one
+     * instead of creating a new one.
+     * 
+     * @param string|array $attributes Either the name of the widget, or an array with the attributes the new widget should hold, including the name attribute.
+     * 
+     * @return Widget
+     */
     public static function add($attributes = null)
     {
         // use the widgets collection object from the Laravel Service Container
@@ -30,24 +39,27 @@ class Widget extends Fluent
         $attributes = is_string($attributes) ? ['name' => $attributes] : $attributes;
         $attributes['name'] = $attributes['name'] ?? 'widget_'.rand(1, 999999999);
 
-        $existingItem = $collection->firstWhere('name', $attributes['name']);
-
-        if ($existingItem) {
+        // if that widget name already exists in the widgets collection
+        // then pick up all widget attributes from that entry
+        // and overwrite them with the ones passed in $attributes
+        if ($existingItem = $collection->firstWhere('name', $attributes['name'])) {
             $attributes = array_merge($existingItem->attributes, $attributes);
         }
 
+        // set defaults for other mandatory attributes
         $attributes['group'] = $attributes['group'] ?? 'before_content';
         $attributes['type'] = $attributes['type'] ?? 'card';
 
         return new static($attributes, $collection);
     }
 
-    // Aliases of add()
+    // Alias of add()
     public static function name($name = null)
     {
         return static::add($name);
     }
 
+    // Alias of add()
     public static function make($name = null)
     {
         return static::add($name);
@@ -76,16 +88,15 @@ class Widget extends Fluent
     // -------------
 
     /**
-     * If a developer calls a method that doesn't exist, assume they want:
-     * - the Widget array to have an attribute with that value;
-     * - that field be updated inside the global Widgets object;.
+     * Any call to a non-existing method on this class will be assumed to be
+     * an attribute that the developer wants to add to that particular widget.
      *
      * Eg: class('something') will set the "class" attribute to "something"
      *
      * @param  string $method     The method being called that doesn't exist.
      * @param  array $parameters  The arguments when that method was called.
      *
-     * @return Widgets
+     * @return Widget
      */
     public function __call($method, $parameters)
     {
