@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Backpack\CRUD\app\Library\Widget;
 
 class AdminController extends Controller
 {
@@ -28,6 +29,16 @@ class AdminController extends Controller
             trans('backpack::crud.admin')     => backpack_url('dashboard'),
             trans('backpack::base.dashboard') => false,
         ];
+
+        Widget::add('thirdWidget')
+            ->type('alert')
+            ->group('before_content')
+            ->class('alert alert-warning bg-success border-0 mb-2')
+            ->heading('Widgets Fluent Syntax Works')
+            ->content('This widget was added in <span class="badge badge-warning">AdminController::dashboard()</span>, using the fluent syntax. If you can see this, it means that works.')
+            ->close_button(true);
+
+        // dd(WidgetsCollection::all());
 
         return view(backpack_view('dashboard'), $this->data);
     }
