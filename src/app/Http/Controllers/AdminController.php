@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Http\Controllers;
 
-use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Routing\Controller;
 
 class AdminController extends Controller

@@ -25,9 +25,9 @@ class Widget extends Fluent
      * Add a new widget to the widgets collection in the Laravel Service Container.
      * If a widget with the same name exists, it will update the attributes of that one
      * instead of creating a new one.
-     * 
+     *
      * @param string|array $attributes Either the name of the widget, or an array with the attributes the new widget should hold, including the name attribute.
-     * 
+     *
      * @return Widget
      */
     public static function add($attributes = null)
