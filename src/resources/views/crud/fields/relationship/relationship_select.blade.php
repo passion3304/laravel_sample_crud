@@ -5,7 +5,7 @@
     $connected_entity_key_name = $connected_entity->getKeyName();
 
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
-    $field['attribute'] = $field['attribute'] ?? $connected_entity->getIdentifiableName();
+    $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 

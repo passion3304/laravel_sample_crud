@@ -127,6 +127,24 @@ trait ColumnsProtectedMethods
     }
 
     /**
+     * If a column definition is missing the wrapper element, set the default (empty).
+     * The wrapper is the HTML element that wrappes around the column text.
+     * By defining this array a developer can wrap the text into an anchor (link),
+     * span, div or whatever they want.
+     *
+     * @param array $column Column definition array.
+     * @return array        Column definition array with wrapper.
+     */
+    protected function makeSureColumnHasWrapper($column)
+    {
+        if (! isset($column['wrapper'])) {
+            $column['wrapper'] = [];
+        }
+
+        return $column;
+    }
+
+    /**
      * If an entity has been defined for the column, but no model,
      * determine the model from that relationship.
      *

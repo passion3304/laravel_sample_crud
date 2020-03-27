@@ -1,4 +1,4 @@
-@extends('backpack::layouts.top_left')
+@extends(backpack_view('blank'))
 
 @section('after_styles')
     <style media="screen">

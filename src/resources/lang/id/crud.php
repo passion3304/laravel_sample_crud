@@ -29,18 +29,6 @@ return [
     'edit'                 => 'Ubah',
     'save'                 => 'Simpan',
 
-    // Revisions
-    'revisions'            => 'Revisi',
-    'no_revisions'         => 'Tidak ada revisi yang ditemukan',
-    'created_this'         => 'telah dibuat',
-    'changed_the'          => 'mengubah',
-    'restore_this_value'   => 'Kembalikan nilai ini',
-    'from'                 => 'dari',
-    'to'                   => 'ke',
-    'undo'                 => 'Batalkan',
-    'revision_restored'    => 'Revisi berhasil dipulihkan',
-    'guest_user'           => 'Pengguna Tamu',
-
     // Translatable models
     'edit_translations' => 'Terjemahan',
     'language'          => 'Bahasa',
@@ -86,7 +74,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Tak ada data yang tersedia pada tabel ini',
     'info'           => 'Menampilkan _START_ dari _END_ dari _TOTAL_ masukan',
-    'infoEmpty'      => 'Menampilkan 0 dari 0 dari 0 masukan',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(difilter dari _MAX_ jumlah masukan)',
     'infoPostFix'    => '.',
     'thousands'      => ',',

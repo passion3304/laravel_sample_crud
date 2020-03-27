@@ -15,6 +15,7 @@
         $bgColor = $video->provider == 'vimeo' ? '#00ADEF' : '#DA2724';
     }
 @endphp
+
 <span>
     @if( isset($video) )
     <a target="_blank" href="{{$video->url}}" title="{{$video->title}}" style="background: {{$bgColor}}; color: #fff; display: inline-block; width: 30px; height: 25px; text-align: center; border-top-left-radius: 3px; border-bottom-left-radius: 3px; transform: translateY(-1px);">

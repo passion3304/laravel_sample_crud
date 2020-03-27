@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
+use Illuminate\Support\Arr;
+
 trait HasIdentifiableAttribute
 {
     /**
@@ -9,16 +11,15 @@ trait HasIdentifiableAttribute
      *
      * Rephrased: In most cases a user will NOT identify an Article because its ID is "4", but
      * because its name is "10 Ways to Burn Fat". This method returns the column in the database
-     * that represents that is better to show to the user as an identifier rather than the ID.
+     * that represents what is better to show to the user as an identifier rather than the ID.
      * Ex: name, title, label, description etc.
      *
      * @return string The name of the column that best defines this entry from the user perspective.
      */
-    public static function getIdentifiableName()
+    public function identifiableAttribute()
     {
-        $model = (new self);
-        if (method_exists($model, 'identifiableName')) {
-            return $model->identifiableName();
+        if (property_exists($this, 'identifiableAttribute')) {
+            return $this->identifiableAttribute;
         }
 
         return static::guessIdentifiableColumnName();
@@ -29,7 +30,7 @@ trait HasIdentifiableAttribute
      *
      * @return string The name of the column in the database that is most likely to be a good indentifying attribute.
      */
-    public static function guessIdentifiableColumnName()
+    private static function guessIdentifiableColumnName()
     {
         $instance = new static();
         $conn = $instance->getConnectionWithExtraTypeMappings();
@@ -74,6 +75,6 @@ trait HasIdentifiableAttribute
         }
 
         // in case everything fails we just return the first column in database
-        return \Arr::first($columnsNames);
+        return Arr::first($columnsNames);
     }
 }

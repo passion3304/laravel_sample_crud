@@ -223,15 +223,22 @@ var fetchDefaultEntry = function (element) {
 //when clicked, fetches the html for the modal to show
 
 function setupInlineCreateButtons(element) {
-    var $inlineCreateButton = element.attr('data-inline-create-button');
     var $fieldEntity = element.attr('data-field-related-name');
-    var $inlineCreateButtonElement = $(document.getElementById($inlineCreateButton));
+    var $inlineCreateButtonElement = $(document.getElementById(element.attr('data-inline-create-button')));
     var $inlineModalRoute = element.attr('data-inline-modal-route');
     var $inlineModalClass = element.attr('data-inline-modal-class');
     var $parentLoadedFields = element.attr('data-parent-loaded-fields');
 
     $inlineCreateButtonElement.on('click', function () {
-        $(".loading_modal_dialog").show();
+
+        //we change button state so users know something is happening.
+        var loadingText = '<span class="la la-spinner la-spin" style="font-size:18px;"></span>';
+        if ($inlineCreateButtonElement.html() !== loadingText) {
+            $inlineCreateButtonElement.data('original-text', $inlineCreateButtonElement.html());
+            $inlineCreateButtonElement.html(loadingText);
+
+
+        }
         $.ajax({
             url: $inlineModalRoute,
             data: {
@@ -256,6 +263,7 @@ function setupInlineCreateButtons(element) {
                 });
             }
         });
+
     });
 
 }
@@ -299,6 +307,7 @@ function triggerModal(element) {
     var $ajax = element.attr('data-field-ajax') == 'true' ? true : false;
     var $force_select = (element.attr('data-force-select') == 'true') ? true : false;
 
+
     $modal.modal();
 
 
@@ -316,7 +325,7 @@ function triggerModal(element) {
 
         //we change button state so users know something is happening.
         //we also disable it to prevent double form submition
-        var loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> loading...';
+        var loadingText = '<i class="la la-spinner la-spin"></i> saving...';
         if ($modalSaveButton.html() !== loadingText) {
             $modalSaveButton.data('original-text', $(this).html());
             $modalSaveButton.html(loadingText);
@@ -344,7 +353,9 @@ function triggerModal(element) {
                 }
 
                 $modal.modal('hide');
-                
+
+
+
                 new Noty({
                     type: "info",
                     text: '{{ trans('backpack::crud.related_entry_created_success') }}',
@@ -373,11 +384,15 @@ function triggerModal(element) {
 
     $modal.on('hidden.bs.modal', function (e) {
         $modal.remove();
+
+        //when modal is closed (canceled or success submited) we revert the "+ Add" loading state back to normal.
+        var $inlineCreateButtonElement = $(document.getElementById(element.attr('data-inline-create-button')));
+        $inlineCreateButtonElement.html($inlineCreateButtonElement.data('original-text'));
     });
 
 
     $modal.on('shown.bs.modal', function (e) {
-        $(".loading_modal_dialog").hide();
+
     });
 }
 

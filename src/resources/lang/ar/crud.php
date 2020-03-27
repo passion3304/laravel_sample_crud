@@ -25,7 +25,7 @@ return [
     'internal_link_placeholder'               => "Internal slug. Ex: 'admin/page' (no quotes) for ':url'",
     'table_max_reached'                       => 'أقصى عدد :max تم الوصول إليه',
     'zeroRecords'                             => 'لم يتم العثور على سجلات متطابقة',
-    'infoEmpty'                               => 'Showing 0 to 0 of 0 entries',
+    'infoEmpty'                               => '',
     'info'                                    => 'Showing _START_ to _END_ of _TOTAL_ entries',
     'details_row'                             => 'هذا هو صف التفاصيل. عدل كما تريد.',
     'reorder_text'                            => 'استخدام السحب والإفلات لإعادة الترتيب.',

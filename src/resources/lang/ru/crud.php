@@ -29,18 +29,6 @@ return [
     'edit'                                    => 'Редактировать',
     'save'                                    => 'Сохранить',
 
-    // Revisions
-    'revisions'                               => 'Версии',
-    'no_revisions'                            => 'Версий не найдено',
-    'created_this'                            => 'создал(а) это',
-    'changed_the'                             => 'изменил(а)',
-    'restore_this_value'                      => 'Восстановить это значение',
-    'from'                                    => 'с',
-    'to'                                      => 'по',
-    'undo'                                    => 'Шаг назад',
-    'revision_restored'                       => 'Версия успешно восстановлена',
-    'guest_user'                              => 'Гость',
-
     // Translatable models
     'edit_translations'                       => 'Перевод',
     'language'                                => 'Язык',
@@ -86,7 +74,7 @@ return [
     // DataTables translation
     'emptyTable'                              => 'В таблице нет доступных данных',
     'info'                                    => 'Показано _START_ до _END_ из _TOTAL_ совпадений',
-    'infoEmpty'                               => 'Показано 0 до 0 из 0 совпадений',
+    'infoEmpty'                               => '',
     'infoFiltered'                            => '(отфильтровано из _MAX_ совпадений)',
     'infoPostFix'                             => '.',
     'thousands'                               => ',',
