@@ -2,7 +2,7 @@
 @php
     $array = data_get($entry, $column['name']);
     $list[$column['visible_key']] = [];
-    
+
     // if the isn't using attribute casting, decode it
     if (is_string($array)) {
         $array = json_decode($array);
@@ -27,13 +27,14 @@
     @if(!empty($list))
         @foreach($list[$column['visible_key']] as $key => $text)
             @php
-                $related_key = $text;
+                $column['text'] = $text;
+                $related_key = $key;
             @endphp
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
                 @if($column['escaped'])
-                    {{ $text }}
+                    {{ $column['text'] }}
                 @else
-                    {!! $text !!}
+                    {!! $column['text'] !!}
                 @endif
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
         @if($lastKey != $key),@endif

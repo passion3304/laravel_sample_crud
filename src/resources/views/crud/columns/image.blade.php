@@ -1,7 +1,7 @@
 {{-- image column type --}}
 @php
   $value = data_get($entry, $column['name']);
-  
+
   $column['height'] = $column['height'] ?? "25px";
   $column['width'] = $column['width'] ?? "auto";
   $column['radius'] = $column['radius'] ?? "3px";

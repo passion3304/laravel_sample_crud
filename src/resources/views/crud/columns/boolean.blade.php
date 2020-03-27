@@ -3,6 +3,7 @@
     $value = data_get($entry, $column['name']);
 
     if ($value === true || $value === 1 || $value === '1') {
+        $related_key = 1;
         if ( isset( $column['options'][1] ) ) {
             $column['text'] = $column['options'][1];
             $column['escaped'] = false;
@@ -10,6 +11,7 @@
             $column['text'] = Lang::has('backpack::crud.yes')?trans('backpack::crud.yes'):'Yes';
         }
     }else {
+        $related_key = 0;
         if ( isset( $column['options'][0] ) ) {
             $column['text'] = $column['options'][0];
             $column['escaped'] = false;

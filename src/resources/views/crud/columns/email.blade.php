@@ -6,7 +6,7 @@
     $column['limit'] = $column['limit'] ?? 40;
     $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
     $column['wrapper']['href'] = $column['wrapper']['href'] ?? 'mailto:'.$value;
-    $column['text'] = Str::limit(strip_tags($value), $column['limit'], "[...]")
+    $column['text'] = Str::limit(strip_tags($value), $column['limit'], "[...]") ?? '-';
 @endphp
 
 <span>
