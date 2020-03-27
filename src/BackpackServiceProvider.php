@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -56,7 +58,12 @@ class BackpackServiceProvider extends ServiceProvider
     {
         // Bind the CrudPanel object to Laravel's service container
         $this->app->singleton('crud', function ($app) {
-            return new \Backpack\CRUD\app\Library\CrudPanel\CrudPanel($app);
+            return new CrudPanel($app);
+        });
+
+        // Bind the widgets collection object to Laravel's service container
+        $this->app->singleton('widgets', function ($app) {
+            return new Collection();
         });
 
         // load a macro for Route,
@@ -283,5 +290,15 @@ class BackpackServiceProvider extends ServiceProvider
     public function loadHelpers()
     {
         require_once __DIR__.'/helpers.php';
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['crud', 'widgets'];
     }
 }
