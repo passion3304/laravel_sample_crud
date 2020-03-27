@@ -13,7 +13,7 @@ trait Filters
      */
     public function filtersEnabled()
     {
-        return $this->filters() && $this->filters() != [];
+        return $this->filters() && $this->filters()->isNotEmpty();
     }
 
     /**
@@ -21,7 +21,7 @@ trait Filters
      */
     public function filtersDisabled()
     {
-        return $this->filters() == [] || $this->filters() == null;
+        return $this->filters()->isEmpty();
     }
 
     public function enableFilters()
