@@ -35,7 +35,7 @@ class CrudColumn
         return $this->save();
     }
 
-    public function crud() 
+    public function crud()
     {
         return app()->make('crud');
     }
