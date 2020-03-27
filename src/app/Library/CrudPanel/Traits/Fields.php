@@ -163,6 +163,8 @@ trait Fields
             $fields[$field][$attributeName] = $attributeValue;
         }
 
+        $this->enableTabsIfFieldUsesThem($modifications);
+
         $this->setOperationSetting('fields', $fields);
     }
 
