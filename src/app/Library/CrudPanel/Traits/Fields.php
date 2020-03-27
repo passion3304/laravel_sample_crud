@@ -454,6 +454,6 @@ trait Fields
      */
     public function field($name)
     {
-        return new CrudField($this, $name);
+        return new CrudField($name);
     }
 }

@@ -16,14 +16,11 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  */
 class CrudField
 {
-    protected $crud;
     protected $attributes;
 
-    public function __construct(CrudPanel $crud, $name)
+    public function __construct($name)
     {
-        $this->crud = $crud;
-
-        $field = $this->crud->firstFieldWhere('name', $name);
+        $field = $this->crud()->firstFieldWhere('name', $name);
 
         // if field exists
         if ((bool) $field) {
@@ -38,6 +35,11 @@ class CrudField
         return $this->save();
     }
 
+    public function crud()
+    {
+        return app()->make('crud');
+    }
+
     /**
      * Create a CrudField object with the parameter as its name.
      *
@@ -46,7 +48,7 @@ class CrudField
      */
     public static function name($name)
     {
-        return new static(app()->make('crud'), $name);
+        return new static($name);
     }
 
     /**
@@ -56,7 +58,7 @@ class CrudField
      */
     public function remove()
     {
-        $this->crud->removeField($this->attributes['name']);
+        $this->crud()->removeField($this->attributes['name']);
     }
 
     /**
@@ -67,7 +69,7 @@ class CrudField
      */
     public function forget($attribute)
     {
-        $this->crud->removeFieldAttribute($this->attributes['name'], $attribute);
+        $this->crud()->removeFieldAttribute($this->attributes['name'], $attribute);
 
         return $this;
     }
@@ -80,8 +82,8 @@ class CrudField
      */
     public function after($destinationField)
     {
-        $this->crud->removeField($this->attributes['name']);
-        $this->crud->addField($this->attributes)->afterField($destinationField);
+        $this->crud()->removeField($this->attributes['name']);
+        $this->crud()->addField($this->attributes)->afterField($destinationField);
 
         return $this;
     }
@@ -94,8 +96,8 @@ class CrudField
      */
     public function before($destinationField)
     {
-        $this->crud->removeField($this->attributes['name']);
-        $this->crud->addField($this->attributes)->beforeField($destinationField);
+        $this->crud()->removeField($this->attributes['name']);
+        $this->crud()->addField($this->attributes)->beforeField($destinationField);
 
         return $this;
     }
@@ -107,8 +109,8 @@ class CrudField
      */
     public function makeFirst()
     {
-        $this->crud->removeField($this->attributes['name']);
-        $this->crud->addField($this->attributes)->makeFirstField();
+        $this->crud()->removeField($this->attributes['name']);
+        $this->crud()->addField($this->attributes)->makeFirstField();
 
         return $this;
     }
@@ -120,8 +122,8 @@ class CrudField
      */
     public function makeLast()
     {
-        $this->crud->removeField($this->attributes['name']);
-        $this->crud->addField($this->attributes);
+        $this->crud()->removeField($this->attributes['name']);
+        $this->crud()->addField($this->attributes);
 
         return $this;
     }
@@ -161,10 +163,10 @@ class CrudField
     {
         $key = $this->attributes['name'];
 
-        if ($this->crud->hasFieldWhere('name', $key)) {
-            $this->crud->modifyField($key, $this->attributes);
+        if ($this->crud()->hasFieldWhere('name', $key)) {
+            $this->crud()->modifyField($key, $this->attributes);
         } else {
-            $this->crud->addField($this->attributes);
+            $this->crud()->addField($this->attributes);
         }
 
         return $this;
