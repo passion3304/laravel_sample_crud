@@ -24,6 +24,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.57 - 2020-03-23
+
+### Fixed
+- #2592 - fixed widget style not loading;
+
+
 ## 4.0.56 - 2020-03-19
 
 ### Fixed

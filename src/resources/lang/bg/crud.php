@@ -35,17 +35,6 @@ return [
     'edit'                 => 'Поправи',
     'save'                 => 'Запиши',
 
-    // Revisions
-    'revisions'             => 'Версии',
-    'no_revisions'          => 'Не бяха открити версии',
-    'created_this'          => 'създаде това',
-    'changed_the'           => 'смени',
-    'restore_this_value'    => 'Възстанови от ?',
-    'from'                  => 'от',
-    'to'                    => 'до',
-    'undo'                  => 'отмени',
-    'revision_restored'     => 'Версията беше върната успешно.',
-
     // CRUD table view
     'all'                       => 'Всички ',
     'in_the_database'           => 'В базите данни',

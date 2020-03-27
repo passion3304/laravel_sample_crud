@@ -40,7 +40,7 @@
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'flex-column nav-pills'}} {{ $horizontalTabs ? '' : 'col-md-3' }}" role="tablist">
             @foreach ($crud->getTabs() as $k => $tab)
                 <li role="presentation" class="nav-item">
-                    <a href="#inline_tab_{{ str_slug($tab, "") }}" aria-controls="inline_tab_{{ str_slug($tab, "") }}" role="tab" tab_name="inline_{{ str_slug($tab, "") }}" data-toggle="tab" class="nav-link {{ isset($tabWithError) ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}">{{ $tab }}</a>
+                    <a href="#inline_tab_{{ Str::slug($tab, "") }}" aria-controls="inline_tab_{{ Str::slug($tab, "") }}" role="tab" tab_name="inline_{{ Str::slug($tab, "") }}" data-toggle="tab" class="nav-link {{ isset($tabWithError) ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}">{{ $tab }}</a>
                 </li>
             @endforeach
         </ul>
@@ -48,7 +48,7 @@
         <div class="tab-content p-0 {{$horizontalTabs ? '' : 'col-md-9'}}">
 
             @foreach ($crud->getTabs() as $k => $tab)
-            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="inline_tab_{{ str_slug($tab, "") }}">
+            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="inline_tab_{{ Str::slug($tab, "") }}">
 
                 <div class="row">
                 @include('crud::fields.relationship.show_fields', ['fields' => $crud->getTabFields($tab)])

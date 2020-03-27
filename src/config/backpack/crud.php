@@ -154,15 +154,6 @@ return [
             'contentClass'   => 'col-md-8 col-md-offset-2',
         ],
 
-        /*
-         * Revisions Operation
-         */
-        'revisions' => [
-            // Define the size/looks of the content div for all CRUDs
-            // To override per view use $this->crud->setRevisionsTimelineContentClass('class-string')
-            'timelineContentClass' => 'col-md-12',
-        ],
-
     ],
 
     /*

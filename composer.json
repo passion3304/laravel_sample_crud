@@ -38,8 +38,6 @@
         "nesbot/carbon": "^2.14",
         "ocramius/package-versions": "^1.4",
         "doctrine/dbal": "^2.5",
-        "venturecraft/revisionable": "1.*",
-        "intervention/image": "^2.3",
         "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
@@ -75,7 +73,8 @@
                 "Backpack\\CRUD\\BackpackServiceProvider"
             ],
             "aliases": {
-                "CRUD": "Backpack\\CRUD\\app\\Library\\CrudPanel\\CrudPanelFacade"
+                "CRUD": "Backpack\\CRUD\\app\\Library\\CrudPanel\\CrudPanelFacade",
+                "Widget": "Backpack\\CRUD\\app\\Library\\Widget"
             }
         }
     }
