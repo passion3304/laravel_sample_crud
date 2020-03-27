@@ -366,6 +366,6 @@ trait Columns
      */
     public function column($name)
     {
-        return new CrudColumn($this, $name);
+        return new CrudColumn($name);
     }
 }

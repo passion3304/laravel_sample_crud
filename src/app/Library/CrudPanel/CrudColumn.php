@@ -16,14 +16,11 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  */
 class CrudColumn
 {
-    protected $crud;
     protected $attributes;
 
-    public function __construct(CrudPanel $crud, $name)
+    public function __construct($name)
     {
-        $this->crud = $crud;
-
-        $column = $this->crud->firstColumnWhere('name', $name);
+        $column = $this->crud()->firstColumnWhere('name', $name);
 
         // if column exists
         if ((bool) $column) {
@@ -38,15 +35,20 @@ class CrudColumn
         return $this->save();
     }
 
+    public function crud() 
+    {
+        return app()->make('crud');
+    }
+
     /**
      * Create a CrudColumn object with the parameter as its name.
      *
      * @param  string $name Name of the column in the db, or model attribute.
-     * @return CrudPanel
+     * @return CrudColumn
      */
     public static function name($name)
     {
-        return new static(app()->make('crud'), $name);
+        return new static($name);
     }
 
     /**
@@ -56,7 +58,9 @@ class CrudColumn
      */
     public function remove()
     {
-        $this->crud->removeColumn($this->attributes['name']);
+        $this->crud()->removeColumn($this->attributes['name']);
+
+        return $this;
     }
 
     /**
@@ -67,7 +71,7 @@ class CrudColumn
      */
     public function forget($attribute)
     {
-        $this->crud->removeColumnAttribute($this->attributes['name'], $attribute);
+        $this->crud()->removeColumnAttribute($this->attributes['name'], $attribute);
 
         return $this;
     }
@@ -80,8 +84,8 @@ class CrudColumn
      */
     public function after($destinationColumn)
     {
-        $this->crud->removeColumn($this->attributes['name']);
-        $this->crud->addColumn($this->attributes)->afterColumn($destinationColumn);
+        $this->crud()->removeColumn($this->attributes['name']);
+        $this->crud()->addColumn($this->attributes)->afterColumn($destinationColumn);
 
         return $this;
     }
@@ -94,8 +98,8 @@ class CrudColumn
      */
     public function before($destinationColumn)
     {
-        $this->crud->removeColumn($this->attributes['name']);
-        $this->crud->addColumn($this->attributes)->beforeColumn($destinationColumn);
+        $this->crud()->removeColumn($this->attributes['name']);
+        $this->crud()->addColumn($this->attributes)->beforeColumn($destinationColumn);
 
         return $this;
     }
@@ -103,12 +107,12 @@ class CrudColumn
     /**
      * Make the current column the first one in the columns list.
      *
-     * @return CrudPanel
+     * @return CrudColumn
      */
     public function makeFirst()
     {
-        $this->crud->removeColumn($this->attributes['name']);
-        $this->crud->addColumn($this->attributes)->makeFirstColumn();
+        $this->crud()->removeColumn($this->attributes['name']);
+        $this->crud()->addColumn($this->attributes)->makeFirstColumn();
 
         return $this;
     }
@@ -116,12 +120,12 @@ class CrudColumn
     /**
      * Make the current column the last one in the columns list.
      *
-     * @return CrudPanel
+     * @return CrudColumn
      */
     public function makeLast()
     {
-        $this->crud->removeColumn($this->attributes['name']);
-        $this->crud->addColumn($this->attributes);
+        $this->crud()->removeColumn($this->attributes['name']);
+        $this->crud()->addColumn($this->attributes);
 
         return $this;
     }
@@ -161,10 +165,10 @@ class CrudColumn
     {
         $key = $this->attributes['key'] ?? $this->attributes['name'];
 
-        if ($this->crud->hasColumnWhere('key', $key)) {
-            $this->crud->setColumnDetails($key, $this->attributes);
+        if ($this->crud()->hasColumnWhere('key', $key)) {
+            $this->crud()->setColumnDetails($key, $this->attributes);
         } else {
-            $this->crud->addColumn($this->attributes);
+            $this->crud()->addColumn($this->attributes);
         }
 
         return $this;
