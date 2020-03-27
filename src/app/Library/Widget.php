@@ -49,34 +49,40 @@ class Widget extends Fluent
 
     /**
      * Remove an attribute from the current definition array.
-     * 
+     *
      * @param  string $attribute Name of the attribute to forget (ex: class)
      * @return Widget
      */
     public function forget($attribute)
     {
-    	$this->offsetUnset($attribute);
+        $this->offsetUnset($attribute);
 
-    	return $this;
+        return $this;
     }
 
-    public function after($destination) {}
-    public function before($destionation) {}
-
-    public function makeFirst() {
-    	$this->collection()->pull($this->name);
-    	$this->collection()->prepend($this);
-
-    	return $this;
+    public function after($destination)
+    {
     }
 
-    public function makeLast() {
-    	$this->collection()->pull($this->name);
-    	$this->collection()->push($this);
-
-    	return $this;
+    public function before($destionation)
+    {
     }
 
+    public function makeFirst()
+    {
+        $this->collection()->pull($this->name);
+        $this->collection()->prepend($this);
+
+        return $this;
+    }
+
+    public function makeLast()
+    {
+        $this->collection()->pull($this->name);
+        $this->collection()->push($this);
+
+        return $this;
+    }
 
     // -------
     // ALIASES
@@ -99,9 +105,8 @@ class Widget extends Fluent
     // Alias of group()
     public function to(...$args)
     {
-    	return $this->group(...$args);
+        return $this->group(...$args);
     }
-
 
     // ------------------
     // COLLECTION METHODS
@@ -110,27 +115,25 @@ class Widget extends Fluent
 
     public static function collection()
     {
-    	return app('widgets');
+        return app('widgets');
     }
 
     public function remove()
-    {    	
-    	$this->collection()->pull($this->name);
+    {
+        $this->collection()->pull($this->name);
 
-    	return $this;
+        return $this;
     }
 
     // alias of remove()
     public function onlyHere(...$args)
     {
-    	return $this->remove(...$args);
+        return $this->remove(...$args);
     }
-
 
     // ---------------
     // PRIVATE METHODS
     // ---------------
-
 
     /**
      * Update the global CrudPanel object with the current widget attributes.
