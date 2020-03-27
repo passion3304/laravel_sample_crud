@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 
 /**
@@ -10,13 +9,11 @@ use Illuminate\Support\Fluent;
  */
 class Widget extends Fluent
 {
-    protected $collection;
     protected $attributes = [];
 
-    public function __construct($attributes, Collection $collection)
+    public function __construct($attributes)
     {
         $this->attributes = $attributes;
-        $this->collection = $collection;
 
         $this->save();
     }
@@ -32,9 +29,6 @@ class Widget extends Fluent
      */
     public static function add($attributes = null)
     {
-        // use the widgets collection object from the Laravel Service Container
-        $collection = app()->make('widgets');
-
         // make sure the widget has a name
         $attributes = is_string($attributes) ? ['name' => $attributes] : $attributes;
         $attributes['name'] = $attributes['name'] ?? 'widget_'.rand(1, 999999999);
@@ -42,7 +36,7 @@ class Widget extends Fluent
         // if that widget name already exists in the widgets collection
         // then pick up all widget attributes from that entry
         // and overwrite them with the ones passed in $attributes
-        if ($existingItem = $collection->firstWhere('name', $attributes['name'])) {
+        if ($existingItem = self::collection()->firstWhere('name', $attributes['name'])) {
             $attributes = array_merge($existingItem->attributes, $attributes);
         }
 
@@ -50,20 +44,93 @@ class Widget extends Fluent
         $attributes['group'] = $attributes['group'] ?? 'before_content';
         $attributes['type'] = $attributes['type'] ?? 'card';
 
-        return new static($attributes, $collection);
+        return new static($attributes);
+    }
+
+    /**
+     * Remove an attribute from the current definition array.
+     * 
+     * @param  string $attribute Name of the attribute to forget (ex: class)
+     * @return Widget
+     */
+    public function forget($attribute)
+    {
+    	$this->offsetUnset($attribute);
+
+    	return $this;
+    }
+
+    public function after($destination) {}
+    public function before($destionation) {}
+
+    public function makeFirst() {
+    	$this->collection()->pull($this->name);
+    	$this->collection()->prepend($this);
+
+    	return $this;
+    }
+
+    public function makeLast() {
+    	$this->collection()->pull($this->name);
+    	$this->collection()->push($this);
+
+    	return $this;
+    }
+
+
+    // -------
+    // ALIASES
+    // -------
+    // Aka convenience methods.
+    // These method just call other methods.
+
+    // Alias of add()
+    public static function name(...$args)
+    {
+        return static::add(...$args);
     }
 
     // Alias of add()
-    public static function name($name = null)
+    public static function make(...$args)
     {
-        return static::add($name);
+        return static::add(...$args);
     }
 
-    // Alias of add()
-    public static function make($name = null)
+    // Alias of group()
+    public function to(...$args)
     {
-        return static::add($name);
+    	return $this->group(...$args);
     }
+
+
+    // ------------------
+    // COLLECTION METHODS
+    // ------------------
+    // Manipulate the global widget collection.
+
+    public static function collection()
+    {
+    	return app('widgets');
+    }
+
+    public function remove()
+    {    	
+    	$this->collection()->pull($this->name);
+
+    	return $this;
+    }
+
+    // alias of remove()
+    public function onlyHere(...$args)
+    {
+    	return $this->remove(...$args);
+    }
+
+
+    // ---------------
+    // PRIVATE METHODS
+    // ---------------
+
 
     /**
      * Update the global CrudPanel object with the current widget attributes.
@@ -72,12 +139,12 @@ class Widget extends Fluent
      */
     private function save()
     {
-        $itemExists = $this->collection->contains('name', $this->attributes['name']);
+        $itemExists = $this->collection()->contains('name', $this->attributes['name']);
 
         if (! $itemExists) {
-            $this->collection->put($this->attributes['name'], $this);
+            $this->collection()->put($this->attributes['name'], $this);
         } else {
-            $this->collection[$this->name] = $this;
+            $this->collection()[$this->name] = $this;
         }
 
         return $this;
