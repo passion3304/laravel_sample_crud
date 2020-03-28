@@ -7,36 +7,33 @@ if (!$multiple && is_array($value)) {
     $value = Arr::first($value);
 }
 
-if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function']))
-{
-    $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitBrowseMultipleElement';
+$field['wrapper'] = $field['wrapperAttributes'] ?? [];
+$field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitBrowseMultipleElement';
+if ($multiple) {
+    $field['wrapper']['data-popup-title'] = trans('backpack::crud.select_files');
+    $field['wrapper']['data-multiple'] = "true";
+} else {
+    $field['wrapper']['data-popup-title'] = trans('backpack::crud.select_file');
+    $field['wrapper']['data-multiple'] = "false";
+}
+$field['wrapper']['data-only-mimes'] = json_encode($field['mime_types'] ?? []);
 
-    if ($multiple) {
-        $field['wrapperAttributes']['data-popup-title'] = trans('backpack::crud.select_files');
-        $field['wrapperAttributes']['data-multiple'] = "true";
-    } else {
-        $field['wrapperAttributes']['data-popup-title'] = trans('backpack::crud.select_file');
-        $field['wrapperAttributes']['data-multiple'] = "false";
-    }
-    $field['wrapperAttributes']['data-only-mimes'] = json_encode($field['mime_types'] ?? []);
-
-    if($sortable){
-        $field['wrapperAttributes']['sortable'] = "true";
-    }
+if($sortable){
+    $field['wrapper']['sortable'] = "true";
 }
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
 
     <div><label>{!! $field['label'] !!}</label></div>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     @if ($multiple)
         <div class="list">
             @foreach( (array)$value as $v)
                 @if ($v)
                     <div class="input-group input-group-sm">
                         <input type="text" name="{{ $field['name'] }}[]" value="{{ $v }}" data-marker="multipleBrowseInput"
-                                @include('crud::inc.field_attributes') readonly>
+                                @include('crud::fields.inc.attributes') readonly>
                         <div class="input-group-btn">
                             <button type="button" class="browse remove btn btn-sm btn-light">
                                 <i class="la la-trash"></i>
@@ -50,7 +47,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
             @endforeach
         </div>
     @else
-        <input type="text" name="{{ $field['name'] }}" value="{{ $value }}" @include('crud::inc.field_attributes') readonly>
+        <input type="text" name="{{ $field['name'] }}" value="{{ $value }}" @include('crud::fields.inc.attributes') readonly>
     @endif
 
     <div class="btn-group" role="group" aria-label="..." style="margin-top: 3px;">
@@ -70,7 +67,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
 
     <script type="text/html" data-marker="browse_multiple_template">
         <div class="input-group input-group-sm">
-            <input type="text" name="{{ $field['name'] }}[]" @include('crud::inc.field_attributes') readonly>
+            <input type="text" name="{{ $field['name'] }}[]" @include('crud::fields.inc.attributes') readonly>
             <div class="input-group-btn">
                 <button type="button" class="browse remove btn btn-sm btn-light">
                     <i class="la la-trash"></i>
@@ -81,7 +78,7 @@ if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['d
             </div>
         </div>
     </script>
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 
 {{-- ########################################## --}}

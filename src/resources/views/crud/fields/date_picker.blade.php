@@ -17,16 +17,16 @@
     }
 ?>
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}">
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     <div class="input-group date">
         <input
             data-bs-datepicker="{{ isset($field['date_picker_options']) ? json_encode($field['date_picker_options']) : '{}'}}"
             data-init-function="bpFieldInitDatePickerElement"
             type="text"
-            @include('crud::inc.field_attributes')
+            @include('crud::fields.inc.attributes')
             >
         <div class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
@@ -37,7 +37,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

@@ -31,7 +31,7 @@
     }
 ?>
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <input class="datepicker-range-start" type="hidden" name="{{ $field['name'][0] }}" value="{{ old(square_brackets_to_dots($field['name'][0])) ?? $start_name ?? $start_default ?? '' }}">
     <input class="datepicker-range-end" type="hidden" name="{{ $field['name'][1] }}" value="{{ old(square_brackets_to_dots($field['name'][1])) ?? $end_name ?? $end_default ?? '' }}">
     <label>{!! $field['label'] !!}</label>
@@ -40,7 +40,7 @@
             data-bs-daterangepicker="{{ isset($field['date_range_options']) ? json_encode($field['date_range_options']) : '{}'}}"
             data-init-function="bpFieldInitDateRangeElement"
             type="text"
-            @include('crud::inc.field_attributes')
+            @include('crud::fields.inc.attributes')
             >
         <div class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
@@ -51,7 +51,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
