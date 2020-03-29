@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Enregistrer et créer un nouveau',
     'save_action_save_and_edit'        => 'Enregistrer et éditer',
     'save_action_save_and_back'        => 'Enregistrer et retour',
+    'save_action_save_and_preview'     => 'Enregistrer et aperçu',
     'save_action_changed_notification' => 'Action par défaut changée',
 
     // Create form

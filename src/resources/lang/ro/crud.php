@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'                => 'Salvează și adaugă o nouă intrare',
     'save_action_save_and_edit'               => 'Salvează și editează intrarea',
     'save_action_save_and_back'               => 'Salvează și mergi la listă',
+    'save_action_save_and_preview'            => 'Salvează și previzualizează',
     'save_action_changed_notification'        => 'A fost salvată preferința redirecționării după salvare.',
 
     // Create form
