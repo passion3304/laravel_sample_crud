@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
+
 trait FakeFields
 {
     /**
@@ -60,7 +62,7 @@ trait FakeFields
     private function addCompactedField(&$requestInput, $fakeFieldName, $fakeFieldKey)
     {
         $fakeField = $requestInput[$fakeFieldName];
-        array_pull($requestInput, $fakeFieldName); // remove the fake field from the request
+        Arr::pull($requestInput, $fakeFieldName); // remove the fake field from the request
 
         $requestInput[$fakeFieldKey][$fakeFieldName] = $fakeField;
     }

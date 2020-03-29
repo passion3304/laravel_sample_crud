@@ -18,18 +18,6 @@ return [
     'edit'                 => 'Düzenle',
     'save'                 => 'Kaydet',
 
-    // Revisions
-    'revisions'            => 'Düzeltmeler',
-    'no_revisions'         => 'Düzeltme bulunamadı',
-    'created_this'         => 'bunu oluşturdu',
-    'changed_the'          => 'değişti',
-    'restore_this_value'   => 'Bu değeri geri yükle',
-    'from'                 => 'dan',
-    'to'                   => 'buraya',
-    'undo'                 => 'Geri al',
-    'revision_restored'    => 'Revizyon başarıyla geri yüklendi',
-    'guest_user'           => 'Misafir Kullanıcı',
-
     // Translatable models
     'edit_translations' => 'EDIT TRANSLATIONS',
     'language'          => 'Language',
@@ -74,9 +62,9 @@ return [
     // DataTables translation
     'emptyTable'     => 'Tabloda veri yok',
     'info'           => '_START_ ile _END_ arası Toplam _TOTAL_ kayıt',
-    'infoEmpty'      => '0 - 0 arası 0 Kayıt',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(Toplam _MAX_ kayıt filtrelendi)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ kayıt sayfa başına',
     'loadingRecords' => 'Yükleniyor...',

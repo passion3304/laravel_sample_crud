@@ -29,18 +29,6 @@ return [
     'edit'                 => 'Edit',
     'save'                 => 'Save',
 
-    // Revisions
-    'revisions'            => 'Revisions',
-    'no_revisions'         => 'No revisions found',
-    'created_this'         => 'created this',
-    'changed_the'          => 'changed the',
-    'restore_this_value'   => 'Restore this value',
-    'from'                 => 'from',
-    'to'                   => 'to',
-    'undo'                 => 'Undo',
-    'revision_restored'    => 'Revision successfully restored',
-    'guest_user'           => 'Guest User',
-
     // Translatable models
     'edit_translations' => 'Translation',
     'language'          => 'Language',
@@ -86,9 +74,9 @@ return [
     // DataTables translation
     'emptyTable'     => 'No data available in table',
     'info'           => 'Showing _START_ to _END_ of _TOTAL_ entries',
-    'infoEmpty'      => 'Showing 0 to 0 of 0 entries',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtered from _MAX_ total entries)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ records per page',
     'loadingRecords' => 'Loading...',
@@ -159,4 +147,8 @@ return [
 
     // File manager
     'file_manager' => 'File Manager',
+
+    // InlineCreateOperation
+    'related_entry_created_success' => 'Related entry has been created and selected.',
+    'related_entry_created_error' => 'Could not create related entry.',
 ];

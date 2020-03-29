@@ -29,18 +29,6 @@ return [
     'edit'                 => '编辑',
     'save'                 => '存储',
 
-    // Revisions
-    'revisions'            => '修顶版本',
-    'no_revisions'         => '找不到修订版本',
-    'created_this'         => '建立的',
-    'changed_the'          => '更改了',
-    'restore_this_value'   => '还原这个值',
-    'from'                 => '由',
-    'to'                   => '到',
-    'undo'                 => '撤销',
-    'revision_restored'    => '成功恢复修订版本',
-    'guest_user'           => '访客',
-
     // Translatable models
     'edit_translations' => '翻译',
     'language'          => '语言',
@@ -86,9 +74,9 @@ return [
     // DataTables translation
     'emptyTable'     => '数据库中没有相关记录',
     'info'           => '正在显示 _TOTAL_ 个记录中的 _START_ 至 _END_ 项',
-    'infoEmpty'      => '正在显示 0 个记录中的 0 至 0 项',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(自 _TOTAL_ 个记录中筛选出来的记录)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '每页 _MENU_ 条记录',
     'loadingRecords' => '加载中...',

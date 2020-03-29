@@ -6,7 +6,7 @@
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
-    <div class="row" 
+    <div class="row"
          data-init-function="bpFieldInitSelectAndOrderElement"
          data-field-name="{{ $field['name'] }}">
         <div class="col-md-12">
@@ -15,14 +15,14 @@
                 @if(is_array(old($field["name"])))
                     @foreach (old($field["name"]) as $key)
                         @if(array_key_exists($key,$field['options']))
-                            <li value="{{$key}}"><i class="fa fa-arrows"></i> {{ $field['options'][$key] }}</li>
+                            <li value="{{$key}}"><i class="la la-arrows"></i> {{ $field['options'][$key] }}</li>
                         @endif
                     @endforeach
                 @endif
             @elseif (is_array($values))
                 @foreach ($values as $key)
                     @if(array_key_exists($key,$field['options']))
-                    <li value="{{$key}}"><i class="fa fa-arrows"></i> {{ $field['options'][$key] }}</li>
+                    <li value="{{$key}}"><i class="la la-arrows"></i> {{ $field['options'][$key] }}</li>
                     @endif
                 @endforeach
             @endif
@@ -31,13 +31,13 @@
             @if(old($field["name"]))
                 @foreach ($field['options'] as $key => $value)
                     @if(!is_array(old($field["name"])) || !in_array($key, old($field["name"])))
-                        <li value="{{ $key}}"><i class="fa fa-arrows"></i> {{ $value }}</li>
+                        <li value="{{ $key}}"><i class="la la-arrows"></i> {{ $value }}</li>
                     @endif
                 @endforeach
             @elseif (isset($field['options']))
                 @foreach ($field['options'] as $key => $value)
                     @if(is_array($values) && !in_array($key, $values))
-                        <li value="{{ $key}}"><i class="fa fa-arrows"></i> {{ $value }}</li>
+                        <li value="{{ $key}}"><i class="la la-arrows"></i> {{ $value }}</li>
                     @endif
                 @endforeach
             @endif
@@ -69,6 +69,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+
     <style>
         .select_and_order_all,
         .select_and_order_selected {
@@ -120,14 +121,9 @@
     </style>
     @endpush
 
-    @push('crud_fields_scripts')
-        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-    @endpush
-
-@endif
-
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
+<script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
 <script>
     function bpFieldInitSelectAndOrderElement(element) {
         var $selected = element.find('[data-identifier=selected]');
@@ -160,7 +156,10 @@
         }).disableSelection();
     }
 </script>
+
 @endpush
+
+@endif
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

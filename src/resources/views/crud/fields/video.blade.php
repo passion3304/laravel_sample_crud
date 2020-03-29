@@ -27,15 +27,15 @@ $field['youtube_api_key'] = $field['youtube_api_key'] ?? 'AIzaSyBLRoVYovRmbIf_BH
             <div class="video-preview">
                 <span class="video-previewImage"></span>
                 <a class="video-previewLink hidden" target="_blank" href="">
-                    <i class="fa fa-lg video-previewIcon"></i>
+                    <i class="la la-lg video-previewIcon"></i>
                 </a>
             </div>
             <div class="video-dummy">
                 <a class="video-previewLink youtube dummy" target="_blank" href="">
-                    <i class="fa fa-lg fa-youtube video-previewIcon dummy"></i>
+                    <i class="la la-lg la-youtube video-previewIcon dummy"></i>
                 </a>
                 <a class="video-previewLink vimeo dummy" target="_blank" href="">
-                    <i class="fa fa-lg fa-vimeo video-previewIcon dummy"></i>
+                    <i class="la la-lg la-vimeo video-previewIcon dummy"></i>
                 </a>
             </div>
         </div>

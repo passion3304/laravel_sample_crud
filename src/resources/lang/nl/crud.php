@@ -29,17 +29,6 @@ return [
     'edit'                 => 'Bewerken',
     'save'                 => 'Opslaan',
 
-    // Revisions
-    'revisions'             => 'Revisies',
-    'no_revisions'          => 'Geen revisies gevonden',
-    'created_this'          => 'heeft dit aangemaakt',
-    'changed_the'           => 'heeft aangepast',
-    'restore_this_value'    => 'Herstel deze waarde',
-    'from'                  => 'van',
-    'to'                    => 'naar',
-    'undo'                  => 'Ongedaan maken',
-    'revision_restored'     => 'Revisie succesvol hersteld',
-
     // Translatable models
     'edit_translations' => 'VERTALING WIJZIGEN',
     'language'          => 'Taal',
@@ -67,9 +56,9 @@ return [
     // DataTables translation
     'emptyTable'     => 'Geen data beschikbaar in de tabel',
     'info'           => 'Toon _START_ tot _END_ van _TOTAL_ items',
-    'infoEmpty'      => 'Toon 0 tot 0 van 0 items',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(gefilterd van _MAX_ totale items)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ items per pagina',
     'loadingRecords' => 'Laden...',

@@ -2,7 +2,10 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -55,7 +58,12 @@ class BackpackServiceProvider extends ServiceProvider
     {
         // Bind the CrudPanel object to Laravel's service container
         $this->app->singleton('crud', function ($app) {
-            return new \Backpack\CRUD\app\Library\CrudPanel\CrudPanel($app);
+            return new CrudPanel($app);
+        });
+
+        // Bind the widgets collection object to Laravel's service container
+        $this->app->singleton('widgets', function ($app) {
+            return new Collection();
         });
 
         // load a macro for Route,
@@ -69,21 +77,6 @@ class BackpackServiceProvider extends ServiceProvider
 
         // register the artisan commands
         $this->commands($this->commands);
-
-        // register the services that are only used for development
-        // if ($this->app->environment() == 'local') {
-        //     if (class_exists('Laracasts\Generators\GeneratorsServiceProvider')) {
-        //         $this->app->register('Laracasts\Generators\GeneratorsServiceProvider');
-        //     }
-        //     if (class_exists('Backpack\Generators\GeneratorsServiceProvider')) {
-        //         $this->app->register('Backpack\Generators\GeneratorsServiceProvider');
-        //     }
-        // }
-
-        // map the elfinder prefix
-        if (! \Config::get('elfinder.route.prefix')) {
-            \Config::set('elfinder.route.prefix', \Config::get('backpack.base.route_prefix').'/elfinder');
-        }
     }
 
     public function registerMiddlewareGroup(Router $router)
@@ -109,12 +102,8 @@ class BackpackServiceProvider extends ServiceProvider
         $backpack_public_assets = [__DIR__.'/public' => public_path()];
         $backpack_lang_files = [__DIR__.'/resources/lang' => resource_path('lang/vendor/backpack')];
         $backpack_config_files = [__DIR__.'/config' => config_path()];
-        $elfinder_files = [
-            __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
-            __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
-        ];
 
-        // sidebar_content view, which is the only view most people need to overwrite
+        // sidebar content views, which are the only views most people need to overwrite
         $backpack_menu_contents_view = [
             __DIR__.'/resources/views/base/inc/sidebar_content.blade.php'      => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php'),
             __DIR__.'/resources/views/base/inc/topbar_left_content.blade.php'  => resource_path('views/vendor/backpack/base/inc/topbar_left_content.blade.php'),
@@ -130,7 +119,6 @@ class BackpackServiceProvider extends ServiceProvider
         $minimum = array_merge(
             // $backpack_views,
             // $backpack_lang_files,
-            // $elfinder_files,
             $error_views,
             $backpack_public_assets,
             $backpack_config_files,
@@ -148,7 +136,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->publishes($backpack_public_assets, 'public');
         $this->publishes($backpack_custom_routes_file, 'custom_routes');
         $this->publishes($gravatar_assets, 'gravatar');
-        $this->publishes($elfinder_files, 'elfinder');
         $this->publishes($minimum, 'minimum');
     }
 
@@ -222,7 +209,7 @@ class BackpackServiceProvider extends ServiceProvider
                 $groupNamespace = '';
             }
             $namespacedController = $groupNamespace.$controller;
-            $controllerInstance = new $namespacedController();
+            $controllerInstance = App::make($namespacedController);
 
             return $controllerInstance->setupRoutes($name, $routeName, $controller);
         });
@@ -303,5 +290,15 @@ class BackpackServiceProvider extends ServiceProvider
     public function loadHelpers()
     {
         require_once __DIR__.'/helpers.php';
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['crud', 'widgets'];
     }
 }

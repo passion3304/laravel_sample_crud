@@ -1,11 +1,18 @@
 <!-- summernote editor -->
+@php
+    // make sure that the options array is defined
+    // and at the very least, dialogsInBody is true;
+    // that's needed for modals to show above the overlay in Bootstrap 4
+    $field['options'] = array_merge(['dialogsInBody' => true], $field['options'] ?? []);
+@endphp
+
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <textarea
         name="{{ $field['name'] }}"
         data-init-function="bpFieldInitSummernoteElement"
-        data-options="{{ json_encode($field['options'] ?? []) }}"
+        data-options="{{ json_encode($field['options']) }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control summernote'])
         >{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 

@@ -18,16 +18,16 @@
     <div class="existing-file">
         @if (isset($field['disk']))
         @if (isset($field['temporary']))
-            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->temporaryUrl(array_get($field, 'prefix', '').$field['value'], Carbon\Carbon::now()->addMinutes($field['temporary'])))) }}">
+            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->temporaryUrl(Arr::get($field, 'prefix', '').$field['value'], Carbon\Carbon::now()->addMinutes($field['temporary'])))) }}">
         @else
-            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->url(array_get($field, 'prefix', '').$field['value']))) }}">
+            <a target="_blank" href="{{ (asset(\Storage::disk($field['disk'])->url(Arr::get($field, 'prefix', '').$field['value']))) }}">
         @endif
         @else
-            <a target="_blank" href="{{ (asset(array_get($field, 'prefix', '').$field['value'])) }}">
+            <a target="_blank" href="{{ (asset(Arr::get($field, 'prefix', '').$field['value'])) }}">
         @endif
             {{ $field['value'] }}
         </a>
-    	<a href="#" class="file_clear_button btn btn-light btn-sm float-right" title="Clear file"><i class="fa fa-remove"></i></a>
+    	<a href="#" class="file_clear_button btn btn-light btn-sm float-right" title="Clear file"><i class="la la-remove"></i></a>
     	<div class="clearfix"></div>
     </div>
     @endif
@@ -159,7 +159,7 @@
                     fileInput.parent().removeClass('d-none');
                     fileInput.attr("value", "").replaceWith(fileInput.clone(true));
 
-                    // redo the selector, so we can use the same fileInput variable going forward 
+                    // redo the selector, so we can use the same fileInput variable going forward
                     fileInput = element.find(".file_input");
 
                     // add a hidden input with the same name, so that the setXAttribute method is triggered

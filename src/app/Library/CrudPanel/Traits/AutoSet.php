@@ -23,7 +23,7 @@ trait AutoSet
                 'label'      => $this->makeLabel($field),
                 'value'      => null,
                 'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
-                'type'       => $this->getFieldTypeFromDbColumnType($field),
+                'type'       => $this->inferFieldTypeFromDbColumnType($field),
                 'values'     => [],
                 'attributes' => [],
                 'autoset'    => true,
@@ -37,7 +37,7 @@ trait AutoSet
                 $this->addColumn([
                     'name'    => $field,
                     'label'   => $this->makeLabel($field),
-                    'type'    => $this->getFieldTypeFromDbColumnType($field),
+                    'type'    => $this->inferFieldTypeFromDbColumnType($field),
                     'autoset' => true,
                 ]);
             }
@@ -87,79 +87,71 @@ trait AutoSet
     }
 
     /**
-     * Intuit a field type, judging from the database column type.
+     * Infer a field type, judging from the database column type.
      *
      * @param string $field Field name.
      *
      * @return string Field type.
      */
-    public function getFieldTypeFromDbColumnType($field)
+    protected function inferFieldTypeFromDbColumnType($fieldName)
     {
-        $dbColumnTypes = $this->getDbColumnTypes();
-
-        if ($field == 'password') {
+        if ($fieldName == 'password') {
             return 'password';
         }
 
-        if ($field == 'email') {
+        if ($fieldName == 'email') {
             return 'email';
         }
 
-        if (isset($dbColumnTypes[$field])) {
-            switch ($dbColumnTypes[$field]['type']) {
-                case 'int':
-                case 'integer':
-                case 'smallint':
-                case 'mediumint':
-                case 'longint':
-                    return 'number';
-                    break;
+        $dbColumnTypes = $this->getDbColumnTypes();
 
-                case 'string':
-                case 'varchar':
-                case 'set':
-                    return 'text';
-                    break;
+        if (! isset($dbColumnTypes[$fieldName])) {
+            return 'text';
+        }
 
-                // case 'enum':
-                //     return 'enum';
-                // break;
+        switch ($dbColumnTypes[$fieldName]['type']) {
+            case 'int':
+            case 'integer':
+            case 'smallint':
+            case 'mediumint':
+            case 'longint':
+                return 'number';
 
-                case 'boolean':
-                       return 'boolean';
-                       break;
+            case 'string':
+            case 'varchar':
+            case 'set':
+                return 'text';
 
-                case 'tinyint':
-                    return 'active';
-                    break;
+            // case 'enum':
+            //     return 'enum';
+            // break;
 
-                case 'text':
-                case 'mediumtext':
-                case 'longtext':
-                    return 'textarea';
-                    break;
+            case 'boolean':
+                return 'boolean';
 
-                case 'date':
-                    return 'date';
-                    break;
+            case 'tinyint':
+                return 'active';
 
-                case 'datetime':
-                case 'timestamp':
-                    return 'datetime';
-                    break;
+            case 'text':
+            case 'mediumtext':
+            case 'longtext':
+                return 'textarea';
 
-                case 'time':
-                    return 'time';
-                    break;
+            case 'date':
+                return 'date';
 
-                case 'json':
-                    return 'table';
-                    break;
+            case 'datetime':
+            case 'timestamp':
+                return 'datetime';
 
-                default:
-                    return 'text';
-                    break;
-            }
+            case 'time':
+                return 'time';
+
+            case 'json':
+                return 'table';
+
+            default:
+                return 'text';
         }
 
         return 'text';

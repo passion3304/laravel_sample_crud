@@ -29,18 +29,6 @@ return [
     'edit'                                    => 'Editează',
     'save'                                    => 'Salvează',
 
-    // Revisions
-    'revisions'                               => 'Revizii',
-    'no_revisions'                            => 'Nici o revizie',
-    'created_this'                            => 'a generat înregistrarea',
-    'changed_the'                             => 'a schimbat câmpul',
-    'restore_this_value'                      => 'restabilește valoare',
-    'from'                                    => 'valoare veche',
-    'to'                                      => 'valoare nouă',
-    'undo'                                    => 'Restabilește valoare anterioară',
-    'revision_restored'                       => 'Revizie restaurată cu succes',
-    'guest_user'                              => 'Vizitator',
-
     // Translatable models
     'edit_translations'                       => 'EDITEAZĂ TRADUCERILE',
     'language'                                => 'Limbă',
@@ -70,9 +58,9 @@ return [
     // DataTables translation
     'emptyTable'                              => 'Nu există intrări în baza de date',
     'info'                                    => 'Sunt afișate intrările _START_-_END_ din _TOTAL_',
-    'infoEmpty'                               => 'Sunt afișate toate intrarile. Adică niciuna.',
+    'infoEmpty'                               => '',
     'infoFiltered'                            => '(filtrate din totalul de _MAX_ )',
-    'infoPostFix'                             => '',
+    'infoPostFix'                             => '.',
     'thousands'                               => ',',
     'lengthMenu'                              => '_MENU_ pe pagină',
     'loadingRecords'                          => 'Se încarcă...',
