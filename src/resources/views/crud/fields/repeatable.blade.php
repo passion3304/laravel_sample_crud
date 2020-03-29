@@ -34,7 +34,7 @@
     </div>
 
   </div>
-  <button type="button" class="btn btn-primary float-right add-repeatable-element-button">+</button>
+  <button type="button" class="btn btn-outline-primary btn-sm ml-1 add-repeatable-element-button">+ New Item</button>
 
   {{-- HINT --}}
   @if (isset($field['hint']))
@@ -103,7 +103,7 @@
             // element will be a jQuery wrapped DOM node
             var container = element.siblings('.container-repeatable-elements');
 
-            // make sure the inputs no longer have a "name" attribute, 
+            // make sure the inputs no longer have a "name" attribute,
             // so that the form will not send the inputs as request variables;
             // use a "data-repeatable-input-name" attribute to store the same information;
             container.find('input, select, textarea')
@@ -116,11 +116,11 @@
                             $(this).removeAttr("name");
                         }
                         $(this).attr('data-repeatable-input-name', name_attr)
-                               .val('');
+                            //    .val('');
                     });
 
             // make a copy of the group of inputs in their default state
-            // this way we have a clean element we can clone when the user 
+            // this way we have a clean element we can clone when the user
             // wants to add a new group of inputs
             var field_group_clone = container.find('.repeatable-element:first').clone();
             container.find('.repeatable-element').remove();
@@ -168,7 +168,7 @@
                     }
                 });
             }
-            
+
             container.append(new_field_group);
             initializeFieldsWithJavascript(container);
         }

@@ -30,7 +30,7 @@
             break;
     }
 
-    $fontIconFilePath = $field['font_icon_file_path'] ?? $fontIconFilePath;
+    $field['font_icon_file_path'] = $field['font_icon_file_path'] ?? $fontIconFilePath;
 
 @endphp
 
@@ -64,7 +64,7 @@
     {{-- FIELD EXTRA CSS  --}}
     @push('crud_fields_styles')
         {{-- The chosen font --}}
-        <link rel="stylesheet" type="text/css" href="{{ $fontIconFilePath }}">
+        <link rel="stylesheet" type="text/css" href="{{ $field['font_icon_file_path'] }}">
         <!-- Bootstrap-Iconpicker -->
         <link rel="stylesheet" href="{{ asset('packages/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css') }}"/>
     @endpush
