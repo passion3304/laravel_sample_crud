@@ -1,11 +1,23 @@
 <!-- CKeditor -->
+@php
+    $field['extra_plugins'] = isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : "embed,widget";
+
+    $defaultOptions = [
+        "filebrowserBrowseUrl" => backpack_url('elfinder/ckeditor'),
+        "extraPlugins" => $field['extra_plugins'],
+        "embed_provider" => "//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}",
+    ];
+
+    $field['options'] = array_merge($defaultOptions, $field['options'] ?? []);
+@endphp
+
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <textarea
-    	id="ckeditor-{{ $field['name'] }}"
         name="{{ $field['name'] }}"
         data-init-function="bpFieldInitCKEditorElement"
+        data-options="{{ trim(json_encode($field['options'])) }}"
         @include('crud::inc.field_attributes', ['default_class' => 'form-control'])
     	>{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
@@ -24,29 +36,19 @@
         $crud->markFieldTypeAsLoaded($field);
     @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
-
-    @endpush
-
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <script src="{{ asset('packages/ckeditor/ckeditor.js') }}"></script>
         <script src="{{ asset('packages/ckeditor/adapters/jquery.js') }}"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
+
         <script>
             function bpFieldInitCKEditorElement(element) {
                 // remove any previous CKEditors from right next to the textarea
-                element.siblings("[id^='cke_ckeditor']").remove();
-                //console.log('ckeditor init');
+                // element.siblings("[id^='cke_editor']").remove();
+
                 // trigger a new CKEditor
-                element.ckeditor({
-                    "filebrowserBrowseUrl": "{{ url(config('backpack.base.route_prefix').'/elfinder/ckeditor') }}",
-                    "extraPlugins" : '{{ isset($field['extra_plugins']) ? implode(',', $field['extra_plugins']) : 'embed,widget' }}',
-                    "embed_provider": '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}'
-                    @if (isset($field['options']) && count($field['options']))
-                        {!! ', '.trim(json_encode($field['options']), "{}") !!}
-                    @endif
-                });
+                element.ckeditor(element.data('options'));
             }
         </script>
     @endpush
