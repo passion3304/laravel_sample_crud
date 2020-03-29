@@ -41,17 +41,20 @@ $field['options'] = array_merge($defaultOptions, $field['options'] ?? []);
 
     <script type="text/javascript">
     function bpFieldInitTinyMceElement(element) {
-        console.log('bpFieldInitTinyMceElement got called');
-
+        // grab the configuration defined in PHP
         var configuration = element.data('options');
 
+        // the target should be the element the function has been called on
         configuration['target'] = element;
+
+        // automatically update the textarea value on focusout
         configuration['setup'] = (function (editor) {
             editor.on('change', function () {
                 tinymce.triggerSave();
             });
         });
 
+        // initialize the TinyMCE editor
         tinymce.init(element.data('options'));
     }
 
