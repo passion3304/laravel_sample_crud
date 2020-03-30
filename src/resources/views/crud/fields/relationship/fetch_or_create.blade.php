@@ -67,10 +67,10 @@ if($activeInlineCreate) {
 
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
 
         <label>{!! $field['label'] !!}</label>
-        @include('crud::inc.field_translatable_icon')
+        @include('crud::fields.inc.translatable_icon')
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.inline_create_button', ['field' => $field])
@@ -102,7 +102,7 @@ if($activeInlineCreate) {
             @include('crud::fields.relationship.field_attributes')
         @endif
 
-        @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
+        @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
 
         @if($field['multiple'])
         multiple
@@ -115,7 +115,7 @@ if($activeInlineCreate) {
  <p class="help-block">{!! $field['hint'] !!}</p>
 @endif
 
-</div>
+@include('crud::fields.inc.wrapper_end')
 
         @if ($crud->fieldTypeNotLoaded($field))
         @php

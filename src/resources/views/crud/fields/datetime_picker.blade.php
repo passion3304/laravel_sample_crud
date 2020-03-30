@@ -10,16 +10,16 @@ if (isset($field['value']) && ($field['value'] instanceof \Carbon\CarbonInterfac
     $field_language = isset($field['datetime_picker_options']['language']) ? $field['datetime_picker_options']['language'] : \App::getLocale();
 ?>
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}">
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     <div class="input-group date">
         <input
             type="text"
             data-bs-datetimepicker="{{ isset($field['datetime_picker_options']) ? json_encode($field['datetime_picker_options']) : '{}'}}"
             data-init-function="bpFieldInitDateTimePickerElement"
-            @include('crud::inc.field_attributes')
+            @include('crud::fields.inc.attributes')
             >
         <div class="input-group-append">
             <span class="input-group-text"><span class="la la-calendar"></span></span>
@@ -30,7 +30,7 @@ if (isset($field['value']) && ($field['value'] instanceof \Carbon\CarbonInterfac
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

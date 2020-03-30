@@ -3,9 +3,9 @@
     $current_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     @php
         $entity_model = $crud->model;
         $related_model = $crud->getRelationModel($field['entity']);
@@ -18,7 +18,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
+        @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
         >
 
             @if ($entity_model::isColumnNullable($field['name']))
@@ -57,4 +57,4 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')

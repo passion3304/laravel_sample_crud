@@ -9,9 +9,9 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
 
 ?>
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     <input type="hidden" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" name="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix'])) <div class="input-group"> @endif
@@ -21,7 +21,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             type="text"
             data-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
             data-init-function="bpFieldInitAddressAlgoliaElement"
-            @include('crud::inc.field_attributes')
+            @include('crud::fields.inc.attributes')
         >
         @else
         <input
@@ -30,7 +30,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             data-init-function="bpFieldInitAddressAlgoliaElement"
             name="{{ $field['name'] }}"
             value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
-            @include('crud::inc.field_attributes')
+            @include('crud::fields.inc.attributes')
         >
         @endif
         @if(isset($field['suffix'])) <div class="input-group-addon">{!! $field['suffix'] !!}</div> @endif
@@ -40,7 +40,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- Note: you can use  to only load some CSS/JS once, even though there are multiple instances of it --}}
 

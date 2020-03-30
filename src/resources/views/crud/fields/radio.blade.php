@@ -9,11 +9,11 @@
     }
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
 
     <div>
         <label>{!! $field['label'] !!}</label>
-        @include('crud::inc.field_translatable_icon')
+        @include('crud::fields.inc.translatable_icon')
     </div>
 
     @if( isset($field['options']) && $field['options'] = (array)$field['options'] )
@@ -29,7 +29,7 @@
                         id="{{$field['name']}}_{{$optionPointer}}"
                         name="{{$field['name']}}"
                         value="{{$value}}"
-                        @include('crud::inc.field_attributes')
+                        @include('crud::fields.inc.attributes')
                         {{$optionValue == $value ? ' checked': ''}}
                         >
                 <label class="radio-inline form-check-label font-weight-normal" for="{{$field['name']}}_{{$optionPointer}}">{!! $label !!}</label>
@@ -43,7 +43,7 @@
                 		id="{{$field['name']}}_{{$optionPointer}}"
                 		name="{{$field['name']}}"
                 		value="{{$value}}"
-                		@include('crud::inc.field_attributes')
+                		@include('crud::fields.inc.attributes')
                 		{{$optionValue == $value ? ' checked': ''}}>
                 <label class="form-check-label font-weight-normal" for="{{$field['name']}}_{{$optionPointer}}">{!! $label !!}</label>
             </div>
@@ -59,4 +59,4 @@
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
 
-</div>
+@include('crud::fields.inc.wrapper_end')

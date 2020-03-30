@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Guardar y crear nuevo',
     'save_action_save_and_edit'        => 'Guardar y continuar editando',
     'save_action_save_and_back'        => 'Guardar y regresar',
+    'save_action_save_and_preview'     => 'Guardar y vista previa',
     'save_action_changed_notification' => 'La acción por defecto del botón guardar ha sido modificada.',
 
     // Create form

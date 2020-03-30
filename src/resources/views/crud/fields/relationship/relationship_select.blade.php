@@ -45,7 +45,7 @@
     $field['value'] = json_encode($current_value);
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
 
     <select
@@ -63,7 +63,7 @@
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-options-for-select="{{json_encode($field['options'])}}"
 
-        @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
+        @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
         @if($field['multiple'])
         multiple
@@ -75,7 +75,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

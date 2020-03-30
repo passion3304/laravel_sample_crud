@@ -48,15 +48,17 @@
     }
 
     $max_image_size_in_bytes = $field['max_file_size'] ?? (int)maximumServerUploadSizeInBytes();
+
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
+    $field['wrapper']['data-preview'] = '#'.$field['name'];
+    $field['wrapper']['data-aspectRatio'] = $field['aspect_ratio'] ?? 0;
+    $field['wrapper']['data-crop'] = $field['crop'] ?? false;
 @endphp
 
-  <div data-preview="#{{ $field['name'] }}"
-        data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}"
-        data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}"
-        @include('crud::inc.field_wrapper_attributes')>
+@include('crud::fields.inc.wrapper_start')
     <div>
         <label>{!! $field['label'] !!}</label>
-        @include('crud::inc.field_translatable_icon')
+        @include('crud::fields.inc.translatable_icon')
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
@@ -75,7 +77,7 @@
     </div>
     <div class="btn-group">
         <div class="btn btn-light btn-sm btn-file">
-            {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
+            {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes', ['default_class' => 'hide'])>
             <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
@@ -92,7 +94,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-  </div>
+@include('crud::fields.inc.wrapper_end')
 
 
 {{-- ########################################## --}}
