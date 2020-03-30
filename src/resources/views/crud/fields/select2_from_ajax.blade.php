@@ -9,7 +9,7 @@
     $field['delay'] = $field['delay'] ?? 500;
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     <?php $entity_model = $crud->model; ?>
 
@@ -27,7 +27,7 @@
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
         data-ajax-delay="{{ $field['delay'] }}"
-        @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
+        @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
         >
 
         @if ($old_value)
@@ -54,7 +54,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

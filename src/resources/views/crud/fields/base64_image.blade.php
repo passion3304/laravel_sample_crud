@@ -1,29 +1,18 @@
 @php
-
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function'])){
-        $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitBase64CropperImageElement';
-    }
-
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-field-name'])) {
-        $field['wrapperAttributes']['data-field-name'] = $field['name'];
-    }
-
-
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['class'])) {
-        $field['wrapperAttributes']['class'] = "form-group col-sm-12 cropperImage";
-    } elseif (isset($field['wrapperAttributes']) && isset($field['wrapperAttributes']['class'])) {
-        $field['wrapperAttributes']['class'] .= " cropperImage";
-    }
-
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
+    $field['wrapper']['class'] = $field['wrapper']['class'] ?? "form-group col-sm-12";
+    $field['wrapper']['class'] = $field['wrapper']['class'].' cropperImage';
+    $field['wrapper']['data-preview'] = "#".$field['name'];
+    $field['wrapper']['data-aspectRatio'] = $field['aspect_ratio'] ?? 0;
+    $field['wrapper']['data-crop'] = $field['crop'] ?? false;
+    $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
+    $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitBase64CropperImageElement';
 @endphp
 
-  <div  data-preview="#{{ $field['name'] }}"
-        data-aspectRatio="{{ isset($field['aspect_ratio']) ? $field['aspect_ratio'] : 0 }}"
-        data-crop="{{ isset($field['crop']) ? $field['crop'] : false }}"
-        @include('crud::inc.field_wrapper_attributes')>
+@include('crud::fields.inc.wrapper_start')
     <div>
         <label>{!! $field['label'] !!}</label>
-        @include('crud::inc.field_translatable_icon')
+        @include('crud::fields.inc.translatable_icon')
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
@@ -53,7 +42,7 @@
     </div>
     <div class="btn-group">
         <div class="btn btn-light btn-sm btn-file">
-            Choose file <input type="file" accept="image/*" data-handle="uploadImage" @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
+            Choose file <input type="file" accept="image/*" data-handle="uploadImage" @include('crud::fields.inc.attributes', ['default_class' => 'hide'])>
             <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
@@ -70,7 +59,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-  </div>
+@include('crud::fields.inc.wrapper_end')
 
 
 {{-- ########################################## --}}

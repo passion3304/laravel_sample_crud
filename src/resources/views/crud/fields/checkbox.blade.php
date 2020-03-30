@@ -1,7 +1,7 @@
 <!-- checkbox field -->
 
-<div @include('crud::inc.field_wrapper_attributes') >
-    @include('crud::inc.field_translatable_icon')
+@include('crud::fields.inc.wrapper_start')
+    @include('crud::fields.inc.translatable_icon')
     <div class="checkbox">
         <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? 0 }}">
     	  <input type="checkbox"
@@ -27,7 +27,7 @@
             <p class="help-block">{!! $field['hint'] !!}</p>
         @endif
     </div>
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

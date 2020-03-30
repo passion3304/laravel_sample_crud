@@ -14,15 +14,19 @@ if (is_array($value)) {
 
 $field['youtube_api_key'] = $field['youtube_api_key'] ?? 'AIzaSyBLRoVYovRmbIf_BH3X12IcTCudAEDRlCE';
 
+$field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
+$field['wrapper']['data-init-function'] = 'bpFieldInitVideoElement';
+$field['wrapper']['data-youtube-api-key'] = $field['youtube_api_key'];
+$field['wrapper']['data-video'] = '';
 ?>
 
 
-<div data-video data-init-function="bpFieldInitVideoElement" data-youtube-api-key="{{$field['youtube_api_key']}}" @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label for="{{ $field['name'] }}_link">{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ $value }}">
     <div class="input-group">
-        <input @include('crud::inc.field_attributes', ['default_class' => 'video-link form-control']) type="url" id="{{ $field['name'] }}_link">
+        <input @include('crud::fields.inc.attributes', ['default_class' => 'video-link form-control']) type="url" id="{{ $field['name'] }}_link">
         <div class="input-group-append video-previewSuffix video-noPadding">
             <div class="video-preview">
                 <span class="video-previewImage"></span>
@@ -45,7 +49,7 @@ $field['youtube_api_key'] = $field['youtube_api_key'] ?? 'AIzaSyBLRoVYovRmbIf_BH
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

@@ -3,9 +3,9 @@
     $values = isset($field['value']) ? (array)$field['value'] : [];
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     <div class="row"
          data-init-function="bpFieldInitSelectAndOrderElement"
          data-field-name="{{ $field['name'] }}">
@@ -56,7 +56,7 @@
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
     </div>
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 
 {{-- ########################################## --}}

@@ -34,9 +34,9 @@
 
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
 
     <div>
         <button class="btn btn-light btn-sm" role="iconpicker" data-icon="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" data-iconset="{{ $field['iconset'] }}"></button>
@@ -45,7 +45,7 @@
             name="{{ $field['name'] }}"
             data-init-function="bpFieldInitIconPickerElement"
             value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
-            @include('crud::inc.field_attributes')
+            @include('crud::fields.inc.attributes')
         >
     </div>
 
@@ -53,7 +53,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 
 @if ($crud->fieldTypeNotLoaded($field))
