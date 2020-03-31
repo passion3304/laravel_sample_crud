@@ -1,3 +1,4 @@
+{{-- relationship_count (works for n-n relationships) --}}
 @php
    $column['text'] = data_get($entry, $column['name'])->count();
    $column['prefix'] = $column['prefix'] ?? '';
@@ -7,6 +8,6 @@
 
 <span>
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
-            {{ $column['text'] }}
+        {{ $column['text'] }}
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 </span>
