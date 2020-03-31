@@ -70,12 +70,11 @@ trait FetchOperation
             $config['query']->get();
         }
 
-        $textColumnTypes = ['string', 'json_string', 'text'];
+        $textColumnTypes = ['string', 'json_string', 'text', 'json_array'];
         // for each searchable attribute, add a WHERE clause
         foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
             $columnType = $config['query']->getColumnType($searchColumn);
-
             if (in_array($columnType, $textColumnTypes)) {
                 $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$search_string.'%');
             } else {
