@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.58 - 2020-03-31
+
+### Fixed
+- Fixing arguments to set settings value @shadowbane (#2618)
+- Update checklist.blade.php @PiahDoNeumann (#2598)
+
 ## 4.0.57 - 2020-03-23
 
 ### Fixed
