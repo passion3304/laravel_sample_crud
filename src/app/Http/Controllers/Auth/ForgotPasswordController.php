@@ -2,14 +2,13 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
-use Backpack\CRUD\app\Library\Auth\SendsPasswordResetEmails;
+use Backpack\CRUD\app\Library\Auth\PasswordBrokerManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
-use Backpack\CRUD\app\Library\Auth\PasswordBrokerManager;
-   
+
 class ForgotPasswordController extends Controller
 {
     protected $data = []; // the information we send to the view

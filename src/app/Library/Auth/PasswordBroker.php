@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\Auth;
 
-use Illuminate\Auth\Passwords\PasswordBroker as OriginalPasswordBroker;
 use Backpack\CRUD\app\Notifications\ResetPasswordNotification;
+use Illuminate\Auth\Passwords\PasswordBroker as OriginalPasswordBroker;
 
 /**
  * Overwrite of Illuminate\Auth\Passwords\PasswordBroker in order to send
