@@ -57,9 +57,6 @@ class Install extends Command
         $this->line(" Generating users table (using Laravel's default migrations)");
         $this->executeArtisanProcess('migrate');
 
-        $this->line(" Creating App\Models\BackpackUser.php");
-        $this->executeArtisanProcess('backpack:publish-user-model');
-
         $this->line(" Creating App\Http\Middleware\CheckIfAdmin.php");
         $this->executeArtisanProcess('backpack:publish-middleware');
 
