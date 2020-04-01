@@ -92,7 +92,7 @@
 
                 $fake.on('apply.daterangepicker hide.daterangepicker', function(e, picker){
                     $start.val( picker.startDate.format('YYYY-MM-DD HH:mm:ss') );
-                    $end.val( picker.endDate.format('YYYY-MM-DD H:mm:ss') );
+                    $end.val( picker.endDate.format('YYYY-MM-DD HH:mm:ss') );
                 });
         }
     </script>
