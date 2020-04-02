@@ -376,6 +376,7 @@ trait Fields
         if (is_array($setting)) {
             return $this->getRequest()->except($this->getOperationSetting('saveAllInputsExcept'));
         }
+
         return $this->getRequest()->only($this->getAllFieldNames());
     }
 }

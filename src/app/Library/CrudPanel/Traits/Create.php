@@ -204,17 +204,14 @@ trait Create
      */
     private function getRelationDataFromFormData($data)
     {
-
         $relation_fields = $this->getRelationFields();
 
         $relationData = [];
         foreach ($relation_fields as $relation_field) {
-
             $relation_field['name'] = $relation_field['entity'];
             $attributeKey = $relation_field['name'];
 
-            if (!is_null(Arr::get($data,$attributeKey)) && empty($relation_field['pivot'])) {
-
+            if (! is_null(Arr::get($data, $attributeKey)) && empty($relation_field['pivot'])) {
                 $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
                 $fieldData = Arr::get($relationData, 'relations.'.$key, []);
 
@@ -225,30 +222,34 @@ trait Create
                 if (! array_key_exists('parent', $fieldData)) {
                     $fieldData['parent'] = $this->getRelationModel($relation_field['entity'], -1);
                 }
-                $relatedAttribute = Arr::last(explode('.',$attributeKey));
-                $fieldData['values'][$relatedAttribute] = Arr::get($data,$attributeKey);
+                $relatedAttribute = Arr::last(explode('.', $attributeKey));
+                $fieldData['values'][$relatedAttribute] = Arr::get($data, $attributeKey);
 
                 Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
+
         return $relationData;
     }
 
-    public function getOnlyRelationEntity($relation_field) {
+    public function getOnlyRelationEntity($relation_field)
+    {
         $entity_array = explode('.', $relation_field['entity']);
 
         $relation_model = $this->getRelationModel($relation_field['entity'], -1);
 
         $related_method = Arr::last($entity_array);
 
-        if (!method_exists($relation_model, $related_method)) {
+        if (! method_exists($relation_model, $related_method)) {
             if (count($entity_array) <= 1) {
                 return $relation_field['entity'];
-            }else{
+            } else {
                 array_pop($entity_array);
             }
-            return implode('.',$entity_array);
+
+            return implode('.', $entity_array);
         }
+
         return $relation_field['entity'];
     }
 }

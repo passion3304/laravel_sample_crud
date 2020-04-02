@@ -328,8 +328,9 @@ class CrudPanel
         $result = array_reduce(array_splice($relationArray, 0, $length), function ($obj, $method) {
             try {
                 $result = $obj->$method();
+
                 return $result->getRelated();
-            }catch(Exception $e) {
+            } catch (Exception $e) {
                 return $obj;
             }
         }, $model);

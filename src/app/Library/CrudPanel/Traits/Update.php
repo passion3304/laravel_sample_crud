@@ -58,9 +58,7 @@ trait Update
                         $field['value'][] = $entry->{$subfield['name']};
                     }
                 } else {
-
                     $field['value'] = $this->getModelAttributeValue($entry, $field);
-
                 }
             }
         }
@@ -89,7 +87,7 @@ trait Update
     {
         if (isset($field['entity'])) {
             $relational_entity = $this->getOnlyRelationEntity($field);
-            $relation_array = explode('.',$relational_entity);
+            $relation_array = explode('.', $relational_entity);
             $relatedModel = array_reduce(array_splice($relation_array, 0, -1), function ($obj, $method) {
                 return $obj->{$method} ? $obj->{$method} : $obj;
             }, $model);
@@ -97,7 +95,7 @@ trait Update
             $relationMethod = Arr::last($relation_array);
 
             if ($relatedModel->{$relationMethod} && $relatedModel->{$relationMethod}() instanceof HasOneOrMany) {
-                return $relatedModel->{$relationMethod}->{Arr::last(explode('.',$field['entity']))};
+                return $relatedModel->{$relationMethod}->{Arr::last(explode('.', $field['entity']))};
             } else {
                 return $relatedModel->{$relationMethod};
             }
@@ -112,6 +110,7 @@ trait Update
             foreach ($field['name'] as $key => $value) {
                 $result = $model->{$value};
             }
+
             return $result;
         }
     }

@@ -36,7 +36,6 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasName($field)
     {
-
         if (is_string($field)) {
             return ['name' => $field];
         }
@@ -44,6 +43,7 @@ trait FieldsProtectedMethods
         if (is_array($field) && ! isset($field['name'])) {
             abort(500, 'All fields must have their name defined');
         }
+
         return $field;
     }
 
@@ -67,14 +67,16 @@ trait FieldsProtectedMethods
         }
 
         //if the name is dot notation we are sure it's a relationship
-        if(strpos($field['name'],'.') !== false) {
+        if (strpos($field['name'], '.') !== false) {
             $field['entity'] = $field['name'];
+
             return $field;
         }
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $field['name'])) {
             $field['entity'] = $field['name'];
+
             return $field;
         } // TODO: also check if that method is a relationship (returns Relation)
 
@@ -85,6 +87,7 @@ trait FieldsProtectedMethods
 
             if (method_exists($this->model, $possibleMethodName)) {
                 $field['entity'] = $possibleMethodName;
+
                 return $field;
             }
         }
@@ -101,7 +104,7 @@ trait FieldsProtectedMethods
 
         $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field);
 
-        if (!empty($extraFieldAttributes)) {
+        if (! empty($extraFieldAttributes)) {
             $field = array_merge($field, $extraFieldAttributes);
         } else {
             abort(500, 'Unable to process relationship data: '.$field['name']);
