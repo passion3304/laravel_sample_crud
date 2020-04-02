@@ -60,14 +60,21 @@ class Widget extends Fluent
         return $this;
     }
 
+    // TODO: add ability to push a widget right after another widget
     public function after($destination)
     {
     }
 
+    // TODO: add ability to push a widget right before another widget
     public function before($destionation)
     {
     }
 
+    /**
+     * Make this widget the first one in its group.
+     *
+     * @return Widget
+     */
     public function makeFirst()
     {
         $this->collection()->pull($this->name);
@@ -76,6 +83,11 @@ class Widget extends Fluent
         return $this;
     }
 
+    /**
+     * Make this widget the last one in its group.
+     *
+     * @return Widget
+     */
     public function makeLast()
     {
         $this->collection()->pull($this->name);
@@ -118,6 +130,11 @@ class Widget extends Fluent
         return app('widgets');
     }
 
+    /**
+     * Remove the widget from its group.
+     *
+     * @return Widget
+     */
     public function remove()
     {
         $this->collection()->pull($this->name);
