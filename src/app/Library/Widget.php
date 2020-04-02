@@ -50,17 +50,18 @@ class Widget extends Fluent
     /**
      * This method allows one to creat a widget without attaching it to any 'real'
      * widget section, by moving it to a 'hidden' section.
-     * 
+     *
      * It exists for one reason: so that developers can add widgets to a custom array, without
-     * adding them to one of the widget sections. 
-     * 
+     * adding them to one of the widget sections.
+     *
      * Ex: when developers need to pass multiple widgets as contents of the
      * div widget. But they don't want them added to the before_content of after_content
      * sections. So what they do is basically add them to a 'hidden' section, that nobody will ever see.
-     * 
+     *
      * @return Widget
      */
-    public static function make($attributes = null) {
+    public static function make($attributes = null)
+    {
         $widget = static::add($attributes);
         $widget->section('hidden');
 
@@ -92,7 +93,7 @@ class Widget extends Fluent
 
     /**
      * Make this widget the first one in its section.
-     * 
+     *
      * @return Widget
      */
     public function makeFirst()
@@ -105,7 +106,7 @@ class Widget extends Fluent
 
     /**
      * Make this widget the last one in its section.
-     * 
+     *
      * @return Widget
      */
     public function makeLast()
@@ -158,7 +159,7 @@ class Widget extends Fluent
 
     /**
      * Remove the widget from its section.
-     * 
+     *
      * @return Widget
      */
     public function remove()
@@ -175,7 +176,7 @@ class Widget extends Fluent
      * div widget. But they don't want them added to the before_content of after_content
      * sections. So what they do is basically add them to a section, then remove them.
      * What's left is the widget itself, but without being attached to any section.
-     * 
+     *
      * @return Widget
      */
     public function onlyHere(...$args)
