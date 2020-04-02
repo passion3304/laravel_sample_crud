@@ -18,7 +18,6 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasNecessaryAttributes($field)
     {
         $field = $this->makeSureFieldHasName($field);
-        $field = $this->makeSureFieldHasModel($field);
         $field = $this->makeSureFieldHasLabel($field);
         $field = $this->makeSureFieldHasEntity($field);
         $field = $this->makeSureFieldHasAttribute($field);
@@ -37,6 +36,7 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasName($field)
     {
+
         if (is_string($field)) {
             return ['name' => $field];
         }
@@ -44,7 +44,6 @@ trait FieldsProtectedMethods
         if (is_array($field) && ! isset($field['name'])) {
             abort(500, 'All fields must have their name defined');
         }
-
         return $field;
     }
 
@@ -67,10 +66,15 @@ trait FieldsProtectedMethods
             return $field;
         }
 
+        //if the name is dot notation we are sure it's a relationship
+        if(strpos($field['name'],'.') !== false) {
+            $field['entity'] = $field['name'];
+            return $field;
+        }
+
         // if there's a method on the model with this name
         if (method_exists($this->model, $field['name'])) {
             $field['entity'] = $field['name'];
-
             return $field;
         } // TODO: also check if that method is a relationship (returns Relation)
 
@@ -81,17 +85,9 @@ trait FieldsProtectedMethods
 
             if (method_exists($this->model, $possibleMethodName)) {
                 $field['entity'] = $possibleMethodName;
-
                 return $field;
-            } // TODO: also check if that method is a relationship (returns Relation)
+            }
         }
-
-        // if there's a column in the db for this field name
-        // most likely it doesn't need 'entity', UNLESS it's a foreign key
-        // TODO: make this work
-        // if ($this->checkIfFieldNameBelongsToAnyRelation($field['name'])) {
-        //     $field['entity'] = RELATIONSHIP_METHOD;
-        // }
 
         return $field;
     }
@@ -103,23 +99,12 @@ trait FieldsProtectedMethods
             return $field;
         }
 
-        $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field['entity']);
+        $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field);
 
-        if ($extraFieldAttributes !== false) {
-            $field = array_merge($extraFieldAttributes, $field);
+        if (!empty($extraFieldAttributes)) {
+            $field = array_merge($field, $extraFieldAttributes);
         } else {
             abort(500, 'Unable to process relationship data: '.$field['name']);
-        }
-
-        return $field;
-    }
-
-    protected function makeSureFieldHasModel($field)
-    {
-        // if this is a relation type field and no corresponding model was specified,
-        // get it from the relation method defined in the main model
-        if (isset($field['entity']) && ! isset($field['model'])) {
-            $field['model'] = $this->getRelationModel($field['entity']);
         }
 
         return $field;

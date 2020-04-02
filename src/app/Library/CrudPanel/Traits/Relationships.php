@@ -2,125 +2,115 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Exception;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 
 trait Relationships
 {
-    /**
-     * If the field name is not a relationship method e.g: article_id,
-     * we try to find if this field has a relation defined.
-     *
-     * @param string $fieldName
-     * @return array|bool
-     */
-    public function checkIfFieldNameBelongsToAnyRelation($fieldName)
-    {
-        $relations = $this->getAvailableRelationsInModel();
-
-        if (empty($relations)) {
-            return false;
-        }
-
-        if (in_array($fieldName, array_column($relations, 'name'))) {
-            return array_filter($relations, function ($arr) use ($fieldName) {
-                if (isset($arr['name'])) {
-                    return $arr['name'] == $fieldName;
-                }
-
-                return false;
-            })[0];
-        }
-
-        return false;
-    }
-
-    /**
-     * Get the user defined methods in model that return any type of relation.
-     * Only returns methods that have their return type explicitly specified. For example:
-     * public function article() : BelongsTo { return $this->belongsTo(...); }
-     * public function tags() : HasMany {}.
-     */
-    public function getAvailableRelationsInModel()
-    {
-        //this is the currently supported, we should be able to add more in future.
-        $eloquentRelationships = ['HasOne', 'BelongsTo', 'HasMany', 'BelongsToMany'];
-
-        try {
-            $reflect = new \ReflectionClass($this->model);
-            $relations = [];
-
-            foreach ($reflect->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                if ($method->hasReturnType()) {
-                    $returnType = $method->getReturnType();
-                    if (in_array(class_basename($returnType->getName()), $eloquentRelationships)) {
-                        $relations[] = $this->inferFieldAttributesFromRelationship($method);
-                    }
-                }
-            }
-
-            return $relations;
-        } catch (Exception $e) {
-            return;
-        }
-    }
 
     /**
      * Gets the relation data from the method in the model.
      *
-     * @param ReflectionMethod $method
+     * @param array $field
      * @return array
      */
-    public function inferFieldAttributesFromRelationship($method)
+    public function inferFieldAttributesFromRelationship($field)
     {
-        // get the parent of the last relation if using dot notation
-        // eg: user.account.address -> Return model for account and the relation address in account model.
-        $relationModel = $this->getRelationModel($method, -1);
-        $relatedMethod = Arr::last(explode('.', $method));
-
-        if ($relationModel != get_class($this->model)) {
-            $relationModel = new $relationModel();
-            if (method_exists($relationModel, $relatedMethod)) {
-                return $this->getFieldAttributesFromRelationship($relationModel, $relatedMethod);
-            }
-        }
-        if (method_exists($this->model, $relatedMethod)) {
-            return $this->getFieldAttributesFromRelationship($this->model, $relatedMethod);
-        }
-
-        return false;
+        return $this->getFieldAttributesFromRelationship($field) ?? $field;
     }
 
-    public function getFieldAttributesFromRelationship($model, $method)
-    {
-        try {
-            $method = (new \ReflectionClass($model))->getMethod($method);
+    public function getRelationInstance($field) {
 
-            $relation = $method->invoke($model);
+        $entity_array = explode('.', $field['entity']);
+        $relation_model = $this->getRelationModel($field['entity']);
+        $relation_model = new $relation_model();
+        $related_method = Arr::last($entity_array);
+        $field_in_database = false;
 
-            if ($relation instanceof Relation) {
-                $relationship['type'] = 'relationship';
-                $relationship['entity'] = $method->getName();
-                $relationship['relation_type'] = (new \ReflectionClass($relation))->getShortName();
-                $relationship['multiple'] = $this->relationAllowsMultiple($relationship['relation_type']);
-                $relationship['model'] = get_class($relation->getRelated());
 
-                if ($relationship['relation_type'] == 'BelongsTo' || $relationship['relation_type'] == 'HasOne') {
-                    $relationship['name'] = $relation->getForeignKeyName();
+        //if the last part of entity is in fillable for related method, it means dev wants to edit some relation
+        //specific attribute like account.address.name where Account HasOne Address
+            if(in_array($related_method, $relation_model->getFillable())) {
+                if (count($entity_array) > 1) {
+                    $related_method = $entity_array[(count($entity_array) -2)];
+                    $relation_model = $this->getRelationModel($field['entity'], -2);
+                    $field_in_database = array_pop($entity_array);
+                }else{
+                    $relation_model = $this->model;
                 }
-
-                if ($relationship['relation_type'] == 'hasManyThrough' || $relationship['relation_type'] == 'BelongsToMany' || $relationship['relation_type'] == 'morphMany') {
-                    $relationship['pivot'] = true;
-                }
-
-                return $relationship;
+            }else{
+                $relation_model = $this->getRelationModel($field['entity'], -1);
             }
+            if (count($entity_array) == 1 && $field_in_database !== false) {
+                if (method_exists($this->model, $related_method)) {
+                    return $this->model->{$related_method}();
+                }
+            }
+            $relation_model = new $relation_model();
+            return $relation_model->{$related_method}();
 
-            return false;
-        } catch (Exception $e) {
-            return false;
+    }
+
+    public function getFieldAttributesFromRelationship($field)
+    {
+        $relation = $this->getRelationInstance($field);
+
+        $relation_model = $relation->getRelated();
+
+        $relationship = array();
+        $relationship['relation_type'] =  Arr::last(explode('\\', get_class($relation)));
+        $relationship['model'] = get_class($relation_model);
+        switch($relationship['relation_type']) {
+            case 'BelongsTo' : {
+                $relationship['foreign_key'] = $relation->getForeignKeyName();
+                $relationship['multiple'] = false;
+                $relationship['entity'] = $field['entity'].'.'.$relation->getOwnerKeyName();
+                $relationship['name'] = $this->setRelationHtmlName($relation_model, $relationship['entity']);
+                $relationship['type'] = $field['type'] ?? 'relationship';
+
+            }
+        break;
+            case 'HasOne' : {
+                $relationship['multiple'] = false;
+                $relationship['pivot'] = false;
+                $relationship['name'] = $this->setRelationHtmlName($relation_model, $field['entity']);
+                $relationship['type'] = $field['type'] ?? 'text';
+            }
+            break;
+            case 'BelongsToMany' :
+            case 'HasManyThrough' :
+            case 'HasMany' : {
+                $relationship['pivot'] = true;
+                $relationship['multiple'] = true;
+                $relationship['type'] = $field['type'] ?? 'relationship';
+            }
+            break;
         }
+        return $relationship;
+    }
+
+    public function parseRelationFieldNamesFromHtml($fields) {
+
+        foreach($fields as &$field) {
+            if (isset($field['relation_type'])) {
+                $field['name'] = Arr::first(explode('.',$field['entity']));
+            }
+        }
+        return $fields;
+    }
+
+    public function setRelationHtmlName($relation_model, $entity) {
+        $entity_array = explode('.',$entity);
+        $name_string = '';
+
+        foreach($entity_array as $key => $array_entity) {
+            $name_string .= ($key == 0) ? $array_entity : '[' .$array_entity. ']';
+        }
+
+        return $name_string;
+    }
+
+    public function inferFieldTypeFromRelation($relation) {
+        return;
     }
 
     /**

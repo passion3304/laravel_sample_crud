@@ -20,6 +20,7 @@
     // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
+
     if ($current_value != false) {
         switch (gettype($current_value)) {
             case 'array':
@@ -29,10 +30,15 @@
                 break;
 
             case 'object':
+                if (is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
+                    $current_value = [$current_value->{$connected_entity_key_name} => $current_value->{$field['attribute']}];
+                }else{
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
-                break;
+                    }
+
+            break;
 
             default:
                 $current_value = $connected_entity
@@ -42,7 +48,10 @@
         }
     }
 
+
+
     $field['value'] = json_encode($current_value);
+
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -149,7 +158,9 @@
             $(element).append($option);
             //if option key is the same of current value we reselect it
             if(!$multiple) {
+                console.log(Object.keys($currentValue)[0]);
                 if (key == Object.keys($currentValue)[0]) {
+                    console.log(key);
                     $(element).val(key);
                 }
             }else{

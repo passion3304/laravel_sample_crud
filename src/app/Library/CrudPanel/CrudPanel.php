@@ -28,6 +28,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
@@ -325,7 +326,12 @@ class CrudPanel
         }
 
         $result = array_reduce(array_splice($relationArray, 0, $length), function ($obj, $method) {
-            return $obj->$method()->getRelated();
+            try {
+                $result = $obj->$method();
+                return $result->getRelated();
+            }catch(Exception $e) {
+                return $obj;
+            }
         }, $model);
 
         return get_class($result);
