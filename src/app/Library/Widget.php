@@ -72,7 +72,7 @@ class Widget extends Fluent
 
     /**
      * Make this widget the first one in its group.
-     * 
+     *
      * @return Widget
      */
     public function makeFirst()
@@ -85,7 +85,7 @@ class Widget extends Fluent
 
     /**
      * Make this widget the last one in its group.
-     * 
+     *
      * @return Widget
      */
     public function makeLast()
@@ -132,7 +132,7 @@ class Widget extends Fluent
 
     /**
      * Remove the widget from its group.
-     * 
+     *
      * @return Widget
      */
     public function remove()
