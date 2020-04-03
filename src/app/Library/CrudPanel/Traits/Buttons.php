@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Support\Collection;
+use Backpack\CRUD\app\Library\CrudPanel\CrudButton;
 
 trait Buttons
 {
@@ -67,38 +68,15 @@ trait Buttons
      *                                     'beginning' for the line stack or 'end' otherwise.
      * @param bool        $replaceExisting True if a button with the same name on the given stack should be replaced.
      *
-     * @return \Backpack\CRUD\app\Library\CrudPanel\Traits\CrudButton The new CRUD button.
+     * @return \Backpack\CRUD\app\Library\CrudPanel\CrudButton The new CRUD button.
      */
     public function addButton($stack, $name, $type, $content, $position = false, $replaceExisting = true)
     {
-        if ($position == false) {
-            switch ($stack) {
-                case 'line':
-                    $position = 'beginning';
-                    break;
-
-                default:
-                    $position = 'end';
-                    break;
-            }
-        }
-
         if ($replaceExisting) {
             $this->removeButton($name, $stack);
         }
 
-        $button = new CrudButton($stack, $name, $type, $content);
-        switch ($position) {
-            case 'beginning':
-                $this->setOperationSetting('buttons', $this->buttons()->prepend($button));
-                break;
-
-            default:
-                $this->setOperationSetting('buttons', $this->buttons()->push($button));
-                break;
-        }
-
-        return $button;
+        return new CrudButton($name, $stack, $type, $content, $position);
     }
 
     public function addButtonFromModelFunction($stack, $name, $model_function_name, $position = false)
@@ -193,20 +171,89 @@ trait Buttons
             return $button->name == $name && $button->stack == $stack;
         }));
     }
-}
 
-class CrudButton
-{
-    public $stack;
-    public $name;
-    public $type = 'view';
-    public $content;
-
-    public function __construct($stack, $name, $type, $content)
+    /**
+     * Move the most recently added button before or after the given target button. Default is before.
+     *
+     * @param string|array $target      The target button name or array.
+     * @param string|array $destination The destination button name or array.
+     * @param bool         $before      If true, the button will be moved before the target button, otherwise it will be moved after it.
+     */
+    public function moveButton($target, $where, $destination)
     {
-        $this->stack = $stack;
-        $this->name = $name;
-        $this->type = $type;
-        $this->content = $content;
+        $targetButton = $this->firstButtonWhere('name', $target);
+        $destinationButton = $this->firstButtonWhere('name', $destination);
+        $destinationKey = $this->getButtonKey($destination);
+        $newDestinationKey = ($where == 'before' ? $destinationKey : $destinationKey + 1);
+        $newButtons = $this->buttons()->filter(function ($value, $key) use ($target) {
+            return $value->name != $target;
+        });
+
+        if (! $targetButton) {
+            return;
+        }
+
+        if (! $destinationButton) {
+            return;
+        }
+
+        $firstSlice = $newButtons->slice(0, $newDestinationKey);
+        $lastSlice = $newButtons->slice($newDestinationKey, null);
+
+        $newButtons = $firstSlice->push($targetButton);
+        $lastSlice->each(function ($item, $key) use ($newButtons) {
+            $newButtons->push($item);
+        });
+
+        $this->setOperationSetting('buttons', $newButtons);
+    }
+
+    /**
+     * Check if a filter exists, by any given attribute.
+     *
+     * @param  string  $attribute   Attribute name on that filter definition array.
+     * @param  string  $value       Value of that attribute on that filter definition array.
+     * @return bool
+     */
+    public function hasButtonWhere($attribute, $value)
+    {
+        return $this->buttons()->contains($attribute, $value);
+    }
+
+    /**
+     * Get the first filter where a given attribute has the given value.
+     *
+     * @param  string  $attribute   Attribute name on that filter definition array.
+     * @param  string  $value       Value of that attribute on that filter definition array.
+     * @return bool
+     */
+    public function firstButtonWhere($attribute, $value)
+    {
+        return $this->buttons()->firstWhere($attribute, $value);
+    }
+
+
+    public function getButtonKey($buttonName)
+    {
+        $array = $this->buttons()->toArray();
+
+        foreach ($array as $key => $value) {
+            if ($value->name == $buttonName) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Add a new button to the current CRUD operation.
+     * 
+     * @param  string|array $attributes Button name or array that contains name, stack, type and content.
+     * @return \Backpack\CRUD\app\Library\CrudPanel\CrudButton
+     */
+    public function button($attributes = null) 
+    {
+        return new CrudButton($attributes);
     }
 }
