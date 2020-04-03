@@ -42,22 +42,24 @@ class CrudButton
     // ------
     // MAKERS
     // ------
-    
+
     /**
      * Add a new button to the default stack.
-     * 
+     *
      * @param  string|array $attributes Button name or array that contains name, stack, type and content.
      */
-    public static function name($attributes = null) {
+    public static function name($attributes = null)
+    {
         return new static($attributes);
     }
 
     /**
      * Add a new button to the default stack.
-     * 
+     *
      * @param  string|array $attributes Button name or array that contains name, stack, type and content.
      */
-    public static function add($attributes = null) {
+    public static function add($attributes = null)
+    {
         return new static($attributes);
     }
 
@@ -75,7 +77,8 @@ class CrudButton
      * @param  string|array $attributes Button name or array that contains name, stack, type and content.
      * @return CrudButton
      */
-    public static function make($attributes = null) {
+    public static function make($attributes = null)
+    {
         $button = static::add($attributes);
         $button->stack('hidden');
 
@@ -88,11 +91,11 @@ class CrudButton
 
     /**
      * Set the button stack (where the button will be shown).
-     * 
+     *
      * @param  string $stack The name of the stack where the button should be moved.
      * @return CrudButton
      */
-    public function stack($stack) 
+    public function stack($stack)
     {
         $this->stack = $stack;
 
@@ -101,27 +104,26 @@ class CrudButton
 
     /**
      * Sets the button type (view or model_function).
-     * 
+     *
      * @param  string $type The type of button - view or model_function.
      * @return CrudButton
      */
-    public function type($type) 
+    public function type($type)
     {
         $this->type = $type;
 
         return $this->save();
     }
 
-
     /**
      * Sets the content of the button.
      * For the view button type, set it to the view path, including namespace.
      * For the model_function button type, set it to the name of the method on the model.
-     * 
+     *
      * @param  string $content Path to view or name of method on Model.
      * @return CrudButton
      */
-    public function content($content) 
+    public function content($content)
     {
         $this->content = $content;
 
@@ -131,7 +133,7 @@ class CrudButton
     /**
      * Sets the namespace and path of the view for this button.
      * Sets the button type as 'view'.
-     * 
+     *
      * @param  string $value Path to view file.
      * @return CrudButton
      */
@@ -146,7 +148,7 @@ class CrudButton
     /**
      * Sets the name of the method on the model that contains the HTML for this button.
      * Sets the button type as 'model_function'.
-     * 
+     *
      * @param  string $value Name of the method on the model.
      * @return CrudButton
      */
@@ -163,7 +165,7 @@ class CrudButton
      * Sets the name of the method on the model that contains the HTML for this button.
      * Sets the button type as 'model_function'.
      * Alias of the modelFunction() method.
-     * 
+     *
      * @param  string $value Name of the method on the model.
      * @return CrudButton
      */
@@ -175,7 +177,7 @@ class CrudButton
     /**
      * Unserts an property that is set on the current button.
      * Possible properties: name, stack, type, content.
-     * 
+     *
      * @param  string $property Name of the property that should be cleared.
      * @return CrudButton
      */
@@ -186,21 +188,19 @@ class CrudButton
         return $this->save();
     }
 
-
     // --------------
     // SETTER ALIASES
     // --------------
 
-
     /**
      * Moves the button to a certain button stack.
      * Alias of stack().
-     * 
+     *
      * @param  string $stack The name of the stack where the button should be moved.
-     * 
+     *
      * @return self
      */
-    public function to($stack) 
+    public function to($stack)
     {
         return $this->stack($stack);
     }
@@ -208,12 +208,12 @@ class CrudButton
     /**
      * Moves the button to a certain button stack.
      * Alias of stack().
-     * 
+     *
      * @param  string $stack The name of the stack where the button should be moved.
-     * 
+     *
      * @return self
      */
-    public function group($stack) 
+    public function group($stack)
     {
         return $this->stack($stack);
     }
@@ -221,12 +221,12 @@ class CrudButton
     /**
      * Moves the button to a certain button stack.
      * Alias of stack().
-     * 
+     *
      * @param  string $stack The name of the stack where the button should be moved.
-     * 
+     *
      * @return self
      */
-    public function section($stack) 
+    public function section($stack)
     {
         return $this->stack($stack);
     }
@@ -238,12 +238,13 @@ class CrudButton
     /**
      * Get the end result that should be displayed to the user.
      * The HTML itself of the button.
-     * 
+     *
      * @param  object|null $entry The eloquent Model for the current entry or null if no current entry.
-     * 
+     *
      * @return HTML
      */
-    public function getHtml($entry = null) {
+    public function getHtml($entry = null)
+    {
         $button = $this;
         $crud = $this->crud();
 
@@ -251,6 +252,7 @@ class CrudButton
             if (is_null($entry)) {
                 return $crud->model->{$button->content}($crud);
             }
+
             return $entry->{$button->content}($crud);
         }
 
@@ -267,8 +269,8 @@ class CrudButton
 
     /**
      * Get the key for this button in the global buttons collection.
-     * 
-     * @return integer
+     *
+     * @return int
      */
     public function getKey()
     {
@@ -278,13 +280,13 @@ class CrudButton
     // -----
     // ORDER
     // -----
-    
+
     /**
      * Move this button to be the first in the buttons list.
      *
      * @return CrudButton
      */
-    public function makeFirst() 
+    public function makeFirst()
     {
         $this->remove();
         $this->collection()->prepend($this);
@@ -297,7 +299,7 @@ class CrudButton
      *
      * @return CrudButton
      */
-    public function makeLast() 
+    public function makeLast()
     {
         $this->remove();
         $this->collection()->push($this);
@@ -338,7 +340,7 @@ class CrudButton
 
     /**
      * Access the global collection when all buttons are stored.
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     public static function collection()
@@ -360,7 +362,7 @@ class CrudButton
 
     /**
      * Access the global CrudPanel object.
-     * 
+     *
      * @return \Backpack\CRUD\app\Library\CrudPanel\CrudPanel
      */
     public function crud()

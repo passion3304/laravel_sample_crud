@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Support\Collection;
 use Backpack\CRUD\app\Library\CrudPanel\CrudButton;
+use Illuminate\Support\Collection;
 
 trait Buttons
 {
@@ -232,7 +232,6 @@ trait Buttons
         return $this->buttons()->firstWhere($attribute, $value);
     }
 
-
     public function getButtonKey($buttonName)
     {
         $array = $this->buttons()->toArray();
@@ -242,17 +241,15 @@ trait Buttons
                 return $key;
             }
         }
-
-        return null;
     }
 
     /**
      * Add a new button to the current CRUD operation.
-     * 
+     *
      * @param  string|array $attributes Button name or array that contains name, stack, type and content.
      * @return \Backpack\CRUD\app\Library\CrudPanel\CrudButton
      */
-    public function button($attributes = null) 
+    public function button($attributes = null)
     {
         return new CrudButton($attributes);
     }
