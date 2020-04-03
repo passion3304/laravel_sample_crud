@@ -8,7 +8,7 @@
     $column['suffix'] = $column['suffix'] ?? '';
 
     $value = data_get($entry, $column['name']);
-    if ($value != null) {
+    if (!is_null($value)) {
     	$value = number_format($value, $column['decimals'], $column['dec_point'], $column['thousands_sep']);
     }
     $column['text'] = is_null($value) ? '' : $column['prefix'].$value.$column['suffix'];

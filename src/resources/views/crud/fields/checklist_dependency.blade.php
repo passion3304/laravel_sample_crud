@@ -4,7 +4,7 @@
   $field['wrapper']['class'] = $field['wrapper']['class'] ?? 'form-group col-sm-12';
   $field['wrapper']['class'] = $field['wrapper']['class'].' checklist_dependency';
   $field['wrapper']['data-entity'] = $field['wrapper']['data-entity'] ?? $field['field_unique_name'];
-  $field['wrapper']['init-function'] = $field['wrapper']['init-function'] ?? 'bpFieldInitChecklistDependencyElement';
+  $field['wrapper']['data-init-function'] = $field['wrapper']['init-function'] ?? 'bpFieldInitChecklistDependencyElement';
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

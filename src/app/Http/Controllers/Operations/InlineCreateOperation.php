@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Illuminate\Support\Facades\Route;
+use Prologue\Alerts\Facades\Alert;
 
 trait InlineCreateOperation
 {
@@ -74,6 +75,11 @@ trait InlineCreateOperation
      */
     public function storeInlineCreate()
     {
-        return $this->store();
+        $result = $this->store();
+
+        // do not carry over the flash messages from the Create operation
+        Alert::flush();
+
+        return $result;
     }
 }
