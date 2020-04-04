@@ -2,9 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\CrudPanel\CrudButton;
-use Backpack\CRUD\Tests\Unit\CrudPanel\BaseCrudPanelTest;
 
 class CrudPanelButtonsTest extends BaseCrudPanelTest
 {
