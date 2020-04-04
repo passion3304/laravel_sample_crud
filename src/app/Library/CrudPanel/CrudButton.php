@@ -34,7 +34,11 @@ class CrudButton
         $this->stack = $stack ?? 'top';
         $this->type = $type ?? 'view';
         $this->content = $content;
-        $this->position = $position;
+
+        // if no position was passed, the defaults are:
+        // - 'beginning' for the 'line' stack
+        // - 'end' for all other stacks
+        $this->position = $position ?? ($this->stack == 'line' ? 'beginning' : 'end');
 
         return $this->save();
     }
@@ -280,6 +284,7 @@ class CrudButton
     // -----
     // ORDER
     // -----
+    // Manipulate the button collection (inside the global CrudPanel object).
 
     /**
      * Move this button to be the first in the buttons list.
@@ -333,21 +338,6 @@ class CrudButton
         return $this;
     }
 
-    // ------------------
-    // COLLECTION METHODS
-    // ------------------
-    // Manipulate the button collection (inside the global CrudPanel object).
-
-    /**
-     * Access the global collection when all buttons are stored.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public static function collection()
-    {
-        return app('crud')->buttons();
-    }
-
     /**
      * Remove the button from the global button collection.
      *
@@ -360,6 +350,21 @@ class CrudButton
         return $this;
     }
 
+    // --------------
+    // GLOBAL OBJECTS
+    // --------------
+    // Access to the objects stored in Laravel's service container.
+    
+    /**
+     * Access the global collection when all buttons are stored.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function collection()
+    {
+        return $this->crud()->buttons();
+    }
+    
     /**
      * Access the global CrudPanel object.
      *
@@ -382,14 +387,17 @@ class CrudButton
     private function save()
     {
         $itemExists = $this->collection()->contains('name', $this->name);
-        $position = $this->position ?? ($this->stack == 'line' ? 'beginning' : 'end');
 
         if (! $itemExists) {
-            if ($position == 'beginning') {
+            if ($this->position == 'beginning') {
                 $this->collection()->prepend($this);
             } else {
                 $this->collection()->push($this);
             }
+
+            // clear the custom position, so that the next daisy chained method 
+            // doesn't move it yet again
+            $this->position = null;
         } else {
             $this->collection()->replace([$this->getKey() => $this]);
         }
