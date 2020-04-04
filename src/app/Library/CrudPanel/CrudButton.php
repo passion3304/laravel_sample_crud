@@ -354,7 +354,7 @@ class CrudButton
     // GLOBAL OBJECTS
     // --------------
     // Access to the objects stored in Laravel's service container.
-    
+
     /**
      * Access the global collection when all buttons are stored.
      *
@@ -364,7 +364,7 @@ class CrudButton
     {
         return $this->crud()->buttons();
     }
-    
+
     /**
      * Access the global CrudPanel object.
      *
@@ -395,7 +395,7 @@ class CrudButton
                 $this->collection()->push($this);
             }
 
-            // clear the custom position, so that the next daisy chained method 
+            // clear the custom position, so that the next daisy chained method
             // doesn't move it yet again
             $this->position = null;
         } else {
