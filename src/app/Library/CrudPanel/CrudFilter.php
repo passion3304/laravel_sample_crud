@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CrudFilter
 {
-    public $crud;
     public $name; // the name of the filtered variable (db column name)
     public $type = 'select2'; // the name of the filter view that will be loaded
     public $label;
@@ -20,13 +19,11 @@ class CrudFilter
     public $viewNamespace = 'crud::filters';
     public $applied = false;
 
-    public function __construct($options, $values, $logic, $fallbackLogic, CrudPanel $crud)
+    public function __construct($options, $values, $logic, $fallbackLogic)
     {
-        $this->crud = $crud;
-
         // if filter exists
-        if ($this->crud->hasFilterWhere('name', $options['name'])) {
-            $properties = get_object_vars($this->crud->firstFilterWhere('name', $options['name']));
+        if ($this->crud()->hasFilterWhere('name', $options['name'])) {
+            $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));
             foreach ($properties as $property => $value) {
                 $this->{$property} = $value;
             }
@@ -34,7 +31,7 @@ class CrudFilter
             // it means we're creating the filter now,
             $this->name = $options['name'];
             $this->type = $options['type'] ?? $this->type;
-            $this->label = $options['label'] ?? $crud->makeLabel($this->name);
+            $this->label = $options['label'] ?? $this->crud()->makeLabel($this->name);
             $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
             $this->view = $this->viewNamespace.'.'.$this->type;
             $this->placeholder = $options['placeholder'] ?? '';
@@ -102,7 +99,7 @@ class CrudFilter
             $input = new ParameterBag($input);
         }
 
-        $input = $input ?? new ParameterBag($this->crud->getRequest()->all());
+        $input = $input ?? new ParameterBag($this->crud()->getRequest()->all());
 
         if (! $input->has($this->name)) {
             return;
@@ -143,7 +140,7 @@ class CrudFilter
      */
     public function remove()
     {
-        $this->crud->removeFilter($this->name);
+        $this->crud()->removeFilter($this->name);
     }
 
     /**
@@ -162,7 +159,7 @@ class CrudFilter
             unset($this->options[$attribute]);
         }
 
-        $this->crud->replaceFilter($this->name, $this);
+        $this->crud()->replaceFilter($this->name, $this);
 
         return $this;
     }
@@ -189,7 +186,7 @@ class CrudFilter
      */
     public function after($destination)
     {
-        $this->crud->moveFilter($this->name, 'after', $destination);
+        $this->crud()->moveFilter($this->name, 'after', $destination);
 
         return $this;
     }
@@ -202,7 +199,7 @@ class CrudFilter
      */
     public function before($destination)
     {
-        $this->crud->moveFilter($this->name, 'before', $destination);
+        $this->crud()->moveFilter($this->name, 'before', $destination);
 
         return $this;
     }
@@ -214,7 +211,7 @@ class CrudFilter
      */
     public function makeFirst()
     {
-        $this->crud->moveFilter($this->name, 'before', $this->crud->filters()->first()->name);
+        $this->crud()->moveFilter($this->name, 'before', $this->crud()->filters()->first()->name);
 
         return $this;
     }
@@ -226,8 +223,8 @@ class CrudFilter
      */
     public function makeLast()
     {
-        $this->crud->removeFilter($this->name);
-        $this->crud->addCrudFilter($this);
+        $this->crud()->removeFilter($this->name);
+        $this->crud()->addCrudFilter($this);
 
         return $this;
     }
@@ -358,6 +355,11 @@ class CrudFilter
     // PRIVATE METHODS
     // ---------------
 
+    private function crud()
+    {
+        return app()->make('crud');
+    }
+
     /**
      * Set the value for a certain attribute on the CrudFilter object.
      *
@@ -389,10 +391,10 @@ class CrudFilter
     {
         $key = $this->name;
 
-        if ($this->crud->hasFilterWhere('name', $key)) {
-            $this->crud->modifyFilter($key, $this->options);
+        if ($this->crud()->hasFilterWhere('name', $key)) {
+            $this->crud()->modifyFilter($key, $this->options);
         } else {
-            $this->crud->addCrudFilter($this);
+            $this->crud()->addCrudFilter($this);
         }
 
         return $this;
@@ -405,17 +407,17 @@ class CrudFilter
      */
     private function applyDefaultLogic($name, $operator, $input = null)
     {
-        $input = $input ?? $this->crud->getRequest()->all();
+        $input = $input ?? $this->crud()->getRequest()->all();
 
         // if this filter is active (the URL has it as a GET parameter)
         switch ($operator) {
             // if no operator was passed, just use the equals operator
             case false:
-                $this->crud->addClause('where', $name, $input[$name]);
+                $this->crud()->addClause('where', $name, $input[$name]);
                 break;
 
             case 'scope':
-                $this->crud->addClause($operator);
+                $this->crud()->addClause($operator);
                 break;
 
             // TODO:
@@ -441,7 +443,7 @@ class CrudFilter
             case '>=':
             case '<':
             case '<=':
-                $this->crud->addClause('where', $name, $operator, $input[$name]);
+                $this->crud()->addClause('where', $name, $operator, $input[$name]);
                 break;
 
             default:

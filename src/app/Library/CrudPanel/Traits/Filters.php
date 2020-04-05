@@ -80,7 +80,7 @@ trait Filters
         }
 
         // add a new filter to the interface
-        $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic, $this);
+        $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic);
         $this->setOperationSetting('filters', $this->filters()->push($filter));
 
         return $filter;
@@ -333,6 +333,6 @@ trait Filters
      */
     public function filter($name)
     {
-        return new CrudFilter(compact('name'), null, null, null, $this);
+        return new CrudFilter(compact('name'), null, null, null);
     }
 }
