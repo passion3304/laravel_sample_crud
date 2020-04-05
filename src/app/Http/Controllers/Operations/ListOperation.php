@@ -71,6 +71,15 @@ trait ListOperation
     {
         $this->crud->hasAccessOrFail('list');
 
+        // apply any unapplied filters
+        // if the developer forgot to call apply() at the end of their filter declaration
+        $unappliedFilters = $this->crud->filters()->where('applied', false);
+        if ($unappliedFilters->count()) {
+            $unappliedFilters->each(function($filter) {
+                $filter->apply();
+            });
+        }
+
         $totalRows = $this->crud->model->count();
         $filteredRows = $this->crud->count();
         $startIndex = request()->input('start') ?: 0;
