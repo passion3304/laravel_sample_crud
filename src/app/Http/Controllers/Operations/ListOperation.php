@@ -75,7 +75,7 @@ trait ListOperation
         // if the developer forgot to call apply() at the end of their filter declaration
         $unappliedFilters = $this->crud->filters()->where('applied', false);
         if ($unappliedFilters->count()) {
-            $unappliedFilters->each(function($filter) {
+            $unappliedFilters->each(function ($filter) {
                 $filter->apply();
             });
         }
