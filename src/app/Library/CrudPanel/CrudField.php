@@ -128,6 +128,28 @@ class CrudField
         return $this;
     }
 
+    // -------------------
+    // CONVENIENCE METHODS
+    // -------------------
+    // These methods don't do exactly what advertised by their name.
+    // They exist because the original syntax was too long.
+
+    /**
+     * Set the wrapper width at this many number of columns.
+     * For example, to set a field wrapper to span across 6 columns, you can do both:
+     * ->wrapper(['class' => 'form-group col-md-6'])
+     * ->size(6).
+     *
+     * @param  int $numberOfColumns How many columns should this field span across (1-12)?
+     * @return CrudField
+     */
+    public function size($numberOfColumns)
+    {
+        $this->attributes['wrapper']['class'] = 'form-group col-md-'.$numberOfColumns;
+
+        return $this->save();
+    }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------
