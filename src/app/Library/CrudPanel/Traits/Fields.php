@@ -152,20 +152,22 @@ trait Fields
     /**
      * Update value of a given key for a current field.
      *
-     * @param string $field         The field
+     * @param string $fieldName         The field name
      * @param array  $modifications An array of changes to be made.
      */
-    public function modifyField($field, $modifications)
+    public function modifyField($fieldName, $modifications)
     {
-        $fields = $this->fields();
+        $fieldsArray = $this->fields();
+        $field = $this->firstFieldWhere('name', $fieldName);
+        $fieldKey = $this->getFieldKey($field);
 
         foreach ($modifications as $attributeName => $attributeValue) {
-            $fields[$field][$attributeName] = $attributeValue;
+            $fieldsArray[$fieldKey][$attributeName] = $attributeValue;
         }
 
         $this->enableTabsIfFieldUsesThem($modifications);
 
-        $this->setOperationSetting('fields', $fields);
+        $this->setOperationSetting('fields', $fieldsArray);
     }
 
     /**
