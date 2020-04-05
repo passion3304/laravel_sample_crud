@@ -109,6 +109,23 @@ trait Filters
     }
 
     /**
+     * Apply all unapplied filters in the filter collection.
+     * This is called by the ListOperation just in case developers forgot to call apply() 
+     * at the end of their filter declarations.
+     *  
+     * @return void
+     */
+    public function applyUnappliedFilters()
+    {
+        $unappliedFilters = $this->filters()->where('applied', false);
+        if ($unappliedFilters->count()) {
+            $unappliedFilters->each(function($filter) {
+                $filter->apply();
+            });
+        }
+    }
+
+    /**
      * @return array|\Illuminate\Support\Collection
      */
     public function filters()

@@ -8,7 +8,7 @@ class CrudFilter
 {
     public $crud;
     public $name; // the name of the filtered variable (db column name)
-    public $type = 'select'; // the name of the filter view that will be loaded
+    public $type = 'select2'; // the name of the filter view that will be loaded
     public $label;
     public $placeholder;
     public $values;
@@ -51,6 +51,9 @@ class CrudFilter
     }
 
     /**
+     * Check if the field is currently active. This happens when there's a GET parameter 
+     * in the current request with the same name as the name of the field.
+     * 
      * @return bool
      */
     public function isActive()
@@ -62,16 +65,34 @@ class CrudFilter
         return false;
     }
 
+    /**
+     * Check if the filter has already had the apply method called on it.
+     * 
+     * @return bool
+     */
     public function wasApplied()
     {
         return $this->applied;
     }
 
+    /**
+     * Check if the filter has not had the apply method called on it yet.
+     * This is the inverse of the wasApplied() method.
+     * 
+     * @return bool
+     */
     public function wasNotApplied()
     {
         return ! $this->applied;
     }
 
+    /**
+     * Run the filter logic, default logic and/or fallback logic so that from this point on
+     * the CRUD query has its results filtered, according to the Request.
+     * 
+     * @param  array $input The GET parameters for which the filter should be applied.
+     * @return void
+     */
     public function apply($input = null)
     {
         // mark the field as already applied
@@ -215,6 +236,12 @@ class CrudFilter
     // FILTER-SPECIFIC SETTERS
     // -----------------------
 
+    /**
+     * Set the type of the filter.
+     * 
+     * @param  string $value Name of blade view that shows the field.
+     * @return CrudFilter
+     */
     public function type($value)
     {
         $this->type = $value;
@@ -223,6 +250,13 @@ class CrudFilter
         return $this->save();
     }
 
+    /**
+     * Set the label of the filter - the element that the end-user can see and click 
+     * to activate the filter or an input that will activate the filter.
+     * 
+     * @param  string $value A name for this filter that the end-user will understand.
+     * @return CrudFilter
+     */
     public function label($value)
     {
         $this->label = $value;
