@@ -242,7 +242,7 @@ class CrudFilter
     public function type($value)
     {
         $this->type = $value;
-        $this->setAttributeValue('type', $value);
+        $this->setOptionValue('type', $value);
 
         return $this->save();
     }
@@ -257,55 +257,95 @@ class CrudFilter
     public function label($value)
     {
         $this->label = $value;
-        $this->setAttributeValue('label', $value);
+        $this->setOptionValue('label', $value);
 
         return $this->save();
     }
 
+    /**
+     * Set the values for the current filter, for the filters who need values. 
+     * For example, the dropdown, select2 and select2 filters let the user select
+     * pre-determined values to filter with. This is how to set those values that will be picked up.
+     * 
+     * @param  array $value Key-value array with values for the user to pick from.
+     * @return CrudFilter
+     */
     public function values($value)
     {
         $this->values = $value;
-        $this->setAttributeValue('values', $value);
+        $this->setOptionValue('values', $value);
 
         return $this->save();
     }
 
+    /**
+     * Set the blade view that will be used by the filter.
+     * Should NOT include the namespace, that's defined separately using 'viewNamespace'.
+     * 
+     * @param  string $value Path to the blade file, after the view namespace.
+     * @return CrudFilter
+     */
     public function view($value)
     {
         $this->view = $value;
-        $this->setAttributeValue('view', $value);
+        $this->setOptionValue('view', $value);
 
         return $this->save();
     }
 
+    /**
+     * The path to the blade views directory where the filter file will be found. Ex: 'crud::filters'
+     * Useful to load filters from a different package or directory.
+     * 
+     * @param  string $value Blade path to the directory.
+     * @return CrudFilter
+     */
     public function viewNamespace($value)
     {
         $this->viewNamespace = $value;
-        $this->setAttributeValue('viewNamespace', $value);
+        $this->setOptionValue('viewNamespace', $value);
 
         return $this->save();
     }
 
+    /**
+     * Define what happens when the filter is active, through a closure.
+     * 
+     * @param  Closure $value Closure that will be called when Request has this name as GET parameter.
+     * @return CrudFilter
+     */
     public function logic($value)
     {
         $this->logic = $value;
-        $this->setAttributeValue('logic', $value);
+        $this->setOptionValue('logic', $value);
 
         return $this->save();
     }
 
+    /**
+     * Define what happens when the filter is NOT active, through a closure.
+     * 
+     * @param  Closure $value Closure that will be called when Request does NOT have this name as GET parameter.
+     * @return CrudFilter
+     */
     public function fallbackLogic($value)
     {
         $this->fallbackLogic = $value;
-        $this->setAttributeValue('fallbackLogic', $value);
+        $this->setOptionValue('fallbackLogic', $value);
 
         return $this->save();
     }
 
+    /**
+     * Define if the filter has already been applied (logic or fallbackLogic called).
+     * 
+     * @param  bool $value Whether the filter has been run.
+     * @return CrudFilter
+     */
     public function applied($value)
     {
         $this->applied = $value;
-        $this->setAttributeValue('applied', $value);
+        $this->setOptionValue('applied', $value);
 
         return $this->save();
     }
@@ -366,24 +406,24 @@ class CrudFilter
      * @param string $attribute Name of the attribute.
      * @param string $value     Value of that attribute.
      */
-    private function setAttributeValue($attribute, $value)
+    private function setOptionValue($attribute, $value)
     {
         $this->options[$attribute] = $value;
     }
 
     /**
-     * Replace all field attributes on the CrudFilter object
+     * Replace all field options on the CrudFilter object
      * with the given array of attribute-value pairs.
      *
-     * @param array $array Array of attributes and their values.
+     * @param array $array Array of options and their values.
      */
-    private function setAllAttributeValues($array)
+    private function setAllOptionsValues($array)
     {
         $this->options = $array;
     }
 
     /**
-     * Update the global CrudPanel object with the current field attributes.
+     * Update the global CrudPanel object with the current field options.
      *
      * @return CrudFilter
      */
@@ -393,6 +433,7 @@ class CrudFilter
 
         if ($this->crud()->hasFilterWhere('name', $key)) {
             $this->crud()->modifyFilter($key, $this->options);
+            // $this->crud()->replaceFilter($key, $this);
         } else {
             $this->crud()->addCrudFilter($this);
         }
@@ -470,7 +511,7 @@ class CrudFilter
      */
     public function __call($method, $parameters)
     {
-        $this->setAttributeValue($method, $parameters[0]);
+        $this->setOptionValue($method, $parameters[0]);
 
         return $this->save();
     }

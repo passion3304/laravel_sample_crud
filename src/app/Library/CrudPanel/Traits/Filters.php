@@ -94,7 +94,7 @@ trait Filters
      */
     public function addCrudFilter($object)
     {
-        return $this->addFilterToCollection($object->options, $object->values, $object->logic, $object->fallbackLogic);
+        return $this->addFilterToCollection((array)$object, $object->values, $object->logic, $object->fallbackLogic);
     }
 
     /**
