@@ -58,7 +58,7 @@ trait Create
         $relationFields = [];
 
         foreach ($fields as $field) {
-            if (isset($field['model'])) {
+            if (isset($field['model']) && $field['model'] !== false) {
                 array_push($relationFields, $field);
             }
 
@@ -109,7 +109,6 @@ trait Create
     public function syncPivot($model, $data)
     {
         $fields_with_relationships = $this->getRelationFields();
-
         foreach ($fields_with_relationships as $key => $field) {
             if (isset($field['pivot']) && $field['pivot']) {
                 $values = isset($data[$field['name']]) ? $data[$field['name']] : [];
@@ -195,8 +194,16 @@ trait Create
     /**
      * Get a relation data array from the form data.
      * For each relation defined in the fields through the entity attribute, set the model, the parent model and the
-     * attribute values. For relations defined with the "dot" notations, this will be used to calculate the depth in the
-     * final array (@see \Illuminate\Support\Arr::set() for more).
+     * attribute values.
+     *
+     * We traverse this relation array later to create the relations, for example:
+     *
+     * Current model HasOne Address, this Address (line_1, country_id) BelongsTo Country through country_id in Address Model.
+     *
+     * So when editing current model crud user have two fields address.line_1 and address.country (we infer country_id from relation)
+     *
+     * Those will be nested accordingly in this relation array, so address relation will have a nested relation with country.
+     *
      *
      * @param array $data The form data.
      *
@@ -205,7 +212,6 @@ trait Create
     private function getRelationDataFromFormData($data)
     {
         $relation_fields = $this->getRelationFields();
-
         $relationData = [];
         foreach ($relation_fields as $relation_field) {
             $relation_field['name'] = $relation_field['entity'];
@@ -228,7 +234,6 @@ trait Create
                 Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
-
         return $relationData;
     }
 

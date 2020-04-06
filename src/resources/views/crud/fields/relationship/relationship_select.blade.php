@@ -158,9 +158,7 @@
             $(element).append($option);
             //if option key is the same of current value we reselect it
             if(!$multiple) {
-                console.log(Object.keys($currentValue)[0]);
                 if (key == Object.keys($currentValue)[0]) {
-                    console.log(key);
                     $(element).val(key);
                 }
             }else{

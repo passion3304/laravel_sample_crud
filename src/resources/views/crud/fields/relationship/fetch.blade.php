@@ -30,10 +30,14 @@
                 break;
 
             case 'object':
-                if(! $current_value->isEmpty())  {
+            if (is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
+                    $current_value = [$current_value->{$connected_entity_key_name} => $current_value->{$field['attribute']}];
+                }else{
+                    if(! $current_value->isEmpty())  {
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
+                    }
                 }
                 break;
 
