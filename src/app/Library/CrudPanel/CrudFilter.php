@@ -272,10 +272,10 @@ class CrudFilter
     }
 
     /**
-     * Set the values for the current filter, for the filters who need values. 
+     * Set the values for the current filter, for the filters who need values.
      * For example, the dropdown, select2 and select2 filters let the user select
      * pre-determined values to filter with. This is how to set those values that will be picked up.
-     * 
+     *
      * @param  array $value Key-value array with values for the user to pick from.
      * @return CrudFilter
      */
@@ -289,7 +289,7 @@ class CrudFilter
     /**
      * Set the blade view that will be used by the filter.
      * Should NOT include the namespace, that's defined separately using 'viewNamespace'.
-     * 
+     *
      * @param  string $value Path to the blade file, after the view namespace.
      * @return CrudFilter
      */
@@ -303,7 +303,7 @@ class CrudFilter
     /**
      * The path to the blade views directory where the filter file will be found. Ex: 'crud::filters'
      * Useful to load filters from a different package or directory.
-     * 
+     *
      * @param  string $value Blade path to the directory.
      * @return CrudFilter
      */
@@ -316,7 +316,7 @@ class CrudFilter
 
     /**
      * Define what happens when the filter is active, through a closure.
-     * 
+     *
      * @param  Closure $value Closure that will be called when Request has this name as GET parameter.
      * @return CrudFilter
      */
@@ -329,7 +329,7 @@ class CrudFilter
 
     /**
      * Define what happens when the filter is NOT active, through a closure.
-     * 
+     *
      * @param  Closure $value Closure that will be called when Request does NOT have this name as GET parameter.
      * @return CrudFilter
      */
@@ -342,7 +342,7 @@ class CrudFilter
 
     /**
      * Define if the filter has already been applied (logic or fallbackLogic called).
-     * 
+     *
      * @param  bool $value Whether the filter has been run.
      * @return CrudFilter
      */
