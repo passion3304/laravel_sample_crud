@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Illuminate\Support\Arr;
 
 trait Fields
@@ -79,6 +80,21 @@ trait Fields
     }
 
     /**
+     * Move this field to be first in the fields list.
+     *
+     * @return bool|null
+     */
+    public function makeFirstField()
+    {
+        if (! $this->fields()) {
+            return false;
+        }
+
+        $firstField = array_keys(array_slice($this->fields(), 0, 1))[0];
+        $this->beforeField($firstField);
+    }
+
+    /**
      * Remove a certain field from the create/update/both forms by its name.
      *
      * @param string $name Field name (as defined with the addField() procedure)
@@ -120,20 +136,38 @@ trait Fields
     }
 
     /**
-     * Update value of a given key for a current field.
-     *
-     * @param string $field         The field
-     * @param array  $modifications An array of changes to be made.
+     * Remove an attribute from one field's definition array.
+     * @param  string $field     The name of the field.
+     * @param  string $attribute The name of the attribute being removed.
      */
-    public function modifyField($field, $modifications)
+    public function removeFieldAttribute($field, $attribute)
     {
         $fields = $this->fields();
 
-        foreach ($modifications as $attributeName => $attributeValue) {
-            $fields[$field][$attributeName] = $attributeValue;
-        }
+        unset($fields[$field][$attribute]);
 
         $this->setOperationSetting('fields', $fields);
+    }
+
+    /**
+     * Update value of a given key for a current field.
+     *
+     * @param string $fieldName         The field name
+     * @param array  $modifications An array of changes to be made.
+     */
+    public function modifyField($fieldName, $modifications)
+    {
+        $fieldsArray = $this->fields();
+        $field = $this->firstFieldWhere('name', $fieldName);
+        $fieldKey = $this->getFieldKey($field);
+
+        foreach ($modifications as $attributeName => $attributeValue) {
+            $fieldsArray[$fieldKey][$attributeName] = $attributeValue;
+        }
+
+        $this->enableTabsIfFieldUsesThem($modifications);
+
+        $this->setOperationSetting('fields', $fieldsArray);
     }
 
     /**
@@ -376,5 +410,54 @@ trait Fields
         }
 
         return $this->getRequest()->only($this->getAllFieldNames());
+    }
+
+    /**
+     * Check if a field exists, by any given attribute.
+     *
+     * @param  string  $attribute   Attribute name on that field definition array.
+     * @param  string  $value       Value of that attribute on that field definition array.
+     * @return bool
+     */
+    public function hasFieldWhere($attribute, $value)
+    {
+        $match = Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
+            return isset($field[$attribute]) && $field[$attribute] == $value;
+        });
+
+        return (bool) $match;
+    }
+
+    /**
+     * Get the first field where a given attribute has the given value.
+     *
+     * @param  string  $attribute   Attribute name on that field definition array.
+     * @param  string  $value       Value of that attribute on that field definition array.
+     * @return bool
+     */
+    public function firstFieldWhere($attribute, $value)
+    {
+        return Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
+            return isset($field[$attribute]) && $field[$attribute] == $value;
+        });
+    }
+
+    /**
+     * Create and return a CrudField object for that field name.
+     *
+     * Enables developers to use a fluent syntax to declare their fields,
+     * in addition to the existing options:
+     * - CRUD::addField(['name' => 'price', 'type' => 'number']);
+     * - CRUD::field('price')->type('number');
+     *
+     * And if the developer uses the CrudField object as Field in his CrudController:
+     * - Field::name('price')->type('number');
+     *
+     * @param  string $name The name of the column in the db, or model attribute.
+     * @return CrudField
+     */
+    public function field($name)
+    {
+        return new CrudField($name);
     }
 }

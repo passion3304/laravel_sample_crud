@@ -11,21 +11,21 @@
     $field['options'] = array_merge($defaultOptions, $field['options'] ?? []);
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     <textarea
         name="{{ $field['name'] }}"
         data-init-function="bpFieldInitCKEditorElement"
         data-options="{{ trim(json_encode($field['options'])) }}"
-        @include('crud::inc.field_attributes', ['default_class' => 'form-control'])
+        @include('crud::fields.inc.attributes', ['default_class' => 'form-control'])
     	>{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
     {{-- HINT --}}
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 
 {{-- ########################################## --}}
@@ -40,8 +40,6 @@
     @push('crud_fields_scripts')
         <script src="{{ asset('packages/ckeditor/ckeditor.js') }}"></script>
         <script src="{{ asset('packages/ckeditor/adapters/jquery.js') }}"></script>
-        <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
-
         <script>
             function bpFieldInitCKEditorElement(element) {
                 // remove any previous CKEditors from right next to the textarea

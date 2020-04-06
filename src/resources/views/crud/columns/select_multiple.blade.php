@@ -2,6 +2,7 @@
 @php
     $column['escaped'] = $column['escaped'] ?? true;
     $column['limit'] = $column['limit'] ?? 40;
+    $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
 
     $results = data_get($entry, $column['name']);
     $results_array = [];

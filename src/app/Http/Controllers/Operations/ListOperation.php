@@ -71,6 +71,8 @@ trait ListOperation
     {
         $this->crud->hasAccessOrFail('list');
 
+        $this->crud->applyUnappliedFilters();
+
         $totalRows = $this->crud->model->count();
         $filteredRows = $this->crud->count();
         $startIndex = request()->input('start') ?: 0;

@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Illuminate\Support\Arr;
 
 trait Columns
@@ -174,6 +175,20 @@ trait Columns
     }
 
     /**
+     * Remove an attribute from one column's definition array.
+     * @param  string $column     The name of the column.
+     * @param  string $attribute The name of the attribute being removed.
+     */
+    public function removeColumnAttribute($column, $attribute)
+    {
+        $columns = $this->columns();
+
+        unset($columns[$column][$attribute]);
+
+        $this->setOperationSetting('columns', $columns);
+    }
+
+    /**
      * Change attributes for multiple columns.
      *
      * @param array $columns
@@ -303,5 +318,54 @@ trait Columns
         $this->setOperationSetting('actionsColumnPriority', (int) $number);
 
         return $this;
+    }
+
+    /**
+     * Check if a column exists, by any given attribute.
+     *
+     * @param  string  $attribute   Attribute name on that column definition array.
+     * @param  string  $value       Value of that attribute on that column definition array.
+     * @return bool
+     */
+    public function hasColumnWhere($attribute, $value)
+    {
+        $match = Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
+            return isset($column[$attribute]) && $column[$attribute] == $value;
+        });
+
+        return (bool) $match;
+    }
+
+    /**
+     * Get the first column where a given attribute has the given value.
+     *
+     * @param  string  $attribute   Attribute name on that column definition array.
+     * @param  string  $value       Value of that attribute on that column definition array.
+     * @return bool
+     */
+    public function firstColumnWhere($attribute, $value)
+    {
+        return Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
+            return isset($column[$attribute]) && $column[$attribute] == $value;
+        });
+    }
+
+    /**
+     * Create and return a CrudColumn object for that column name.
+     *
+     * Enables developers to use a fluent syntax to declare their columns,
+     * in addition to the existing options:
+     * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
+     * - CRUD::column('price')->type('number');
+     *
+     * And if the developer uses the CrudColumn object as Column in his CrudController:
+     * - Column::name('price')->type('number');
+     *
+     * @param  string $name The name of the column in the db, or model attribute.
+     * @return CrudColumn
+     */
+    public function column($name)
+    {
+        return new CrudColumn($name);
     }
 }

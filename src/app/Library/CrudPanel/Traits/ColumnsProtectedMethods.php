@@ -26,7 +26,7 @@ trait ColumnsProtectedMethods
         $column = $this->makeSureColumnHasModel($column);
 
         // check if the column exists in the database (as a db column)
-        $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column['name']);
+        $columnExistsInDb = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
 
         // make sure column has tableColumn, orderable and searchLogic
         $column['tableColumn'] = $column['tableColumn'] ?? $columnExistsInDb;
@@ -196,7 +196,7 @@ trait ColumnsProtectedMethods
      *
      * @return bool
      */
-    protected function hasColumn($table, $name)
+    protected function hasDatabaseColumn($table, $name)
     {
         static $cache = [];
 

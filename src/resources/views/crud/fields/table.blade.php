@@ -23,11 +23,15 @@
     if (! isset($field['columns'])) {
         $field['columns'] = ['value' => 'Value'];
     }
+
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
+    $field['wrapper']['data-field-type'] = 'table';
+    $field['wrapper']['data-field-name'] = $field['name'];
 ?>
-<div data-field-type="table" data-field-name="{{ $field['name'] }}" @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
 
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
 
     <input class="array-json"
             type="hidden"
@@ -85,7 +89,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

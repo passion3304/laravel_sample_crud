@@ -132,10 +132,13 @@ trait Relationships
     public function relationAllowsMultiple($relationType)
     {
         switch ($relationType) {
-            case 'HasMany':
             case 'BelongsToMany':
+            case 'HasMany':
             case 'HasManyThrough':
+            case 'HasOneOrMany':
             case 'MorphMany':
+            case 'MorphOneOrMany':
+            case 'MorphToMany':
                 return true;
 
             default:

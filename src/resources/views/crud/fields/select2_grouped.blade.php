@@ -3,9 +3,9 @@
     $current_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     @php
         $entity_model = $crud->getRelationModel($field['entity'],  - 1);
         $group_by_model = (new $entity_model)->{$field['group_by']}()->getRelated();
@@ -19,7 +19,7 @@
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2GroupedElement"
-        @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
+        @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
         >
 
             @if ($entity_model::isColumnNullable($field['name']))
@@ -58,7 +58,7 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

@@ -2,6 +2,7 @@
 @php
     $column['escaped'] = $column['escaped'] ?? true;
     $column['limit'] = $column['limit'] ?? 40;
+    $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
 
     $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
     foreach ($attributes as $key => $text) {

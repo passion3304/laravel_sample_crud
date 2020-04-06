@@ -1,9 +1,9 @@
 <!-- browse server input -->
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
 
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     <div class="controls">
 	    <div class="input-group">
 			<input
@@ -12,7 +12,7 @@
 		        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
 		        data-init-function="bpFieldInitBrowseElement"
 		        data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup') }}"
-		        @include('crud::inc.field_attributes')
+		        @include('crud::fields.inc.attributes')
 
 				@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
 			>
@@ -28,7 +28,7 @@
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
 
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

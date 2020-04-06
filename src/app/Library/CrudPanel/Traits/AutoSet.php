@@ -103,6 +103,10 @@ trait AutoSet
             return 'email';
         }
 
+        if (is_array($fieldName)) {
+            return 'text'; // not because it's right, but because we don't know what it is
+        }
+
         $dbColumnTypes = $this->getDbColumnTypes();
 
         if (! isset($dbColumnTypes[$fieldName])) {
