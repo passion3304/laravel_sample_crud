@@ -120,7 +120,7 @@ class CrudFilter
 
     /**
      * Get the full path of the filter view, including the view namespace.
-     * 
+     *
      * @return string
      */
     public function getViewWithNamespace()
@@ -435,7 +435,7 @@ class CrudFilter
         $key = $this->name;
 
         if ($this->crud()->hasFilterWhere('name', $key)) {
-            $this->crud()->modifyFilter($key, (array)$this);
+            $this->crud()->modifyFilter($key, (array) $this);
         } else {
             $this->crud()->addCrudFilter($this);
         }
