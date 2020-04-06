@@ -234,6 +234,7 @@ trait Create
                 Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
+        dd($relationData);
         return $relationData;
     }
 

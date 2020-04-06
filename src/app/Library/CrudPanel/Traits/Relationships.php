@@ -50,7 +50,7 @@ trait Relationships
      * @return string
      */
     public function inferFieldModelFromRelationship($field) {
-        $relation = $this->getRelationInstance($field);
+        $relation = $this->getRelationInstance($field['entity']);
 
         return get_class($relation->getRelated());
     }
@@ -62,7 +62,7 @@ trait Relationships
      * @return string
      */
     public function inferRelationTypeFromRelationship($field) {
-        $relation = $this->getRelationInstance($field);
+        $relation = $this->getRelationInstance($field['entity']);
 
         return Arr::last(explode('\\', get_class($relation)));
     }
