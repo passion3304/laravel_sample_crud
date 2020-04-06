@@ -33,7 +33,7 @@ class CrudFilter
             $this->type = $options['type'] ?? $this->type;
             $this->label = $options['label'] ?? $this->crud()->makeLabel($this->name);
             $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
-            $this->view = $this->viewNamespace.'.'.$this->type;
+            $this->view = $this->type;
             $this->placeholder = $options['placeholder'] ?? '';
 
             $this->values = is_callable($values) ? $values() : $values;
@@ -118,6 +118,16 @@ class CrudFilter
         }
     }
 
+    /**
+     * Get the full path of the filter view, including the view namespace.
+     * 
+     * @return string
+     */
+    public function getViewWithNamespace()
+    {
+        return $this->viewNamespace.'.'.$this->view;
+    }
+
     // ---------------------
     // FLUENT SYNTAX METHODS
     // ---------------------
@@ -130,7 +140,7 @@ class CrudFilter
      */
     public static function name($name)
     {
-        return new static(compact('name'), null, null, null, app()->make('crud'));
+        return new static(compact('name'), null, null, null);
     }
 
     /**
@@ -242,7 +252,7 @@ class CrudFilter
     public function type($value)
     {
         $this->type = $value;
-        $this->setOptionValue('type', $value);
+        $this->view = $value;
 
         return $this->save();
     }
@@ -257,7 +267,6 @@ class CrudFilter
     public function label($value)
     {
         $this->label = $value;
-        $this->setOptionValue('label', $value);
 
         return $this->save();
     }
@@ -273,7 +282,6 @@ class CrudFilter
     public function values($value)
     {
         $this->values = $value;
-        $this->setOptionValue('values', $value);
 
         return $this->save();
     }
@@ -288,7 +296,6 @@ class CrudFilter
     public function view($value)
     {
         $this->view = $value;
-        $this->setOptionValue('view', $value);
 
         return $this->save();
     }
@@ -303,7 +310,6 @@ class CrudFilter
     public function viewNamespace($value)
     {
         $this->viewNamespace = $value;
-        $this->setOptionValue('viewNamespace', $value);
 
         return $this->save();
     }
@@ -317,7 +323,6 @@ class CrudFilter
     public function logic($value)
     {
         $this->logic = $value;
-        $this->setOptionValue('logic', $value);
 
         return $this->save();
     }
@@ -331,7 +336,6 @@ class CrudFilter
     public function fallbackLogic($value)
     {
         $this->fallbackLogic = $value;
-        $this->setOptionValue('fallbackLogic', $value);
 
         return $this->save();
     }
@@ -345,7 +349,6 @@ class CrudFilter
     public function applied($value)
     {
         $this->applied = $value;
-        $this->setOptionValue('applied', $value);
 
         return $this->save();
     }
@@ -432,8 +435,7 @@ class CrudFilter
         $key = $this->name;
 
         if ($this->crud()->hasFilterWhere('name', $key)) {
-            $this->crud()->modifyFilter($key, $this->options);
-            // $this->crud()->replaceFilter($key, $this);
+            $this->crud()->modifyFilter($key, (array)$this);
         } else {
             $this->crud()->addCrudFilter($this);
         }
@@ -499,7 +501,7 @@ class CrudFilter
 
     /**
      * If a developer calls a method that doesn't exist, assume they want:
-     * - the CrudFilter object to have an attribute with that value;
+     * - $this->options['whatever'] to be set to that value;
      * - that filter be updated inside the global CrudPanel object;.
      *
      * Eg: type('number') will set the "type" attribute to "number"
