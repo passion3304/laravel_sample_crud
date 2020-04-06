@@ -44,7 +44,7 @@
         </ul>
 
         {{-- The results will be stored here --}}
-        <div id="{{ $field['name'] }}_results">
+        <div id="{{ $field['name'] }}_results" data-identifier="results">
             @foreach ($values as $key)
                 <input type="hidden" name="{{ $field['name'] }}[]" value="{{ $key }}">
             @endforeach
@@ -126,29 +126,37 @@
 <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
 <script>
     function bpFieldInitSelectAndOrderElement(element) {
-        var $selected = element.find('[data-identifier=selected]');
-        var $all = element.find('[data-identifier=all]');
+        // var $selected = element.find('[data-identifier=selected]');
+        // var $results = element.find('[data-identifier=results]');
+        // var $all = element.find('[data-identifier=all]');
         var $fieldName = element.attr('data-field-name');
+        var $allId = 'sao_all_'+Math.ceil(Math.random() * 1000000);
+        var $selectedId = 'sao_selected_'+Math.ceil(Math.random() * 1000000);
+        var $resultsId = 'sao_results_'+Math.ceil(Math.random() * 1000000);
 
-        $( "#"+$fieldName+"_all, #"+$fieldName+"_selected" ).sortable({
+        element.find('[data-identifier=selected]').attr('id', $selectedId);
+        element.find('[data-identifier=all]').attr('id', $allId);
+        element.find('[data-identifier=results]').attr('id', $resultsId);
+
+        $( "#"+$allId+", #"+$selectedId ).sortable({
             connectWith: "."+$fieldName+"_connectedSortable",
             update: function() {
                 var updatedlist = $(this).attr('id');
-                if((updatedlist == $fieldName+"_selected")) {
-                    $("#"+$fieldName+"_results").html("");
-                    if($("#"+$fieldName+"_selected").find('li').length==0) {
+                if((updatedlist == $selectedId)) {
+                    $("#"+$resultsId).html("");
+                    if($("#"+$selectedId).find('li').length==0) {
                         var input = document.createElement("input");
                         input.setAttribute('name', $fieldName);
                         input.setAttribute('value',null);
                         input.setAttribute('type','hidden');
-                        $("#"+$fieldName+"_results").append(input);
+                        $("#"+$resultsId).append(input);
                     } else {
-                        $("#"+$fieldName+"_selected").find('li').each(function(val,obj) {
+                        $("#"+$selectedId).find('li').each(function(val,obj) {
                             var input = document.createElement("input");
                             input.setAttribute('name', $fieldName+"[]");
                             input.setAttribute('value',obj.getAttribute('value'));
                             input.setAttribute('type','hidden');
-                            $("#"+$fieldName+"_results").append(input);
+                            $("#"+$resultsId).append(input);
                         });
                     }
                 }

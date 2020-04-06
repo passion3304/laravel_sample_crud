@@ -7,7 +7,7 @@
 
     $items = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
-    // make sure not matter the attribute casting
+    // make sure no matter the attribute casting
     // the $items variable contains a properly defined JSON string
     if (is_array($items)) {
         if (count($items)) {
@@ -36,11 +36,16 @@
     <input class="array-json"
             type="hidden"
             data-init-function="bpFieldInitTableElement"
-            name="{{ $field['name'] }}">
+            name="{{ $field['name'] }}"
+            value="{{ $items }}"
+            data-max="{{$max}}" 
+            data-min="{{$min}}" 
+            data-maxErrorTitle="{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}" 
+            data-maxErrorMessage="{{trans('backpack::crud.table_max_reached', ['max' => $max])}}">
 
     <div class="array-container form-group">
 
-        <table class="table table-sm table-striped m-b-0" data-items="{{ $items }}" data-max="{{$max}}" data-min="{{$min}}" data-maxErrorTitle="{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}" data-maxErrorMessage="{{trans('backpack::crud.table_max_reached', ['max' => $max])}}">
+        <table class="table table-sm table-striped m-b-0">
 
             <thead>
                 <tr>
@@ -59,7 +64,7 @@
                 <tr class="array-row clonable" style="display: none;">
                     @foreach( $field['columns'] as $column => $label)
                     <td>
-                        <input class="form-control form-control-sm" type="text" data-name="item.{{ $column }}">
+                        <input class="form-control form-control-sm" type="text" data-cell-name="item.{{ $column }}">
                     </td>
                     @endforeach
                     <td>
@@ -102,14 +107,12 @@
         <script>
             function bpFieldInitTableElement(element) {
                 var $tableWrapper = element.parent('[data-field-type=table]');
+                var $rows = (element.attr('value') != '') ? $.parseJSON(element.attr('value')) : '';
+                var $max = element.attr('data-max');
+                var $min = element.attr('data-min');
+                var $maxErrorTitle = element.attr('data-maxErrorTitle');
+                var $maxErrorMessage = element.attr('data-maxErrorMessage');
 
-                var $max = $tableWrapper.find('table').attr('data-max');
-                var $min = $tableWrapper.find('table').attr('data-min');
-
-                var $maxErrorTitle = $tableWrapper.find('table').attr('data-maxErrorTitle');
-                var $maxErrorMessage = $tableWrapper.find('table').attr('data-maxErrorMessage');
-
-                var $rows = $.parseJSON($tableWrapper.find('table').attr('data-items'));
 
                 // add rows with the information from the database
                 if($rows != '[]') {
@@ -118,7 +121,7 @@
                         addItem();
 
                         $.each(this, function(column , value) {
-                            $tableWrapper.find('tbody tr:last').find('input[data-name="item.' + column + '"]').val(value);
+                            $tableWrapper.find('tbody tr:last').find('input[data-cell-name="item.' + column + '"]').val(value);
                         });
 
                         // if it's the last row, update the JSON
@@ -192,8 +195,7 @@
 
                 function updateTableFieldJson() {
                     var $rows = $tableWrapper.find('tbody tr').not('.clonable');
-                    var $fieldName = $tableWrapper.attr('data-field-name');
-                    var $hiddenField = $($tableWrapper).find('input[name='+$fieldName+']');
+                    var $hiddenField = $tableWrapper.find('input.array-json');
 
                     var json = '[';
                     var otArr = [];
@@ -202,7 +204,7 @@
                         var itArr = [];
                         x.each(function() {
                             if(this.value.length > 0) {
-                                var key = $(this).attr('data-name').replace('item.','');
+                                var key = $(this).attr('data-cell-name').replace('item.','');
                                 var value = this.value.replace(/(['"])/g, "\\$1"); // escapes single and double quotes
 
                                 itArr.push('"' + key + '":"' + value + '"');

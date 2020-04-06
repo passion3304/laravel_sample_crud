@@ -3,7 +3,6 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     <textarea
-    	id="simplemde_{{ $field['name'] }}"
         name="{{ $field['name'] }}"
         data-init-function="bpFieldInitSimpleMdeElement"
         data-simplemdeAttributesRaw="{{ isset($field['simplemdeAttributesRaw']) ? "{".$field['simplemdeAttributesRaw']."}" : "{}" }}"
@@ -44,6 +43,10 @@
         <script src="{{ asset('packages/simplemde/dist/simplemde.min.js') }}"></script>
         <script>
             function bpFieldInitSimpleMdeElement(element) {
+                element.attr('id', 'simplemde_'+Math.ceil(Math.random() * 1000000));
+
+                console.log(element.attr('id'));
+
                 var elementId = element.attr('id');
                 var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
                 var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
@@ -51,12 +54,9 @@
                     element: $('#'+elementId)[0],
                 };
 
-                configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
+                console.log($('#'+elementId));
 
-                //by default we prevent the loading of fontawesome
-                if(!configurationObject.autoDownloadFontAwesome) {
-                    configurationObject.autoDownloadFontAwesome = false;
-                }
+                configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
 
                 var smdeObject = new SimpleMDE(configurationObject);
 

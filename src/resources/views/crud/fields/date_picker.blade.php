@@ -7,18 +7,15 @@
         $field['value'] = $field['value']->format('Y-m-d');
     }
 
-    $field_language = isset($field['date_picker_options']['language']) ? $field['date_picker_options']['language'] : \App::getLocale();
+    $field['value'] = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    $field['attributes']['style'] = $field['attributes']['style'] ?? 'background-color: white!important;';
+    $field['attributes']['readonly'] = $field['attributes']['readonly'] ?? 'readonly';
 
-    if (! isset($field['attributes']['style'])) {
-        $field['attributes']['style'] = 'background-color: white!important;';
-    }
-    if (! isset($field['attributes']['readonly'])) {
-        $field['attributes']['readonly'] = 'readonly';
-    }
+    $field_language = isset($field['date_picker_options']['language']) ? $field['date_picker_options']['language'] : \App::getLocale();
 ?>
 
 @include('crud::fields.inc.wrapper_start')
-    <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}">
+    <input type="hidden" name="{{ $field['name'] }}" value="{{ $field['value'] }}">
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     <div class="input-group date">
@@ -70,7 +67,7 @@
 
         function bpFieldInitDatePickerElement(element) {
             var $fake = element,
-            $field = $fake.parents('.form-group').find('input[type="hidden"]'),
+            $field = $fake.closest('.form-group').find('input[type="hidden"]'),
             $customConfig = $.extend({
                 format: 'dd/mm/yyyy'
             }, $fake.data('bs-datepicker'));
