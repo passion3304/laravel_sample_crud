@@ -32,10 +32,8 @@ trait FieldsProtectedMethods
         $field = $this->makeSureFieldHasType($field);
         $field = $this->overwriteFieldNameFromDotNotationToArray($field);
 
-
         return $field;
     }
-
 
     /**
      * If field has entity we want to get the relation type from it.
@@ -43,8 +41,10 @@ trait FieldsProtectedMethods
      * @param array $field
      * @return array
      */
-    public function makeSureFieldHasRelationType($field) {
+    public function makeSureFieldHasRelationType($field)
+    {
         $field['relation_type'] = $field['relation_type'] ?? $this->inferRelationTypeFromRelationship($field);
+
         return $field;
     }
 
@@ -54,8 +54,10 @@ trait FieldsProtectedMethods
      * @param array $field
      * @return array
      */
-    public function makeSureFieldHasModel($field) {
+    public function makeSureFieldHasModel($field)
+    {
         $field['model'] = $field['model'] ?? $this->inferFieldModelFromRelationship($field);
+
         return $field;
     }
 
@@ -65,8 +67,10 @@ trait FieldsProtectedMethods
      * @param array $field
      * @return array
      */
-    public function makeSureFieldHasPivot($field) {
+    public function makeSureFieldHasPivot($field)
+    {
         $field['pivot'] = $field['pivot'] ?? $this->guessIfFieldHasPivotFromRelationType($field['relation_type']);
+
         return $field;
     }
 
@@ -76,23 +80,24 @@ trait FieldsProtectedMethods
      * @param array $field
      * @return array
      */
-    public function makeSureFieldHasMultiple($field) {
-        if(isset($field['relation_type'])) {
+    public function makeSureFieldHasMultiple($field)
+    {
+        if (isset($field['relation_type'])) {
             $field['multiple'] = $field['multiple'] ?? $this->guessIfFieldHasMultipleFromRelationType($field['relation_type']);
         }
 
         return $field;
     }
 
-
     /**
-     * In case field name is dot notation we want to convert it to a valid HTML array field name for validation purposes
+     * In case field name is dot notation we want to convert it to a valid HTML array field name for validation purposes.
      *
      * @param array $field
      * @return array
      */
-    public function overwriteFieldNameFromDotNotationToArray($field) {
-        if (!is_array($field['name']) && strpos($field['name'], '.') !== false) {
+    public function overwriteFieldNameFromDotNotationToArray($field)
+    {
+        if (! is_array($field['name']) && strpos($field['name'], '.') !== false) {
             $entity_array = explode('.', $field['name']);
             $name_string = '';
 
@@ -231,7 +236,6 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasType($field)
     {
         if (! isset($field['type'])) {
-
             $field['type'] = isset($field['relation_type']) ? $this->inferFieldTypeFromRelationType($field['relation_type']) : $this->inferFieldTypeFromDbColumnType($field['name']);
         }
 

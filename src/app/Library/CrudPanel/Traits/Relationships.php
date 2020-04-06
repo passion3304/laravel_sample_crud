@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 
 trait Relationships
 {
-
     /**
      * From the field entity we get the relation instance.
      *
@@ -43,25 +42,28 @@ trait Relationships
 
         return $relation_model->{$related_method}();
     }
+
     /**
      * Grabs an relation instance and returns the class name of the related model.
      *
      * @param array $field
      * @return string
      */
-    public function inferFieldModelFromRelationship($field) {
+    public function inferFieldModelFromRelationship($field)
+    {
         $relation = $this->getRelationInstance($field['entity']);
 
         return get_class($relation->getRelated());
     }
 
     /**
-     * Return the relation type from a given field: BelongsTo, HasOne ... etc
+     * Return the relation type from a given field: BelongsTo, HasOne ... etc.
      *
      * @param array $field
      * @return string
      */
-    public function inferRelationTypeFromRelationship($field) {
+    public function inferRelationTypeFromRelationship($field)
+    {
         $relation = $this->getRelationInstance($field['entity']);
 
         return Arr::last(explode('\\', get_class($relation)));
@@ -69,7 +71,7 @@ trait Relationships
 
     /**
      * Parse the field name back to the related entity after the form is submited.
-     * Its called in getAllFieldNames()
+     * Its called in getAllFieldNames().
      *
      * @param array $fields
      * @return array
@@ -129,13 +131,15 @@ trait Relationships
                 return false;
         }
     }
+
     /**
      * Based on relation type returns if relation has a pivot table.
      *
      * @param string $relation_type
      * @return bool
      */
-    public function guessIfFieldHasPivotFromRelationType($relation_type) {
+    public function guessIfFieldHasPivotFromRelationType($relation_type)
+    {
         switch ($relation_type) {
             case 'BelongsToMany':
             case 'HasMany':
