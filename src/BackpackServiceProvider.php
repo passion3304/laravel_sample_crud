@@ -6,6 +6,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -44,6 +45,7 @@ class BackpackServiceProvider extends ServiceProvider
         $this->setupRoutes($this->app->router);
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
+        $this->loadBladeDirectives();
         $this->checkLicenseCodeExists();
         $this->sendUsageStats();
     }
@@ -281,6 +283,11 @@ class BackpackServiceProvider extends ServiceProvider
                 'provider' => 'backpack',
             ],
         ];
+    }
+
+    private function loadBladeDirectives()
+    {
+        require_once __DIR__.'/blade_directives.php';
     }
 
     /**
