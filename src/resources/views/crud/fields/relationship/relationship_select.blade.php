@@ -13,7 +13,7 @@
     if (!isset($field['options'])) {
             $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name);
         } else {
-            $field['options'] = call_user_func($field['options'], $field['model']::query()->pluck($field['attribute'],$connected_entity_key_name));
+            $field['options'] = call_user_func($field['options'], $field['model']::query())->pluck($field['attribute'],$connected_entity_key_name);
     }
 
     // make sure the $field['value'] takes the proper value
