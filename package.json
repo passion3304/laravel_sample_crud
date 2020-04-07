@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.1",
-        "css-loader": "^3.4.2",
+        "css-loader": "^3.5.0",
         "laravel-mix": "^4.1.4",
         "lodash": "^4.17.13",
         "pace": "0.0.4",
@@ -60,6 +60,6 @@
         "source-sans-pro": "^2.45",
         "summernote": "^0.8.16",
         "sweetalert": "^2.1.2",
-        "tinymce": "^4.9.8"
+        "tinymce": "^4.9.9"
     }
 }

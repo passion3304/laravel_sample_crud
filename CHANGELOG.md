@@ -8,6 +8,12 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.59 - 2020-04-07
+
+### Fixed
+- updated npm dependencies;
+
+
 ## 4.0.58 - 2020-03-31
 
 ### Fixed
