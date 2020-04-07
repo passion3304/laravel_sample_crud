@@ -79,138 +79,130 @@
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
-{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    <!-- include select2 css-->
-    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-
+        <!-- relationship field type css -->
+        @loadCssOnce('packages/select2/dist/css/select2.min.css')
+        @loadCssOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-    <!-- include select2 js-->
-    <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
-    @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
-    @endif
-    @endpush
+        <!-- relationship field type js -->
+        @loadJsOnce('packages/select2/dist/js/select2.full.min.js')
+        @if (app()->getLocale() !== 'en')
+            @loadJsOnce('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js')
+        @endif
 
+        <!-- include field specific select2 js-->
+        @loadOnce('bpFieldInitRelationshipSelectElement')
+        <script>
+            // if nullable, make sure the Clear button uses the translated string
+            document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 
+            /**
+             *
+             * This method gets called automatically by Backpack:
+             *
+             * @param  node element The jQuery-wrapped "select" element.
+             * @return void
+             */
+            function bpFieldInitRelationshipSelectElement(element) {
+                var form = element.closest('form');
+                var $placeholder = element.attr('data-placeholder');
+                var $modelKey = element.attr('data-model-local-key');
+                var $fieldAttribute = element.attr('data-field-attribute');
+                var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
+                var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
+                var $dependencies = JSON.parse(element.attr('data-dependencies'));
+                var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
+                var $optionsForSelect = JSON.parse(element.attr('data-options-for-select'));
+                var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
+                var $allowClear = $allows_null;
 
-<!-- include field specific select2 js-->
-@push('crud_fields_scripts')
-<script>
-    // if nullable, make sure the Clear button uses the translated string
-    document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
+                var $item = false;
 
+                var $value = JSON.parse(element.attr('data-current-value'))
 
-    /**
-     *
-     * This method gets called automatically by Backpack:
-     *
-     * @param  node element The jQuery-wrapped "select" element.
-     * @return void
-     */
-    function bpFieldInitRelationshipSelectElement(element) {
-        var form = element.closest('form');
-        var $placeholder = element.attr('data-placeholder');
-        var $modelKey = element.attr('data-model-local-key');
-        var $fieldAttribute = element.attr('data-field-attribute');
-        var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
-        var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
-        var $dependencies = JSON.parse(element.attr('data-dependencies'));
-        var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
-        var $optionsForSelect = JSON.parse(element.attr('data-options-for-select'));
-        var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
-        var $allowClear = $allows_null;
-
-        var $item = false;
-
-        var $value = JSON.parse(element.attr('data-current-value'))
-
-        if(Object.keys($value).length > 0) {
-            $item = true;
-        }
-
-
-        var selectedOptions = [];
-        var $currentValue = $item ? $value : '';
-
-
-        for (const [key, value] of Object.entries($optionsForSelect)) {
-            var $option = new Option(value, key);
-            $(element).append($option);
-            //if option key is the same of current value we reselect it
-            if(!$multiple) {
-                if (key == Object.keys($currentValue)[0]) {
-                    $(element).val(key);
+                if(Object.keys($value).length > 0) {
+                    $item = true;
                 }
-            }else{
-                for (const [key, value] of Object.entries($currentValue)) {
-                        selectedOptions.push(key);
+
+
+                var selectedOptions = [];
+                var $currentValue = $item ? $value : '';
+
+
+                for (const [key, value] of Object.entries($optionsForSelect)) {
+                    var $option = new Option(value, key);
+                    $(element).append($option);
+                    //if option key is the same of current value we reselect it
+                    if(!$multiple) {
+                        if (key == Object.keys($currentValue)[0]) {
+                            $(element).val(key);
+                        }
+                    }else{
+                        for (const [key, value] of Object.entries($currentValue)) {
+                                selectedOptions.push(key);
+                            }
+
+                            $(element).val(selectedOptions);
                     }
 
-                    $(element).val(selectedOptions);
+                }
+
+                //if there is no current value and the field allows null, we add the placeholder first.
+               /* if($allowsNull && $item === false) {
+                    var $option = new Option('', '', true, true);
+                    $(element).prepend($option);
+                //if element does not allow null we select the first available option
+                }else if(!$allowsNull && $item === false) {
+
+                    //if there is any option we select the first, otherwise we place the placeholder.
+                    if(Object.keys($optionsForSelect).length > 0) {
+                        $(element).val(Object.keys($optionsForSelect)[0]);
+                    }else{
+                        var $option = new Option('', '', true, true);
+                        $(element).prepend($option);
+                    }
+                }*/
+                if (!$allows_null && $item === false) {
+                    if(Object.keys($optionsForSelect).length > 0) {
+                        $(element).val(Object.keys($optionsForSelect)[0]);
+                    }else{
+                        $(element).val(null);
+                    }
+                }
+
+                $(element).attr('data-current-value',$(element).val());
+                $(element).trigger('change');
+
+                var $select2Settings = {
+                        theme: 'bootstrap',
+                        multiple: $multiple,
+                        placeholder: $placeholder,
+                        allowClear: $allowClear,
+                    };
+                if (!$(element).hasClass("select2-hidden-accessible"))
+                {
+                    $(element).select2($select2Settings);
+                     // if any dependencies have been declared
+                    // when one of those dependencies changes value
+                    // reset the select2 value
+                    for (var i=0; i < $dependencies.length; i++) {
+                        $dependency = $dependencies[i];
+                        $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
+                            element.val(null).trigger("change");
+                        });
+
+                    }
+                }
             }
+        </script>
+        @endLoadOnce
 
-        }
+    @endpush
 
-        //if there is no current value and the field allows null, we add the placeholder first.
-       /* if($allowsNull && $item === false) {
-            var $option = new Option('', '', true, true);
-            $(element).prepend($option);
-        //if element does not allow null we select the first available option
-        }else if(!$allowsNull && $item === false) {
-
-            //if there is any option we select the first, otherwise we place the placeholder.
-            if(Object.keys($optionsForSelect).length > 0) {
-                $(element).val(Object.keys($optionsForSelect)[0]);
-            }else{
-                var $option = new Option('', '', true, true);
-                $(element).prepend($option);
-            }
-        }*/
-        if (!$allows_null && $item === false) {
-            if(Object.keys($optionsForSelect).length > 0) {
-                $(element).val(Object.keys($optionsForSelect)[0]);
-            }else{
-                $(element).val(null);
-            }
-        }
-
-        $(element).attr('data-current-value',$(element).val());
-        $(element).trigger('change');
-
-        var $select2Settings = {
-                theme: 'bootstrap',
-                multiple: $multiple,
-                placeholder: $placeholder,
-                allowClear: $allowClear,
-            };
-        if (!$(element).hasClass("select2-hidden-accessible"))
-        {
-            $(element).select2($select2Settings);
-             // if any dependencies have been declared
-            // when one of those dependencies changes value
-            // reset the select2 value
-            for (var i=0; i < $dependencies.length; i++) {
-                $dependency = $dependencies[i];
-                $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
-                    element.val(null).trigger("change");
-                });
-
-            }
-        }
-    }
-</script>
-@endpush
-@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
