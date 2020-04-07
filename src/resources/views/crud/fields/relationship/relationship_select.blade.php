@@ -71,6 +71,7 @@
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-options-for-select="{{json_encode($field['options'])}}"
+        data-app-current-lang="{{ app()->getLocale() }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -171,21 +172,6 @@
 
         }
 
-        //if there is no current value and the field allows null, we add the placeholder first.
-       /* if($allowsNull && $item === false) {
-            var $option = new Option('', '', true, true);
-            $(element).prepend($option);
-        //if element does not allow null we select the first available option
-        }else if(!$allowsNull && $item === false) {
-
-            //if there is any option we select the first, otherwise we place the placeholder.
-            if(Object.keys($optionsForSelect).length > 0) {
-                $(element).val(Object.keys($optionsForSelect)[0]);
-            }else{
-                var $option = new Option('', '', true, true);
-                $(element).prepend($option);
-            }
-        }*/
         if (!$allows_null && $item === false) {
             if(Object.keys($optionsForSelect).length > 0) {
                 $(element).val(Object.keys($optionsForSelect)[0]);
@@ -218,6 +204,20 @@
             }
         }
     }
+
+    if (typeof processItemText !== 'function') {
+    function processItemText(item, $fieldAttribute, $appLang) {
+        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
+                        if(item[$fieldAttribute][$appLang] != 'undefined') {
+                            return item[$fieldAttribute][$appLang];
+                        }else{
+                            return item[$fieldAttribute][0];
+                        }
+                    }else{
+                        return item[$fieldAttribute];
+                    }
+    }
+}
 </script>
 @endpush
 @endif

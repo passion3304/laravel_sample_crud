@@ -563,18 +563,19 @@ function selectOption(element, option) {
             }
 
                 }
-
-                function processItemText(item, $fieldAttribute, $appLang) {
-                    if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
-                                    if(item[$fieldAttribute][$appLang] != 'undefined') {
-                                        return item[$fieldAttribute][$appLang];
-                                    }else{
-                                        return item[$fieldAttribute][0];
-                                    }
-                                }else{
-                                    return item[$fieldAttribute];
-                                }
-                }
+if (typeof processItemText !== 'function') {
+    function processItemText(item, $fieldAttribute, $appLang) {
+        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
+                        if(item[$fieldAttribute][$appLang] != 'undefined') {
+                            return item[$fieldAttribute][$appLang];
+                        }else{
+                            return item[$fieldAttribute][0];
+                        }
+                    }else{
+                        return item[$fieldAttribute];
+                    }
+    }
+}
             </script>
         @endpush
 
