@@ -4,7 +4,6 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\Article;
 use Backpack\CRUD\Tests\Unit\Models\User;
-use Backpack\CRUD\Tests\Unit\Models\Address;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
@@ -97,11 +96,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
     private $userInputHasOneRelation = [
         [
-            'name' => 'accountDetails.nickname'
+            'name' => 'accountDetails.nickname',
         ],
         [
-            'name' => 'accountDetails.profile_picture'
-        ]
+            'name' => 'accountDetails.profile_picture',
+        ],
     ];
 
     public function testCreate()
@@ -234,7 +233,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($this->crudPanel->get('create.fields')['street'], Arr::last($relationFields));
     }
 
-    public function testCreateHasOneRelations() {
+    public function testCreateHasOneRelations()
+    {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('create');
 
@@ -250,7 +250,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'accountDetails' => [
                 'nickname' => 'i_have_has_one',
                 'profile_picture' => 'simple_picture.jpg',
-            ]
+            ],
         ];
         $entry = $this->crudPanel->create($inputData);
         $account_details = $entry->accountDetails()->first();
@@ -296,8 +296,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEmpty($relationFields);
     }
 
-    public function testCreateOneToOneRelationships() {
-
+    public function testCreateOneToOneRelationships()
+    {
     }
 
     public function testSyncPivot()

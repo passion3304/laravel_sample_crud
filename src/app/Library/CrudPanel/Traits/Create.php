@@ -230,6 +230,7 @@ trait Create
                 Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
+
         return $relationData;
     }
 
