@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
+use Backpack\CRUD\Tests\Unit\Models\User;
 
 class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 {
@@ -533,5 +534,26 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $this->markTestIncomplete();
 
         // TODO: the decode JSON method should not be in fields trait and should not be exposed in the public API.
+    }
+
+    public function testFieldNameDotNotationIsRelationship() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addField('accountDetails.nickname');
+        $field = $this->crudPanel->fields()['accountDetails[nickname]'];
+        $this->assertEquals($field['relation_type'], 'HasOne');
+    }
+
+    public function testFieldNameIsRelationInCrudModel() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addField('roles');
+        $field = $this->crudPanel->fields()['roles'];
+        $this->assertEquals($field['relation_type'], 'BelongsToMany');
+    }
+
+    public function testFieldNameIsPartialRelationInCrudModel() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addField('articles_id');
+        $field = $this->crudPanel->fields()['articles_id'];
+        $this->assertEquals($field['relation_type'], 'HasMany');
     }
 }

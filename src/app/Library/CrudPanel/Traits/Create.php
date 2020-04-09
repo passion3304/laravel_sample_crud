@@ -180,9 +180,6 @@ trait Create
                     $modelInstance = new $model($relationData['values']);
                     $relation->save($modelInstance);
                 }
-            } else {
-                $modelInstance = new $model($relationData['values']);
-                $relation->save($modelInstance);
             }
 
             if (isset($relationData['relations'])) {
@@ -214,10 +211,9 @@ trait Create
         $relation_fields = $this->getRelationFields();
         $relationData = [];
         foreach ($relation_fields as $relation_field) {
-            $relation_field['name'] = $relation_field['entity'];
-            $attributeKey = $relation_field['name'];
+            $attributeKey = $relation_field['entity'];
 
-            if (! is_null(Arr::get($data, $attributeKey)) && empty($relation_field['pivot'])) {
+            if (! is_null(Arr::get($data, $attributeKey)) && $relation_field['pivot'] !== true) {
                 $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
                 $fieldData = Arr::get($relationData, 'relations.'.$key, []);
 
@@ -226,7 +222,7 @@ trait Create
                 }
 
                 if (! array_key_exists('parent', $fieldData)) {
-                    $fieldData['parent'] = $this->getRelationModel($relation_field['entity'], -1);
+                    $fieldData['parent'] = $this->getRelationModel($attributeKey, -1);
                 }
                 $relatedAttribute = Arr::last(explode('.', $attributeKey));
                 $fieldData['values'][$relatedAttribute] = Arr::get($data, $attributeKey);
@@ -234,7 +230,6 @@ trait Create
                 Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
-
         return $relationData;
     }
 
