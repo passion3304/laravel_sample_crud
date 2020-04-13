@@ -354,7 +354,12 @@ class CrudPanel
                     $attributes[$entry[$modelKey]] = $entry[$attribute];
                 }
             } elseif (is_array($entries) && isset($entries[$attribute])) {
-                $attributes[$entries[$modelKey]] = $entries[$attribute];
+                if (!empty((new $model())->getTranslatableAttributes()) && in_array($attribute, (new $model())->getTranslatableAttributes())) {
+                    $translatableField = (array) json_decode($entries[$attribute]);
+                    $attributes[$entries[$modelKey]] =  $translatableField[app()->getLocale()];
+                } else {
+                    $attributes[$entries[$modelKey]] = $entries[$attribute];
+                }
             } elseif ($entries->{$attribute}) {
                 $attributes[$entries->{$modelKey}] = $entries->{$attribute};
             }
