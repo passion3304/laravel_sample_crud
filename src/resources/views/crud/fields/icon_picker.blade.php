@@ -39,10 +39,11 @@
     @include('crud::fields.inc.translatable_icon')
 
     <div>
-        <button class="btn btn-light btn-sm" role="iconpicker" data-icon="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" data-iconset="{{ $field['iconset'] }}"></button>
+        <button class="btn btn-light iconpicker btn-sm" role="icon-selector"></button>
         <input
             type="hidden"
             name="{{ $field['name'] }}"
+            data-iconset="{{ $field['iconset'] }}"
             data-init-function="bpFieldInitIconPickerElement"
             value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
             @include('crud::fields.inc.attributes')
@@ -55,6 +56,13 @@
     @endif
 @include('crud::fields.inc.wrapper_end')
 
+{{-- This is temporary fix to make icon_picker work on Inline Create if other iconpicker is defined in parent crud.
+    Will be refactored to only load once the font file, but atm we need to load it all the times,
+    because if parent crud has a different icon file than inline, the inline one would not be loaded
+    --}}
+@push('crud_fields_styles')
+<link rel="stylesheet" type="text/css" href="{{ $field['font_icon_file_path'] }}">
+@endpush
 
 @if ($crud->fieldTypeNotLoaded($field))
     @php
@@ -77,9 +85,20 @@
         {{-- Bootstrap-Iconpicker - set hidden input value --}}
         <script>
             function bpFieldInitIconPickerElement(element) {
-                element.siblings('button[role=iconpicker]').on('change', function(e) {
-                    $(this).siblings('input[type=hidden]').val(e.icon);
-                });
+                var $iconset = element.attr('data-iconset');
+                var $iconButton = element.siblings('button[role=icon-selector]');
+                var $icon = element.attr('value');
+
+                // we explicit init the iconpicker on the button element.
+                // this way we can init the iconpicker in InlineCreate as in future provide aditional configurations.
+                    $($iconButton).iconpicker({
+                        iconset: $iconset,
+                        icon: $icon
+                    });
+
+                    element.siblings('button[role=icon-selector]').on('change', function(e) {
+                        $(this).siblings('input[type=hidden]').val(e.icon);
+                    });
             }
         </script>
     @endpush
