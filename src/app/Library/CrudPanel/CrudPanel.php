@@ -365,7 +365,7 @@ class CrudPanel
     }
 
     /**
-     * Parse translatable attributes from a model or models resulting from the specified relation string
+     * Parse translatable attributes from a model or models resulting from the specified relation string.
      *
      * @param \Illuminate\Database\Eloquent\Model $model          Model (eg: user).
      * @param string                              $attribute      The attribute from the relation model (eg: the street attribute from the address model).
@@ -375,21 +375,21 @@ class CrudPanel
      */
     public function parseTranslatableAttributes($model, $attribute, $value)
     {
-        if (!method_exists($model, 'isTranslatableAttribute')) {
+        if (! method_exists($model, 'isTranslatableAttribute')) {
             return $value;
         }
 
-        if (!$model->isTranslatableAttribute($attribute)) {
+        if (! $model->isTranslatableAttribute($attribute)) {
             return $value;
         }
 
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $decodedAttribute = json_decode($value, true);
         } else {
             $decodedAttribute = $value;
         }
 
-        if (is_array($decodedAttribute) && !empty($decodedAttribute)) {
+        if (is_array($decodedAttribute) && ! empty($decodedAttribute)) {
             if (isset($decodedAttribute[app()->getLocale()])) {
                 return $decodedAttribute[app()->getLocale()];
             } else {
