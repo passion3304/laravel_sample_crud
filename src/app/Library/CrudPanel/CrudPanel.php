@@ -357,7 +357,7 @@ class CrudPanel
             } elseif (is_array($entries) && isset($entries[$attribute])) {
                 $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
             } elseif ($entries->{$attribute}) {
-                $attributes[$entries->{$modelKey}] =$this->parseTranslatableAttributes($model_instance, $attribute, $entries->{$attribute});
+                $attributes[$entries->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries->{$attribute});
             }
         }
 
