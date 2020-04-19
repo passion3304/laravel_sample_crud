@@ -19,12 +19,13 @@
     <br><br>
     <a href="https://backpackforlaravel.com/">Website</a> | 
     <a href="https://backpackforlaravel.com/docs/">Documentation</a> | 
+    <a href="https://backpackforlaravel.com/addons">Add-ons</a> | 
+    <a href="https://backpackforlaravel.com/pricing">Pricing</a> |
+    <a href="https://backpackforlaravel.com/need-freelancer-or-development-team">Services</a> | 
     <a href="https://stackoverflow.com/questions/tagged/backpack-for-laravel">Stack Overflow</a> | 
     <a href="https://www.reddit.com/r/BackpackForLaravel/">Reddit</a> | 
     <a href="https://backpackforlaravel.com/articles">Blog</a> | 
-    <a href="https://backpackforlaravel.com/newsletter">Newsletter</a> | 
-    <a href="https://backpackforlaravel.com/pricing">Pricing</a> |
-    <a href="https://backpackforlaravel.com/need-freelancer-or-development-team">Hire Us</a>
+    <a href="https://backpackforlaravel.com/newsletter">Newsletter</a>
 </p>
 
 Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its features:
