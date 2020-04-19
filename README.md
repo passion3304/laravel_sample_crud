@@ -59,7 +59,7 @@ Start with the ["Getting Started" series](https://backpackforlaravel.com/docs/4.
 Alternatively, if you don't have 20 minutes right now, subscribe to our [drip email tutorial](https://backpackforlaravel.com/getting-started-emails). You'll receive one email per day, for 5 days, 5 minutes each. By the end, you'll be familiar with how Backpack works, and be able to create admin panels for your Laravel apps.
 
 > ### Security updates and breaking changes
-> If you're using Backpack in production, please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We never _ever_ share your email with anyone & we try to send as few emails as possible (1-2 emails per year). We hate unsolicited email too. But... you know... you're building an admin panel, security _should_ be something you're up-to-date with.
+> If you're using Backpack in production, please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We never _ever_ share your email with anyone & we try to send as few emails as possible (1-4 emails per year). We hate unsolicited email too. But... you know... you're building an admin panel, security _should_ be something you're up-to-date with.
 
 ## Install
 
