@@ -87,7 +87,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md).
 
 If you discover any security related issues, please email hello@tabacitu.ro instead of using the issue tracker.
 
-Please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email every 3-6 months. Sometimes less.
+It's _heavily_ recommended that you **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email about 3-4 emails per year. Sometimes less.
 
 ## Credits
 
