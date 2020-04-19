@@ -4,6 +4,10 @@
 <p>
 
 <p align="center">
+    <a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://backpackforlaravel.com/presentation/img/backpack/backpack_hero_screenshots.png"></a>
+</p>
+
+<p align="center">
     <br>
     <a href="https://packagist.org/packages/backpack/crud" title="Latest Version on Packagist"><img src="https://img.shields.io/packagist/v/backpack/crud.svg?style=flat-square"></a>
     <a href="https://packagist.org/packages/backpack/crud" title="Total Downloads"><img src="https://img.shields.io/packagist/dt/backpack/crud.svg?style=flat-square"></a>
@@ -21,11 +25,6 @@
     <a href="https://backpackforlaravel.com/newsletter">Newsletter</a> | 
     <a href="https://backpackforlaravel.com/pricing">Pricing</a> |
     <a href="https://backpackforlaravel.com/need-freelancer-or-development-team">Hire Us</a>
-</p>
-
-
-<p align="center">
-    <a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://backpackforlaravel.com/presentation/img/backpack/backpack_hero_screenshots.png"></a>
 </p>
 
 Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its features:
