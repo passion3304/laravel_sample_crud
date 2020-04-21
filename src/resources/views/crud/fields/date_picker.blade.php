@@ -28,8 +28,10 @@
             type="text"
             @include('crud::inc.field_attributes')
             >
-        <div class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
+        <div class="input-group-append">
+            <span class="input-group-text">
+                <span class="fa fa-calendar"></span>
+            </span>
         </div>
     </div>
 
