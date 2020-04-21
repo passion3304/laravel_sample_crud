@@ -6,14 +6,14 @@
   $field['value'] = is_array($field['value']) ? json_encode($field['value']) : $field['value'];
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
   <label>{!! $field['label'] !!}</label>
   <input
       type="hidden"
       name="{{ $field['name'] }}"
       data-init-function="bpFieldInitRepeatableElement"
       value="{{ $field['value'] }}"
-      @include('crud::inc.field_attributes')
+      @include('crud::fields.inc.attributes')
   >
 
   <div class="container-repeatable-elements">
@@ -40,7 +40,7 @@
   @if (isset($field['hint']))
       <p class="help-block">{!! $field['hint'] !!}</p>
   @endif
-</div>
+ @include('crud::fields.inc.wrapper_end')
 
 @if ($crud->fieldTypeNotLoaded($field))
   @php

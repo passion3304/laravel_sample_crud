@@ -275,8 +275,8 @@ $field['wrapper']['data-video'] = '';
             .css('backgroundImage', 'url('+video.image+')');
 
             pIcon
-            .removeClass('fa-vimeo fa-youtube')
-            .addClass('fa-' + video.provider);
+            .removeClass('la-vimeo la-youtube')
+            .addClass('la-' + video.provider);
             pWrap.fadeIn();
         };
 
