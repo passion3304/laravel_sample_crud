@@ -68,7 +68,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Keine Einträge vorhanden',
     'info'           => 'Zeigt _START_ bis _END_ von _TOTAL_ Einträgen',
-    'infoEmpty'      => 'Zeigt 0 von 0 aus insgesamt 0 Einträgen',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(gefiltert von insgesamt _MAX_ Einträgen)',
     'infoPostFix'    => '',
     'thousands'      => '.',

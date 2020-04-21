@@ -12,10 +12,12 @@ if (is_array($value)) {
     $value = $value;
 }
 
+$field['youtube_api_key'] = $field['youtube_api_key'] ?? 'AIzaSyBLRoVYovRmbIf_BH3X12IcTCudAEDRlCE';
+
 ?>
 
 
-<div data-video data-init-function="bpFieldInitVideoElement" @include('crud::inc.field_wrapper_attributes') >
+<div data-video data-init-function="bpFieldInitVideoElement" data-youtube-api-key="{{$field['youtube_api_key']}}" @include('crud::inc.field_wrapper_attributes') >
     <label for="{{ $field['name'] }}_link">{!! $field['label'] !!}</label>
     @include('crud::inc.field_translatable_icon')
     <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ $value }}">
@@ -145,9 +147,9 @@ if (is_array($value)) {
             return id;
         };
 
-        var fetchYouTube = function( videoId, callback ){
+        var fetchYouTube = function( videoId, callback, apiKey ){
 
-            var api = 'https://www.googleapis.com/youtube/v3/videos?id='+videoId+'&key=AIzaSyDQa76EpdNPzfeTAoZUut2AnvBA0jkx3FI&part=snippet';
+            var api = 'https://www.googleapis.com/youtube/v3/videos?id='+videoId+'&key='+apiKey+'&part=snippet';
 
             var video = {
                 provider: 'youtube',
@@ -199,7 +201,7 @@ if (is_array($value)) {
             });
         };
 
-        var parseVideoLink = function( link, callback ){
+        var parseVideoLink = function( link, callback, apiKey ){
 
             var response = {success: false, message: 'unknown error occured, please try again', data: [] };
 
@@ -211,7 +213,7 @@ if (is_array($value)) {
             }
 
 
-            var id = tryYouTube(link);
+            var id = tryYouTube(link, apiKey);
 
             if( id ){
 
@@ -224,7 +226,7 @@ if (is_array($value)) {
                     }
 
                     callback(response);
-                });
+                },apiKey);
             }
             else {
 
@@ -281,7 +283,8 @@ if (is_array($value)) {
                 jsonField = $this.find('.video-json'),
                 linkField = $this.find('.video-link'),
                 pDummy = $this.find('.video-dummy'),
-                pWrap = $this.find('.video-preview');
+                pWrap = $this.find('.video-preview'),
+                apiKey = $this.attr('data-youtube-api-key');
 
                 try {
                     var videoJson = JSON.parse(jsonField.val());
@@ -325,7 +328,7 @@ if (is_array($value)) {
                             }
 
                             videoParsing = false;
-                        });
+                        },apiKey);
                     }
                     else {
                         videoParsing = false;

@@ -83,7 +83,7 @@ return [
     // DataTables translation
     'emptyTable'     => 'Sem dados disponíveis na tabela',
     'info'           => 'A mostrar _START_ a _END_ de _TOTAL_ itens',
-    'infoEmpty'      => 'A mostrar 0 de 0 itens',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtrado de um total de _MAX_ itens)',
     'infoPostFix'    => '',
     'thousands'      => ',',

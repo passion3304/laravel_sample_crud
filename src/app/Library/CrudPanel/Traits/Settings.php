@@ -74,7 +74,7 @@ trait Settings
             return $this->get($key);
         }
 
-        return $this->set($key);
+        return $this->set($key, $value);
     }
 
     /**

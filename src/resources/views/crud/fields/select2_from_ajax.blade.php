@@ -3,6 +3,10 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
     $old_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
+
+    // by default set ajax query delay to 500ms
+    // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
+    $field['delay'] = $field['delay'] ?? 500;
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -21,7 +25,8 @@
         data-method="{{ $field['method'] ?? 'GET' }}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
+        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
+        data-ajax-delay="{{ $field['delay'] }}"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control'])
         >
 
@@ -99,6 +104,7 @@
         var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
+        var $ajaxDelay = element.attr('data-ajax-delay');
 
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
@@ -112,7 +118,7 @@
                     url: $dataSource,
                     type: $method,
                     dataType: 'json',
-                    quietMillis: 250,
+                    delay: $ajaxDelay,
                     data: function (params) {
                         if ($includeAllFormFields) {
                             return {
@@ -148,15 +154,6 @@
                     cache: true
                 },
             });
-
-            // show a clear button if the column is nullable
-            if ($allowClear) {
-                element.on('select2:unselecting', function(e) {
-                    $(this).val('').trigger('change');
-                    // console.log('cleared! '+$(this).val());
-                    e.preventDefault();
-                });
-            }
 
             // if any dependencies have been declared
             // when one of those dependencies changes value

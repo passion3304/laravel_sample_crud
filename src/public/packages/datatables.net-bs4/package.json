@@ -1,4 +1,10 @@
 {
+  "_args": [
+    [
+      "datatables.net-bs4@1.10.20",
+      "/Users/tabacitu/Sites/v40master/vendor/backpack/crud"
+    ]
+  ],
   "_from": "datatables.net-bs4@1.10.20",
   "_id": "datatables.net-bs4@1.10.20",
   "_inBundle": false,
@@ -16,15 +22,13 @@
     "fetchSpec": "1.10.20"
   },
   "_requiredBy": [
-    "#USER",
     "/",
     "/datatables.net-fixedheader-bs4",
     "/datatables.net-responsive-bs4"
   ],
   "_resolved": "https://registry.npmjs.org/datatables.net-bs4/-/datatables.net-bs4-1.10.20.tgz",
-  "_shasum": "beff1c8d3510826c0678eaa055270607c0e53882",
-  "_spec": "datatables.net-bs4@1.10.20",
-  "_where": "/Users/tabacitu/Sites/v4demo7/vendor/backpack/crud",
+  "_spec": "1.10.20",
+  "_where": "/Users/tabacitu/Sites/v40master/vendor/backpack/crud",
   "author": {
     "name": "SpryMedia Ltd",
     "url": "http://datatables.net"
@@ -32,12 +36,10 @@
   "bugs": {
     "url": "https://datatables.net/forums"
   },
-  "bundleDependencies": false,
   "dependencies": {
     "datatables.net": "1.10.20",
     "jquery": ">=1.7"
   },
-  "deprecated": false,
   "description": "DataTables for jQuery with styling for [Bootstrap 4](http://getbootstrap.com/)",
   "files": [
     "css/**/*.css",

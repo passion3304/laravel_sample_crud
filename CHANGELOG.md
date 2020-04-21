@@ -8,6 +8,176 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.59 - 2020-04-07
+
+### Fixed
+- updated npm dependencies;
+
+
+## 4.0.58 - 2020-03-31
+
+### Fixed
+- Fixing arguments to set settings value @shadowbane (#2618)
+- Update checklist.blade.php @PiahDoNeumann (#2598)
+
+## 4.0.57 - 2020-03-23
+
+### Fixed
+- #2592 - fixed widget style not loading;
+
+
+## 4.0.56 - 2020-03-19
+
+### Fixed
+- #2217 - odd bump when opening/closing the sidebar-pills;
+
+
+## 4.0.55 - 2020-03-19
+
+### Fixed
+- In datatabes, when zero records, only show that inside the table, not as a subheading too;
+- Updated npm dependencies to update minimist;
+
+
+## 4.0.54 - 2020-03-15
+
+### Fixed
+- Deleted obsolete line about cheaper licences @genesiscz (#2556)
+- Added a Czech translation for base @genesiscz (#2557)
+- Fixed switch icon_picker @adriallongarriu (#2476)
+- Updated acorn dependency @tabacitu (#2559)
+
+
+## 4.0.53 - 2020-03-10
+
+### Fixed
+- #2532 during installation, the published elFinder menu item had its quotes doubled;
+
+
+## 4.0.52 - 2020-03-09
+
+### Fixed
+- #2529 fixes #2525 and #2523 - removed PUT route for the Create operation, which didn't serve any direct purpose but caused errors when running ```php artisan optimize``` for some, under Laravel 7;
+
+
+## 4.0.51 - 2020-03-09
+
+### Fixed
+- #2528 fix installation problem - ```elfinder:publish``` command didn't work on Windows; 
+
+
+## 4.0.50 - 2020-03-09
+
+### Fixed
+- #2524 - Change include_all_form_fields data attribute to explicitly output string true/false;
+- #2526 - debug flag in installation command;
+
+
+## 4.0.49 - 2020-03-08
+
+### Fixed
+- Symmetry alignment and window widening for password reset view @urlportal (#2516)
+- Actualisation of Russian localisation @urlportal (#2515)
+- Update @onurmutlu (#2514)
+- Fixed ```php artisan backpack:version``` command @tabacitu (#2520)
+
+
+## 4.0.48 - 2020-03-06
+
+### Fixed
+- Create/Update operation tabs no longer worked because of Str::slug() helper;
+
+
+## 4.0.47 - 2020-03-05
+
+### Fixed
+- Delete operation can respond with Notification Bubbles @tabacitu (#2477)
+- Elfinder mime type filter. @pxpm (#2505)
+- Implement orderButtons @tabacitu (#2457)
+- Allow delay on AJAX calls for select2_from_ajax fields @pxpm (#2504)
+
+## 4.0.46 - 2020-03-05
+
+### Fixed
+- added back revisionable as a dependency;
+
+
+## 4.0.45 - 2020-03-05
+
+### Fixed
+- installation command did not correctly use the new version of Symphony Process;
+
+
+## 4.0.44 - 2020-03-04
+
+### Fixed
+- installation command on Laravel 7;
+
+
+## 4.0.43 - 2020-03-04
+
+### Added
+- support for Laravel 7;
+
+### Fixed
+- #2501 - Backpack is no longer using the Auth services from Laravel (5.8-7); because Laravel moved its services in a different package in Laravel 7, but we want to support L5.8, L6 and L7 at the same time, we've been forced to move those classes inside Backpack, and we've done so, inside app\Library\Auth; Backpack is now completely indepenendent from Laravel's authentication;
+
+
+## 4.0.42 - 2020-03-01
+
+### Fixed
+- updated npm dependencies;
+- CSS assets inside elFinder views;
+
+
+## 4.0.41 - 2020-02-16
+
+### Fixed
+- merged #2450 - video field now has customizable youtube api key;
+- merged #2453 - radio field can have attributes even if inline;
+- merged #2455 - select_from_array column fallback if value not in options array;
+
+
+## 4.0.40 - 2020-02-10
+
+### Fixed
+- merged #2438 - exception class for isColumnNullable();
+
+
+## 4.0.39 - 2020-02-06
+
+### Fixed
+- merged #2426 - select2_from_ajax field did not save empty array when Clear button was pressed;
+
+
+## 4.0.38 - 2020-02-04
+
+### Fixed
+- merged #2428 - bug in installation process published elfinder files even when not necessary;
+
+
+## 4.0.37 - 2020-02-02
+
+### Fixed
+- (fixed in Backstrap) when closing the sidebar, the content is centered left-to-right;
+- on mobile and tablet, the hamburger menu is no longer out of the container, we have the same margin left-to-right;
+- updated Backstrap to 0.2.22, updated all JS dependencies, re-published all CSS and JS assets;
+
+
+## 4.0.36 - 2020-01-28
+
+### Fixed
+- merged #2401 fixes #2390 - dropdown filter did not properly reset when clearing filters;
+
+
+## 4.0.35 - 2020-01-23
+
+### Fixed
+- merged #2389 - print button on Show operation (aka Preview);
+- merged #2386 - overwrite new loggedOut() method in LoginController instead of logout();
+- merged #2395 - simplemde field should not download FontAwesome;
+
+
 ## 4.0.34 - 2020-01-20
 
 ### Fixed
