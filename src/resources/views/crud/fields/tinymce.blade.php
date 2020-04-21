@@ -1,7 +1,7 @@
 <!-- Tiny MCE -->
 @php
 $defaultOptions = [
-    'file_browser_callback' => 'elFinderBrowser',
+    'file_picker_callback' => 'elFinderBrowser',
     'selector' => 'textarea.tinymce',
     'plugins' => 'image,link,media,anchor',
 ];
@@ -46,6 +46,7 @@ $field['options'] = array_merge($defaultOptions, $field['options'] ?? []);
 
         // the target should be the element the function has been called on
         configuration['target'] = element;
+        configuration['file_picker_callback'] = eval(configuration['file_picker_callback']);
 
         // automatically update the textarea value on focusout
         configuration['setup'] = (function (editor) {
@@ -58,19 +59,38 @@ $field['options'] = array_merge($defaultOptions, $field['options'] ?? []);
         tinymce.init(element.data('options'));
     }
 
-    function elFinderBrowser (field_name, url, type, win) {
-      tinymce.activeEditor.windowManager.open({
-        file: '{{ backpack_url('elfinder/tinymce4') }}',// use an absolute path!
-        title: 'elFinder 2.0',
-        width: 900,
-        height: 450,
-        resizable: 'yes'
-      }, {
-        setUrl: function (url) {
-          win.document.getElementById(field_name).value = url;
-        }
-      });
-      return false;
+    function elFinderBrowser (callback, value, meta) {
+        tinymce.activeEditor.windowManager.openUrl({
+            title: 'elFinder 2.0',
+            url: '{{ backpack_url('elfinder/tinymce5') }}',
+            width: 900,
+            height: 460,
+            onMessage: function (dialogApi, details) {
+                if (details.mceAction === 'fileSelected') {
+                    const file = details.data.file;
+
+                    // Make file info
+                    const info = file.name;
+
+                    // Provide file and text for the link dialog
+                    if (meta.filetype === 'file') {
+                        callback(file.url, {text: info, title: info});
+                    }
+
+                    // Provide image and alt text for the image dialog
+                    if (meta.filetype === 'image') {
+                        callback(file.url, {alt: info});
+                    }
+
+                    // Provide alternative source and posted for the media dialog
+                    if (meta.filetype === 'media') {
+                        callback(file.url);
+                    }
+
+                    dialogApi.close();
+                }
+            }
+        });
     }
     </script>
     @endpush
