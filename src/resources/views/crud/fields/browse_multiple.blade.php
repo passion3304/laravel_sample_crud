@@ -88,15 +88,24 @@ if($sortable){
 @if ($crud->fieldTypeNotLoaded($field))
     @php
         $crud->markFieldTypeAsLoaded($field);
+
+        $dir = 'packages/barryvdh/elfinder';
+        $locale = str_replace("-",  "_", App::getLocale());
+        if (!file_exists(public_path("/$dir/js/i18n/elfinder.$locale.js"))) {
+            $locale = false;
+        }
+        $csrf = true;
+        $jquery = false;
     @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <!-- include browse server css -->
-        <link rel="stylesheet" type="text/css" href="{{ asset('packages/jquery-ui-dist/jquery-ui.min.css') }}">
+        {{-- <link rel="stylesheet" type="text/css" href="{{ asset('packages/jquery-ui-dist/jquery-ui.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('packages/barryvdh/elfinder/css/elfinder.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('packages/barryvdh/elfinder/css/theme.css') }}">
-        <link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" /> --}}
+        
         <style>
             #cboxContent, #cboxLoadedContent, .cboxIframe {
                 background: transparent;
@@ -105,14 +114,18 @@ if($sortable){
     @endpush
 
     @push('crud_fields_scripts')
+        
+        @include('vendor.elfinder.common_scripts', compact('dir', 'locale', 'csrf'))
+        @include('vendor.elfinder.common_styles', compact('dir', 'locale', 'csrf'))
+
         <!-- include browse server js -->
-        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-        <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/barryvdh/elfinder/js/elfinder.min.js') }}"></script>
+        {{-- <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script> --}}
+        {{-- <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script> --}}
+        {{-- <script type="text/javascript" src="{{ asset('packages/barryvdh/elfinder/js/elfinder.min.js') }}"></script> --}}
         {{-- <script type="text/javascript" src="{{ asset('packages/barryvdh/elfinder/js/extras/editors.default.min.js') }}"></script> --}}
-        @if ( ($locale = \App::getLocale()) != 'en' )
+        {{-- @if ( ($locale = \App::getLocale()) != 'en' )
             <script type="text/javascript" src="{{ asset("packages/barryvdh/elfinder/js/i18n/elfinder.{$locale}.js") }}"></script>
-        @endif
+        @endif --}}
 
         <script>
             function bpFieldInitBrowseMultipleElement(element) {
