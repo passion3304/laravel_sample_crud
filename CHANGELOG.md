@@ -24,6 +24,22 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.60 - 2020-04-21
+
+### Fixed
+- Fixed breadcrumb alignment in rtl html direction. @ahmadmrj (#2691)
+- added names to edit-account-info post route @iMokhles (#2672)
+- Security upgrade jquery from 3.4.1 to 3.5.0 @snyk-bot (#2671)
+- use named route for login link @juventus18 (#2658)
+- Fix docblock in Validation trait @JaZo (#2664)
+- Fix different date formats in Date Range Field @FakeFakers (#2627)
+
+## 4.0.59 - 2020-04-07
+
+### Fixed
+- updated npm dependencies;
+
+
 ## 4.0.58 - 2020-03-31
 
 ### Fixed

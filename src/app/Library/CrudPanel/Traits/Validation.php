@@ -58,7 +58,7 @@ trait Validation
     /**
      * Run the authorization and validation the currently set FormRequest.
      *
-     * @return Request
+     * @return \Illuminate\Http\Request
      */
     public function validateRequest()
     {
