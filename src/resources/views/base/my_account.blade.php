@@ -49,7 +49,7 @@
 
         {{-- UPDATE INFO FORM --}}
         <div class="col-lg-8">
-            <form class="form" action="{{ route('backpack.account.info') }}" method="post">
+            <form class="form" action="{{ route('backpack.account.info.store') }}" method="post">
 
                 {!! csrf_field() !!}
 
