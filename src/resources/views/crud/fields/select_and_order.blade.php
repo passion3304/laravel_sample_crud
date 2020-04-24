@@ -62,14 +62,11 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
 
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
+@push('crud_fields_styles')
+    @loadOnce('select_and_order_field_style')
     <style>
         .select_and_order_all,
         .select_and_order_selected {
@@ -117,57 +114,56 @@
             -ms-touch-action: none;
             touch-action: none;
         }
-
     </style>
-    @endpush
+    @endLoadOnce
+@endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-<script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-<script>
-    function bpFieldInitSelectAndOrderElement(element) {
-        // var $selected = element.find('[data-identifier=selected]');
-        // var $results = element.find('[data-identifier=results]');
-        // var $all = element.find('[data-identifier=all]');
-        var $fieldName = element.attr('data-field-name');
-        var $allId = 'sao_all_'+Math.ceil(Math.random() * 1000000);
-        var $selectedId = 'sao_selected_'+Math.ceil(Math.random() * 1000000);
-        var $resultsId = 'sao_results_'+Math.ceil(Math.random() * 1000000);
+    @loadCssOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+    @loadOnce('bpFieldInitSelectAndOrderElement')
+    <script>
+        function bpFieldInitSelectAndOrderElement(element) {
+            // var $selected = element.find('[data-identifier=selected]');
+            // var $results = element.find('[data-identifier=results]');
+            // var $all = element.find('[data-identifier=all]');
+            var $fieldName = element.attr('data-field-name');
+            var $allId = 'sao_all_'+Math.ceil(Math.random() * 1000000);
+            var $selectedId = 'sao_selected_'+Math.ceil(Math.random() * 1000000);
+            var $resultsId = 'sao_results_'+Math.ceil(Math.random() * 1000000);
 
-        element.find('[data-identifier=selected]').attr('id', $selectedId);
-        element.find('[data-identifier=all]').attr('id', $allId);
-        element.find('[data-identifier=results]').attr('id', $resultsId);
+            element.find('[data-identifier=selected]').attr('id', $selectedId);
+            element.find('[data-identifier=all]').attr('id', $allId);
+            element.find('[data-identifier=results]').attr('id', $resultsId);
 
-        $( "#"+$allId+", #"+$selectedId ).sortable({
-            connectWith: "."+$fieldName+"_connectedSortable",
-            update: function() {
-                var updatedlist = $(this).attr('id');
-                if((updatedlist == $selectedId)) {
-                    $("#"+$resultsId).html("");
-                    if($("#"+$selectedId).find('li').length==0) {
-                        var input = document.createElement("input");
-                        input.setAttribute('name', $fieldName);
-                        input.setAttribute('value',null);
-                        input.setAttribute('type','hidden');
-                        $("#"+$resultsId).append(input);
-                    } else {
-                        $("#"+$selectedId).find('li').each(function(val,obj) {
+            $( "#"+$allId+", #"+$selectedId ).sortable({
+                connectWith: "."+$fieldName+"_connectedSortable",
+                update: function() {
+                    var updatedlist = $(this).attr('id');
+                    if((updatedlist == $selectedId)) {
+                        $("#"+$resultsId).html("");
+                        if($("#"+$selectedId).find('li').length==0) {
                             var input = document.createElement("input");
-                            input.setAttribute('name', $fieldName+"[]");
-                            input.setAttribute('value',obj.getAttribute('value'));
+                            input.setAttribute('name', $fieldName);
+                            input.setAttribute('value',null);
                             input.setAttribute('type','hidden');
                             $("#"+$resultsId).append(input);
-                        });
+                        } else {
+                            $("#"+$selectedId).find('li').each(function(val,obj) {
+                                var input = document.createElement("input");
+                                input.setAttribute('name', $fieldName+"[]");
+                                input.setAttribute('value',obj.getAttribute('value'));
+                                input.setAttribute('type','hidden');
+                                $("#"+$resultsId).append(input);
+                            });
+                        }
                     }
                 }
-            }
-        }).disableSelection();
-    }
-</script>
-
+            }).disableSelection();
+        }
+    </script>
+    @endLoadOnce
 @endpush
-
-@endif
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

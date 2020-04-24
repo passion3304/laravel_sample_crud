@@ -20,56 +20,54 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
-        <link rel="stylesheet" href="{{ asset('packages/simplemde/dist/simplemde.min.css') }}">
-        <style type="text/css">
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
+@push('crud_fields_styles')
+    @loadCssOnce('packages/simplemde/dist/simplemde.min.css')
+    @loadOnce('simpleMdeFieldStyle')
+    <style type="text/css">
         .CodeMirror-fullscreen, .editor-toolbar.fullscreen {
             z-index: 9999 !important;
         }
         .CodeMirror{
         	min-height: auto !important;
         }
-        </style>
-    @endpush
+    </style>
+    @endLoadOnce
+@endpush
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
-        <script src="{{ asset('packages/simplemde/dist/simplemde.min.js') }}"></script>
-        <script>
-            function bpFieldInitSimpleMdeElement(element) {
-                element.attr('id', 'simplemde_'+Math.ceil(Math.random() * 1000000));
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
+    @loadJsOnce('packages/simplemde/dist/simplemde.min.js')
+    @loadOnce('bpFieldInitSimpleMdeElement')
+    <script>
+        function bpFieldInitSimpleMdeElement(element) {
+            element.attr('id', 'simplemde_'+Math.ceil(Math.random() * 1000000));
 
-                console.log(element.attr('id'));
+            console.log(element.attr('id'));
 
-                var elementId = element.attr('id');
-                var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
-                var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
-                var configurationObject = {
-                    element: $('#'+elementId)[0],
-                };
+            var elementId = element.attr('id');
+            var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
+            var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
+            var configurationObject = {
+                element: $('#'+elementId)[0],
+            };
 
-                console.log($('#'+elementId));
+            console.log($('#'+elementId));
 
-                configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
+            configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
 
-                var smdeObject = new SimpleMDE(configurationObject);
+            var smdeObject = new SimpleMDE(configurationObject);
 
-                smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
-                smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
-                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                    setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
-                });
-            }
-        </script>
-    @endpush
-
-@endif
+            smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
+            smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
+            });
+        }
+    </script>
+    @endLoadOnce
+@endpush
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

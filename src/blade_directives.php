@@ -9,6 +9,7 @@ Blade::directive('loadCssOnce', function ($parameter) use (&$already_loaded_asse
     if (! in_array($path, $already_loaded_assets)) {
         // remember this file path, so that it's never loaded again
         array_push($already_loaded_assets, $path);
+
         // load the CSS file
         return '<link href="'.asset($path).'" rel="stylesheet" type="text/css" />';
     }
@@ -21,6 +22,7 @@ Blade::directive('loadJsOnce', function ($parameter) use (&$already_loaded_asset
     if (! in_array($path, $already_loaded_assets)) {
         // remember this file path, so that it's never loaded again
         array_push($already_loaded_assets, $path);
+
         // load the JS file
         return '<script src="'.asset($path).'"></script>';
     }

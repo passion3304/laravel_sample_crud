@@ -94,136 +94,133 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
-        {{-- YOUR JS HERE --}}
-        <script type="text/javascript" src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-
-        <script>
-            function bpFieldInitTableElement(element) {
-                var $tableWrapper = element.parent('[data-field-type=table]');
-                var $rows = (element.attr('value') != '') ? $.parseJSON(element.attr('value')) : '';
-                var $max = element.attr('data-max');
-                var $min = element.attr('data-min');
-                var $maxErrorTitle = element.attr('data-maxErrorTitle');
-                var $maxErrorMessage = element.attr('data-maxErrorMessage');
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
+    {{-- YOUR JS HERE --}}
+    @loadJsOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+    @loadOnce('bpFieldInitTableElement')
+    <script>
+        function bpFieldInitTableElement(element) {
+            var $tableWrapper = element.parent('[data-field-type=table]');
+            var $rows = (element.attr('value') != '') ? $.parseJSON(element.attr('value')) : '';
+            var $max = element.attr('data-max');
+            var $min = element.attr('data-min');
+            var $maxErrorTitle = element.attr('data-maxErrorTitle');
+            var $maxErrorMessage = element.attr('data-maxErrorMessage');
 
 
-                // add rows with the information from the database
-                if($rows != '[]') {
-                    $.each($rows, function(key) {
+            // add rows with the information from the database
+            if($rows != '[]') {
+                $.each($rows, function(key) {
 
+                    addItem();
+
+                    $.each(this, function(column , value) {
+                        $tableWrapper.find('tbody tr:last').find('input[data-cell-name="item.' + column + '"]').val(value);
+                    });
+
+                    // if it's the last row, update the JSON
+                    if ($rows.length == key+1) {
+                        updateTableFieldJson();
+                    }
+                });
+            }
+
+            // add minimum rows if needed
+            var itemCount = $tableWrapper.find('tbody tr').not('.clonable').length;
+            if($min > 0 && itemCount < $min) {
+                $rowsToAdd = Number($min) - Number(itemCount);
+
+                for(var i = 0; i < $rowsToAdd; i++){
+                    addItem();
+                }
+            }
+
+            $tableWrapper.find('.sortableOptions').sortable({
+                handle: '.sort-handle',
+                axis: 'y',
+                helper: function(e, ui) {
+                    ui.children().each(function() {
+                        $(this).width($(this).width());
+                    });
+                    return ui;
+                },
+                update: function( event, ui ) {
+                    updateTableFieldJson();
+                }
+            });
+
+
+            $tableWrapper.find('[data-button-type=addItem]').click(function() {
+                if($max > -1) {
+                    var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
+
+                    if(totalRows < $max) {
                         addItem();
+                        updateTableFieldJson();
+                    } else {
+                        new Noty({
+                          type: "warning",
+                          text: "<strong>"+$maxErrorTitle+"</strong><br>"+$maxErrorMessage
+                        }).show();
+                    }
+                } else {
+                    addItem();
+                    updateTableFieldJson();
+                }
+            });
 
-                        $.each(this, function(column , value) {
-                            $tableWrapper.find('tbody tr:last').find('input[data-cell-name="item.' + column + '"]').val(value);
-                        });
+            function addItem() {
+                $tableWrapper.find('tbody').append($tableWrapper.find('tbody .clonable').clone().show().removeClass('clonable'));
+            }
 
-                        // if it's the last row, update the JSON
-                        if ($rows.length == key+1) {
-                            updateTableFieldJson();
+            $tableWrapper.on('click', '.removeItem', function() {
+                var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
+                if (totalRows > $min) {
+                    $(this).closest('tr').remove();
+                    updateTableFieldJson();
+                    return false;
+                }
+            });
+
+            $tableWrapper.find('tbody').on('keyup', function() {
+                updateTableFieldJson();
+            });
+
+
+            function updateTableFieldJson() {
+                var $rows = $tableWrapper.find('tbody tr').not('.clonable');
+                var $hiddenField = $tableWrapper.find('input.array-json');
+
+                var json = '[';
+                var otArr = [];
+                var tbl2 = $rows.each(function(i) {
+                    x = $(this).children().closest('td').find('input');
+                    var itArr = [];
+                    x.each(function() {
+                        if(this.value.length > 0) {
+                            var key = $(this).attr('data-cell-name').replace('item.','');
+                            var value = this.value.replace(/(['"])/g, "\\$1"); // escapes single and double quotes
+
+                            itArr.push('"' + key + '":"' + value + '"');
                         }
                     });
-                }
+                    otArr.push('{' + itArr.join(',') + '}');
+                })
+                json += otArr.join(",") + ']';
 
-                // add minimum rows if needed
-                var itemCount = $tableWrapper.find('tbody tr').not('.clonable').length;
-                if($min > 0 && itemCount < $min) {
-                    $rowsToAdd = Number($min) - Number(itemCount);
+                var totalRows = $rows.length;
 
-                    for(var i = 0; i < $rowsToAdd; i++){
-                        addItem();
-                    }
-                }
-
-                $tableWrapper.find('.sortableOptions').sortable({
-                    handle: '.sort-handle',
-                    axis: 'y',
-                    helper: function(e, ui) {
-                        ui.children().each(function() {
-                            $(this).width($(this).width());
-                        });
-                        return ui;
-                    },
-                    update: function( event, ui ) {
-                        updateTableFieldJson();
-                    }
-                });
-
-
-                $tableWrapper.find('[data-button-type=addItem]').click(function() {
-                    if($max > -1) {
-                        var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
-
-                        if(totalRows < $max) {
-                            addItem();
-                            updateTableFieldJson();
-                        } else {
-                            new Noty({
-                              type: "warning",
-                              text: "<strong>"+$maxErrorTitle+"</strong><br>"+$maxErrorMessage
-                            }).show();
-                        }
-                    } else {
-                        addItem();
-                        updateTableFieldJson();
-                    }
-                });
-
-                function addItem() {
-                    $tableWrapper.find('tbody').append($tableWrapper.find('tbody .clonable').clone().show().removeClass('clonable'));
-                }
-
-                $tableWrapper.on('click', '.removeItem', function() {
-                    var totalRows = $tableWrapper.find('tbody tr').not('.clonable').length;
-                    if (totalRows > $min) {
-                        $(this).closest('tr').remove();
-                        updateTableFieldJson();
-                        return false;
-                    }
-                });
-
-                $tableWrapper.find('tbody').on('keyup', function() {
-                    updateTableFieldJson();
-                });
-
-
-                function updateTableFieldJson() {
-                    var $rows = $tableWrapper.find('tbody tr').not('.clonable');
-                    var $hiddenField = $tableWrapper.find('input.array-json');
-
-                    var json = '[';
-                    var otArr = [];
-                    var tbl2 = $rows.each(function(i) {
-                        x = $(this).children().closest('td').find('input');
-                        var itArr = [];
-                        x.each(function() {
-                            if(this.value.length > 0) {
-                                var key = $(this).attr('data-cell-name').replace('item.','');
-                                var value = this.value.replace(/(['"])/g, "\\$1"); // escapes single and double quotes
-
-                                itArr.push('"' + key + '":"' + value + '"');
-                            }
-                        });
-                        otArr.push('{' + itArr.join(',') + '}');
-                    })
-                    json += otArr.join(",") + ']';
-
-                    var totalRows = $rows.length;
-
-                    $hiddenField.val( totalRows ? json : null );
-                }
-
-                // on page load, make sure the input has the old values
-                updateTableFieldJson();
+                $hiddenField.val( totalRows ? json : null );
             }
-        </script>
-    @endpush
-@endif
+
+            // on page load, make sure the input has the old values
+            updateTableFieldJson();
+        }
+    </script>
+    @endLoadOnce
+@endpush
+
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
