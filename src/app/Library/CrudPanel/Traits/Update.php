@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Support\Arr;
 
 trait Update
@@ -23,7 +22,6 @@ trait Update
      */
     public function update($id, $data)
     {
-
         $data = $this->decodeJsonCastedAttributes($data);
         $data = $this->compactFakeFields($data);
         $item = $this->model->findOrFail($id);
@@ -55,7 +53,6 @@ trait Update
         foreach ($fields as &$field) {
             // set the value
             if (! isset($field['value'])) {
-
                 if (isset($field['subfields'])) {
                     $field['value'] = [];
                     foreach ($field['subfields'] as $subfield) {
@@ -90,7 +87,6 @@ trait Update
     private function getModelAttributeValue($model, $field)
     {
         if (isset($field['entity'])) {
-
             $relational_entity = $this->parseRelationFieldNamesFromHtml([$field])[0]['name'];
 
             $relation_array = explode('.', $relational_entity);
@@ -101,7 +97,7 @@ trait Update
 
             $relationMethod = Arr::last($relation_array);
 
-            if (method_exists($relatedModel,$relationMethod) && $relatedModel->{$relationMethod}() instanceof HasOne) {
+            if (method_exists($relatedModel, $relationMethod) && $relatedModel->{$relationMethod}() instanceof HasOne) {
                 return $relatedModel->{$relationMethod}->{Arr::last(explode('.', $relational_entity))};
             } else {
                 return $relatedModel->{$relationMethod};

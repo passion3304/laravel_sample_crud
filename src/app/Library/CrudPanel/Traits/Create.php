@@ -23,7 +23,6 @@ trait Create
      */
     public function create($data)
     {
-
         $data = $this->decodeJsonCastedAttributes($data);
         $data = $this->compactFakeFields($data);
 
@@ -161,7 +160,7 @@ trait Create
             return false;
         }
         foreach ($formattedData['relations'] as $relationMethod => $relationData) {
-            if(!isset($relationData['model'])) {
+            if (! isset($relationData['model'])) {
                 continue;
             }
             $model = $relationData['model'];
@@ -230,6 +229,7 @@ trait Create
                 Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
+
         return $relationData;
     }
 

@@ -27,7 +27,6 @@ trait Relationships
         //if counts are diferent means that last element of entity is the field in relation.
         if (count(explode('.', $entity)) != count(explode('.', $field['entity']))) {
             if (in_array($related_method, $relation_model->getFillable())) {
-
                 if (count($entity_array) > 1) {
                     $related_method = $entity_array[(count($entity_array) - 2)];
                     $relation_model = $this->getRelationModel($entity, -2);
@@ -41,6 +40,7 @@ trait Relationships
                 return $this->model->{$related_method}();
             }
         }
+
         return $relation_model->{$related_method}();
     }
 
@@ -53,6 +53,7 @@ trait Relationships
     public function inferFieldModelFromRelationship($field)
     {
         $relation = $this->getRelationInstance($field);
+
         return get_class($relation->getRelated());
     }
 
@@ -81,16 +82,17 @@ trait Relationships
         foreach ($fields as &$field) {
             //we only want to parse fields that has a relation type and their name contains [ ] used in html.
             if (isset($field['relation_type']) && preg_match('/[\[\]]/', $field['name']) !== 0) {
-                $chunks = explode('[',$field['name']);
+                $chunks = explode('[', $field['name']);
 
                 foreach ($chunks as &$chunk) {
-                    if (strpos($chunk,']')) {
-                        $chunk = str_replace(']','',$chunk);
+                    if (strpos($chunk, ']')) {
+                        $chunk = str_replace(']', '', $chunk);
                     }
                 }
-                $field['name'] = implode('.',$chunks);
+                $field['name'] = implode('.', $chunks);
             }
         }
+
         return $fields;
     }
 

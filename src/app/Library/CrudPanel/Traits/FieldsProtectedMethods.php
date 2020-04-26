@@ -33,7 +33,6 @@ trait FieldsProtectedMethods
         $field = $this->makeSureFieldHasType($field);
         $field = $this->overwriteFieldNameFromDotNotationToArray($field);
 
-
         return $field;
     }
 
@@ -199,20 +198,22 @@ trait FieldsProtectedMethods
         return $field;
     }
 
-    protected function makeSureFieldNameMatchesRelation($field) {
-        switch($field['relation_type']) {
-            case 'BelongsTo' : {
-                if(count(explode('.',$field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
-                    $field['name'] = implode(".", array_slice(explode('.',$field['entity']), 0, -1));
+    protected function makeSureFieldNameMatchesRelation($field)
+    {
+        switch ($field['relation_type']) {
+            case 'BelongsTo':
+                if (count(explode('.', $field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
+                    $field['name'] = implode('.', array_slice(explode('.', $field['entity']), 0, -1));
                     $relation = $this->getRelationInstance($field);
-                    if(!empty($field['name'])) {
+                    if (! empty($field['name'])) {
                         $field['name'] .= '.';
                     }
                     $field['name'] .= $relation->getForeignKeyName();
                 }
-            }
+
         break;
         }
+
         return $field;
     }
 
