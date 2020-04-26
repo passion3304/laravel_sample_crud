@@ -24,6 +24,7 @@ trait FieldsProtectedMethods
         if (isset($field['entity'])) {
             $field = $this->makeSureFieldHasRelationType($field);
             $field = $this->makeSureFieldHasModel($field);
+            $field = $this->makeSureFieldNameMatchesRelation($field);
             $field = $this->makeSureFieldHasAttribute($field);
             $field = $this->makeSureFieldHasMultiple($field);
             $field = $this->makeSureFieldHasPivot($field);
@@ -31,6 +32,7 @@ trait FieldsProtectedMethods
 
         $field = $this->makeSureFieldHasType($field);
         $field = $this->overwriteFieldNameFromDotNotationToArray($field);
+
 
         return $field;
     }
@@ -197,6 +199,23 @@ trait FieldsProtectedMethods
         return $field;
     }
 
+    protected function makeSureFieldNameMatchesRelation($field) {
+        switch($field['relation_type']) {
+            case 'BelongsTo' : {
+                if(count(explode('.',$field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
+                    $field['name'] = implode(".", array_slice(explode('.',$field['entity']), 0, -1));
+                    $relation = $this->getRelationInstance($field);
+                    if(!empty($field['name'])) {
+                        $field['name'] .= '.';
+                    }
+                    $field['name'] .= $relation->getForeignKeyName();
+                }
+            }
+        break;
+        }
+        return $field;
+    }
+
     protected function makeSureFieldHasAttribute($field)
     {
         // if there's a model defined, but no attribute
@@ -236,7 +255,7 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasType($field)
     {
         if (! isset($field['type'])) {
-            $field['type'] = isset($field['relation_type']) ? $this->inferFieldTypeFromRelationType($field['relation_type']) : $this->inferFieldTypeFromDbColumnType($field['name']);
+            $field['type'] = isset($field['relation_type']) ? $this->inferFieldTypeFromFieldRelation($field) : $this->inferFieldTypeFromDbColumnType($field['name']);
         }
 
         return $field;

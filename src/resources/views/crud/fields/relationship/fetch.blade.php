@@ -13,7 +13,7 @@
 
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
-    $field['attribute'] = $field['attribute'] ?? $connected_entity->getIdentifiableName();
+    $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['placeholder'] = $field['placeholder'] ?? $field['multiple'] ? 'Select entities' : 'Select an entity';
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
@@ -65,7 +65,7 @@
         data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
         data-method="{{ $field['method'] ?? 'POST' }}"
         data-data-source="{{ $field['data_source']}}"
-        data-field-attribute="{{ $field['attribute'] ?? $field['model']::getIdentifiableName() }}"
+        data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         data-current-value="{{ $field['value'] }}"

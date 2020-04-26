@@ -23,7 +23,7 @@ trait Create
      */
     public function create($data)
     {
-        //dd($data);
+
         $data = $this->decodeJsonCastedAttributes($data);
         $data = $this->compactFakeFields($data);
 
@@ -160,8 +160,10 @@ trait Create
         if (! isset($formattedData['relations'])) {
             return false;
         }
-
         foreach ($formattedData['relations'] as $relationMethod => $relationData) {
+            if(!isset($relationData['model'])) {
+                continue;
+            }
             $model = $relationData['model'];
             $relation = $item->{$relationMethod}();
 
@@ -211,16 +213,14 @@ trait Create
         $relation_fields = $this->getRelationFields();
         $relationData = [];
         foreach ($relation_fields as $relation_field) {
-            $attributeKey = $relation_field['entity'];
+            $attributeKey = $this->parseRelationFieldNamesFromHtml([$relation_field])[0]['name'];
 
             if (! is_null(Arr::get($data, $attributeKey)) && $relation_field['pivot'] !== true) {
                 $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
                 $fieldData = Arr::get($relationData, 'relations.'.$key, []);
-
                 if (! array_key_exists('model', $fieldData)) {
                     $fieldData['model'] = $relation_field['model'];
                 }
-
                 if (! array_key_exists('parent', $fieldData)) {
                     $fieldData['parent'] = $this->getRelationModel($attributeKey, -1);
                 }
@@ -230,7 +230,6 @@ trait Create
                 Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
-
         return $relationData;
     }
 

@@ -3,7 +3,6 @@
 @php
 
     //in case entity is superNews we want the url friendly super-news
-
     $entityWithoutAttribute = $crud->getOnlyRelationEntity($field);
     $routeEntity = Str::kebab($entityWithoutAttribute);
     $connected_entity = new $field['model'];
@@ -31,15 +30,16 @@
                                     ->toArray();
                     }
                 }
+            break;
             default:
                 $current_value = $connected_entity
                                 ->where($connected_entity_key_name, $current_value)
                                 ->pluck($field['attribute'], $connected_entity_key_name)
                                 ->toArray();
+
                 break;
         }
     }
-
     $field['value'] = json_encode($current_value);
 
 

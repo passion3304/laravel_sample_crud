@@ -9,37 +9,38 @@ trait Relationships
     /**
      * From the field entity we get the relation instance.
      *
-     * @param string $entity
+     * @param array $entity
      * @return void
      */
-    public function getRelationInstance($entity)
+    public function getRelationInstance($field)
     {
+        $entity = $this->getOnlyRelationEntity($field);
         $entity_array = explode('.', $entity);
         $relation_model = $this->getRelationModel($entity);
-        $relation_model = new $relation_model();
-        $related_method = Arr::last($entity_array);
-        $field_in_database = false;
 
-        //if the last part of entity is in fillable for related method, it means dev wants to edit some relation
-        //specific attribute like account.address.name where Account HasOne Address
-        if (in_array($related_method, $relation_model->getFillable())) {
-            if (count($entity_array) > 1) {
-                $related_method = $entity_array[(count($entity_array) - 2)];
-                $relation_model = $this->getRelationModel($entity, -2);
-                $field_in_database = array_pop($entity_array);
-            } else {
-                $relation_model = $this->model;
-            }
-        } else {
+        $related_method = Arr::last($entity_array);
+        if (count(explode('.', $entity)) == count(explode('.', $field['entity']))) {
             $relation_model = $this->getRelationModel($entity, -1);
         }
-        if (count($entity_array) == 1 && $field_in_database !== false) {
+        $relation_model = new $relation_model();
+
+        //if counts are diferent means that last element of entity is the field in relation.
+        if (count(explode('.', $entity)) != count(explode('.', $field['entity']))) {
+            if (in_array($related_method, $relation_model->getFillable())) {
+
+                if (count($entity_array) > 1) {
+                    $related_method = $entity_array[(count($entity_array) - 2)];
+                    $relation_model = $this->getRelationModel($entity, -2);
+                } else {
+                    $relation_model = $this->model;
+                }
+            }
+        }
+        if (count($entity_array) == 1) {
             if (method_exists($this->model, $related_method)) {
                 return $this->model->{$related_method}();
             }
         }
-        $relation_model = new $relation_model();
-
         return $relation_model->{$related_method}();
     }
 
@@ -51,8 +52,7 @@ trait Relationships
      */
     public function inferFieldModelFromRelationship($field)
     {
-        $relation = $this->getRelationInstance($field['entity']);
-
+        $relation = $this->getRelationInstance($field);
         return get_class($relation->getRelated());
     }
 
@@ -64,7 +64,7 @@ trait Relationships
      */
     public function inferRelationTypeFromRelationship($field)
     {
-        $relation = $this->getRelationInstance($field['entity']);
+        $relation = $this->getRelationInstance($field);
 
         return Arr::last(explode('\\', get_class($relation)));
     }
@@ -79,11 +79,18 @@ trait Relationships
     public function parseRelationFieldNamesFromHtml($fields)
     {
         foreach ($fields as &$field) {
-            if (isset($field['relation_type'])) {
-                $field['name'] = Arr::first(explode('.', $field['entity']));
+            //we only want to parse fields that has a relation type and their name contains [ ] used in html.
+            if (isset($field['relation_type']) && preg_match('/[\[\]]/', $field['name']) !== 0) {
+                $chunks = explode('[',$field['name']);
+
+                foreach ($chunks as &$chunk) {
+                    if (strpos($chunk,']')) {
+                        $chunk = str_replace(']','',$chunk);
+                    }
+                }
+                $field['name'] = implode('.',$chunks);
             }
         }
-
         return $fields;
     }
 
@@ -93,9 +100,9 @@ trait Relationships
      * @param string $relation_type
      * @return bool
      */
-    public function inferFieldTypeFromRelationType($relation_type)
+    public function inferFieldTypeFromFieldRelation($field)
     {
-        switch ($relation_type) {
+        switch ($field['relation_type']) {
             case 'BelongsToMany':
             case 'HasMany':
             case 'HasManyThrough':

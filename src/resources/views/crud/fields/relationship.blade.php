@@ -4,7 +4,6 @@
     if(isset($field['inline_create']) && !is_array($field['inline_create'])) {
         $field['inline_create'] = [true];
     }
-
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
     $field['ajax'] = $field['ajax'] ?? false;
     $field['placeholder'] = $field['placeholder'] ?? ($field['multiple'] ? 'Select entries' : 'Select entry');

@@ -281,7 +281,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->userInputFieldsDotNotation);
 
         $relationFields = $this->crudPanel->getRelationFieldsWithPivot();
-        //dd($relationFields);
         $this->assertEquals($this->crudPanel->get('create.fields')['roles'], Arr::first($relationFields));
     }
 
