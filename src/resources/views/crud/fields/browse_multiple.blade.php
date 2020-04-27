@@ -91,18 +91,11 @@ if($sortable){
 @if ($crud->fieldTypeNotLoaded($field))
     @php
         $crud->markFieldTypeAsLoaded($field);
-
-        $dir = 'packages/barryvdh/elfinder';
-        $locale = str_replace("-",  "_", App::getLocale());
-        if (!file_exists(public_path("/$dir/js/i18n/elfinder.$locale.js"))) {
-            $locale = false;
-        }
-        $csrf = true;
-        $jquery = false;
     @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')        
+        <link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
         <style>
             #cboxContent, #cboxLoadedContent, .cboxIframe {
                 background: transparent;
@@ -112,9 +105,7 @@ if($sortable){
 
     @push('crud_fields_scripts')
         
-        @include('vendor.elfinder.common_scripts', compact('dir', 'locale', 'csrf'))
-        @include('vendor.elfinder.common_styles', compact('dir', 'locale', 'csrf'))
-
+        <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
         <script>
             // this global variable is used to remember what input to update with the file path
             // because elfinder is actually loaded in an iframe by colorbox
