@@ -348,19 +348,56 @@ class CrudPanel
         $endModels = $this->getRelatedEntries($model, $relationString);
         $attributes = [];
         foreach ($endModels as $model => $entries) {
-            $modelKey = (new $model())->getKeyName();
+            $model_instance = new $model();
+            $modelKey = $model_instance->getKeyName();
             if (is_array($entries) && ! isset($entries[$attribute])) {
                 foreach ($entries as $entry) {
-                    $attributes[$entry[$modelKey]] = $entry[$attribute];
+                    $attributes[$entry[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry[$attribute]);
                 }
             } elseif (is_array($entries) && isset($entries[$attribute])) {
-                $attributes[$entries[$modelKey]] = $entries[$attribute];
+                $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
             } elseif ($entries->{$attribute}) {
-                $attributes[$entries->{$modelKey}] = $entries->{$attribute};
+                $attributes[$entries->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries->{$attribute});
             }
         }
 
         return $attributes;
+    }
+
+    /**
+     * Parse translatable attributes from a model or models resulting from the specified relation string.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model          Model (eg: user).
+     * @param string                              $attribute      The attribute from the relation model (eg: the street attribute from the address model).
+     * @param string                              $value          Attribute value translatable or not
+     *
+     * @return string A string containing the translated attributed based on app()->getLocale()
+     */
+    public function parseTranslatableAttributes($model, $attribute, $value)
+    {
+        if (! method_exists($model, 'isTranslatableAttribute')) {
+            return $value;
+        }
+
+        if (! $model->isTranslatableAttribute($attribute)) {
+            return $value;
+        }
+
+        if (! is_array($value)) {
+            $decodedAttribute = json_decode($value, true);
+        } else {
+            $decodedAttribute = $value;
+        }
+
+        if (is_array($decodedAttribute) && ! empty($decodedAttribute)) {
+            if (isset($decodedAttribute[app()->getLocale()])) {
+                return $decodedAttribute[app()->getLocale()];
+            } else {
+                return Arr::first($decodedAttribute);
+            }
+        }
+
+        return $value;
     }
 
     /**
