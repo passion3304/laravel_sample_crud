@@ -74,7 +74,7 @@ trait FetchOperation
         // when multiple searchable columns are provided.
         $originalBuilder = $config['query'];
 
-        $textColumnTypes = ['string', 'json_string', 'text'];
+        $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array'];
         // for each searchable attribute, add a WHERE clause
         foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
