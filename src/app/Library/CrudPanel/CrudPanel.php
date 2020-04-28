@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Access;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Assets;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\AutoFocus;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\AutoSet;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Buttons;
@@ -28,7 +29,6 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Assets;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;

@@ -7,7 +7,7 @@ Blade::directive('loadCssOnce', function ($parameter) use ($crudPanel) {
     // if parameter starts with '$' we assume it's a php variable.
     $parameterIsVariable = substr($parameter, 0, 1) === '$' ? true : false;
 
-    if($parameterIsVariable) {
+    if ($parameterIsVariable) {
         return '<?php
 
         if(!$crud->isAssetLoaded('.$parameter.')) {
@@ -15,7 +15,7 @@ Blade::directive('loadCssOnce', function ($parameter) use ($crudPanel) {
             echo $crud->echoCssFileLink('.$parameter.');
         }
     ?>';
-    }else{
+    } else {
         $path = trim($parameter, '"');
         $path = trim($parameter, "'");
 
@@ -34,7 +34,7 @@ Blade::directive('loadJsOnce', function ($parameter) use ($crudPanel) {
     // if parameter starts with '$' we assume it's a php variable.
     $parameterIsVariable = substr($parameter, 0, 1) === '$' ? true : false;
 
-    if($parameterIsVariable) {
+    if ($parameterIsVariable) {
         return '<?php
 
             if(!$crud->isAssetLoaded('.$parameter.')) {
@@ -42,7 +42,7 @@ Blade::directive('loadJsOnce', function ($parameter) use ($crudPanel) {
                 echo $crud->echoJsScript('.$parameter.');
             }
         ?>';
-    }else{
+    } else {
         $path = trim($parameter, '"');
         $path = trim($parameter, "'");
 
@@ -56,7 +56,6 @@ Blade::directive('loadJsOnce', function ($parameter) use ($crudPanel) {
 });
 
 Blade::directive('loadOnce', function ($parameter) use ($crudPanel) {
-
     $path = trim($parameter, '"');
     $path = trim($parameter, "'");
     $exists = in_array($path, $crudPanel->getLoadedAssets());
