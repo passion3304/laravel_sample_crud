@@ -70,11 +70,15 @@ trait FetchOperation
             $config['query']->get();
         }
 
+        // we store the original builder so we can use it to check column types
+        // when multiple searchable columns are provided.
+        $originalBuilder = $config['query'];
+
         $textColumnTypes = ['string', 'json_string', 'text'];
         // for each searchable attribute, add a WHERE clause
         foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
-            $columnType = $config['query']->getColumnType($searchColumn);
+            $columnType = $originalBuilder->getColumnType($searchColumn);
 
             if (in_array($columnType, $textColumnTypes)) {
                 $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$search_string.'%');
