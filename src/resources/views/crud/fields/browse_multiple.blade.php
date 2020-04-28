@@ -105,6 +105,7 @@ if($sortable){
 
     @push('crud_fields_scripts')
         
+        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
         <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
         <script>
             // this global variable is used to remember what input to update with the file path
