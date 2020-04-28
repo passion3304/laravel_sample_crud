@@ -1,42 +1,70 @@
 <?php
 
-$already_loaded_assets = [];
+$crudPanel = app('crud');
 
-Blade::directive('loadCssOnce', function ($parameter) use (&$already_loaded_assets) {
-    $path = trim($parameter, '"');
-    $path = trim($parameter, "'");
+Blade::directive('loadCssOnce', function ($parameter) use ($crudPanel) {
 
-    if (! in_array($path, $already_loaded_assets)) {
-        // remember this file path, so that it's never loaded again
-        array_push($already_loaded_assets, $path);
+    // if parameter starts with '$' we assume it's a php variable.
+    $parameterIsVariable = substr($parameter, 0, 1) === '$' ? true : false;
 
-        // load the CSS file
-        return '<link href="'.asset($path).'" rel="stylesheet" type="text/css" />';
+    if($parameterIsVariable) {
+        return '<?php
+
+        if(!$crud->isAssetLoaded('.$parameter.')) {
+            $crud->markAssetAsLoaded('.$parameter.');
+            echo $crud->echoJsScript('.$parameter.');
+        }
+    ?>';
+    }else{
+        $path = trim($parameter, '"');
+        $path = trim($parameter, "'");
+
+        if (! in_array($path, $crudPanel->getLoadedAssets())) {
+            // remember this file path, so that it's never loaded again
+            $crudPanel->markAssetAsLoaded($path);
+
+            // load the CSS file
+            return '<link href="'.asset($path).'" rel="stylesheet" type="text/css" />';
+        }
     }
 });
 
-Blade::directive('loadJsOnce', function ($parameter) use (&$already_loaded_assets) {
-    $path = trim($parameter, '"');
-    $path = trim($parameter, "'");
+Blade::directive('loadJsOnce', function ($parameter) use ($crudPanel) {
 
-    if (! in_array($path, $already_loaded_assets)) {
-        // remember this file path, so that it's never loaded again
-        array_push($already_loaded_assets, $path);
+    // if parameter starts with '$' we assume it's a php variable.
+    $parameterIsVariable = substr($parameter, 0, 1) === '$' ? true : false;
 
-        // load the JS file
-        return '<script src="'.asset($path).'"></script>';
+    if($parameterIsVariable) {
+        return '<?php
+
+            if(!$crud->isAssetLoaded('.$parameter.')) {
+                $crud->markAssetAsLoaded('.$parameter.');
+                echo $crud->echoJsScript('.$parameter.');
+            }
+        ?>';
+    }else{
+        $path = trim($parameter, '"');
+        $path = trim($parameter, "'");
+
+        if (! in_array($path, $crudPanel->getLoadedAssets())) {
+            // remember this file path, so that it's never loaded again
+            $crudPanel->markAssetAsLoaded($path);
+            // load the JS file
+            return '<script src="'.asset($path).'"></script>';
+        }
     }
 });
 
-Blade::directive('loadOnce', function ($parameter) use (&$already_loaded_assets) {
+Blade::directive('loadOnce', function ($parameter) use ($crudPanel) {
+
     $path = trim($parameter, '"');
     $path = trim($parameter, "'");
-    $exists = in_array($path, $already_loaded_assets);
+    $exists = in_array($path, $crudPanel->getLoadedAssets());
 
     if ($exists) {
         return '<?php if (false) { ?>';
     } else {
-        array_push($already_loaded_assets, $path);
+        $crudPanel->markAssetAsLoaded($path);
 
         return '<?php if (true) { ?>';
     }
