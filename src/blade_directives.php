@@ -12,7 +12,7 @@ Blade::directive('loadCssOnce', function ($parameter) use ($crudPanel) {
 
         if(!$crud->isAssetLoaded('.$parameter.')) {
             $crud->markAssetAsLoaded('.$parameter.');
-            echo $crud->echoJsScript('.$parameter.');
+            echo $crud->echoCssFileLink('.$parameter.');
         }
     ?>';
     }else{
