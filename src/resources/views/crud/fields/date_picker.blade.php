@@ -27,7 +27,7 @@
             >
         <div class="input-group-append">
             <span class="input-group-text">
-                <span class="fa fa-calendar"></span>
+                <span class="la la-calendar"></span>
             </span>
         </div>
     </div>

@@ -7,12 +7,17 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
     $field['value'] = json_encode($field['value']);
 }
 
+$field['wrapper']['algolia-wrapper'] = $field['wrapper']['algolia-wrapper'] ?? 'true';
+
 ?>
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
-    <input type="hidden" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" name="{{ $field['name'] }}">
+    <input type="hidden" 
+        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" 
+        name="{{ $field['name'] }}" 
+        data-algolia-hidden-input="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix'])) <div class="input-group"> @endif
         @if(isset($field['prefix'])) <div class="input-group-addon">{!! $field['prefix'] !!}</div> @endif
@@ -69,15 +74,21 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             window.AlgoliaPlaces = window.AlgoliaPlaces || {};
 
             function bpFieldInitAddressAlgoliaElement(element) {
-                $addressConfig = element.data('address'),
-                $field = $('[name="'+$addressConfig.field+'"]'),
+                $addressConfig = element.data('address');
+                // console.log(element);
+                // console.log(element.prev("[data-algolia-hidden-input]"));
+                // console.log(element.siblings("[data-algolia-hidden-input]"));
+                console.log($('[name="'+$addressConfig.field+'"]'));
+                console.log(element.parent("[algolia-wrapper]").find('[data-algolia-hidden-input="'+$addressConfig.field+'"]'));
+                // console.log(element.parent("[algolia-wrapper]").children("[data-algolia-hidden-input]").first());
+                $hiddenInput = element.parent("[algolia-wrapper]").find('[data-algolia-hidden-input="'+$addressConfig.field+'"]');
                 $place = places({
                     container: element[0]
                 });
 
                 function clearInput() {
                     if( !element.val().length ){
-                        $field.val('');
+                        $hiddenInput.val('');
                     }
                 }
 
@@ -87,14 +98,14 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
                         var result = JSON.parse(JSON.stringify(e.suggestion));
                         delete(result.highlight); delete(result.hit); delete(result.hitIndex);
                         delete(result.rawAnswer); delete(result.query);
-                        $field.val( JSON.stringify(result) );
+                        $hiddenInput.val( JSON.stringify(result) );
                     });
 
                     element.on('change blur', clearInput);
                     $place.on('clear', clearInput);
 
-                    if( $field.val().length ){
-                        var existingData = JSON.parse($field.val());
+                    if( $hiddenInput.val().length ){
+                        var existingData = JSON.parse($hiddenInput.val());
                         element.val(existingData.value);
                     }
                 }
