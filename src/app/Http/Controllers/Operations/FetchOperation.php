@@ -71,8 +71,8 @@ trait FetchOperation
         }
 
         // FetchOperation has an optional parameter in url that when present means we want to fetch a single entity.
-        $fetchUriCount = count(explode('/',request()->route()->uri())) - 1;
-        $currentUriCount = count(explode('/',request()->path()));
+        $fetchUriCount = count(explode('/', request()->route()->uri())) - 1;
+        $currentUriCount = count(explode('/', request()->path()));
 
         //in this case last parameter in url was specified so we will trigger the return of single entity
         if ($currentUriCount > $fetchUriCount) {
