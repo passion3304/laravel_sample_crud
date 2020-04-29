@@ -22,7 +22,7 @@ trait FetchOperation
 
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
-                Route::post($segment.'/fetch/'.Str::kebab($methodName).'{single?}', [
+                Route::post($segment.'/fetch/'.Str::kebab($methodName).'/{single?}', [
                     'uses'      => $controller.'@fetch'.$methodName,
                     'operation' => 'FetchOperation',
                 ]);
