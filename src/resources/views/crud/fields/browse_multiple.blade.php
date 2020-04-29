@@ -32,24 +32,7 @@ if($sortable){
     @include('crud::fields.inc.translatable_icon')
     <div class="list" data-field-name="{{ $field['name'] }}">
     @if ($multiple)
-
-            @foreach( (array)$value as $v)
-                @if ($v)
-                    <div class="input-group input-group-sm">
-                        <input type="text" name="{{ $field['name'] }}[]" value="{{ $v }}" data-marker="multipleBrowseInput"
-                                @include('crud::fields.inc.attributes') readonly>
-                        <div class="input-group-btn">
-                            <button type="button" class="browse remove btn btn-sm btn-light">
-                                <i class="la la-trash"></i>
-                            </button>
-                            @if ($sortable)
-                                <button type="button" class="browse move btn btn-sm btn-light"><span class="la la-sort"></span></button>
-                            @endif
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-
+        <input type="hidden" data-marker="multipleBrowseInput" name="{{ $field['name'] }}" value="{{ json_encode($value) }}">
     @else
         <input type="text" data-marker="multipleBrowseInput" name="{{ $field['name'] }}" value="{{ $value }}" @include('crud::fields.inc.attributes') readonly>
     @endif
@@ -71,7 +54,7 @@ if($sortable){
 
     <script type="text/html" data-marker="browse_multiple_template">
         <div class="input-group input-group-sm">
-            <input type="text" name="{{ $field['name'] }}[]" @include('crud::fields.inc.attributes') readonly>
+            <input type="text" @include('crud::fields.inc.attributes') readonly>
             <div class="input-group-btn">
                 <button type="button" class="browse remove btn btn-sm btn-light">
                     <i class="la la-trash"></i>
@@ -112,9 +95,9 @@ if($sortable){
             // because elfinder is actually loaded in an iframe by colorbox
             var elfinderTarget = false;
 
-            // function to update the file selected by elfinder
+            // function to use the files selected inside elfinder
             function processSelectedMultipleFiles(files, requestingField) {
-                elfinderTarget.trigger('processFiles', [files]);                
+                elfinderTarget.trigger('createInputsForItemsSelectedWithElfinder', [files]);                
                 elfinderTarget = false;
             }
 
@@ -130,33 +113,28 @@ if($sortable){
                 var $multiple = element.attr('data-multiple');
                 var $sortable = element.attr('sortable');
 
+                // show existing items - display visible inputs for each stored path  
+                if ($input.val() != '' && $input.val() != null && $multiple === 'true') {
+                    $paths = JSON.parse($input.val());
+                    if ($paths.length) {
+                        $paths.forEach(function (path) {
+                            var newInput = $($template);
+                            newInput.find('input').val(path);
+                            $list.append(newInput);
+                        });
+                    }
+                }
+
+                // make the items sortable, if configurations says so
                 if($sortable){
                     $list.sortable({
                         handle: 'button.move',
-                        cancel: ''
+                        cancel: '',
+                        update: function (event, ui) {
+                            element.trigger('saveToJson');
+                        }
                     });
                 }
-
-                element.on('processFiles', element, function(event, files) {
-                    if ($multiple === 'true') {
-
-                        files.forEach(function (file) {
-                            var newInput = $($template);
-                            newInput.find('input').val(file.path);
-                            $list.append(newInput);
-                        });
-
-                        if($sortable){
-                            $list.sortable("refresh")
-                        }
-                    } else {
-
-                        $input.val(files[0].path);
-
-                    }
-                    // after submit a file we delete the hidden input if it exists.
-                    deleteHiddenInput($inputName, $list);
-                });
 
                 element.on('click', 'button.popup', function (event) {
                     event.preventDefault();
@@ -174,56 +152,59 @@ if($sortable){
                     });
                 });
 
-                element.on('click', 'button.clear', function (event) {
-                    event.preventDefault();
+                // turn non-hidden inputs into a JSON
+                // and save them inside the hidden input that ACTUALLY holds all paths
+                element.on('saveToJson', function(event) {
+                    var $paths = element.find('input').not('[type=hidden]').map(function (idx, item) {
+                        return $(item).val();
+                    }).toArray();
 
-                    if($multiple === 'true') {
-
-                        $('.input-group',$list).remove();
-                        //when clearing all files we create an hidden input to be submited with the form empty
-                        if($('.hidden_browse_multiple_'+$inputName,$list).length < 1) {
-                            createHiddenInput($list,$inputName,$multiple);
-                        }
-                    }else{
-
-                        $input.val('');
-
-                    }
+                    // save the JSON inside the hidden input
+                    $input.val(JSON.stringify($paths));
                 });
 
                 if ($multiple === 'true') {
+                    // remote item button
                     element.on('click', 'button.remove', function (event) {
                         event.preventDefault();
                         $(this).closest('.input-group').remove();
+                        element.trigger('saveToJson');
+                    });
 
-                        //if we remove the last file we create an hidden input to be submited with the form empty.
-                        if($('.input-group',$list).length < 1) {
-                            createHiddenInput($list, $inputName, $multiple)
+                    // clear button
+                    element.on('click', 'button.clear', function (event) {
+                        event.preventDefault();
+
+                        $('.input-group', $list).remove();
+                        element.trigger('saveToJson');
+                    });
+
+                    // called after one or more items are selected in the elFinder window
+                    element.on('createInputsForItemsSelectedWithElfinder', element, function(event, files) {
+                        files.forEach(function (file) {
+                            var newInput = $($template);
+                            newInput.find('input').val(file.path);
+                            $list.append(newInput);
+                        });
+
+                        if($sortable){
+                            $list.sortable("refresh")
                         }
+
+                        element.trigger('saveToJson');
+                    });
+
+                } else {
+                    // clear button
+                    element.on('click', 'button.clear', function (event) {
+                        $input.val('');
+                    });
+
+                    // called after an item has been selected in the elFinder window
+                    element.on('createInputsForItemsSelectedWithElfinder', element, function(event, files) {
+                        $input.val(files[0].path);
                     });
                 }
-            }
-
-            //removes the hidden input from the field
-            function deleteHiddenInput($fieldName, $list) {
-                $('.hidden_browse_multiple_'+$fieldName,$list).remove()
-            }
-
-            //creates the hidden input and appends to field.
-            function createHiddenInput($list, $fieldName, $multiple) {
-                var input = document.createElement("input");
-
-                input.setAttribute("type", "hidden");
-                input.setAttribute("class", "hidden_browse_multiple_"+$fieldName);
-                if($multiple === 'true') {
-                    input.setAttribute("name", $fieldName+'[]');
-                }else{
-                    input.setAttribute("name", $fieldName);
-                }
-
-                input.setAttribute("value", '');
-
-                $list.append(input);
             }
         </script>
     @endpush
