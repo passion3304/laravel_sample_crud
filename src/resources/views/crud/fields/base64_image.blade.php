@@ -6,6 +6,15 @@
     $field['wrapper']['data-crop'] = $field['crop'] ?? false;
     $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
     $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitBase64CropperImageElement';
+
+    // calculate the value of the hidden input
+    if (!is_null(old(square_brackets_to_dots($field['name'])))) {
+        $value = old(square_brackets_to_dots($field['name']));
+    } elseif(isset($field['src']) && isset($entry)) {
+        $value = $entry->find($entry->id)->{$field['src']}();
+    } else {
+        $value = $field['value'] ?? $field['default'] ?? '';
+    }
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -16,17 +25,7 @@
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
         <div class="col-sm-6" data-handle="previewArea" style="margin-bottom: 20px;">
-            @if(!is_null(old(square_brackets_to_dots($field['name']))))
-                <img data-handle="mainImage" src="{{ old(square_brackets_to_dots($field['name'])) }}">
-            @elseif(isset($field['src']) && isset($entry))
-                <img data-handle="mainImage" src="{{ $entry->find($entry->id)->{$field['src']}() }}">
-            @elseif(isset($field['value']))
-                <img data-handle="mainImage" src="{{ $field['value'] }}">
-            @elseif(isset($field['default']))
-                <img data-handle="mainImage" src="{{ $field['default'] }}">
-            @else
-                <img data-handle="mainImage" src="">
-            @endif
+            <img data-handle="mainImage" src="{{ $value }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
         <div class="col-sm-3" data-handle="previewArea">
@@ -37,11 +36,11 @@
             </div>
         </div>
         @endif
-        <input type="hidden" id="hiddenFilename" name="{{ $field['filename'] }}" value="">
+        <input type="hidden" class="hiddenFilename" name="{{ $field['filename'] }}" value="">
     </div>
     <div class="btn-group">
         <div class="btn btn-light btn-sm btn-file">
-            Choose file <input type="file" accept="image/*" data-handle="uploadImage" @include('crud::fields.inc.attributes', ['default_class' => 'hide'])>
+            {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes', ['default_class' => 'hide'])>
             <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
@@ -129,7 +128,7 @@
                     var $mainImage = element.find('[data-handle=mainImage]');
                     var $uploadImage = element.find("[data-handle=uploadImage]");
                     var $hiddenImage = element.find("[data-handle=hiddenImage]");
-                    var $hiddenFilename = element.find("#hiddenFilename");
+                    var $hiddenFilename = element.find(".hiddenFilename");
                     var $rotateLeft = element.find("[data-handle=rotateLeft]");
                     var $rotateRight = element.find("[data-handle=rotateRight]");
                     var $zoomIn = element.find("[data-handle=zoomIn]");
