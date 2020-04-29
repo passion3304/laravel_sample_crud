@@ -105,11 +105,7 @@ if($sortable){
                 var $triggerUrl = element.data('elfinder-trigger-url');
                 var $template = element.find("[data-marker=browse_multiple_template]").html();
                 var $list = element.find(".list");
-                var $popupButton = element.find(".popup");
-                var $clearButton = element.find(".clear");
-                var $removeButton = element.find(".remove");
                 var $input = element.find('input[data-marker=multipleBrowseInput]');
-                var $inputName = $list.attr('data-field-name');
                 var $multiple = element.attr('data-multiple');
                 var $sortable = element.attr('sortable');
 
@@ -117,6 +113,10 @@ if($sortable){
                 if ($input.val() != '' && $input.val() != null && $multiple === 'true') {
                     $paths = JSON.parse($input.val());
                     if ($paths.length) {
+                        // remove any already visible inputs
+                        $list.find('.input-group').remove();
+
+                        // add visible inputs for each item inside the hidden input array
                         $paths.forEach(function (path) {
                             var newInput = $($template);
                             newInput.find('input').val(path);
