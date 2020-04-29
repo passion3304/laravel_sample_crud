@@ -164,6 +164,7 @@
             if (values != null) {
                 new_field_group.find('input, select, textarea').each(function () {
                     if ($(this).data('repeatable-input-name')) {
+                        $(this).attr('data-value', values[$(this).data('repeatable-input-name')]);
                         $(this).val(values[$(this).data('repeatable-input-name')]);
                     }
                 });
