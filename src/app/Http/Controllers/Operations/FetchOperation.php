@@ -22,7 +22,7 @@ trait FetchOperation
 
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
-                Route::post($segment.'/fetch/'.Str::kebab($methodName), [
+                Route::post($segment.'/fetch/'.Str::kebab($methodName).'{single?}', [
                     'uses'      => $controller.'@fetch'.$methodName,
                     'operation' => 'FetchOperation',
                 ]);
@@ -68,6 +68,15 @@ trait FetchOperation
             return ($config['paginate'] !== false) ?
             $config['query']->paginate($config['paginate']) :
             $config['query']->get();
+        }
+
+        // FetchOperation has an optional parameter in url that when present means we want to fetch a single entity.
+        $fetchUriCount = count(explode('/',request()->route()->uri())) - 1;
+        $currentUriCount = count(explode('/',request()->path()));
+
+        //in this case last parameter in url was specified so we will trigger the return of single entity
+        if ($currentUriCount > $fetchUriCount) {
+            return $model_instance->where($model_instance->getKeyName(), $search_string)->first();
         }
 
         // we store the original model so we can use it to check column types
