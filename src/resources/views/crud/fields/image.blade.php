@@ -50,7 +50,6 @@
     $max_image_size_in_bytes = $field['max_file_size'] ?? (int)maximumServerUploadSizeInBytes();
 
     $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
-    $field['wrapper']['data-preview'] = '#'.$field['name'];
     $field['wrapper']['data-aspectRatio'] = $field['aspect_ratio'] ?? 0;
     $field['wrapper']['data-crop'] = $field['crop'] ?? false;
 @endphp
@@ -68,7 +67,7 @@
         @if(isset($field['crop']) && $field['crop'])
         <div class="col-sm-3" data-handle="previewArea">
             <div class="docs-preview clearfix">
-                <div id="{{ $field['name'] }}" class="img-preview preview-lg">
+                <div class="img-preview preview-lg">
                     <img src="" style="display: block; min-width: 0px !important; min-height: 0px !important; max-width: none !important; max-height: none !important; margin-left: -32.875px; margin-top: -18.4922px; transform: none;">
                 </div>
             </div>
@@ -178,7 +177,7 @@
                         checkOrientation: false,
                         autoCropArea: 1,
                         responsive: true,
-                        preview : element.attr('data-preview'),
+                        preview : element.find('.img-preview'),
                         aspectRatio : element.attr('data-aspectRatio')
                     };
                     var crop = element.attr('data-crop');
