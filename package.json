@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.1",
-        "css-loader": "^3.5.0",
+        "css-loader": "^3.5.3",
         "laravel-mix": "^4.1.4",
         "lodash": "^4.17.13",
         "pace": "0.0.4",
