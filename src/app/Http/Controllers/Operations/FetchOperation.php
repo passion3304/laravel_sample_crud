@@ -22,7 +22,7 @@ trait FetchOperation
 
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
-                Route::post($segment.'/fetch/'.Str::kebab($methodName).'/{single?}', [
+                Route::post($segment.'/fetch/'.Str::kebab($methodName), [
                     'uses'      => $controller.'@fetch'.$methodName,
                     'operation' => 'FetchOperation',
                 ]);
@@ -60,6 +60,16 @@ trait FetchOperation
         $config['searchable_attributes'] = $config['searchable_attributes'] ?? $model_instance->identifiableAttribute();
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : $model_instance; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
+        // FetchOperation is aware of an optional parameter 'keys' that will fetch you the entity/entities that match the provided keys
+        if(request()->has('keys')) {
+            $decoded_keys = json_decode(request()->get('keys'));
+            if(is_array($decoded_keys)) {
+                return $model_instance->whereIn($model_instance->getKeyName(), $decoded_keys)->get();
+            }else{
+                return $model_instance->where($model_instance->getKeyName(), $decoded_keys)->first();
+            }
+        }
+
         // FetchOperation sends an empty query to retrieve the default entry for select when field is not nullable.
         // Also sends an empty query in case we want to load all entities to emulate non-ajax fields
         // when using InlineCreate.
@@ -68,15 +78,6 @@ trait FetchOperation
             return ($config['paginate'] !== false) ?
             $config['query']->paginate($config['paginate']) :
             $config['query']->get();
-        }
-
-        // FetchOperation has an optional parameter in url that when present means we want to fetch a single entity.
-        $fetchUriCount = count(explode('/', request()->route()->uri())) - 1;
-        $currentUriCount = count(explode('/', request()->path()));
-
-        //in this case last parameter in url was specified so we will trigger the return of single entity
-        if ($currentUriCount > $fetchUriCount) {
-            return $model_instance->where($model_instance->getKeyName(), $search_string)->first();
         }
 
         // we store the original model so we can use it to check column types
