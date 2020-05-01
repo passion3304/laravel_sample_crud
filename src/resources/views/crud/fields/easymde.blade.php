@@ -27,7 +27,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        <link rel="stylesheet" href="{{ asset('https://unpkg.com/easymde/dist/easymde.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('packages/easymde/dist/easymde.min.css') }}">
         <style type="text/css">
             .editor-toolbar {
                 border: 1px solid #ddd;
@@ -38,7 +38,7 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <script src="{{ asset('https://unpkg.com/easymde/dist/easymde.min.js') }}"></script>
+        <script src="{{ asset('packages/easymde/dist/easymde.min.js') }}"></script>
         <script>
             function bpFieldInitEasyMdeElement(element) {
                 if (element.attr('data-initialized') == 'true') {
