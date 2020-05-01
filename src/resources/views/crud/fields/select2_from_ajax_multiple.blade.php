@@ -79,6 +79,27 @@
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
 <script>
+    var select2AjaxMultipleFetchSelectedEntries = function (element) {
+        var $fetchUrl = element.attr('data-data-source');
+        var $value = element.attr('data-selected-options');
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: $fetchUrl,
+                data: {
+                    'keys': $value
+                },
+                type: 'POST',
+                success: function (result) {
+
+                    resolve(result);
+                },
+                error: function (result) {
+                    reject(result);
+                }
+            });
+        });
+    };
+
     function bpFieldInitSelect2FromAjaxMultipleElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
@@ -91,9 +112,12 @@
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
+        var $selectedOptions = element.attr('data-selected-options');
 
+        console.log('running');
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
+            console.log('initing');
             $(element).select2({
                 theme: 'bootstrap',
                 multiple: true,
@@ -136,6 +160,22 @@
                     cache: true
                 },
             });
+        }
+
+        // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
+        // we have stored from the field and append those options in the select.
+        if (typeof $selectedOptions !== typeof undefined && $selectedOptions !== false) {
+            /*select2AjaxMultipleFetchSelectedEntries(element).then(result => {
+                for (item in Object.entries(result)) {
+                console.log(item);
+                    $itemText = item[$fieldAttribute];
+                    $itemValue = item[$connectedEntityKeyName];
+                }
+
+                $(element).append('<option value="'+$key+'">'+$value+'</option>');
+                $(element).val($key);
+                $(element).trigger('change');
+            });*/
         }
 
         // if any dependencies have been declared

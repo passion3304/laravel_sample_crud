@@ -162,14 +162,22 @@
             });
 
             if (values != null) {
-                new_field_group.find('input, select, textarea').each(function () {
+                new_field_group.find('input, textarea').each(function () {
                     if ($(this).data('repeatable-input-name')) {
-                        $(this).attr('data-value', values[$(this).data('repeatable-input-name')]);
                         $(this).val(values[$(this).data('repeatable-input-name')]);
                     }
                 });
+                new_field_group.find('select').each(function () {
+                    if ($(this).data('repeatable-input-name')) {
+                        if ($(this).children('option').length == 0) {
+                            $(this).attr('data-selected-options', values[$(this).data('repeatable-input-name')]);
+                        }else{
+                            $(this).val(values[$(this).data('repeatable-input-name')]);
+                        }
+                    }
+                });
             }
-
+            console.log(container);
             container.append(new_field_group);
             initializeFieldsWithJavascript(container);
         }
