@@ -61,11 +61,11 @@ trait FetchOperation
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : $model_instance; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
         // FetchOperation is aware of an optional parameter 'keys' that will fetch you the entity/entities that match the provided keys
-        if(request()->has('keys')) {
+        if (request()->has('keys')) {
             $decoded_keys = json_decode(request()->get('keys'));
-            if(is_array($decoded_keys)) {
+            if (is_array($decoded_keys)) {
                 return $model_instance->whereIn($model_instance->getKeyName(), $decoded_keys)->get();
-            }else{
+            } else {
                 return $model_instance->where($model_instance->getKeyName(), $decoded_keys)->first();
             }
         }
