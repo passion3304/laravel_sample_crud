@@ -62,8 +62,6 @@
                 var checkboxes = element.find('input[type=checkbox]');
                 var container = element.find('.row');
 
-                console.log(selected_options);
-
                 // set the default checked/unchecked states on checklist options
                 checkboxes.each(function(key, option) {
                   var id = parseInt($(this).val());
