@@ -162,13 +162,18 @@
             });
 
             if (values != null) {
+                // set the value on inputs & textareas, based on the JSON in the hidden input
                 new_field_group.find('input, textarea').each(function () {
                     if ($(this).data('repeatable-input-name')) {
                         $(this).val(values[$(this).data('repeatable-input-name')]);
                     }
                 });
+                
+                // set the value on selects, based on the JSON in the hidden input
                 new_field_group.find('select').each(function () {
                     if ($(this).data('repeatable-input-name')) {
+                        // we can't select options that aren't already inside the select,
+                        // so in that case, add them as a data-attribute, so that the select2 fields can add them in JS
                         if ($(this).children('option').length == 0) {
                             $(this).attr('data-selected-options', values[$(this).data('repeatable-input-name')]);
                         }else{
@@ -177,7 +182,7 @@
                     }
                 });
             }
-            console.log(container);
+            
             container.append(new_field_group);
             initializeFieldsWithJavascript(container);
         }
