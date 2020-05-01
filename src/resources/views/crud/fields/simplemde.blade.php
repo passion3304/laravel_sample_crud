@@ -43,21 +43,37 @@
         <script src="{{ asset('packages/simplemde/dist/simplemde.min.js') }}"></script>
         <script>
             function bpFieldInitSimpleMdeElement(element) {
-                element.attr('id', 'simplemde_'+Math.ceil(Math.random() * 1000000));
+                if (element.attr('data-initialized') == 'true') {
+                    return;
+                }
+
+                if (typeof element.attr('id') == 'undefined') {
+                    element.attr('id', 'SimpleMDE_'+Math.ceil(Math.random() * 1000000));
+                }
 
                 var elementId = element.attr('id');
                 var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
                 var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
                 var configurationObject = {
-                    element: $('#'+elementId)[0],
+                    element: document.getElementById(elementId),
                 };
 
                 configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
+
+                if (!document.getElementById(elementId)) {
+                    return;
+                }
 
                 var smdeObject = new SimpleMDE(configurationObject);
 
                 smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
                 smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
+
+                // update the original textarea on keypress
+                smdeObject.codemirror.on("change", function(){
+                    element.val(smdeObject.value());
+                });
+
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                     setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
                 });
