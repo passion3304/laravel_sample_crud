@@ -45,16 +45,12 @@
             function bpFieldInitSimpleMdeElement(element) {
                 element.attr('id', 'simplemde_'+Math.ceil(Math.random() * 1000000));
 
-                console.log(element.attr('id'));
-
                 var elementId = element.attr('id');
                 var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
                 var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
                 var configurationObject = {
                     element: $('#'+elementId)[0],
                 };
-
-                console.log($('#'+elementId));
 
                 configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
 
