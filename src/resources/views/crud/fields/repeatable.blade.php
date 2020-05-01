@@ -41,7 +41,7 @@
   </div>
   <button type="button" class="btn btn-outline-primary btn-sm ml-1 add-repeatable-element-button">+ New Item</button>
 
- @include('crud::fields.inc.wrapper_end')
+@include('crud::fields.inc.wrapper_end')
 
 @if ($crud->fieldTypeNotLoaded($field))
   @php
@@ -59,7 +59,7 @@
           background-color: #f0f3f94f;
         }
         .container-repeatable-elements .delete-element {
-          z-index: 99;
+          z-index: 2;
           position: absolute!important;
           margin-left: -24px;
           margin-top: 0px;
