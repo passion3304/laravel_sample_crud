@@ -16,6 +16,11 @@
       @include('crud::fields.inc.attributes')
   >
 
+  {{-- HINT --}}
+  @if (isset($field['hint']))
+      <p class="help-block text-muted text-sm">{!! $field['hint'] !!}</p>
+  @endif
+
   <div class="container-repeatable-elements">
     <div class="col-md-12 well repeatable-element row m-1 p-2">
       @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
@@ -36,11 +41,7 @@
   </div>
   <button type="button" class="btn btn-outline-primary btn-sm ml-1 add-repeatable-element-button">+ New Item</button>
 
-  {{-- HINT --}}
-  @if (isset($field['hint']))
-      <p class="help-block">{!! $field['hint'] !!}</p>
-  @endif
- @include('crud::fields.inc.wrapper_end')
+@include('crud::fields.inc.wrapper_end')
 
 @if ($crud->fieldTypeNotLoaded($field))
   @php
@@ -58,7 +59,7 @@
           background-color: #f0f3f94f;
         }
         .container-repeatable-elements .delete-element {
-          z-index: 99;
+          z-index: 2;
           position: absolute!important;
           margin-left: -24px;
           margin-top: 0px;

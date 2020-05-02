@@ -60,6 +60,16 @@ trait FetchOperation
         $config['searchable_attributes'] = $config['searchable_attributes'] ?? $model_instance->identifiableAttribute();
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : $model_instance; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
+        // FetchOperation is aware of an optional parameter 'keys' that will fetch you the entity/entities that match the provided keys
+        if (request()->has('keys')) {
+            $decoded_keys = json_decode(request()->get('keys'));
+            if (is_array($decoded_keys)) {
+                return $model_instance->whereIn($model_instance->getKeyName(), $decoded_keys)->get();
+            } else {
+                return $model_instance->where($model_instance->getKeyName(), $decoded_keys)->first();
+            }
+        }
+
         // FetchOperation sends an empty query to retrieve the default entry for select when field is not nullable.
         // Also sends an empty query in case we want to load all entities to emulate non-ajax fields
         // when using InlineCreate.
@@ -70,11 +80,15 @@ trait FetchOperation
             $config['query']->get();
         }
 
-        $textColumnTypes = ['string', 'json_string', 'text'];
+        // we store the original model so we can use it to check column types
+        // when multiple searchable columns are provided.
+        $originalModel = $config['query'];
+
+        $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array'];
         // for each searchable attribute, add a WHERE clause
         foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
-            $columnType = $config['query']->getColumnType($searchColumn);
+            $columnType = $originalModel->getColumnType($searchColumn);
 
             if (in_array($columnType, $textColumnTypes)) {
                 $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$search_string.'%');

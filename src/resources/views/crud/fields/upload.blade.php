@@ -1,10 +1,10 @@
 @php
-   if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function'])){
-        $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitUploadElement';
+   if (!isset($field['wrapper']) || !isset($field['wrapper']['data-init-function'])){
+        $field['wrapper']['data-init-function'] = 'bpFieldInitUploadElement';
     }
 
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-field-name'])) {
-        $field['wrapperAttributes']['data-field-name'] = $field['name'];
+    if (!isset($field['wrapper']) || !isset($field['wrapper']['data-field-name'])) {
+        $field['wrapper']['data-field-name'] = $field['name'];
     }
 @endphp
 

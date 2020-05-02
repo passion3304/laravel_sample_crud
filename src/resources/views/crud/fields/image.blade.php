@@ -1,22 +1,7 @@
 @php
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function'])){
-        $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitCropperImageElement';
-    }
-
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-field-name'])) {
-        $field['wrapperAttributes']['data-field-name'] = $field['name'];
-    }
-
-
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['class'])) {
-        $field['wrapperAttributes']['class'] = "form-group col-sm-12 cropperImage";
-    } elseif (isset($field['wrapperAttributes']) && isset($field['wrapperAttributes']['class'])) {
-        $field['wrapperAttributes']['class'] .= " cropperImage";
-    }
-
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
     $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
-    $image_url = $value
+    $value = $value
         ? preg_match('/^data\:image\//', $value)
             ? $value
             : (isset($field['disk'])
@@ -50,9 +35,12 @@
     $max_image_size_in_bytes = $field['max_file_size'] ?? (int)maximumServerUploadSizeInBytes();
 
     $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
-    $field['wrapper']['data-preview'] = '#'.$field['name'];
+    $field['wrapper']['class'] = $field['wrapper']['class'] ?? "form-group col-sm-12";
+    $field['wrapper']['class'] = $field['wrapper']['class'].' cropperImage';
     $field['wrapper']['data-aspectRatio'] = $field['aspect_ratio'] ?? 0;
     $field['wrapper']['data-crop'] = $field['crop'] ?? false;
+    $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
+    $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitCropperImageElement';
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -63,12 +51,12 @@
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">
         <div class="col-sm-6" data-handle="previewArea" style="margin-bottom: 20px;">
-            <img data-handle="mainImage" src="{{ $image_url }}">
+            <img data-handle="mainImage" src="">
         </div>
         @if(isset($field['crop']) && $field['crop'])
         <div class="col-sm-3" data-handle="previewArea">
             <div class="docs-preview clearfix">
-                <div id="{{ $field['name'] }}" class="img-preview preview-lg">
+                <div class="img-preview preview-lg">
                     <img src="" style="display: block; min-width: 0px !important; min-height: 0px !important; max-width: none !important; max-height: none !important; margin-left: -32.875px; margin-top: -18.4922px; transform: none;">
                 </div>
             </div>
@@ -78,7 +66,7 @@
     <div class="btn-group">
         <div class="btn btn-light btn-sm btn-file">
             {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes', ['default_class' => 'hide'])>
-            <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}">
+            <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}" value="{{ $value }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
         <button class="btn btn-light btn-sm" data-handle="rotateLeft" type="button" style="display: none;"><i class="la la-rotate-left"></i></button>
@@ -178,18 +166,18 @@
                         checkOrientation: false,
                         autoCropArea: 1,
                         responsive: true,
-                        preview : element.attr('data-preview'),
+                        preview : element.find('.img-preview'),
                         aspectRatio : element.attr('data-aspectRatio')
                     };
                     var crop = element.attr('data-crop');
 
                     // Hide 'Remove' button if there is no image saved
-                    if (!$mainImage.attr('src')){
+                    if (!$hiddenImage.val()){
                         $previews.hide();
                         $remove.hide();
                     }
-                    // Initialise hidden form input in case we submit with no change
-                    $hiddenImage.val($mainImage.attr('src'));
+                    // Make the main image show the image in the hidden input
+                    $mainImage.attr('src', $hiddenImage.val());
 
 
                     // Only initialize cropper plugin if crop is set to true
@@ -241,10 +229,11 @@
                                 if(crop){
                                     $mainImage.cropper(options).cropper("reset", true).cropper("replace", this.result);
                                     // Override form submit to copy canvas to hidden input before submitting
-                                    $('form').submit(function() {
+                                    // update the hidden input after selecting a new item or cropping
+                                    $mainImage.on('ready cropstart cropend', function() {
                                         var imageURL = $mainImage.cropper('getCroppedCanvas').toDataURL(file.type);
                                         $hiddenImage.val(imageURL);
-                                        return true; // return false to cancel form action
+                                        return true;
                                     });
                                     $rotateLeft.click(function() {
                                         $mainImage.cropper("rotate", 90);
