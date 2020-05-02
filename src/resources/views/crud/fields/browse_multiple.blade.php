@@ -112,7 +112,7 @@ if($sortable){
                 // show existing items - display visible inputs for each stored path  
                 if ($input.val() != '' && $input.val() != null && $multiple === 'true') {
                     $paths = JSON.parse($input.val());
-                    if ($paths.length) {
+                    if (Array.isArray($paths) && $paths.length) {
                         // remove any already visible inputs
                         $list.find('.input-group').remove();
 
