@@ -163,27 +163,22 @@
             });
 
             if (values != null) {
-                // set the value on inputs & textareas, based on the JSON in the hidden input
-                new_field_group.find('input, textarea').each(function () {
+                // set the value on field inputs, based on the JSON in the hidden input
+                new_field_group.find('input, select, textarea').each(function () {
                     if ($(this).data('repeatable-input-name')) {
                         $(this).val(values[$(this).data('repeatable-input-name')]);
-                    }
-                });
-                
-                // set the value on selects, based on the JSON in the hidden input
-                new_field_group.find('select').each(function () {
-                    if ($(this).data('repeatable-input-name')) {
-                        // we can't select options that aren't already inside the select,
-                        // so in that case, add them as a data-attribute, so that the select2 fields can add them in JS
-                        if ($(this).children('option').length == 0) {
-                            $(this).attr('data-selected-options', values[$(this).data('repeatable-input-name')]);
-                        }else{
-                            $(this).val(values[$(this).data('repeatable-input-name')]);
+
+                        // if it's a Select input with no options, also attach the values as a data attribute;
+                        // this is done because the above val() call will do nothing if the options aren't there
+                        // so the fields themselves have to treat this use case, and look at data-selected-options
+                        // and create the options based on those values
+                        if ($(this).is('select') && $(this).children('option').length == 0) {
+                          $(this).attr('data-selected-options', values[$(this).data('repeatable-input-name')]);
                         }
                     }
                 });
             }
-            
+
             container.append(new_field_group);
             initializeFieldsWithJavascript(container);
         }
