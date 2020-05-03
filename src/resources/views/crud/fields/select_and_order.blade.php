@@ -10,7 +10,7 @@
          data-init-function="bpFieldInitSelectAndOrderElement"
          data-field-name="{{ $field['name'] }}">
         <div class="col-md-12">
-        <ul id="{{ $field['name'] }}_selected" data-identifier="selected" class="{{ $field['name'] }}_connectedSortable select_and_order_selected float-left">
+        <ul data-identifier="selected" class="{{ $field['name'] }}_connectedSortable select_and_order_selected float-left">
             @if(old($field["name"]))
                 @if(is_array(old($field["name"])))
                     @foreach (old($field["name"]) as $key)
@@ -27,7 +27,7 @@
                 @endforeach
             @endif
         </ul>
-        <ul id="{{ $field['name'] }}_all" data-identifier="all" class="{{ $field['name'] }}_connectedSortable select_and_order_all float-right">
+        <ul data-identifier="all" class="{{ $field['name'] }}_connectedSortable select_and_order_all float-right">
             @if(old($field["name"]))
                 @foreach ($field['options'] as $key => $value)
                     @if(!is_array(old($field["name"])) || !in_array($key, old($field["name"])))
@@ -44,10 +44,12 @@
         </ul>
 
         {{-- The results will be stored here --}}
-        <div id="{{ $field['name'] }}_results" data-identifier="results">
-            @foreach ($values as $key)
-                <input type="hidden" name="{{ $field['name'] }}[]" value="{{ $key }}">
-            @endforeach
+        <div data-identifier="results">
+            <select class="d-none" name="{{ $field['name'] }}[]" multiple>
+                @foreach ($values as $key)
+                    <option value="{{ $key }}" selected></option>
+                @endforeach
+            </select>
         </div>
     </div>
 
@@ -133,6 +135,7 @@
         var $allId = 'sao_all_'+Math.ceil(Math.random() * 1000000);
         var $selectedId = 'sao_selected_'+Math.ceil(Math.random() * 1000000);
         var $resultsId = 'sao_results_'+Math.ceil(Math.random() * 1000000);
+        var hiddenSelect = element.find('[data-identifier=results] select');
 
         element.find('[data-identifier=selected]').attr('id', $selectedId);
         element.find('[data-identifier=all]').attr('id', $allId);
@@ -143,20 +146,20 @@
             update: function() {
                 var updatedlist = $(this).attr('id');
                 if((updatedlist == $selectedId)) {
-                    $("#"+$resultsId).html("");
+                    hiddenSelect.html("");
                     if($("#"+$selectedId).find('li').length==0) {
-                        var input = document.createElement("input");
-                        input.setAttribute('name', $fieldName);
-                        input.setAttribute('value',null);
-                        input.setAttribute('type','hidden');
-                        $("#"+$resultsId).append(input);
+                        var option = document.createElement("option");
+                        // option.setAttribute('name', $fieldName);
+                        option.setAttribute('value',null);
+                        option.setAttribute('selected','selected');
+                        hiddenSelect.append(option);
                     } else {
                         $("#"+$selectedId).find('li').each(function(val,obj) {
-                            var input = document.createElement("input");
-                            input.setAttribute('name', $fieldName+"[]");
-                            input.setAttribute('value',obj.getAttribute('value'));
-                            input.setAttribute('type','hidden');
-                            $("#"+$resultsId).append(input);
+                            var option = document.createElement("option");
+                            // option.setAttribute('name', $fieldName+"[]");
+                            option.setAttribute('value',obj.getAttribute('value'));
+                            option.setAttribute('selected','selected');
+                            hiddenSelect.append(option);
                         });
                     }
                 }
