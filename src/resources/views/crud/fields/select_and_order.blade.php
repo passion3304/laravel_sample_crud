@@ -128,14 +128,14 @@
 <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
 <script>
     function bpFieldInitSelectAndOrderElement(element) {
-        // var $selected = element.find('[data-identifier=selected]');
-        // var $results = element.find('[data-identifier=results]');
-        // var $all = element.find('[data-identifier=all]');
+        var $all = element.find('[data-identifier=all]');
+        var $selected = element.find('[data-identifier=selected]');
+        var $results = element.find('[data-identifier=results]');
+        var $hiddenSelect = element.find('[data-identifier=results] select');
         var $fieldName = element.attr('data-field-name');
         var $allId = 'sao_all_'+Math.ceil(Math.random() * 1000000);
         var $selectedId = 'sao_selected_'+Math.ceil(Math.random() * 1000000);
         var $resultsId = 'sao_results_'+Math.ceil(Math.random() * 1000000);
-        var hiddenSelect = element.find('[data-identifier=results] select');
 
         element.find('[data-identifier=selected]').attr('id', $selectedId);
         element.find('[data-identifier=all]').attr('id', $allId);
@@ -145,23 +145,24 @@
             connectWith: "."+$fieldName+"_connectedSortable",
             update: function() {
                 var updatedlist = $(this).attr('id');
+                
                 if((updatedlist == $selectedId)) {
-                    hiddenSelect.html("");
-                    if($("#"+$selectedId).find('li').length==0) {
-                        var option = document.createElement("option");
-                        // option.setAttribute('name', $fieldName);
-                        option.setAttribute('value',null);
-                        option.setAttribute('selected','selected');
-                        hiddenSelect.append(option);
-                    } else {
-                        $("#"+$selectedId).find('li').each(function(val,obj) {
-                            var option = document.createElement("option");
-                            // option.setAttribute('name', $fieldName+"[]");
-                            option.setAttribute('value',obj.getAttribute('value'));
-                            option.setAttribute('selected','selected');
-                            hiddenSelect.append(option);
-                        });
+                    // clear all options inside the select
+                    $hiddenSelect.html("");
+
+                    // if there are no items dragged inside the selected area, abort
+                    if($selected.find('li').length=0) {
+                        return;
                     }
+
+                    // for each item dragged inside the selected area
+                    // add a new selected option inside the hidden select
+                    $selected.find('li').each(function(val,obj) {
+                        var option = document.createElement("option");
+                        option.setAttribute('value',obj.getAttribute('value'));
+                        option.setAttribute('selected','selected');
+                        $hiddenSelect.append(option);
+                    });
                 }
             }
         }).disableSelection();
