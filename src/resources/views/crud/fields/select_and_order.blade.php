@@ -135,6 +135,10 @@
 
                 // populate selected options in the left-hand area (aka $dragDestination)
                 if ($alreadySelectedOptions.length) {
+                    if ($alreadySelectedOptions.length == 1 && ($alreadySelectedOptions[0] =='' || $alreadySelectedOptions == ' ' ) ) {
+                        return;
+                    }
+
                     $dragDestination.html("");
                     $hiddenSelect.html("");
 
