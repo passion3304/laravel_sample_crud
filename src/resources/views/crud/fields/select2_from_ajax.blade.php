@@ -93,26 +93,7 @@
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
 <script>
-    var select2AjaxFetchSelectedEntry = function (element) {
-        var $fetchUrl = element.attr('data-data-source');
-        var $value = element.attr('data-selected-options');
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: $fetchUrl,
-                data: {
-                    'keys': $value
-                },
-                type: 'POST',
-                success: function (result) {
 
-                    resolve(result);
-                },
-                error: function (result) {
-                    reject(result);
-                }
-            });
-        });
-    };
 
     function bpFieldInitSelect2FromAjaxElement(element) {
         var form = element.closest('form');
@@ -127,6 +108,25 @@
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
         var $selectedOptions = element.attr('data-selected-options');
+
+        var select2AjaxFetchSelectedEntry = function (element) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: $dataSource,
+                data: {
+                    'related_keys': $selectedOptions
+                },
+                type: 'POST',
+                success: function (result) {
+
+                    resolve(result);
+                },
+                error: function (result) {
+                    reject(result);
+                }
+            });
+        });
+    };
 
         // do not initialise select2s that have already been initialised
         if ($(element).hasClass("select2-hidden-accessible"))
@@ -184,12 +184,20 @@
         // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
         // we have stored from the field and append those options in the select.
         if (typeof $selectedOptions !== typeof undefined && $selectedOptions !== false) {
+            var optionsForSelect = [];
             select2AjaxFetchSelectedEntry(element).then(result => {
-                $key = result[$connectedEntityKeyName];
-                $value = result[$fieldAttribute];
+                result.forEach(function(item) {
+                    $itemText = item[$fieldAttribute];
+                    $itemValue = item[$connectedEntityKeyName];
+                    //add current key to be selected later.
+                    optionsForSelect.push($itemValue);
 
-                $(element).append('<option value="'+$key+'">'+$value+'</option>');
-                $(element).val($key);
+                    //create the option in the select
+                    $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
+                });
+
+                // set the option keys as selected.
+                $(element).val(optionsForSelect);
                 $(element).trigger('change');
             });
         }
