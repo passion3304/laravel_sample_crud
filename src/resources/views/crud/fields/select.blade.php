@@ -3,6 +3,11 @@
 	$current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
     $entity_model = $crud->getRelationModel($field['entity'],  - 1);
 
+    //if it's part of a relationship here we have the full related model, we want the key.
+    if (is_object($current_value) && is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
+        $current_value = $current_value->getKey();
+    }
+
     if (!isset($field['options'])) {
         $options = $field['model']::all();
     } else {

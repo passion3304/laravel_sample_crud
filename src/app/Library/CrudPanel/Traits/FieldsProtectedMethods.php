@@ -18,12 +18,96 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasNecessaryAttributes($field)
     {
         $field = $this->makeSureFieldHasName($field);
-        $field = $this->makeSureFieldHasModel($field);
-        $field = $this->makeSureFieldHasLabel($field);
         $field = $this->makeSureFieldHasEntity($field);
-        $field = $this->makeSureFieldHasAttribute($field);
-        $field = $this->makeSureFieldHasRelationshipData($field);
+        $field = $this->makeSureFieldHasLabel($field);
+
+        if (isset($field['entity'])) {
+            $field = $this->makeSureFieldHasRelationType($field);
+            $field = $this->makeSureFieldHasModel($field);
+            $field = $this->makeSureFieldNameMatchesRelation($field);
+            $field = $this->makeSureFieldHasAttribute($field);
+            $field = $this->makeSureFieldHasMultiple($field);
+            $field = $this->makeSureFieldHasPivot($field);
+        }
+
         $field = $this->makeSureFieldHasType($field);
+        $field = $this->overwriteFieldNameFromDotNotationToArray($field);
+
+        return $field;
+    }
+
+    /**
+     * If field has entity we want to get the relation type from it.
+     *
+     * @param array $field
+     * @return array
+     */
+    public function makeSureFieldHasRelationType($field)
+    {
+        $field['relation_type'] = $field['relation_type'] ?? $this->inferRelationTypeFromRelationship($field);
+
+        return $field;
+    }
+
+    /**
+     * If field has entity we want to make sure it also has a model for that relation.
+     *
+     * @param array $field
+     * @return array
+     */
+    public function makeSureFieldHasModel($field)
+    {
+        $field['model'] = $field['model'] ?? $this->inferFieldModelFromRelationship($field);
+
+        return $field;
+    }
+
+    /**
+     * Based on relation type we can guess if pivot is set.
+     *
+     * @param array $field
+     * @return array
+     */
+    public function makeSureFieldHasPivot($field)
+    {
+        $field['pivot'] = $field['pivot'] ?? $this->guessIfFieldHasPivotFromRelationType($field['relation_type']);
+
+        return $field;
+    }
+
+    /**
+     * Based on relation type we can try to guess if it is a multiple field.
+     *
+     * @param array $field
+     * @return array
+     */
+    public function makeSureFieldHasMultiple($field)
+    {
+        if (isset($field['relation_type'])) {
+            $field['multiple'] = $field['multiple'] ?? $this->guessIfFieldHasMultipleFromRelationType($field['relation_type']);
+        }
+
+        return $field;
+    }
+
+    /**
+     * In case field name is dot notation we want to convert it to a valid HTML array field name for validation purposes.
+     *
+     * @param array $field
+     * @return array
+     */
+    public function overwriteFieldNameFromDotNotationToArray($field)
+    {
+        if (! is_array($field['name']) && strpos($field['name'], '.') !== false) {
+            $entity_array = explode('.', $field['name']);
+            $name_string = '';
+
+            foreach ($entity_array as $key => $array_entity) {
+                $name_string .= ($key == 0) ? $array_entity : '['.$array_entity.']';
+            }
+
+            $field['name'] = $name_string;
+        }
 
         return $field;
     }
@@ -67,6 +151,13 @@ trait FieldsProtectedMethods
             return $field;
         }
 
+        //if the name is dot notation we are sure it's a relationship
+        if (strpos($field['name'], '.') !== false) {
+            $field['entity'] = $field['name'];
+
+            return $field;
+        }
+
         // if there's a method on the model with this name
         if (method_exists($this->model, $field['name'])) {
             $field['entity'] = $field['name'];
@@ -83,15 +174,8 @@ trait FieldsProtectedMethods
                 $field['entity'] = $possibleMethodName;
 
                 return $field;
-            } // TODO: also check if that method is a relationship (returns Relation)
+            }
         }
-
-        // if there's a column in the db for this field name
-        // most likely it doesn't need 'entity', UNLESS it's a foreign key
-        // TODO: make this work
-        // if ($this->checkIfFieldNameBelongsToAnyRelation($field['name'])) {
-        //     $field['entity'] = RELATIONSHIP_METHOD;
-        // }
 
         return $field;
     }
@@ -103,10 +187,10 @@ trait FieldsProtectedMethods
             return $field;
         }
 
-        $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field['entity']);
+        $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field);
 
-        if ($extraFieldAttributes !== false) {
-            $field = array_merge($extraFieldAttributes, $field);
+        if (! empty($extraFieldAttributes)) {
+            $field = array_merge($field, $extraFieldAttributes);
         } else {
             abort(500, 'Unable to process relationship data: '.$field['name']);
         }
@@ -114,12 +198,20 @@ trait FieldsProtectedMethods
         return $field;
     }
 
-    protected function makeSureFieldHasModel($field)
+    protected function makeSureFieldNameMatchesRelation($field)
     {
-        // if this is a relation type field and no corresponding model was specified,
-        // get it from the relation method defined in the main model
-        if (isset($field['entity']) && ! isset($field['model'])) {
-            $field['model'] = $this->getRelationModel($field['entity']);
+        switch ($field['relation_type']) {
+            case 'BelongsTo':
+                if (count(explode('.', $field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
+                    $field['name'] = implode('.', array_slice(explode('.', $field['entity']), 0, -1));
+                    $relation = $this->getRelationInstance($field);
+                    if (! empty($field['name'])) {
+                        $field['name'] .= '.';
+                    }
+                    $field['name'] .= $relation->getForeignKeyName();
+                }
+
+        break;
         }
 
         return $field;
@@ -164,7 +256,7 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasType($field)
     {
         if (! isset($field['type'])) {
-            $field['type'] = $this->inferFieldTypeFromDbColumnType($field['name']);
+            $field['type'] = isset($field['relation_type']) ? $this->inferFieldTypeFromFieldRelation($field) : $this->inferFieldTypeFromDbColumnType($field['name']);
         }
 
         return $field;

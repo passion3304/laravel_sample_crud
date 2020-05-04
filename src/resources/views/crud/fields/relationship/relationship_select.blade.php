@@ -3,7 +3,6 @@
     //in case entity is superNews we want the url friendly super-news
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
-
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
@@ -20,6 +19,7 @@
     // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
+
     if ($current_value != false) {
         switch (gettype($current_value)) {
             case 'array':
@@ -29,10 +29,15 @@
                 break;
 
             case 'object':
+                if (is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
+                    $current_value = [$current_value->{$connected_entity_key_name} => $current_value->{$field['attribute']}];
+                }else{
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
-                break;
+                    }
+
+            break;
 
             default:
                 $current_value = $connected_entity
@@ -42,7 +47,10 @@
         }
     }
 
+
+
     $field['value'] = json_encode($current_value);
+
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -62,6 +70,7 @@
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-options-for-select="{{json_encode($field['options'])}}"
+        data-app-current-lang="{{ app()->getLocale() }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -162,21 +171,6 @@
 
         }
 
-        //if there is no current value and the field allows null, we add the placeholder first.
-       /* if($allowsNull && $item === false) {
-            var $option = new Option('', '', true, true);
-            $(element).prepend($option);
-        //if element does not allow null we select the first available option
-        }else if(!$allowsNull && $item === false) {
-
-            //if there is any option we select the first, otherwise we place the placeholder.
-            if(Object.keys($optionsForSelect).length > 0) {
-                $(element).val(Object.keys($optionsForSelect)[0]);
-            }else{
-                var $option = new Option('', '', true, true);
-                $(element).prepend($option);
-            }
-        }*/
         if (!$allows_null && $item === false) {
             if(Object.keys($optionsForSelect).length > 0) {
                 $(element).val(Object.keys($optionsForSelect)[0]);
@@ -209,6 +203,20 @@
             }
         }
     }
+
+    if (typeof processItemText !== 'function') {
+    function processItemText(item, $fieldAttribute, $appLang) {
+        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
+                        if(item[$fieldAttribute][$appLang] != 'undefined') {
+                            return item[$fieldAttribute][$appLang];
+                        }else{
+                            return item[$fieldAttribute][0];
+                        }
+                    }else{
+                        return item[$fieldAttribute];
+                    }
+    }
+}
 </script>
 @endpush
 @endif

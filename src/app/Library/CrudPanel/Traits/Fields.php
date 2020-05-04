@@ -390,7 +390,10 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        return Arr::flatten(Arr::pluck($this->getCurrentFields(), 'name'));
+        //we need to parse field names in relation fields so they get posted/stored correctly
+        $fields = $this->parseRelationFieldNamesFromHtml($this->getCurrentFields());
+
+        return Arr::flatten(Arr::pluck($fields, 'name'));
     }
 
     /**
@@ -400,7 +403,6 @@ trait Fields
     public function getStrippedSaveRequest()
     {
         $setting = $this->getOperationSetting('saveAllInputsExcept');
-
         if ($setting == false || $setting == null) {
             return $this->getRequest()->only($this->getAllFieldNames());
         }

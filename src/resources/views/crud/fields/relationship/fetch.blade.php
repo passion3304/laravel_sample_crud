@@ -1,7 +1,8 @@
 @php
 
     //in case entity is superNews we want the url friendly super-news
-    $routeEntity = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $field['entity']));
+    $entityWithoutAttribute = $crud->getOnlyRelationEntity($field);
+    $routeEntity = Str::kebab($entityWithoutAttribute);
 
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
@@ -12,7 +13,7 @@
 
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
-    $field['attribute'] = $field['attribute'] ?? $connected_entity->getIdentifiableName();
+    $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['placeholder'] = $field['placeholder'] ?? $field['multiple'] ? 'Select entities' : 'Select an entity';
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
@@ -29,10 +30,14 @@
                 break;
 
             case 'object':
-                if(! $current_value->isEmpty())  {
+            if (is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
+                    $current_value = [$current_value->{$connected_entity_key_name} => $current_value->{$field['attribute']}];
+                }else{
+                    if(! $current_value->isEmpty())  {
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
+                    }
                 }
                 break;
 
@@ -60,11 +65,12 @@
         data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
         data-method="{{ $field['method'] ?? 'POST' }}"
         data-data-source="{{ $field['data_source']}}"
-        data-field-attribute="{{ $field['attribute'] ?? $field['model']::getIdentifiableName() }}"
+        data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
+        data-app-current-lang="{{ app()->getLocale() }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -122,6 +128,7 @@
             var $relatedAttribute = element.attr('data-field-attribute');
             var $relatedKeyName = element.attr('data-connected-entity-key-name');
             var $return = {};
+            var $appLang = element.attr('data-app-current-lang');
 
             return new Promise(function (resolve, reject) {
                 $.ajax({
@@ -132,22 +139,20 @@
                     type: 'POST',
                     success: function (result) {
                         // if data is available here it means a paginated collection has been returned.
-                        // we want only the first as default.
-                        if (typeof result.data !== "undefined") {
-                            $key = result.data[0][$relatedKeyName];
-                            $value = result.data[0][$relatedAttribute];
-                        }else{
+                // we want only the first to be default.
+                if (typeof result.data !== "undefined"){
+                    $key = result.data[0][$relatedKeyName];
+                    $value = processItemText(result.data[0], $relatedAttribute, $appLang);
+                }else{
+                    $key = result[0][$relatedKeyName];
+                    $value = processItemText(result[0], $relatedAttribute, $appLang);
+                }
 
-                            $key = result[0][$relatedKeyName];
-                            $value = result[0][$relatedAttribute];
-                        }
+                $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
+                $return = {...$return, ...$pair};
 
-                        $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
-                        $return = {...$return, ...$pair};
-
-                        $(element).attr('data-current-value', JSON.stringify($return));
-
-                        resolve(result);
+                $(element).attr('data-current-value', JSON.stringify($return));
+                resolve($return);
                     },
                     error: function (result) {
                         reject(result);
@@ -179,6 +184,7 @@
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
         var $allows_null = element.attr('data-column-nullable') == 'true' ? true : false;
+        var $appLang = element.attr('data-app-current-lang');
 
         var $item = false;
 
@@ -239,11 +245,15 @@
                     },
                     processResults: function (data, params) {
                         params.page = params.page || 1;
+                        //if we have data.data here it means we returned a paginated instance from controller.
+                        //otherwise we returned one or more entries unpaginated.
                         if(data.data) {
                         var result = {
                             results: $.map(data.data, function (item) {
+                                var $itemText = processItemText(item, $fieldAttribute, $appLang);
+
                                 return {
-                                    text: item[$fieldAttribute],
+                                    text: $itemText,
                                     id: item[$connectedEntityKeyName]
                                 }
                             }),
@@ -254,8 +264,10 @@
                         }else {
                             var result = {
                                 results: $.map(data, function (item) {
+                                    var $itemText = processItemText(item, $fieldAttribute, $appLang);
+
                                     return {
-                                        text: item[$fieldAttribute],
+                                        text: $itemText,
                                         id: item[$connectedEntityKeyName]
                                     }
                                 }),
@@ -264,6 +276,7 @@
                                 }
                             }
                         }
+
                         return result;
                     },
                     cache: true
@@ -284,6 +297,20 @@
             }
         }
     }
+
+    if (typeof processItemText !== 'function') {
+    function processItemText(item, $fieldAttribute, $appLang) {
+        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
+                        if(item[$fieldAttribute][$appLang] != 'undefined') {
+                            return item[$fieldAttribute][$appLang];
+                        }else{
+                            return item[$fieldAttribute][0];
+                        }
+                    }else{
+                        return item[$fieldAttribute];
+                    }
+    }
+}
 </script>
 @endpush
 @endif
