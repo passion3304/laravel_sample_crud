@@ -173,7 +173,7 @@
                         // so the fields themselves have to treat this use case, and look at data-selected-options
                         // and create the options based on those values
                         if ($(this).is('select') && $(this).children('option').length == 0) {
-                          $(this).attr('data-selected-options', values[$(this).data('repeatable-input-name')]);
+                          $(this).attr('data-selected-options', JSON.stringify(values[$(this).data('repeatable-input-name')]));
                         }
                     }
                 });

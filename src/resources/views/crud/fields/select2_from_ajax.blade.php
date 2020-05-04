@@ -93,8 +93,6 @@
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
 <script>
-
-
     function bpFieldInitSelect2FromAjaxElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
@@ -107,14 +105,14 @@
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
-        var $selectedOptions = element.attr('data-selected-options');
+        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
 
         var select2AjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     url: $dataSource,
                     data: {
-                        'related_keys': $selectedOptions
+                        'keys': $selectedOptions
                     },
                     type: $method,
                     success: function (result) {
@@ -183,7 +181,12 @@
 
         // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
         // we have stored from the field and append those options in the select.
-        if (typeof $selectedOptions !== typeof undefined && $selectedOptions !== false) {
+        if (typeof $selectedOptions !== typeof undefined && 
+            $selectedOptions !== false &&  
+            $selectedOptions != '' && 
+            $selectedOptions != null && 
+            $selectedOptions != []) 
+        {
             var optionsForSelect = [];
             select2AjaxFetchSelectedEntry(element).then(result => {
                 result.forEach(function(item) {
