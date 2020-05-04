@@ -1,5 +1,4 @@
 @php
-
     //in case entity is superNews we want the url friendly super-news
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
@@ -137,6 +136,7 @@
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
         var $optionsForSelect = JSON.parse(element.attr('data-options-for-select'));
+        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
 
@@ -171,7 +171,17 @@
 
         }
 
-        if (!$allows_null && $item === false) {
+        if (typeof $selectedOptions !== typeof undefined &&
+                    $selectedOptions !== false &&
+                        $selectedOptions != '' &&
+                        $selectedOptions != null &&
+                        $selectedOptions != [])
+                {
+                    $(element).val($selectedOptions);
+                    $(element).trigger('change');
+                }
+
+        if (!$allows_null && $item === false && $selectedOptions == null) {
             if(Object.keys($optionsForSelect).length > 0) {
                 $(element).val(Object.keys($optionsForSelect)[0]);
             }else{
