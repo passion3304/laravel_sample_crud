@@ -8,35 +8,6 @@ use Illuminate\Support\Str;
 trait FieldsProtectedMethods
 {
     /**
-     * The only REALLY MANDATORY attribute when defining a field is the 'name'.
-     * Everything else Backpack can probably guess. This method makes sure  the
-     * field definition array is complete, by guessing missing attributes.
-     *
-     * @param  string|array $field  The definition of a field (string or array).
-     * @return array                The correct definition of that field.
-     */
-    protected function makeSureFieldHasNecessaryAttributes($field)
-    {
-        $field = $this->makeSureFieldHasName($field);
-        $field = $this->makeSureFieldHasEntity($field);
-        $field = $this->makeSureFieldHasLabel($field);
-
-        if (isset($field['entity'])) {
-            $field = $this->makeSureFieldHasRelationType($field);
-            $field = $this->makeSureFieldHasModel($field);
-            $field = $this->makeSureFieldNameMatchesRelation($field);
-            $field = $this->makeSureFieldHasAttribute($field);
-            $field = $this->makeSureFieldHasMultiple($field);
-            $field = $this->makeSureFieldHasPivot($field);
-        }
-
-        $field = $this->makeSureFieldHasType($field);
-        $field = $this->overwriteFieldNameFromDotNotationToArray($field);
-
-        return $field;
-    }
-
-    /**
      * If field has entity we want to get the relation type from it.
      *
      * @param array $field
