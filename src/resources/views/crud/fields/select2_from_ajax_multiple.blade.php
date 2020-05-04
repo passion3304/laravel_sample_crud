@@ -161,7 +161,7 @@
 
         // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
         // we have stored from the field and append those options in the select.
-        if (typeof $selectedOptions !== typeof undefined && $selectedOptions !== false) {
+        if (typeof $selectedOptions !== typeof undefined && $selectedOptions !== false && $selectedOptions != '') {
             var optionsForSelect = [];
             select2AjaxMultipleFetchSelectedEntries(element).then(result => {
                 result.forEach(function(item) {
