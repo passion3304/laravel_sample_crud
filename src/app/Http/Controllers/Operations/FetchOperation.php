@@ -62,11 +62,11 @@ trait FetchOperation
 
         // FetchOperation is aware of an optional parameter 'keys' that will fetch you the entity/entities that match the provided keys
         if (request()->has('keys')) {
-            $decoded_keys = json_decode(request()->get('keys'));
-            if (is_array($decoded_keys)) {
-                return $model_instance->whereIn($model_instance->getKeyName(), $decoded_keys)->get();
+            $array_keys = json_decode(request()->get('keys'));
+            if (is_array($array_keys) && count($array_keys) > 1) {
+                return $model_instance->whereIn($model_instance->getKeyName(), $array_keys)->get();
             } else {
-                return $model_instance->where($model_instance->getKeyName(), $decoded_keys)->first();
+                return $model_instance->where($model_instance->getKeyName(), $array_keys)->get();
             }
         }
 
