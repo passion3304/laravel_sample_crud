@@ -78,6 +78,11 @@
         multiple
         @endif
         >
+        {{-- select2 placeholders need an empty option in case it's a single select --}}
+        @if ($field['allows_null'] && !$field['multiple'])
+        <option value="" selected>
+            {{ $field['placeholder'] }}
+        </option>
     </select>
 
     {{-- HINT --}}

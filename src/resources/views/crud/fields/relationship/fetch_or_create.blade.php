@@ -114,7 +114,12 @@ if($activeInlineCreate) {
         multiple
         @endif
         >
-
+        {{-- select2 placeholders need an empty option in case it's a single select --}}
+        @if ($field['allows_null'] && !$field['multiple'])
+        <option value="" selected>
+            {{ $field['placeholder'] }}
+        </option>
+    @endif
 </select>
  {{-- HINT --}}
  @if (isset($field['hint']))
@@ -472,7 +477,7 @@ function selectOption(element, option) {
                     $(element).val(selectedOptions);
 
                     //null is not allowed we fetch some default entry
-                    if(!$allows_null && !$item) {
+                    if(!$allows_null && !$item && $selectedOptions == null) {
                         fetchDefaultEntry(element).then(result => {
                             $(element).append('<option value="'+result[$modelKey]+'">'+result[$fieldAttribute]+'</option>');
                             $(element).val(result[$modelKey]);
