@@ -110,23 +110,23 @@
         var $selectedOptions = element.attr('data-selected-options');
 
         var select2AjaxFetchSelectedEntry = function (element) {
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: $dataSource,
-                data: {
-                    'related_keys': $selectedOptions
-                },
-                type: 'POST',
-                success: function (result) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: $dataSource,
+                    data: {
+                        'related_keys': $selectedOptions
+                    },
+                    type: $method,
+                    success: function (result) {
 
-                    resolve(result);
-                },
-                error: function (result) {
-                    reject(result);
-                }
+                        resolve(result);
+                    },
+                    error: function (result) {
+                        reject(result);
+                    }
+                });
             });
-        });
-    };
+        };
 
         // do not initialise select2s that have already been initialised
         if ($(element).hasClass("select2-hidden-accessible"))
