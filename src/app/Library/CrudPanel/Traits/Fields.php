@@ -24,7 +24,7 @@ trait Fields
         return $this->getOperationSetting('fields') ?? [];
     }
 
-        /**
+    /**
      * The only REALLY MANDATORY attribute when defining a field is the 'name'.
      * Everything else Backpack can probably guess. This method makes sure  the
      * field definition array is complete, by guessing missing attributes.
