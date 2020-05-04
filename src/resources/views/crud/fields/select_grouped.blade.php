@@ -11,6 +11,7 @@
         $related_model = $crud->getRelationModel($field['entity']);
         $group_by_model = (new $related_model)->{$field['group_by']}()->getRelated();
         $categories = $group_by_model::with($field['group_by_relationship_back'])->get();
+        
         if (isset($field['model'])) {
             $categorylessEntries = $related_model::doesnthave($field['group_by'])->get();
         }

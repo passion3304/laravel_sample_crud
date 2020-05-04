@@ -24,7 +24,7 @@
         data-method="{{ $field['method'] ?? 'GET' }}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
+        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'false' }}"
         data-ajax-delay="{{ $field['delay'] }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
         >
@@ -108,66 +108,116 @@
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
+        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
 
-        if (!$(element).hasClass("select2-hidden-accessible"))
-        {
-            $(element).select2({
-                theme: 'bootstrap',
-                multiple: false,
-                placeholder: $placeholder,
-                minimumInputLength: $minimumInputLength,
-                allowClear: $allowClear,
-                ajax: {
+        var select2AjaxFetchSelectedEntry = function (element) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
                     url: $dataSource,
+                    data: {
+                        'keys': $selectedOptions
+                    },
                     type: $method,
-                    dataType: 'json',
-                    delay: $ajaxDelay,
-                    data: function (params) {
-                        if ($includeAllFormFields) {
-                            return {
-                                q: params.term, // search term
-                                page: params.page, // pagination
-                                form: form.serializeArray() // all other form inputs
-                            };
-                        } else {
-                            return {
-                                q: params.term, // search term
-                                page: params.page, // pagination
-                            };
-                        }
+                    success: function (result) {
+
+                        resolve(result);
                     },
-                    processResults: function (data, params) {
-                        params.page = params.page || 1;
-
-                        var result = {
-                            results: $.map(data.data, function (item) {
-                                textField = $fieldAttribute;
-                                return {
-                                    text: item[textField],
-                                    id: item[$connectedEntityKeyName]
-                                }
-                            }),
-                           pagination: {
-                                 more: data.current_page < data.last_page
-                           }
-                        };
-
-                        return result;
-                    },
-                    cache: true
-                },
-            });
-
-            // if any dependencies have been declared
-            // when one of those dependencies changes value
-            // reset the select2 value
-            for (var i=0; i < $dependencies.length; i++) {
-                $dependency = $dependencies[i];
-                $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
-                    element.val(null).trigger("change");
+                    error: function (result) {
+                        reject(result);
+                    }
                 });
-            }
+            });
+        };
+
+        // do not initialise select2s that have already been initialised
+        if ($(element).hasClass("select2-hidden-accessible"))
+        {
+            return;
         }
+        //init the element
+        $(element).select2({
+            theme: 'bootstrap',
+            multiple: false,
+            placeholder: $placeholder,
+            minimumInputLength: $minimumInputLength,
+            allowClear: $allowClear,
+            ajax: {
+                url: $dataSource,
+                type: $method,
+                dataType: 'json',
+                delay: $ajaxDelay,
+                data: function (params) {
+                    if ($includeAllFormFields) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page, // pagination
+                            form: form.serializeArray() // all other form inputs
+                        };
+                    } else {
+                        return {
+                            q: params.term, // search term
+                            page: params.page, // pagination
+                        };
+                    }
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    var result = {
+                        results: $.map(data.data, function (item) {
+                            textField = $fieldAttribute;
+                            return {
+                                text: item[textField],
+                                id: item[$connectedEntityKeyName]
+                            }
+                        }),
+                        pagination: {
+                                more: data.current_page < data.last_page
+                        }
+                    };
+
+                    return result;
+                },
+                cache: true
+            },
+        });
+
+        // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
+        // we have stored from the field and append those options in the select.
+        if (typeof $selectedOptions !== typeof undefined && 
+            $selectedOptions !== false &&  
+            $selectedOptions != '' && 
+            $selectedOptions != null && 
+            $selectedOptions != []) 
+        {
+            var optionsForSelect = [];
+            select2AjaxFetchSelectedEntry(element).then(result => {
+                result.forEach(function(item) {
+                    $itemText = item[$fieldAttribute];
+                    $itemValue = item[$connectedEntityKeyName];
+                    //add current key to be selected later.
+                    optionsForSelect.push($itemValue);
+
+                    //create the option in the select
+                    $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
+                });
+
+                // set the option keys as selected.
+                $(element).val(optionsForSelect);
+                $(element).trigger('change');
+            });
+        }
+
+        // if any dependencies have been declared
+        // when one of those dependencies changes value
+        // reset the select2 value
+        for (var i=0; i < $dependencies.length; i++) {
+            $dependency = $dependencies[i];
+            $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
+                element.val(null).trigger("change");
+            });
+        }
+
     }
 </script>
 @endpush

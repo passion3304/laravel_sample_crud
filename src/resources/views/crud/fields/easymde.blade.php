@@ -4,9 +4,9 @@
     @include('crud::fields.inc.translatable_icon')
     <textarea
         name="{{ $field['name'] }}"
-        data-init-function="bpFieldInitSimpleMdeElement"
-        data-simplemdeAttributesRaw="{{ isset($field['simplemdeAttributesRaw']) ? "{".$field['simplemdeAttributesRaw']."}" : "{}" }}"
-        data-simplemdeAttributes="{{ isset($field['simplemdeAttributes']) ? json_encode($field['simplemdeAttributes']) : "{}" }}"
+        data-init-function="bpFieldInitEasyMdeElement"
+        data-easymdeAttributesRaw="{{ isset($field['easymdeAttributesRaw']) ? "{".$field['easymdeAttributesRaw']."}" : "{}" }}"
+        data-easymdeAttributes="{{ isset($field['easymdeAttributes']) ? json_encode($field['easymdeAttributes']) : "{}" }}"
         @include('crud::fields.inc.attributes', ['default_class' => 'form-control'])
     	>{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
@@ -27,56 +27,54 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        <link rel="stylesheet" href="{{ asset('packages/simplemde/dist/simplemde.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('packages/easymde/dist/easymde.min.css') }}">
         <style type="text/css">
-        .CodeMirror-fullscreen, .editor-toolbar.fullscreen {
-            z-index: 9999 !important;
-        }
-        .CodeMirror{
-        	min-height: auto !important;
-        }
+            .editor-toolbar {
+                border: 1px solid #ddd;
+                border-bottom: none;
+            }
         </style>
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <script src="{{ asset('packages/simplemde/dist/simplemde.min.js') }}"></script>
+        <script src="{{ asset('packages/easymde/dist/easymde.min.js') }}"></script>
         <script>
-            function bpFieldInitSimpleMdeElement(element) {
+            function bpFieldInitEasyMdeElement(element) {
                 if (element.attr('data-initialized') == 'true') {
                     return;
                 }
 
                 if (typeof element.attr('id') == 'undefined') {
-                    element.attr('id', 'SimpleMDE_'+Math.ceil(Math.random() * 1000000));
+                    element.attr('id', 'EasyMDE_'+Math.ceil(Math.random() * 1000000));
                 }
 
                 var elementId = element.attr('id');
-                var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
-                var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
+                var easymdeAttributes = JSON.parse(element.attr('data-easymdeAttributes'));
+                var easymdeAttributesRaw = JSON.parse(element.attr('data-easymdeAttributesRaw'));
                 var configurationObject = {
                     element: document.getElementById(elementId),
                 };
 
-                configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
+                configurationObject = Object.assign(configurationObject, easymdeAttributes, easymdeAttributesRaw);
 
                 if (!document.getElementById(elementId)) {
                     return;
                 }
 
-                var smdeObject = new SimpleMDE(configurationObject);
+                var easyMDE = new EasyMDE(configurationObject);
 
-                smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
-                smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
+                easyMDE.options.minHeight = easyMDE.options.minHeight || "300px";
+                easyMDE.codemirror.getScrollerElement().style.minHeight = easyMDE.options.minHeight;
 
                 // update the original textarea on keypress
-                smdeObject.codemirror.on("change", function(){
-                    element.val(smdeObject.value());
+                easyMDE.codemirror.on("change", function(){
+                    element.val(easyMDE.value());
                 });
 
-                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                    setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
-                });
+                // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                //     setTimeout(function() { easyMDE.codemirror.refresh(); }, 10);
+                // });
             }
         </script>
     @endpush

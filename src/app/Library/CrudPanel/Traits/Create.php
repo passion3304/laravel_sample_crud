@@ -112,6 +112,11 @@ trait Create
             if (isset($field['pivot']) && $field['pivot']) {
                 $values = isset($data[$field['name']]) ? $data[$field['name']] : [];
 
+                // if a JSON was passed instead of an array, turn it into an array
+                if (is_string($values)) {
+                    $values = json_decode($values);
+                }
+
                 $relation_data = [];
                 foreach ($values as $pivot_id) {
                     $pivot_data = [];

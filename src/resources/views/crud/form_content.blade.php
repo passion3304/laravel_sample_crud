@@ -40,12 +40,15 @@
       } else {
         selector = $(container);
       }
-      selector.find("[data-init-function]").each(function () {
+      selector.find("[data-init-function]").not("[data-initialized=true]").each(function () {
         var element = $(this);
         var functionName = element.data('init-function');
 
         if (typeof window[functionName] === "function") {
           window[functionName](element);
+
+          // mark the element as initialized, so that its function is never called again
+          element.attr('data-initialized', 'true');
         }
       });
     }
