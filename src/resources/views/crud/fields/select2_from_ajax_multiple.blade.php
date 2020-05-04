@@ -95,23 +95,23 @@
         var $selectedOptions = element.attr('data-selected-options');
 
         var select2AjaxMultipleFetchSelectedEntries = function (element) {
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: $dataSource,
-                data: {
-                    'related_keys': $selectedOptions
-                },
-                type: 'POST',
-                success: function (result) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: $dataSource,
+                    data: {
+                        'related_keys': $selectedOptions
+                    },
+                    type: $method,
+                    success: function (result) {
 
-                    resolve(result);
-                },
-                error: function (result) {
-                    reject(result);
-                }
+                        resolve(result);
+                    },
+                    error: function (result) {
+                        reject(result);
+                    }
+                });
             });
-        });
-    };
+        };
 
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
