@@ -134,7 +134,7 @@ trait FieldsProtectedMethods
             $field['entity'] = $field['name'];
 
             return $field;
-        } // TODO: also check if that method is a relationship (returns Relation)
+        }
 
         // if the name ends with _id and that method exists,
         // we can probably use it as an entity
@@ -169,20 +169,25 @@ trait FieldsProtectedMethods
         return $field;
     }
 
-    protected function makeSureFieldNameMatchesRelation($field)
+    protected function overwriteFieldNameFromEntity($field)
     {
-        switch ($field['relation_type']) {
-            case 'BelongsTo':
-                if (count(explode('.', $field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
-                    $field['name'] = implode('.', array_slice(explode('.', $field['entity']), 0, -1));
-                    $relation = $this->getRelationInstance($field);
-                    if (! empty($field['name'])) {
-                        $field['name'] .= '.';
-                    }
-                    $field['name'] .= $relation->getForeignKeyName();
-                }
+        // if the entity doesn't have a dot, it means we don't need to overwrite the name
+        if ( ! Str::contains($field['entity'], ".") ) {
+            return $field;
+        }
 
-        break;
+        // only 1-1 relationships are supported, if it's anything else, abort
+        if ($field['relation_type'] != 'BelongsTo') {
+            return $field;
+        }
+
+        if (count(explode('.', $field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
+            $field['name'] = implode('.', array_slice(explode('.', $field['entity']), 0, -1));
+            $relation = $this->getRelationInstance($field);
+            if (! empty($field['name'])) {
+                $field['name'] .= '.';
+            }
+            $field['name'] .= $relation->getForeignKeyName();
         }
 
         return $field;
