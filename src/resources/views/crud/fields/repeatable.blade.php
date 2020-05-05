@@ -27,6 +27,7 @@
         <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
         @foreach($field['fields'] as $subfield)
           @php
+              $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
               $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
               $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
               $subfield['showAsterisk'] = false;

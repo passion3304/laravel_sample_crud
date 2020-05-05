@@ -450,7 +450,50 @@ function selectOption(element, option) {
                 var $modelKey = element.attr('data-model-local-key');
                 var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
                 var $appLang = element.attr('data-app-current-lang');
+                var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+                var FetchOrCreateAjaxFetchSelectedEntry = function (element) {
+                        return new Promise(function (resolve, reject) {
+                            $.ajax({
+                                url: $dataSource,
+                                data: {
+                                    'keys': $selectedOptions
+                                },
+                                type: $method,
+                                success: function (result) {
 
+                                    resolve(result);
+                                },
+                                error: function (result) {
+                                    reject(result);
+                                }
+                            });
+                        });
+                    };
+
+                if (typeof $selectedOptions !== typeof undefined &&
+                    $selectedOptions !== false &&
+                        $selectedOptions != '' &&
+                        $selectedOptions != null &&
+                        $selectedOptions != [])
+                {
+                    var optionsForSelect = [];
+
+                    FetchOrCreateAjaxFetchSelectedEntry(element).then(result => {
+                        result.forEach(function(item) {
+                        $itemText = processItemText(item, $fieldAttribute, $appLang);
+                        $itemValue = item[$connectedEntityKeyName];
+                        //add current key to be selected later.
+                        optionsForSelect.push($itemValue);
+
+                        //create the option in the select
+                        $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
+                });
+
+                // set the option keys as selected.
+                $(element).val(optionsForSelect);
+                $(element).trigger('change');
+            });
+        }
 
                     var $item = false;
 

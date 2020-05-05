@@ -185,6 +185,50 @@
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
         var $allows_null = element.attr('data-column-nullable') == 'true' ? true : false;
         var $appLang = element.attr('data-app-current-lang');
+        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+
+        var FetchAjaxFetchSelectedEntry = function (element) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: $dataSource,
+                    data: {
+                        'keys': $selectedOptions
+                    },
+                    type: $method,
+                    success: function (result) {
+
+                        resolve(result);
+                    },
+                    error: function (result) {
+                        reject(result);
+                    }
+                });
+            });
+        };
+
+        if (typeof $selectedOptions !== typeof undefined &&
+            $selectedOptions !== false &&
+            $selectedOptions != '' &&
+            $selectedOptions != null &&
+            $selectedOptions != [])
+        {
+            var optionsForSelect = [];
+            FetchAjaxFetchSelectedEntry(element).then(result => {
+                result.forEach(function(item) {
+                    $itemText = processItemText(item, $fieldAttribute, $appLang);
+                    $itemValue = item[$connectedEntityKeyName];
+                    //add current key to be selected later.
+                    optionsForSelect.push($itemValue);
+
+                    //create the option in the select
+                    $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
+                });
+
+                // set the option keys as selected.
+                $(element).val(optionsForSelect);
+                $(element).trigger('change');
+            });
+        }
 
         var $item = false;
 
@@ -208,7 +252,7 @@
         $(element).val(selectedOptions);
 
 
-        if (!$allows_null && $item === false) {
+        if (!$allows_null && $item === false && $selectedOptions == null) {
             fetchDefaultEntry(element).then(result => {
                 var $item = JSON.parse(element.attr('data-current-value'));
                 $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
