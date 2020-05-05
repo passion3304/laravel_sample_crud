@@ -172,7 +172,7 @@ trait FieldsProtectedMethods
     protected function overwriteFieldNameFromEntity($field)
     {
         // if the entity doesn't have a dot, it means we don't need to overwrite the name
-        if ( ! Str::contains($field['entity'], ".") ) {
+        if (! Str::contains($field['entity'], '.')) {
             return $field;
         }
 
