@@ -41,7 +41,7 @@ trait Fields
         if (isset($field['entity'])) {
             $field = $this->makeSureFieldHasRelationType($field);
             $field = $this->makeSureFieldHasModel($field);
-            // $field = $this->makeSureFieldNameMatchesRelation($field);
+            $field = $this->overwriteFieldNameFromEntity($field);
             $field = $this->makeSureFieldHasAttribute($field);
             $field = $this->makeSureFieldHasMultiple($field);
             $field = $this->makeSureFieldHasPivot($field);
