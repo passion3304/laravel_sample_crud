@@ -83,6 +83,7 @@
         <option value="" selected>
             {{ $field['placeholder'] }}
         </option>
+        @endif
     </select>
 
     {{-- HINT --}}
