@@ -208,7 +208,7 @@
         };
 
         if($allows_null && !$multiple) {
-            $(element).append('<option value="">'+$multiple+'</option>');
+            $(element).append('<option value="">'+$placeholder+'</option>');
         }
 
 

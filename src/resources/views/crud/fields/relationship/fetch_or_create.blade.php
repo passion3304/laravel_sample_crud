@@ -391,7 +391,7 @@ function triggerModal(element) {
         $modal.remove();
 
         //when modal is closed (canceled or success submited) we revert the "+ Add" loading state back to normal.
-        var $inlineCreateButtonElement = $(document.getElementById(element.attr('data-inline-create-button')));
+        var $inlineCreateButtonElement = $(element).parent().find('.inline-create-button');
         $inlineCreateButtonElement.html($inlineCreateButtonElement.data('original-text'));
     });
 
@@ -471,7 +471,7 @@ function bpFieldInitFetchOrCreateElement(element) {
         };
 
        if($allows_null && !$multiple) {
-        $(element).append('<option value="">'+$multiple+'</option>');
+        $(element).append('<option value="">'+$placeholder+'</option>');
        }
 
         if (typeof $selectedOptions !== typeof undefined &&
