@@ -24,6 +24,19 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+## 4.0.61 - 2020-05-06
+
+### Changes
+- pameters not respecting what passed @dilneiss (#2705)
+- Rtl refines @ahmadmrj (#2703)
+- Date range calendar Icon @martijnb92 (#2695)
+- Date picker calendar Icon @martijnb92 (#2694)
+
+### Changes
+- Bump places.js from 1.18.1 to 1.18.2 @dependabot-preview (#2741)
+- Bump moment from 2.24.0 to 2.25.0 @dependabot-preview (#2739)
+- Bump css-loader from 3.5.0 to 3.5.3 @dependabot-preview (#2740)
+
 ## 4.0.60 - 2020-04-21
 
 ### Fixed
