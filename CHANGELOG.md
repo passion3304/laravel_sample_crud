@@ -9,14 +9,39 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.1.0 - 2020-02-xx
+## 4.1.0 - 2020-05-06
+
+See the [release notes](https://backpackforlaravel.com/docs/4.1/release-notes) and the [upgrade guide](https://backpackforlaravel.com/docs/4.1/upgrade-guide). TLDR:
 
 ### Added
-- support for Laravel 7;
+- new operation - InlineCreate
+- new operation - Fetch
+- new field - repeatable
+- new field - relationship
+- new column - relationship
+- new column - relationship_count
+- new widget - chart
+- new optional API - fluent syntax for Fields, Column, Filters, Buttons, Widgets
+- inside list operation
+    - hide/show the searchbar with a config
+    - hide/show a Reset button that clears filtering pagination everything
+- customizable SaveActions (buttons at the end of Create/Update forms)
+
+### Changed
+- fields `wrapperAttributes` is now `wrapper`
+- line-awesome uses `la la-home` syntax instead of `fa fa-home`
 
 ### Removed
 - support for Laravel 5.8;
-- support for PHP 7.1;
+- support for PHP lower than 7.2.5;
+- laravel/helpers dependency;
+- barryvdh/laravel-elfinder dependency;
+- venturecraft/revisionable dependency;
+- intervention/image dependency;
+- App\Models\BackpackUser;
+- RevisionsOperation - it's now an add-on;
+- elFinder functionality - it's now an add-on;
+
 
 -----------
 
