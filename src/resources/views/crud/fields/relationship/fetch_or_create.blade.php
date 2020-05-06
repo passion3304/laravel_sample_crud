@@ -17,6 +17,7 @@
             case 'array':
                 $current_value = $connected_entity
                                     ->whereIn($connected_entity_key_name, $current_value)
+                                    ->get()
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
                 break;
@@ -34,6 +35,7 @@
             default:
                 $current_value = $connected_entity
                                 ->where($connected_entity_key_name, $current_value)
+                                ->get()
                                 ->pluck($field['attribute'], $connected_entity_key_name)
                                 ->toArray();
 
