@@ -88,7 +88,6 @@ if($activeInlineCreate) {
         data-force-select="{{ var_export($field['inline_create']['force_select']) }}"
         data-init-function="bpFieldInitFetchOrCreateElement"
         data-is-inline="{{ $inlineCreate ?? 'false' }}"
-        data-field-multiple="{{var_export($field['multiple'])}}"
         data-allows-null="{{var_export($field['allows_null'])}}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
@@ -406,7 +405,7 @@ function triggerModal(element) {
 function selectOption(element, option) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
-    var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
+    var $multiple = element.prop('multiple');
     var $appLang = element.attr('data-app-current-lang');
 
     var $optionText = processItemText(option, $relatedAttribute, $appLang);
@@ -449,7 +448,7 @@ function bpFieldInitFetchOrCreateElement(element) {
     var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
     var $appLang = element.attr('data-app-current-lang');
     var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
-    var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
+    var $multiple = element.prop('multiple');
 
     var FetchOrCreateAjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {

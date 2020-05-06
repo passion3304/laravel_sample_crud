@@ -69,7 +69,6 @@
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
         data-current-value="{{ $field['value'] }}"
-        data-field-multiple="{{var_export($field['multiple'])}}"
         data-app-current-lang="{{ app()->getLocale() }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
@@ -182,11 +181,10 @@
         var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
         var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
-        var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
         var $allows_null = element.attr('data-column-nullable') == 'true' ? true : false;
         var $appLang = element.attr('data-app-current-lang');
         var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
-        var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
+        var $multiple = element.prop('multiple');
 
         var FetchAjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
