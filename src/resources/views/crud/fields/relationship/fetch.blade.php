@@ -83,6 +83,7 @@
         <option value="" selected>
             {{ $field['placeholder'] }}
         </option>
+        @endif
     </select>
 
     {{-- HINT --}}
@@ -191,6 +192,7 @@
         var $allows_null = element.attr('data-column-nullable') == 'true' ? true : false;
         var $appLang = element.attr('data-app-current-lang');
         var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+        var $multiple = (element.attr('data-field-multiple') == 'true') ? true : false;
 
         var FetchAjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
@@ -210,6 +212,11 @@
                 });
             });
         };
+
+        if($allows_null && !$multiple) {
+            $(element).append('<option value="">'+$multiple+'</option>');
+        }
+
 
         if (typeof $selectedOptions !== typeof undefined &&
             $selectedOptions !== false &&
