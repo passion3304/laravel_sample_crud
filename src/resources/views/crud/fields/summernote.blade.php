@@ -3,7 +3,7 @@
     // make sure that the options array is defined
     // and at the very least, dialogsInBody is true;
     // that's needed for modals to show above the overlay in Bootstrap 4
-    $field['options'] = array_merge(['dialogsInBody' => true], $field['options'] ?? []);
+    $field['options'] = array_merge(['dialogsInBody' => true, 'tooltip' => false], $field['options'] ?? []);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
