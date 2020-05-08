@@ -1,44 +1,47 @@
 <!-- address_algolia input -->
 
 <?php
+    $field['store_as_json'] = $field['store_as_json'] ?? false;
+    $field['wrapper']['algolia-wrapper'] = $field['wrapper']['algolia-wrapper'] ?? 'true';
+    $field['config'] = [
+        'field' => $field['name'],
+        'full' => $field['store_as_json'],
+    ];
+    $field['value'] = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
-// the field should work whether or not Laravel attribute casting is used
-if (isset($field['value']) && (is_array($field['value']) || is_object($field['value']))) {
-    $field['value'] = json_encode($field['value']);
-}
-
-$field['wrapper']['algolia-wrapper'] = $field['wrapper']['algolia-wrapper'] ?? 'true';
-
+    // the field should work whether or not Laravel attribute casting is used
+    if (isset($field['value']) && (is_array($field['value']) || is_object($field['value']))) {
+        $field['value'] = json_encode($field['value']);
+    }
 ?>
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
+
     @include('crud::fields.inc.translatable_icon')
+
+    @if($field['store_as_json'])
     <input type="hidden" 
-        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}" 
+        value='{{ $field['value'] }}' 
         name="{{ $field['name'] }}" 
         data-algolia-hidden-input="{{ $field['name'] }}">
+    @endif
 
     @if(isset($field['prefix']) || isset($field['suffix'])) <div class="input-group"> @endif
-        @if(isset($field['prefix'])) <div class="input-group-addon">{!! $field['prefix'] !!}</div> @endif
-        @if(isset($field['store_as_json']) && $field['store_as_json'])
-        <input
-            type="text"
-            data-config="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
-            data-init-function="bpFieldInitAddressAlgoliaElement"
-            @include('crud::fields.inc.attributes')
-        >
-        @else
-        <input
-            type="text"
-            data-config="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
-            data-init-function="bpFieldInitAddressAlgoliaElement"
-            name="{{ $field['name'] }}"
-            value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
-            @include('crud::fields.inc.attributes')
-        >
+    @if(isset($field['prefix'])) <div class="input-group-addon">{!! $field['prefix'] !!}</div> @endif
+
+    <input
+        type="text"
+        data-config='@json((object)$field['config'])'
+        data-init-function="bpFieldInitAddressAlgoliaElement"
+        @if(!$field['store_as_json'])
+        name="{{ $field['name'] }}"
+        value="{{ $field['value'] }}"
         @endif
-        @if(isset($field['suffix'])) <div class="input-group-addon">{!! $field['suffix'] !!}</div> @endif
+        @include('crud::fields.inc.attributes')
+    >
+
+    @if(isset($field['suffix'])) <div class="input-group-addon">{!! $field['suffix'] !!}</div> @endif
     @if(isset($field['prefix']) || isset($field['suffix'])) </div> @endif
 
     {{-- HINT --}}
@@ -75,7 +78,7 @@ $field['wrapper']['algolia-wrapper'] = $field['wrapper']['algolia-wrapper'] ?? '
 
             function bpFieldInitAddressAlgoliaElement(element) {
                 $addressConfig = element.data('config');
-                $hiddenInput = element.parent("[algolia-wrapper]").find('[data-algolia-hidden-input]');
+                $hiddenInput = element.parent("[algolia-wrapper]").find('input[type=hidden]');
                 $place = places({ container: element[0] });
 
                 function clearInput() {
