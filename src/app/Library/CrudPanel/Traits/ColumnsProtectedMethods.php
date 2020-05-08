@@ -33,6 +33,14 @@ trait ColumnsProtectedMethods
         $column['orderable'] = $column['orderable'] ?? $columnExistsInDb;
         $column['searchLogic'] = $column['searchLogic'] ?? $columnExistsInDb;
 
+        // check if it's a method on the model,
+        // that means it's a relationship
+        if (!$columnExistsInDb && method_exists($this->model, $column['name'])) {
+            $relatedModel = $this->model->{$column['name']}()->getRelated();
+            $column['entity'] = $column['name'];
+            $column['model'] = get_class($relatedModel);
+        }
+
         return $column;
     }
 

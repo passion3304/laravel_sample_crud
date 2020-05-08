@@ -2,11 +2,15 @@
 @php
    $relationshipType = new ReflectionClass($entry->{$column['name']}());
    $relationshipType = $relationshipType->getShortName();
-   $allows_multiple = $crud->relationAllowsMultiple($relationshipType);
+   $allows_multiple = $crud->guessIfFieldHasMultipleFromRelationType($relationshipType);
+
+   if (!$allows_multiple) {
+	   $column['name'] = 'parent_id';
+   }
 @endphp
 
 @if ($allows_multiple)
-    @include('crud::columns.select_multiple')
+	@include('crud::columns.select_multiple')
 @else
-    @include('crud::columns.select')
+	@include('crud::columns.select')
 @endif
