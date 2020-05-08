@@ -110,6 +110,12 @@ trait ColumnsProtectedMethods
      */
     protected function makeSureColumnHasType($column)
     {
+        // if it's got a method on the model with the same name
+        // then it should be a relationship
+        if (! isset($column['type']) && method_exists($this->model, $column['name'])) {
+            $column['type'] = 'relationship';
+        }
+
         if (! isset($column['type'])) {
             $column['type'] = 'text';
         }
