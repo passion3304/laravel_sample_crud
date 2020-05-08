@@ -9,6 +9,14 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
+
+## 4.1.1 - 2020-05-08
+
+### Fixed
+- #2748 address_algolia field didn't work inside repeatable fields;
+- summernote field tooltips were not showing properly so we disable them by default;
+
+
 ## 4.1.0 - 2020-05-06
 
 See the [release notes](https://backpackforlaravel.com/docs/4.1/release-notes) and the [upgrade guide](https://backpackforlaravel.com/docs/4.1/upgrade-guide). TLDR:
