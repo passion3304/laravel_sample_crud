@@ -70,7 +70,7 @@ trait Validation
             // because form requests implement ValidatesWhenResolved
             $request = app($formRequest);
         } else {
-            $request = $this->request;
+            $request = $this->getRequest();
         }
 
         return $request;

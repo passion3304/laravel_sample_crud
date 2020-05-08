@@ -1,4 +1,9 @@
-<div class="{{ $widget['wrapperClass'] ?? 'col-sm-6 col-lg-3' }}">
+@php
+  // defaults; backwards compatibility with Backpack 4.0 widgets
+  $widget['wrapper']['class'] = $widget['wrapper']['class'] ?? $widget['wrapperClass'] ?? 'col-sm-6 col-lg-3';
+@endphp
+
+@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_start')
   <div class="{{ $widget['class'] ?? 'card' }}">
     <div class="card-body">
       @if (isset($widget['value']))
@@ -22,8 +27,8 @@
 
     @if (isset($widget['footer_link']))
     <div class="card-footer px-3 py-2">
-      <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ $widget['footer_link'] ?? '#' }}"><span class="small font-weight-bold">{{ $widget['footer_text'] ?? 'View more' }}</span><i class="fa fa-angle-right"></i></a>
+      <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ $widget['footer_link'] ?? '#' }}"><span class="small font-weight-bold">{{ $widget['footer_text'] ?? 'View more' }}</span><i class="la la-angle-right"></i></a>
     </div>
     @endif
   </div>
-</div>
+@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')

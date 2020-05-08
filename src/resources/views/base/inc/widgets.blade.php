@@ -1,10 +1,15 @@
 @if (!empty($widgets))
-	@foreach ($widgets as $widget)
+	@foreach ($widgets as $currentWidget)
+		@php
+			if (!is_array($currentWidget)) {
+				$currentWidget = $currentWidget->toArray();
+			}
+		@endphp
 
-		@if (isset($widget['viewNamespace']))
-			@include($widgetsViewNamespace.'.'.$widget['type'], ['widget' => $widget])
+		@if (isset($currentWidget['viewNamespace']))
+			@include($widgetsViewNamespace.'.'.$currentWidget['type'], ['widget' => $currentWidget])
 		@else
-			@include(backpack_view('widgets.'.$widget['type']), ['widget' => $widget])
+			@include(backpack_view('widgets.'.$currentWidget['type']), ['widget' => $currentWidget])
 		@endif
 
 	@endforeach

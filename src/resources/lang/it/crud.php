@@ -29,18 +29,6 @@ return [
     'edit'                 => 'Modifica',
     'save'                 => 'Salva',
 
-    // Revisions
-    'revisions'            => 'Revisioni',
-    'no_revisions'         => 'Nessuna revisione trovata',
-    'created_this'         => 'ha creato questo',
-    'changed_the'          => 'ha cambiato il',
-    'restore_this_value'   => 'ripristinare questo valore',
-    'from'                 => 'da',
-    'to'                   => 'a',
-    'undo'                 => 'Annulla',
-    'revision_restored'    => 'Revisione ripristinata con successo',
-    'guest_user'           => 'Un Ospite',
-
     // Translatable models
     'edit_translations' => 'MODIFICA TRADUZIONI',
     'language'          => 'Lingua',
@@ -84,7 +72,7 @@ return [
     'info'           => 'Visualizzando da _START_ a _END_ record di _TOTAL_',
     'infoEmpty'      => '',
     'infoFiltered'   => '(filtrati da _MAX_ record totali)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ record per pagina',
     'loadingRecords' => 'Caricamento...',

@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Guardar y crear nuevo',
     'save_action_save_and_edit'        => 'Guardar y continuar editando',
     'save_action_save_and_back'        => 'Guardar y regresar',
+    'save_action_save_and_preview'     => 'Guardar y vista previa',
     'save_action_changed_notification' => 'La acción por defecto del botón guardar ha sido modificada.',
 
     // Create form
@@ -28,18 +29,6 @@ return [
     // Edit form
     'edit'                 => 'Editar',
     'save'                 => 'Guardar',
-
-    // Revisions
-    'revisions'            => 'Las revisiones',
-    'no_revisions'         => 'No hay revisiones encontradas',
-    'created_this'         => 'creado este',
-    'changed_the'          => 'cambiado el',
-    'restore_this_value'   => 'Restaurar este valor',
-    'from'                 => 'de',
-    'to'                   => 'a',
-    'undo'                 => 'Deshacer',
-    'revision_restored'    => 'Revisión restaurada correctamente',
-    'guest_user'           => 'Usuario invitado',
 
     // Translatable models
     'edit_translations' => 'EDITAR TRADUCCIONES',
@@ -85,7 +74,7 @@ return [
     'info'           => 'Mostrando registros _START_ a _END_ de un total de _TOTAL_ registros',
     'infoEmpty'      => '',
     'infoFiltered'   => '(filtrando de _MAX_ registros totales)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ elementos por página',
     'loadingRecords' => 'Cargando...',

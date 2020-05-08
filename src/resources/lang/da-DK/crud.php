@@ -28,18 +28,6 @@ return [
     'edit'                 => 'Rediger',
     'save'                 => 'Gem',
 
-    // Revisions
-    'revisions'            => 'Revisioner',
-    'no_revisions'         => 'ingen revisioner fundet',
-    'created_this'         => 'lavede denne',
-    'changed_the'          => 'ændrede denne',
-    'restore_this_value'   => 'gendan denne værdi',
-    'from'                 => 'før',
-    'to'                   => 'efter',
-    'undo'                 => 'fortryd',
-    'revision_restored'    => 'Revision gendannet',
-    'guest_user'           => 'gæste bruger',
-
     // Translatable models
     'edit_translations' => 'rediger oversættelser',
     'language'          => 'Sprog',
@@ -69,7 +57,7 @@ return [
     'info'           => 'Viser fra _START_ til _END_ ud af _TOTAL_ emner',
     'infoEmpty'      => '',
     'infoFiltered'   => '(filtreret efter max _MAX_ emner)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ felter pr side',
     'loadingRecords' => 'Indlæser...',

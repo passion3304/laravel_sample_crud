@@ -29,18 +29,6 @@ return [
     'edit' => 'Rediģēt',
     'save' => 'Saglabāt',
 
-    // Revisions
-    'revisions'          => 'Revīzijas',
-    'no_revisions'       => 'Revīzijas nav atrastas',
-    'created_this'       => 'izveidoja',
-    'changed_the'        => 'izmainīja',
-    'restore_this_value' => 'Atjaunot vērtību',
-    'from'               => 'no',
-    'to'                 => 'līdz',
-    'undo'               => 'Atgriezt atpakaļ',
-    'revision_restored'  => 'Revīzija veiksmīgi atjaunota',
-    'guest_user'         => 'Lietotājs: viesis',
-
     // Translatable models
     'edit_translations' => 'LABOT TULKOJUMUS',
     'language'          => 'Valoda',
@@ -73,7 +61,7 @@ return [
     'info'           => 'Rādot no _START_ līdz _END_ no kopumā _TOTAL_ ierakstiem',
     'infoEmpty'      => '',
     'infoFiltered'   => '(filtrēts no _MAX_ kopējiem ierakstiem)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ ieraksti uz lapu',
     'loadingRecords' => 'Ielādē...',

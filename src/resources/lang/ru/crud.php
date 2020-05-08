@@ -29,18 +29,6 @@ return [
     'edit'                                    => 'Редактировать',
     'save'                                    => 'Сохранить',
 
-    // Revisions
-    'revisions'                               => 'Версии',
-    'no_revisions'                            => 'Версий не найдено',
-    'created_this'                            => 'создал(а) это',
-    'changed_the'                             => 'изменил(а)',
-    'restore_this_value'                      => 'Восстановить это значение',
-    'from'                                    => 'с',
-    'to'                                      => 'по',
-    'undo'                                    => 'Шаг назад',
-    'revision_restored'                       => 'Версия успешно восстановлена',
-    'guest_user'                              => 'Гость',
-
     // Translatable models
     'edit_translations'                       => 'Перевод',
     'language'                                => 'Язык',
@@ -88,7 +76,7 @@ return [
     'info'                                    => 'Показано _START_ до _END_ из _TOTAL_ совпадений',
     'infoEmpty'                               => '',
     'infoFiltered'                            => '(отфильтровано из _MAX_ совпадений)',
-    'infoPostFix'                             => '',
+    'infoPostFix'                             => '.',
     'thousands'                               => ',',
     'lengthMenu'                              => '_MENU_ записей на странице',
     'loadingRecords'                          => 'Загрузка...',

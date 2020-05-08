@@ -48,9 +48,11 @@ trait UpdateOperation
                 $this->crud->addField([
                     'name' => 'locale',
                     'type' => 'hidden',
-                    'value' => $this->request->input('locale') ?? app()->getLocale(),
+                    'value' => request()->input('locale') ?? app()->getLocale(),
                 ]);
             }
+
+            $this->crud->setupDefaultSaveActions();
         });
 
         $this->crud->operation(['list', 'show'], function () {
@@ -68,11 +70,9 @@ trait UpdateOperation
     public function edit($id)
     {
         $this->crud->hasAccessOrFail('update');
-
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
         $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
-
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
         $this->data['crud'] = $this->crud;
@@ -96,7 +96,6 @@ trait UpdateOperation
 
         // execute the FormRequest authorization and validation, if one is required
         $request = $this->crud->validateRequest();
-
         // update the row in the db
         $item = $this->crud->update($request->get($this->crud->model->getKeyName()),
                             $this->crud->getStrippedSaveRequest());

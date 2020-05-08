@@ -2,8 +2,14 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudField;
+use Illuminate\Support\Arr;
+
 trait Fields
 {
+    use FieldsProtectedMethods;
+    use FieldsPrivateMethods;
+
     // ------------
     // FIELDS
     // ------------
@@ -19,6 +25,35 @@ trait Fields
     }
 
     /**
+     * The only REALLY MANDATORY attribute when defining a field is the 'name'.
+     * Everything else Backpack can probably guess. This method makes sure  the
+     * field definition array is complete, by guessing missing attributes.
+     *
+     * @param  string|array $field  The definition of a field (string or array).
+     * @return array                The correct definition of that field.
+     */
+    public function makeSureFieldHasNecessaryAttributes($field)
+    {
+        $field = $this->makeSureFieldHasName($field);
+        $field = $this->makeSureFieldHasEntity($field);
+        $field = $this->makeSureFieldHasLabel($field);
+
+        if (isset($field['entity'])) {
+            $field = $this->makeSureFieldHasRelationType($field);
+            $field = $this->makeSureFieldHasModel($field);
+            $field = $this->overwriteFieldNameFromEntity($field);
+            $field = $this->makeSureFieldHasAttribute($field);
+            $field = $this->makeSureFieldHasMultiple($field);
+            $field = $this->makeSureFieldHasPivot($field);
+        }
+
+        $field = $this->makeSureFieldHasType($field);
+        $field = $this->overwriteFieldNameFromDotNotationToArray($field);
+
+        return $field;
+    }
+
+    /**
      * Add a field to the create/update form or both.
      *
      * @param string|array $field The new field.
@@ -27,42 +62,10 @@ trait Fields
      */
     public function addField($field)
     {
-        // if the field_definition_array array is a string, it means the programmer was lazy and has only passed the name
-        // set some default values, so the field will still work
-        if (is_string($field)) {
-            $newField['name'] = $field;
-        } else {
-            $newField = $field;
-        }
+        $field = $this->makeSureFieldHasNecessaryAttributes($field);
 
-        // if this is a relation type field and no corresponding model was specified, get it from the relation method
-        // defined in the main model
-        if (isset($newField['entity']) && ! isset($newField['model'])) {
-            $newField['model'] = $this->getRelationModel($newField['entity']);
-        }
-
-        // if the label is missing, we should set it
-        if (! isset($newField['label'])) {
-            $label = is_array($newField['name']) ? $newField['name'][0] : $newField['name'];
-            $newField['label'] = mb_ucfirst(str_replace('_', ' ', $label));
-        }
-
-        // if the field type is missing, we should set it
-        if (! isset($newField['type'])) {
-            $newField['type'] = $this->getFieldTypeFromDbColumnType($newField['name']);
-        }
-
-        // if a tab was mentioned, we should enable it
-        if (isset($newField['tab'])) {
-            if (! $this->tabsEnabled()) {
-                $this->enableTabs();
-            }
-        }
-
-        $fields = $this->getOperationSetting('fields');
-        $fieldKey = is_array($newField['name']) ? implode('_', $newField['name']) : $newField['name'];
-        $fields = array_add($this->fields(), $fieldKey, $newField);
-        $this->setOperationSetting('fields', $fields);
+        $this->enableTabsIfFieldUsesThem($field);
+        $this->addFieldToOperationSettings($field);
 
         return $this;
     }
@@ -106,33 +109,18 @@ trait Fields
     }
 
     /**
-     * Move the most recently added field before or after the given target field. Default is before.
+     * Move this field to be first in the fields list.
      *
-     * @param array  $fields          The form fields.
-     * @param string $targetFieldName The target field name.
-     * @param bool   $before          If true, the field will be moved before the target field, otherwise it will be moved after it.
-     *
-     * @return array
+     * @return bool|null
      */
-    private function moveField($fields, $targetFieldName, $before = true)
+    public function makeFirstField()
     {
-        if (array_key_exists($targetFieldName, $fields)) {
-            $targetFieldPosition = $before ? array_search($targetFieldName, array_keys($fields))
-                : array_search($targetFieldName, array_keys($fields)) + 1;
-
-            if ($targetFieldPosition >= (count($fields) - 1)) {
-                // target field name is same as element
-                return $fields;
-            }
-
-            $element = array_pop($fields);
-            $beginningArrayPart = array_slice($fields, 0, $targetFieldPosition, true);
-            $endingArrayPart = array_slice($fields, $targetFieldPosition, null, true);
-
-            $fields = array_merge($beginningArrayPart, [$element['name'] => $element], $endingArrayPart);
+        if (! $this->fields()) {
+            return false;
         }
 
-        return $fields;
+        $firstField = array_keys(array_slice($this->fields(), 0, 1))[0];
+        $this->beforeField($firstField);
     }
 
     /**
@@ -143,7 +131,7 @@ trait Fields
     public function removeField($name)
     {
         $this->transformFields(function ($fields) use ($name) {
-            array_forget($fields, $name);
+            Arr::forget($fields, $name);
 
             return $fields;
         });
@@ -177,20 +165,38 @@ trait Fields
     }
 
     /**
-     * Update value of a given key for a current field.
-     *
-     * @param string $field         The field
-     * @param array  $modifications An array of changes to be made.
+     * Remove an attribute from one field's definition array.
+     * @param  string $field     The name of the field.
+     * @param  string $attribute The name of the attribute being removed.
      */
-    public function modifyField($field, $modifications)
+    public function removeFieldAttribute($field, $attribute)
     {
         $fields = $this->fields();
 
-        foreach ($modifications as $attributeName => $attributeValue) {
-            $fields[$field][$attributeName] = $attributeValue;
-        }
+        unset($fields[$field][$attribute]);
 
         $this->setOperationSetting('fields', $fields);
+    }
+
+    /**
+     * Update value of a given key for a current field.
+     *
+     * @param string $fieldName         The field name
+     * @param array  $modifications An array of changes to be made.
+     */
+    public function modifyField($fieldName, $modifications)
+    {
+        $fieldsArray = $this->fields();
+        $field = $this->firstFieldWhere('name', $fieldName);
+        $fieldKey = $this->getFieldKey($field);
+
+        foreach ($modifications as $attributeName => $attributeValue) {
+            $fieldsArray[$fieldKey][$attributeName] = $attributeValue;
+        }
+
+        $this->enableTabsIfFieldUsesThem($modifications);
+
+        $this->setOperationSetting('fields', $fieldsArray);
     }
 
     /**
@@ -278,42 +284,6 @@ trait Fields
     }
 
     /**
-     * Apply the given order to the fields and return the new array.
-     *
-     * @param array $fields The fields array.
-     * @param array $order  The desired field order array.
-     *
-     * @return array The ordered fields array.
-     */
-    private function applyOrderToFields($fields, $order)
-    {
-        $orderedFields = [];
-        foreach ($order as $fieldName) {
-            if (array_key_exists($fieldName, $fields)) {
-                $orderedFields[$fieldName] = $fields[$fieldName];
-            }
-        }
-
-        if (empty($orderedFields)) {
-            return $fields;
-        }
-
-        $remaining = array_diff_key($fields, $orderedFields);
-
-        return array_merge($orderedFields, $remaining);
-    }
-
-    /**
-     * Apply the given callback to the form fields.
-     *
-     * @param callable $callback The callback function to run for the given form fields.
-     */
-    private function transformFields(callable $callback)
-    {
-        $this->setOperationSetting('fields', $callback($this->fields()));
-    }
-
-    /**
      * Get the fields for the create or update forms.
      *
      * @return array all the fields that need to be shown and their information
@@ -335,7 +305,7 @@ trait Fields
     public function hasUploadFields()
     {
         $fields = $this->getFields();
-        $upload_fields = array_where($fields, function ($value, $key) {
+        $upload_fields = Arr::where($fields, function ($value, $key) {
             return isset($value['upload']) && $value['upload'] == true;
         });
 
@@ -370,15 +340,18 @@ trait Fields
      * Get a namespaced version of the field type name.
      * Appends the 'view_namespace' attribute of the field to the `type', using dot notation.
      *
-     * @param  array $field Field array
+     * @param  mixed $field
      * @return string Namespaced version of the field type name. Ex: 'text', 'custom.view.path.text'
      */
     public function getFieldTypeWithNamespace($field)
     {
-        $fieldType = $field['type'];
-
-        if (isset($field['view_namespace'])) {
-            $fieldType = implode('.', [$field['view_namespace'], $field['type']]);
+        if (is_array($field)) {
+            $fieldType = $field['type'];
+            if (isset($field['view_namespace'])) {
+                $fieldType = implode('.', [$field['view_namespace'], $field['type']]);
+            }
+        } else {
+            $fieldType = $field;
         }
 
         return $fieldType;
@@ -446,7 +419,10 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        return array_flatten(array_pluck($this->getCurrentFields(), 'name'));
+        //we need to parse field names in relation fields so they get posted/stored correctly
+        $fields = $this->parseRelationFieldNamesFromHtml($this->getCurrentFields());
+
+        return Arr::flatten(Arr::pluck($fields, 'name'));
     }
 
     /**
@@ -456,15 +432,63 @@ trait Fields
     public function getStrippedSaveRequest()
     {
         $setting = $this->getOperationSetting('saveAllInputsExcept');
-
         if ($setting == false || $setting == null) {
-            return $this->request->only($this->getAllFieldNames());
+            return $this->getRequest()->only($this->getAllFieldNames());
         }
 
         if (is_array($setting)) {
-            return $this->request->except($this->getOperationSetting('saveAllInputsExcept'));
+            return $this->getRequest()->except($this->getOperationSetting('saveAllInputsExcept'));
         }
 
-        return $this->request->only($this->getAllFieldNames());
+        return $this->getRequest()->only($this->getAllFieldNames());
+    }
+
+    /**
+     * Check if a field exists, by any given attribute.
+     *
+     * @param  string  $attribute   Attribute name on that field definition array.
+     * @param  string  $value       Value of that attribute on that field definition array.
+     * @return bool
+     */
+    public function hasFieldWhere($attribute, $value)
+    {
+        $match = Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
+            return isset($field[$attribute]) && $field[$attribute] == $value;
+        });
+
+        return (bool) $match;
+    }
+
+    /**
+     * Get the first field where a given attribute has the given value.
+     *
+     * @param  string  $attribute   Attribute name on that field definition array.
+     * @param  string  $value       Value of that attribute on that field definition array.
+     * @return bool
+     */
+    public function firstFieldWhere($attribute, $value)
+    {
+        return Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
+            return isset($field[$attribute]) && $field[$attribute] == $value;
+        });
+    }
+
+    /**
+     * Create and return a CrudField object for that field name.
+     *
+     * Enables developers to use a fluent syntax to declare their fields,
+     * in addition to the existing options:
+     * - CRUD::addField(['name' => 'price', 'type' => 'number']);
+     * - CRUD::field('price')->type('number');
+     *
+     * And if the developer uses the CrudField object as Field in his CrudController:
+     * - Field::name('price')->type('number');
+     *
+     * @param  string $name The name of the column in the db, or model attribute.
+     * @return CrudField
+     */
+    public function field($name)
+    {
+        return new CrudField($name);
     }
 }

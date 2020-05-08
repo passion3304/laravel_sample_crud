@@ -71,28 +71,30 @@ trait ListOperation
     {
         $this->crud->hasAccessOrFail('list');
 
+        $this->crud->applyUnappliedFilters();
+
         $totalRows = $this->crud->model->count();
         $filteredRows = $this->crud->count();
-        $startIndex = $this->request->input('start') ?: 0;
+        $startIndex = request()->input('start') ?: 0;
         // if a search term was present
-        if ($this->request->input('search') && $this->request->input('search')['value']) {
+        if (request()->input('search') && request()->input('search')['value']) {
             // filter the results accordingly
-            $this->crud->applySearchTerm($this->request->input('search')['value']);
+            $this->crud->applySearchTerm(request()->input('search')['value']);
             // recalculate the number of filtered rows
             $filteredRows = $this->crud->count();
         }
         // start the results according to the datatables pagination
-        if ($this->request->input('start')) {
-            $this->crud->skip((int) $this->request->input('start'));
+        if (request()->input('start')) {
+            $this->crud->skip((int) request()->input('start'));
         }
         // limit the number of results according to the datatables pagination
-        if ($this->request->input('length')) {
-            $this->crud->take((int) $this->request->input('length'));
+        if (request()->input('length')) {
+            $this->crud->take((int) request()->input('length'));
         }
         // overwrite any order set in the setup() method with the datatables order
-        if ($this->request->input('order')) {
-            $column_number = $this->request->input('order')[0]['column'];
-            $column_direction = $this->request->input('order')[0]['dir'];
+        if (request()->input('order')) {
+            $column_number = request()->input('order')[0]['column'];
+            $column_direction = request()->input('order')[0]['dir'];
             $column = $this->crud->findColumnById($column_number);
             if ($column['tableColumn']) {
                 // clear any past orderBy rules
