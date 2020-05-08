@@ -3,10 +3,6 @@
    $relationshipType = new ReflectionClass($entry->{$column['name']}());
    $relationshipType = $relationshipType->getShortName();
    $allows_multiple = $crud->guessIfFieldHasMultipleFromRelationType($relationshipType);
-
-   if (!$allows_multiple) {
-	   $column['name'] = 'parent_id';
-   }
 @endphp
 
 @if ($allows_multiple)
