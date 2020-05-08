@@ -81,6 +81,10 @@
                 $hiddenInput = element.parent("[algolia-wrapper]").find('input[type=hidden]');
                 $place = places({ container: element[0] });
 
+                // set id to something unique
+                $randomNumber = Math.round(Math.random() * 1000000000);
+                element.attr('id', 'algolia_input_'+$randomNumber);
+
                 function clearInput() {
                     if( !element.val().length ){
                         $hiddenInput.val('');
@@ -105,7 +109,7 @@
                     }
                 }
 
-                window.AlgoliaPlaces[ $addressConfig.field ] = $place;
+                window.AlgoliaPlaces[ element.attr('id') ] = $place;
             }
     </script>
     @endpush
