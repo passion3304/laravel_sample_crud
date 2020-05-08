@@ -57,7 +57,7 @@ trait Create
         $relationFields = [];
 
         foreach ($fields as $field) {
-            if (isset($field['model'])) {
+            if (isset($field['model']) && $field['model'] !== false) {
                 array_push($relationFields, $field);
             }
 
@@ -108,7 +108,6 @@ trait Create
     public function syncPivot($model, $data)
     {
         $fields_with_relationships = $this->getRelationFields();
-
         foreach ($fields_with_relationships as $key => $field) {
             if (isset($field['pivot']) && $field['pivot']) {
                 $values = isset($data[$field['name']]) ? $data[$field['name']] : [];
@@ -165,8 +164,10 @@ trait Create
         if (! isset($formattedData['relations'])) {
             return false;
         }
-
         foreach ($formattedData['relations'] as $relationMethod => $relationData) {
+            if (! isset($relationData['model'])) {
+                continue;
+            }
             $model = $relationData['model'];
             $relation = $item->{$relationMethod}();
 
@@ -185,9 +186,6 @@ trait Create
                     $modelInstance = new $model($relationData['values']);
                     $relation->save($modelInstance);
                 }
-            } else {
-                $modelInstance = new $model($relationData['values']);
-                $relation->save($modelInstance);
             }
 
             if (isset($relationData['relations'])) {
@@ -199,8 +197,16 @@ trait Create
     /**
      * Get a relation data array from the form data.
      * For each relation defined in the fields through the entity attribute, set the model, the parent model and the
-     * attribute values. For relations defined with the "dot" notations, this will be used to calculate the depth in the
-     * final array (@see \Illuminate\Support\Arr::set() for more).
+     * attribute values.
+     *
+     * We traverse this relation array later to create the relations, for example:
+     *
+     * Current model HasOne Address, this Address (line_1, country_id) BelongsTo Country through country_id in Address Model.
+     *
+     * So when editing current model crud user have two fields address.line_1 and address.country (we infer country_id from relation)
+     *
+     * Those will be nested accordingly in this relation array, so address relation will have a nested relation with country.
+     *
      *
      * @param array $data The form data.
      *
@@ -208,29 +214,48 @@ trait Create
      */
     private function getRelationDataFromFormData($data)
     {
-        $relationFields = $this->getRelationFields();
-
+        $relation_fields = $this->getRelationFields();
         $relationData = [];
-        foreach ($relationFields as $relationField) {
-            $attributeKey = $relationField['name'];
-            if (array_key_exists($attributeKey, $data) && empty($relationField['pivot'])) {
-                $key = implode('.relations.', explode('.', $relationField['entity']));
+        foreach ($relation_fields as $relation_field) {
+            $attributeKey = $this->parseRelationFieldNamesFromHtml([$relation_field])[0]['name'];
+
+            if (! is_null(Arr::get($data, $attributeKey)) && $relation_field['pivot'] !== true) {
+                $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
                 $fieldData = Arr::get($relationData, 'relations.'.$key, []);
-
                 if (! array_key_exists('model', $fieldData)) {
-                    $fieldData['model'] = $relationField['model'];
+                    $fieldData['model'] = $relation_field['model'];
                 }
-
                 if (! array_key_exists('parent', $fieldData)) {
-                    $fieldData['parent'] = $this->getRelationModel($relationField['entity'], -1);
+                    $fieldData['parent'] = $this->getRelationModel($attributeKey, -1);
                 }
-
-                $fieldData['values'][$attributeKey] = $data[$attributeKey];
+                $relatedAttribute = Arr::last(explode('.', $attributeKey));
+                $fieldData['values'][$relatedAttribute] = Arr::get($data, $attributeKey);
 
                 Arr::set($relationData, 'relations.'.$key, $fieldData);
             }
         }
 
         return $relationData;
+    }
+
+    public function getOnlyRelationEntity($relation_field)
+    {
+        $entity_array = explode('.', $relation_field['entity']);
+
+        $relation_model = $this->getRelationModel($relation_field['entity'], -1);
+
+        $related_method = Arr::last($entity_array);
+
+        if (! method_exists($relation_model, $related_method)) {
+            if (count($entity_array) <= 1) {
+                return $relation_field['entity'];
+            } else {
+                array_pop($entity_array);
+            }
+
+            return implode('.', $entity_array);
+        }
+
+        return $relation_field['entity'];
     }
 }

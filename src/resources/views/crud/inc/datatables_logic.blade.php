@@ -227,7 +227,7 @@
 
       @if($crud->getOperationSetting('resetButton') ?? true)
         // create the reset button
-        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1" id="crudTable_reset_button">Reset</a>';
+        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1" id="crudTable_reset_button">{{ trans('backpack::crud.reset') }}</a>';
 
         $('#datatable_info_stack').append(crudTableResetButton);
 

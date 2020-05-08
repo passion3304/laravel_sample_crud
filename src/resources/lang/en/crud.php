@@ -38,6 +38,7 @@ return [
     'all'                       => 'All ',
     'in_the_database'           => 'in the database',
     'list'                      => 'List',
+    'reset'                     => 'Reset',
     'actions'                   => 'Actions',
     'preview'                   => 'Preview',
     'delete'                    => 'Delete',

@@ -27,6 +27,7 @@
         <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
         @foreach($field['fields'] as $subfield)
           @php
+              $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
               $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
               $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
               $subfield['showAsterisk'] = false;
@@ -163,9 +164,18 @@
             });
 
             if (values != null) {
+                // set the value on field inputs, based on the JSON in the hidden input
                 new_field_group.find('input, select, textarea').each(function () {
                     if ($(this).data('repeatable-input-name')) {
                         $(this).val(values[$(this).data('repeatable-input-name')]);
+
+                        // if it's a Select input with no options, also attach the values as a data attribute;
+                        // this is done because the above val() call will do nothing if the options aren't there
+                        // so the fields themselves have to treat this use case, and look at data-selected-options
+                        // and create the options based on those values
+                        if ($(this).is('select') && $(this).children('option').length == 0) {
+                          $(this).attr('data-selected-options', JSON.stringify(values[$(this).data('repeatable-input-name')]));
+                        }
                     }
                 });
             }

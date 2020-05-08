@@ -15,7 +15,6 @@
     <select
         name="{{ $field['name'] }}[]"
         style="width: 100%"
-        id="select2_ajax_multiple_{{ $field['name'] }}"
         data-init-function="bpFieldInitSelect2FromAjaxMultipleElement"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-placeholder="{{ $field['placeholder'] }}"
@@ -24,7 +23,7 @@
         data-method="{{ $field['method'] ?? 'GET' }}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
+        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'false' }}"
         data-ajax-delay="{{ $field['delay'] }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
         multiple>
@@ -79,6 +78,8 @@
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
 <script>
+
+
     function bpFieldInitSelect2FromAjaxMultipleElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
@@ -91,6 +92,26 @@
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
+        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? '[]');
+
+        var select2AjaxMultipleFetchSelectedEntries = function (element) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: $dataSource,
+                    data: {
+                        'keys': $selectedOptions
+                    },
+                    type: $method,
+                    success: function (result) {
+
+                        resolve(result);
+                    },
+                    error: function (result) {
+                        reject(result);
+                    }
+                });
+            });
+        };
 
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
@@ -135,6 +156,27 @@
                     },
                     cache: true
                 },
+            });
+        }
+
+        // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
+        // we have stored from the field and append those options in the select.
+        if (typeof $selectedOptions !== typeof undefined && $selectedOptions !== false && $selectedOptions != '') {
+            var optionsForSelect = [];
+            select2AjaxMultipleFetchSelectedEntries(element).then(result => {
+                result.forEach(function(item) {
+                    $itemText = item[$fieldAttribute];
+                    $itemValue = item[$connectedEntityKeyName];
+                    //add current key to be selected later.
+                    optionsForSelect.push($itemValue);
+
+                    //create the option in the select
+                    $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
+                });
+
+                // set the option keys as selected.
+                $(element).val(optionsForSelect);
+                $(element).trigger('change');
             });
         }
 

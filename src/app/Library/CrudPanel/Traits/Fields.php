@@ -25,6 +25,35 @@ trait Fields
     }
 
     /**
+     * The only REALLY MANDATORY attribute when defining a field is the 'name'.
+     * Everything else Backpack can probably guess. This method makes sure  the
+     * field definition array is complete, by guessing missing attributes.
+     *
+     * @param  string|array $field  The definition of a field (string or array).
+     * @return array                The correct definition of that field.
+     */
+    public function makeSureFieldHasNecessaryAttributes($field)
+    {
+        $field = $this->makeSureFieldHasName($field);
+        $field = $this->makeSureFieldHasEntity($field);
+        $field = $this->makeSureFieldHasLabel($field);
+
+        if (isset($field['entity'])) {
+            $field = $this->makeSureFieldHasRelationType($field);
+            $field = $this->makeSureFieldHasModel($field);
+            $field = $this->overwriteFieldNameFromEntity($field);
+            $field = $this->makeSureFieldHasAttribute($field);
+            $field = $this->makeSureFieldHasMultiple($field);
+            $field = $this->makeSureFieldHasPivot($field);
+        }
+
+        $field = $this->makeSureFieldHasType($field);
+        $field = $this->overwriteFieldNameFromDotNotationToArray($field);
+
+        return $field;
+    }
+
+    /**
      * Add a field to the create/update form or both.
      *
      * @param string|array $field The new field.
@@ -390,7 +419,10 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        return Arr::flatten(Arr::pluck($this->getCurrentFields(), 'name'));
+        //we need to parse field names in relation fields so they get posted/stored correctly
+        $fields = $this->parseRelationFieldNamesFromHtml($this->getCurrentFields());
+
+        return Arr::flatten(Arr::pluck($fields, 'name'));
     }
 
     /**
@@ -400,7 +432,6 @@ trait Fields
     public function getStrippedSaveRequest()
     {
         $setting = $this->getOperationSetting('saveAllInputsExcept');
-
         if ($setting == false || $setting == null) {
             return $this->getRequest()->only($this->getAllFieldNames());
         }

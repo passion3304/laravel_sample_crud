@@ -65,7 +65,8 @@ Alternatively, if you don't have 20 minutes right now, subscribe to our [drip em
 ## Install
 
 Installation guides:
-- [Install Backpack 4.0 on Laravel 5.8, 6 or 7](https://backpackforlaravel.com/docs/4.0/installation) - recommended
+- [Install Backpack 4.0 on Laravel 6 or 7](https://backpackforlaravel.com/docs/4.1/installation) - recommended;
+- [Install Backpack 4.0 on Laravel 5.8, 6 or 7](https://backpackforlaravel.com/docs/4.0/installation) - last feature update was 21st Apr 2020;
 - [Install Backpack 3.6 on Laravel 5.8 or 6.x](https://backpackforlaravel.com/docs/3.6/installation) - last feature update was 17th Sep 2019;
 - [Install Backpack 3.5 on Laravel 5.5, 5.6, 5.7](https://backpackforlaravel.com/docs/3.5/installation) - last feature update was 27th Feb 2019;
 - [Install Backpack 3.x on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - last feature update was 27 Sep 2017;
@@ -113,7 +114,7 @@ Please see the [License File](LICENSE.md) and [Pricing](https://backpackforlarav
 <a name="versioning"></a>
 ## Versioning
 
-When installing Backpack, require its minor version (currently ```4.0.*```). For us, this is what ```major.minor.patch``` means:
+When installing Backpack, require its minor version (currently ```4.1.*```). For us, this is what ```major.minor.patch``` means:
 
 - ```major``` - **PAID upgrade; MAJOR breaking changes;** historically every 2-3 years; upgrading may take even 2-3 hours; includes major new features, major changes in how the whole system works, and complete rewrites; it allows us to _considerably_ improve the product, and add features that were previously impossible;
 - ```minor``` - **FREE upgrade; MINOR breaking changes**; historically every 6-12 months; upgrading takes less than 30 minutes; it allows us to add big new features, for free;

@@ -9,20 +9,58 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 -----------
 
-## 4.1.0 - 2020-02-xx
+## 4.1.0 - 2020-05-06
+
+See the [release notes](https://backpackforlaravel.com/docs/4.1/release-notes) and the [upgrade guide](https://backpackforlaravel.com/docs/4.1/upgrade-guide). TLDR:
 
 ### Added
-- support for Laravel 7;
+- new operation - InlineCreate
+- new operation - Fetch
+- new field - repeatable
+- new field - relationship
+- new column - relationship
+- new column - relationship_count
+- new widget - chart
+- new optional API - fluent syntax for Fields, Column, Filters, Buttons, Widgets
+- inside list operation
+    - hide/show the searchbar with a config
+    - hide/show a Reset button that clears filtering pagination everything
+- customizable SaveActions (buttons at the end of Create/Update forms)
+
+### Changed
+- fields `wrapperAttributes` is now `wrapper`
+- line-awesome uses `la la-home` syntax instead of `fa fa-home`
 
 ### Removed
 - support for Laravel 5.8;
-- support for PHP 7.1;
+- support for PHP lower than 7.2.5;
+- laravel/helpers dependency;
+- barryvdh/laravel-elfinder dependency;
+- venturecraft/revisionable dependency;
+- intervention/image dependency;
+- App\Models\BackpackUser;
+- RevisionsOperation - it's now an add-on;
+- elFinder functionality - it's now an add-on;
+
 
 -----------
 
 # Backpack Version 4
 
 -----------
+
+## 4.0.61 - 2020-05-06
+
+### Changes
+- pameters not respecting what passed @dilneiss (#2705)
+- Rtl refines @ahmadmrj (#2703)
+- Date range calendar Icon @martijnb92 (#2695)
+- Date picker calendar Icon @martijnb92 (#2694)
+
+### Changes
+- Bump places.js from 1.18.1 to 1.18.2 @dependabot-preview (#2741)
+- Bump moment from 2.24.0 to 2.25.0 @dependabot-preview (#2739)
+- Bump css-loader from 3.5.0 to 3.5.3 @dependabot-preview (#2740)
 
 ## 4.0.60 - 2020-04-21
 
