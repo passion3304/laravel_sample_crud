@@ -65,7 +65,7 @@
         data-placeholder="{{ $field['placeholder'] }}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
+        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-options-for-select="{{json_encode($field['options'])}}"

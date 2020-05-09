@@ -69,7 +69,7 @@
         data-data-source="{{ $field['data_source']}}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ $field['include_all_form_fields'] ?? 'true' }}"
+        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
         data-current-value="{{ $field['value'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
 
