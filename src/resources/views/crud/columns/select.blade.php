@@ -12,21 +12,22 @@
 
 <span>
     @if(count($attributes))
-
         @foreach($attributes as $key => $text)
             @php
                 $related_key = $key;
             @endphp
 
-            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
-                @if($column['escaped'])
-                    {{ $text }}
-                @else
-                    {!! $text !!}
-                @endif
-            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
-            
-            @if(!$loop->last), @endif
+            <span class="d-inline-flex">
+                @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+                    @if($column['escaped'])
+                        {{ $text }}
+                    @else
+                        {!! $text !!}
+                    @endif
+                @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+
+                @if(!$loop->last), @endif
+            </span>
         @endforeach
     @else
         -

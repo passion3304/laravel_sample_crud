@@ -18,21 +18,23 @@
 @endphp
 
 <span>
-    @if (!empty($results_array))
-        @foreach ($results_array as $key => $text)
+    @if(!empty($results_array))
+        @foreach($results_array as $key => $text)
             @php
                 $related_key = $key;
             @endphp
 
-            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
-                @if($column['escaped'])
-                    {{ $text }}
-                @else
-                    {!! $text !!}
-                @endif
-            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+            <span class="d-inline-flex">
+                @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+                    @if($column['escaped'])
+                        {{ $text }}
+                    @else
+                        {!! $text !!}
+                    @endif
+                @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 
-            @if(!$loop->last), @endif
+                @if(!$loop->last), @endif
+            </span>
         @endforeach
     @else
         -
