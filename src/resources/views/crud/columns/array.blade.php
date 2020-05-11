@@ -12,10 +12,6 @@
 <span>
 
     @if($value && count($value))
-        @php
-            $lastKey = array_key_last($value);
-        @endphp
-
         @foreach($value as $key => $text)
             @php
                 $column['text'] = $text;
@@ -29,7 +25,7 @@
                 @endif
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 
-            @if($key != $lastKey), @endif
+            @if(!$loop->last), @endif
         @endforeach
     @else
         -

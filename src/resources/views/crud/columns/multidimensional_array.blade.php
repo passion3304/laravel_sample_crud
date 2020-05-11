@@ -17,7 +17,6 @@
                 $list[$column['visible_key']][] = $item[$column['visible_key']];
             }
         }
-        $lastKey = array_key_last($list[$column['visible_key']]);
     }
 
     $column['escaped'] = $column['escaped'] ?? true;
@@ -37,7 +36,8 @@
                     {!! $column['text'] !!}
                 @endif
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
-        @if($lastKey != $key),@endif
+        
+            @if(!$loop->last), @endif
         @endforeach
     @else
         -

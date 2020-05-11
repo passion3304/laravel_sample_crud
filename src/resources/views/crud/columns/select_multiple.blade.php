@@ -9,8 +9,7 @@
 
     if(!$results->isEmpty()) {
         $related_key = $results->first()->getKeyName();
-        $results_array = $results->pluck($column['attribute'],$related_key)->toArray();
-        $lastKey = array_key_last($results_array);
+        $results_array = $results->pluck($column['attribute'], $related_key)->toArray();
     }
 
     foreach ($results_array as $key => $text) { 
@@ -33,7 +32,7 @@
                 @endif
             @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 
-            @if($lastKey != $key), @endif
+            @if(!$loop->last), @endif
         @endforeach
     @else
         -
