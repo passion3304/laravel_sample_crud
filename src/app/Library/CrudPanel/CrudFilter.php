@@ -495,6 +495,37 @@ class CrudFilter
         }
     }
 
+    // -----------------
+    // DEBUGGING METHODS
+    // -----------------
+    
+    /**
+     * Dump the current object to the screen,
+     * so that the developer can see its contents.
+     * 
+     * @return CrudFilter
+     */
+    public function dump()
+    {
+        dump($this);
+
+        return $this;
+    }
+
+    /**
+     * Dump and die. Duumps the current object to the screen,
+     * so that the developer can see its contents, then stops 
+     * the execution.
+     * 
+     * @return CrudFilter
+     */
+    public function dd()
+    {
+        dd($this);
+
+        return $this;
+    }
+
     // -------------
     // MAGIC METHODS
     // -------------
