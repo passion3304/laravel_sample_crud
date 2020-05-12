@@ -206,15 +206,14 @@ class Widget extends Fluent
         return $this;
     }
 
-
     // -----------------
     // DEBUGGING METHODS
     // -----------------
-    
+
     /**
      * Dump the current object to the screen,
      * so that the developer can see its contents.
-     * 
+     *
      * @return Widget
      */
     public function dump()
@@ -226,9 +225,9 @@ class Widget extends Fluent
 
     /**
      * Dump and die. Duumps the current object to the screen,
-     * so that the developer can see its contents, then stops 
+     * so that the developer can see its contents, then stops
      * the execution.
-     * 
+     *
      * @return Widget
      */
     public function dd()
@@ -237,7 +236,6 @@ class Widget extends Fluent
 
         return $this;
     }
-    
 
     // -------------
     // MAGIC METHODS
