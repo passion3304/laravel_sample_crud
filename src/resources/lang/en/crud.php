@@ -142,6 +142,7 @@ return [
     'internal_link_placeholder' => 'Internal slug. Ex: \'admin/page\' (no quotes) for \':url\'',
     'external_link'             => 'External link',
     'choose_file'               => 'Choose file',
+    'new_item'                  => 'New Item',
 
     //Table field
     'table_cant_add'    => 'Cannot add new :entity',
