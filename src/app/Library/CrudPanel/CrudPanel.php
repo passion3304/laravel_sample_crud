@@ -430,7 +430,7 @@ class CrudPanel
             } elseif (is_array($relation)) {
                 $currentResults = $relation;
             } elseif ($relation instanceof Model) {
-                $currentResults = array($relation);
+                $currentResults = [$relation];
             } else {
                 $currentResults = [];
             }
