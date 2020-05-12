@@ -4,6 +4,7 @@
     $connected_entity_key_name = $connected_entity->getKeyName();
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
+    $field['include_all_form_fields'] = $field['include_all_form_fields'] ?? true;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
@@ -65,7 +66,7 @@
         data-placeholder="{{ $field['placeholder'] }}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
+        data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-options-for-select="{{json_encode($field['options'])}}"
