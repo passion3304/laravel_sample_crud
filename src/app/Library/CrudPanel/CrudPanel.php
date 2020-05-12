@@ -30,6 +30,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 
@@ -421,24 +422,28 @@ class CrudPanel
         $relationArray = explode('.', $relationString);
         $firstRelationName = Arr::first($relationArray);
         $relation = $model->{$firstRelationName};
-        $currentResults = [];
 
         $results = [];
         if (! is_null($relation)) {
-            if ($relation instanceof Collection && ! $relation->isEmpty()) {
-                $relation = $relation->first();
-            } elseif (is_array($relation) && ! empty($relation)) {
-                $relation = Arr::first($relation);
+            if ($relation instanceof Collection) {
+                $currentResults = $relation->all();
+            } elseif (is_array($relation)) {
+                $currentResults = $relation;
+            } elseif ($relation instanceof Model) {
+                $currentResults = array($relation);
+            } else {
+                $currentResults = [];
             }
-
-            $currentResults[get_class($relation)] = $relation->toArray();
 
             array_shift($relationArray);
 
             if (! empty($relationArray)) {
-                $results = array_merge($currentResults, $this->getRelatedEntries($relation->first(), implode('.', $relationArray)));
+                foreach ($currentResults as $currentResult) {
+                    $results = array_merge_recursive($results, $this->getRelatedEntries($currentResult, implode('.', $relationArray)));
+                }
             } else {
-                $results = $currentResults;
+                $relatedClass = get_class($model->{$firstRelationName}()->getRelated());
+                $results[$relatedClass] = $currentResults;
             }
         }
 
