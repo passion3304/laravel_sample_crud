@@ -136,11 +136,11 @@ class CrudColumn
     // -----------------
     // DEBUGGING METHODS
     // -----------------
-    
+
     /**
      * Dump the current object to the screen,
      * so that the developer can see its contents.
-     * 
+     *
      * @return CrudColumn
      */
     public function dump()
@@ -152,9 +152,9 @@ class CrudColumn
 
     /**
      * Dump and die. Duumps the current object to the screen,
-     * so that the developer can see its contents, then stops 
+     * so that the developer can see its contents, then stops
      * the execution.
-     * 
+     *
      * @return CrudColumn
      */
     public function dd()

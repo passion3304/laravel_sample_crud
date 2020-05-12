@@ -197,11 +197,11 @@ class CrudField
     // -----------------
     // DEBUGGING METHODS
     // -----------------
-    
+
     /**
      * Dump the current object to the screen,
      * so that the developer can see its contents.
-     * 
+     *
      * @return CrudField
      */
     public function dump()
@@ -213,9 +213,9 @@ class CrudField
 
     /**
      * Dump and die. Duumps the current object to the screen,
-     * so that the developer can see its contents, then stops 
+     * so that the developer can see its contents, then stops
      * the execution.
-     * 
+     *
      * @return CrudField
      */
     public function dd()
@@ -224,7 +224,6 @@ class CrudField
 
         return $this;
     }
-
 
     // -------------
     // MAGIC METHODS

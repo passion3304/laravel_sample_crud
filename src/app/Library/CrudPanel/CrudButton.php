@@ -378,11 +378,11 @@ class CrudButton
     // -----------------
     // DEBUGGING METHODS
     // -----------------
-    
+
     /**
      * Dump the current object to the screen,
      * so that the developer can see its contents.
-     * 
+     *
      * @return CrudButton
      */
     public function dump()
@@ -394,9 +394,9 @@ class CrudButton
 
     /**
      * Dump and die. Duumps the current object to the screen,
-     * so that the developer can see its contents, then stops 
+     * so that the developer can see its contents, then stops
      * the execution.
-     * 
+     *
      * @return CrudButton
      */
     public function dd()
