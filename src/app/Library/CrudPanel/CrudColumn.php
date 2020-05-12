@@ -32,6 +32,9 @@ class CrudColumn
             $this->setAttributeValue('name', $name);
         }
 
+        // guess all attributes that weren't explicitly defined
+        $this->attributes = $this->crud()->makeSureColumnHasNeededAttributes($this->attributes);
+
         return $this->save();
     }
 
