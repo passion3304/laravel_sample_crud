@@ -426,22 +426,17 @@ class CrudPanel
         $results = [];
         if (! is_null($relation)) {
             if ($relation instanceof Collection && ! $relation->isEmpty()) {
-                $currentResults[get_class($relation->first())] = $relation->toArray();
+                $relation = $relation->first();
             } elseif (is_array($relation) && ! empty($relation)) {
-                $currentResults[get_class($relation->first())] = $relation;
-            } else {
-                //relation must be App\Models\Article or App\Models\Category
-                if (! $relation instanceof Collection && ! empty($relation)) {
-                    $currentResults[get_class($relation)] = $relation->toArray();
-                }
+                $relation = Arr::first($relation);
             }
+
+            $currentResults[get_class($relation)] = $relation->toArray();
 
             array_shift($relationArray);
 
             if (! empty($relationArray)) {
-                foreach ($currentResults as $model => $currentResult) {
-                    $results[$model] = array_merge($results[$model], $this->getRelatedEntries($currentResult, implode('.', $relationArray)));
-                }
+                $results = array_merge($currentResults, $this->getRelatedEntries($relation->first(), implode('.', $relationArray)));
             } else {
                 $results = $currentResults;
             }
