@@ -358,21 +358,32 @@ class CrudPanel
             $model_instance = new $model();
             $modelKey = $model_instance->getKeyName();
 
-            // we go here in case attribute is not in the main entries array.
-            // - we have an array of entries OR it's an accessor attribute that is not in $appends.
-            // we check if it's not an acessor so we are sure it's an array of entries.
-            if (is_array($entries) && ! isset($entries[$attribute]) && ! $model_instance->hasGetMutator($attribute)) {
-                foreach ($entries as $entry) {
-                    $attributes[$entry[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry[$attribute]);
+            if (is_array($entries)) {
+                //if attribute does not exist in main array we have more than one entry OR the attribute
+                //is an acessor that is not in $appends property of model.
+                if (! isset($entries[$attribute])) {
+                    //we first check if we don't have the attribute because it's and acessor that is not in appends.
+                    if ($model_instance->hasGetMutator($attribute) && isset($entries[$modelKey])) {
+                        $entry_in_database = $model_instance->find($entries[$modelKey]);
+                        $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
+                    }else{
+                        //we have multiple entries
+                        //for each entry we check if $attribute exists in array or try to check if it's an acessor.
+                        foreach ($entries as $entry) {
+                            if (isset($entry[$attribute])) {
+                                $attributes[$entry[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry[$attribute]);
+                            } else {
+                                if ($model_instance->hasGetMutator($attribute)) {
+                                    $entry_in_database = $model_instance->find($entry[$modelKey]);
+                                    $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    //if we have the attribute we just return it, does not matter if it is direct attribute or an acessor added in $appends.
+                    $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
                 }
-                //in case attribute is in main array we just return it. (it could be mutated, but it's in $appends property)
-            } elseif (is_array($entries) && isset($entries[$attribute])) {
-                $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
-            //in case it's a mutated attribute that is not on the main array
-                //we grab an instance of that model so we return the attribute.
-            } elseif ($model_instance->hasGetMutator($attribute)) {
-                $entry_in_database = $model_instance->find($entries[$modelKey]);
-                $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
             }
         }
 
