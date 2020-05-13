@@ -80,10 +80,6 @@ trait FetchOperation
             $config['query']->get();
         }
 
-        // we store the original model so we can use it to check column types
-        // when multiple searchable columns are provided.
-        $originalModel = $config['query'];
-
         $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array'];
         // for each searchable attribute, add a WHERE clause
         foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
