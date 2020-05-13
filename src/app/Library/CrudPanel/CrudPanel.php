@@ -366,7 +366,7 @@ class CrudPanel
                     if ($model_instance->hasGetMutator($attribute) && isset($entries[$modelKey])) {
                         $entry_in_database = $model_instance->find($entries[$modelKey]);
                         $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
-                    }else{
+                    } else {
                         //we have multiple entries
                         //for each entry we check if $attribute exists in array or try to check if it's an acessor.
                         foreach ($entries as $entry) {
@@ -380,7 +380,7 @@ class CrudPanel
                             }
                         }
                     }
-                }else{
+                } else {
                     //if we have the attribute we just return it, does not matter if it is direct attribute or an acessor added in $appends.
                     $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
                 }
