@@ -357,14 +357,22 @@ class CrudPanel
         foreach ($endModels as $model => $entries) {
             $model_instance = new $model();
             $modelKey = $model_instance->getKeyName();
-            if (is_array($entries) && ! isset($entries[$attribute])) {
+
+            // we go here in case attribute is not in the main entries array.
+            // - we have an array of entries OR it's an accessor attribute that is not in $appends.
+            // we check if it's not an acessor so we are sure it's an array of entries.
+            if (is_array($entries) && ! isset($entries[$attribute]) && !$model_instance->hasGetMutator($attribute)) {
                 foreach ($entries as $entry) {
                     $attributes[$entry[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry[$attribute]);
                 }
+                //in case attribute is in main array we just return it. (it could be mutated, but it's in $appends property)
             } elseif (is_array($entries) && isset($entries[$attribute])) {
                 $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
-            } elseif ($entries->{$attribute}) {
-                $attributes[$entries->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries->{$attribute});
+                //in case it's a mutated attribute that is not on the main array
+                //we grab an instance of that model so we return the attribute.
+            } elseif ($model_instance->hasGetMutator($attribute)) {
+                $entry_in_database = $model_instance->find($entries[$modelKey]);
+                $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
             }
         }
 
