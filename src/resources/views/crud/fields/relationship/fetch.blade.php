@@ -14,7 +14,7 @@
     $field['multiple'] = $field['multiple'] ?? $crud->guessIfFieldHasMultipleFromRelationType($field['relation_type']);
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
-    $field['placeholder'] = $field['placeholder'] ?? $field['multiple'] ? 'Select entities' : 'Select an entity';
+    $field['placeholder'] = $field['placeholder'] ?? ($field['multiple'] ? 'Select entities' : 'Select an entity');
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
