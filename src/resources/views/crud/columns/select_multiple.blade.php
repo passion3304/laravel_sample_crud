@@ -13,8 +13,8 @@
         $lastKey = array_key_last($results_array);
     }
 
-    foreach ($results_array as $key => $text) {
-        $text = Str::limit($text, $column['limit'], '[...]');
+    foreach ($results_array as $key => $text) { 
+        $results_array[$key] = Str::limit($text, $column['limit'], '[...]');
     }
 @endphp
 

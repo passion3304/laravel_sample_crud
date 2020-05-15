@@ -124,8 +124,9 @@ return [
     'select_all'                => 'Selecionar todos',
     'select_files'              => 'Selecionar todos os arquivos',
     'select_file'               => 'Selecionar arquivo',
+    'new_item'                  => 'Novo Item',
 
-    //Table field
+    // Table field
     'table_cant_add'    => 'Não foi possível adicionar um(a) novo(a) :entity',
     'table_max_reached' => 'Limite de :max alcançado',
 

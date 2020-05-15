@@ -4,6 +4,13 @@ All Notable changes to `Backpack CRUD` will be documented in this file.
 
 
 -----------
+IMPORTANT
+-----------
+
+Since version 4.1.2 we no longer use this file to track changes. Please see
+https://github.com/Laravel-Backpack/CRUD/releases
+
+-----------
 
 # Backpack Version 4.1
 

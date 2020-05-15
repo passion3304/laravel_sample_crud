@@ -58,7 +58,7 @@ trait FetchOperation
         // set configuration defaults
         $config['paginate'] = isset($config['paginate']) ? $config['paginate'] : 10;
         $config['searchable_attributes'] = $config['searchable_attributes'] ?? $model_instance->identifiableAttribute();
-        $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($config['model']) : $model_instance; // if a closure that has been passed as "query", use the closure - otherwise use the model
+        $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($model_instance) : $model_instance; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
         // FetchOperation is aware of an optional parameter 'keys' that will fetch you the entity/entities that match the provided keys
         if (request()->has('keys')) {
@@ -80,15 +80,11 @@ trait FetchOperation
             $config['query']->get();
         }
 
-        // we store the original model so we can use it to check column types
-        // when multiple searchable columns are provided.
-        $originalModel = $config['query'];
-
         $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array'];
         // for each searchable attribute, add a WHERE clause
         foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
             $operation = ($k == 0) ? 'where' : 'orWhere';
-            $columnType = $originalModel->getColumnType($searchColumn);
+            $columnType = $model_instance->getColumnType($searchColumn);
 
             if (in_array($columnType, $textColumnTypes)) {
                 $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$search_string.'%');
