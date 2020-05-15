@@ -24,4 +24,8 @@ class Article extends Model
     {
         return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\User');
     }
+
+    public function getContentComposedAttribute() {
+        return $this->content . '++';
+    }
 }
