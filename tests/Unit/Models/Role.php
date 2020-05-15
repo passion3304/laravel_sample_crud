@@ -20,7 +20,8 @@ class Role extends Model
         return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\User', 'user_role');
     }
 
-    public function getRoleNameAttribute() {
-        return $this->name . '++';
+    public function getRoleNameAttribute()
+    {
+        return $this->name.'++';
     }
 }

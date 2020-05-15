@@ -36,7 +36,8 @@ class User extends Model
         return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Role', 'user_role');
     }
 
-    public function getNameComposedAttribute() {
-        return $this->name . '++';
+    public function getNameComposedAttribute()
+    {
+        return $this->name.'++';
     }
 }

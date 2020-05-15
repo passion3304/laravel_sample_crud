@@ -120,10 +120,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEntryEquals($inputData, $entry);
         $this->assertEmpty($entry->articles);
     }
+
     /**
      * @group failing
-     *
-     *
      */
     public function testCreateWithOneToOneRelationship()
     {
@@ -137,8 +136,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'password' => bcrypt($faker->password()),
             'accountDetails' => [
                 'nickname' => $faker->name,
-                'profile_picture' => 'test.jpg'
-            ]
+                'profile_picture' => 'test.jpg',
+            ],
         ];
         $entry = $this->crudPanel->create($inputData);
         $this->markTestIncomplete('Has one relation is not created in tests.');
