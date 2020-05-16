@@ -61,7 +61,7 @@ class AddSidebarContent extends Command
             $this->error('The sidebar_content file does not exist. Make sure Backpack is properly installed.');
         }
     }
-    
+
     /**
      * Parse the given file stream and return the line number where a string is found.
      *
