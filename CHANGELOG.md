@@ -16,7 +16,6 @@ https://github.com/Laravel-Backpack/CRUD/releases
 
 -----------
 
-
 ## 4.1.1 - 2020-05-08
 
 ### Fixed
