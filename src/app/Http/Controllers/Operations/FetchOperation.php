@@ -34,7 +34,7 @@ trait FetchOperation
      * Gets items from database and returns to selects.
      *
      * @param string|array $arg
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     private function fetch($arg)
     {
