@@ -143,6 +143,8 @@ return [
     'external_link'             => 'External link',
     'choose_file'               => 'Choose file',
     'new_item'                  => 'New Item',
+    'select_entry'              => 'Select an entry',
+    'select_entries'            => 'Select entries',
 
     //Table field
     'table_cant_add'    => 'Cannot add new :entity',

@@ -21,7 +21,5 @@
 @endsection
 
 @section('after_content_widgets')
-	@if (isset($widgets['after_content']))
-		@include(backpack_view('inc.widgets'), [ 'widgets' => app('widgets')->where('section', 'after_content')->toArray() ])
-	@endif
+	@include(backpack_view('inc.widgets'), [ 'widgets' => app('widgets')->where('section', 'after_content')->toArray() ])
 @endsection
