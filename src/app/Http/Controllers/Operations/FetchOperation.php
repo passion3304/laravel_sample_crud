@@ -34,7 +34,7 @@ trait FetchOperation
      * Gets items from database and returns to selects.
      *
      * @param string|array $arg
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse|Illuminate\Database\Eloquent\Collection|Illuminate\Pagination\LengthAwarePaginator
      */
     private function fetch($arg)
     {
