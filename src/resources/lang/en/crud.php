@@ -76,15 +76,15 @@ return [
     // DataTables translation
     'emptyTable'     => 'No data available in table',
     'info'           => 'Showing _START_ to _END_ of _TOTAL_ entries',
-    'infoEmpty'      => '',
+    'infoEmpty'      => 'No entries',
     'infoFiltered'   => '(filtered from _MAX_ total entries)',
     'infoPostFix'    => '.',
     'thousands'      => ',',
-    'lengthMenu'     => '_MENU_ records per page',
+    'lengthMenu'     => '_MENU_ entries per page',
     'loadingRecords' => 'Loading...',
     'processing'     => 'Processing...',
     'search'         => 'Search: ',
-    'zeroRecords'    => 'No matching records found',
+    'zeroRecords'    => 'No matching entries found',
     'paginate'       => [
         'first'    => 'First',
         'last'     => 'Last',
