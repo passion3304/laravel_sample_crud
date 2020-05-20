@@ -26,7 +26,7 @@ class PublishView extends Command
      *
      * @var string
      */
-    protected $description = 'Publishes a Backpack view so you can make changes in your project.';
+    protected $description = 'Publishes a Backpack view so you can make changes to it, for your project.';
 
     /**
      * The directory where the views will be published FROM.
