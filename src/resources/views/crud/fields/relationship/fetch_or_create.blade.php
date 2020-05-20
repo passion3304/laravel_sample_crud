@@ -307,8 +307,9 @@ function ajaxSearch(element, created) {
 
 function triggerModal(element) {
     var $fieldName = element.attr('data-field-related-name');
-    var $modal = $('#'+$fieldName+'-inline-create-dialog');
+    var $modal = $('#inline-create-dialog');
     var $modalSaveButton = $modal.find('#saveButton');
+    var $modalCancelButton = $modal.find('#cancelButton');
     var $form = $(document.getElementById($fieldName+"-inline-create-form"));
     var $inlineCreateRoute = element.attr('data-inline-create-route');
     var $ajax = element.attr('data-field-ajax') == 'true' ? true : false;
@@ -317,8 +318,11 @@ function triggerModal(element) {
 
     $modal.modal();
 
-
     initializeFieldsWithJavascript($form);
+
+    $modalCancelButton.on('click', function () {
+        $($modal).modal('hide');
+    });
 
     //when you hit save on modal save button.
     $modalSaveButton.on('click', function () {
@@ -399,7 +403,16 @@ function triggerModal(element) {
 
 
     $modal.on('shown.bs.modal', function (e) {
-
+        $modal.on('keyup',  function (e) {
+        if($modal.is(':visible')) {
+            var key = e.which;
+                if (key == 13) { //This is an ENTER
+                e.preventDefault();
+                $modalSaveButton.click();
+            }
+        }
+        return false;
+    });
     });
 }
 
