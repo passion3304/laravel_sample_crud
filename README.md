@@ -79,7 +79,7 @@ Play around in our [live demo](https://demo.backpackforlaravel.com/).
 
 ## Change Log
 
-Please see [CHANGELOG](CHANGELOG.md).
+For the current release (4.1.x) please see [the Releases tab](https://github.com/Laravel-Backpack/CRUD/releases). For previous versions (Backpack <=4.0.x), please see our old [CHANGELOG](CHANGELOG.md) file.
 
 ## Contributing Guidelines
 
