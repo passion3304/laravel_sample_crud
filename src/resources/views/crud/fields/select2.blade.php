@@ -1,7 +1,7 @@
 <!-- select2 -->
 @php
     $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
-    $entity_model = new $field['model']();
+    $entity_model = $crud->model;
 
     //if it's part of a relationship here we have the full related model, we want the key.
     if (is_object($current_value) && is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
