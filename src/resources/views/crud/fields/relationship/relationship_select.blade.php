@@ -10,10 +10,13 @@
 
 
     if (!isset($field['options'])) {
-            $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name);
+            $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name)->toArray();
         } else {
-            $field['options'] = call_user_func($field['options'], $field['model']::query())->pluck($field['attribute'],$connected_entity_key_name);
+            $field['options'] = call_user_func($field['options'], $field['model']::query())->pluck($field['attribute'],$connected_entity_key_name)->toArray();
     }
+    //json parse will clear the order of the keys, so we store the order in a separate variable
+    $optionsOrderedKeys = implode(',',array_keys($field['options']));
+
 
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
@@ -71,8 +74,9 @@
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
-        data-options-for-select="{{json_encode($field['options'])}}"
+        data-options-for-select="{{ json_encode($field['options']) }}"
         data-app-current-lang="{{ app()->getLocale() }}"
+        data-options-for-select-order="{{ $optionsOrderedKeys }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -138,8 +142,16 @@
         var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
-        var $optionsForSelect = JSON.parse(element.attr('data-options-for-select'));
         var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+        //prepare the options that will show in the select because JSON.parse does not preserve keys
+        var $optionsForSelect = [];
+        var $optionsForSelectOrderedKeys = element.attr('data-options-for-select-order').split(',');
+        var $optionsForSelectUnordered = JSON.parse(element.attr('data-options-for-select') ?? null);
+        for (const [key, value] of Object.entries($optionsForSelectOrderedKeys)) {
+            $optionsForSelect.push({ 'connecting_key' : value, 'value' : $optionsForSelectUnordered[value]});
+        };
+
+
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
 
@@ -157,7 +169,7 @@
 
 
         for (const [key, value] of Object.entries($optionsForSelect)) {
-            var $option = new Option(value, key);
+            var $option = new Option(value.value, value.connecting_key);
             $(element).append($option);
             //if option key is the same of current value we reselect it
             if(!$multiple) {
