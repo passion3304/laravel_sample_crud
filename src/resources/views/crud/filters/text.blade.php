@@ -1,8 +1,8 @@
 {{-- Text Backpack CRUD filter --}}
 
-<li filter-name="{{ $filter->name }}"
+<li filter-name="{{ Str::slug($filter->name) }}"
 	filter-type="{{ $filter->type }}"
-	class="nav-item dropdown {{ Request::get($filter->name) ? 'active' : '' }}">
+	class="nav-item dropdown {{ Request::get(Str::slug($filter->name)) ? 'active' : '' }}">
 	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
 	<div class="dropdown-menu p-0">
 		<div class="form-group backpack-filter mb-0">
@@ -35,7 +35,7 @@
 		jQuery(document).ready(function($) {
 			$('#text-filter-{{ Str::slug($filter->name) }}').on('change', function(e) {
 
-				var parameter = '{{ $filter->name }}';
+				var parameter = '{{ Str::slug($filter->name) }}';
 				var value = $(this).val();
 
 		    	// behaviour for ajax table
@@ -51,15 +51,15 @@
 				crud.updateUrl(new_url);
 
 				// mark this filter as active in the navbar-filters
-				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
+				if (URI(new_url).hasQuery('{{ Str::slug($filter->name) }}', true)) {
+					$('li[filter-name={{ Str::slug($filter->name) }}]').removeClass('active').addClass('active');
 				} else {
-					$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
+					$('li[filter-name={{ Str::slug($filter->name) }}]').trigger('filter:clear');
 				}
 			});
 
 			$('li[filter-name={{ Str::slug($filter->name) }}]').on('filter:clear', function(e) {
-				$('li[filter-name={{ $filter->name }}]').removeClass('active');
+				$('li[filter-name={{ Str::slug($filter->name) }}]').removeClass('active');
 				$('#text-filter-{{ Str::slug($filter->name) }}').val('');
 			});
 

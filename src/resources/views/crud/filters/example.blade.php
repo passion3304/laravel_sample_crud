@@ -1,8 +1,8 @@
 {{-- Example Backpack CRUD filter --}}
 
-<li filter-name="{{ $filter->name }}"
+<li filter-name="{{ Str::slug($filter->name) }}"
 	filter-type="{{ $filter->type }}"
-	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
+	class="nav-item dropdown {{ Request::get(Str::slug($filter->name))?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu padding-10">
 
@@ -40,7 +40,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 @push('crud_list_scripts')
     <script>
 		jQuery(document).ready(function($) {
-			$("li[filter-name={{ $filter->name }}] a").click(function(e) {
+			$("li[filter-name={{ Str::slug($filter->name) }}] a").click(function(e) {
 				e.preventDefault();
 
 				var parameter = $(this).attr('parameter');
@@ -63,19 +63,19 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
                 crud.updateUrl(new_url);
 
 				// mark this filter as active in the navbar-filters
-				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
+				if (URI(new_url).hasQuery('{{ Str::slug($filter->name) }}', true)) {
+					$("li[filter-name={{ Str::slug($filter->name) }}]").removeClass('active').addClass('active');
 				}
 				else
 				{
-					$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
+					$("li[filter-name={{ Str::slug($filter->name) }}]").trigger("filter:clear");
 				}
 			});
 
 			// clear filter event (used here and by the Remove all filters button)
-			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
+			$("li[filter-name={{ Str::slug($filter->name) }}]").on('filter:clear', function(e) {
 				// console.log('dropdown filter cleared');
-				$("li[filter-name={{ $filter->name }}]").removeClass('active');
+				$("li[filter-name={{ Str::slug($filter->name) }}]").removeClass('active');
 			});
 		});
 	</script>

@@ -1,14 +1,14 @@
 {{-- Select2 Ajax Backpack CRUD filter --}}
 
-<li filter-name="{{ $filter->name }}"
+<li filter-name="{{ Str::slug($filter->name) }}"
 	filter-type="{{ $filter->type }}"
-	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
+	class="nav-item dropdown {{ Request::get(Str::slug($filter->name))?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0 ajax-select">
 	    <div class="form-group mb-0">
-	    	<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2_ajax" data-filter-name="{{ $filter->name }}" placeholder="{{ $filter->placeholder }}">
-				@if (Request::get($filter->name))
-					<option value="{{ Request::get($filter->name) }}" selected="selected"> {{ Request::get($filter->name.'_text') ?? 'Previous selection' }} </option>
+	    	<select id="filter_{{ Str::slug($filter->name) }}" name="filter_{{ Str::slug($filter->name) }}" class="form-control input-sm select2" data-filter-type="select2_ajax" data-filter-name="{{ Str::slug($filter->name) }}" placeholder="{{ $filter->placeholder }}">
+				@if (Request::get(Str::slug($filter->name)))
+					<option value="{{ Request::get(Str::slug($filter->name)) }}" selected="selected"> {{ Request::get(Str::slug($filter->name).'_text') ?? 'Previous selection' }} </option>
 				@endif
 			</select>
 	    </div>
@@ -60,11 +60,11 @@
     @if (app()->getLocale() !== 'en')
     <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
     @endif
-    
+
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box
-            $('#filter_{{ $filter->name }}').each(function () {
+            $('#filter_{{ Str::slug($filter->name) }}').each(function () {
 
             	// if the filter has already been initialised, do nothing
             	if ($(this).attr('data-initialised')) {
