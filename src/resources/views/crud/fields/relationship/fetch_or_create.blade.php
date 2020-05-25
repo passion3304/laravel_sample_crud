@@ -625,18 +625,37 @@ function bpFieldInitFetchOrCreateElement(element) {
     }
 
         }
+
 if (typeof processItemText !== 'function') {
     function processItemText(item, $fieldAttribute, $appLang) {
-        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
-                if(item[$fieldAttribute][$appLang] != 'undefined') {
-                    return item[$fieldAttribute][$appLang];
-                }else{
-                    return item[$fieldAttribute][0];
+        if (typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null) {
+            // Return translated text if a translation is available
+            if(Object.keys(item[$fieldAttribute]).length >= 1) {
+                let $locale;
+                // Use current locale to get the translation
+                if ($appLang in item[$fieldAttribute]) {
+                    $locale = $appLang;
                 }
-            }else{
-                return item[$fieldAttribute];
+                // Use fallback locale to get the translation
+                else if ("{{ Lang::getFallback() }}" in item[$fieldAttribute]) {
+                    $locale = "{{ Lang::getFallback() }}";
+                }
+                // Use first locale in array to get the translation
+                else {
+                    $locale = Object.keys(item[$fieldAttribute])[0];
+                }
+
+                return item[$fieldAttribute][$locale];
             }
-}
+            // Report error since no translations are available
+            else {
+                console.error("No translations for attribute '" + $fieldAttribute + "' found.", item[$fieldAttribute]);
+                return 'no translations available';
+            }
+        } else {
+            return item[$fieldAttribute];
+        }
+    }
 }
             </script>
         @endpush
