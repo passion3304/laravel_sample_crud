@@ -13,6 +13,10 @@
 	}
 @endphp
 
+@section('before_breadcrumbs_widgets')
+	@include(backpack_view('inc.widgets'), [ 'widgets' => app('widgets')->where('section', 'before_breadcrumbs')->toArray() ])
+@endsection
+
 @section('before_content_widgets')
 	@include(backpack_view('inc.widgets'), [ 'widgets' => app('widgets')->where('section', 'before_content')->toArray() ])
 @endsection

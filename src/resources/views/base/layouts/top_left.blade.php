@@ -17,6 +17,8 @@
 
     <main class="main pt-2">
 
+       @yield('before_breadcrumbs_widgets')
+
        @includeWhen(isset($breadcrumbs), backpack_view('inc.breadcrumbs'))
 
        @yield('header')
