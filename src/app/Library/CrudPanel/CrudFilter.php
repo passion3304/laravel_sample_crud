@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CrudFilter
 {
@@ -24,7 +24,6 @@ class CrudFilter
     {
         //we use the sluggable name of the filter. When 'camelCased' Str::slug() will destroy it becoming 'camelcased'
         $options['name'] = Str::slug($options['name']);
-
 
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {
