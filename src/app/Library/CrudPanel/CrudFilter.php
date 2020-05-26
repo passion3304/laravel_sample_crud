@@ -22,8 +22,8 @@ class CrudFilter
 
     public function __construct($options, $values, $logic, $fallbackLogic)
     {
-        //we use the sluggable name of the filter. When 'camelCased' Str::slug() will destroy it becoming 'camelcased'
-        $options['name'] = Str::slug($options['name']);
+        //make sure we use the camel cased version of name.
+        $options['name'] = Str::camel($options['name']);
 
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {

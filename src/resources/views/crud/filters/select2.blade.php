@@ -1,12 +1,12 @@
 {{-- Select2 Backpack CRUD filter --}}
 
-<li filter-name="{{ Str::slug($filter->name) }}"
+<li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="nav-item dropdown {{ Request::get(Str::slug($filter->name))?'active':'' }}">
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0">
       <div class="form-group backpack-filter mb-0">
-			<select id="filter_{{ Str::slug($filter->name) }}" name="filter_{{ Str::slug($filter->name) }}" class="form-control input-sm select2" data-filter-type="select2" data-filter-name="{{ Str::slug($filter->name) }}" placeholder="{{ $filter->placeholder }}">
+			<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2" data-filter-name="{{ $filter->name }}" placeholder="{{ $filter->placeholder }}">
 				<option value="">-</option>
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)

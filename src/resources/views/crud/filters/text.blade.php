@@ -1,20 +1,20 @@
 {{-- Text Backpack CRUD filter --}}
 
-<li filter-name="{{ Str::slug($filter->name) }}"
+<li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="nav-item dropdown {{ Request::get(Str::slug($filter->name)) ? 'active' : '' }}">
+	class="nav-item dropdown {{ Request::get($filter->name) ? 'active' : '' }}">
 	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
 	<div class="dropdown-menu p-0">
 		<div class="form-group backpack-filter mb-0">
 			<div class="input-group">
 		        <input class="form-control pull-right"
-		        		id="text-filter-{{ Str::slug($filter->name) }}"
+		        		id="text-filter-{{ $filter->name }}"
 		        		type="text"
 						@if ($filter->currentValue)
 							value="{{ $filter->currentValue }}"
 						@endif
 		        		>
-		        <div class="input-group-append text-filter-{{ Str::slug($filter->name) }}-clear-button">
+		        <div class="input-group-append text-filter-{{ $filter->name }}-clear-button">
 		          <a class="input-group-text" href=""><i class="la la-times"></i></a>
 		        </div>
 		    </div>
@@ -33,9 +33,9 @@
 	<!-- include select2 js-->
   <script>
 		jQuery(document).ready(function($) {
-			$('#text-filter-{{ Str::slug($filter->name) }}').on('change', function(e) {
+			$('#text-filter-{{ $filter->name }}').on('change', function(e) {
 
-				var parameter = '{{ Str::slug($filter->name) }}';
+				var parameter = '{{ $filter->name }}';
 				var value = $(this).val();
 
 		    	// behaviour for ajax table
@@ -51,25 +51,25 @@
 				crud.updateUrl(new_url);
 
 				// mark this filter as active in the navbar-filters
-				if (URI(new_url).hasQuery('{{ Str::slug($filter->name) }}', true)) {
-					$('li[filter-name={{ Str::slug($filter->name) }}]').removeClass('active').addClass('active');
+				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
+					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
 				} else {
-					$('li[filter-name={{ Str::slug($filter->name) }}]').trigger('filter:clear');
+					$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
 				}
 			});
 
-			$('li[filter-name={{ Str::slug($filter->name) }}]').on('filter:clear', function(e) {
-				$('li[filter-name={{ Str::slug($filter->name) }}]').removeClass('active');
-				$('#text-filter-{{ Str::slug($filter->name) }}').val('');
+			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
+				$('li[filter-name={{ $filter->name }}]').removeClass('active');
+				$('#text-filter-{{ $filter->name }}').val('');
 			});
 
 			// datepicker clear button
-			$(".text-filter-{{ Str::slug($filter->name) }}-clear-button").click(function(e) {
+			$(".text-filter-{{ $filter->name }}-clear-button").click(function(e) {
 				e.preventDefault();
 
-				$('li[filter-name={{ Str::slug($filter->name) }}]').trigger('filter:clear');
-				$('#text-filter-{{ Str::slug($filter->name) }}').val('');
-				$('#text-filter-{{ Str::slug($filter->name) }}').trigger('change');
+				$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
+				$('#text-filter-{{ $filter->name }}').val('');
+				$('#text-filter-{{ $filter->name }}').trigger('change');
 			})
 		});
   </script>

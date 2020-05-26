@@ -1,11 +1,11 @@
 {{-- Dropdown Backpack CRUD filter --}}
 
-<li filter-name="{{ Str::slug($filter->name) }}"
+<li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="nav-item dropdown {{ Request::get(Str::slug($filter->name))?'active':'' }}">
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <ul class="dropdown-menu">
-		<a class="dropdown-item" parameter="{{ Str::slug($filter->name) }}" dropdownkey="" href="">-</a>
+		<a class="dropdown-item" parameter="{{ $filter->name }}" dropdownkey="" href="">-</a>
 		<div role="separator" class="dropdown-divider"></div>
 		@if (is_array($filter->values) && count($filter->values))
 			@foreach($filter->values as $key => $value)
@@ -13,7 +13,7 @@
 					<div role="separator" class="dropdown-divider"></div>
 				@else
 					<a  class="dropdown-item {{ ($filter->isActive() && $filter->currentValue == $key)?'active':'' }}"
-						parameter="{{ Str::slug($filter->name) }}"
+						parameter="{{ $filter->name }}"
 						href=""
 						dropdownkey="{{ $key }}"
 						>{{ $value }}</a>
@@ -41,7 +41,7 @@
 @push('crud_list_scripts')
     <script>
 		jQuery(document).ready(function($) {
-			$("li.dropdown[filter-name={{ Str::slug($filter->name) }}] .dropdown-menu a").click(function(e) {
+			$("li.dropdown[filter-name={{ $filter->name }}] .dropdown-menu a").click(function(e) {
 				e.preventDefault();
 
 				var value = $(this).attr('dropdownkey');
@@ -61,22 +61,22 @@
 
 				// mark this filter as active in the navbar-filters
 				// mark dropdown items active accordingly
-				if (URI(new_url).hasQuery('{{ Str::slug($filter->name) }}', true)) {
-					$("li[filter-name={{ Str::slug($filter->name) }}]").removeClass('active').addClass('active');
-					$("li[filter-name={{ Str::slug($filter->name) }}] .dropdown-menu a").removeClass('active');
+				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
+					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
+					$("li[filter-name={{ $filter->name }}] .dropdown-menu a").removeClass('active');
 					$(this).addClass('active');
 				}
 				else
 				{
-					$("li[filter-name={{ Str::slug($filter->name) }}]").trigger("filter:clear");
+					$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
 				}
 			});
 
 			// clear filter event (used here and by the Remove all filters button)
-			$("li[filter-name={{ Str::slug($filter->name) }}]").on('filter:clear', function(e) {
+			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
 				// console.log('dropdown filter cleared');
-				$("li[filter-name={{ Str::slug($filter->name) }}]").removeClass('active');
-				$("li[filter-name={{ Str::slug($filter->name) }}] .dropdown-menu a").removeClass('active');
+				$("li[filter-name={{ $filter->name }}]").removeClass('active');
+				$("li[filter-name={{ $filter->name }}] .dropdown-menu a").removeClass('active');
 			});
 		});
 	</script>

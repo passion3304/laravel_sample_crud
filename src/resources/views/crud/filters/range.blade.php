@@ -1,7 +1,7 @@
 {{-- Example Backpack CRUD filter --}}
-<li filter-name="{{ Str::slug($filter->name) }}"
+<li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="nav-item dropdown {{ Request::get(Str::slug($filter->name))?'active':'' }}">
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0">
 
@@ -38,7 +38,7 @@
 										placeholder = "max value"
 									@endif
 				        		>
-				        <div class="input-group-append range-filter-{{ Str::slug($filter->name) }}-clear-button">
+				        <div class="input-group-append range-filter-{{ $filter->name }}-clear-button">
 				          <a class="input-group-text" href=""><i class="la la-times"></i></a>
 				        </div>
 				    </div>
@@ -74,10 +74,10 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 @push('crud_list_scripts')
 	<script>
 		jQuery(document).ready(function($) {
-			$("li[filter-name={{ Str::slug($filter->name) }}] .from, li[filter-name={{ Str::slug($filter->name) }}] .to").change(function(e) {
+			$("li[filter-name={{ $filter->name }}] .from, li[filter-name={{ $filter->name }}] .to").change(function(e) {
 				e.preventDefault();
-				var from = $("li[filter-name={{ Str::slug($filter->name) }}] .from").val();
-				var to = $("li[filter-name={{ Str::slug($filter->name) }}] .to").val();
+				var from = $("li[filter-name={{ $filter->name }}] .from").val();
+				var to = $("li[filter-name={{ $filter->name }}] .to").val();
 				if (from || to) {
 					var range = {
 						'from': from,
@@ -88,7 +88,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 					//this change to empty string,because addOrUpdateUriParameter method just judgment string
 					var value = '';
 				}
-				var parameter = '{{ Str::slug($filter->name) }}';
+				var parameter = '{{ $filter->name }}';
 
 				// behaviour for ajax table
 				var ajax_table = $('#crudTable').DataTable();
@@ -103,23 +103,23 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 				crud.updateUrl(new_url);
 
 				// mark this filter as active in the navbar-filters
-				if (URI(new_url).hasQuery('{{ Str::slug($filter->name) }}', true)) {
-					$('li[filter-name={{ Str::slug($filter->name) }}]').removeClass('active').addClass('active');
+				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
+					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
 				}
 			});
 
-			$('li[filter-name={{ Str::slug($filter->name) }}]').on('filter:clear', function(e) {
-				$('li[filter-name={{ Str::slug($filter->name) }}]').removeClass('active');
-				$("li[filter-name={{ Str::slug($filter->name) }}] .from").val("");
-				$("li[filter-name={{ Str::slug($filter->name) }}] .to").val("");
-				$("li[filter-name={{ Str::slug($filter->name) }}] .to").trigger('change');
+			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
+				$('li[filter-name={{ $filter->name }}]').removeClass('active');
+				$("li[filter-name={{ $filter->name }}] .from").val("");
+				$("li[filter-name={{ $filter->name }}] .to").val("");
+				$("li[filter-name={{ $filter->name }}] .to").trigger('change');
 			});
 
 			// range clear button
-			$(".range-filter-{{ Str::slug($filter->name) }}-clear-button").click(function(e) {
+			$(".range-filter-{{ $filter->name }}-clear-button").click(function(e) {
 				e.preventDefault();
 
-				$('li[filter-name={{ Str::slug($filter->name) }}]').trigger('filter:clear');
+				$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
 			})
 
 		});

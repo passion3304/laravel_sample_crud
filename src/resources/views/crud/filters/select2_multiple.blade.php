@@ -1,12 +1,12 @@
 {{-- Select2 Multiple Backpack CRUD filter --}}
 
-<li filter-name="{{ Str::slug($filter->name) }}"
+<li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0">
       <div class="form-group backpack-filter mb-0">
-			<select id="filter_{{ Str::slug($filter->name) }}" name="filter_{{ Str::slug($filter->name) }}" data-filter-name="{{ Str::slug($filter->name) }}" class="form-control input-sm select2" data-filter-type="select2_multiple" placeholder="{{ $filter->placeholder }}" multiple>
+			<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" data-filter-name="{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2_multiple" placeholder="{{ $filter->placeholder }}" multiple>
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)
 						<option value="{{ $key }}"
@@ -72,7 +72,7 @@
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box
-            $('select[name=filter_{{ Str::slug($filter->name) }}]').not('[data-filter-enabled]').each(function () {
+            $('select[name=filter_{{ $filter->name }}]').not('[data-filter-enabled]').each(function () {
             	var filterName = $(this).attr('data-filter-name');
 
                 $(this).select2({
@@ -92,7 +92,7 @@
 	                    value = values.length !== 0 ? JSON.stringify(values) : '';
 	                }
 
-					var parameter = '{{ Str::slug($filter->name) }}';
+					var parameter = '{{ $filter->name }}';
 
 			    	// behaviour for ajax table
 					var ajax_table = $("#crudTable").DataTable();
