@@ -165,7 +165,6 @@
         }
 
         if (!$allows_null && $item === false) {
-            console.log(element.find('option:eq(0)'));
             element.find('option:eq(0)').prop('selected', true);
         }
 
