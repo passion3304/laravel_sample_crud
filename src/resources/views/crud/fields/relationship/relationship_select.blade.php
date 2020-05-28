@@ -1,5 +1,4 @@
 @php
-    //in case entity is superNews we want the url friendly super-news
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
@@ -10,13 +9,10 @@
 
 
     if (!isset($field['options'])) {
-            $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name)->toArray();
+            $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name);
         } else {
-            $field['options'] = call_user_func($field['options'], $field['model']::query())->pluck($field['attribute'],$connected_entity_key_name)->toArray();
+            $field['options'] = call_user_func($field['options'], $field['model']::query())->pluck($field['attribute'],$connected_entity_key_name);
     }
-    //json parse will clear the order of the keys, so we store the order in a separate variable
-    $optionsOrderedKeys = implode(',',array_keys($field['options']));
-
 
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
@@ -37,8 +33,7 @@
                     $current_value = [$current_value->{$connected_entity_key_name} => $current_value->{$field['attribute']}];
                 }else{
                     $current_value = $current_value
-                                    ->pluck($field['attribute'], $connected_entity_key_name)
-                                    ->toArray();
+                                    ->pluck($field['attribute'], $connected_entity_key_name);
                     }
 
             break;
@@ -74,9 +69,7 @@
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
-        data-options-for-select="{{ json_encode($field['options']) }}"
         data-app-current-lang="{{ app()->getLocale() }}"
-        data-options-for-select-order="{{ $optionsOrderedKeys }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -84,6 +77,16 @@
         multiple
         @endif
         >
+        @if ($field['allows_null'])
+            <option value="">-</option>
+        @endif
+
+        @if (count($field['options']))
+            @foreach ($field['options'] as $key => $option)
+                    <option value="{{ $key }}">{{ $option }}</option>
+            @endforeach
+        @endif
+    </select>
     </select>
 
     {{-- HINT --}}
@@ -143,15 +146,6 @@
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
         var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
-        //prepare the options that will show in the select because JSON.parse does not preserve keys
-        var $optionsForSelect = [];
-        var $optionsForSelectOrderedKeys = element.attr('data-options-for-select-order').split(',');
-        var $optionsForSelectUnordered = JSON.parse(element.attr('data-options-for-select') ?? null);
-        for (const [key, value] of Object.entries($optionsForSelectOrderedKeys)) {
-            $optionsForSelect.push({ 'connecting_key' : value, 'value' : $optionsForSelectUnordered[value]});
-        };
-
-
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
 
@@ -162,46 +156,17 @@
         if(Object.keys($value).length > 0) {
             $item = true;
         }
-
-
         var selectedOptions = [];
         var $currentValue = $item ? $value : '';
 
-
-        for (const [key, value] of Object.entries($optionsForSelect)) {
-            var $option = new Option(value.value, value.connecting_key);
-            $(element).append($option);
-            //if option key is the same of current value we reselect it
-            if(!$multiple) {
-                if (key == Object.keys($currentValue)[0]) {
-                    $(element).val(key);
-                }
-            }else{
-                for (const [key, value] of Object.entries($currentValue)) {
-                        selectedOptions.push(key);
-                    }
-
-                    $(element).val(selectedOptions);
-            }
-
+        for (const [key, value] of Object.entries($currentValue)) {
+            selectedOptions.push(key);
+            $(element).val(selectedOptions);
         }
 
-        if (typeof $selectedOptions !== typeof undefined &&
-                    $selectedOptions !== false &&
-                        $selectedOptions != '' &&
-                        $selectedOptions != null &&
-                        $selectedOptions != [])
-                {
-                    $(element).val($selectedOptions);
-                    $(element).trigger('change');
-                }
-
-        if (!$allows_null && $item === false && $selectedOptions == null) {
-            if(Object.keys($optionsForSelect).length > 0) {
-                $(element).val(Object.keys($optionsForSelect)[0]);
-            }else{
-                $(element).val(null);
-            }
+        if (!$allows_null && $item === false) {
+            console.log(element.find('option:eq(0)'));
+            element.find('option:eq(0)').prop('selected', true);
         }
 
         $(element).attr('data-current-value',$(element).val());
