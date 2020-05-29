@@ -88,8 +88,8 @@ trait FetchOperation
         // .... 'query' => function($model) { return $model->where('active', 1); }
         // So it reads: SELECT ... WHERE active = 1 AND (XXX = x OR YYY = y) and not SELECT ... WHERE active = 1 AND XXX = x OR YYY = y;
 
-        if (!empty($config['query']->getQuery()->wheres)) {
-            $config['query'] = $config['query']->where(function($query) use ($model_instance, $config, $search_string, $textColumnTypes) {
+        if (! empty($config['query']->getQuery()->wheres)) {
+            $config['query'] = $config['query']->where(function ($query) use ($model_instance, $config, $search_string, $textColumnTypes) {
                 foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
                     $operation = ($k == 0) ? 'where' : 'orWhere';
                     $columnType = $model_instance->getColumnType($searchColumn);
@@ -100,9 +100,10 @@ trait FetchOperation
                         $tempQuery = $query->{$operation}($searchColumn, $search_string);
                     }
                 }
+
                 return $tempQuery;
             });
-        }else{
+        } else {
             foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
                 $operation = ($k == 0) ? 'where' : 'orWhere';
                 $columnType = $model_instance->getColumnType($searchColumn);
