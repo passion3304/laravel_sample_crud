@@ -140,8 +140,8 @@
 
                 // highlight its parent tab
                 @if ($crud->tabsEnabled())
-                var tab_id = $(container).parent().attr('id');
-                $("#form_tabs [aria-controls="+tab_id+"]").addClass('text-red');
+                var tab_id = $(container).closest('[role="tabpanel"]').attr('id');
+                $("#form_tabs [aria-controls="+tab_id+"]").addClass('text-danger');
                 @endif
             });
         });
