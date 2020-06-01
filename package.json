@@ -27,7 +27,7 @@
         "bootstrap": "^4.4.1",
         "bootstrap-colorpicker": "^3.2.0",
         "bootstrap-datepicker": "^1.9.0",
-        "bootstrap-daterangepicker": "^3.0.5",
+        "bootstrap-daterangepicker": "^3.1.0",
         "bootstrap-iconpicker": "^1.8.2",
         "ckeditor": "^4.12.1",
         "cropperjs": "^1.5.6",
