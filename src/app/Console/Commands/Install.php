@@ -33,7 +33,7 @@ class Install extends Command
      */
     public function handle()
     {
-        $this->progressBar = $this->output->createProgressBar(6);
+        $this->progressBar = $this->output->createProgressBar(5);
         $this->progressBar->minSecondsBetweenRedraws(0);
         $this->progressBar->maxSecondsBetweenRedraws(120);
         $this->progressBar->setRedrawFrequency(1);
