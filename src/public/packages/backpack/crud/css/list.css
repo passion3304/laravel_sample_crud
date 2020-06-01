@@ -65,8 +65,12 @@
 		content: "\f142";
 		font-size: 21px;
 		box-shadow: none;
-		/*margin-top: 8px;*/
 		border: none;
+		display: inline;
+		position: relative;
+		left: 0;
+		top: 2px;
+		margin-left: 8px;
 	}
 
 	.dt-buttons {
@@ -82,8 +86,19 @@
 		vertical-align: middle;
 	}
 
+	#crudTable .details-control {
+		margin-left: 8px;
+	}
+
 	#crudTable.has-hidden-columns .details-control {
 		/*display: none;*/
+		margin-left: 0px;
+	}
+
+	#crudTable tbody > tr > td:first-of-type,
+	#crudTable thead > tr > th:first-of-type,
+	#crudTable tfoot > tr > th:first-of-type {
+		padding: 0;
 	}
 
 	div.dataTables_wrapper div.dataTables_length select {
@@ -208,7 +223,7 @@
 		min-height: 35px;
 	}
 
-	#crudTable thead>tr>th, table.dataTable thead>tr>td {
+	#crudTable thead>tr>th:not(.sorting_disabled), table.dataTable thead>tr>td {
 		padding-right: 30px;
 	}
 
