@@ -7,7 +7,6 @@
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
-
     if (!isset($field['options'])) {
             $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name);
         } else {
@@ -86,7 +85,6 @@
                     <option value="{{ $key }}">{{ $option }}</option>
             @endforeach
         @endif
-    </select>
     </select>
 
     {{-- HINT --}}
