@@ -92,7 +92,7 @@ if($activeInlineCreate) {
         data-init-function="bpFieldInitFetchOrCreateElement"
         data-is-inline="{{ $inlineCreate ?? 'false' }}"
         data-allows-null="{{var_export($field['allows_null'])}}"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
+        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
         data-placeholder="{{ $field['placeholder'] }}"
         data-data-source="{{ $field['data_source'] }}"
