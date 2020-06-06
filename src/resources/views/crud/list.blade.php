@@ -39,7 +39,7 @@
             @endif
           </div>
           <div class="col-sm-6">
-            <div id="datatable_search_stack" class="float-right mt-2 mt-sm-0"></div>
+            <div id="datatable_search_stack"></div>
           </div>
         </div>
 
