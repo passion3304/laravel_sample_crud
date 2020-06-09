@@ -208,6 +208,21 @@
 		min-height: 35px;
 	}
 
+	@media(max-width: 576px) {
+		#datatable_search_stack {
+			margin-top: .5rem;
+		}
+
+		#datatable_search_stack label {
+			width: 100%;
+		}
+	
+		#datatable_search_stack input[type="search"] {
+			margin-left: 0;
+			width: 100%;
+		}
+	}
+
 	#crudTable thead>tr>th, table.dataTable thead>tr>td {
 		padding-right: 30px;
 	}
