@@ -53,7 +53,7 @@ return [
     'delete_confirmation_title'                   => 'Obrisano',
     'delete_confirmation_message'                 => 'Stavka je uspešno izbrisana.',
     'delete_confirmation_not_title'               => 'NIJE obrisano',
-    'delete_confirmation_not_message'             => "Došlo je do greške. Vaša stavka možda nije izbrisana.",
+    'delete_confirmation_not_message'             => 'Došlo je do greške. Vaša stavka možda nije izbrisana.',
     'delete_confirmation_not_deleted_title'       => 'Nije obrisano',
     'delete_confirmation_not_deleted_message'     => 'Ništa se nije dogodilo. Vaš unos je siguran.',
 
