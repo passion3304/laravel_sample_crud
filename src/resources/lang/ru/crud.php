@@ -143,7 +143,7 @@ return [
     'external_link'                           => 'Внешняя ссылка',
     'choose_file'                             => 'Выбрать файл',
     'new_item'                                => 'Новый элемент',
-    'select_entry'                            => 'Выьрать запись',
+    'select_entry'                            => 'Выбрать запись',
     'select_entries'                          => 'Выбрать записи',
 
     //Table field
