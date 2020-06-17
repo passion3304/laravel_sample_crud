@@ -26,14 +26,6 @@ trait UpdateOperation
             'uses'      => $controller.'@update',
             'operation' => 'update',
         ]);
-
-        if(is_array(config('backpack.crud.locales')) && count(config('backpack.crud.locales'))  > 1){
-            Route::get($segment.'/{id}/translate/{lang}', [
-                'as'        => $routeName.'.translateItem',
-                'uses'      => $controller.'@translateItem',
-                'operation' => 'update',
-            ]);
-        }
     }
 
     /**
