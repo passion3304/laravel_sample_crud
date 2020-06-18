@@ -13,6 +13,16 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  *
  * And if the developer uses CrudField as Field in their CrudController:
  * - Field::name('price')->type('number');
+ *
+ * @method self type(string $value)
+ * @method self label(string $value)
+ * @method self tab(string $value)
+ * @method self prefix(string $value)
+ * @method self suffix(string $value)
+ * @method self default(mixed $value)
+ * @method self hint(string $value)
+ * @method self attributes(array $value)
+ * @method self wrapper(array $value)
  */
 class CrudField
 {
