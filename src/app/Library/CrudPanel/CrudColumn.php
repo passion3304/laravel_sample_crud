@@ -16,8 +16,14 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  *
  * @method self type(string $value)
  * @method self label(string $value)
- * @method self wrapper(array $value)
+ * @method self searchLogic(mixed $value)
+ * @method self orderLogic(callable $value)
  * @method self orderable(bool $value)
+ * @method self wrapper(array $value)
+ * @method self visibleInTable(bool $value)
+ * @method self visibleInModal(bool $value)
+ * @method self visibleInExport(bool $value)
+ * @method self visibleInShow(bool $value)
  * @method self priority(int $value)
  */
 class CrudColumn
