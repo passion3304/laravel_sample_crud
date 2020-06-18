@@ -23,6 +23,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  * @method self hint(string $value)
  * @method self attributes(array $value)
  * @method self wrapper(array $value)
+ * @method self fake(bool $value)
+ * @method self store_in(string $value)
  */
 class CrudField
 {
@@ -168,7 +170,7 @@ class CrudField
      * Set the value for a certain attribute on the CrudField object.
      *
      * @param string $attribute Name of the attribute.
-     * @param string $value     Value of that attribute.
+     * @param mixed $value     Value of that attribute.
      */
     private function setAttributeValue($attribute, $value)
     {
