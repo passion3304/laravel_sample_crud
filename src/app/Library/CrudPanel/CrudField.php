@@ -42,7 +42,7 @@ class CrudField
             $this->setAttributeValue('name', $name);
         }
 
-        return $this->save();
+        $this->save();
     }
 
     public function crud()
@@ -54,7 +54,7 @@ class CrudField
      * Create a CrudField object with the parameter as its name.
      *
      * @param  string $name Name of the column in the db, or model attribute.
-     * @return CrudPanel
+     * @return CrudField
      */
     public static function name($name)
     {
@@ -115,7 +115,7 @@ class CrudField
     /**
      * Make the current field the first one in the fields list.
      *
-     * @return CrudPanel
+     * @return CrudField
      */
     public function makeFirst()
     {
@@ -128,7 +128,7 @@ class CrudField
     /**
      * Make the current field the last one in the fields list.
      *
-     * @return CrudPanel
+     * @return CrudField
      */
     public function makeLast()
     {
