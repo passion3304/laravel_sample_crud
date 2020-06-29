@@ -38,9 +38,9 @@
             data-init-function="bpFieldInitTableElement"
             name="{{ $field['name'] }}"
             value="{{ $items }}"
-            data-max="{{$max}}" 
-            data-min="{{$min}}" 
-            data-maxErrorTitle="{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}" 
+            data-max="{{$max}}"
+            data-min="{{$min}}"
+            data-maxErrorTitle="{{trans('backpack::crud.table_cant_add', ['entity' => $item_name])}}"
             data-maxErrorMessage="{{trans('backpack::crud.table_max_reached', ['max' => $max])}}">
 
     <div class="array-container form-group">
@@ -205,9 +205,7 @@
                         x.each(function() {
                             if(this.value.length > 0) {
                                 var key = $(this).attr('data-cell-name').replace('item.','');
-                                var value = this.value.replace(/(['"])/g, "\\$1"); // escapes single and double quotes
-
-                                itArr.push('"' + key + '":"' + value + '"');
+                                itArr.push('"' + key + '":' + JSON.stringify(this.value));
                             }
                         });
                         otArr.push('{' + itArr.join(',') + '}');
