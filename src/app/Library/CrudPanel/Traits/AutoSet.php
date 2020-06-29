@@ -53,7 +53,7 @@ trait AutoSet
     public function getDbColumnTypes()
     {
         $this->setDoctrineTypesMapping();
-            
+
         $dbColumnTypes = [];
 
         foreach ($this->getDbTableColumns() as $key => $column) {
