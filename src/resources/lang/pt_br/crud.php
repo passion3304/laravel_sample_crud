@@ -83,7 +83,7 @@ return [
     'lengthMenu'     => '_MENU_ registros por página',
     'loadingRecords' => 'Carregando...',
     'processing'     => 'Processando...',
-    'search'         => 'Pesquisar: ',
+    'search'         => 'Pesquisar',
     'zeroRecords'    => 'Nenhum registro encontrado',
     'paginate'       => [
         'first'    => 'Primeira',

@@ -82,7 +82,7 @@ return [
     'lengthMenu'     => '_MENU_ stavki po stranici',
     'loadingRecords' => 'Učitavanje...',
     'processing'     => 'Pricesiranje...',
-    'search'         => 'Pretraga: ',
+    'search'         => 'Pretraga',
     'zeroRecords'    => 'Nije pronadjeno ništa',
     'paginate'       => [
         'first'    => 'Prvi',
