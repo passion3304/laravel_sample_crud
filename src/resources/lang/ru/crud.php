@@ -83,7 +83,7 @@ return [
     'lengthMenu'                              => '_MENU_ записей на странице',
     'loadingRecords'                          => 'Загрузка...',
     'processing'                              => 'Обработка...',
-    'search'                                  => 'Поиск: ',
+    'search'                                  => 'Поиск',
     'zeroRecords'                             => 'Совпадений не найдено',
     'paginate'                                => [
         'first'    => 'Первая',
