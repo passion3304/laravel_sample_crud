@@ -67,7 +67,7 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         @loadCssOnce('packages/cropperjs/dist/cropper.min.css')
-        @loadOnce('bpFieldInitBase64CropperImageStyle')
+        @loadOnce('bpFieldInitBase64CropperImageCss')
         <style>
             .hide {
                 display: none;
