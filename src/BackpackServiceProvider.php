@@ -66,6 +66,13 @@ class BackpackServiceProvider extends ServiceProvider
             return new Collection();
         });
 
+        //we register asset manager with an alias of 'assets' to use in Facade
+        $this->app->alias(\Backpack\CRUD\app\Library\Assets\AssetManager::class, 'assets');
+
+        //we register the Assets Facade so developer could use it in views like: Assets::isAssetLoaded($asset)
+        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        $loader->alias('Assets', 'Backpack\CRUD\app\Library\Assets\AssetsFacade');
+
         // load a macro for Route,
         // helps developers load all routes for a CRUD resource in one line
         if (! Route::hasMacro('crud')) {
