@@ -9,7 +9,7 @@
     @include('crud::fields.inc.translatable_icon')
 
     <div>
-        <button class="btn btn-light iconpicker btn-sm" role="icon-selector"></button>
+        <button type="button" class="btn btn-light iconpicker btn-sm" role="icon-selector"></button>
         <input
             type="hidden"
             name="{{ $field['name'] }}"

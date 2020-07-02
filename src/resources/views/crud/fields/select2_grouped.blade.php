@@ -7,12 +7,13 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     @php
-        $entity_model = $crud->getRelationModel($field['entity'],  - 1);
+        $entity_model = $crud->model;
+        $related_model = $crud->getRelationModel($field['entity']);
         $group_by_model = (new $entity_model)->{$field['group_by']}()->getRelated();
-        $categories = $group_by_model::has($field['group_by_relationship_back'])->get();
-
+        $categories = $group_by_model::with($field['group_by_relationship_back'])->get();
+        
         if (isset($field['model'])) {
-            $categorylessEntries = $field['model']::has($field['group_by'], '=', 0)->get();
+            $categorylessEntries = $related_model::doesnthave($field['group_by'])->get();
         }
     @endphp
     <select

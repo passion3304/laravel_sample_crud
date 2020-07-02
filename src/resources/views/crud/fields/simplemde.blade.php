@@ -36,38 +36,50 @@
     @endLoadOnce
 @endpush
 
-{{-- FIELD JS - will be loaded in the after_scripts section --}}
-@push('crud_fields_scripts')
+    {{-- FIELD JS - will be loaded in the after_scripts section --}}
+    @push('crud_fields_scripts')
     @loadJsOnce('packages/simplemde/dist/simplemde.min.js')
     @loadOnce('bpFieldInitSimpleMdeElement')
-    <script>
-        function bpFieldInitSimpleMdeElement(element) {
-            element.attr('id', 'simplemde_'+Math.ceil(Math.random() * 1000000));
+        <script>
+            function bpFieldInitSimpleMdeElement(element) {
+                if (element.attr('data-initialized') == 'true') {
+                    return;
+                }
 
-            console.log(element.attr('id'));
+                if (typeof element.attr('id') == 'undefined') {
+                    element.attr('id', 'SimpleMDE_'+Math.ceil(Math.random() * 1000000));
+                }
 
-            var elementId = element.attr('id');
-            var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
-            var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
-            var configurationObject = {
-                element: $('#'+elementId)[0],
-            };
+                var elementId = element.attr('id');
+                var simplemdeAttributes = JSON.parse(element.attr('data-simplemdeAttributes'));
+                var simplemdeAttributesRaw = JSON.parse(element.attr('data-simplemdeAttributesRaw'));
+                var configurationObject = {
+                    element: document.getElementById(elementId),
+                };
 
-            console.log($('#'+elementId));
+                configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
 
-            configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw);
+                if (!document.getElementById(elementId)) {
+                    return;
+                }
 
-            var smdeObject = new SimpleMDE(configurationObject);
+                var smdeObject = new SimpleMDE(configurationObject);
 
-            smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
-            smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
-            });
-        }
-    </script>
-    @endLoadOnce
-@endpush
+                smdeObject.options.minHeight = smdeObject.options.minHeight || "300px";
+                smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
+
+                // update the original textarea on keypress
+                smdeObject.codemirror.on("change", function(){
+                    element.val(smdeObject.value());
+                });
+
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
+                });
+            }
+        </script>
+        @endLoadOnce
+    @endpush
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

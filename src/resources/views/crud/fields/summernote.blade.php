@@ -3,7 +3,7 @@
     // make sure that the options array is defined
     // and at the very least, dialogsInBody is true;
     // that's needed for modals to show above the overlay in Bootstrap 4
-    $field['options'] = array_merge(['dialogsInBody' => true], $field['options'] ?? []);
+    $field['options'] = array_merge(['dialogsInBody' => true, 'tooltip' => false], $field['options'] ?? []);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -27,16 +27,24 @@
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
 
-{{-- FIELD CSS - will be loaded in the after_styles section --}}
+    {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
     <!-- include summernote css-->
     @loadCssOnce('packages/summernote/dist/summernote-bs4.css')
+    @loadOnce('summernoteCss')
+    <style type="text/css">
+        .note-editor.note-frame .note-status-output, .note-editor.note-airframe .note-status-output {
+                height: auto;
+        }
+    </style>
+    @endLoadOnce
 @endpush
+
+    @endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
     <!-- include summernote js-->
-    {{-- <script src="{{ asset('packages/summernote/dist/summernote.min.js') }}"></script> --}}
     @loadJsOnce('packages/summernote/dist/summernote-bs4.min.js')
     @loadOnce('bpFieldInitSummernoteElement')
     <script>

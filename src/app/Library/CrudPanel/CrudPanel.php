@@ -29,6 +29,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
@@ -326,7 +327,13 @@ class CrudPanel
         }
 
         $result = array_reduce(array_splice($relationArray, 0, $length), function ($obj, $method) {
-            return $obj->$method()->getRelated();
+            try {
+                $result = $obj->$method();
+
+                return $result->getRelated();
+            } catch (Exception $e) {
+                return $obj;
+            }
         }, $model);
 
         return get_class($result);
@@ -349,19 +356,75 @@ class CrudPanel
         $endModels = $this->getRelatedEntries($model, $relationString);
         $attributes = [];
         foreach ($endModels as $model => $entries) {
-            $modelKey = (new $model())->getKeyName();
-            if (is_array($entries) && ! isset($entries[$attribute])) {
-                foreach ($entries as $entry) {
-                    $attributes[$entry[$modelKey]] = $entry[$attribute];
+            $model_instance = new $model();
+            $modelKey = $model_instance->getKeyName();
+
+            if (is_array($entries)) {
+                //if attribute does not exist in main array we have more than one entry OR the attribute
+                //is an acessor that is not in $appends property of model.
+                if (! isset($entries[$attribute])) {
+                    //we first check if we don't have the attribute because it's and acessor that is not in appends.
+                    if ($model_instance->hasGetMutator($attribute) && isset($entries[$modelKey])) {
+                        $entry_in_database = $model_instance->find($entries[$modelKey]);
+                        $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
+                    } else {
+                        //we have multiple entries
+                        //for each entry we check if $attribute exists in array or try to check if it's an acessor.
+                        foreach ($entries as $entry) {
+                            if (isset($entry[$attribute])) {
+                                $attributes[$entry[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry[$attribute]);
+                            } else {
+                                if ($model_instance->hasGetMutator($attribute)) {
+                                    $entry_in_database = $model_instance->find($entry[$modelKey]);
+                                    $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    //if we have the attribute we just return it, does not matter if it is direct attribute or an acessor added in $appends.
+                    $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
                 }
-            } elseif (is_array($entries) && isset($entries[$attribute])) {
-                $attributes[$entries[$modelKey]] = $entries[$attribute];
-            } elseif ($entries->{$attribute}) {
-                $attributes[$entries->{$modelKey}] = $entries->{$attribute};
             }
         }
 
         return $attributes;
+    }
+
+    /**
+     * Parse translatable attributes from a model or models resulting from the specified relation string.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model          Model (eg: user).
+     * @param string                              $attribute      The attribute from the relation model (eg: the street attribute from the address model).
+     * @param string                              $value          Attribute value translatable or not
+     *
+     * @return string A string containing the translated attributed based on app()->getLocale()
+     */
+    public function parseTranslatableAttributes($model, $attribute, $value)
+    {
+        if (! method_exists($model, 'isTranslatableAttribute')) {
+            return $value;
+        }
+
+        if (! $model->isTranslatableAttribute($attribute)) {
+            return $value;
+        }
+
+        if (! is_array($value)) {
+            $decodedAttribute = json_decode($value, true);
+        } else {
+            $decodedAttribute = $value;
+        }
+
+        if (is_array($decodedAttribute) && ! empty($decodedAttribute)) {
+            if (isset($decodedAttribute[app()->getLocale()])) {
+                return $decodedAttribute[app()->getLocale()];
+            } else {
+                return Arr::first($decodedAttribute);
+            }
+        }
+
+        return $value;
     }
 
     /**

@@ -15,7 +15,6 @@
     <select
         name="{{ $field['name'] }}[]"
         style="width: 100%"
-        id="select2_ajax_multiple_{{ $field['name'] }}"
         data-init-function="bpFieldInitSelect2FromAjaxMultipleElement"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-placeholder="{{ $field['placeholder'] }}"
@@ -24,7 +23,7 @@
         data-method="{{ $field['method'] ?? 'GET' }}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'true' }}"
+        data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'false' }}"
         data-ajax-delay="{{ $field['delay'] }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
         multiple>
@@ -63,85 +62,126 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <!-- select2_from_ajax_multiple field type js -->
-        @loadJsOnce('packages/select2/dist/js/select2.full.min.js')
+    @loadJsOnce('packages/select2/dist/js/select2.full.min.js')
         @if (app()->getLocale() !== 'en')
             @loadJsOnce('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js')
         @endif
-        @loadOnce('bpFieldInitSelect2FromAjaxMultipleElement')
-        <script>
-            function bpFieldInitSelect2FromAjaxMultipleElement(element) {
-                var form = element.closest('form');
-                var $placeholder = element.attr('data-placeholder');
-                var $minimumInputLength = element.attr('data-minimum-input-length');
-                var $dataSource = element.attr('data-data-source');
-                var $method = element.attr('data-method');
-                var $fieldAttribute = element.attr('data-field-attribute');
-                var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
-                var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
-                var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
-                var $dependencies = JSON.parse(element.attr('data-dependencies'));
-                var $ajaxDelay = element.attr('data-ajax-delay');
+    @loadOnce('bpFieldInitSelect2FromAjaxMultipleElement')
+    <script>
 
-                if (!$(element).hasClass("select2-hidden-accessible"))
-                {
-                    $(element).select2({
-                        theme: 'bootstrap',
-                        multiple: true,
-                        placeholder: $placeholder,
-                        minimumInputLength: $minimumInputLength,
-                        ajax: {
-                            url: $dataSource,
-                            type: $method,
-                            dataType: 'json',
-                            delay: $ajaxDelay,
-                            data: function (params) {
-                                if ($includeAllFormFields) {
-                                    return {
-                                        q: params.term, // search term
-                                        page: params.page, // pagination
-                                        form: form.serializeArray() // all other form inputs
-                                    };
-                                } else {
-                                    return {
-                                        q: params.term, // search term
-                                        page: params.page, // pagination
-                                    };
-                                }
-                            },
-                            processResults: function (data, params) {
-                                params.page = params.page || 1;
 
-                                return {
-                                    results: $.map(data.data, function (item) {
-                                        return {
-                                            text: item[$fieldAttribute],
-                                            id: item[$connectedEntityKeyName]
-                                        }
-                                    }),
-                                    pagination: {
-                                         more: data.current_page < data.last_page
-                                    }
-                                };
-                            },
-                            cache: true
+    function bpFieldInitSelect2FromAjaxMultipleElement(element) {
+            var form = element.closest('form');
+            var $placeholder = element.attr('data-placeholder');
+            var $minimumInputLength = element.attr('data-minimum-input-length');
+            var $dataSource = element.attr('data-data-source');
+            var $method = element.attr('data-method');
+            var $fieldAttribute = element.attr('data-field-attribute');
+            var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
+            var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
+            var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
+            var $dependencies = JSON.parse(element.attr('data-dependencies'));
+            var $ajaxDelay = element.attr('data-ajax-delay');
+            var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? '[]');
+
+            var select2AjaxMultipleFetchSelectedEntries = function (element) {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: $dataSource,
+                        data: {
+                            'keys': $selectedOptions
                         },
-                    });
-                }
+                        type: $method,
+                        success: function (result) {
 
-                // if any dependencies have been declared
-                // when one of those dependencies changes value
-                // reset the select2 value
-                for (var i=0; i < $dependencies.length; i++) {
-                    $dependency = $dependencies[i];
-                    $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
-                        element.val(null).trigger("change");
+                            resolve(result);
+                        },
+                        error: function (result) {
+                            reject(result);
+                        }
                     });
-                }
+                });
+            };
+
+            if (!$(element).hasClass("select2-hidden-accessible"))
+            {
+                $(element).select2({
+                    theme: 'bootstrap',
+                    multiple: true,
+                    placeholder: $placeholder,
+                    minimumInputLength: $minimumInputLength,
+                    ajax: {
+                        url: $dataSource,
+                        type: $method,
+                        dataType: 'json',
+                        delay: $ajaxDelay,
+                        data: function (params) {
+                            if ($includeAllFormFields) {
+                                return {
+                                    q: params.term, // search term
+                                    page: params.page, // pagination
+                                    form: form.serializeArray() // all other form inputs
+                                };
+                            } else {
+                                return {
+                                    q: params.term, // search term
+                                    page: params.page, // pagination
+                                };
+                            }
+                        },
+                        processResults: function (data, params) {
+                            params.page = params.page || 1;
+
+                            return {
+                                results: $.map(data.data, function (item) {
+                                    return {
+                                        text: item[$fieldAttribute],
+                                        id: item[$connectedEntityKeyName]
+                                    }
+                                }),
+                                pagination: {
+                                    more: data.current_page < data.last_page
+                                }
+                            };
+                        },
+                        cache: true
+                    },
+                });
             }
-        </script>
-        @endLoadOnce
-    @endpush
 
+            // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
+            // we have stored from the field and append those options in the select.
+            if (typeof $selectedOptions !== typeof undefined && $selectedOptions !== false && $selectedOptions != '') {
+                var optionsForSelect = [];
+                select2AjaxMultipleFetchSelectedEntries(element).then(result => {
+                    result.forEach(function(item) {
+                        $itemText = item[$fieldAttribute];
+                        $itemValue = item[$connectedEntityKeyName];
+                        //add current key to be selected later.
+                        optionsForSelect.push($itemValue);
+
+                        //create the option in the select
+                        $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
+                    });
+
+                    // set the option keys as selected.
+                    $(element).val(optionsForSelect);
+                    $(element).trigger('change');
+                });
+            }
+
+            // if any dependencies have been declared
+            // when one of those dependencies changes value
+            // reset the select2 value
+            for (var i=0; i < $dependencies.length; i++) {
+                $dependency = $dependencies[i];
+                $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
+                    element.val(null).trigger("change");
+                });
+            }
+        }
+</script>
+@endLoadOnce
+@endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
