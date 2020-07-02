@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\Assets;
+
 use Illuminate\Support\Facades\Facade;
 
 class AssetsFacade extends Facade
@@ -10,5 +11,8 @@ class AssetsFacade extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'assets'; }
+    protected static function getFacadeAccessor()
+    {
+        return 'assets';
+    }
 }

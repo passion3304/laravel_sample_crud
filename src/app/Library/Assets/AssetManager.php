@@ -1,17 +1,17 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\Assets;
+
 use Illuminate\Support\Arr;
 
 class AssetManager
 {
-
     public $loaded_assets = [];
 
     public function __construct()
     {
-
     }
+
     /**
      * Adds the asset to the current loaded assets.
      *
@@ -20,30 +20,33 @@ class AssetManager
      */
     public function markAssetAsLoaded($asset)
     {
-        if (!$this->isAssetLoaded($asset)) {
+        if (! $this->isAssetLoaded($asset)) {
             $this->loaded_assets[] = $asset;
         }
     }
 
     /**
-     * Checks if the asset is already on loaded asset list
+     * Checks if the asset is already on loaded asset list.
      *
      * @param string $asset
-     * @return boolean
+     * @return bool
      */
     public function isAssetLoaded($asset)
     {
-        if (Arr::exists($this->loaded_assets,$asset)) {
+        if (Arr::exists($this->loaded_assets, $asset)) {
             return true;
         }
+
         return false;
     }
+
     /**
      * Returns the current loaded assets on app lifecycle.
      *
      * @return array
      */
-    public function loadedAssets() {
+    public function loadedAssets()
+    {
         return $this->loaded_assets;
     }
 
@@ -68,5 +71,4 @@ class AssetManager
     {
         return '<link href="'.asset($path).'" rel="stylesheet" type="text/css" />';
     }
-
 }
