@@ -66,8 +66,10 @@ class BackpackServiceProvider extends ServiceProvider
             return new Collection();
         });
 
-        //we register asset manager with an alias of 'assets' to use in Facade
-        $this->app->alias(\Backpack\CRUD\app\Library\Assets\AssetManager::class, 'assets');
+        // Bind the widgets collection object to Laravel's service container
+        $this->app->singleton('assets', function ($app) {
+            return new \Backpack\CRUD\app\Library\Assets\AssetManager();
+        });
 
         //we register the Assets Facade so developer could use it in views like: Assets::isAssetLoaded($asset)
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();

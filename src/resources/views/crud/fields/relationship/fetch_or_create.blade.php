@@ -234,7 +234,7 @@ function setupInlineCreateButtons(element) {
     var $inlineCreateButtonElement = $(element).parent().find('.inline-create-button');
     var $inlineModalRoute = element.attr('data-inline-modal-route');
     var $inlineModalClass = element.attr('data-inline-modal-class');
-    var $parentLoadedFields = element.attr('data-parent-loaded-fields');
+    var $parentLoadedAssets = $('#parentLoadedAssets').html();
     $inlineCreateButtonElement.on('click', function () {
 
         //we change button state so users know something is happening.
@@ -250,7 +250,7 @@ function setupInlineCreateButtons(element) {
             data: {
                 'entity': $fieldEntity,
                 'modal_class' : $inlineModalClass,
-                'parent_loaded_fields' : $parentLoadedFields,
+                'parent_loaded_assets' : $parentLoadedAssets,
             },
             type: 'POST',
             success: function (result) {

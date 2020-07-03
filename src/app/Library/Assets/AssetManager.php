@@ -6,10 +6,11 @@ use Illuminate\Support\Arr;
 
 class AssetManager
 {
-    public $loaded_assets = [];
+    public $loaded_assets;
 
     public function __construct()
     {
+        $this->loaded_assets = [];
     }
 
     /**
@@ -33,7 +34,7 @@ class AssetManager
      */
     public function isAssetLoaded($asset)
     {
-        if (Arr::exists($this->loaded_assets, $asset)) {
+        if (in_array($asset, $this->loaded_assets)) {
             return true;
         }
 
@@ -56,7 +57,7 @@ class AssetManager
      * @param string $path
      * @return string
      */
-    public function echoJsScript($path)
+    public function echoJsFileLink($path)
     {
         return '<script src="'.asset($path).'"></script>';
     }
@@ -69,6 +70,7 @@ class AssetManager
      */
     public function echoCssFileLink($path)
     {
+        //dd($path);
         return '<link href="'.asset($path).'" rel="stylesheet" type="text/css" />';
     }
 }
