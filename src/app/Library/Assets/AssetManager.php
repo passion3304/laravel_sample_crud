@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\Assets;
 
-use Illuminate\Support\Arr;
-
 class AssetManager
 {
     public $loaded_assets;
