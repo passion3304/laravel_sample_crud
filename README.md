@@ -75,7 +75,9 @@ Installation guides:
 
 ## Screenshots
 
-Play around in our [live demo](https://demo.backpackforlaravel.com/).
+![https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif](https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif)
+
+Play around in our [live demo](https://demo.backpackforlaravel.com/admin).
 
 ## Change Log
 
