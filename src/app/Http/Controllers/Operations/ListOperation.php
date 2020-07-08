@@ -74,7 +74,7 @@ trait ListOperation
         $this->crud->applyUnappliedFilters();
 
         $totalRows = $this->crud->model->count();
-        $filteredRows = $this->crud->count();
+        $filteredRows = $this->crud->query->toBase()->getCountForPagination();
         $startIndex = request()->input('start') ?: 0;
         // if a search term was present
         if (request()->input('search') && request()->input('search')['value']) {
