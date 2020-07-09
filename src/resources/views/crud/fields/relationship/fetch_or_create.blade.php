@@ -71,19 +71,6 @@ if($activeInlineCreate) {
 
         //route to modal
         $field['inline_create']['modal_route'] = route($field['inline_create']['entity']."-inline-create");
-
-        //include main form fields in the request when asking for modal data,
-        //allow the developer to modify the inline create modal
-        //based on some field on the main form
-        $field['inline_create']['include_main_form_fields'] = $field['inline_create']['include_main_form_fields'] ?? false;
-
-        if($field['inline_create']['include_main_form_fields'] !== false || $field['inline_create']['include_main_form_fields'] !== true) {
-            if(is_array($field['inline_create']['include_main_form_fields'])) {
-                $field['inline_create']['include_main_form_fields'] = json_encode($field['inline_create']['include_main_form_fields']);
-            }else{
-                $field['inline_create']['include_main_form_fields'] = json_encode([$field['inline_create']['include_main_form_fields']]);
-            }
-        }
     }
 }
 
@@ -118,7 +105,6 @@ if($activeInlineCreate) {
         data-field-ajax="{{var_export($field['ajax'])}}"
         data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
-        data-include-main-form-fields="{{$field['inline_create']['include_main_form_fields']}}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -250,9 +236,6 @@ function setupInlineCreateButtons(element) {
     var $inlineModalRoute = element.attr('data-inline-modal-route');
     var $inlineModalClass = element.attr('data-inline-modal-class');
     var $parentLoadedFields = element.attr('data-parent-loaded-fields');
-    var $includeMainFormFields = element.attr('data-include-main-form-fields');
-    var $form = element.closest('form');
-
     $inlineCreateButtonElement.on('click', function () {
 
         //we change button state so users know something is happening.
@@ -263,43 +246,13 @@ function setupInlineCreateButtons(element) {
 
 
         }
-        //prepare main form fields to be submited in case there are some.
-        //if result is "1" it means all form fields will be passed, developer passed "true".
-        if($includeMainFormFields == 1) {
-            var $toPass = $form.serializeArray();
-            $includeMainFormFields = true;
-        }else{
-            $fields = JSON.parse($includeMainFormFields);
-            $serializedForm = $form.serializeArray();
-            var $toPass = [];
-            $fields.forEach(function(value, index) {
-                $valueFromForm = $serializedForm.filter(field => field.name === value);
-                $toPass.push($valueFromForm[0]);
-
-            });
-            //if it's undefined here, developer passed false.
-            if(typeof $toPass[0] === "undefined") {
-                $includeMainFormFields = false;
-            }
-        }
         $.ajax({
             url: $inlineModalRoute,
-            data: (function() {
-                if($includeMainFormFields) {
-                    return {
-                        'entity': $fieldEntity,
-                        'modal_class' : $inlineModalClass,
-                        'parent_loaded_fields' : $parentLoadedFields,
-                        'main_form_fields' : $toPass
-                    };
-                }else{
-                    return {
-                        'entity': $fieldEntity,
-                        'modal_class' : $inlineModalClass,
-                        'parent_loaded_fields' : $parentLoadedFields
-                    };
-                }
-            })(),
+            data: {
+                'entity': $fieldEntity,
+                'modal_class' : $inlineModalClass,
+                'parent_loaded_fields' : $parentLoadedFields,
+            },
             type: 'POST',
             success: function (result) {
                 $('body').append(result);
