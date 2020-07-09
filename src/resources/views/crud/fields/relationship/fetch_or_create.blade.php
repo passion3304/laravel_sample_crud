@@ -510,7 +510,7 @@ function bpFieldInitFetchOrCreateElement(element) {
     var $modelKey = element.attr('data-model-local-key');
     var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
     var $appLang = element.attr('data-app-current-lang');
-    var $selectedOptions = JSON.parse(element.attr('data-selected-options') ? element.attr('data-selected-options') : null);
+    var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
     var $multiple = element.prop('multiple');
 
     var FetchOrCreateAjaxFetchSelectedEntry = function (element) {
