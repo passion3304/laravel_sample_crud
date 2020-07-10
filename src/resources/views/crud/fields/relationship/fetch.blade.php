@@ -186,7 +186,7 @@
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $allows_null = element.attr('data-column-nullable') == 'true' ? true : false;
         var $appLang = element.attr('data-app-current-lang');
-        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $multiple = element.prop('multiple');
 
         var FetchAjaxFetchSelectedEntry = function (element) {
