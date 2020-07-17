@@ -10,7 +10,7 @@
     $model_instance = new $field['model'];
     $options_ids_array = $field['options']->pluck($model_instance->getKeyName())->toArray();
 
-    $field['multiple'] = isset($field['multiple']) && $field['multiple']===false ? '': 'multiple';
+    $field['multiple'] = $field['multiple'] ?? true;
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -23,7 +23,7 @@
         data-select-all="{{ var_export($field['select_all'] ?? false)}}"
         data-options-for-js="{{json_encode(array_values($options_ids_array))}}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_multiple'])
-        {{$multiple}}>
+        {{ $field['multiple'] ? 'multiple' : '' }}>
 
         @if (isset($field['allows_null']) && $field['allows_null']==true)
             <option value="">-</option>
