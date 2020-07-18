@@ -55,7 +55,7 @@ return [
 
     // Bulk actions
     'bulk_no_entries_selected_title'   => 'Nessun record selezionato',
-    'bulk_no_entries_selected_message' => 'Seleziona uno o più record su cui effetturare l\'operaione.',
+    'bulk_no_entries_selected_message' => 'Seleziona uno o più record su cui effettuare l\'operazione.',
 
     // Bulk confirmation
     'bulk_delete_are_you_sure'   => 'Sei sicuro di voler eliminare :number record?',
