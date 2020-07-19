@@ -9,6 +9,7 @@ return [
     */
 
     'registration_closed'    => 'Le registrazioni sono chiuse.',
+    'no_email_column'        => 'Gli utenti non hanno un indirizzo email associato.',
     'first_page_you_see'     => 'La prima pagina che vedi dopo il login',
     'login_status'           => 'Stato autenticazione',
     'logged_in'              => 'Sei autenticato!',
@@ -39,7 +40,9 @@ return [
     'save'                   => 'Salva',
     'cancel'                 => 'Annulla',
     'error'                  => 'Errore',
-    'success'                => 'Operazione eseguita con successo',
+    'success'                => 'Successo',
+    'warning'                => 'Attenzione',
+    'notice'                 => 'Avviso',
     'old_password_incorrect' => 'La vecchia password non è corretta.',
     'password_dont_match'    => 'Le password non corrispondono.',
     'password_empty'         => 'Accertati di aver riempito entrambi i campi password.',
@@ -47,4 +50,20 @@ return [
     'account_updated'        => 'Account aggiornato con successo.',
     'unknown_error'          => 'Si è verificato un errore sconosciuto. Riprova più tardi.',
     'error_saving'           => 'Errore durante il salvataggio. Riprova più tardi.',
+    'welcome'                => 'Benvenuto!',
+    'use_sidebar'            => 'Usa la sidebar alla sinistra per creare, modificare o cancellare contenuti.',
+
+    'password_reset'         => [
+        'greeting'           => 'Ciao!',
+        'subject'            => 'Reimposta notifica password',
+        'line_1'             => 'Ricevi questa email perché abbiamo ricevuto una richiesta di reimpostazione della password per il tuo account.',
+        'line_2'             => 'Fai clic sul pulsante in basso per reimpostare la password:',
+        'button'             => 'Resetta la password',
+        'notice'             => 'Se non è stata richiesta la reimpostazione della password, non sono necessarie ulteriori azioni.',
+    ],
+
+    'step'                   => 'Passo',
+    'confirm_email'          => 'Conferma email',
+    'choose_new_password'    => 'Scegli la nuova password',
+    'confirm_new_password'   => 'Conferma la nuova password',
 ];
