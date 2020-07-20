@@ -7,7 +7,7 @@
         'field' => $field['name'],
         'full' => $field['store_as_json'],
     ];
-    $field['value'] = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    $field['value'] = oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '';
 
     // the field should work whether or not Laravel attribute casting is used
     if (isset($field['value']) && (is_array($field['value']) || is_object($field['value']))) {
@@ -21,9 +21,9 @@
     @include('crud::fields.inc.translatable_icon')
 
     @if($field['store_as_json'])
-    <input type="hidden" 
-        value='{{ $field['value'] }}' 
-        name="{{ $field['name'] }}" 
+    <input type="hidden"
+        value='{{ $field['value'] }}'
+        name="{{ $field['name'] }}"
         data-algolia-hidden-input="{{ $field['name'] }}">
     @endif
 

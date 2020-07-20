@@ -1,6 +1,6 @@
 @php
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
-    $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    $value = oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '';
     $value = $value
         ? preg_match('/^data\:image\//', $value)
             ? $value

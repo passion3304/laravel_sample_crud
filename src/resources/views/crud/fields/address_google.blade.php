@@ -1,5 +1,3 @@
-<!-- text input -->
-
 <?php
 
 // the field should work whether or not Laravel attribute casting is used
@@ -13,7 +11,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     <input type="hidden"
-           value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+           value="{{ oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '' }}"
            name="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix']))
@@ -33,7 +31,7 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
                         data-google-address="{&quot;field&quot;: &quot;{{$field['name']}}&quot;, &quot;full&quot;: {{isset($field['store_as_json']) && $field['store_as_json'] ? 'true' : 'false'}} }"
                         data-init-function="bpFieldInitAddressGoogleElement"
                         name="{{ $field['name'] }}"
-                        value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+                        value="{{ oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '' }}"
                         @include('crud::fields.inc.attributes')
                 >
             @endif

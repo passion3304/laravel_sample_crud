@@ -5,7 +5,7 @@
     <input
     	type="time"
     	name="{{ $field['name'] }}"
-        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
+        value="{{ oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '' }}"
         @include('crud::fields.inc.attributes')
     	>
 

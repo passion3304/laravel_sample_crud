@@ -1,6 +1,6 @@
 <!-- select2 -->
 @php
-    $current_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+    $current_value = oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '';
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -11,7 +11,7 @@
         $related_model = $crud->getRelationModel($field['entity']);
         $group_by_model = (new $entity_model)->{$field['group_by']}()->getRelated();
         $categories = $group_by_model::with($field['group_by_relationship_back'])->get();
-        
+
         if (isset($field['model'])) {
             $categorylessEntries = $related_model::doesnthave($field['group_by'])->get();
         }

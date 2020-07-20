@@ -1,6 +1,6 @@
 <!-- select2 -->
 @php
-    $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
+    $current_value = oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '';
     $entity_model = $crud->model;
 
     //if it's part of a relationship here we have the full related model, we want the key.
