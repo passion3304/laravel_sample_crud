@@ -9,7 +9,7 @@ return [
     */
 
     'registration_closed'    => 'Le registrazioni sono chiuse.',
-    'no_email_column'        => 'Gli untenti non hanno un indirizzo e-mail associato.',
+    'no_email_column'        => 'Gli utenti non hanno un indirizzo email associato.',
     'first_page_you_see'     => 'La prima pagina che vedi dopo il login',
     'login_status'           => 'Stato autenticazione',
     'logged_in'              => 'Sei autenticato!',
@@ -62,7 +62,7 @@ return [
         'notice'   => 'Se tu non hai richiesto il reset della password, non è necessaria nessun\'altra azione.',
     ],
 
-    'step'                 => 'Step',
+    'step'                 => 'Passo',
     'confirm_email'        => 'Conferma E-mail',
     'choose_new_password'  => 'Scegli una nuova password',
     'confirm_new_password' => 'Conferma la nuova password',
