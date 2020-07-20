@@ -181,7 +181,7 @@
             }
 
             container.append(new_field_group);
-            initializeFieldsWithJavascript(container);
+            initializeFieldsWithJavascript(new_field_group);
         }
     </script>
   @endpush
