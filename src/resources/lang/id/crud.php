@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Simpan dan buat baru',
     'save_action_save_and_edit'        => 'Simpan dan lanjutkan perubahan',
     'save_action_save_and_back'        => 'Simpan dan kembali',
+    'save_action_save_and_preview'     => 'Simpan dan lihat',
     'save_action_changed_notification' => 'Perilaku default setelah penyimpanan diubah.',
 
     // Create form
@@ -37,6 +38,7 @@ return [
     'all'                       => 'Semua ',
     'in_the_database'           => 'di database',
     'list'                      => 'Daftar',
+    'reset'                     => 'Set ulang',
     'actions'                   => 'Aksi',
     'preview'                   => 'Lihat',
     'delete'                    => 'Hapus',
@@ -44,8 +46,8 @@ return [
     'details_row'               => 'Ini adalah baris rincian. Ubah sesuka Anda.',
     'details_row_loading_error' => 'Terjadi kesalahan saat memuat detail. Silakan coba lagi.',
     'clone'                     => 'Duplikat',
-    'clone_success'             => '<strong>Entri telah diduplikat</strong><br>Entri baru telah ditambahkan, dengan informasi yang sama.',
-    'clone_failure'             => '<strong>Proses duplikat gagal</strong><br>Entri baru tidak dapat dibuat. Silakan coba lagi.',
+    'clone_success'             => '<strong>Masukan telah diduplikat</strong><br>Masukan baru telah ditambahkan, dengan informasi yang sama.',
+    'clone_failure'             => '<strong>Proses duplikat gagal</strong><br>Masukan baru tidak dapat dibuat. Silakan coba lagi.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Anda yakin ingin menghapus item ini?',
@@ -57,7 +59,7 @@ return [
     'delete_confirmation_not_deleted_message'     => 'Tidak ada yang terjadi. Item Anda aman.',
 
     // Bulk actions
-    'bulk_no_entries_selected_title'   => 'Tidak ada entri yang dipilih',
+    'bulk_no_entries_selected_title'   => 'Tidak ada masukan yang dipilih',
     'bulk_no_entries_selected_message' => 'Silakan pilih satu atau lebih untuk melakukan tindakan massal pada mereka.',
 
     // Bulk confirmation
@@ -73,8 +75,8 @@ return [
 
     // DataTables translation
     'emptyTable'     => 'Tak ada data yang tersedia pada tabel ini',
-    'info'           => 'Menampilkan _START_ dari _END_ dari _TOTAL_ masukan',
-    'infoEmpty'      => '',
+    'info'           => 'Menampilkan _START_ hingga _END_ dari _TOTAL_ masukan',
+    'infoEmpty'      => 'Tidak ada masukan',
     'infoFiltered'   => '(difilter dari _MAX_ jumlah masukan)',
     'infoPostFix'    => '.',
     'thousands'      => ',',
@@ -140,6 +142,9 @@ return [
     'internal_link_placeholder' => 'Slug internal. Cth: \'admin/page\' (tanpa tanda kutip) untuk \':url\'',
     'external_link'             => 'Tautan eksternal',
     'choose_file'               => 'Pilih File',
+    'new_item'                  => 'Item baru',
+    'select_entry'              => 'Pilih masukan',
+    'select_entries'            => 'Pilih masukan',
 
     //Table field
     'table_cant_add'    => 'Tidak dapat menambahkan :entity yang baru',
@@ -147,4 +152,8 @@ return [
 
     // File manager
     'file_manager' => 'Manajer File',
+
+    // InlineCreateOperation
+    'related_entry_created_success' => 'Masukan terkait telah dibuat dan dipilih.',
+    'related_entry_created_error' => 'Tidak dapat membuat masukan terkait.',
 ];
