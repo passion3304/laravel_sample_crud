@@ -55,7 +55,7 @@ return [
 
     'password_reset' => [
         'greeting' => 'Ciao!',
-        'subject'  => 'Notifica di reset della password',If you did not request a password reset, no further action is required
+        'subject'  => 'Notifica di reset della password',
         'line_1'   => 'Stai ricevendo questa e-mail in quanto abbiamo ricevuto una richiesta di reset della password dal tuo account.',
         'line_2'   => 'Clicca il pulsante qui sotto per reimpostare la tua password:',
         'button'   => 'Reimposta Password',
