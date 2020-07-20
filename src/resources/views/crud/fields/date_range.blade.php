@@ -2,8 +2,8 @@
 
 <?php
 
-    $start_value = oldOrFallback($field['name'][0],'') ?? $field['value'] ?? $field['default'] ?? '';
-    $end_value = oldOrFallback($field['name'][1],'') ?? $field['value'] ?? $field['default'] ?? '';
+    $start_value = oldOrFallback($field['name'][0], '') ?? $field['value'] ?? $field['default'] ?? '';
+    $end_value = oldOrFallback($field['name'][1], '') ?? $field['value'] ?? $field['default'] ?? '';
 
     // if the column has been cast to Carbon or Date (using attribute casting)
     // get the value as a date string

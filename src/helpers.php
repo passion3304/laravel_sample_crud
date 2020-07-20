@@ -214,7 +214,7 @@ if (! function_exists('is_countable')) {
 if (! function_exists('oldOrFallback')) {
     /**
      * This functions allows us to setup a default value in case there is an old value, but is forcelly empty
-     * by Laravel middleware ConvertEmptyStringsToNull
+     * by Laravel middleware ConvertEmptyStringsToNull.
      *
      * @param $field_name
      * @param $fallback
@@ -227,6 +227,5 @@ if (! function_exists('oldOrFallback')) {
         if (is_null(old(square_brackets_to_dots($field_name))) && ! empty(session()->getOldInput())) {
             return $fallback;
         }
-        return null;
     }
 }
