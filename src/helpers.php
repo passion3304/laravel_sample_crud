@@ -227,5 +227,6 @@ if (! function_exists('oldOrFallback')) {
         if (is_null(old(square_brackets_to_dots($field_name))) && ! empty(session()->getOldInput())) {
             return $fallback;
         }
+        return old(square_brackets_to_dots($field_name));
     }
 }
