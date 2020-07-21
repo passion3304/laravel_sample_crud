@@ -1,10 +1,6 @@
 <!-- bootstrap daterange picker input -->
 
 <?php
-
-    $start_value = oldOrFallback($field['name'][0], '') ?? $field['value'] ?? $field['default'] ?? '';
-    $end_value = oldOrFallback($field['name'][1], '') ?? $field['value'] ?? $field['default'] ?? '';
-
     // if the column has been cast to Carbon or Date (using attribute casting)
     // get the value as a date string
     if (! function_exists('formatDate')) {
@@ -42,8 +38,8 @@
 ?>
 
 @include('crud::fields.inc.wrapper_start')
-    <input class="datepicker-range-start" type="hidden" name="{{ $field['name'][0] }}" value="{{ old(square_brackets_to_dots($field['name'][0])) ?? $start_value ?? $start_default ?? '' }}">
-    <input class="datepicker-range-end" type="hidden" name="{{ $field['name'][1] }}" value="{{ old(square_brackets_to_dots($field['name'][1])) ?? $end_value ?? $end_default ?? '' }}">
+    <input class="datepicker-range-start" type="hidden" name="{{ $field['name'][0] }}" value="{{ oldOrFallback($field['name'][0], '') ?? $start_value ?? $start_default ?? '' }}">
+    <input class="datepicker-range-end" type="hidden" name="{{ $field['name'][1] }}" value="{{ oldOrFallback($field['name'][1], '') ?? $end_value ?? $end_default ?? '' }}">
     <label>{!! $field['label'] !!}</label>
     <div class="input-group date">
         <input
