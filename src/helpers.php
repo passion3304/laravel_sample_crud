@@ -213,20 +213,23 @@ if (! function_exists('is_countable')) {
 
 if (! function_exists('oldOrFallback')) {
     /**
-     * This functions allows us to setup a default value in case there is an old value, but is forcelly empty
+     * This function allows us to setup a default value in case there is an old value, but is forcelly null
      * by Laravel middleware ConvertEmptyStringsToNull.
      *
-     * @param $field_name
-     * @param $fallback
+     * @param string $field_name
+     * @param mixed $fallback
      *
      * @return mixed
      */
     function oldOrFallback($field_name, $fallback)
     {
-        //this means that there is values in session old() but that value is null
+        // When you submit your field empty, internaly laravel will convert it to «null».
+        // Using old('field') with coalescing operator (??) we can't match it even if we have it in the old() session (as null).
+        // This checks that the value is null, but exists in the session old array, so it was submited empty|null, but exists!
         if (is_null(old(square_brackets_to_dots($field_name))) && ! empty(session()->getOldInput())) {
             return $fallback;
         }
+
         return old(square_brackets_to_dots($field_name));
     }
 }
