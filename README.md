@@ -57,7 +57,7 @@ But professionals don't love Backpack just because it's feature-packed. They als
 
 ![https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif](https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif)
 
-The GIF above should provide you with a good idea about what Backapck will help you build. To get a deeper understanding, you can play around in our [live demo](https://demo.backpackforlaravel.com/admin) and see it in action.
+The GIF above should give you with a good idea about what Backpack will help you build. But you can also see it in action in our [live demo](https://demo.backpackforlaravel.com/admin), to get a deeper understanding of how Backpack admin panels look & feel and the amount of features it provides.
 
 ## Getting started
 
