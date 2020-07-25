@@ -22,9 +22,6 @@ class CrudFilter
 
     public function __construct($options, $values, $logic, $fallbackLogic)
     {
-        //make sure we use the camel cased version of name.
-        $options['name'] = Str::camel($options['name']);
-
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {
             $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));
