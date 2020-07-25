@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudFilter;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait Filters
@@ -76,7 +75,7 @@ trait Filters
         if (! isset($options['name'])) {
             abort(500, 'All your filters need names.');
         }
-        
+
         if ($this->filters()->contains('name', $options['name'])) {
             abort(500, "Sorry, you can't have two filters with the same name.");
         }

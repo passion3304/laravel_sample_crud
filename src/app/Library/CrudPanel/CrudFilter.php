@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CrudFilter
