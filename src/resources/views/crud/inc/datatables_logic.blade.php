@@ -12,7 +12,6 @@
         var saved_list_url = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url');
 
         //check if saved url has any parameter or is empty after clearing filters.
-
         if (saved_list_url && saved_list_url.indexOf('?') < 1) {
             var saved_list_url = false;
         }else{
@@ -50,7 +49,24 @@
 
     @endif
         if (saved_list_url && persistentUrl!=window.location.href) {
+            //before redirecting the user we get the current alerts for this page
+            //we can show them to the user after the persistency redirects him
+            var $passAlerts = [];
+            @foreach (\Alert::getMessages() as $type => $messages)
+
+                @foreach ($messages as $message)
+                    $passAlerts.push({
+                        type: "{{ $type }}",
+                        text: "{!! str_replace('"', "'", $message) !!}"
+                    });
+                @endforeach
+            @endforeach
+            //we setup variables that will be read by our alerts.blade.php file.
+            localStorage.setItem('passAlerts', JSON.stringify($passAlerts));
+
+            //finally redirect the user.
             window.location.href = persistentUrl;
+
         }
     @endif
 
