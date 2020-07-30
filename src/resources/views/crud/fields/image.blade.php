@@ -65,7 +65,7 @@
     </div>
     <div class="btn-group">
         <div class="btn btn-light btn-sm btn-file">
-            {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes', ['default_class' => 'hide'])>
+            {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes')>
             <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}" value="{{ $value }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
@@ -97,9 +97,6 @@
     @push('crud_fields_styles')
         <link href="{{ asset('packages/cropperjs/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
         <style>
-            .hide {
-                display: none;
-            }
             .image .btn-group {
                 margin-top: 10px;
             }
