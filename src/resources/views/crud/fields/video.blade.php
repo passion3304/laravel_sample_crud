@@ -182,21 +182,6 @@ $field['wrapper']['data-video'] = '';
             });
         };
 
-           /*  $.getJSON(api, function( data ){
-
-                if (typeof(data.items[0]) != "undefined") {
-                    var v = data.items[0].snippet;
-
-                    video.id = videoId;
-                    video.title = v.title;
-                    video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
-                    video.url = 'https://www.youtube.com/watch?v=' + video.id;
-
-                    callback(video);
-                }
-            });
-        }; */
-
         var fetchVimeo = function( videoId, callback ){
 
             var api = 'https://vimeo.com/api/v2/video/' + videoId + '.json?callback=?';
