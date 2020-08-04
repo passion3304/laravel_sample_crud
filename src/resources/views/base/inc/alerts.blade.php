@@ -6,7 +6,7 @@
 
 window.addEventListener('DOMContentLoaded', function() {
     //get the php alerts
-    var $crudAlerts = JSON.parse('{!! json_encode(\Alert::getMessages()) !!}');
+    var $crudAlerts = JSON.parse('{!! json_encode( \Alert::getMessages() , JSON_HEX_APOS) !!}');
 
         Noty.overrideDefaults({
             layout   : 'topRight',
