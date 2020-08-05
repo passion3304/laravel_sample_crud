@@ -77,11 +77,13 @@ if($activeInlineCreate) {
         //based on some field on the main form
         $field['inline_create']['include_main_form_fields'] = $field['inline_create']['include_main_form_fields'] ?? false;
 
-        if($field['inline_create']['include_main_form_fields'] !== false || $field['inline_create']['include_main_form_fields'] !== true) {
+        if(!is_bool($field['inline_create']['include_main_form_fields'])) {
             if(is_array($field['inline_create']['include_main_form_fields'])) {
                 $field['inline_create']['include_main_form_fields'] = json_encode($field['inline_create']['include_main_form_fields']);
             }else{
-                $field['inline_create']['include_main_form_fields'] = json_encode([$field['inline_create']['include_main_form_fields']]);
+                //it is a string or treat it like
+                $arrayed_field = array($field['inline_create']['include_main_form_fields']);
+                $field['inline_create']['include_main_form_fields'] = json_encode($arrayed_field);
             }
         }
     }
@@ -118,7 +120,7 @@ if($activeInlineCreate) {
         data-field-ajax="{{var_export($field['ajax'])}}"
         data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
-        data-include-main-form-fields="{{$field['inline_create']['include_main_form_fields']}}"
+        data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -250,7 +252,8 @@ function setupInlineCreateButtons(element) {
     var $inlineModalRoute = element.attr('data-inline-modal-route');
     var $inlineModalClass = element.attr('data-inline-modal-class');
     var $parentLoadedFields = element.attr('data-parent-loaded-fields');
-    var $includeMainFormFields = element.attr('data-include-main-form-fields');
+    var $includeMainFormFields = element.attr('data-include-main-form-fields') == 'false' ? false : (element.attr('data-include-main-form-fields') == 'true' ? true : element.attr('data-include-main-form-fields'));
+
     var $form = element.closest('form');
 
     $inlineCreateButtonElement.on('click', function () {
@@ -263,23 +266,22 @@ function setupInlineCreateButtons(element) {
 
 
         }
-        //prepare main form fields to be submited in case there are some.
-        //if result is "1" it means all form fields will be passed, developer passed "true".
-        if($includeMainFormFields == 1) {
-            var $toPass = $form.serializeArray();
-            $includeMainFormFields = true;
-        }else{
-            $fields = JSON.parse($includeMainFormFields);
-            $serializedForm = $form.serializeArray();
-            var $toPass = [];
-            $fields.forEach(function(value, index) {
-                $valueFromForm = $serializedForm.filter(field => field.name === value);
-                $toPass.push($valueFromForm[0]);
 
-            });
-            //if it's undefined here, developer passed false.
-            if(typeof $toPass[0] === "undefined") {
-                $includeMainFormFields = false;
+        //prepare main form fields to be submited in case there are some.
+        if(typeof $includeMainFormFields === "boolean" && $includeMainFormFields === true) {
+            var $toPass = $form.serializeArray();
+        }else{
+            if(typeof $includeMainFormFields !== "boolean") {
+            var $fields = JSON.parse($includeMainFormFields);
+            var $serializedForm = $form.serializeArray();
+            var $toPass = [];
+                $fields.forEach(function(value, index) {
+                    $valueFromForm = $serializedForm.filter(field => field.name === value);
+                    $toPass.push($valueFromForm[0]);
+
+                });
+
+                $includeMainFormFields = true;
             }
         }
         $.ajax({
