@@ -28,7 +28,7 @@ trait SaveActions
         $higherAction = $this->getSaveActionByOrder(1);
 
         //if there is an higher action and that action is not the backpack default higher one `save_and_back` we return it.
-        if (!empty($higherAction) &&  key($higherAction) !== 'save_and_back') {
+        if (! empty($higherAction) && key($higherAction) !== 'save_and_back') {
             return key($higherAction);
         }
 
