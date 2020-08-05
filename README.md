@@ -53,6 +53,12 @@ Quickly build an admin interface for your Eloquent models. Then customize every 
 
 But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to overwrite a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
 
+## Screenshots
+
+![https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif](https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif)
+
+The GIF above should give you with a good idea about what Backpack will help you build. But you can also see it in action in our [live demo](https://demo.backpackforlaravel.com/admin), to get a deeper understanding of how Backpack admin panels look & feel and the amount of features it provides.
+
 ## Getting started
 
 Start with the ["Getting Started" series](https://backpackforlaravel.com/docs/4.0/introduction) in our docs. We try to nudge you towards creating a Backpack acccount, but you don't _need_ one, if you're just trying it out.
@@ -72,12 +78,6 @@ Installation guides:
 - [Install Backpack 3.x on Laravel 5.4](https://laravel-backpack.readme.io/docs/install-on-laravel-54) - last feature update was 27 Sep 2017;
 - [Install Backpack 3.x on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
 - [Install Backpack 3.x on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
-
-## Screenshots
-
-![https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif](https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif)
-
-Play around in our [live demo](https://demo.backpackforlaravel.com/admin).
 
 ## Change Log
 
