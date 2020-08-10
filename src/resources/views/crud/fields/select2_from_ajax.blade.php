@@ -108,7 +108,7 @@
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
-        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
 
         var select2AjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
@@ -184,11 +184,11 @@
 
         // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
         // we have stored from the field and append those options in the select.
-        if (typeof $selectedOptions !== typeof undefined && 
-            $selectedOptions !== false &&  
-            $selectedOptions != '' && 
-            $selectedOptions != null && 
-            $selectedOptions != []) 
+        if (typeof $selectedOptions !== typeof undefined &&
+            $selectedOptions !== false &&
+            $selectedOptions != '' &&
+            $selectedOptions != null &&
+            $selectedOptions != [])
         {
             var optionsForSelect = [];
             select2AjaxFetchSelectedEntry(element).then(result => {

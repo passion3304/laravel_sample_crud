@@ -100,8 +100,11 @@ trait FetchOperation
                         $tempQuery = $query->{$operation}($searchColumn, $search_string);
                     }
                 }
-
-                return $tempQuery;
+                // If developer provide an empty searchable_attributes array it means he don't want us to search
+                // in any specific column, or try to guess the column from model identifiableAttribute.
+                // In that scenario we will not have any $tempQuery here, so we just return the query, is up to the developer
+                // to do his own search.
+                return $tempQuery ?? $query;
             });
         } else {
             foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {

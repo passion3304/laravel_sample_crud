@@ -48,7 +48,7 @@ return [
     'password_empty'         => 'Make sure both password fields are filled out.',
     'password_updated'       => 'Password updated.',
     'account_updated'        => 'Account updated successfully.',
-    'unknown_error'          => 'An unknown error has occured. Please try again.',
+    'unknown_error'          => 'An unknown error has occurred. Please try again.',
     'error_saving'           => 'Error while saving. Please try again.',
     'welcome'                => 'Welcome!',
     'use_sidebar'            => 'Use the sidebar to the left to create, edit or delete content.',
