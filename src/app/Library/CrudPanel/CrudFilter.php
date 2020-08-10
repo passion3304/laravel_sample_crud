@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
