@@ -52,18 +52,19 @@ if (! function_exists('backpack_input_parse')) {
 
             //we check if we found a dot and if there is something after the dot
             //if not we just return the string without the dot.
-            if($pos !== false && !isset($parsedName[$pos+1])) {
+            if ($pos !== false && ! isset($parsedName[$pos + 1])) {
                 $parsedName = substr($parsedName, 0, $pos);
             }
 
-            if (!isset($result[$parsedName])) {
+            if (! isset($result[$parsedName])) {
                 $result[$parsedName] = $row['value'];
             } else {
-                $result[$parsedName] = !is_array($result[$parsedName]) ? array($result[$parsedName]) : $result[$parsedName];
+                $result[$parsedName] = ! is_array($result[$parsedName]) ? [$result[$parsedName]] : $result[$parsedName];
 
                 array_push($result[$parsedName], $row['value']);
             }
         }
+
         return $result;
     }
 }
