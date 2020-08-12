@@ -30,6 +30,44 @@ if (! function_exists('backpack_authentication_column')) {
     }
 }
 
+if (! function_exists('backpack_input_parse')) {
+    /**
+     * Parse the form submited input as it comes from request.
+     * Joins the multiple[] fields as a single key.
+     *
+     * Parse the HasOne relation names like address[street] to dot notation
+     *
+     * @return array
+     */
+    function backpack_input_parse($input)
+    {
+        $result = [];
+        foreach ($input as $row) {
+            //converts fields like address[street] into adress.street names.
+            //if if is multiple replaces the name_field[] by name_field.
+            $parsedName = square_brackets_to_dots($row['name']);
+
+            //we get the position of the first « . » in the string.
+            $pos = strpos($parsedName, '.');
+
+            //we check if we found a dot and if there is something after the dot
+            //if not we just return the string without the dot.
+            if($pos !== false && !isset($parsedName[$pos+1])) {
+                $parsedName = substr($parsedName, 0, $pos);
+            }
+
+            if (!isset($result[$parsedName])) {
+                $result[$parsedName] = $row['value'];
+            } else {
+                $result[$parsedName] = !is_array($result[$parsedName]) ? array($result[$parsedName]) : $result[$parsedName];
+
+                array_push($result[$parsedName], $row['value']);
+            }
+        }
+        return $result;
+    }
+}
+
 if (! function_exists('backpack_users_have_email')) {
     /**
      * Check if the email column is present on the user table.
