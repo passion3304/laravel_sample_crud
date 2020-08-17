@@ -39,7 +39,7 @@ trait HasRelationshipFields
      */
     public function getTableWithPrefix()
     {
-        $prefix = Config::get('database.connections.'.$this->getConnectionName().'.prefix');
+        $prefix = $this->getConnection()->getTablePrefix();
         $tableName = $this->getTable();
 
         return $prefix.$tableName;
