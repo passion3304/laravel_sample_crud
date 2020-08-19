@@ -84,8 +84,6 @@ trait ShowOperation
     /**
      * Default behaviour for setupShowOperation, in case none has been
      * provided by including a setupShowOperation() method in the CrudController.
-     *
-     * @return [type] [description]
      */
     protected function setupShowOperation()
     {
