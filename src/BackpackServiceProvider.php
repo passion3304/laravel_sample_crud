@@ -88,13 +88,12 @@ class BackpackServiceProvider extends ServiceProvider
         $web_middleware = config('backpack.base.web_middleware', 'web');
 
         //if it is an array it means developer would like to replace the default web middleware list with his own MW array.
-        if(is_array($web_middleware)) {
+        if (is_array($web_middleware)) {
             $router->middlewareGroup('web', $web_middleware);
 
             //after replacing the web middleware with the ones we want
             //we setup the correct middleware key in config so we can get it on runtime.
             config(['backpack.base.web_middleware' => 'web']);
-
         }
 
         if (! is_array($middleware_class)) {
