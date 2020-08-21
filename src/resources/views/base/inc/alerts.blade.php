@@ -5,39 +5,36 @@
 // when the user is beeing redirected by persistent table, that happens before this event triggers.
 
 window.addEventListener('DOMContentLoaded', function() {
-    //get the php alerts
-    var $crudAlerts = JSON.parse('{!! json_encode( \Alert::getMessages() , JSON_HEX_APOS) !!}');
 
-        Noty.overrideDefaults({
+    Noty.overrideDefaults({
             layout   : 'topRight',
             theme    : 'backstrap',
             timeout  : 2500,
             closeWith: ['click', 'button'],
         });
 
+    //get alerts from the alert bag
+    var $backpack_alerts = JSON.parse('@json(\Alert::getMessages())');
 
-    for (var type in $crudAlerts) {
-        for(var message in $crudAlerts[type]) {
+    //the will be no simultaneous alerts, either we get them from the alert bag,
+    //or we already have them in the localstorage.
+    var $passedAlerts = localStorage.getItem('backpack_alerts');
+
+    if($passedAlerts !== null) {
+        $backpack_alerts = JSON.parse($passedAlerts);
+    }
+
+    for (var type in $backpack_alerts) {
+        for(var message in $backpack_alerts[type]) {
             new Noty({
                     type: type,
-                    text: $crudAlerts[type][message]
+                    text: $backpack_alerts[type][message]
                 }).show();
         }
     }
-    //if the user was redirected by persistent table we get any alerts to show from localstorage
-    //as they are not in session anymore but we previously stored them.
-    $passedAlerts = JSON.parse(localStorage.getItem('passAlerts'));
 
-    if(typeof $passedAlerts === 'object' && $passedAlerts !== null) {
-        $passedAlerts.forEach(function($item) {
-                new Noty({
-                    type: $item.type,
-                    text: $item.text
-                }).show();
-        });
-    }
     //clear the localstorage alerts
-    localStorage.removeItem('passAlerts');
+    localStorage.removeItem('backpack_alerts');
 });
 
 </script>

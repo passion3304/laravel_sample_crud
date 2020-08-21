@@ -49,20 +49,10 @@
 
     @endif
         if (saved_list_url && persistentUrl!=window.location.href) {
-            //before redirecting the user we get the current alerts for this page
-            //we can show them to the user after the persistency redirects him
-            var $passAlerts = [];
-            @foreach (\Alert::getMessages() as $type => $messages)
 
-                @foreach ($messages as $message)
-                    $passAlerts.push({
-                        type: "{{ $type }}",
-                        text: "{!! str_replace('"', "'", $message) !!}"
-                    });
-                @endforeach
-            @endforeach
-            //we setup variables that will be read by our alerts.blade.php file.
-            localStorage.setItem('passAlerts', JSON.stringify($passAlerts));
+            //we save the current alerts into local storage so we can read it later in alerts.blade.php
+            //after the user had been redirected by persistent table
+            localStorage.setItem('backpack_alerts', JSON.stringify(@json(\Alert::getMessages())));
 
             //finally redirect the user.
             window.location.href = persistentUrl;
