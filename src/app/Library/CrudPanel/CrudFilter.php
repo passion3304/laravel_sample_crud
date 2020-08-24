@@ -9,6 +9,7 @@ class CrudFilter
 {
     public $name; // the name of the filtered variable (db column name)
     public $type = 'select2'; // the name of the filter view that will be loaded
+    public $key; //camelCased version of filter name to use in internal ids, js functions and css classes.
     public $label;
     public $placeholder;
     public $values;
@@ -22,9 +23,6 @@ class CrudFilter
 
     public function __construct($options, $values, $logic, $fallbackLogic)
     {
-        //we use the key in filters for properties, js functions etc. We leave the name untouched for beeing sent in request.
-        $options['key'] = Str::camel($options['key']);
-
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {
             $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));
@@ -34,6 +32,7 @@ class CrudFilter
         } else {
             // it means we're creating the filter now,
             $this->name = $options['name'];
+            $this->key = Str::camel($options['name']);
             $this->type = $options['type'] ?? $this->type;
             $this->label = $options['label'] ?? $this->crud()->makeLabel($this->name);
             $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;

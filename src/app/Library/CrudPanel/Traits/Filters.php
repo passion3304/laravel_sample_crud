@@ -81,9 +81,6 @@ trait Filters
             abort(500, "Sorry, you can't have two filters with the same name.");
         }
 
-        //we use the key in filters for properties, js functions etc. We leave the name untouched for beeing sent in request.
-        $options['key'] = Str::camel($options['name']);
-
         // add a new filter to the interface
         $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic);
         $this->setOperationSetting('filters', $this->filters()->push($filter));
