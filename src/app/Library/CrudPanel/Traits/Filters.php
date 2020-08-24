@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudFilter;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait Filters
