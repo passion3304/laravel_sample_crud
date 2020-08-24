@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudFilter;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait Filters
@@ -79,6 +80,9 @@ trait Filters
         if ($this->filters()->contains('name', $options['name'])) {
             abort(500, "Sorry, you can't have two filters with the same name.");
         }
+
+        //we use the key in filters for properties, js functions etc. We leave the name untouched for beeing sent in request.
+        $options['key'] = Str::camel($options['name']);
 
         // add a new filter to the interface
         $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic);

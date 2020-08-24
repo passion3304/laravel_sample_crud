@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Illuminate\Support\Str;
 
 class CrudFilter
 {
@@ -21,6 +22,9 @@ class CrudFilter
 
     public function __construct($options, $values, $logic, $fallbackLogic)
     {
+        //we use the key in filters for properties, js functions etc. We leave the name untouched for beeing sent in request.
+        $options['key'] = Str::camel($options['key']);
+
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {
             $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));

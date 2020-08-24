@@ -1,7 +1,7 @@
 {{-- Dropdown Backpack CRUD filter --}}
-
 <li filter-name="{{ $filter->name }}"
-	filter-type="{{ $filter->type }}"
+    filter-type="{{ $filter->type }}"
+    filter-key="{{ $filter->key }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <ul class="dropdown-menu">
@@ -41,7 +41,7 @@
 @push('crud_list_scripts')
     <script>
 		jQuery(document).ready(function($) {
-			$("li.dropdown[filter-name={{ $filter->name }}] .dropdown-menu a").click(function(e) {
+			$("li.dropdown[filter-key={{ $filter->key }}] .dropdown-menu a").click(function(e) {
 				e.preventDefault();
 
 				var value = $(this).attr('dropdownkey');
@@ -62,21 +62,21 @@
 				// mark this filter as active in the navbar-filters
 				// mark dropdown items active accordingly
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
-					$("li[filter-name={{ $filter->name }}] .dropdown-menu a").removeClass('active');
+					$("li[filter-key={{ $filter->key }}]").removeClass('active').addClass('active');
+					$("li[filter-key={{ $filter->key }}] .dropdown-menu a").removeClass('active');
 					$(this).addClass('active');
 				}
 				else
 				{
-					$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
+					$("li[filter-key={{ $filter->key }}]").trigger("filter:clear");
 				}
 			});
 
 			// clear filter event (used here and by the Remove all filters button)
-			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
+			$("li[filter-key={{ $filter->key }}]").on('filter:clear', function(e) {
 				// console.log('dropdown filter cleared');
-				$("li[filter-name={{ $filter->name }}]").removeClass('active');
-				$("li[filter-name={{ $filter->name }}] .dropdown-menu a").removeClass('active');
+				$("li[filter-key={{ $filter->key }}]").removeClass('active');
+				$("li[filter-key={{ $filter->key }}] .dropdown-menu a").removeClass('active');
 			});
 		});
 	</script>
