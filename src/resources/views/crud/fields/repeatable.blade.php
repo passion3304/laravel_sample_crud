@@ -170,13 +170,14 @@
          * Adds a new field group to the repeatable input.
          */
         function newRepeatableElement(container, field_group, values) {
+
+            var field_name = container.data('repeatable-identifier');
             var new_field_group = field_group.clone();
 
             //this is the container for this repeatable group that holds it inside the main form.
-            var container_holder = $('[data-repeatable-holder={{ $field['name'] }}]');
+            var container_holder = $('[data-repeatable-holder='+field_name+']');
 
             new_field_group.find('.delete-element').click(function(){
-                //console.log($(this));
                 new_field_group.find('input, select, textarea').each(function(i, el) {
                     //we trigger this event so fields can intercept when they are beeing deleted from the page
                     //implemented because of ckeditor instances that stayed around when deleted from page
