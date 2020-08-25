@@ -1,12 +1,12 @@
 {{-- Select2 Multiple Backpack CRUD filter --}}
-
 <li filter-name="{{ $filter->name }}"
-	filter-type="{{ $filter->type }}"
+    filter-type="{{ $filter->type }}"
+    filter-key="{{ $filter->key }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0">
       <div class="form-group backpack-filter mb-0">
-			<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" data-filter-name="{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2_multiple" placeholder="{{ $filter->placeholder }}" multiple>
+			<select id="filter_{{ $filter->key }}" name="filter_{{ $filter->key }}" data-filter-key="{{ $filter->key }}" data-filter-name="{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2_multiple" placeholder="{{ $filter->placeholder }}" multiple>
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)
 						<option value="{{ $key }}"
@@ -72,8 +72,9 @@
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box
-            $('select[name=filter_{{ $filter->name }}]').not('[data-filter-enabled]').each(function () {
+            $('select[name=filter_{{ $filter->key }}]').not('[data-filter-enabled]').each(function () {
             	var filterName = $(this).attr('data-filter-name');
+                var filter_key = $(this).attr('data-filter-key');
 
                 $(this).select2({
                 	allowClear: true,
@@ -108,25 +109,25 @@
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery(filterName, true)) {
-						$("li[filter-name="+filterName+"]").removeClass('active').addClass('active');
+						$("li[filter-key="+filter_key+"]").removeClass('active').addClass('active');
 					}
 					else
 					{
-						$("li[filter-name="+filterName+"]").removeClass("active");
-						$("li[filter-name="+filterName+"]").find('.dropdown-menu').removeClass("show");
+						$("li[filter-key="+filter_key+"]").removeClass("active");
+						$("li[filter-key="+filter_key+"]").find('.dropdown-menu').removeClass("show");
 					}
 				});
 
 				// when the dropdown is opened, autofocus on the select2
-				$("li[filter-name="+filterName+"]").on('shown.bs.dropdown', function () {
-					$('#filter_'+filterName+'').select2('open');
+				$("li[filter-key="+filter_key+"]").on('shown.bs.dropdown', function () {
+					$('#filter_'+filter_key+'').select2('open');
 				});
 
 				// clear filter event (used here and by the Remove all filters button)
-				$("li[filter-name="+filterName+"]").on('filter:clear', function(e) {
+				$("li[filter-key="+filter_key+"]").on('filter:clear', function(e) {
 					// console.log('select2 filter cleared');
-					$("li[filter-name="+filterName+"]").removeClass('active');
-	                $('#filter_'+filterName).val(null).trigger('change.select2');
+					$("li[filter-key="+filter_key+"]").removeClass('active');
+	                $('#filter_'+filter_key).val(null).trigger('change.select2');
 				});
             });
 		});
