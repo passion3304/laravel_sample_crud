@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Models\Traits;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +38,7 @@ trait HasRelationshipFields
      */
     public function getTableWithPrefix()
     {
-        $prefix = Config::get('database.connections.'.$this->getConnectionName().'.prefix');
+        $prefix = $this->getConnection()->getTablePrefix();
         $tableName = $this->getTable();
 
         return $prefix.$tableName;
