@@ -155,7 +155,7 @@ return [
 
     //Table field
     'table_cant_add'    => '不能再增加 :entity',
-    'table_max_reached' => '已到達 :max 項紀錄的上限',
+    'table_max_reached' => '已達到 :max 項紀錄的上限',
 
     // File manager
     'file_manager' => '檔案管理',
