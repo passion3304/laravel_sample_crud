@@ -39,7 +39,7 @@ return [
     'list'                      => '清單',
     'actions'                   => '動作',
     'preview'                   => '預覽',
-    'delete'                    => '剛除',
+    'delete'                    => '刪除',
     'admin'                     => '管理員',
     'details_row'               => '這是詳情列。你可以在這裡作出編輯。',
     'details_row_loading_error' => '當載入詳情時遇到錯誤。請重試。',
