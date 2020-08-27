@@ -114,7 +114,6 @@
         function bpFieldInitRepeatableElement(element) {
 
             var field_name = element.attr('name');
-            console.log(field_name);
 
             // element will be a jQuery wrapped DOM node
             var container = $('[data-repeatable-identifier='+field_name+']');
@@ -137,7 +136,6 @@
             // make a copy of the group of inputs in their default state
             // this way we have a clean element we can clone when the user
             // wants to add a new group of inputs
-            //sconsole.log(container.find('.repeatable-element:first'));
             var field_group_clone = container.clone();
             container.remove();
 
@@ -146,7 +144,6 @@
             });
 
             if (element.val()) {
-                console.log(element.val());
                 var repeatable_fields_values = JSON.parse(element.val());
 
                 for (var i = 0; i < repeatable_fields_values.length; ++i) {
