@@ -93,7 +93,7 @@
             var arr = [];
             var obj = {};
 
-            var container = $('[data-repeatable-holder={{ $field['name'] }}]');
+            var container = $('[data-repeatable-holder='+container_name+']');
 
             container.find('.well').each(function () {
                 $(this).find('input, select, textarea').each(function () {
@@ -136,7 +136,6 @@
             // make a copy of the group of inputs in their default state
             // this way we have a clean element we can clone when the user
             // wants to add a new group of inputs
-            //sconsole.log(container.find('.repeatable-element:first'));
             var field_group_clone = container.clone();
             container.remove();
 
