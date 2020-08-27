@@ -93,7 +93,7 @@
             var arr = [];
             var obj = {};
 
-            var container = $('[data-repeatable-holder={{ $field['name'] }}]');
+            var container = $('[data-repeatable-holder='+container_name+']');
 
             container.find('.well').each(function () {
                 $(this).find('input, select, textarea').each(function () {
@@ -114,6 +114,7 @@
         function bpFieldInitRepeatableElement(element) {
 
             var field_name = element.attr('name');
+            console.log(field_name);
 
             // element will be a jQuery wrapped DOM node
             var container = $('[data-repeatable-identifier='+field_name+']');
@@ -145,6 +146,7 @@
             });
 
             if (element.val()) {
+                console.log(element.val());
                 var repeatable_fields_values = JSON.parse(element.val());
 
                 for (var i = 0; i < repeatable_fields_values.length; ++i) {
