@@ -1,7 +1,7 @@
 {{-- Simple Backpack CRUD filter --}}
-
 <li filter-name="{{ $filter->name }}"
-	filter-type="{{ $filter->type }}"
+    filter-type="{{ $filter->type }}"
+    filter-key="{{ $filter->key }}"
 	class="nav-item {{ Request::get($filter->name)?'active':'' }}">
     <a class="nav-link" href=""
 		parameter="{{ $filter->name }}"
@@ -26,7 +26,7 @@
 @push('crud_list_scripts')
     <script>
 		jQuery(document).ready(function($) {
-			$("li[filter-name={{ $filter->name }}] a").click(function(e) {
+			$("li[filter-key={{ $filter->key }}] a").click(function(e) {
 				e.preventDefault();
 
 				var parameter = $(this).attr('parameter');
@@ -51,19 +51,19 @@
 
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
+					$("li[filter-key={{ $filter->key }}]").removeClass('active').addClass('active');
                     $('#remove_filters_button').removeClass('invisible');
 				}
 				else
 				{
-					$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
+					$("li[filter-key={{ $filter->key }}]").trigger("filter:clear");
 				}
 			});
 
 			// clear filter event (used here and by the Remove all filters button)
-			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
+			$("li[filter-key={{ $filter->key }}]").on('filter:clear', function(e) {
 				// console.log('dropdown filter cleared');
-				$("li[filter-name={{ $filter->name }}]").removeClass('active');
+				$("li[filter-key={{ $filter->key }}]").removeClass('active');
 			});
 		});
 	</script>
