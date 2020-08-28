@@ -217,7 +217,7 @@
 		}
 	}
 
-	#crudTable thead>tr>th, table.dataTable thead>tr>td {
+	#crudTable thead>tr>th, table.dataTable thead>tr>th {
 		padding-right: 30px;
 	}
 
