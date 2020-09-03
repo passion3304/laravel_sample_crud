@@ -106,6 +106,10 @@ class CrudFilter
         $input = $input ?? new ParameterBag($this->crud()->getRequest()->all());
 
         if (! $input->has($this->name)) {
+            // if fallback logic was supplied and is a closure
+            if (is_callable($this->fallbackLogic)) {
+                return ($this->fallbackLogic)();
+            }
             return;
         }
 
