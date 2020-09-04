@@ -110,6 +110,7 @@ class CrudFilter
             if (is_callable($this->fallbackLogic)) {
                 return ($this->fallbackLogic)();
             }
+
             return;
         }
 
@@ -118,11 +119,6 @@ class CrudFilter
             return ($this->logic)($input->get($this->name));
         } else {
             return $this->applyDefaultLogic($this->name, false);
-        }
-
-        // if fallback logic was supplied and is a closure
-        if (is_callable($this->fallbackLogic)) {
-            return ($this->fallbackLogic)();
         }
     }
 
