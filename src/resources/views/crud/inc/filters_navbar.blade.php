@@ -35,7 +35,7 @@
               new_url.removeQuery(parameter);
             }
 
-            if (value != '' && value != null) {
+            if (value !== '' && value != null) {
               new_url = new_url.addQuery(parameter, value);
             }
 
