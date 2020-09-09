@@ -76,7 +76,11 @@
         fn.apply(window, args);
       },
       updateUrl : function (new_url) {
-        new_url = new_url.replace('/search', '');
+        url_start = "{{ url($crud->route) }}";
+        url_end = new_url.replace(url_start, '');
+        url_end = url_end.replace('/search', '');
+        new_url = url_start + url_end;
+
         window.history.pushState({}, '', new_url);
         localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
       },
