@@ -280,12 +280,12 @@ class CrudFilter
      * For example, the dropdown, select2 and select2 filters let the user select
      * pre-determined values to filter with. This is how to set those values that will be picked up.
      *
-     * @param  array $value Key-value array with values for the user to pick from.
+     * @param  array|function $value Key-value array with values for the user to pick from, or a function which also return a Key-value array.
      * @return CrudFilter
      */
     public function values($value)
     {
-        $this->values = is_callable($value) ? $value() : $value;
+        $this->values = (!is_string($value) && is_callable($value)) ? $value() : $value;
 
         return $this->save();
     }
