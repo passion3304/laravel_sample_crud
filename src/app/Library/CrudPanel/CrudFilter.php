@@ -285,7 +285,7 @@ class CrudFilter
      */
     public function values($value)
     {
-        $this->values = (!is_string($value) && is_callable($value)) ? $value() : $value;
+        $this->values = (! is_string($value) && is_callable($value)) ? $value() : $value;
 
         return $this->save();
     }
