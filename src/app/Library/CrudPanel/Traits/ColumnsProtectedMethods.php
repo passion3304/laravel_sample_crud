@@ -18,15 +18,23 @@ trait ColumnsProtectedMethods
         $allColumns = Arr::add($allColumns, $column['key'], $column);
 
         $this->setOperationSetting('columns', $allColumns);
+    }
 
-        // make sure the column has a priority in terms of visibility
-        // if no priority has been defined, use the order in the array plus one
-        if (! array_key_exists('priority', $column)) {
-            $position_in_columns_array = (int) array_search($column['key'], array_keys($this->columns()));
-            $allColumns[$column['key']]['priority'] = $position_in_columns_array + 1;
-        }
 
-        $this->setOperationSetting('columns', $allColumns);
+    /**
+     * If a column priority has not been defined, provide a default one.
+     *
+     * @param array $column Column definition array.
+     * @return array         Proper array defining the column.
+     */
+    protected function makeSureColumnHasPriority($column)
+    {
+        $columns_count = $this->countColumnsWithoutActions();
+        $assumed_priority = $columns_count ? $columns_count : 0;
+
+        $column['priority'] = $column['priority'] ?? $assumed_priority;
+
+        return $column;
     }
 
     /**

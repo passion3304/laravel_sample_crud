@@ -74,25 +74,13 @@
                       data-visible-in-modal="false"
                       data-visible-in-export="true"
                       data-force-export="true"
-
                     @else
-
                       data-visible-in-table="{{var_export($column['visibleInTable'] ?? false)}}"
                       data-visible="{{var_export($column['visibleInTable'] ?? true)}}"
                       data-can-be-visible-in-table="true"
                       data-visible-in-modal="{{var_export($column['visibleInModal'] ?? true)}}"
-                      @if(isset($column['visibleInExport']))
-                        @if($column['visibleInExport'] === false)
-                          data-visible-in-export="false"
-                          data-force-export="false"
-                        @else
-                          data-visible-in-export="true"
-                          data-force-export="true"
-                        @endif
-                      @else
-                        data-visible-in-export="true"
-                        data-force-export="false"
-                      @endif
+                      data-visible-in-export="{{var_export($column['visibleInExport'] ?? true)}}"
+                      data-force-export="{{var_export($column['visibleInExport'] ?? true)}}"
                     @endif
                   >
                     {!! $column['label'] !!}
@@ -100,7 +88,10 @@
                 @endforeach
 
                 @if ( $crud->buttons()->where('stack', 'line')->count() )
-                  <th data-orderable="false" data-priority="{{ $crud->getActionsColumnPriority() }}" data-visible-in-export="false">{{ trans('backpack::crud.actions') }}</th>
+                  <th data-orderable="false" 
+                      data-priority="{{ $crud->getActionsColumnPriority() }}" 
+                      data-visible-in-export="false"
+                      >{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>
             </thead>
