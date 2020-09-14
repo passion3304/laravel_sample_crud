@@ -111,7 +111,9 @@
         }
       })
       $(".dt-buttons").appendTo($('#datatable_button_stack' ));
-      $('.dt-buttons').addClass('d-md-inline-block').addClass('d-lg-inline-block');
+      $('.dt-buttons').addClass('d-sm-inline-block')
+                      .addClass('d-md-inline-block')
+                      .addClass('d-lg-inline-block');
     }
 
     crud.addFunctionToDataTablesDrawEventQueue('moveExportButtonsToTopRight');
