@@ -79,8 +79,18 @@
                       data-visible="{{var_export($column['visibleInTable'] ?? true)}}"
                       data-can-be-visible-in-table="true"
                       data-visible-in-modal="{{var_export($column['visibleInModal'] ?? true)}}"
-                      data-visible-in-export="{{var_export($column['visibleInExport'] ?? true)}}"
-                      data-force-export="{{var_export($column['visibleInExport'] ?? true)}}"
+                      @if(isset($column['visibleInExport']))                     
+                         @if($column['visibleInExport'] === false)
+                           data-visible-in-export="false"   
+                           data-force-export="false"    
+                         @else    
+                           data-visible-in-export="true"    
+                           data-force-export="true"   
+                         @endif   
+                       @else    
+                         data-visible-in-export="true"    
+                         data-force-export="false"    
+                       @endif
                     @endif
                   >
                     {!! $column['label'] !!}
