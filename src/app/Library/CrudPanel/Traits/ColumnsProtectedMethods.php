@@ -20,7 +20,6 @@ trait ColumnsProtectedMethods
         $this->setOperationSetting('columns', $allColumns);
     }
 
-
     /**
      * If a column priority has not been defined, provide a default one.
      *

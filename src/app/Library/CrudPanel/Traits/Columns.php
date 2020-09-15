@@ -391,15 +391,15 @@ trait Columns
     /**
      * Count the number of columns added so far.
      *
-     * It will not take into account the action 
+     * It will not take into account the action
      * columns (columns with buttons, checkbox).
-     * 
-     * @return integer
+     *
+     * @return int
      */
     public function countColumnsWithoutActions()
     {
         return collect($this->columns())->filter(function ($column, $key) {
-            return !isset($column['hasActions']) || $column['hasActions'] == false;
+            return ! isset($column['hasActions']) || $column['hasActions'] == false;
         })->count();
     }
 
