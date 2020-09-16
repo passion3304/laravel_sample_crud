@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\Auth;
 
-use Closure;
 use Backpack\CRUD\app\Notifications\ResetPasswordNotification;
+use Closure;
 use Illuminate\Auth\Passwords\PasswordBroker as OriginalPasswordBroker;
 
 /**
