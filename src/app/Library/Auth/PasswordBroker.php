@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\Auth;
 
+use Closure;
 use Backpack\CRUD\app\Notifications\ResetPasswordNotification;
 use Illuminate\Auth\Passwords\PasswordBroker as OriginalPasswordBroker;
 
@@ -17,7 +18,7 @@ class PasswordBroker extends OriginalPasswordBroker
      * @param  array  $credentials
      * @return string
      */
-    public function sendResetLink(array $credentials)
+    public function sendResetLink(array $credentials, Closure $callback = null)
     {
         // First we will check to see if we found a user at the given credentials and
         // if we did not we will redirect back to this current URI with a piece of
