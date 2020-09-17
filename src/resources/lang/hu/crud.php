@@ -54,7 +54,7 @@ return [
     'delete_confirmation_title'                   => 'Törölve',
     'delete_confirmation_message'                 => 'Az elemet sikeresen töröltük.',
     'delete_confirmation_not_title'               => 'NEM sikerült a törlés',
-    'delete_confirmation_not_message'             => "Valami hiba történt, az elemet nem sikerült törölni.",
+    'delete_confirmation_not_message'             => 'Valami hiba történt, az elemet nem sikerült törölni.',
     'delete_confirmation_not_deleted_title'       => 'Nem törlődött',
     'delete_confirmation_not_deleted_message'     => 'Nem történt semmi. Az elem biztonságban van.',
 
