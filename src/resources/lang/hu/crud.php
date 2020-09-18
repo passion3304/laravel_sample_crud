@@ -113,7 +113,7 @@ return [
     ],
 
     // global crud - errors
-    'unauthorized_access' => 'Jogosultatlan hozzáférés. Nincsenek meg a megfelelő jogosultságaid az oldal megtekintéséhez.',
+    'unauthorized_access' => 'Jogosulatlan hozzáférés. Nincsenek meg a megfelelő jogosultságaid az oldal megtekintéséhez.',
     'please_fix'          => 'Kérlek javítsd a következő hibákat:',
 
     // global crud - success / error notification bubbles
@@ -146,7 +146,7 @@ return [
     'page_link'                 => 'Oldal link',
     'page_link_placeholder'     => 'http://example.com/sajat-oldal',
     'internal_link'             => 'Belső link',
-    'internal_link_placeholder' => 'Belső ling. Pl: \'admin/oldal\' (idézőjelek nélkül) itt \':url\'',
+    'internal_link_placeholder' => 'Belső link. Pl: \'admin/oldal\' (idézőjelek nélkül) itt \':url\'',
     'external_link'             => 'Külső link',
     'choose_file'               => 'Fájl kiválasztása',
     'new_item'                  => 'Új elem',
