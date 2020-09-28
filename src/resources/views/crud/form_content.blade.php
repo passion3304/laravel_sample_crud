@@ -135,7 +135,7 @@
 
             $.each(messages, function(key, msg){
                 // highlight the input that errored
-                var row = $('<div class="invalid-feedback">' + msg + '</div>');
+                var row = $('<div class="invalid-feedback d-block">' + msg + '</div>');
                 row.appendTo(container);
 
                 // highlight its parent tab
