@@ -249,9 +249,6 @@
 		}
 	}
 
-	#crudTable thead>tr>th, table.dataTable thead>tr>th {
-		padding-right: 30px;
-	}
 
 	.navbar-filters li>a:active,
 	.navbar-filters .navbar-nav>.active>a, .navbar-filters .navbar-nav>.active>a:focus, .navbar-filters .navbar-nav>.active>a:hover,
