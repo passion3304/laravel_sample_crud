@@ -75,6 +75,12 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
         <script>
 
             function bpFieldInitAddressGoogleElement(element) {
+
+                //this script is async loaded so it does not prevent other scripts in page to load while this is fetched from outside url.
+                //at somepoint our initialization script might run before the script is on page throwing undesired errors.
+                //this makes sure that when this script is run, it has google available either on our field initialization or when the callback function is called.
+                if(typeof google === "undefined") { return; }
+
                 var $addressConfig = element.data('google-address');
                 var $field = $('[name="' + $addressConfig.field + '"]');
 

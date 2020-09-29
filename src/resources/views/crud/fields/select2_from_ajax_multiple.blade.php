@@ -92,7 +92,7 @@
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
-        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? '[]');
+        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse("[]");
 
         var select2AjaxMultipleFetchSelectedEntries = function (element) {
             return new Promise(function (resolve, reject) {

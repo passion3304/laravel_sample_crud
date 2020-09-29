@@ -83,7 +83,7 @@ return [
     'lengthMenu'     => '_MENU_ items per pagina',
     'loadingRecords' => 'Laden...',
     'processing'     => 'Verwerken...',
-    'search'         => 'Zoeken: ',
+    'search'         => 'Zoeken',
     'zeroRecords'    => 'Geen overeenkomend item gevonden',
     'paginate'       => [
         'first'    => 'Eerste',

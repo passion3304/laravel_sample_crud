@@ -48,7 +48,7 @@
   <script>
       // Set active state on menu element
       var full_url = "{{ Request::fullUrl() }}";
-      var $navLinks = $(".sidebar-nav li a");
+      var $navLinks = $(".sidebar-nav li a, .app-header li a");
 
       // First look for an exact match including the search string
       var $curentPageLink = $navLinks.filter(

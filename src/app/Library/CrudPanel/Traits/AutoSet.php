@@ -13,7 +13,6 @@ trait AutoSet
     public function setFromDb()
     {
         if (! $this->driverIsMongoDb()) {
-            $this->setDoctrineTypesMapping();
             $this->getDbColumnTypes();
         }
 
@@ -53,6 +52,8 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
+        $this->setDoctrineTypesMapping();
+
         $dbColumnTypes = [];
 
         foreach ($this->getDbTableColumns() as $key => $column) {

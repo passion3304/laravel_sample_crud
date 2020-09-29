@@ -21,8 +21,13 @@
       <p class="help-block text-muted text-sm">{!! $field['hint'] !!}</p>
   @endif
 
-  <div class="container-repeatable-elements">
-    <div class="col-md-12 well repeatable-element row m-1 p-2">
+
+
+<div class="container-repeatable-elements">
+    <div data-repeatable-holder="{{ $field['name'] }}"></div>
+
+    @push('before_scripts')
+    <div class="col-md-12 well repeatable-element row m-1 p-2" data-repeatable-identifier="{{ $field['name'] }}">
       @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
         <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
         @foreach($field['fields'] as $subfield)
@@ -38,9 +43,12 @@
 
       @endif
     </div>
+    @endpush
 
   </div>
-  <button type="button" class="btn btn-outline-primary btn-sm ml-1 add-repeatable-element-button">+ {{ trans('backpack::crud.new_item') }}</button>
+
+
+  <button type="button" class="btn btn-outline-primary btn-sm ml-1 add-repeatable-element-button">+ {{ $field['new_item_label'] ?? trans('backpack::crud.new_item') }}</button>
 
 @include('crud::fields.inc.wrapper_end')
 
@@ -81,9 +89,11 @@
         /**
          * Takes all inputs and makes them an object.
          */
-        function repeatableInputToObj(container) {
+        function repeatableInputToObj(container_name) {
             var arr = [];
             var obj = {};
+
+            var container = $('[data-repeatable-holder='+container_name+']');
 
             container.find('.well').each(function () {
                 $(this).find('input, select, textarea').each(function () {
@@ -102,8 +112,11 @@
          * The method that initializes the javascript on this field type.
          */
         function bpFieldInitRepeatableElement(element) {
+
+            var field_name = element.attr('name');
+
             // element will be a jQuery wrapped DOM node
-            var container = element.siblings('.container-repeatable-elements');
+            var container = $('[data-repeatable-identifier='+field_name+']');
 
             // make sure the inputs no longer have a "name" attribute,
             // so that the form will not send the inputs as request variables;
@@ -118,14 +131,13 @@
                             $(this).removeAttr("name");
                         }
                         $(this).attr('data-repeatable-input-name', name_attr)
-                            //    .val('');
                     });
 
             // make a copy of the group of inputs in their default state
             // this way we have a clean element we can clone when the user
             // wants to add a new group of inputs
-            var field_group_clone = container.find('.repeatable-element:first').clone();
-            container.find('.repeatable-element').remove();
+            var field_group_clone = container.clone();
+            container.remove();
 
             element.parent().find('.add-repeatable-element-button').click(function(){
                 newRepeatableElement(container, field_group_clone);
@@ -143,11 +155,11 @@
 
             if (element.closest('.modal-content').length) {
                 element.closest('.modal-content').find('.save-block').click(function(){
-                    element.val(JSON.stringify(repeatableInputToObj(container)));
+                    element.val(JSON.stringify(repeatableInputToObj(field_name)));
                 })
             } else if (element.closest('form').length) {
                 element.closest('form').submit(function(){
-                    element.val(JSON.stringify(repeatableInputToObj(container)));
+                    element.val(JSON.stringify(repeatableInputToObj(field_name)));
                     return true;
                 })
             }
@@ -157,9 +169,20 @@
          * Adds a new field group to the repeatable input.
          */
         function newRepeatableElement(container, field_group, values) {
+
+            var field_name = container.data('repeatable-identifier');
             var new_field_group = field_group.clone();
 
+            //this is the container for this repeatable group that holds it inside the main form.
+            var container_holder = $('[data-repeatable-holder='+field_name+']');
+
             new_field_group.find('.delete-element').click(function(){
+                new_field_group.find('input, select, textarea').each(function(i, el) {
+                    //we trigger this event so fields can intercept when they are beeing deleted from the page
+                    //implemented because of ckeditor instances that stayed around when deleted from page
+                    //introducing unwanted js errors and high memory usage.
+                    $(el).trigger('backpack_field.deleted');
+                });
                 $(this).parent().remove();
             });
 
@@ -179,9 +202,9 @@
                     }
                 });
             }
-
-            container.append(new_field_group);
-            initializeFieldsWithJavascript(container);
+            //we push the fields to the correct container in page.
+            container_holder.append(new_field_group);
+            initializeFieldsWithJavascript(container_holder);
         }
     </script>
   @endpush

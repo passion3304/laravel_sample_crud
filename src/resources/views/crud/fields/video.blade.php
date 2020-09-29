@@ -163,17 +163,21 @@ $field['wrapper']['data-video'] = '';
                 url: null
             };
 
-            $.getJSON(api, function( data ){
+            $.ajax({
+                dataType: "jsonp",
+                url: api,
+                crossDomain: true,
+                success: function (data) {
+                    if (typeof(data.items[0]) != "undefined") {
+                                    var v = data.items[0].snippet;
 
-                if (typeof(data.items[0]) != "undefined") {
-                    var v = data.items[0].snippet;
+                                    video.id = videoId;
+                                    video.title = v.title;
+                                    video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
+                                    video.url = 'https://www.youtube.com/watch?v=' + video.id;
 
-                    video.id = videoId;
-                    video.title = v.title;
-                    video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
-                    video.url = 'https://www.youtube.com/watch?v=' + video.id;
-
-                    callback(video);
+                                    callback(video);
+                                }
                 }
             });
         };

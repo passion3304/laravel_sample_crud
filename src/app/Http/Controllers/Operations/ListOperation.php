@@ -74,7 +74,7 @@ trait ListOperation
         $this->crud->applyUnappliedFilters();
 
         $totalRows = $this->crud->model->count();
-        $filteredRows = $this->crud->count();
+        $filteredRows = $this->crud->query->toBase()->getCountForPagination();
         $startIndex = request()->input('start') ?: 0;
         // if a search term was present
         if (request()->input('search') && request()->input('search')['value']) {
@@ -100,7 +100,7 @@ trait ListOperation
                 // clear any past orderBy rules
                 $this->crud->query->getQuery()->orders = null;
                 // apply the current orderBy rules
-                $this->crud->query->orderBy($column['name'], $column_direction);
+                $this->crud->query->orderByRaw($this->crud->model->getTableWithPrefix().'.'.$column['name'].' '.$column_direction);
             }
 
             // check for custom order logic in the column definition
@@ -126,7 +126,7 @@ trait ListOperation
             }
         });
         if (! $hasOrderByPrimaryKey) {
-            $this->crud->query->orderByDesc($this->crud->model->getKeyName());
+            $this->crud->query->orderByRaw($this->crud->model->getTableWithPrefix().'.'.$this->crud->model->getKeyName().' DESC');
         }
 
         $entries = $this->crud->getEntries();
