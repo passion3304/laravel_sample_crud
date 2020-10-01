@@ -32,7 +32,7 @@
         "ckeditor": "^4.12.1",
         "cropperjs": "^1.5.7",
         "datatables.net": "^1.10.21",
-        "datatables.net-bs4": "^1.10.21",
+        "datatables.net-bs4": "^1.10.22",
         "datatables.net-fixedheader": "^3.1.7",
         "datatables.net-fixedheader-bs4": "^3.1.7",
         "datatables.net-responsive": "^2.2.5",
