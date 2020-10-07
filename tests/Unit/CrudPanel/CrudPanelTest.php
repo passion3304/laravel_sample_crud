@@ -2,8 +2,10 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\Tests\Unit\Models\TestModel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\App;
 
 class CrudPanelTest extends BaseCrudPanelTest
 {
@@ -32,12 +34,6 @@ class CrudPanelTest extends BaseCrudPanelTest
         $this->expectException(\Exception::class);
 
         $this->crudPanel->setModel('\Foo\Bar');
-    }
-
-    public function testSetRouteName()
-    {
-        // TODO: check if we need an app instance to test this out
-        $this->markTestIncomplete();
     }
 
     public function testSetUnknownRouteName()
