@@ -7,8 +7,8 @@ use Backpack\CRUD\Tests\BaseTest;
 
 class CrudControllerTest extends BaseTest
 {
-
     private $crudPanel;
+
     /**
      * Define environment setup.
      *
