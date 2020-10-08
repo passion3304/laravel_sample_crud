@@ -139,9 +139,9 @@
 
             data.columns.forEach(function(item, index) {
                 var columnHeading = crud.table.columns().header()[index];
-                    if ($(columnHeading).attr('data-visible-in-table') == 'true') {
-                        return item.visible = true;
-                    }
+                if ($(columnHeading).attr('data-visible-in-table') == 'true' && $(columnHeading).attr('data-can-be-visible-in-table') == 'true') {
+                    return item.visible = true;
+                }
             });
         },
         @if($crud->getPersistentTableDuration())
