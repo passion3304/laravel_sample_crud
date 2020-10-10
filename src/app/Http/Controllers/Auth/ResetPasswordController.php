@@ -5,6 +5,7 @@ namespace Backpack\CRUD\app\Http\Controllers\Auth;
 use Backpack\CRUD\app\Library\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
@@ -47,7 +48,7 @@ class ResetPasswordController extends Controller
 
         $this->middleware("guest:$guard");
 
-        if (! backpack_users_have_email()) {
+        if (! backpack_users_have_email() && ! App::runningInConsole()) {
             abort(501, trans('backpack::base.no_email_column'));
         }
 
