@@ -142,4 +142,11 @@ trait Query
     {
         return $this->query->count();
     }
+
+    public function applyCrudOrder($column_name, $column_direction = 'ASC') {
+        if (!$this->driverIsMongoDb()) {
+            return $this->query->orderByRaw($this->model->getTableWithPrefix().'.'.$column_name.' '.$column_direction);
+        }
+        return $this->query->orderBy($column_name, $column_direction);
+    }
 }
