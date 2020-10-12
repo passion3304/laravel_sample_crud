@@ -48,7 +48,7 @@ class ResetPasswordController extends Controller
 
         $this->middleware("guest:$guard");
 
-        if (! backpack_users_have_email() && ! App::runningInConsole()) {
+        if (! backpack_users_have_email()) {
             abort(501, trans('backpack::base.no_email_column'));
         }
 
