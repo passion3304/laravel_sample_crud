@@ -173,7 +173,6 @@ class CrudPanel
         }
 
         $this->route = route($complete_route, $parameters);
-        $this->initButtons();
     }
 
     /**
