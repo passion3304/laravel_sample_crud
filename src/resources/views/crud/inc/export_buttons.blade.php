@@ -96,7 +96,7 @@
             extend: 'colvis',
             text: '<i class="la la-eye-slash"></i> {{ trans('backpack::crud.export.column_visibility') }}',
             columns: function ( idx, data, node ) {
-                return  $(node).attr('data-visible-in-table') == 'false';
+                return $(node).attr('data-visible-in-table') == 'false' && $(node).attr('data-can-be-visible-in-table') == 'true';
             },
             dropup: true
         }
