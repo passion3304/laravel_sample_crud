@@ -7,6 +7,8 @@ use Backpack\CRUD\Tests\BaseTest;
 
 class CrudControllerTest extends BaseTest
 {
+    private $crudPanel;
+
     /**
      * Define environment setup.
      *
@@ -16,14 +18,26 @@ class CrudControllerTest extends BaseTest
     protected function getEnvironmentSetUp($app)
     {
         parent::getEnvironmentSetUp($app);
+
         $controller = '\Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController';
 
         $app['router']->get('users/{id}/edit', "$controller@edit");
         $app['router']->put('users/{id}', "$controller@update");
 
+        $app['router']->get('admin/users', "$controller@index")->name('admin.users.index');
+
         $app->singleton('crud', function ($app) {
             return new CrudPanel($app);
         });
+
+        $this->crudPanel = app('crud');
+    }
+
+    public function testSetRouteName()
+    {
+        $this->crudPanel->setRouteName('admin.users');
+
+        $this->assertEquals(url('admin/users'), $this->crudPanel->getRoute());
     }
 
     public function testCrudRequestUpdatesOnEachRequest()
