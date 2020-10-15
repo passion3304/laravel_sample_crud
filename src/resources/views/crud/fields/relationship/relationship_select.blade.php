@@ -1,5 +1,4 @@
 @php
-    //in case entity is superNews we want the url friendly super-news
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
@@ -7,7 +6,6 @@
     $field['include_all_form_fields'] = $field['include_all_form_fields'] ?? true;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
-
 
     if (!isset($field['options'])) {
             $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name);
@@ -34,8 +32,7 @@
                     $current_value = [$current_value->{$connected_entity_key_name} => $current_value->{$field['attribute']}];
                 }else{
                     $current_value = $current_value
-                                    ->pluck($field['attribute'], $connected_entity_key_name)
-                                    ->toArray();
+                                    ->pluck($field['attribute'], $connected_entity_key_name);
                     }
 
             break;
@@ -63,7 +60,7 @@
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitRelationshipSelectElement"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
+        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
         data-placeholder="{{ $field['placeholder'] }}"
         data-field-attribute="{{ $field['attribute'] }}"
@@ -71,7 +68,6 @@
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
-        data-options-for-select="{{json_encode($field['options'])}}"
         data-app-current-lang="{{ app()->getLocale() }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
@@ -80,6 +76,15 @@
         multiple
         @endif
         >
+        @if ($field['allows_null'])
+            <option value="">-</option>
+        @endif
+
+        @if (count($field['options']))
+            @foreach ($field['options'] as $key => $option)
+                    <option value="{{ $key }}">{{ $option }}</option>
+            @endforeach
+        @endif
     </select>
 
     {{-- HINT --}}
@@ -138,8 +143,7 @@
         var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
-        var $optionsForSelect = JSON.parse(element.attr('data-options-for-select'));
-        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
 
@@ -150,46 +154,16 @@
         if(Object.keys($value).length > 0) {
             $item = true;
         }
-
-
         var selectedOptions = [];
         var $currentValue = $item ? $value : '';
 
-
-        for (const [key, value] of Object.entries($optionsForSelect)) {
-            var $option = new Option(value, key);
-            $(element).append($option);
-            //if option key is the same of current value we reselect it
-            if(!$multiple) {
-                if (key == Object.keys($currentValue)[0]) {
-                    $(element).val(key);
-                }
-            }else{
-                for (const [key, value] of Object.entries($currentValue)) {
-                        selectedOptions.push(key);
-                    }
-
-                    $(element).val(selectedOptions);
-            }
-
+        for (const [key, value] of Object.entries($currentValue)) {
+            selectedOptions.push(key);
+            $(element).val(selectedOptions);
         }
 
-        if (typeof $selectedOptions !== typeof undefined &&
-                    $selectedOptions !== false &&
-                        $selectedOptions != '' &&
-                        $selectedOptions != null &&
-                        $selectedOptions != [])
-                {
-                    $(element).val($selectedOptions);
-                    $(element).trigger('change');
-                }
-
-        if (!$allows_null && $item === false && $selectedOptions == null) {
-            if(Object.keys($optionsForSelect).length > 0) {
-                $(element).val(Object.keys($optionsForSelect)[0]);
-            }else{
-                $(element).val(null);
-            }
+        if (!$allows_null && $item === false) {
+            element.find('option:eq(0)').prop('selected', true);
         }
 
         $(element).attr('data-current-value',$(element).val());

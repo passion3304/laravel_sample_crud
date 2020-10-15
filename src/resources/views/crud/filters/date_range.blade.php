@@ -1,7 +1,7 @@
 {{-- Date Range Backpack CRUD filter --}}
-
 <li filter-name="{{ $filter->name }}"
-	filter-type="{{ $filter->type }}"
+    filter-type="{{ $filter->type }}"
+    filter-key="{{ $filter->key }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
 	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
 	<div class="dropdown-menu p-0">
@@ -11,7 +11,7 @@
 		          <span class="input-group-text"><i class="la la-calendar"></i></span>
 		        </div>
 		        <input class="form-control pull-right"
-		        		id="daterangepicker-{{ Str::slug($filter->name) }}"
+		        		id="daterangepicker-{{ $filter->key }}"
 		        		type="text"
 		        		@if ($filter->currentValue)
 							@php
@@ -26,7 +26,7 @@
 					        placeholder="{{ $date_range }}"
 						@endif
 		        		>
-		        <div class="input-group-append daterangepicker-{{ Str::slug($filter->name) }}-clear-button">
+		        <div class="input-group-append daterangepicker-{{ $filter->key }}-clear-button">
 		          <a class="input-group-text" href=""><i class="la la-times"></i></a>
 		        </div>
 		    </div>
@@ -62,7 +62,7 @@
 	<script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
   <script>
 
-  		function applyDateRangeFilter{{Str::camel($filter->name)}}(start, end) {
+  		function applyDateRangeFilter{{$filter->key}}(start, end) {
   			if (start && end) {
   				var dates = {
 					'from': start.format('YYYY-MM-DD'),
@@ -89,16 +89,16 @@
 
 			// mark this filter as active in the navbar-filters
 			if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-				$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
+				$('li[filter-key={{ $filter->key }}]').removeClass('active').addClass('active');
 			}
 			else
 			{
-				$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
+				$('li[filter-key={{ $filter->key }}]').trigger('filter:clear');
 			}
   		}
 
 		jQuery(document).ready(function($) {
-			var dateRangeInput = $('#daterangepicker-{{ Str::slug($filter->name) }}').daterangepicker({
+			var dateRangeInput = $('#daterangepicker-{{ $filter->key }}').daterangepicker({
 				timePicker: false,
 		        ranges: {
 		            'Today': [moment().startOf('day'), moment().endOf('day')],
@@ -117,24 +117,24 @@
 			});
 
 			dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
-				applyDateRangeFilter{{Str::camel($filter->name)}}(picker.startDate, picker.endDate);
+				applyDateRangeFilter{{$filter->key}}(picker.startDate, picker.endDate);
 			});
 
-			$('li[filter-name={{ $filter->name }}]').on('hide.bs.dropdown', function () {
+			$('li[filter-key={{ $filter->key }}]').on('hide.bs.dropdown', function () {
 				if($('.daterangepicker').is(':visible'))
 			    return false;
 			});
 
-			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
+			$('li[filter-key={{ $filter->key }}]').on('filter:clear', function(e) {
 				// console.log('daterangepicker filter cleared');
 				//if triggered by remove filters click just remove active class,no need to send ajax
-				$('li[filter-name={{ $filter->name }}]').removeClass('active');
+				$('li[filter-key={{ $filter->key }}]').removeClass('active');
 			});
 
 			// datepicker clear button
-			$(".daterangepicker-{{ Str::slug($filter->name) }}-clear-button").click(function(e) {
+			$(".daterangepicker-{{ $filter->key }}-clear-button").click(function(e) {
 				e.preventDefault();
-				applyDateRangeFilter{{Str::camel($filter->name)}}(null, null);
+				applyDateRangeFilter{{$filter->key}}(null, null);
 			})
 		});
   </script>

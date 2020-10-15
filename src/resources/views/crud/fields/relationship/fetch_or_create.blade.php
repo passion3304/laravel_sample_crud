@@ -71,6 +71,21 @@ if($activeInlineCreate) {
 
         //route to modal
         $field['inline_create']['modal_route'] = route($field['inline_create']['entity']."-inline-create");
+
+        //include main form fields in the request when asking for modal data,
+        //allow the developer to modify the inline create modal
+        //based on some field on the main form
+        $field['inline_create']['include_main_form_fields'] = $field['inline_create']['include_main_form_fields'] ?? false;
+
+        if(!is_bool($field['inline_create']['include_main_form_fields'])) {
+            if(is_array($field['inline_create']['include_main_form_fields'])) {
+                $field['inline_create']['include_main_form_fields'] = json_encode($field['inline_create']['include_main_form_fields']);
+            }else{
+                //it is a string or treat it like
+                $arrayed_field = array($field['inline_create']['include_main_form_fields']);
+                $field['inline_create']['include_main_form_fields'] = json_encode($arrayed_field);
+            }
+        }
     }
 }
 
@@ -92,7 +107,7 @@ if($activeInlineCreate) {
         data-init-function="bpFieldInitFetchOrCreateElement"
         data-is-inline="{{ $inlineCreate ?? 'false' }}"
         data-allows-null="{{var_export($field['allows_null'])}}"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(array_wrap($field['dependencies'])): json_encode([]) }}"
+        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
         data-placeholder="{{ $field['placeholder'] }}"
         data-data-source="{{ $field['data_source'] }}"
@@ -105,6 +120,7 @@ if($activeInlineCreate) {
         data-field-ajax="{{var_export($field['ajax'])}}"
         data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
+        data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -236,6 +252,10 @@ function setupInlineCreateButtons(element) {
     var $inlineModalRoute = element.attr('data-inline-modal-route');
     var $inlineModalClass = element.attr('data-inline-modal-class');
     var $parentLoadedFields = element.attr('data-parent-loaded-fields');
+    var $includeMainFormFields = element.attr('data-include-main-form-fields') == 'false' ? false : (element.attr('data-include-main-form-fields') == 'true' ? true : element.attr('data-include-main-form-fields'));
+
+    var $form = element.closest('form');
+
     $inlineCreateButtonElement.on('click', function () {
 
         //we change button state so users know something is happening.
@@ -246,13 +266,42 @@ function setupInlineCreateButtons(element) {
 
 
         }
+
+        //prepare main form fields to be submited in case there are some.
+        if(typeof $includeMainFormFields === "boolean" && $includeMainFormFields === true) {
+            var $toPass = $form.serializeArray();
+        }else{
+            if(typeof $includeMainFormFields !== "boolean") {
+            var $fields = JSON.parse($includeMainFormFields);
+            var $serializedForm = $form.serializeArray();
+            var $toPass = [];
+                $fields.forEach(function(value, index) {
+                    $valueFromForm = $serializedForm.filter(field => field.name === value);
+                    $toPass.push($valueFromForm[0]);
+
+                });
+
+                $includeMainFormFields = true;
+            }
+        }
         $.ajax({
             url: $inlineModalRoute,
-            data: {
-                'entity': $fieldEntity,
-                'modal_class' : $inlineModalClass,
-                'parent_loaded_fields' : $parentLoadedFields,
-            },
+            data: (function() {
+                if($includeMainFormFields) {
+                    return {
+                        'entity': $fieldEntity,
+                        'modal_class' : $inlineModalClass,
+                        'parent_loaded_fields' : $parentLoadedFields,
+                        'main_form_fields' : $toPass
+                    };
+                }else{
+                    return {
+                        'entity': $fieldEntity,
+                        'modal_class' : $inlineModalClass,
+                        'parent_loaded_fields' : $parentLoadedFields
+                    };
+                }
+            })(),
             type: 'POST',
             success: function (result) {
                 $('body').append(result);
@@ -463,7 +512,7 @@ function bpFieldInitFetchOrCreateElement(element) {
     var $modelKey = element.attr('data-model-local-key');
     var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
     var $appLang = element.attr('data-app-current-lang');
-    var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+    var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
     var $multiple = element.prop('multiple');
 
     var FetchOrCreateAjaxFetchSelectedEntry = function (element) {

@@ -75,6 +75,7 @@ trait Filters
         if (! isset($options['name'])) {
             abort(500, 'All your filters need names.');
         }
+
         if ($this->filters()->contains('name', $options['name'])) {
             abort(500, "Sorry, you can't have two filters with the same name.");
         }

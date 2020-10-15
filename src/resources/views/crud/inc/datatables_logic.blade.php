@@ -76,7 +76,11 @@
         fn.apply(window, args);
       },
       updateUrl : function (new_url) {
-        new_url = new_url.replace('/search', '');
+        url_start = "{{ url($crud->route) }}";
+        url_end = new_url.replace(url_start, '');
+        url_end = url_end.replace('/search', '');
+        new_url = url_start + url_end;
+
         window.history.pushState({}, '', new_url);
         localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
       },
@@ -135,9 +139,9 @@
 
             data.columns.forEach(function(item, index) {
                 var columnHeading = crud.table.columns().header()[index];
-                    if ($(columnHeading).attr('data-visible-in-table') == 'true') {
-                        return item.visible = true;
-                    }
+                if ($(columnHeading).attr('data-visible-in-table') == 'true') {
+                    return item.visible = true;
+                }
             });
         },
         @if($crud->getPersistentTableDuration())
@@ -175,7 +179,8 @@
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
               "processing":     "<img src='{{ asset('packages/backpack/crud/img/ajax-loader.gif') }}' alt='{{ trans('backpack::crud.processing') }}'>",
-              "search":         "<span class='d-none d-sm-inline'>{{ trans('backpack::crud.search') }}</span>",
+              "search": "_INPUT_",
+              "searchPlaceholder": "{{ trans('backpack::crud.search') }}...",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
               "paginate": {
                   "first":      "{{ trans('backpack::crud.paginate.first') }}",
@@ -204,9 +209,9 @@
               "type": "POST"
           },
           dom:
-            "<'row hidden'<'col-sm-6 hidden-xs'i><'col-sm-6 hidden-print'f>>" +
+            "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row mt-2 '<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
+            "<'row mt-2 d-print-none '<'col-sm-12 col-md-4'l><'col-sm-0 col-md-4 text-center'B><'col-sm-12 col-md-4 'p>>",
       }
   }
   </script>

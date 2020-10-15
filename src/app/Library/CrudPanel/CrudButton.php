@@ -320,7 +320,7 @@ class CrudButton
      */
     public function after($destination)
     {
-        $this->crud()->moveButton($this->name, 'after', $destinationName);
+        $this->crud()->moveButton($this->name, 'after', $destination);
 
         return $this;
     }
@@ -333,7 +333,7 @@ class CrudButton
      */
     public function before($destination)
     {
-        $this->crud()->moveButton($this->name, 'before', $destinationName);
+        $this->crud()->moveButton($this->name, 'before', $destination);
 
         return $this;
     }

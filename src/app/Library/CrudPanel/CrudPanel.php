@@ -30,6 +30,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 
@@ -172,7 +173,6 @@ class CrudPanel
         }
 
         $this->route = route($complete_route, $parameters);
-        $this->initButtons();
     }
 
     /**
@@ -440,29 +440,28 @@ class CrudPanel
         $relationArray = explode('.', $relationString);
         $firstRelationName = Arr::first($relationArray);
         $relation = $model->{$firstRelationName};
-        $currentResults = [];
 
         $results = [];
         if (! is_null($relation)) {
-            if ($relation instanceof Collection && ! $relation->isEmpty()) {
-                $currentResults[get_class($relation->first())] = $relation->toArray();
-            } elseif (is_array($relation) && ! empty($relation)) {
-                $currentResults[get_class($relation->first())] = $relation;
+            if ($relation instanceof Collection) {
+                $currentResults = $relation->all();
+            } elseif (is_array($relation)) {
+                $currentResults = $relation;
+            } elseif ($relation instanceof Model) {
+                $currentResults = [$relation];
             } else {
-                //relation must be App\Models\Article or App\Models\Category
-                if (! $relation instanceof Collection && ! empty($relation)) {
-                    $currentResults[get_class($relation)] = $relation->toArray();
-                }
+                $currentResults = [];
             }
 
             array_shift($relationArray);
 
             if (! empty($relationArray)) {
-                foreach ($currentResults as $model => $currentResult) {
-                    $results[$model] = array_merge($results[$model], $this->getRelatedEntries($currentResult, implode('.', $relationArray)));
+                foreach ($currentResults as $currentResult) {
+                    $results = array_merge_recursive($results, $this->getRelatedEntries($currentResult, implode('.', $relationArray)));
                 }
             } else {
-                $results = $currentResults;
+                $relatedClass = get_class($model->{$firstRelationName}()->getRelated());
+                $results[$relatedClass] = $currentResults;
             }
         }
 

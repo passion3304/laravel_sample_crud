@@ -23,6 +23,7 @@ trait FetchOperation
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
                 Route::post($segment.'/fetch/'.Str::kebab($methodName), [
+                    'as'        => $segment.'.fetch'.Str::studly($methodName),
                     'uses'      => $controller.'@fetch'.$methodName,
                     'operation' => 'FetchOperation',
                 ]);
@@ -81,15 +82,41 @@ trait FetchOperation
         }
 
         $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array'];
-        // for each searchable attribute, add a WHERE clause
-        foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
-            $operation = ($k == 0) ? 'where' : 'orWhere';
-            $columnType = $model_instance->getColumnType($searchColumn);
 
-            if (in_array($columnType, $textColumnTypes)) {
-                $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$search_string.'%');
-            } else {
-                $config['query'] = $config['query']->{$operation}($searchColumn, $search_string);
+        // if the query builder brings any where clause already defined by the user we must
+        // ensure that the where prevails and we should only use our search as a complement to the query constraints.
+        // e.g user want only the active products, so in fetch he would return something like:
+        // .... 'query' => function($model) { return $model->where('active', 1); }
+        // So it reads: SELECT ... WHERE active = 1 AND (XXX = x OR YYY = y) and not SELECT ... WHERE active = 1 AND XXX = x OR YYY = y;
+
+        if (! empty($config['query']->getQuery()->wheres)) {
+            $config['query'] = $config['query']->where(function ($query) use ($model_instance, $config, $search_string, $textColumnTypes) {
+                foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
+                    $operation = ($k == 0) ? 'where' : 'orWhere';
+                    $columnType = $model_instance->getColumnType($searchColumn);
+
+                    if (in_array($columnType, $textColumnTypes)) {
+                        $tempQuery = $query->{$operation}($searchColumn, 'LIKE', '%'.$search_string.'%');
+                    } else {
+                        $tempQuery = $query->{$operation}($searchColumn, $search_string);
+                    }
+                }
+                // If developer provide an empty searchable_attributes array it means he don't want us to search
+                // in any specific column, or try to guess the column from model identifiableAttribute.
+                // In that scenario we will not have any $tempQuery here, so we just return the query, is up to the developer
+                // to do his own search.
+                return $tempQuery ?? $query;
+            });
+        } else {
+            foreach ((array) $config['searchable_attributes'] as $k => $searchColumn) {
+                $operation = ($k == 0) ? 'where' : 'orWhere';
+                $columnType = $model_instance->getColumnType($searchColumn);
+
+                if (in_array($columnType, $textColumnTypes)) {
+                    $config['query'] = $config['query']->{$operation}($searchColumn, 'LIKE', '%'.$search_string.'%');
+                } else {
+                    $config['query'] = $config['query']->{$operation}($searchColumn, $search_string);
+                }
             }
         }
 

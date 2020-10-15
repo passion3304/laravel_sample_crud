@@ -131,17 +131,17 @@
                         container = field.parents('.form-group');
 
             container.addClass('text-danger');
-            container.children('input, textarea').addClass('is-invalid');
+            container.children('input, textarea, select').addClass('is-invalid');
 
             $.each(messages, function(key, msg){
                 // highlight the input that errored
-                var row = $('<div class="invalid-feedback">' + msg + '</div>');
+                var row = $('<div class="invalid-feedback d-block">' + msg + '</div>');
                 row.appendTo(container);
 
                 // highlight its parent tab
                 @if ($crud->tabsEnabled())
-                var tab_id = $(container).parent().attr('id');
-                $("#form_tabs [aria-controls="+tab_id+"]").addClass('text-red');
+                var tab_id = $(container).closest('[role="tabpanel"]').attr('id');
+                $("#form_tabs [aria-controls="+tab_id+"]").addClass('text-danger');
                 @endif
             });
         });

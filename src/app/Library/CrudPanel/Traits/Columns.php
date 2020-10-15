@@ -366,6 +366,7 @@ trait Columns
         $column = $this->makeSureColumnHasLabel($column);
         $column = $this->makeSureColumnHasType($column);
         $column = $this->makeSureColumnHasKey($column);
+        $column = $this->makeSureColumnHasPriority($column);
         $column = $this->makeSureColumnHasModel($column);
 
         // check if the column exists in the database (as a db column)
@@ -385,6 +386,21 @@ trait Columns
         }
 
         return $column;
+    }
+
+    /**
+     * Count the number of columns added so far.
+     *
+     * It will not take into account the action
+     * columns (columns with buttons, checkbox).
+     *
+     * @return int
+     */
+    public function countColumnsWithoutActions()
+    {
+        return collect($this->columns())->filter(function ($column, $key) {
+            return ! isset($column['hasActions']) || $column['hasActions'] == false;
+        })->count();
     }
 
     /**
