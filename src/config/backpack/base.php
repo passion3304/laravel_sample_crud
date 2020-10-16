@@ -207,7 +207,9 @@ return [
     */
 
     // Fully qualified namespace of the User model
-    'user_model_fqn' => App\User::class,
+    'user_model_fqn' => config('auth.providers.users.model'),
+    // 'user_model_fqn' => App\User::class, // works on Laravel <= 7
+    // 'user_model_fqn' => App\Models\User::class, // works on Laravel >= 8
 
     // The classes for the middleware to check if the visitor is an admin
     // Can be a single class or an array of classes
