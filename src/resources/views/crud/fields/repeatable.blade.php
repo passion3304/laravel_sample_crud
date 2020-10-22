@@ -184,6 +184,9 @@
                     $(el).trigger('backpack_field.deleted');
                 });
                 $(this).parent().remove();
+
+                //we reassure row numbers
+                setupElementRowsNumbers(container_holder);
             });
 
             if (values != null) {
@@ -204,7 +207,23 @@
             }
             //we push the fields to the correct container in page.
             container_holder.append(new_field_group);
+
+            //after appending to the container we reassure row numbers
+            setupElementRowsNumbers(container_holder);
+
             initializeFieldsWithJavascript(container_holder);
+        }
+
+        //this function is responsible for managing rows numbers upon creation/deletion of elements
+        function setupElementRowsNumbers(container) {
+            container.children().each(function(i, el) {
+                var rowNumber = i+1;
+                $(el).attr('data-repeatable-row-number', rowNumber);
+                //also attach the row number to all the input elements inside
+                $(el).find('input, select, textarea').each(function(i, el) {
+                    $(el).attr('data-repeatable-row-number', rowNumber);
+                });
+            });
         }
     </script>
   @endpush
