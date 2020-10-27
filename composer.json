@@ -35,7 +35,7 @@
         "laravel/framework": "^8.0|^7.0|^6.0",
         "prologue/alerts": "^0.4.1",
         "creativeorange/gravatar": "~1.0",
-        "ocramius/package-versions": "^1.4",
+        "composer/package-versions-deprecated": "^1.8",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^7.0|^6.3"
     },
