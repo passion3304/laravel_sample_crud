@@ -9,7 +9,7 @@
   <script>
     @if ($crud->getPersistentTable())
 
-        var saved_list_url = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url');
+        var saved_list_url = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url');
 
         //check if saved url has any parameter or is empty after clearing filters.
 
@@ -30,7 +30,7 @@
         }
 
     @if($crud->getPersistentTableDuration())
-        var saved_list_url_time = localStorage.getItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+        var saved_list_url_time = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url_time');
 
         if (saved_list_url_time) {
             var $current_date = new Date();
@@ -76,9 +76,13 @@
         fn.apply(window, args);
       },
       updateUrl : function (new_url) {
-        new_url = new_url.replace('/search', '');
+        url_start = "{{ url($crud->route) }}";
+        url_end = new_url.replace(url_start, '');
+        url_end = url_end.replace('/search', '');
+        new_url = url_start + url_end;
+
         window.history.pushState({}, '', new_url);
-        localStorage.setItem('{{ str_slug($crud->getRoute()) }}_list_url', new_url);
+        localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
       },
       dataTableConfiguration: {
 
@@ -131,13 +135,13 @@
 
         stateSaveParams: function(settings, data) {
 
-            localStorage.setItem('{{ str_slug($crud->getRoute()) }}_list_url_time', data.time);
+            localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url_time', data.time);
 
             data.columns.forEach(function(item, index) {
                 var columnHeading = crud.table.columns().header()[index];
-                    if ($(columnHeading).attr('data-visible-in-table') == 'true') {
-                        return item.visible = true;
-                    }
+                if ($(columnHeading).attr('data-visible-in-table') == 'true') {
+                    return item.visible = true;
+                }
             });
         },
         @if($crud->getPersistentTableDuration())
@@ -149,11 +153,11 @@
 
             //if the save time as expired we force datatabled to clear localStorage
             if($saved_time < $current_date) {
-                if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url')) {
-                    localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url');
+                if (localStorage.getItem('{{ Str::slug($crud->getRoute())}}_list_url')) {
+                    localStorage.removeItem('{{ Str::slug($crud->getRoute()) }}_list_url');
                 }
-                if (localStorage.getItem('{{ str_slug($crud->getRoute())}}_list_url_time')) {
-                    localStorage.removeItem('{{ str_slug($crud->getRoute()) }}_list_url_time');
+                if (localStorage.getItem('{{ Str::slug($crud->getRoute())}}_list_url_time')) {
+                    localStorage.removeItem('{{ Str::slug($crud->getRoute()) }}_list_url_time');
                 }
                return false;
             }
@@ -175,7 +179,8 @@
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
               "processing":     "<img src='{{ asset('packages/backpack/crud/img/ajax-loader.gif') }}' alt='{{ trans('backpack::crud.processing') }}'>",
-              "search":         "<span class='d-none d-sm-inline'>{{ trans('backpack::crud.search') }}</span>",
+              "search": "_INPUT_",
+              "searchPlaceholder": "{{ trans('backpack::crud.search') }}...",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
               "paginate": {
                   "first":      "{{ trans('backpack::crud.paginate.first') }}",
@@ -198,14 +203,15 @@
           },
           processing: true,
           serverSide: true,
+          searching: @json($crud->getOperationSetting('searchableTable') ?? true),
           ajax: {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
               "type": "POST"
           },
           dom:
-            "<'row hidden'<'col-sm-6 hidden-xs'i><'col-sm-6 hidden-print'f>>" +
+            "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row mt-2 '<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
+            "<'row mt-2 d-print-none '<'col-sm-12 col-md-4'l><'col-sm-0 col-md-4 text-center'B><'col-sm-12 col-md-4 'p>>",
       }
   }
   </script>
@@ -222,7 +228,31 @@
       $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
-      $("#datatable_info_stack").html($('#crudTable_info'));
+      $("#datatable_info_stack").html($('#crudTable_info')).css('display','inline-flex').addClass('animated fadeIn');
+
+      @if($crud->getOperationSetting('resetButton') ?? true)
+        // create the reset button
+        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1" id="crudTable_reset_button">{{ trans('backpack::crud.reset') }}</a>';
+
+        $('#datatable_info_stack').append(crudTableResetButton);
+
+          // when clicking in reset button we clear the localStorage for datatables.
+        $('#crudTable_reset_button').on('click', function() {
+
+          //clear the filters
+          if (localStorage.getItem('{{ Str::slug($crud->getRoute())}}_list_url')) {
+              localStorage.removeItem('{{ Str::slug($crud->getRoute()) }}_list_url');
+          }
+          if (localStorage.getItem('{{ Str::slug($crud->getRoute())}}_list_url_time')) {
+              localStorage.removeItem('{{ Str::slug($crud->getRoute()) }}_list_url_time');
+          }
+
+          //clear the table sorting/ordering/visibility
+          if(localStorage.getItem('DataTables_crudTable_/{{ $crud->getRoute() }}')) {
+              localStorage.removeItem('DataTables_crudTable_/{{ $crud->getRoute() }}');
+          }
+        });
+      @endif
 
       // move the bottom buttons before pagination
       $("#bottom_buttons").insertBefore($('#crudTable_wrapper .row:last-child' ));

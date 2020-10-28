@@ -37,6 +37,25 @@ trait ShowOperation
         $this->crud->operation('list', function () {
             $this->crud->addButton('line', 'show', 'view', 'crud::buttons.show', 'beginning');
         });
+
+        $this->crud->operation(['create', 'update'], function () {
+            $this->crud->addSaveAction([
+                'name' => 'save_and_preview',
+                'visible' => function ($crud) {
+                    return $crud->hasAccess('show');
+                },
+                'redirect' => function ($crud, $request, $itemId = null) {
+                    $itemId = $itemId ?: $request->input('id');
+                    $redirectUrl = $crud->route.'/'.$itemId.'/show';
+                    if ($request->has('locale')) {
+                        $redirectUrl .= '?locale='.$request->input('locale');
+                    }
+
+                    return $redirectUrl;
+                },
+                'button_text' => trans('backpack::crud.save_action_save_and_preview'),
+            ]);
+        });
     }
 
     /**
@@ -89,7 +108,7 @@ trait ShowOperation
 
             // remove the character limit on columns that take it into account
             if (in_array($column['type'], ['text', 'email', 'model_function', 'model_function_attribute', 'phone', 'row_number', 'select'])) {
-                $this->crud->modifyColumn($column['key'], ['limit' => 999]);
+                $this->crud->modifyColumn($column['key'], ['limit' => ($column['limit'] ?? 999)]);
             }
         }
 

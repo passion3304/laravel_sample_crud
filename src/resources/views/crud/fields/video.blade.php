@@ -12,28 +12,34 @@ if (is_array($value)) {
     $value = $value;
 }
 
+$field['youtube_api_key'] = $field['youtube_api_key'] ?? 'AIzaSyBLRoVYovRmbIf_BH3X12IcTCudAEDRlCE';
+
+$field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
+$field['wrapper']['data-init-function'] = 'bpFieldInitVideoElement';
+$field['wrapper']['data-youtube-api-key'] = $field['youtube_api_key'];
+$field['wrapper']['data-video'] = '';
 ?>
 
 
-<div data-video data-init-function="bpFieldInitVideoElement" @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label for="{{ $field['name'] }}_link">{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     <input class="video-json" type="hidden" name="{{ $field['name'] }}" value="{{ $value }}">
     <div class="input-group">
-        <input @include('crud::inc.field_attributes', ['default_class' => 'video-link form-control']) type="text" id="{{ $field['name'] }}_link">
+        <input @include('crud::fields.inc.attributes', ['default_class' => 'video-link form-control']) type="url" id="{{ $field['name'] }}_link">
         <div class="input-group-append video-previewSuffix video-noPadding">
             <div class="video-preview">
                 <span class="video-previewImage"></span>
                 <a class="video-previewLink hidden" target="_blank" href="">
-                    <i class="fa fa-lg video-previewIcon"></i>
+                    <i class="la la-lg video-previewIcon"></i>
                 </a>
             </div>
             <div class="video-dummy">
                 <a class="video-previewLink youtube dummy" target="_blank" href="">
-                    <i class="fa fa-lg fa-youtube video-previewIcon dummy"></i>
+                    <i class="la la-lg la-youtube video-previewIcon dummy"></i>
                 </a>
                 <a class="video-previewLink vimeo dummy" target="_blank" href="">
-                    <i class="fa fa-lg fa-vimeo video-previewIcon dummy"></i>
+                    <i class="la la-lg la-vimeo video-previewIcon dummy"></i>
                 </a>
             </div>
         </div>
@@ -43,7 +49,7 @@ if (is_array($value)) {
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
@@ -145,9 +151,9 @@ if (is_array($value)) {
             return id;
         };
 
-        var fetchYouTube = function( videoId, callback ){
+        var fetchYouTube = function( videoId, callback, apiKey ){
 
-            var api = 'https://www.googleapis.com/youtube/v3/videos?id='+videoId+'&key=AIzaSyDQa76EpdNPzfeTAoZUut2AnvBA0jkx3FI&part=snippet';
+            var api = 'https://www.googleapis.com/youtube/v3/videos?id='+videoId+'&key='+apiKey+'&part=snippet';
 
             var video = {
                 provider: 'youtube',
@@ -157,17 +163,21 @@ if (is_array($value)) {
                 url: null
             };
 
-            $.getJSON(api, function( data ){
+            $.ajax({
+                dataType: "jsonp",
+                url: api,
+                crossDomain: true,
+                success: function (data) {
+                    if (typeof(data.items[0]) != "undefined") {
+                                    var v = data.items[0].snippet;
 
-                if (typeof(data.items[0]) != "undefined") {
-                    var v = data.items[0].snippet;
+                                    video.id = videoId;
+                                    video.title = v.title;
+                                    video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
+                                    video.url = 'https://www.youtube.com/watch?v=' + video.id;
 
-                    video.id = videoId;
-                    video.title = v.title;
-                    video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
-                    video.url = 'https://www.youtube.com/watch?v=' + video.id;
-
-                    callback(video);
+                                    callback(video);
+                                }
                 }
             });
         };
@@ -199,7 +209,7 @@ if (is_array($value)) {
             });
         };
 
-        var parseVideoLink = function( link, callback ){
+        var parseVideoLink = function( link, callback, apiKey ){
 
             var response = {success: false, message: 'unknown error occured, please try again', data: [] };
 
@@ -211,7 +221,7 @@ if (is_array($value)) {
             }
 
 
-            var id = tryYouTube(link);
+            var id = tryYouTube(link, apiKey);
 
             if( id ){
 
@@ -224,7 +234,7 @@ if (is_array($value)) {
                     }
 
                     callback(response);
-                });
+                },apiKey);
             }
             else {
 
@@ -269,8 +279,8 @@ if (is_array($value)) {
             .css('backgroundImage', 'url('+video.image+')');
 
             pIcon
-            .removeClass('fa-vimeo fa-youtube')
-            .addClass('fa-' + video.provider);
+            .removeClass('la-vimeo la-youtube')
+            .addClass('la-' + video.provider);
             pWrap.fadeIn();
         };
 
@@ -281,7 +291,8 @@ if (is_array($value)) {
                 jsonField = $this.find('.video-json'),
                 linkField = $this.find('.video-link'),
                 pDummy = $this.find('.video-dummy'),
-                pWrap = $this.find('.video-preview');
+                pWrap = $this.find('.video-preview'),
+                apiKey = $this.attr('data-youtube-api-key');
 
                 try {
                     var videoJson = JSON.parse(jsonField.val());
@@ -325,7 +336,7 @@ if (is_array($value)) {
                             }
 
                             videoParsing = false;
-                        });
+                        },apiKey);
                     }
                     else {
                         videoParsing = false;

@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
+
 /**
  * Key-value store for operations.
  */
@@ -55,7 +57,7 @@ trait Settings
      */
     public function settings()
     {
-        return array_sort($this->settings, function ($value, $key) {
+        return Arr::sort($this->settings, function ($value, $key) {
             return $key;
         });
     }
@@ -74,7 +76,7 @@ trait Settings
             return $this->get($key);
         }
 
-        return $this->set($key);
+        return $this->set($key, $value);
     }
 
     /**

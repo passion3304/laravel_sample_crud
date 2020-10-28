@@ -19,6 +19,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
@@ -27,13 +28,16 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Arr;
 
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings;
+    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships;
     // allow developers to add their own closures to this object
     use Macroable;
 
@@ -51,15 +55,36 @@ class CrudPanel
 
     public $entry;
 
+    protected $request;
+
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 
     public function __construct()
     {
-        $this->request = \Request::instance();
+        $this->setRequest();
 
         if ($this->getCurrentOperation()) {
             $this->setOperation($this->getCurrentOperation());
         }
+    }
+
+    /**
+     * Set the request instance for this CRUD.
+     *
+     * @param \Illuminate\Http\Request $request
+     */
+    public function setRequest($request = null)
+    {
+        $this->request = $request ?? \Request::instance();
+    }
+
+    /**
+     * [getRequest description].
+     * @return [type] [description]
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     // ------------------------------------------------------
@@ -106,7 +131,7 @@ class CrudPanel
      */
     private function getSchema()
     {
-        return \Schema::setConnection($this->getModel()->getConnection());
+        return $this->getModel()->getConnection()->getSchemaBuilder();
     }
 
     /**
@@ -148,7 +173,6 @@ class CrudPanel
         }
 
         $this->route = route($complete_route, $parameters);
-        $this->initButtons();
     }
 
     /**
@@ -192,7 +216,7 @@ class CrudPanel
      */
     public function getAction()
     {
-        return $this->request->route()->getAction();
+        return $this->getRequest()->route()->getAction();
     }
 
     /**
@@ -203,7 +227,7 @@ class CrudPanel
      */
     public function getActionName()
     {
-        return $this->request->route()->getActionName();
+        return $this->getRequest()->route()->getActionName();
     }
 
     /**
@@ -214,7 +238,7 @@ class CrudPanel
      */
     public function getActionMethod()
     {
-        return $this->request->route()->getActionMethod();
+        return $this->getRequest()->route()->getActionMethod();
     }
 
     /**
@@ -244,7 +268,7 @@ class CrudPanel
      */
     public function getFirstOfItsTypeInArray($type, $array)
     {
-        return array_first($array, function ($item) use ($type) {
+        return Arr::first($array, function ($item) use ($type) {
             return $item['type'] == $type;
         });
     }
@@ -302,7 +326,13 @@ class CrudPanel
         }
 
         $result = array_reduce(array_splice($relationArray, 0, $length), function ($obj, $method) {
-            return $obj->$method()->getRelated();
+            try {
+                $result = $obj->$method();
+
+                return $result->getRelated();
+            } catch (Exception $e) {
+                return $obj;
+            }
         }, $model);
 
         return get_class($result);
@@ -320,19 +350,80 @@ class CrudPanel
      *
      * @return array An array containing a list of attributes from the resulting model.
      */
-    public function getModelAttributeFromRelation($model, $relationString, $attribute)
+    public function getRelatedEntriesAttributes($model, $relationString, $attribute)
     {
-        $endModels = $this->getRelationModelInstances($model, $relationString);
+        $endModels = $this->getRelatedEntries($model, $relationString);
         $attributes = [];
-        foreach ($endModels as $model) {
-            if (is_array($model) && isset($model[$attribute])) {
-                $attributes[] = $model[$attribute];
-            } elseif ($model->{$attribute}) {
-                $attributes[] = $model->{$attribute};
+        foreach ($endModels as $model => $entries) {
+            $model_instance = new $model();
+            $modelKey = $model_instance->getKeyName();
+
+            if (is_array($entries)) {
+                //if attribute does not exist in main array we have more than one entry OR the attribute
+                //is an acessor that is not in $appends property of model.
+                if (! isset($entries[$attribute])) {
+                    //we first check if we don't have the attribute because it's and acessor that is not in appends.
+                    if ($model_instance->hasGetMutator($attribute) && isset($entries[$modelKey])) {
+                        $entry_in_database = $model_instance->find($entries[$modelKey]);
+                        $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
+                    } else {
+                        //we have multiple entries
+                        //for each entry we check if $attribute exists in array or try to check if it's an acessor.
+                        foreach ($entries as $entry) {
+                            if (isset($entry[$attribute])) {
+                                $attributes[$entry[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry[$attribute]);
+                            } else {
+                                if ($model_instance->hasGetMutator($attribute)) {
+                                    $entry_in_database = $model_instance->find($entry[$modelKey]);
+                                    $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    //if we have the attribute we just return it, does not matter if it is direct attribute or an acessor added in $appends.
+                    $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
+                }
             }
         }
 
         return $attributes;
+    }
+
+    /**
+     * Parse translatable attributes from a model or models resulting from the specified relation string.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model          Model (eg: user).
+     * @param string                              $attribute      The attribute from the relation model (eg: the street attribute from the address model).
+     * @param string                              $value          Attribute value translatable or not
+     *
+     * @return string A string containing the translated attributed based on app()->getLocale()
+     */
+    public function parseTranslatableAttributes($model, $attribute, $value)
+    {
+        if (! method_exists($model, 'isTranslatableAttribute')) {
+            return $value;
+        }
+
+        if (! $model->isTranslatableAttribute($attribute)) {
+            return $value;
+        }
+
+        if (! is_array($value)) {
+            $decodedAttribute = json_decode($value, true);
+        } else {
+            $decodedAttribute = $value;
+        }
+
+        if (is_array($decodedAttribute) && ! empty($decodedAttribute)) {
+            if (isset($decodedAttribute[app()->getLocale()])) {
+                return $decodedAttribute[app()->getLocale()];
+            } else {
+                return Arr::first($decodedAttribute);
+            }
+        }
+
+        return $value;
     }
 
     /**
@@ -344,28 +435,33 @@ class CrudPanel
      *
      * @return array An array of the associated model instances defined by the relation string.
      */
-    private function getRelationModelInstances($model, $relationString)
+    private function getRelatedEntries($model, $relationString)
     {
         $relationArray = explode('.', $relationString);
-        $firstRelationName = array_first($relationArray);
+        $firstRelationName = Arr::first($relationArray);
         $relation = $model->{$firstRelationName};
 
         $results = [];
-        if (! empty($relation)) {
+        if (! is_null($relation)) {
             if ($relation instanceof Collection) {
-                $currentResults = $relation->toArray();
+                $currentResults = $relation->all();
+            } elseif (is_array($relation)) {
+                $currentResults = $relation;
+            } elseif ($relation instanceof Model) {
+                $currentResults = [$relation];
             } else {
-                $currentResults[] = $relation;
+                $currentResults = [];
             }
 
             array_shift($relationArray);
 
             if (! empty($relationArray)) {
                 foreach ($currentResults as $currentResult) {
-                    $results = array_merge($results, $this->getRelationModelInstances($currentResult, implode('.', $relationArray)));
+                    $results = array_merge_recursive($results, $this->getRelatedEntries($currentResult, implode('.', $relationArray)));
                 }
             } else {
-                $results = $currentResults;
+                $relatedClass = get_class($model->{$firstRelationName}()->getRelated());
+                $results[$relatedClass] = $currentResults;
             }
         }
 

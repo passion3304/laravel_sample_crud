@@ -2,8 +2,13 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
+use Illuminate\Support\Arr;
+
 trait Columns
 {
+    use ColumnsProtectedMethods;
+
     // ------------
     // COLUMNS
     // ------------
@@ -62,64 +67,8 @@ trait Columns
      */
     public function addColumn($column)
     {
-        // if a string was passed, not an array, change it to an array
-        if (! is_array($column)) {
-            $column = ['name' => $column];
-        }
-
-        // make sure the column has a label
-        $column_with_details = $this->addDefaultLabel($column);
-
-        // make sure the column has a name
-        if (! array_key_exists('name', $column_with_details)) {
-            $column_with_details['name'] = 'anonymous_column_'.str_random(5);
-        }
-
-        // make sure the column has a type
-        if (! array_key_exists('type', $column_with_details)) {
-            $column_with_details['type'] = 'text';
-        }
-
-        // make sure the column has a key
-        if (! array_key_exists('key', $column_with_details)) {
-            $column_with_details['key'] = str_replace('.', '__', $column_with_details['name']);
-        }
-
-        // check if the column exists in the database table
-        $columnExistsInDb = $this->hasColumn($this->model->getTable(), $column_with_details['name']);
-
-        // make sure the column has a tableColumn boolean
-        if (! array_key_exists('tableColumn', $column_with_details)) {
-            $column_with_details['tableColumn'] = $columnExistsInDb ? true : false;
-        }
-
-        // make sure the column has a orderable boolean
-        if (! array_key_exists('orderable', $column_with_details)) {
-            $column_with_details['orderable'] = $columnExistsInDb ? true : false;
-        }
-
-        // make sure the column has a searchLogic
-        if (! array_key_exists('searchLogic', $column_with_details)) {
-            $column_with_details['searchLogic'] = $columnExistsInDb ? true : false;
-        }
-
-        $columnsArray = array_add($this->columns(), $column_with_details['key'], $column_with_details);
-        $this->setOperationSetting('columns', $columnsArray);
-
-        // make sure the column has a priority in terms of visibility
-        // if no priority has been defined, use the order in the array plus one
-        if (! array_key_exists('priority', $column_with_details)) {
-            $position_in_columns_array = (int) array_search($column_with_details['key'], array_keys($this->columns()));
-            $columnsArray[$column_with_details['key']]['priority'] = $position_in_columns_array + 1;
-        }
-
-        // if this is a relation type field and no corresponding model was specified, get it from the relation method
-        // defined in the main model
-        if (isset($column_with_details['entity']) && ! isset($column_with_details['model'])) {
-            $columnsArray[$column_with_details['key']]['model'] = $this->getRelationModel($column_with_details['entity']);
-        }
-
-        $this->setOperationSetting('columns', $columnsArray);
+        $column = $this->makeSureColumnHasNeededAttributes($column);
+        $this->addColumnToOperationSettings($column);
 
         return $this;
     }
@@ -174,32 +123,6 @@ trait Columns
     }
 
     /**
-     * Move the most recently added column before or after the given target column. Default is before.
-     *
-     * @param string|array $targetColumn The target column name or array.
-     * @param bool         $before       If true, the column will be moved before the target column, otherwise it will be moved after it.
-     */
-    private function moveColumn($targetColumn, $before = true)
-    {
-        // TODO: this and the moveField method from the Fields trait should be refactored into a single method and moved
-        //       into a common class
-        $targetColumnName = is_array($targetColumn) ? $targetColumn['name'] : $targetColumn;
-        $columnsArray = $this->columns();
-
-        if (array_key_exists($targetColumnName, $columnsArray)) {
-            $targetColumnPosition = $before ? array_search($targetColumnName, array_keys($columnsArray)) :
-                array_search($targetColumnName, array_keys($columnsArray)) + 1;
-
-            $element = array_pop($columnsArray);
-            $beginningPart = array_slice($columnsArray, 0, $targetColumnPosition, true);
-            $endingArrayPart = array_slice($columnsArray, $targetColumnPosition, null, true);
-
-            $columnsArray = array_merge($beginningPart, [$element['name'] => $element], $endingArrayPart);
-            $this->setOperationSetting('columns', $columnsArray);
-        }
-    }
-
-    /**
      * Add the default column type to the given Column, inferring the type from the database column type.
      *
      * @param array $column
@@ -209,7 +132,7 @@ trait Columns
     public function addDefaultTypeToColumn($column)
     {
         if (array_key_exists('name', (array) $column)) {
-            $default_type = $this->getFieldTypeFromDbColumnType($column['name']);
+            $default_type = $this->inferFieldTypeFromDbColumnType($column['name']);
 
             return array_merge(['type' => $default_type], $column);
         }
@@ -218,33 +141,14 @@ trait Columns
     }
 
     /**
-     * If a field or column array is missing the "label" attribute, an ugly error would be show.
-     * So we add the field Name as a label - it's better than nothing.
-     *
-     * @param array $array
-     *
-     * @return array
-     */
-    public function addDefaultLabel($array)
-    {
-        if (! array_key_exists('label', (array) $array) && array_key_exists('name', (array) $array)) {
-            $array = array_merge(['label' => mb_ucfirst($this->makeLabel($array['name']))], $array);
-
-            return $array;
-        }
-
-        return $array;
-    }
-
-    /**
      * Remove a column from the CRUD panel by name.
      *
-     * @param string $column The column key.
+     * @param string $columnKey The column key.
      */
     public function removeColumn($columnKey)
     {
         $columnsArray = $this->columns();
-        array_forget($columnsArray, $columnKey);
+        Arr::forget($columnsArray, $columnKey);
         $this->setOperationSetting('columns', $columnsArray);
     }
 
@@ -268,6 +172,20 @@ trait Columns
     public function removeAllColumns()
     {
         $this->setOperationSetting('columns', []);
+    }
+
+    /**
+     * Remove an attribute from one column's definition array.
+     * @param  string $column     The name of the column.
+     * @param  string $attribute The name of the attribute being removed.
+     */
+    public function removeColumnAttribute($column, $attribute)
+    {
+        $columns = $this->columns();
+
+        unset($columns[$column][$attribute]);
+
+        $this->setOperationSetting('columns', $columns);
     }
 
     /**
@@ -377,29 +295,6 @@ trait Columns
     }
 
     /**
-     * @param string $table
-     * @param string $name
-     *
-     * @return bool
-     */
-    protected function hasColumn($table, $name)
-    {
-        static $cache = [];
-
-        if ($this->driverIsMongoDb()) {
-            return true;
-        }
-
-        if (isset($cache[$table])) {
-            $columns = $cache[$table];
-        } else {
-            $columns = $cache[$table] = $this->getSchema()->getColumnListing($table);
-        }
-
-        return in_array($name, $columns);
-    }
-
-    /**
      * Get the visibility priority for the actions column
      * in the CRUD table view.
      *
@@ -423,5 +318,107 @@ trait Columns
         $this->setOperationSetting('actionsColumnPriority', (int) $number);
 
         return $this;
+    }
+
+    /**
+     * Check if a column exists, by any given attribute.
+     *
+     * @param  string  $attribute   Attribute name on that column definition array.
+     * @param  string  $value       Value of that attribute on that column definition array.
+     * @return bool
+     */
+    public function hasColumnWhere($attribute, $value)
+    {
+        $match = Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
+            return isset($column[$attribute]) && $column[$attribute] == $value;
+        });
+
+        return (bool) $match;
+    }
+
+    /**
+     * Get the first column where a given attribute has the given value.
+     *
+     * @param  string  $attribute   Attribute name on that column definition array.
+     * @param  string  $value       Value of that attribute on that column definition array.
+     * @return bool
+     */
+    public function firstColumnWhere($attribute, $value)
+    {
+        return Arr::first($this->columns(), function ($column, $columnKey) use ($attribute, $value) {
+            return isset($column[$attribute]) && $column[$attribute] == $value;
+        });
+    }
+
+    /**
+     * The only REALLY MANDATORY attribute for a column is the 'name'.
+     * Everything else, Backpack can probably guess.
+     *
+     * This method checks that all necessary attributes are set.
+     * If not, it tries to guess them.
+     *
+     * @param  string|array $column The column definition array OR column name as string.
+     * @return array                Proper column definition array.
+     */
+    public function makeSureColumnHasNeededAttributes($column)
+    {
+        $column = $this->makeSureColumnHasName($column);
+        $column = $this->makeSureColumnHasLabel($column);
+        $column = $this->makeSureColumnHasType($column);
+        $column = $this->makeSureColumnHasKey($column);
+        $column = $this->makeSureColumnHasPriority($column);
+        $column = $this->makeSureColumnHasModel($column);
+
+        // check if the column exists in the database (as a db column)
+        $columnExistsInDb = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
+
+        // make sure column has tableColumn, orderable and searchLogic
+        $column['tableColumn'] = $column['tableColumn'] ?? $columnExistsInDb;
+        $column['orderable'] = $column['orderable'] ?? $columnExistsInDb;
+        $column['searchLogic'] = $column['searchLogic'] ?? $columnExistsInDb;
+
+        // check if it's a method on the model,
+        // that means it's a relationship
+        if (! $columnExistsInDb && method_exists($this->model, $column['name'])) {
+            $relatedModel = $this->model->{$column['name']}()->getRelated();
+            $column['entity'] = $column['name'];
+            $column['model'] = get_class($relatedModel);
+        }
+
+        return $column;
+    }
+
+    /**
+     * Count the number of columns added so far.
+     *
+     * It will not take into account the action
+     * columns (columns with buttons, checkbox).
+     *
+     * @return int
+     */
+    public function countColumnsWithoutActions()
+    {
+        return collect($this->columns())->filter(function ($column, $key) {
+            return ! isset($column['hasActions']) || $column['hasActions'] == false;
+        })->count();
+    }
+
+    /**
+     * Create and return a CrudColumn object for that column name.
+     *
+     * Enables developers to use a fluent syntax to declare their columns,
+     * in addition to the existing options:
+     * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
+     * - CRUD::column('price')->type('number');
+     *
+     * And if the developer uses the CrudColumn object as Column in his CrudController:
+     * - Column::name('price')->type('number');
+     *
+     * @param  string $name The name of the column in the db, or model attribute.
+     * @return CrudColumn
+     */
+    public function column($name)
+    {
+        return new CrudColumn($name);
     }
 }

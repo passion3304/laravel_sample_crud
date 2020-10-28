@@ -35,17 +35,6 @@ return [
     'edit'                                    => 'Τροποποίηση',
     'save'                                    => 'Αποθήκευση',
 
-    // Revisions
-    'revisions'                               => 'Αναθεωρήσεις',
-    'no_revisions'                            => 'Δεν βρέθηκαν αναθεωρήσεις',
-    'created_this'                            => 'δημιούργησε',
-    'changed_the'                             => 'άλλαξε',
-    'restore_this_value'                      => 'επανέφερε αυτή την τιμή',
-    'from'                                    => 'από',
-    'to'                                      => 'σε',
-    'undo'                                    => 'Αναίρεση',
-    'revision_restored'                       => 'Η αναθεώρηση ανακτήθηκε με επιτυχία',
-
     // CRUD table view
     'all'                                     => '',
     'in_the_database'                         => 'της βάσης δεδομένων',
@@ -69,14 +58,14 @@ return [
     // DataTables translation
     'emptyTable'                              => 'Δεν υπάρχουν διαθέσιμα δεδομένα στον πίνακα',
     'info'                                    => 'Εμφάνιση _START_ έως _END_ από _TOTAL_ εγγραφές',
-    'infoEmpty'                               => 'Εμφάνιση 0 έως 0 από 0 εγγραφές',
+    'infoEmpty'                               => '',
     'infoFiltered'                            => '(Επιστράφηκαν από _MAX_ συνολικές εγγραφές)',
-    'infoPostFix'                             => '',
+    'infoPostFix'                             => '.',
     'thousands'                               => ',',
     'lengthMenu'                              => '_MENU_ εγγραφές ανά σελίδα',
     'loadingRecords'                          => 'Loading...',
     'processing'                              => 'Processing...',
-    'search'                                  => 'Αναζήτηση: ',
+    'search'                                  => 'Αναζήτηση',
     'zeroRecords'                             => 'Δεν βρέθηκε καμία σχετική εγγραφή',
     'paginate'                                => [
         'first'    => 'Πρώτη',

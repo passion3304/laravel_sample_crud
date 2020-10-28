@@ -1,5 +1,5 @@
 @if ($crud->hasAccess('bulkClone') && $crud->get('list.bulkActions'))
-	<a href="javascript:void(0)" onclick="bulkCloneEntries(this)" class="btn btn-sm btn-secondary bulk-button"><i class="fa fa-clone"></i> Clone</a>
+	<a href="javascript:void(0)" onclick="bulkCloneEntries(this)" class="btn btn-sm btn-secondary bulk-button"><i class="la la-copy"></i> {{ trans('backpack::crud.clone') }}</a>
 @endif
 
 @push('after_scripts')
@@ -17,7 +17,7 @@
 	      	return;
 	      }
 
-	      var message = "Are you sure you want to clone these :number entries?";
+	      var message = "{!! trans('backpack::crud.bulk_clone_are_you_sure') !!}";
 	      message = message.replace(":number", crud.checkedItems.length);
 
 	      // show confirm message
@@ -34,7 +34,7 @@
 				  closeModal: true,
 				},
 			  	delete: {
-				  text: "Clone",
+				  text: "{{ trans('backpack::crud.clone') }}",
 				  value: true,
 				  visible: true,
 				  className: "bg-primary",
@@ -54,7 +54,7 @@
 						  // Show an alert with the result
 		    	          new Noty({
 				            type: "success",
-				            text: "<strong>Entries cloned</strong><br>"+crud.checkedItems.length+" new entries have been added."
+				            text: "<strong>{!! trans('backpack::crud.bulk_clone_sucess_title') !!}</strong><br>"+crud.checkedItems.length+" {!! trans('backpack::crud.bulk_clone_sucess_message') !!}"
 				          }).show();
 
 						  crud.checkedItems = [];
@@ -64,7 +64,7 @@
 						  // Show an alert with the result
 		    	          new Noty({
 				            type: "danger",
-				            text: "<strong>Cloning failed</strong><br>One or more entries could not be created. Please try again."
+				            text: "<strong>{!! trans('backpack::crud.bulk_clone_error_title') !!}</strong><br>"+crud.checkedItems.length+" {!! trans('backpack::crud.bulk_clone_error_message') !!}"
 				          }).show();
 						}
 					});

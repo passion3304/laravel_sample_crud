@@ -58,7 +58,7 @@ trait Validation
     /**
      * Run the authorization and validation the currently set FormRequest.
      *
-     * @return Request
+     * @return \Illuminate\Http\Request
      */
     public function validateRequest()
     {
@@ -70,7 +70,7 @@ trait Validation
             // because form requests implement ValidatesWhenResolved
             $request = app($formRequest);
         } else {
-            $request = $this->request;
+            $request = $this->getRequest();
         }
 
         return $request;

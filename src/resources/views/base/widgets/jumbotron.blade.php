@@ -1,4 +1,11 @@
-<div class="{{ $widget['wrapperClass'] ?? '' }}">
+@php
+	// preserve backwards compatibility with Widgets in Backpack 4.0
+	if (isset($widget['wrapperClass'])) {
+		$widget['wrapper']['class'] = $widget['wrapperClass'];
+	}
+@endphp
+
+@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_start')
 	<div class="jumbotron mb-2">
 
 	  @if (isset($widget['heading']))
@@ -15,4 +22,4 @@
 	  </p>
 	  @endif
 	</div>
-</div>
+@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')

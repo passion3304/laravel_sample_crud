@@ -13,7 +13,7 @@ if (! function_exists('backpack_url')) {
     {
         $path = ! $path || (substr($path, 0, 1) == '/') ? $path : '/'.$path;
 
-        return url(config('backpack.base.route_prefix', 'admin').$path, $parameters = [], $secure = null);
+        return url(config('backpack.base.route_prefix', 'admin').$path, $parameters, $secure);
     }
 }
 
@@ -55,7 +55,7 @@ if (! function_exists('backpack_avatar_url')) {
      */
     function backpack_avatar_url($user)
     {
-        $firstLetter = $user->getAttribute('name') ? $user->name[0] : 'A';
+        $firstLetter = $user->getAttribute('name') ? mb_substr($user->name, 0, 1, 'UTF-8') : 'A';
         $placeholder = 'https://placehold.it/160x160/00a65a/ffffff/&text='.$firstLetter;
 
         switch (config('backpack.base.avatar_type')) {

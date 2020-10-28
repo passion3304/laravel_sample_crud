@@ -12,7 +12,7 @@ const mix = require('laravel-mix');
  | All JS will be bundled into one file (see bundle.js).
  |
  | How to use (for maintainers only):
- | - cd vendor/backpack/base
+ | - cd vendor/backpack/crud
  | - npm install
  | - npm run prod
  | (this will also publish the assets for you to test, so no need to do that too)
@@ -31,8 +31,7 @@ mix.sass('src/resources/assets/scss/bundle.scss', 'src/public/packages/backpack/
 mix.copy('node_modules/@digitallyhappy/backstrap/dist/css', 'src/public/packages/@digitallyhappy/backstrap/css');
 
 // copy fonts and other assets
-mix.copy('node_modules/line-awesome/fonts', 'src/public/packages/line-awesome/fonts')
-	.copy('node_modules/line-awesome/css', 'src/public/packages/line-awesome/css')
+mix.copy('node_modules/line-awesome/dist/line-awesome', 'src/public/packages/line-awesome')
 	.copy('node_modules/source-sans-pro', 'src/public/packages/source-sans-pro')
 	.copy('node_modules/animate.css/animate.min.css', 'src/public/packages/animate.css/animate.min.css')
 	.copy('node_modules/noty/lib', 'src/public/packages/noty');
@@ -55,11 +54,10 @@ mix.copy('node_modules/bootstrap-datepicker/dist', 'src/public/packages/bootstra
 	.copy('node_modules/bootstrap-iconpicker/bootstrap-iconpicker', 'src/public/packages/bootstrap-iconpicker/bootstrap-iconpicker')
 	.copy('node_modules/bootstrap-iconpicker/icon-fonts', 'src/public/packages/bootstrap-iconpicker/icon-fonts')
 	.copy('node_modules/simplemde/dist', 'src/public/packages/simplemde/dist')
+	.copy('node_modules/easymde/dist', 'src/public/packages/easymde/dist')
 	.copy('node_modules/summernote/dist', 'src/public/packages/summernote/dist')
 	.copy('node_modules/tinymce', 'src/public/packages/tinymce')
 	.copy('node_modules/nestedSortable', 'src/public/packages/nestedSortable')
-	.copy('node_modules/angular', 'src/public/packages/angular')
-	.copy('node_modules/angular-ui-sortable/dist', 'src/public/packages/angular-ui-sortable/dist')
 	.copy('node_modules/datatables.net', 'src/public/packages/datatables.net')
 	.copy('node_modules/datatables.net-bs4', 'src/public/packages/datatables.net-bs4')
 	.copy('node_modules/datatables.net-fixedheader', 'src/public/packages/datatables.net-fixedheader')

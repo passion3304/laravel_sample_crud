@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Saglabāt un jauns ieraksts',
     'save_action_save_and_edit'        => 'Saglabāt un rediģēt šo ierakstu',
     'save_action_save_and_back'        => 'Saglabāt un atpakaļ',
+    'save_action_save_and_preview'     => 'Saglabāt un priekšskatīt',
     'save_action_changed_notification' => 'Uzvedība pēc noklusējuma pēc izmaiņu saglabāšanas.',
 
     // Create form
@@ -29,18 +30,6 @@ return [
     'edit' => 'Rediģēt',
     'save' => 'Saglabāt',
 
-    // Revisions
-    'revisions'          => 'Revīzijas',
-    'no_revisions'       => 'Revīzijas nav atrastas',
-    'created_this'       => 'izveidoja',
-    'changed_the'        => 'izmainīja',
-    'restore_this_value' => 'Atjaunot vērtību',
-    'from'               => 'no',
-    'to'                 => 'līdz',
-    'undo'               => 'Atgriezt atpakaļ',
-    'revision_restored'  => 'Revīzija veiksmīgi atjaunota',
-    'guest_user'         => 'Lietotājs: viesis',
-
     // Translatable models
     'edit_translations' => 'LABOT TULKOJUMUS',
     'language'          => 'Valoda',
@@ -49,12 +38,16 @@ return [
     'all'                       => 'Visi ',
     'in_the_database'           => 'datubāzē',
     'list'                      => 'Saraksts',
+    'reset'                     => 'Atiestatīt',
     'actions'                   => 'Darbības',
     'preview'                   => 'Priekšapskats',
     'delete'                    => 'Dzēst',
     'admin'                     => 'Admin',
     'details_row'               => 'Šī ir detaļu rinda.',
     'details_row_loading_error' => 'Notika kļuda lādējot detaļas. Lūdzu atkārtojiet.',
+    'clone' => 'Klonēt',
+    'clone_success' => '<strong>Ieraksts ir klonēts</strong><br>Pievienots jauns ieraksts ar tādu pašu informāciju kā šis.',
+    'clone_failure' => '<strong>Klonēšana neizdevās</strong><br>Jauno ierakstu nevarēja izveidot. Lūdzu mēģiniet vēlreiz.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                          => 'Vai esat pārliecināti, ka gribat izdzēst šo ierakstu?',
@@ -65,20 +58,32 @@ return [
     'delete_confirmation_not_deleted_title'   => 'Nav izdzēsts',
     'delete_confirmation_not_deleted_message' => 'Nekas nenotika. Ieraksts ir drošībā.',
 
+    // Bulk actions
+    'bulk_no_entries_selected_title'   => 'Nav atlasīts neviens ieraksts',
+    'bulk_no_entries_selected_message' => 'Lūdzu atlasiet vienu vai vairākus ierakstus, lai ar tiem veiktu lielapjoma darbību.',
+
+    // Bulk confirmation
+    'bulk_delete_are_you_sure'   => 'Vai tiešām vēlaties izdzēst šos :number ierakstus?',
+    'bulk_delete_sucess_title'   => 'Ieraksti dzēsti',
+    'bulk_delete_sucess_message' => ' ieraksti tika izdzēsti',
+    'bulk_delete_error_title'    => 'Dzēšana neizdevās',
+    'bulk_delete_error_message'  => 'Vienu vai vairākus ierakstus neizdevās izdzēst',
+
+    // Ajax errors
     'ajax_error_title' => 'Kļūda',
     'ajax_error_text'  => 'Kļūda ielādējot saturu. Lūdzu pārlādē lapu.',
 
     // DataTables translation
     'emptyTable'     => 'Dati nav pieejami',
     'info'           => 'Rādot no _START_ līdz _END_ no kopumā _TOTAL_ ierakstiem',
-    'infoEmpty'      => 'Rādot 0 no 0 no kopumā 0 ierakstiem',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtrēts no _MAX_ kopējiem ierakstiem)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ ieraksti uz lapu',
     'loadingRecords' => 'Ielādē...',
     'processing'     => 'Apstrādā...',
-    'search'         => 'Meklēšana: ',
+    'search'         => 'Meklēšana',
     'zeroRecords'    => 'Peimēroti ieraksti nav atrasti',
     'paginate'       => [
         'first'    => 'Pirmā',
@@ -91,6 +96,7 @@ return [
         'sortDescending' => ': aktivizējiet lai šķirot dilstoši',
     ],
     'export' => [
+        'export'            => 'Eksports',
         'copy'              => 'Kopēt',
         'excel'             => 'Excel',
         'csv'               => 'CSV',
@@ -136,6 +142,9 @@ return [
     'internal_link_placeholder' => 'Iekšējās saites vārds. Piemēram: \'admin/page\' (no quotes) for \':url\'',
     'external_link'             => 'Ārējā saite',
     'choose_file'               => 'Izvēlaties failu',
+    'new_item'                  => 'Jauns ieraksts',
+    'select_entry'              => 'Atlasiet ierakstu',
+    'select_entries'            => 'Atlasiet ierakstus',
 
     //Table field
     'table_cant_add'    => 'Nevar pievienot jaunu :entity',
@@ -143,4 +152,8 @@ return [
 
     // File manager
     'file_manager' => 'Failu Pārlūks',
+
+    // InlineCreateOperation
+    'related_entry_created_success' => 'Saistītais ieraksts ir izveidots un atlasīts.',
+    'related_entry_created_error' => 'Neizdevās izveidot saistīto ierakstu.',
 ];

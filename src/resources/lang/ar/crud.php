@@ -1,6 +1,6 @@
 <?php
 
-    /*
+/*
     |--------------------------------------------------------------------------
     | Backpack Crud Language Lines - Arabic
     |--------------------------------------------------------------------------
@@ -13,7 +13,7 @@
     |
     */
 
- return [
+return [
     'infoFiltered'                            => '(filtered from _MAX_ total entries)',
     'thousands'                               => ',',
     'admin'                                   => 'المشرف',
@@ -25,7 +25,7 @@
     'internal_link_placeholder'               => "Internal slug. Ex: 'admin/page' (no quotes) for ':url'",
     'table_max_reached'                       => 'أقصى عدد :max تم الوصول إليه',
     'zeroRecords'                             => 'لم يتم العثور على سجلات متطابقة',
-    'infoEmpty'                               => 'Showing 0 to 0 of 0 entries',
+    'infoEmpty'                               => '',
     'info'                                    => 'Showing _START_ to _END_ of _TOTAL_ entries',
     'details_row'                             => 'هذا هو صف التفاصيل. عدل كما تريد.',
     'reorder_text'                            => 'استخدام السحب والإفلات لإعادة الترتيب.',
@@ -46,7 +46,7 @@
     'filters'                                 => 'الفلاتر',
     'to'                                      => 'الى',
     'reorder_success_title'                   => 'انتهى',
-    'search'                                  => 'بحث:',
+    'search'                                  => 'بحث',
     'toggle_filters'                          => 'تبديل الفلاتر',
     'undo'                                    => 'تراجع',
     'edit'                                    => 'تعديل',
@@ -55,6 +55,9 @@
     'delete_confirmation_message'             => 'تم حذف العنصر بنجاح.',
     'insert_success'                          => 'تمت إضافة العنصر بنجاح.',
     'revision_restored'                       => 'تمت استعادة المراجعة بنجاح',
+    'clone' => 'استنساخ',
+    'clone_success' => '<strong>تم إستنساخ العنصر</strong><br>تم إضافة عنصر جديد بنفس معلومات هذا العنصر.',
+    'clone_failure' => '<strong>حدث خطأ</strong><br>لم يتم استنساخ العنصر. الرجاء اعادة المحاولة.',
     'loadingRecords'                          => 'جار التحميل...',
     'infoPostFix'                             => 'جميع السجلات',
     'details_row_loading_error'               => 'حدث خطأ أثناء تحميل التفاصيل. الرجاء اعادة المحاولة.',

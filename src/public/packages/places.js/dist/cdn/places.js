@@ -1,4 +1,4 @@
-/*!  1.17.0 | © Algolia | github.com/algolia/places */
+/*!  1.19.0 | © Algolia | github.com/algolia/places */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -240,12 +240,13 @@ module.exports = {
 "use strict";
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var extractParams = function extractParams(_ref) {
   var hitsPerPage = _ref.hitsPerPage,
+      postcodeSearch = _ref.postcodeSearch,
       aroundLatLng = _ref.aroundLatLng,
       aroundRadius = _ref.aroundRadius,
       aroundLatLngViaIP = _ref.aroundLatLngViaIP,
@@ -278,7 +279,11 @@ var extractParams = function extractParams(_ref) {
     extracted.aroundLatLngViaIP = aroundLatLngViaIP;
   }
 
-  return _objectSpread({}, extracted, {
+  if (postcodeSearch) {
+    extracted.restrictSearchableAttributes = 'postcode';
+  }
+
+  return _objectSpread(_objectSpread({}, extracted), {}, {
     aroundRadius: aroundRadius,
     insideBoundingBox: insideBoundingBox,
     insidePolygon: insidePolygon,
@@ -317,8 +322,8 @@ var params = {};
 var controls = {};
 
 var configure = function configure(configuration) {
-  params = extractParams(_objectSpread({}, params, {}, configuration));
-  controls = extractControls(_objectSpread({}, controls, {}, configuration));
+  params = extractParams(_objectSpread(_objectSpread({}, params), configuration));
+  controls = extractControls(_objectSpread(_objectSpread({}, controls), configuration));
   return {
     params: params,
     controls: controls
@@ -408,7 +413,7 @@ module.exports = g;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ('1.17.0');
+/* harmony default export */ __webpack_exports__["default"] = ('1.19.0');
 
 /***/ }),
 /* 7 */
@@ -498,6 +503,9 @@ function formatDropdownValue(_ref) {
 
 "use strict";
 
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ formatHit; });
+
 // CONCATENATED MODULE: ./src/findCountryCode.js
 function findCountryCode(tags) {
   for (var tagIndex = 0; tagIndex < tags.length; tagIndex++) {
@@ -533,10 +541,9 @@ function findType(tags) {
   return 'address';
 }
 // CONCATENATED MODULE: ./src/formatHit.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return formatHit; });
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -664,7 +671,7 @@ function formatHit(_ref) {
     }; // this is the value to put inside the <input value=
 
     var value = formatInputValue(suggestion);
-    return _objectSpread({}, suggestion, {
+    return _objectSpread(_objectSpread({}, suggestion), {}, {
       highlight: highlight,
       hit: hit,
       hitIndex: hitIndex,
@@ -1190,7 +1197,7 @@ function localstorage() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (".algolia-places {\n  width: 100%;\n}\n\n.ap-input, .ap-hint {\n  width: 100%;\n  padding-right: 35px;\n  padding-left: 16px;\n  line-height: 40px;\n  height: 40px;\n  border: 1px solid #CCC;\n  border-radius: 3px;\n  outline: none;\n  font: inherit;\n  appearance: none;\n  -webkit-appearance: none;\n  box-sizing: border-box;\n}\n\n.ap-input::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n.ap-input::-ms-clear {\n  display: none;\n}\n\n.ap-input:hover ~ .ap-input-icon svg,\n.ap-input:focus ~ .ap-input-icon svg,\n.ap-input-icon:hover svg {\n  fill: #aaaaaa;\n}\n\n.ap-dropdown-menu {\n  width: 100%;\n  background: #ffffff;\n  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1);\n  border-radius: 3px;\n  margin-top: 3px;\n  overflow: hidden;\n}\n\n.ap-suggestion {\n  cursor: pointer;\n  height: 46px;\n  line-height: 46px;\n  padding-left: 18px;\n  overflow: hidden;\n}\n\n.ap-suggestion em {\n  font-weight: bold;\n  font-style: normal;\n}\n\n.ap-address {\n  font-size: smaller;\n  margin-left: 12px;\n  color: #aaaaaa;\n}\n\n.ap-suggestion-icon {\n  margin-right: 10px;\n  width: 14px;\n  height: 20px;\n  vertical-align: middle;\n}\n\n.ap-suggestion-icon svg {\n  -webkit-transform: scale(0.9) translateY(2px);\n          transform: scale(0.9) translateY(2px);\n  fill: #cfcfcf;\n}\n\n.ap-input-icon {\n  border: 0;\n  background: transparent;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 16px;\n  outline: none;\n}\n\n.ap-input-icon.ap-icon-pin {\n  cursor: pointer;\n}\n\n.ap-input-icon svg {\n  fill: #cfcfcf;\n  position: absolute;\n  top: 50%;\n  right: 0;\n  -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n}\n\n.ap-cursor {\n  background: #efefef;\n}\n\n.ap-cursor .ap-suggestion-icon svg {\n  -webkit-transform: scale(1) translateY(2px);\n          transform: scale(1) translateY(2px);\n  fill: #aaaaaa;\n}\n\n.ap-footer {\n  opacity: .8;\n  text-align: right;\n  padding: .5em 1em .5em 0;\n  font-size: 12px;\n  line-height: 12px;\n}\n\n.ap-footer a {\n  color: inherit;\n  text-decoration: none;\n}\n\n.ap-footer a svg {\n  vertical-align: middle;\n}\n\n.ap-footer:hover {\n  opacity: 1;\n}\n");
+/* harmony default export */ __webpack_exports__["a"] = (".algolia-places {\n  width: 100%;\n}\n\n.ap-input, .ap-hint {\n  width: 100%;\n  padding-right: 35px;\n  padding-left: 16px;\n  line-height: 40px;\n  height: 40px;\n  border: 1px solid #CCC;\n  border-radius: 3px;\n  outline: none;\n  font: inherit;\n  appearance: none;\n  -webkit-appearance: none;\n  box-sizing: border-box;\n}\n\n.ap-input::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n.ap-input::-ms-clear {\n  display: none;\n}\n\n.ap-input:hover ~ .ap-input-icon svg,\n.ap-input:focus ~ .ap-input-icon svg,\n.ap-input-icon:hover svg {\n  fill: #aaaaaa;\n}\n\n.ap-dropdown-menu {\n  width: 100%;\n  background: #ffffff;\n  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1);\n  border-radius: 3px;\n  margin-top: 3px;\n  overflow: hidden;\n}\n\n.ap-suggestion {\n  cursor: pointer;\n  height: 46px;\n  line-height: 46px;\n  padding-left: 18px;\n  overflow: hidden;\n}\n\n.ap-suggestion em {\n  font-weight: bold;\n  font-style: normal;\n}\n\n.ap-address {\n  font-size: smaller;\n  margin-left: 12px;\n  color: #aaaaaa;\n}\n\n.ap-suggestion-icon {\n  margin-right: 10px;\n  width: 14px;\n  height: 20px;\n  vertical-align: middle;\n}\n\n.ap-suggestion-icon svg {\n  display: inherit;\n  -webkit-transform: scale(0.9) translateY(2px);\n          transform: scale(0.9) translateY(2px);\n  fill: #cfcfcf;\n}\n\n.ap-input-icon {\n  border: 0;\n  background: transparent;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 16px;\n  outline: none;\n}\n\n.ap-input-icon.ap-icon-pin {\n  cursor: pointer;\n}\n\n.ap-input-icon svg {\n  fill: #cfcfcf;\n  position: absolute;\n  top: 50%;\n  right: 0;\n  -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n}\n\n.ap-cursor {\n  background: #efefef;\n}\n\n.ap-cursor .ap-suggestion-icon svg {\n  -webkit-transform: scale(1) translateY(2px);\n          transform: scale(1) translateY(2px);\n  fill: #aaaaaa;\n}\n\n.ap-footer {\n  opacity: .8;\n  text-align: right;\n  padding: .5em 1em .5em 0;\n  font-size: 12px;\n  line-height: 12px;\n}\n\n.ap-footer a {\n  color: inherit;\n  text-decoration: none;\n}\n\n.ap-footer a svg {\n  vertical-align: middle;\n}\n\n.ap-footer:hover {\n  opacity: 1;\n}\n");
 
 /***/ }),
 /* 16 */
@@ -1474,7 +1481,11 @@ module.exports.insertCss = insertCss;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "default", function() { return /* binding */ createAutocompleteDataset; });
 
 // EXTERNAL MODULE: ./src/configure/index.js
 var configure = __webpack_require__(1);
@@ -1488,7 +1499,7 @@ var version = __webpack_require__(6);
 // CONCATENATED MODULE: ./src/createAutocompleteSource.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -1501,6 +1512,7 @@ function createAutocompleteSource(_ref) {
       apiKey = _ref.apiKey,
       appId = _ref.appId,
       hitsPerPage = _ref.hitsPerPage,
+      postcodeSearch = _ref.postcodeSearch,
       aroundLatLng = _ref.aroundLatLng,
       aroundRadius = _ref.aroundRadius,
       aroundLatLngViaIP = _ref.aroundLatLngViaIP,
@@ -1531,6 +1543,7 @@ function createAutocompleteSource(_ref) {
   var configuration = Object(configure["a" /* default */])({
     hitsPerPage: hitsPerPage,
     type: type,
+    postcodeSearch: postcodeSearch,
     countries: countries,
     language: language,
     aroundLatLng: aroundLatLng,
@@ -1560,7 +1573,7 @@ function createAutocompleteSource(_ref) {
   }
 
   function searcher(query, cb) {
-    var searchParams = _objectSpread({}, params, {
+    var searchParams = _objectSpread(_objectSpread({}, params), {}, {
       query: query
     });
 
@@ -1598,7 +1611,7 @@ function createAutocompleteSource(_ref) {
   }
 
   searcher.configure = function (partial) {
-    var updated = Object(configure["a" /* default */])(_objectSpread({}, params, {}, controls, {}, partial));
+    var updated = Object(configure["a" /* default */])(_objectSpread(_objectSpread(_objectSpread({}, params), controls), partial));
     params = updated.params;
     controls = updated.controls;
 
@@ -1620,19 +1633,18 @@ function createAutocompleteSource(_ref) {
 var defaultTemplates = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./src/createAutocompleteDataset.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return createAutocompleteDataset; });
 function createAutocompleteDataset_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function createAutocompleteDataset_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { createAutocompleteDataset_ownKeys(source, true).forEach(function (key) { createAutocompleteDataset_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { createAutocompleteDataset_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function createAutocompleteDataset_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { createAutocompleteDataset_ownKeys(Object(source), true).forEach(function (key) { createAutocompleteDataset_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { createAutocompleteDataset_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function createAutocompleteDataset_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 function createAutocompleteDataset(options) {
-  var templates = createAutocompleteDataset_objectSpread({}, defaultTemplates["a" /* default */], {}, options.templates);
+  var templates = createAutocompleteDataset_objectSpread(createAutocompleteDataset_objectSpread({}, defaultTemplates["a" /* default */]), options.templates);
 
-  var source = createAutocompleteSource(createAutocompleteDataset_objectSpread({}, options, {
+  var source = createAutocompleteSource(createAutocompleteDataset_objectSpread(createAutocompleteDataset_objectSpread({}, options), {}, {
     formatInputValue: templates.value,
     templates: undefined
   }));
@@ -1960,7 +1972,7 @@ module.exports = {
 /* 28 */
 /***/ (function(module, exports) {
 
-module.exports = "0.37.0";
+module.exports = "0.37.1";
 
 
 /***/ }),
@@ -1969,9 +1981,18 @@ module.exports = "0.37.0";
 
 "use strict";
 
+
 module.exports = function parseAlgoliaClientVersion(agent) {
-  var parsed = agent.match(/Algolia for vanilla JavaScript (\d+\.)(\d+\.)(\d+)/);
-  if (parsed) return [parsed[1], parsed[2], parsed[3]];
+  var parsed =
+    // User agent for algoliasearch >= 3.33.0
+    agent.match(/Algolia for JavaScript \((\d+\.)(\d+\.)(\d+)\)/) ||
+    // User agent for algoliasearch < 3.33.0
+    agent.match(/Algolia for vanilla JavaScript (\d+\.)(\d+\.)(\d+)/);
+
+  if (parsed) {
+    return [parsed[1], parsed[2], parsed[3]];
+  }
+
   return undefined;
 };
 
@@ -2068,6 +2089,12 @@ EventEmitter.prototype._maxListeners = undefined;
 // added to it. This is a useful default which helps finding memory leaks.
 var defaultMaxListeners = 10;
 
+function checkListener(listener) {
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+}
+
 Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
   enumerable: true,
   get: function() {
@@ -2102,14 +2129,14 @@ EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
   return this;
 };
 
-function $getMaxListeners(that) {
+function _getMaxListeners(that) {
   if (that._maxListeners === undefined)
     return EventEmitter.defaultMaxListeners;
   return that._maxListeners;
 }
 
 EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
-  return $getMaxListeners(this);
+  return _getMaxListeners(this);
 };
 
 EventEmitter.prototype.emit = function emit(type) {
@@ -2161,9 +2188,7 @@ function _addListener(target, type, listener, prepend) {
   var events;
   var existing;
 
-  if (typeof listener !== 'function') {
-    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-  }
+  checkListener(listener);
 
   events = target._events;
   if (events === undefined) {
@@ -2200,7 +2225,7 @@ function _addListener(target, type, listener, prepend) {
     }
 
     // Check for listener leak
-    m = $getMaxListeners(target);
+    m = _getMaxListeners(target);
     if (m > 0 && existing.length > m && !existing.warned) {
       existing.warned = true;
       // No error code for this since it is a Warning
@@ -2232,12 +2257,12 @@ EventEmitter.prototype.prependListener =
     };
 
 function onceWrapper() {
-  var args = [];
-  for (var i = 0; i < arguments.length; i++) args.push(arguments[i]);
   if (!this.fired) {
     this.target.removeListener(this.type, this.wrapFn);
     this.fired = true;
-    ReflectApply(this.listener, this.target, args);
+    if (arguments.length === 0)
+      return this.listener.call(this.target);
+    return this.listener.apply(this.target, arguments);
   }
 }
 
@@ -2250,18 +2275,14 @@ function _onceWrap(target, type, listener) {
 }
 
 EventEmitter.prototype.once = function once(type, listener) {
-  if (typeof listener !== 'function') {
-    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-  }
+  checkListener(listener);
   this.on(type, _onceWrap(this, type, listener));
   return this;
 };
 
 EventEmitter.prototype.prependOnceListener =
     function prependOnceListener(type, listener) {
-      if (typeof listener !== 'function') {
-        throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-      }
+      checkListener(listener);
       this.prependListener(type, _onceWrap(this, type, listener));
       return this;
     };
@@ -2271,9 +2292,7 @@ EventEmitter.prototype.removeListener =
     function removeListener(type, listener) {
       var list, events, position, i, originalListener;
 
-      if (typeof listener !== 'function') {
-        throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-      }
+      checkListener(listener);
 
       events = this._events;
       if (events === undefined)
@@ -2465,7 +2484,11 @@ module.exports = __webpack_require__(54);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "default", function() { return /* binding */ places_places; });
 
 // EXTERNAL MODULE: ./node_modules/events/events.js
 var events = __webpack_require__(31);
@@ -2520,7 +2543,7 @@ var defaultTemplates = __webpack_require__(8);
 // CONCATENATED MODULE: ./src/createReverseGeocodingSource.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -2601,7 +2624,7 @@ var createReverseGeocodingSource_createReverseGeocodingSource = function createR
       return Promise.reject(error);
     }
 
-    return placesClient.reverse(_objectSpread({}, params, {
+    return placesClient.reverse(_objectSpread(_objectSpread({}, params), {}, {
       aroundLatLng: finalAroundLatLng
     })).then(function (content) {
       var hits = content.hits.map(function (hit, hitIndex) {
@@ -2633,7 +2656,7 @@ var createReverseGeocodingSource_createReverseGeocodingSource = function createR
   };
 
   searcher.configure = function (partial) {
-    var updated = Object(configure["a" /* default */])(_objectSpread({}, params, {}, controls, {}, partial));
+    var updated = Object(configure["a" /* default */])(_objectSpread(_objectSpread(_objectSpread({}, params), controls), partial));
     params = filterApplicableParams(updated.params);
     controls = updated.controls;
     return searcher;
@@ -2644,18 +2667,21 @@ var createReverseGeocodingSource_createReverseGeocodingSource = function createR
 
 /* harmony default export */ var src_createReverseGeocodingSource = (createReverseGeocodingSource_createReverseGeocodingSource);
 // CONCATENATED MODULE: ./src/places.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return places_places; });
 function places_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function places_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { places_ownKeys(source, true).forEach(function (key) { places_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { places_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function places_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { places_ownKeys(Object(source), true).forEach(function (key) { places_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { places_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function places_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -2698,7 +2724,7 @@ function places_places(options) {
     } // if single node NodeList received, resolve to the first one
 
 
-    return places_places(places_objectSpread({}, options, {
+    return places_places(places_objectSpread(places_objectSpread({}, options), {}, {
       container: container[0]
     }));
   } // container sent as a string, resolve it for multiple DOM elements issue
@@ -2706,7 +2732,7 @@ function places_places(options) {
 
   if (typeof container === 'string') {
     var resolvedContainer = document.querySelectorAll(container);
-    return places_places(places_objectSpread({}, options, {
+    return places_places(places_objectSpread(places_objectSpread({}, options), {}, {
       container: resolvedContainer
     }));
   } // if not an <input>, error
@@ -2729,7 +2755,7 @@ function places_places(options) {
     debug: "production" === 'development'
   }, userAutocompleteOptions);
 
-  var autocompleteDataset = Object(createAutocompleteDataset["default"])(places_objectSpread({}, options, {
+  var autocompleteDataset = Object(createAutocompleteDataset["default"])(places_objectSpread(places_objectSpread({}, options), {}, {
     algoliasearch: algoliasearchLite_default.a,
     onHits: function onHits(_ref3) {
       var hits = _ref3.hits,
@@ -2748,7 +2774,7 @@ function places_places(options) {
       var listeners = placesInstance.listenerCount('limit');
 
       if (listeners === 0) {
-        console.log(errors.rateLimitReached); // eslint-disable-line
+        console.log(errors.rateLimitReached); // eslint-disable-line no-console
 
         return;
       }
@@ -2759,9 +2785,9 @@ function places_places(options) {
     },
     onInvalidCredentials: function onInvalidCredentials() {
       if (options && options.appId && options.appId.startsWith('pl')) {
-        console.error(errors.invalidCredentials); // eslint-disable-line
+        console.error(errors.invalidCredentials); // eslint-disable-line no-console
       } else {
-        console.error(errors.invalidAppId); // eslint-disable-line
+        console.error(errors.invalidAppId); // eslint-disable-line no-console
       }
     },
     container: undefined
@@ -2817,6 +2843,7 @@ function places_places(options) {
       useDeviceLocation: true
     });
     autocompleteInstance.focus();
+    placesInstance.emit('locate');
   });
   clear.addEventListener('click', function () {
     autocompleteInstance.autocomplete.setVal('');
@@ -2904,7 +2931,7 @@ function places_places(options) {
     return placesInstance;
   };
 
-  placesInstance.reverse = src_createReverseGeocodingSource(places_objectSpread({}, options, {
+  placesInstance.reverse = src_createReverseGeocodingSource(places_objectSpread(places_objectSpread({}, options), {}, {
     algoliasearch: algoliasearchLite_default.a,
     formatInputValue: (options.templates || {}).value,
     onHits: function onHits(_ref4) {
@@ -2924,7 +2951,7 @@ function places_places(options) {
       var listeners = placesInstance.listenerCount('limit');
 
       if (listeners === 0) {
-        console.log(errors.rateLimitReached); // eslint-disable-line
+        console.log(errors.rateLimitReached); // eslint-disable-line no-console
 
         return;
       }
@@ -2935,9 +2962,9 @@ function places_places(options) {
     },
     onInvalidCredentials: function onInvalidCredentials() {
       if (options && options.appId && options.appId.startsWith('pl')) {
-        console.error(errors.invalidCredentials); // eslint-disable-line
+        console.error(errors.invalidCredentials); // eslint-disable-line no-console
       } else {
-        console.error(errors.invalidAppId); // eslint-disable-line
+        console.error(errors.invalidAppId); // eslint-disable-line no-console
       }
     }
   }));
@@ -7957,7 +7984,9 @@ module.exports = autocomplete;
         event[predicate] = returnFalse
       })
 
-      event.timeStamp || (event.timeStamp = Date.now())
+      try {
+        event.timeStamp || (event.timeStamp = Date.now())
+      } catch (ignored) { }
 
       if (source.defaultPrevented !== undefined ? source.defaultPrevented :
           'returnValue' in source ? source.returnValue === false :
@@ -10297,6 +10326,7 @@ var version = __webpack_require__(6); // must use module.exports to be commonJS 
 
 module.exports = places["default"];
 module.exports.version = version["default"];
+/* eslint-enable import/no-commonjs */
 
 /***/ })
 /******/ ]);

@@ -29,18 +29,6 @@ return [
     'edit'                 => 'Upravit',
     'save'                 => 'Uložit',
 
-    // Revisions
-    'revisions'            => 'Změny',
-    'no_revisions'         => 'Žádné změny nebyly nalezeny',
-    'created_this'         => 'vytvořil',
-    'changed_the'          => 'upravil',
-    'restore_this_value'   => 'Obnovit tuto hodnotu',
-    'from'                 => 'z',
-    'to'                   => 'na',
-    'undo'                 => 'Vrátit',
-    'revision_restored'    => 'Změny úspěšně obnoveny',
-    'guest_user'           => 'Host uživatel',
-
     // Translatable models
     'edit_translations' => 'UPRAVIT PŘEKLADY',
     'language'          => 'Jazyk',
@@ -83,14 +71,14 @@ return [
     // DataTables translation
     'emptyTable'     => 'V tabulce nejsou k dispozici žádná data',
     'info'           => 'Zobrazeno _START_ až _END_ z celkových _TOTAL_ záznamů',
-    'infoEmpty'      => 'Zobrazeno 0 až 0 z celkových 0 záznamů',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtrováno z _MAX_ celkových záznamů)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ záznamů na stránku',
     'loadingRecords' => 'Načítání...',
     'processing'     => 'Zpracování...',
-    'search'         => 'Hledat: ',
+    'search'         => 'Hledat',
     'zeroRecords'    => 'Nebyly nalezeny žádné odpovídající záznamy',
     'paginate'       => [
         'first'    => 'První',
