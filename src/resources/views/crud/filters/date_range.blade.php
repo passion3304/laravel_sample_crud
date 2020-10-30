@@ -5,7 +5,7 @@
 		'timePicker' => false,
     	'alwaysShowCalendars' => true,
         'autoUpdateInput' => true,
-        'firsDay' => 0,
+        'firstDay' => 0,
         'format' => config('backpack.base.default_date_format'),
         'ranges' => [
             trans('backpack::crud.today') =>  [Carbon\Carbon::now()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->endOfDay()->toDateTimeString()],
