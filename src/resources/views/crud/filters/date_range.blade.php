@@ -1,21 +1,28 @@
 {{-- Date Range Backpack CRUD filter --}}
 
 @php
-    $filter->options['date_range_options'] = array_merge([
+    $filter_language = $filter->options['date_range_options']['language'] ?? app()->getLocale();
+    $filter->options['date_range_options'] = array_replace_recursive([
 		'timePicker' => false,
     	'alwaysShowCalendars' => true,
         'autoUpdateInput' => true,
-        'firstDay' => 0,
-        'format' => config('backpack.base.default_date_format'),
+        'startDate' => \Carbon\Carbon::now()->toDateTimeString(),
+        'endDate' => \Carbon\Carbon::now()->toDateTimeString(),
+        'language' => $filter_language,
         'ranges' => [
-            trans('backpack::crud.today') =>  [Carbon\Carbon::now()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->endOfDay()->toDateTimeString()],
-            trans('backpack::crud.yesterday') => [\Carbon\Carbon::now()->subDay()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->subDay()->endOfDay()->toDateTimeString()],
-            trans('backpack::crud.last_7_days') => [\Carbon\Carbon::now()->subDays(6)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
-            trans('backpack::crud.last_30_days') => [\Carbon\Carbon::now()->subDays(29)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
-            trans('backpack::crud.this_month') => [\Carbon\Carbon::now()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->endOfMonth()->toDateTimeString()],
-            trans('backpack::crud.last_month') => [\Carbon\Carbon::now()->subMonth()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->subMonth()->endOfMonth()->toDateTimeString()]
+            trans('backpack::crud.today', array(), $filter_language) =>  [\Carbon\Carbon::now()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->endOfDay()->toDateTimeString()],
+            trans('backpack::crud.yesterday', array(), $filter_language) => [\Carbon\Carbon::now()->subDay()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->subDay()->endOfDay()->toDateTimeString()],
+            trans('backpack::crud.last_7_days', array(), $filter_language) => [\Carbon\Carbon::now()->subDays(6)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
+            trans('backpack::crud.last_30_days', array(), $filter_language) => [\Carbon\Carbon::now()->subDays(29)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
+            trans('backpack::crud.this_month', array(), $filter_language) => [\Carbon\Carbon::now()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->endOfMonth()->toDateTimeString()],
+            trans('backpack::crud.last_month', array(), $filter_language) => [\Carbon\Carbon::now()->subMonth()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->subMonth()->endOfMonth()->toDateTimeString()]
         ],
-        'locale' => app()->getLocale(),
+        'locale' => [
+            'firstDay' => 0,
+            'format' => config('backpack.base.default_date_format'),
+            'applyLabel'=> trans('backpack::crud.apply', array(), $filter_language),
+            'cancelLabel'=> trans('backpack::crud.cancel', array(), $filter_language),
+        ],
 
 
     ], $filter->options['date_range_options'] ?? []);
@@ -78,11 +85,11 @@
 {{-- push things in the after_scripts section --}}
 
 @push('crud_list_scripts')
-    <script type="text/javascript" src="{{ asset('packages/moment/min/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('packages/moment/min/moment-with-locales.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 
-    @if ($filter->options['date_range_options']['locale'] !== 'en')
-        <script charset="UTF-8" src="{{ asset('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$filter->options['date_range_options']['locale'].'.min.js') }}"></script>
+    @if ($filter->options['date_range_options']['language'] !== 'en')
+        <script charset="UTF-8" src="{{ asset('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$filter->options['date_range_options']['language'].'.min.js') }}"></script>
     @endif
 
   <script>
@@ -119,6 +126,7 @@
   		}
 
 		jQuery(document).ready(function($) {
+
 			var dateRangeInput = $('#daterangepicker-{{ $filter->key }}');
 
             $config = dateRangeInput.data('bs-daterangepicker');
@@ -135,19 +143,15 @@
                 }
             }
 
-            if($config.startDate) {
-                $config.startDate = moment($config.startDate, $config.format);
-            }else{
-                $config.startDate = moment(moment().format($config.format));
-            }
+            moment.locale($config.language);
 
-            if($config.endDate) {
-                $config.endDate = moment($config.endDate, $config.format);
-            }else{
-                $config.endDate = moment(moment().format($config.format));
-            }
+            $config.startDate = moment($config.startDate);
+
+            $config.endDate = moment($config.endDate);
+
 
             dateRangeInput.daterangepicker($config);
+
 
             dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
 				applyDateRangeFilter{{$filter->key}}(picker.startDate, picker.endDate);
