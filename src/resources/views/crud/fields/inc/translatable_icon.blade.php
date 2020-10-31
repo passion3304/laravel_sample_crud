@@ -1,8 +1,7 @@
 @php
     //if field name is array we check if any of the arrayed fields is translatable
     $translatable = false;
-    $translationsEnabled = method_exists($crud->model, 'isTranslatableAttribute');
-    if($translationsEnabled) {
+    if($crud->model->translationEnabled()) {
         foreach((array) $field['name'] as $field_name){
             if($crud->model->isTranslatableAttribute($field_name)) {
                 $translatable = true;
