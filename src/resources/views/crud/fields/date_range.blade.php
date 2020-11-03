@@ -28,7 +28,6 @@
     $start_default = $field['default'][0] ?? date('Y-m-d H:i:s');
     $end_default = $field['default'][1] ?? date('Y-m-d H:i:s');
 
-
     // make sure the datepicker configuration has at least these defaults
     $field['date_range_options'] = array_replace_recursive([
         'autoApply' => true,
