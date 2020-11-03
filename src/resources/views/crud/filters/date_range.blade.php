@@ -1,27 +1,25 @@
 {{-- Date Range Backpack CRUD filter --}}
 
 @php
-    $filter_language = $filter->options['date_range_options']['language'] ?? app()->getLocale();
     $filter->options['date_range_options'] = array_replace_recursive([
 		'timePicker' => false,
     	'alwaysShowCalendars' => true,
         'autoUpdateInput' => true,
         'startDate' => \Carbon\Carbon::now()->toDateTimeString(),
         'endDate' => \Carbon\Carbon::now()->toDateTimeString(),
-        'language' => $filter_language,
         'ranges' => [
-            trans('backpack::crud.today', array(), $filter_language) =>  [\Carbon\Carbon::now()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->endOfDay()->toDateTimeString()],
-            trans('backpack::crud.yesterday', array(), $filter_language) => [\Carbon\Carbon::now()->subDay()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->subDay()->endOfDay()->toDateTimeString()],
-            trans('backpack::crud.last_7_days', array(), $filter_language) => [\Carbon\Carbon::now()->subDays(6)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
-            trans('backpack::crud.last_30_days', array(), $filter_language) => [\Carbon\Carbon::now()->subDays(29)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
-            trans('backpack::crud.this_month', array(), $filter_language) => [\Carbon\Carbon::now()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->endOfMonth()->toDateTimeString()],
-            trans('backpack::crud.last_month', array(), $filter_language) => [\Carbon\Carbon::now()->subMonth()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->subMonth()->endOfMonth()->toDateTimeString()]
+            trans('backpack::crud.today') =>  [\Carbon\Carbon::now()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->endOfDay()->toDateTimeString()],
+            trans('backpack::crud.yesterday') => [\Carbon\Carbon::now()->subDay()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->subDay()->endOfDay()->toDateTimeString()],
+            trans('backpack::crud.last_7_days') => [\Carbon\Carbon::now()->subDays(6)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
+            trans('backpack::crud.last_30_days') => [\Carbon\Carbon::now()->subDays(29)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
+            trans('backpack::crud.this_month') => [\Carbon\Carbon::now()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->endOfMonth()->toDateTimeString()],
+            trans('backpack::crud.last_month') => [\Carbon\Carbon::now()->subMonth()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->subMonth()->endOfMonth()->toDateTimeString()]
         ],
         'locale' => [
             'firstDay' => 0,
             'format' => config('backpack.base.default_date_format'),
-            'applyLabel'=> trans('backpack::crud.apply', array(), $filter_language),
-            'cancelLabel'=> trans('backpack::crud.cancel', array(), $filter_language),
+            'applyLabel'=> trans('backpack::crud.apply'),
+            'cancelLabel'=> trans('backpack::crud.cancel'),
         ],
 
 
@@ -88,10 +86,6 @@
     <script type="text/javascript" src="{{ asset('packages/moment/min/moment-with-locales.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 
-    @if ($filter->options['date_range_options']['language'] !== 'en')
-        <script charset="UTF-8" src="{{ asset('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$filter->options['date_range_options']['language'].'.min.js') }}"></script>
-    @endif
-
   <script>
 
   		function applyDateRangeFilter{{$filter->key}}(start, end) {
@@ -127,6 +121,8 @@
 
 		jQuery(document).ready(function($) {
 
+            moment.locale('{{app()->getLocale()}}');
+
 			var dateRangeInput = $('#daterangepicker-{{ $filter->key }}');
 
             $config = dateRangeInput.data('bs-daterangepicker');
@@ -142,8 +138,6 @@
                     });
                 }
             }
-
-            moment.locale($config.language);
 
             $config.startDate = moment($config.startDate);
 
