@@ -36,6 +36,8 @@
         'locale' => [
             'firstDay' => 0,
             'format' => config('backpack.base.default_date_format'),
+            'applyLabel'=> trans('backpack::crud.apply'),
+            'cancelLabel'=> trans('backpack::crud.cancel'),
         ],
     ], $field['date_range_options'] ?? []);
 ?>
