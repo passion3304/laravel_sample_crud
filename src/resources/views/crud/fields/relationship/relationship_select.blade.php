@@ -178,31 +178,6 @@
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2($select2Settings);
-            // if any dependencies have been declared
-            // when one of those dependencies changes value
-            // reset the select2 value
-            for (var i=0; i < $dependencies.length; i++) {
-
-                //if element has name it means is not in repeatable, because in repeatable we strip the names out.
-                if(typeof element.attr('name') != 'undefined') {
-                    $(`[name="${$dependency}"], [name="${$dependency}[]"]`).change(function (el) {
-                        //check if we are dealing with inputs as it's expected and not with some random element in page that happen to have prop `name`
-                        if(el.target.nodeName === 'INPUT' || el.target.nodeName === 'SELECT' || el.target.nodeName === 'TEXTAREA') {
-                            $(element.find('option:not([value=""])')).remove();
-                            element.val(null).trigger("change");
-                        }
-                    });
-                }else{
-                    //this is a repeatable field, we will find the dependency based on row
-                    let rowNumber = element.closest('div[data-repeatable-identifier]').attr('data-repeatable-row-number');
-
-                    $(`[data-repeatable-input-name="${$dependency}"], [data-repeatable-row-number="${rowNumber}"]`).change(function () {
-                        //no need to check element type because `data-repeatable-input-name` is an internal name
-                        $(element.find('option:not([value=""])')).remove();
-                        element.val(null).trigger("change");
-                    });
-                }
-            }
         }
     }
 
