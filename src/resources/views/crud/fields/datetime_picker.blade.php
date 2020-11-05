@@ -73,7 +73,7 @@ if (isset($field['value']) && ($field['value'] instanceof \Carbon\CarbonInterfac
 
         function bpFieldInitDateTimePickerElement(element) {
                 var $fake = element,
-                $field = $fake.closest('.form-group').find('input[type="hidden"]'),
+                $field = $fake.closest('.input-group').parent().find('input[type="hidden"]'),
                 $customConfig = $.extend({
                     format: 'DD/MM/YYYY HH:mm',
                     defaultDate: $field.val(),
