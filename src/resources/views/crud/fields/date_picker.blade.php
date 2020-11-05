@@ -69,7 +69,7 @@
 
         function bpFieldInitDatePickerElement(element) {
             var $fake = element,
-            $field = $fake.closest('.form-group').find('input[type="hidden"]'),
+                $field = $fake.closest('.input-group').parent().find('input[type="hidden"]'),
             $customConfig = $.extend({
                 format: 'dd/mm/yyyy'
             }, $fake.data('bs-datepicker'));
@@ -77,7 +77,7 @@
 
             var $existingVal = $field.val();
 
-                if( $existingVal.length ){
+                if( $existingVal && $existingVal.length ){
                     // Passing an ISO-8601 date string (YYYY-MM-DD) to the Date constructor results in
                     // varying behavior across browsers. Splitting and passing in parts of the date
                     // manually gives us more defined behavior.
