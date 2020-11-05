@@ -673,20 +673,27 @@ function bpFieldInitFetchOrCreateElement(element) {
         });
     }
 
+                $('input[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+'], select[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+'], checkbox[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+'], radio[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+'], textarea[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+']').change(function () {
+                    element.val(null).trigger("change");
+                });
+            }
         }
+    }
+
 if (typeof processItemText !== 'function') {
     function processItemText(item, $fieldAttribute, $appLang) {
         if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
-                if(item[$fieldAttribute][$appLang] != 'undefined') {
-                    return item[$fieldAttribute][$appLang];
-                }else{
-                    return item[$fieldAttribute][0];
-                }
+            if(item[$fieldAttribute][$appLang] != 'undefined') {
+                return item[$fieldAttribute][$appLang];
+            }else{
+                return item[$fieldAttribute][0];
+            }
             }else{
                 return item[$fieldAttribute];
             }
+    }
 }
-}
+
             </script>
         @endpush
 

@@ -345,6 +345,19 @@
                     element.val(null).trigger("change");
                 });
 
+                //if element has name it means is not in repeatable, because in repeatable we strip the names out.
+                if(typeof element.attr('name') != 'undefined') {
+                    $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
+                        element.val(null).trigger("change");
+                    });
+                }else{
+                    //this is a repeatable field, we will find the dependency base on row
+                    let elementRow = element.closest('div[data-repeatable-identifier]').attr('data-repeatable-row-number');
+
+                    $('input[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+'], select[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+'], checkbox[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+'], radio[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+'], textarea[data-repeatable-input-name='+$dependency+'][data-repeatable-row-number='+elementRow+']').change(function () {
+                        element.val(null).trigger("change");
+                    });
+                }
             }
         }
     }
