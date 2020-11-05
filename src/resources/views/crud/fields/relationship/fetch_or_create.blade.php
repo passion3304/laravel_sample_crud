@@ -668,7 +668,7 @@ function bpFieldInitFetchOrCreateElement(element) {
 
         for (var i=0; i < $dependencies.length; i++) {
         $dependency = $dependencies[i];
-        $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
+        $(`[name="${$dependency}"], [name="${$dependency}[]"]`).change(function () {
             element.val(null).trigger("change");
         });
     }
