@@ -89,8 +89,8 @@
                 moment.locale('{{app()->getLocale()}}');
 
                 var $visibleInput = element;
-                var $startInput = $visibleInput.closest('.form-group').find('.datepicker-range-start');
-                var $endInput = $visibleInput.closest('.form-group').find('.datepicker-range-end');
+                var $startInput = $visibleInput.closest('.input-group').parent().find('.datepicker-range-start');
+                var $endInput = $visibleInput.closest('.input-group').parent().find('.datepicker-range-end');
 
                 var $configuration = $visibleInput.data('bs-daterangepicker');
                 // set the startDate and endDate to the defaults
