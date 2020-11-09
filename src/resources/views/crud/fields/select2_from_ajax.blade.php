@@ -212,6 +212,7 @@
         // when one of those dependencies changes value
         // reset the select2 value
         for (var i=0; i < $dependencies.length; i++) {
+            $dependency = $dependencies[i];
             //if element has name it means is not in repeatable, because in repeatable we strip the names out.
             if(typeof element.attr('name') != 'undefined') {
                 form.find(`[name="${$dependency}"], [name="${$dependency}[]"]`).change(function(el) {
