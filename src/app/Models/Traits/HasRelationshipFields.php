@@ -19,9 +19,7 @@ trait HasRelationshipFields
      */
     public function getConnectionWithExtraTypeMappings()
     {
-        $instance = new self;
-
-        $conn = DB::connection($instance->getConnectionName());
+        $conn = DB::connection($this->getConnectionName());
 
         // register the enum, json and jsonb column type, because Doctrine doesn't support it
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
