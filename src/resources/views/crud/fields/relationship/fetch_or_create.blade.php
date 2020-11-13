@@ -680,7 +680,7 @@ function bpFieldInitFetchOrCreateElement(element) {
 
                 $(`[data-repeatable-input-name="${$dependency}"], [data-repeatable-row-number="${rowNumber}"]`).change(function (el) {
                     $(element.find('option:not([value=""])')).remove();
-                    element.val(null).trigger("change");
+                    $(el).val(null).trigger("change");
                 });
             }
         }
