@@ -192,12 +192,12 @@
                         element.val(null).trigger("change");
                 });
             }else{
-                //this is a repeatable field, we will find the dependency based on row
+                // this is a repeatable field, we will find the dependency based on row
                 let rowNumber = element.closest('div[data-repeatable-identifier]').attr('data-repeatable-row-number');
 
-                $(`[data-repeatable-input-name="${$dependency}"], [data-repeatable-row-number="${rowNumber}"]`).change(function (el) {
+                $(`[data-repeatable-input-name="${$dependency}"][data-repeatable-row-number="${rowNumber}"],[data-repeatable-input-name="${$dependency}[]"][data-repeatable-row-number="${rowNumber}"]`).change(function (el) {
                     $(element.find('option:not([value=""])')).remove();
-                    $(el).val(null).trigger("change");
+                    element.val(null).trigger("change");
                 });
             }
         }

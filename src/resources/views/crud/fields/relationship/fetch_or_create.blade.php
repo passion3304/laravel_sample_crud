@@ -664,10 +664,9 @@ function bpFieldInitFetchOrCreateElement(element) {
             cache: true
         },
                 });
-            }
 
         for (var i=0; i < $dependencies.length; i++) {
-        $dependency = $dependencies[i];
+            $dependency = $dependencies[i];
             //if element has name it means is not in repeatable, because in repeatable we strip the names out.
             if(typeof element.attr('name') != 'undefined') {
                 form.find(`[name="${$dependency}"], [name="${$dependency}[]"]`).change(function(el) {
@@ -675,16 +674,17 @@ function bpFieldInitFetchOrCreateElement(element) {
                         element.val(null).trigger("change");
                 });
             }else{
-                //this is a repeatable field, we will find the dependency based on row
+                // this is a repeatable field, we will find the dependency based on row
                 let rowNumber = element.closest('div[data-repeatable-identifier]').attr('data-repeatable-row-number');
 
-                $(`[data-repeatable-input-name="${$dependency}"], [data-repeatable-row-number="${rowNumber}"]`).change(function (el) {
+                $(`[data-repeatable-input-name="${$dependency}"][data-repeatable-row-number="${rowNumber}"],[data-repeatable-input-name="${$dependency}[]"][data-repeatable-row-number="${rowNumber}"]`).change(function (el) {
                     $(element.find('option:not([value=""])')).remove();
-                    $(el).val(null).trigger("change");
+                    element.val(null).trigger("change");
                 });
             }
         }
     }
+}
 
 if (typeof processItemText !== 'function') {
     function processItemText(item, $fieldAttribute, $appLang) {
