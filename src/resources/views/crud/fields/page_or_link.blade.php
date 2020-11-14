@@ -18,7 +18,7 @@
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::fields.inc.translatable_icon', ['field' => ['name' => 'link']])
+    @include('crud::fields.inc.translatable_icon')
 
     <div class="row" data-init-function="bpFieldInitPageOrLinkElement">
         <div class="col-sm-3">
