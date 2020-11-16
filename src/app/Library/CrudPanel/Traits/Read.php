@@ -207,12 +207,16 @@ trait Read
         // assume both arrays are the same length.
         if (! in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
             // Loop through 2 arrays of prop. pageLengthMenu
-            foreach ($this->getOperationSetting('pageLengthMenu') as $key => &$page_length_choices) {
-                // This is a condition that should be always true.
-                if (is_array($page_length_choices)) {
-                    array_unshift($page_length_choices, $this->getDefaultPageLength());
-                }
+            $values = $this->getOperationSetting('pageLengthMenu')[0];
+            $labels = $this->getOperationSetting('pageLengthMenu')[1];
+
+            // This is a condition that should be always true.
+            if (is_array($values) && is_array($labels)) {
+                array_unshift($values, $this->getDefaultPageLength());
+                array_unshift($labels, $this->getDefaultPageLength());
             }
+
+            $this->setOperationSetting('pageLengthMenu', array($values, $labels));
         }
     }
 
@@ -225,7 +229,37 @@ trait Read
      */
     public function setPageLengthMenu($menu)
     {
+        // validates the correct building of the menu array
+        if(isset($menu[0]) && !is_null($menu[0])) {
+
+            // developer defined as setPageLengthMenu([[50, 100, 300], ['f', 'h', 't']])
+            if(is_array($menu[0])) {
+                 // developer defined as setPageLengthMenu([[50, 100, 300]])
+                 // we will apply the same labels as the values to the menu
+                if(!isset($menu[1]) || !is_array($menu[1])) {
+                    $menu[1] = $menu[0];
+                }
+            }else{
+                // developer defined length as setPageLengthMenu([50, 100, 300])
+                // we will use the same values as labels
+                $menu[0] = (array)$menu;
+                $menu[1] = $menu[0];
+            }
+        }else{
+            // developer defined length as setPageLengthMenu([50 => 'f', 100 => 'h', 300 => 't])
+            if (is_array($menu)) {
+                $values = array_keys($menu);
+                $labels = array_values($menu);
+                $menu = array($values, $labels);
+            }else{
+                // developer added only a single value setPageLengthMenu(10)
+                $arrayed_menu = array($menu);
+                $menu = array($arrayed_menu, $arrayed_menu);
+            }
+        }
+
         $this->setOperationSetting('pageLengthMenu', $menu);
+
     }
 
     /**
