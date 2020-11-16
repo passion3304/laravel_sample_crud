@@ -4,7 +4,7 @@
 
 
     //check if attribute is casted, if it is, we get back un-casted values
-    if(in_array($field['name'], array_keys($crud->model->getCasts()))) {
+    if(Arr::get($crud->model->getCasts(), $field['name']) === 'boolean') {
         $optionValue = $optionValue === true ? 1 : 0;
     }
 
