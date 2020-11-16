@@ -223,31 +223,55 @@
 		padding-right: 30px;
 	}
 
-	#crudTable.has-hidden-columns thead tr th:first-child,
-	#crudTable.has-hidden-columns tfoot tr th:first-child {
+	table .has-hidden-columns thead tr th:first-child,
+	table .has-hidden-columns tfoot tr th:first-child {
 		padding-left: 30px;
 	}
 
-	#crudTable .details-control,
-	#crudTable .crud_bulk_actions_checkbox {
+	table .details-control,
+	table .crud_bulk_actions_checkbox {
 		display: flex;
 		margin-right: 10px;
 	}
 
-	#crudTable .crud_bulk_actions_checkbox input {
+	table .crud_bulk_actions_checkbox input {
 		width: 16px;
 		height: 16px;
 	}
 
-	#crudTable tr th:first-child,
-	#crudTable tr td:first-child {
+	table tr th:first-child,
+	table tr td:first-child {
 		display: flex;
 		align-items: center;
 	}
-	#crudTable.has-details-row thead tr th:first-child,
-	#crudTable.has-details-row tfoot tr th:first-child {
+	table.has-details-row thead tr th:first-child,
+	table.has-details-row tfoot tr th:first-child {
 		padding-left: 56px;
 	}
+
+	.dataTables_scrollHead table.has-details-row thead tr th:first-child,
+	.dataTables_scrollFoot table.has-details-row tfoot tr th:first-child {
+		padding-left: 38px;
+	}
+
+	.dataTables_scrollHead table {
+		border-radius: 2px 2px 0 0 !important;
+	}
+	.dataTables_scrollFoot table {
+		border-radius: 0 0 2px 2px !important;
+	}
+	.dataTables_scrollBody table {
+		border-radius: 0 !important;
+	}
+
+	.dataTables_scrollFoot .table th {
+		border-top: 0;
+	}
+
+	.dataTables_scrollBody .table th,
+	.dataTables_scrollBody .table th {
+		visibility: hidden;
+	}	
 
 	.navbar-filters li>a:active,
 	.navbar-filters .navbar-nav>.active>a, .navbar-filters .navbar-nav>.active>a:focus, .navbar-filters .navbar-nav>.active>a:hover,
