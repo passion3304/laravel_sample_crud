@@ -68,6 +68,7 @@
 		box-shadow: none;
 		/*margin-top: 8px;*/
 		border: none;
+		top: calc(50% + 2px);
 	}
 
 	.dt-buttons {
@@ -220,6 +221,32 @@
 
 	#crudTable thead>tr>th, table.dataTable thead>tr>th {
 		padding-right: 30px;
+	}
+
+	#crudTable.has-hidden-columns thead tr th:first-child,
+	#crudTable.has-hidden-columns tfoot tr th:first-child {
+		padding-left: 30px;
+	}
+
+	#crudTable .details-control,
+	#crudTable .crud_bulk_actions_checkbox {
+		display: flex;
+		margin-right: 10px;
+	}
+
+	#crudTable .crud_bulk_actions_checkbox input {
+		width: 16px;
+		height: 16px;
+	}
+
+	#crudTable tr th:first-child,
+	#crudTable tr td:first-child {
+		display: flex;
+		align-items: center;
+	}
+	#crudTable.has-details-row thead tr th:first-child,
+	#crudTable.has-details-row tfoot tr th:first-child {
+		padding-left: 56px;
 	}
 
 	.navbar-filters li>a:active,
