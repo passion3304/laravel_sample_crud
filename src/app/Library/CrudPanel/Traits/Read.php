@@ -234,16 +234,16 @@ trait Read
     public function setPageLengthMenu($menu)
     {
         // validates the correct building of the menu array
-        if(isset($menu[0]) && !is_null($menu[0])) {
+        if (isset($menu[0]) && ! is_null($menu[0])) {
 
             // developer defined as setPageLengthMenu([[50, 100, 300], ['f', 'h', 't']])
-            if(is_array($menu[0])) {
-                 // developer defined as setPageLengthMenu([[50, 100, 300]])
-                 // we will apply the same labels as the values to the menu
-                if(!isset($menu[1]) || !is_array($menu[1])) {
+            if (is_array($menu[0])) {
+                // developer defined as setPageLengthMenu([[50, 100, 300]])
+                // we will apply the same labels as the values to the menu
+                if (! isset($menu[1]) || ! is_array($menu[1])) {
                     $menu[1] = $menu[0];
                 }
-            }else{
+            } else {
                 // developer defined length as setPageLengthMenu([50, 100, 300])
                 // we will use the same values as labels
                 $aux = $menu;
@@ -251,20 +251,19 @@ trait Read
                 $menu[0] = $aux;
                 $menu[1] = $menu[0];
             }
-        }else{
+        } else {
             // developer defined length as setPageLengthMenu([50 => 'f', 100 => 'h', 300 => 't])
             if (is_array($menu)) {
                 $values = array_keys($menu);
                 $labels = array_values($menu);
-                $menu = array($values, $labels);
-            }else{
+                $menu = [$values, $labels];
+            } else {
                 // developer added only a single value setPageLengthMenu(10)
-                $arrayed_menu = array($menu);
-                $menu = array($arrayed_menu, $arrayed_menu);
+                $arrayed_menu = [$menu];
+                $menu = [$arrayed_menu, $arrayed_menu];
             }
         }
         $this->setOperationSetting('pageLengthMenu', $menu);
-
     }
 
     /**
