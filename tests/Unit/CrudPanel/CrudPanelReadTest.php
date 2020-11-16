@@ -118,6 +118,8 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         'upload' => true,
     ];
 
+    private $defaultPaginator = [[10, 20, 30], ['t1', 't2','t3']];
+
     public function testGetEntry()
     {
         $this->crudPanel->setModel(User::class);
@@ -385,4 +387,106 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $entries = $this->crudPanel->getRelatedEntriesAttributes($user, 'accountDetails', 'nickname_composed');
         $this->assertCount(1, $entries);
     }
+    /**
+     * Tests define paginator length with single array [20, 30, 40]
+     *
+     * @group
+     */
+    public function testCrudPanelChangePaginatorLengthSingleArrayNoLabels() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('list');
+        $this->crudPanel->setPageLengthMenu([20, 30, 40]);
+        $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[1]));
+    }
+
+    /**
+     * Tests define paginator length with single array [20 => 'v', 30 => 't', 40 => 'q']
+     *
+     * @group
+     */
+    public function testCrudPanelChangePaginatorLengthSingleArrayWithLabels() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('list');
+        $this->crudPanel->setPageLengthMenu([20 => 'v', 30 => 't', 40 => 'q']);
+        $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
+        $this->assertEquals($this->crudPanel->getOperationSetting('pageLengthMenu')[1], ['v', 't', 'q']);
+    }
+
+    /**
+     * Tests define paginator length with multi array [[20, 30, 40],['v', 't', 'q']]
+     *
+     * @group
+     */
+    public function testCrudPanelChangePaginatorLengthMultiArrayWithLabels() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('list');
+        $this->crudPanel->setPageLengthMenu([[20, 30, 40],['v', 't', 'q']]);
+        $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
+        $this->assertEquals($this->crudPanel->getOperationSetting('pageLengthMenu')[1], ['v', 't', 'q']);
+    }
+
+    /**
+     * Tests define paginator length with multi array [[20, 30, 40]]
+     *
+     * @group
+     */
+    public function testCrudPanelChangePaginatorLengthMultiArrayNoLabels() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('list');
+        $this->crudPanel->setPageLengthMenu([[20, 30, 40]]);
+        $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[1]));
+    }
+    /**
+     * Tests define paginator length with single value 40
+     *
+     * @group
+     */
+    public function testCrudPanelChangePaginatorLengthWithSingleValue() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('list');
+        $this->crudPanel->setPageLengthMenu(40);
+        $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[1]));
+    }
+
+    /**
+     * Tests if table paginator adds default option non-existent
+     *
+     * @group
+     */
+    public function testCrudPanelPaginatorAddsDefaultOptionNonExistent() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('list');
+        $this->crudPanel->setPageLengthMenu(40);
+        $this->crudPanel->setDefaultPageLength(40);
+        $this->assertCount(2, $this->crudPanel->getPageLengthMenu());
+        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
+        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0])[0], 40);
+    }
+
+    /**
+     * Tests if table paginator adds default option existent
+     *
+     * @group
+     */
+    public function testCrudPanelPaginatorAddsDefaultOptionExistent() {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('list');
+
+        $this->crudPanel->setPageLengthMenu($this->defaultPaginator);
+        //dd($this->crudPanel->getPageLengthMenu());
+        $this->crudPanel->setDefaultPageLength(20);
+        $this->assertCount(2, $this->crudPanel->getPageLengthMenu());
+        $this->assertTrue(in_array(10, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
+        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0])[0], 20);
+    }
+
+
 }

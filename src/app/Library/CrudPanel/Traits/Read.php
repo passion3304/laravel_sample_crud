@@ -203,21 +203,25 @@ trait Read
      */
     public function addCustomPageLengthToPageLengthMenu()
     {
-        // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
-        // assume both arrays are the same length.
-        if (! in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
-            // Loop through 2 arrays of prop. pageLengthMenu
-            $values = $this->getOperationSetting('pageLengthMenu')[0];
-            $labels = $this->getOperationSetting('pageLengthMenu')[1];
+        $values = $this->getOperationSetting('pageLengthMenu')[0];
+        $labels = $this->getOperationSetting('pageLengthMenu')[1];
 
-            // This is a condition that should be always true.
-            if (is_array($values) && is_array($labels)) {
+
+        // This is a condition that should be always true.
+        if (is_array($values) && is_array($labels)) {
+            $position = array_search($this->getDefaultPageLength(), $values);
+            if ($position !== false) {
+                $defaultLabel = isset($labels[$position]) ? $labels[$position] : $this->getDefaultPageLength();
                 array_unshift($values, $this->getDefaultPageLength());
-                array_unshift($labels, $this->getDefaultPageLength());
-            }
+                array_unshift($labels, $defaultLabel);
 
-            $this->setOperationSetting('pageLengthMenu', array($values, $labels));
+                //now make it unique.
+                $values = array_unique($values);
+                $labels = array_unique($labels);
+            }
         }
+
+        $this->setOperationSetting('pageLengthMenu', array($values, $labels));
     }
 
     /**
@@ -242,7 +246,9 @@ trait Read
             }else{
                 // developer defined length as setPageLengthMenu([50, 100, 300])
                 // we will use the same values as labels
-                $menu[0] = (array)$menu;
+                $aux = $menu;
+                unset($menu);
+                $menu[0] = $aux;
                 $menu[1] = $menu[0];
             }
         }else{
@@ -257,7 +263,6 @@ trait Read
                 $menu = array($arrayed_menu, $arrayed_menu);
             }
         }
-
         $this->setOperationSetting('pageLengthMenu', $menu);
 
     }
@@ -277,7 +282,6 @@ trait Read
             }
             $this->setOperationSetting('pageLengthMenu', $aux);
         }
-
         $this->addCustomPageLengthToPageLengthMenu();
 
         return $this->getOperationSetting('pageLengthMenu');
