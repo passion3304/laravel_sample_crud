@@ -206,7 +206,6 @@ trait Read
         $values = $this->getOperationSetting('pageLengthMenu')[0];
         $labels = $this->getOperationSetting('pageLengthMenu')[1];
 
-
         // This is a condition that should be always true.
         if (is_array($values) && is_array($labels)) {
             $position = array_search($this->getDefaultPageLength(), $values);
@@ -221,7 +220,7 @@ trait Read
             }
         }
 
-        $this->setOperationSetting('pageLengthMenu', array($values, $labels));
+        $this->setOperationSetting('pageLengthMenu', [$values, $labels]);
     }
 
     /**
