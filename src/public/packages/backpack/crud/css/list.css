@@ -223,20 +223,20 @@
 		padding-right: 30px;
 	}
 
-	table .has-hidden-columns thead tr th:first-child,
-	table .has-hidden-columns tfoot tr th:first-child {
-		padding-left: 30px;
+	table.has-hidden-columns thead tr th:first-child,
+	table.has-hidden-columns tfoot tr th:first-child {
+		padding-left: 1.875rem;
 	}
 
 	table .details-control,
 	table .crud_bulk_actions_checkbox {
 		display: flex;
-		margin-right: 10px;
+		margin-right: 0.625rem;
 	}
 
 	table .crud_bulk_actions_checkbox input {
-		width: 16px;
-		height: 16px;
+		width: 1rem;
+		height: 1rem;
 	}
 
 	table tr th:first-child,
@@ -246,19 +246,19 @@
 	}
 	table.has-details-row thead tr th:first-child,
 	table.has-details-row tfoot tr th:first-child {
-		padding-left: 56px;
+		padding-left: 3.5rem;
 	}
 
 	.dataTables_scrollHead table.has-details-row thead tr th:first-child,
 	.dataTables_scrollFoot table.has-details-row tfoot tr th:first-child {
-		padding-left: 38px;
+		padding-left: 2.375rem;
 	}
 
 	.dataTables_scrollHead table {
-		border-radius: 2px 2px 0 0 !important;
+		border-radius: 0.125rem 0.125rem 0 0 !important;
 	}
 	.dataTables_scrollFoot table {
-		border-radius: 0 0 2px 2px !important;
+		border-radius: 0 0 0.125rem 0.125rem !important;
 	}
 	.dataTables_scrollBody table {
 		border-radius: 0 !important;
@@ -271,7 +271,7 @@
 	.dataTables_scrollBody .table th,
 	.dataTables_scrollBody .table th {
 		visibility: hidden;
-	}	
+	}
 
 	.navbar-filters li>a:active,
 	.navbar-filters .navbar-nav>.active>a, .navbar-filters .navbar-nav>.active>a:focus, .navbar-filters .navbar-nav>.active>a:hover,
