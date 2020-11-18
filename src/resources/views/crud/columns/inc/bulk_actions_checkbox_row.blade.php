@@ -92,6 +92,9 @@
 
                 event.stopPropagation();
             });
+
+            // Stop propagation of href on the first column
+            document.querySelectorAll('table td.dtr-control a').forEach(link => link.onclick = e => e.stopPropagation());
         }
 
         // run this function on DataTable draw event
