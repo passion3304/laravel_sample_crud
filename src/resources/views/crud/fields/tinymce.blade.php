@@ -4,6 +4,9 @@ $defaultOptions = [
     'file_picker_callback' => 'elFinderBrowser',
     'selector' => 'textarea.tinymce',
     'plugins' => 'image,link,media,anchor',
+    //these two options allow tinymce to save the path of images "/upload/image.jpg" instead of the relative server path "../../../uploads/image.jpg"
+    'relative_urls' =>  false,
+    'remove_script_host' => true,
 ];
 
 $field['options'] = array_merge($defaultOptions, $field['options'] ?? []);
