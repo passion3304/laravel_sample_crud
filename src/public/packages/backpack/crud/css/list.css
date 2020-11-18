@@ -273,6 +273,10 @@
 		visibility: hidden;
 	}
 
+	.dtr-bs-modal .crud_bulk_actions_checkbox {
+		display: none;
+	}
+
 	.navbar-filters li>a:active,
 	.navbar-filters .navbar-nav>.active>a, .navbar-filters .navbar-nav>.active>a:focus, .navbar-filters .navbar-nav>.active>a:hover,
 	.navbar-filters .navbar-nav>.open>a, .navbar-filters .navbar-nav>.open>a:focus, .navbar-filters .navbar-nav>.open>a:hover {
