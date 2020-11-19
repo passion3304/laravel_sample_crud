@@ -16,6 +16,7 @@
     <a href="https://styleci.io/repos/53581270" title="Style CI"><img src="https://styleci.io/repos/53581270/shield"></a>
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://img.shields.io/scrutinizer/coverage/g/laravel-backpack/crud.svg?style=flat-square"></a>
     <a href="LICENSE.md" title="Software License"><img src="https://img.shields.io/badge/License-dual-blue"></a>
+    <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
     <br><br>
     <a href="https://backpackforlaravel.com/">Website</a> | 
     <a href="https://backpackforlaravel.com/docs/">Documentation</a> | 
@@ -85,7 +86,9 @@ For the current release (4.1.x) please see [the Releases tab](https://github.com
 
 ## Contributing Guidelines
 
-Please see [CONTRIBUTING](CONTRIBUTING.md).
+This project stands by [The Whole Fruit Manifesto](https://github.com/the-whole-fruit/manifesto). We believe that “_writing good code_” is not only about “_writing good code_”. It’s also about the words around it. That’s why, to make sure your contribution is well received, we ask you to [read and keep in mind the ONE=MOR framework and guidelines](https://github.com/the-whole-fruit/manifesto) when writing comment blocks, PR titles, PR descriptions, and in general, when writing to our community. 
+
+For tasks & details about how you can help our project, please see [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Security
 
