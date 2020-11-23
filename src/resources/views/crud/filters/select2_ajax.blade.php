@@ -6,7 +6,20 @@
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0 ajax-select">
 	    <div class="form-group mb-0">
-	    	<select id="filter_{{ $filter->key }}" name="filter_{{ $filter->name }}" data-filter-key="{{ $filter->key }}" class="form-control input-sm select2" data-filter-type="select2_ajax" data-filter-name="{{ $filter->name }}" placeholder="{{ $filter->placeholder }}">
+            <select
+                id="filter_{{ $filter->key }}"
+                name="filter_{{ $filter->name }}"
+                data-filter-key="{{ $filter->key }}"
+                class="form-control input-sm select2"
+                data-filter-type="select2_ajax"
+                data-filter-name="{{ $filter->name }}"
+                placeholder="{{ $filter->placeholder }}"
+                data-select-key="{{ isset($filter->options['select_key']) ? $filter->options['select_key'] : 'id' }}"
+                data-select-attribute="{{ isset($filter->options['select_attribute']) ? $filter->options['select_attribute'] : 'name' }}"
+                filter-minimum-input-length="{{ isset($filter->options['minimum_input_length']) ? $filter->options['minimum_input_length'] : 2 }}"
+                filter-method="{{ isset($filter->options['method']) ? $filter->options['method'] : 'GET' }}"
+                filter-quiet-time= {{ isset($filter->options['quiet_time']) ? $filter->options['quiet_time'] : 500 }}
+            >
 				@if (Request::get($filter->name))
 					<option value="{{ Request::get($filter->name) }}" selected="selected"> {{ Request::get($filter->name.'_text') ?? 'Previous selection' }} </option>
 				@endif
@@ -76,10 +89,12 @@
 
             	var filterName = $(this).attr('data-filter-name');
                 var filter_key = $(this).attr('data-filter-key');
+                var selectAttribute = $(this).attr('data-select-attribute');
+                var selectKey = $(this).attr('data-select-key');
 
             	$(this).select2({
 				    theme: "bootstrap",
-				    minimumInputLength: 2,
+				    minimumInputLength: $(this).attr('filter-minimum-input-length'),
 	            	allowClear: true,
 	        	    placeholder: $(this).attr('placeholder'),
 					closeOnSelect: false,
@@ -89,21 +104,32 @@
 				        url: '{{ $filter->values }}',
 				        dataType: 'json',
 				        type: 'GET',
-				        quietMillis: 50,
-				        // data: function (term) {
-				        //     return {
-				        //         term: term
-				        //     };
-				        // },
+				        quietMillis: $(this).attr('filter-quiet-time'),
+
 				        processResults: function (data) {
-				            return {
-				                results: $.map(data, function (item, i) {
-				                    return {
-				                        text: item,
-				                        id: i
-				                    }
-				                })
-				            };
+                            //it's a paginated result
+                            if(Array.isArray(data.data)) {
+                                if(data.data.length > 0) {
+                               return {
+                                    results: $.map(data.data, function (item) {
+                                     return {
+                                        text: item[selectAttribute],
+                                        id: item[selectKey]
+                                    }
+                                })
+                                };
+                                }
+                            }else{
+                                //it's non-paginated result
+                                return {
+                                    results: $.map(data, function (item, i) {
+                                        return {
+                                            text: item,
+                                            id: i
+                                        }
+                                    })
+                                };
+                            }
 				        }
 				    }
 				}).on('change', function (evt) {
