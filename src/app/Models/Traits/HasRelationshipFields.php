@@ -4,6 +4,9 @@ namespace Backpack\CRUD\app\Models\Traits;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use \Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 */
 trait HasRelationshipFields
 {
+
     /**
      * Register aditional types in doctrine schema manager for the current connection.
      *
@@ -71,7 +75,7 @@ trait HasRelationshipFields
         $table = $instance->getTableWithPrefix();
 
         // MongoDB columns are alway nullable
-        if ($conn->getConfig()['driver'] === 'mongodb') {
+        if (!in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList()) {
             return true;
         }
 

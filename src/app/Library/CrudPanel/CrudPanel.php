@@ -145,6 +145,28 @@ class CrudPanel
     }
 
     /**
+     * Check if the database connection is any sql driver.
+     *
+     * @return bool
+     */
+    private function driverIsSql()
+    {
+        $driver = $this->getSchema()->getConnection()->getConfig()['driver'];
+
+        return in_array($driver, $this->getSqlDriverList);
+    }
+
+    /**
+     * Get SQL driver list
+     *
+     * @return array
+     */
+    private function getSqlDriverList()
+    {
+        return ['mysql', 'sqlsrv', 'sqlite', 'pgsql'];
+    }
+
+    /**
      * Set the route for this CRUD.
      * Ex: admin/article.
      *

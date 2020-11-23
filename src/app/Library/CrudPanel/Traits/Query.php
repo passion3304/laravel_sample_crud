@@ -143,9 +143,9 @@ trait Query
         return $this->query->count();
     }
 
-    public function applyCrudOrder($column_name, $column_direction = 'ASC')
+    public function orderByWithPrefix($column_name, $column_direction = 'ASC')
     {
-        if (! $this->driverIsMongoDb()) {
+        if ($this->driverIsSql()) {
             return $this->query->orderByRaw($this->model->getTableWithPrefix().'.'.$column_name.' '.$column_direction);
         }
 
