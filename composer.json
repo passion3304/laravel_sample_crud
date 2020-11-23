@@ -35,7 +35,7 @@
         "laravel/framework": "^8.0|^7.0|^6.0",
         "prologue/alerts": "^0.4.1",
         "creativeorange/gravatar": "~1.0",
-        "ocramius/package-versions": "^1.4",
+        "composer/package-versions-deprecated": "^1.8",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^7.0|^6.3"
     },
@@ -76,5 +76,11 @@
                 "Widget": "Backpack\\CRUD\\app\\Library\\Widget"
             }
         }
+    },
+    "suggest": {
+        "backpack/generators": "Required on localhost to easily generate CRUDs, models, controllers etc.",
+        "backpack/filemanager": "Required to use the browse and browse_multiple fields.",
+        "backpack/revise-operation": "Optional operation to remember all entry changes, undo and redo them (aka audit trait).",
+        "digitallyhappy/toggle-field-for-backpack": "Optional field to toggle a boolean. Prettier alternative to the checkbox field."
     }
 }
