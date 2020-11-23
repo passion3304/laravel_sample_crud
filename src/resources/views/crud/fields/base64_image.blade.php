@@ -211,21 +211,7 @@
                                         $hiddenImage.val(imageURL);
                                         return true;
                                     });
-                                    $rotateLeft.click(function() {
-                                        $mainImage.cropper("rotate", 90);
-                                    });
-                                    $rotateRight.click(function() {
-                                        $mainImage.cropper("rotate", -90);
-                                    });
-                                    $zoomIn.click(function() {
-                                        $mainImage.cropper("zoom", 0.1);
-                                    });
-                                    $zoomOut.click(function() {
-                                        $mainImage.cropper("zoom", -0.1);
-                                    });
-                                    $reset.click(function() {
-                                        $mainImage.cropper("reset");
-                                    });
+
                                     $rotateLeft.show();
                                     $rotateRight.show();
                                     $zoomIn.show();
@@ -246,6 +232,30 @@
                             }).show();
                         }
                     });
+
+                    //moved the click binds outside change event, or we would register as many click events for the same amout of times
+                    //we triggered the image change
+                    if(crop) {
+                        $rotateLeft.click(function() {
+                            $mainImage.cropper("rotate", 90);
+                        });
+
+                        $rotateRight.click(function() {
+                            $mainImage.cropper("rotate", -90);
+                        });
+
+                        $zoomIn.click(function() {
+                            $mainImage.cropper("zoom", 0.1);
+                        });
+
+                        $zoomOut.click(function() {
+                            $mainImage.cropper("zoom", -0.1);
+                        });
+
+                        $reset.click(function() {
+                            $mainImage.cropper("reset");
+                        });
+                    }
             }
         </script>
 

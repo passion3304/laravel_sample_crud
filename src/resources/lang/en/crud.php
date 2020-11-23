@@ -136,6 +136,17 @@ return [
     'filters'        => 'Filters',
     'toggle_filters' => 'Toggle filters',
     'remove_filters' => 'Remove filters',
+    'apply' => 'Apply',
+
+    //filters language strings
+    'today' => 'Today',
+    'yesterday' => 'Yesterday',
+    'last_7_days' => 'Last 7 Days',
+    'last_30_days' => 'Last 30 Days',
+    'this_month' => 'This Month',
+    'last_month' => 'Last Month',
+    'custom_range' => 'Custom Range',
+    'weekLabel' => 'W',
 
     // Fields
     'browse_uploads'            => 'Browse uploads',

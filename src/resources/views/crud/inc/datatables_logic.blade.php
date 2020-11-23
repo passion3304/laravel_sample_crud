@@ -139,9 +139,9 @@
 
             data.columns.forEach(function(item, index) {
                 var columnHeading = crud.table.columns().header()[index];
-                    if ($(columnHeading).attr('data-visible-in-table') == 'true') {
-                        return item.visible = true;
-                    }
+                if ($(columnHeading).attr('data-visible-in-table') == 'true') {
+                    return item.visible = true;
+                }
             });
         },
         @if($crud->getPersistentTableDuration())
@@ -313,10 +313,7 @@
         $(window).on('resize', function(e) {
           resizeCrudTableColumnWidths();
         });
-        $(document).on('expanded.pushMenu', function(e) {
-          resizeCrudTableColumnWidths();
-        });
-        $(document).on('collapsed.pushMenu', function(e) {
+        $('.sidebar-toggler').click(function() {
           resizeCrudTableColumnWidths();
         });
       @endif
