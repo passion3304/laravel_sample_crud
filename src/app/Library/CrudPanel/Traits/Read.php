@@ -233,7 +233,7 @@ trait Read
     public function setPageLengthMenu($menu)
     {
         // validates the correct building of the menu array
-        if (isset($menu[0]) && ! is_null($menu[0])) {
+        if (isset($menu[0])) {
 
             // developer defined as setPageLengthMenu([[50, 100, 300], ['f', 'h', 't']])
             if (is_array($menu[0])) {
@@ -245,10 +245,7 @@ trait Read
             } else {
                 // developer defined length as setPageLengthMenu([50, 100, 300])
                 // we will use the same values as labels
-                $aux = $menu;
-                unset($menu);
-                $menu[0] = $aux;
-                $menu[1] = $menu[0];
+                $menu = [$menu, $menu];
             }
         } else {
             // developer defined length as setPageLengthMenu([50 => 'f', 100 => 'h', 300 => 't])
@@ -258,8 +255,7 @@ trait Read
                 $menu = [$values, $labels];
             } else {
                 // developer added only a single value setPageLengthMenu(10)
-                $arrayed_menu = [$menu];
-                $menu = [$arrayed_menu, $arrayed_menu];
+                $menu = [[$menu], [$menu]];
             }
         }
         $this->setOperationSetting('pageLengthMenu', $menu);
