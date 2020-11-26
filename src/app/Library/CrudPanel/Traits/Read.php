@@ -232,33 +232,49 @@ trait Read
      */
     public function setPageLengthMenu($menu)
     {
-        // validates the correct building of the menu array
-        if (isset($menu[0])) {
 
-            // developer defined as setPageLengthMenu([[50, 100, 300], ['f', 'h', 't']])
-            if (is_array($menu[0])) {
-                // developer defined as setPageLengthMenu([[50, 100, 300]])
-                // we will apply the same labels as the values to the menu
-                if (! isset($menu[1]) || ! is_array($menu[1])) {
-                    $menu[1] = $menu[0];
-                }
-            } else {
-                // developer defined length as setPageLengthMenu([50, 100, 300])
-                // we will use the same values as labels
-                $menu = [$menu, $menu];
+        // start checking $menu integrity
+        if (isset($menu[0]) && is_array($menu[0])) {
+            // developer defined as setPageLengthMenu([[50, 100, 300]]) or setPageLengthMenu([[50, 100, 300],['f','h','t']])
+            // we will apply the same labels as the values to the menu if developer didn't
+            if (! isset($menu[1]) || ! is_array($menu[1])) {
+                $menu[1] = $menu[0];
             }
-        } else {
-            // developer defined length as setPageLengthMenu([50 => 'f', 100 => 'h', 300 => 't])
-            if (is_array($menu)) {
-                $values = array_keys($menu);
-                $labels = array_values($menu);
-                $menu = [$values, $labels];
-            } else {
-                // developer added only a single value setPageLengthMenu(10)
-                $menu = [[$menu], [$menu]];
+
+        } elseif(isset($menu[0]) && !is_array($menu[0])) {
+            if(is_array($menu)) {
+               $menu = $this->buildPageLengthMenuFromArray($menu);
             }
+        }elseif(!isset($menu[0]) && is_array($menu)) {
+            $menu = $this->buildPageLengthMenuFromArray($menu);
+        }else{
+            // developer added only a single value setPageLengthMenu(10)
+            $menu = [[$menu], [$menu]];
         }
+
         $this->setOperationSetting('pageLengthMenu', $menu);
+    }
+
+    /**
+     * Builds the menu from the given array. It works out with two different types of arrays:
+     *  [1, 2, 3] AND
+     *  [1 => 'one', 2 => 'two', 3 => 'three']
+     *
+     * @param array $menu
+     * @return array
+     */
+    private function buildPageLengthMenuFromArray($menu) {
+        // check if the values of the array are strings, in case developer defined:
+        // setPageLengthMenu([0 => 'f', 100 => 'h', 300 => 't'])
+        if(count(array_filter(array_values($menu), 'is_string')) > 0) {
+            $values = array_keys($menu);
+            $labels = array_values($menu);
+            return [$values, $labels];
+        }else{
+            // developer defined length as setPageLengthMenu([0, 100, 300])
+            // we will use the same values as labels
+            return [$menu, $menu];
+        }
     }
 
     /**
