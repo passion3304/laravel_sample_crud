@@ -157,7 +157,7 @@ class CrudPanel
     }
 
     /**
-     * Get SQL driver list
+     * Get SQL driver list.
      *
      * @return array
      */

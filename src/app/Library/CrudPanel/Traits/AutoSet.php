@@ -221,7 +221,7 @@ trait AutoSet
     {
         $fillable = $this->model->getFillable();
 
-        if (!$this->driverIsSql()) {
+        if (! $this->driverIsSql()) {
             $columns = $fillable;
         } else {
             // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model

@@ -184,7 +184,7 @@ trait ColumnsProtectedMethods
     {
         static $cache = [];
 
-        if (!$this->driverIsSql()) {
+        if (! $this->driverIsSql()) {
             return true;
         }
 
