@@ -419,7 +419,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     }
 
     /**
-     * Tests define paginator length with and 'all' options as -1 as defined in previous versions of BP
+     * Tests define paginator length with and 'all' options as -1 as defined in previous versions of BP.
      *
      * @group
      */
@@ -440,8 +440,8 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $this->assertTrue(in_array(-1, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
     }
 
-     /**
-     * Tests define paginator length with and 'all' options as -1 as defined in previous versions of BP
+    /**
+     * Tests define paginator length with and 'all' options as -1 as defined in previous versions of BP.
      *
      * @group
      */
@@ -456,21 +456,17 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $this->assertTrue(in_array(0, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
         $this->assertTrue(in_array('v', $this->crudPanel->getOperationSetting('pageLengthMenu')[1]));
 
-
         $this->crudPanel->setPageLengthMenu([0 => 'All']);
         $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
         $this->assertTrue(in_array(0, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
 
-        $this->crudPanel->setPageLengthMenu([0 => 'All', ]);
+        $this->crudPanel->setPageLengthMenu([0 => 'All']);
         $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
         $this->assertTrue(in_array(0, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
 
         $this->crudPanel->setPageLengthMenu([0]);
         $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
         $this->assertTrue(in_array(0, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
-
-
-
     }
 
     /**

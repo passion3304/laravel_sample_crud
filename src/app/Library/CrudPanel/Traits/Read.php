@@ -240,14 +240,13 @@ trait Read
             if (! isset($menu[1]) || ! is_array($menu[1])) {
                 $menu[1] = $menu[0];
             }
-
-        } elseif(isset($menu[0]) && !is_array($menu[0])) {
-            if(is_array($menu)) {
-               $menu = $this->buildPageLengthMenuFromArray($menu);
+        } elseif (isset($menu[0]) && ! is_array($menu[0])) {
+            if (is_array($menu)) {
+                $menu = $this->buildPageLengthMenuFromArray($menu);
             }
-        }elseif(!isset($menu[0]) && is_array($menu)) {
+        } elseif (! isset($menu[0]) && is_array($menu)) {
             $menu = $this->buildPageLengthMenuFromArray($menu);
-        }else{
+        } else {
             // developer added only a single value setPageLengthMenu(10)
             $menu = [[$menu], [$menu]];
         }
@@ -258,19 +257,21 @@ trait Read
     /**
      * Builds the menu from the given array. It works out with two different types of arrays:
      *  [1, 2, 3] AND
-     *  [1 => 'one', 2 => 'two', 3 => 'three']
+     *  [1 => 'one', 2 => 'two', 3 => 'three'].
      *
      * @param array $menu
      * @return array
      */
-    private function buildPageLengthMenuFromArray($menu) {
+    private function buildPageLengthMenuFromArray($menu)
+    {
         // check if the values of the array are strings, in case developer defined:
         // setPageLengthMenu([0 => 'f', 100 => 'h', 300 => 't'])
-        if(count(array_filter(array_values($menu), 'is_string')) > 0) {
+        if (count(array_filter(array_values($menu), 'is_string')) > 0) {
             $values = array_keys($menu);
             $labels = array_values($menu);
+
             return [$values, $labels];
-        }else{
+        } else {
             // developer defined length as setPageLengthMenu([0, 100, 300])
             // we will use the same values as labels
             return [$menu, $menu];
