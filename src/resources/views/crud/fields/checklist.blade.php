@@ -66,7 +66,7 @@
                 checkboxes.each(function(key, option) {
                   var id = $(this).val();
 
-                  if (selected_options.includes(id)) {
+                  if (selected_options.map(String).includes(id)) {
                     $(this).prop('checked', 'checked');
                   } else {
                     $(this).prop('checked', false);
