@@ -75,7 +75,7 @@ trait HasRelationshipFields
         $table = $instance->getTableWithPrefix();
 
         // MongoDB columns are alway nullable
-        if (!in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList()) {
+        if (!in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
             return true;
         }
 
