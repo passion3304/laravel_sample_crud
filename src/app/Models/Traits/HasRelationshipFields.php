@@ -2,11 +2,9 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use DB;
 use Illuminate\Database\Eloquent\Model;
-use \Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +13,6 @@ use \Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 */
 trait HasRelationshipFields
 {
-
     /**
      * Register aditional types in doctrine schema manager for the current connection.
      *
@@ -75,7 +72,7 @@ trait HasRelationshipFields
         $table = $instance->getTableWithPrefix();
 
         // MongoDB columns are alway nullable
-        if (!in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
+        if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
             return true;
         }
 
