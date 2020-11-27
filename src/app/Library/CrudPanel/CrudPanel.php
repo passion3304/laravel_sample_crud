@@ -161,7 +161,7 @@ class CrudPanel
      *
      * @return array
      */
-    private function getSqlDriverList()
+    public function getSqlDriverList()
     {
         return ['mysql', 'sqlsrv', 'sqlite', 'pgsql'];
     }
