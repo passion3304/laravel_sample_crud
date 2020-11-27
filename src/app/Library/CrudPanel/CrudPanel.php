@@ -153,7 +153,7 @@ class CrudPanel
     {
         $driver = $this->getSchema()->getConnection()->getConfig()['driver'];
 
-        return in_array($driver, $this->getSqlDriverList);
+        return in_array($driver, $this->getSqlDriverList());
     }
 
     /**
