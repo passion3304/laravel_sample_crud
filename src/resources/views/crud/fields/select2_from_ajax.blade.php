@@ -11,8 +11,6 @@
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    <?php $entity_model = $crud->model; ?>
-
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"

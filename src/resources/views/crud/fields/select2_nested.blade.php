@@ -33,13 +33,15 @@
         }
     }
 
-    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    $entity_model = $crud->getRelationModel($field['entity'], -1);
+
+    $field['allows_null'] = $field['allows_null'] ?? $entity_model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
-    <?php $entity_model = $crud->getRelationModel($field['entity'], -1); ?>
+
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
