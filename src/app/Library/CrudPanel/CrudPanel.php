@@ -137,6 +137,9 @@ class CrudPanel
     /**
      * Check if the database connection driver is using mongodb.
      *
+     * DEPRECATION NOTICE: This method is no longer used and will be removed in future versions of Backpack
+     *
+     * @deprecated
      * @return bool
      */
     private function driverIsMongoDb()
