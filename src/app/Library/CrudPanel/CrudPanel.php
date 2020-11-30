@@ -154,7 +154,7 @@ class CrudPanel
      */
     private function driverIsSql()
     {
-        $driver = $this->getSchema()->getConnection()->getConfig()['driver'];
+        $driver = $this->getSchema()->getConnection()->getConfig('driver');
 
         return in_array($driver, $this->getSqlDriverList());
     }
