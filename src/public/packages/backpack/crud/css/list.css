@@ -222,6 +222,12 @@
 		padding-right: 30px;
 	}
 
+	#crudTable_wrapper .dt-buttons .dt-button-collection,
+	#crudTable_wrapper .btn-group .dropdown-menu {
+		max-height: 340px;
+		overflow-y: auto;
+	}
+
 	.navbar-filters li>a:active,
 	.navbar-filters .navbar-nav>.active>a, .navbar-filters .navbar-nav>.active>a:focus, .navbar-filters .navbar-nav>.active>a:hover,
 	.navbar-filters .navbar-nav>.open>a, .navbar-filters .navbar-nav>.open>a:focus, .navbar-filters .navbar-nav>.open>a:hover {
