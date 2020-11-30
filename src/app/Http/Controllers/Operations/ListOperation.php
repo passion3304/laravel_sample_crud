@@ -100,7 +100,7 @@ trait ListOperation
                 // clear any past orderBy rules
                 $this->crud->query->getQuery()->orders = null;
                 // apply the current orderBy rules
-                $this->orderByWithPrefix($column['name'], $column_direction);
+                $this->crud->orderByWithPrefix($column['name'], $column_direction);
             }
 
             // check for custom order logic in the column definition
