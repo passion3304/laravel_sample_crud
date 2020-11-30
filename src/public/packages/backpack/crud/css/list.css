@@ -223,9 +223,14 @@
 	}
 
 	#crudTable_wrapper .dt-buttons .dt-button-collection,
-	#crudTable_wrapper .btn-group .dropdown-menu {
+	#crudTable_wrapper tr td .btn-group .dropdown-menu {
 		max-height: 340px;
 		overflow-y: auto;
+	}
+
+	#crudTable_wrapper .dt-buttons .dt-button-collection {
+		padding: 0;
+		border: 0;
 	}
 
 	.navbar-filters li>a:active,
