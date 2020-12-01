@@ -25,7 +25,7 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
 
-    <input type="hidden" value="@json($field['value'])" name="{{ $field['name'] }}">
+    <input type="hidden" value='@json($field['value'])' name="{{ $field['name'] }}">
 
     <div class="row">
         @foreach ($field['options'] as $key => $option)
@@ -64,9 +64,9 @@
 
                 // set the default checked/unchecked states on checklist options
                 checkboxes.each(function(key, option) {
-                  var id = parseInt($(this).val());
+                  var id = $(this).val();
 
-                  if (selected_options.includes(id)) {
+                  if (selected_options.map(String).includes(id)) {
                     $(this).prop('checked', 'checked');
                   } else {
                     $(this).prop('checked', false);
@@ -80,7 +80,7 @@
 
                   checkboxes.each(function() {
                     if ($(this).is(':checked')) {
-                      var id = parseInt($(this).val());
+                      var id = $(this).val();
                       newValue.push(id);
                     }
                   });
