@@ -54,7 +54,7 @@
             //after the user had been redirected by persistent table
             localStorage.setItem('backpack_alerts', JSON.stringify(@json(\Alert::getMessages())));
 
-            //finally redirect the user.
+            // finally redirect the user.
             window.location.href = persistentUrl;
 
         }
