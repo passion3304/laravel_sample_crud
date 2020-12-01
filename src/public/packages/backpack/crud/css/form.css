@@ -17,5 +17,5 @@
 }
 
 .nav-tabs-custom  .nav-tabs .nav-link:hover {
-	border-bottom: none;
+	border-bottom: 1px solid #fff;
 }
