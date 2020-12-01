@@ -9,16 +9,16 @@
             <select
                 id="filter_{{ $filter->key }}"
                 name="filter_{{ $filter->name }}"
-                data-filter-key="{{ $filter->key }}"
                 class="form-control input-sm select2"
+                placeholder="{{ $filter->placeholder }}"
+                data-filter-key="{{ $filter->key }}"
                 data-filter-type="select2_ajax"
                 data-filter-name="{{ $filter->name }}"
-                placeholder="{{ $filter->placeholder }}"
-                data-select-key="{{ isset($filter->options['select_key']) ? $filter->options['select_key'] : 'id' }}"
-                data-select-attribute="{{ isset($filter->options['select_attribute']) ? $filter->options['select_attribute'] : 'name' }}"
-                filter-minimum-input-length="{{ isset($filter->options['minimum_input_length']) ? $filter->options['minimum_input_length'] : 2 }}"
-                filter-method="{{ isset($filter->options['method']) ? $filter->options['method'] : 'GET' }}"
-                filter-quiet-time= {{ isset($filter->options['quiet_time']) ? $filter->options['quiet_time'] : 500 }}
+                data-select-key="{{ $filter->options['select_key'] ?? 'id' }}"
+                data-select-attribute="{{ $filter->options['select_attribute'] ?? 'name' }}"
+                filter-minimum-input-length="{{ $filter->options['minimum_input_length'] ?? 2 }}"
+                filter-method="{{ $filter->options['method'] ?? 'GET' }}"
+                filter-quiet-time="{{ $filter->options['quiet_time'] ?? 500 }}"
             >
 				@if (Request::get($filter->name))
 					<option value="{{ Request::get($filter->name) }}" selected="selected"> {{ Request::get($filter->name.'_text') ?? 'Previous selection' }} </option>
