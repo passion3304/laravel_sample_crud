@@ -88,7 +88,7 @@
             	}
 
             	var filterName = $(this).attr('data-filter-name');
-                var filter_key = $(this).attr('data-filter-key');
+                var filterKey = $(this).attr('data-filter-key');
                 var selectAttribute = $(this).attr('data-select-attribute');
                 var selectKey = $(this).attr('data-select-key');
 
