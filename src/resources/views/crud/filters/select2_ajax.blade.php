@@ -103,7 +103,7 @@
 				    ajax: {
 				        url: '{{ $filter->values }}',
 				        dataType: 'json',
-				        type: 'GET',
+				        type: $(this).attr('filter-method'),
 				        quietMillis: $(this).attr('filter-quiet-time'),
 
 				        processResults: function (data) {
@@ -180,4 +180,3 @@
 @endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
-
