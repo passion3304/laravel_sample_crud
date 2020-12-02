@@ -292,7 +292,7 @@ class CrudFilter
 
     /**
      * Set the values for the current filter, for the filters who need values. For example
-     * the dropdown, select2 and select2 filters let the user select pre-determined 
+     * the dropdown, select2 and select2 filters let the user select pre-determined
      * values to filter with.
      *
      * Alias of the values() method.
