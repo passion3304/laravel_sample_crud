@@ -7,7 +7,8 @@
                 $translatable = true;
             }
         }
-
+        // if the field is a fake one (value is stored in a JSON column instead of a direct db column)
+        // and that JSON column is translatable, then the field itself should be translatable
         if(isset($field['store_in']) && $crud->model->isTranslatableAttribute($field['store_in'])) {
                 $translatable = true;
         }
