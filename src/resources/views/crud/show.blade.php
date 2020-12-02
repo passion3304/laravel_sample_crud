@@ -31,22 +31,21 @@
 	<!-- Default box -->
 	  <div class="">
 	  	@if ($crud->model->translationEnabled())
-	    <div class="row">
-	    	<div class="col-md-12 mb-2">
-				<!-- Change translation button group -->
-				<div class="btn-group float-right">
-				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('locale')?request()->input('locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-					  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?locale={{ $key }}">{{ $locale }}</a>
-				  	@endforeach
-				  </ul>
+			<div class="row">
+				<div class="col-md-12 mb-2">
+					<!-- Change translation button group -->
+					<div class="btn-group float-right">
+					<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('locale')?request()->input('locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						@foreach ($crud->model->getAvailableLocales() as $key => $locale)
+							<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?locale={{ $key }}">{{ $locale }}</a>
+						@endforeach
+					</ul>
+					</div>
 				</div>
 			</div>
-	    </div>
-	    @else
 	    @endif
 	    <div class="card no-padding no-border">
 			<table class="table table-striped mb-0">
@@ -92,11 +91,11 @@
 
 
 @section('after_styles')
-	<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css') }}">
-	<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/show.css') }}">
+	<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css').'?v='.config('backpack.base.cachebusting_string') }}">
+	<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/show.css').'?v='.config('backpack.base.cachebusting_string') }}">
 @endsection
 
 @section('after_scripts')
-	<script src="{{ asset('packages/backpack/crud/js/crud.js') }}"></script>
-	<script src="{{ asset('packages/backpack/crud/js/show.js') }}"></script>
+	<script src="{{ asset('packages/backpack/crud/js/crud.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
+	<script src="{{ asset('packages/backpack/crud/js/show.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
 @endsection

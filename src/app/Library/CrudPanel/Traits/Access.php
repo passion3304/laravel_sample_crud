@@ -9,7 +9,7 @@ trait Access
     /**
      * Set an operation as having access using the Settings API.
      *
-     * @param string $operation
+     * @param array $operation
      *
      * @return bool
      */
@@ -25,7 +25,7 @@ trait Access
     /**
      * Disable the access to a certain operation, or the current one.
      *
-     * @param bool $operation [description]
+     * @param array $operation [description]
      *
      * @return [type] [description]
      */

@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudFilter;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait Filters
@@ -75,10 +74,8 @@ trait Filters
         // check if another filter with the same name exists
         if (! isset($options['name'])) {
             abort(500, 'All your filters need names.');
-        } else {
-            // make sure we check against the converted camel name before adding.
-            $options['name'] = Str::camel($options['name']);
         }
+
         if ($this->filters()->contains('name', $options['name'])) {
             abort(500, "Sorry, you can't have two filters with the same name.");
         }

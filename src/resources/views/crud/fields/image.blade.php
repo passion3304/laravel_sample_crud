@@ -65,7 +65,7 @@
     </div>
     <div class="btn-group">
         <div class="btn btn-light btn-sm btn-file">
-            {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes', ['default_class' => 'hide'])>
+            {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes')>
             <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}" value="{{ $value }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
@@ -97,9 +97,6 @@
     @push('crud_fields_styles')
         <link href="{{ asset('packages/cropperjs/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
         <style>
-            .hide {
-                display: none;
-            }
             .image .btn-group {
                 margin-top: 10px;
             }
@@ -235,21 +232,8 @@
                                         $hiddenImage.val(imageURL);
                                         return true;
                                     });
-                                    $rotateLeft.click(function() {
-                                        $mainImage.cropper("rotate", 90);
-                                    });
-                                    $rotateRight.click(function() {
-                                        $mainImage.cropper("rotate", -90);
-                                    });
-                                    $zoomIn.click(function() {
-                                        $mainImage.cropper("zoom", 0.1);
-                                    });
-                                    $zoomOut.click(function() {
-                                        $mainImage.cropper("zoom", -0.1);
-                                    });
-                                    $reset.click(function() {
-                                        $mainImage.cropper("reset");
-                                    });
+
+
                                     $rotateLeft.show();
                                     $rotateRight.show();
                                     $zoomIn.show();
@@ -270,6 +254,30 @@
                             }).show();
                         }
                     });
+
+                    //moved the click binds outside change event, or we would register as many click events for the same amout of times
+                    //we triggered the image change
+                    if(crop) {
+                        $rotateLeft.click(function() {
+                            $mainImage.cropper("rotate", 90);
+                        });
+
+                        $rotateRight.click(function() {
+                            $mainImage.cropper("rotate", -90);
+                        });
+
+                        $zoomIn.click(function() {
+                            $mainImage.cropper("zoom", 0.1);
+                        });
+
+                        $zoomOut.click(function() {
+                            $mainImage.cropper("zoom", -0.1);
+                        });
+
+                        $reset.click(function() {
+                            $mainImage.cropper("reset");
+                        });
+                    }
             }
         </script>
 
