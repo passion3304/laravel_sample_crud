@@ -86,11 +86,11 @@
 
                 $(this).change(function() {
 	                var value = '';
-	                if ($(this).val() !== null) {
+	                if (Array.isArray($(this).val())) {
 	                    // clean array from undefined, null, "".
-	                    var values = $(this).val().filter(function(e){ return e === 0 || e });
+	                    var values = $(this).val().filter(Boolean);
 	                    // stringify only if values is not empty. otherwise it will be '[]'.
-	                    value = values.length !== 0 ? JSON.stringify(values) : '';
+	                    value = values.length ? JSON.stringify(values) : '';
 	                }
 
 					var parameter = '{{ $filter->name }}';
@@ -109,12 +109,16 @@
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery(filterName, true)) {
-						$("li[filter-key="+filter_key+"]").removeClass('active').addClass('active');
+						$("li[filter-key="+filter_key+"]").addClass('active');
 					}
 					else
 					{
 						$("li[filter-key="+filter_key+"]").removeClass("active");
 						$("li[filter-key="+filter_key+"]").find('.dropdown-menu').removeClass("show");
+
+						if(!URI(new_url).search()){
+							$(".navbar-filters li[filter-name]").trigger('filter:clear');
+						}
 					}
 				});
 
