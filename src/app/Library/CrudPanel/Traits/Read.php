@@ -184,7 +184,11 @@ trait Read
      */
     public function setDefaultPageLength($value)
     {
-        $this->setOperationSetting('defaultPageLength', $value);
+        if($value !== 0) {
+            $this->setOperationSetting('defaultPageLength', $value);
+        }else{
+            abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
+        }
     }
 
     /**
@@ -205,19 +209,22 @@ trait Read
     {
         $values = $this->getOperationSetting('pageLengthMenu')[0];
         $labels = $this->getOperationSetting('pageLengthMenu')[1];
-
-        // This is a condition that should be always true.
+        // this is a condition that should be always true.
         if (is_array($values) && is_array($labels)) {
             $position = array_search($this->getDefaultPageLength(), $values);
+            // if position is not false we already have that value in the pagination array
+            // we are just going to make it first element in array
             if ($position !== false) {
-                $defaultLabel = isset($labels[$position]) ? $labels[$position] : $this->getDefaultPageLength();
                 array_unshift($values, $this->getDefaultPageLength());
-                array_unshift($labels, $defaultLabel);
-
-                //now make it unique.
-                $values = array_unique($values);
-                $labels = array_unique($labels);
+                array_unshift($labels, $labels[$position]);
+            }else{
+                // if it's not in array we add it as the first element
+                array_unshift($values, $this->getDefaultPageLength());
+                array_unshift($labels, $this->getDefaultPageLength());
             }
+            //now make it unique.
+            $values = array_unique($values);
+            $labels = array_unique($labels);
         }
 
         $this->setOperationSetting('pageLengthMenu', [$values, $labels]);
@@ -232,33 +239,39 @@ trait Read
      */
     public function setPageLengthMenu($menu)
     {
-
-        // start checking $menu integrity
-        if (isset($menu[0]) && is_array($menu[0])) {
-            // developer defined as setPageLengthMenu([[50, 100, 300]]) or setPageLengthMenu([[50, 100, 300],['f','h','t']])
-            // we will apply the same labels as the values to the menu if developer didn't
-            if (! isset($menu[1]) || ! is_array($menu[1])) {
-                $menu[1] = $menu[0];
+        if(is_array($menu)) {
+            // start checking $menu integrity
+            if(count($menu) !== count($menu, COUNT_RECURSIVE)) {
+                // developer defined as setPageLengthMenu([[50, 100, 300]]) or setPageLengthMenu([[50, 100, 300],['f','h','t']])
+                // we will apply the same labels as the values to the menu if developer didn't
+                if(!in_array(0, $menu[0])) {
+                    if (! isset($menu[1]) || ! is_array($menu[1])) {
+                        $menu[1] = $menu[0];
+                    }
+                }else{
+                    abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
+                }
+            }else{
+                // developer defined setPageLengthMenu([10 => 'f', 100 => 'h', 300 => 't']) OR setPageLengthMenu([50, 100, 300])
+                $menu = $this->buildPageLengthMenuFromArray($menu);
             }
-
-        } elseif(isset($menu[0]) && !is_array($menu[0])) {
-            if(is_array($menu)) {
-               $menu = $this->buildPageLengthMenuFromArray($menu);
-            }
-        }elseif(!isset($menu[0]) && is_array($menu)) {
-            $menu = $this->buildPageLengthMenuFromArray($menu);
         }else{
             // developer added only a single value setPageLengthMenu(10)
-            $menu = [[$menu], [$menu]];
+            if($menu !== 0) {
+                $menu = [[$menu], [$menu]];
+            }else{
+                abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
+            }
         }
 
         $this->setOperationSetting('pageLengthMenu', $menu);
+
+
     }
 
     /**
      * Builds the menu from the given array. It works out with two different types of arrays:
-     *  [1, 2, 3] AND
-     *  [1 => 'one', 2 => 'two', 3 => 'three']
+     *  [1, 2, 3] AND [1 => 'one', 2 => 'two', 3 => 'three']
      *
      * @param array $menu
      * @return array
@@ -269,11 +282,22 @@ trait Read
         if(count(array_filter(array_values($menu), 'is_string')) > 0) {
             $values = array_keys($menu);
             $labels = array_values($menu);
-            return [$values, $labels];
+
+            if(!in_array(0, $values)) {
+                return [$values, $labels];
+            }
+
+            abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
+
         }else{
-            // developer defined length as setPageLengthMenu([0, 100, 300])
+            // developer defined length as setPageLengthMenu([50, 100, 300])
             // we will use the same values as labels
-            return [$menu, $menu];
+            if(!in_array(0, $menu)) {
+                return [$menu, $menu];
+            }
+
+            abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
+
         }
     }
 
