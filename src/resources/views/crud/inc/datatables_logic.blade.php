@@ -1,3 +1,10 @@
+ @php
+    // as it is possible that we can be redirected with persistent table we save the alerts in a variable
+    // and flush them from session, so we will get them later from localStorage.
+    $backpack_alerts = \Alert::getMessages();
+    \Alert::flush();
+ @endphp
+
   <!-- DATA TABLES SCRIPT -->
   <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -7,6 +14,23 @@
   <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
 
   <script>
+
+    // in this page we allways pass the alerts to localStorage because we can be redirected with
+    // persistent table, and this way we guarantee non-duplicate alerts.
+    $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts')) ?? {};
+    $newAlerts = @json($backpack_alerts);
+
+    Object.entries($newAlerts).forEach(([type, msg]) => {
+        if(typeof $oldAlerts[type] === undefined) {
+            $oldAlerts[type].push(msg);
+        }else{
+            $oldAlerts[type] = msg;
+        }
+    });
+
+    // always store the alerts in localStorage for this page
+    localStorage.setItem('backpack_alerts', JSON.stringify($oldAlerts));
+
     @if ($crud->getPersistentTable())
 
         var saved_list_url = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url');
@@ -36,27 +60,21 @@
             var $saved_time = new Date(parseInt(saved_list_url_time));
             $saved_time.setMinutes($saved_time.getMinutes() + {{$crud->getPersistentTableDuration()}});
 
-            //if the save time is not expired we force the filter redirection.
+            // if the save time is not expired we force the filter redirection.
             if($saved_time > $current_date) {
                 if (saved_list_url && persistentUrl!=window.location.href) {
                     window.location.href = persistentUrl;
                 }
             } else {
-            //persistent table expired, let's not redirect the user
+                // persistent table expired, let's not redirect the user
                 saved_list_url = false;
             }
         }
 
     @endif
         if (saved_list_url && persistentUrl!=window.location.href) {
-
-            //we save the current alerts into local storage so we can read it later in alerts.blade.php
-            //after the user had been redirected by persistent table
-            localStorage.setItem('backpack_alerts', JSON.stringify(@json(\Alert::getMessages())));
-
             // finally redirect the user.
             window.location.href = persistentUrl;
-
         }
     @endif
 

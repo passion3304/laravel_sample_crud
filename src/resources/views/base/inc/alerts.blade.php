@@ -1,40 +1,48 @@
 {{-- Bootstrap Notifications using Prologue Alerts & PNotify JS --}}
 <script type="text/javascript">
 
-// This is intentionaly run after dom loads so this way we can avoid showing duplicate alerts
-// when the user is beeing redirected by persistent table, that happens before this event triggers.
+    // This is intentionaly run after dom loads so this way we can avoid showing duplicate alerts
+    // when the user is beeing redirected by persistent table, that happens before this event triggers.
 
-window.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('DOMContentLoaded', function() {
 
-    Noty.overrideDefaults({
-            layout   : 'topRight',
-            theme    : 'backstrap',
-            timeout  : 2500,
-            closeWith: ['click', 'button'],
+
+        Noty.overrideDefaults({
+                layout   : 'topRight',
+                theme    : 'backstrap',
+                timeout  : 2500,
+                closeWith: ['click', 'button'],
+            });
+
+        // get alerts from the alert bag
+        var $alerts_from_php = JSON.parse('@json(\Alert::getMessages())');
+
+        // get the alerts from the localstorage
+        var $alerts_from_localstorage = localStorage.getItem('backpack_alerts');
+
+        if($alerts_from_localstorage !== null) {
+            $alerts_from_localstorage = JSON.parse($alerts_from_localstorage);
+        }
+
+        // merge both php alerts and localstorage alerts
+        Object.entries($alerts_from_php).forEach(([type, msg]) => {
+          if(typeof $alerts_from_php[type] === undefined) {
+              $alerts_from_localstorage[type].push(msg);
+          }else{
+              $alerts_from_localstorage[type] = msg;
+          }
         });
 
-    //get alerts from the alert bag
-    var $backpack_alerts = JSON.parse('@json(\Alert::getMessages())');
-
-    //the will be no simultaneous alerts, either we get them from the alert bag,
-    //or we already have them in the localstorage.
-    var $passedAlerts = localStorage.getItem('backpack_alerts');
-
-    if($passedAlerts !== null) {
-        $backpack_alerts = JSON.parse($passedAlerts);
-    }
-
-    for (var type in $backpack_alerts) {
-        for(var message in $backpack_alerts[type]) {
-            new Noty({
-                    type: type,
-                    text: $backpack_alerts[type][message]
+        for (var type in $alerts_from_localstorage) {
+            for(var message in $alerts_from_localstorage[type]) {
+                new Noty({
+                        type: type,
+                        text: $alerts_from_localstorage[type][message]
                 }).show();
+            }
         }
-    }
-
-    //clear the localstorage alerts
-    localStorage.removeItem('backpack_alerts');
-});
+        // in the end, remove backpack alerts from localStorage
+        localStorage.removeItem('backpack_alerts');
+    });
 
 </script>
