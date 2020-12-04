@@ -88,7 +88,7 @@
 	                var value = '';
 	                if (Array.isArray($(this).val())) {
 	                    // clean array from undefined, null, "".
-	                    var values = $(this).val().filter(Boolean);
+	                    var values = $(this).val().filter(function(e){ return e === 0 || e });
 	                    // stringify only if values is not empty. otherwise it will be '[]'.
 	                    value = values.length ? JSON.stringify(values) : '';
 	                }
