@@ -313,10 +313,7 @@
         $(window).on('resize', function(e) {
           resizeCrudTableColumnWidths();
         });
-        $(document).on('expanded.pushMenu', function(e) {
-          resizeCrudTableColumnWidths();
-        });
-        $(document).on('collapsed.pushMenu', function(e) {
+        $('.sidebar-toggler').click(function() {
           resizeCrudTableColumnWidths();
         });
       @endif
