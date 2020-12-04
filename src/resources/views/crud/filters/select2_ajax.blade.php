@@ -115,11 +115,8 @@
 					var ajax_table = $('#crudTable').DataTable();
 					var current_url = ajax_table.ajax.url();
 					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					if (val_text) {
-	                    new_url = addOrUpdateUriParameter(new_url, parameter + '_text', val_text);
-					}
+					new_url = addOrUpdateUriParameter(new_url, parameter + '_text', val_text);
 					new_url = normalizeAmpersand(new_url.toString());
-
 
 					// replace the datatables ajax url with new_url and reload it
 					ajax_table.ajax.url(new_url).load();
@@ -135,10 +132,6 @@
 					{
 						$("li[filter-key="+filter_key+"]").removeClass("active");
 						$("li[filter-key="+filter_key+"]").find('.dropdown-menu').removeClass("show");
-
-						if(!URI(new_url).search()){
-							$(".navbar-filters li[filter-name]").trigger('filter:clear');
-						}
 					}
 				});
 

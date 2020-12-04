@@ -39,7 +39,7 @@
               new_url = new_url.addQuery(parameter, value);
             }
 
-            $('#remove_filters_button').removeClass('invisible');
+            $('#remove_filters_button').toggleClass('invisible', !new_url.query());
 
         return new_url.toString();
 

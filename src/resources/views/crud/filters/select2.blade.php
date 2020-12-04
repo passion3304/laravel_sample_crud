@@ -112,10 +112,6 @@
 					{
 						$("li[filter-key="+filter_key+"]").removeClass("active");
 						$("li[filter-key="+filter_key+"]").find('.dropdown-menu').removeClass("show");
-						
-						if(!URI(new_url).search()){
-							$(".navbar-filters li[filter-name]").trigger('filter:clear');
-						}
 					}
 				});
 
