@@ -8,7 +8,6 @@ use Backpack\CRUD\Tests\Unit\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CrudPanelReadTest extends BaseDBCrudPanelTest
 {
@@ -391,7 +390,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     /**
      * Tests define paginator length with single array [20, 30, 40].
-     *
      */
     public function testCrudPanelChangePaginatorLengthSingleArrayNoLabels()
     {
@@ -405,7 +403,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     /**
      * Tests define paginator length with single array [20 => 'v', 30 => 't', 40 => 'q'].
-     *
      */
     public function testCrudPanelChangePaginatorLengthSingleArrayWithLabels()
     {
@@ -418,8 +415,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     }
 
     /**
-     * Tests define paginator length with and 'all' options as -1 as defined in previous versions of BP
-     *
+     * Tests define paginator length with and 'all' options as -1 as defined in previous versions of BP.
      */
     public function testCrudPanelPaginatorWithAllAsOption()
     {
@@ -429,7 +425,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
         $this->assertTrue(in_array(-1, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
 
-        $this->crudPanel->setPageLengthMenu([-1 , 1]);
+        $this->crudPanel->setPageLengthMenu([-1, 1]);
         $this->assertCount(2, $this->crudPanel->getOperationSetting('pageLengthMenu'));
         $this->assertTrue(in_array(-1, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
 
@@ -438,9 +434,8 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $this->assertTrue(in_array(-1, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
     }
 
-     /**
+    /**
      * Tests if paginator aborts when 0 is provided as key.
-     *
      */
     public function testCrudPanelPaginatorWithZeroAsOption()
     {
@@ -478,7 +473,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     /**
      * Tests define paginator length with multi array [[20, 30, 40],['v', 't', 'q']].
-     *
      */
     public function testCrudPanelChangePaginatorLengthMultiArrayWithLabels()
     {
@@ -492,7 +486,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     /**
      * Tests define paginator length with multi array [[20, 30, 40]].
-     *
      */
     public function testCrudPanelChangePaginatorLengthMultiArrayNoLabels()
     {
@@ -506,7 +499,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     /**
      * Tests define paginator length with single value 40.
-     *
      */
     public function testCrudPanelChangePaginatorLengthWithSingleValue()
     {
@@ -520,7 +512,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     /**
      * Tests if table paginator adds default option non-existent at time in the paginator.
-     *
      */
     public function testCrudPanelPaginatorAddsDefaultOptionNonExistent()
     {
@@ -536,7 +527,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     /**
      * Tests if table paginator adds default option existent.
-     *
      */
     public function testCrudPanelPaginatorAddsDefaultOptionExistent()
     {
