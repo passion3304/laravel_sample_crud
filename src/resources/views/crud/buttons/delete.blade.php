@@ -14,29 +14,14 @@
 	  function deleteEntry(button) {
 		// ask for confirmation before deleting an item
 		// e.preventDefault();
-		var button = $(button);
-		var route = button.attr('data-route');
-		var row = $("#crudTable a[data-route='"+route+"']").closest('tr');
+		var route = $(button).attr('data-route');
 
 		swal({
 		  title: "{!! trans('backpack::base.warning') !!}",
 		  text: "{!! trans('backpack::crud.delete_confirm') !!}",
 		  icon: "warning",
-		  buttons: {
-		  	cancel: {
-			  text: "{!! trans('backpack::crud.cancel') !!}",
-			  value: null,
-			  visible: true,
-			  className: "bg-secondary",
-			  closeModal: true,
-			},
-		  	delete: {
-			  text: "{!! trans('backpack::crud.delete') !!}",
-			  value: true,
-			  visible: true,
-			  className: "bg-danger",
-			}
-		  },
+		  buttons: ["{!! trans('backpack::crud.cancel') !!}", "{!! trans('backpack::crud.delete') !!}"],
+		  dangerMode: true,
 		}).then((value) => {
 			if (value) {
 				$.ajax({
@@ -50,16 +35,8 @@
 		                    text: "{!! '<strong>'.trans('backpack::crud.delete_confirmation_title').'</strong><br>'.trans('backpack::crud.delete_confirmation_message') !!}"
 		                  }).show();
 
-			              // Hide the modal, if any
-			              $('.modal').modal('hide');
-
-			              // Remove the details row, if it is open
-			              if (row.hasClass("shown")) {
-			                  row.next().remove();
-			              }
-
 			              // Remove the row from the datatable
-			              row.remove();
+						  crud.table.row($("#crudTable a[data-route='"+route+"']").parents('tr')).remove().draw();
 			          } else {
 			              // if the result is an array, it means 
 			              // we have notification bubbles to show

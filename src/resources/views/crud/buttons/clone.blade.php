@@ -26,9 +26,6 @@
                     text: "{!! trans('backpack::crud.clone_success') !!}"
                   }).show();
 
-                  // Hide the modal, if any
-                  $('.modal').modal('hide');
-
                   if (typeof crud !== 'undefined') {
                     crud.table.ajax.reload();
                   }
