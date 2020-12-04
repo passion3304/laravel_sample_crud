@@ -12,7 +12,7 @@
   }
 
   // calculate the value of the hidden input
-  $field['value'] = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+  $field['value'] = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? [];
   if ($field['value'] instanceof Illuminate\Database\Eloquent\Collection) {
     $field['value'] = $field['value']->pluck($key_attribute)->toArray();
   }
@@ -25,7 +25,7 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
 
-    <input type="hidden" value='@if($field['value'])@json($field['value'])@endif' name="{{ $field['name'] }}">
+    <input type="hidden" value='@json($field['value'])' name="{{ $field['name'] }}">
 
     <div class="row">
         @foreach ($field['options'] as $key => $option)
