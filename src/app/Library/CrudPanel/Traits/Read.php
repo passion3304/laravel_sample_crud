@@ -233,7 +233,7 @@ trait Read
     /**
      * Specify array of available page lengths on the list view.
      *
-     * @param array|integer $menu
+     * @param array|int $menu
      *
      * https://backpackforlaravel.com/docs/4.1/crud-cheat-sheet#page-length
      */
