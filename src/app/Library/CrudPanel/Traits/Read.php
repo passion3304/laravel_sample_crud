@@ -233,9 +233,9 @@ trait Read
     /**
      * Specify array of available page lengths on the list view.
      *
-     * @param array $menu 1d array of page length values,
-     *                    or 2d array (first array: page length values, second array: page length labels)
-     *                    More at: https://datatables.net/reference/option/lengthMenu
+     * @param array|integer $menu
+     *
+     * https://backpackforlaravel.com/docs/4.1/crud-cheat-sheet#page-length
      */
     public function setPageLengthMenu($menu)
     {
