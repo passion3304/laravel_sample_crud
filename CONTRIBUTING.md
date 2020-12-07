@@ -43,4 +43,18 @@ Thank you, thank you, thank you! You can:
 - [purchase a commercial license](https://www.backpackforlaravel.com/commercial-license/form), if you use Backpack to make money;
 - ALL OF THE ABOVE. Groundbreaking, I know, right? :-)
 
+# How to do those things
+
+### Pull Requests
+- There are no restrictions. Go ahead and submit your PR!
+
+### Issues
+- There are no restrictions. Go ahead and submit your issue!
+
+### Rules for writing effectively
+
+This project stands by [The Whole Fruit Manifesto](https://github.com/the-whole-fruit/manifesto). We believe that “_writing good code_” is not only about “_writing good code_”. It’s also about the words around it. That’s why, to make sure your contribution is well received, we ask you to [read and keep in mind the ONE=MOR framework and guidelines](https://github.com/the-whole-fruit/manifesto) when writing comment blocks, PR titles, PR descriptions, and in general, when writing to our community.
+
+
+Thank you for contributing. 
 **Happy coding**!
