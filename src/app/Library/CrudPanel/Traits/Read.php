@@ -223,8 +223,8 @@ trait Read
                 array_unshift($labels, $this->getDefaultPageLength());
             }
             //now make it unique.
-            $values = array_unique($values);
-            $labels = array_unique($labels);
+            $values = array_values(array_unique($values));
+            $labels = array_values(array_unique($labels));
         }
 
         $this->setOperationSetting('pageLengthMenu', [$values, $labels]);
