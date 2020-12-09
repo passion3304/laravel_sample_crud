@@ -31,22 +31,21 @@
 	<!-- Default box -->
 	  <div class="">
 	  	@if ($crud->model->translationEnabled())
-	    <div class="row">
-	    	<div class="col-md-12 mb-2">
-				<!-- Change translation button group -->
-				<div class="btn-group float-right">
-				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('locale')?request()->input('locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-					  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?locale={{ $key }}">{{ $locale }}</a>
-				  	@endforeach
-				  </ul>
+			<div class="row">
+				<div class="col-md-12 mb-2">
+					<!-- Change translation button group -->
+					<div class="btn-group float-right">
+					<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('locale')?request()->input('locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						@foreach ($crud->model->getAvailableLocales() as $key => $locale)
+							<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?locale={{ $key }}">{{ $locale }}</a>
+						@endforeach
+					</ul>
+					</div>
 				</div>
 			</div>
-	    </div>
-	    @else
 	    @endif
 	    <div class="card no-padding no-border">
 			<table class="table table-striped mb-0">
