@@ -184,7 +184,7 @@ trait ColumnsProtectedMethods
     {
         static $cache = [];
 
-        if ($this->driverIsMongoDb()) {
+        if (! $this->driverIsSql()) {
             return true;
         }
 
