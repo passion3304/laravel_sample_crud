@@ -107,23 +107,27 @@
 				        quietMillis: $(this).attr('filter-quiet-time'),
 
 				        processResults: function (data) {
+                            //it's a paginated result
                             if(Array.isArray(data.data)) {
-                                // it's a paginated result
                                 if(data.data.length > 0) {
-                                    return {
-                                        results: data.data.map(item => ({
-                                            id: item[selectKey],
-                                            text: item[selectAttribute],
-                                        }))
-                                    };
+                               return {
+                                    results: $.map(data.data, function (item) {
+                                     return {
+                                        text: item[selectAttribute],
+                                        id: item[selectKey]
+                                    }
+                                })
+                                };
                                 }
-                            } else {
-                                // it's non-paginated result
+                            }else{
+                                //it's non-paginated result
                                 return {
-                                    results: data.map((text, id) => ({
-                                        id,
-                                        text,
-                                    }))
+                                    results: $.map(data, function (item, i) {
+                                        return {
+                                            text: item,
+                                            id: i
+                                        }
+                                    })
                                 };
                             }
 				        }
