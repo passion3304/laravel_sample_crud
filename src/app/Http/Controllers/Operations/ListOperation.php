@@ -100,7 +100,7 @@ trait ListOperation
                 // clear any past orderBy rules
                 $this->crud->query->getQuery()->orders = null;
                 // apply the current orderBy rules
-                $this->crud->query->orderByRaw($this->crud->model->getTableWithPrefix().'.'.$column['name'].' '.$column_direction);
+                $this->crud->orderByWithPrefix($column['name'], $column_direction);
             }
 
             // check for custom order logic in the column definition
@@ -126,7 +126,7 @@ trait ListOperation
             }
         });
         if (! $hasOrderByPrimaryKey) {
-            $this->crud->query->orderByRaw($this->crud->model->getTableWithPrefix().'.'.$this->crud->model->getKeyName().' DESC');
+            $this->crud->orderByWithPrefix($this->crud->model->getKeyName(), 'DESC');
         }
 
         $entries = $this->crud->getEntries();

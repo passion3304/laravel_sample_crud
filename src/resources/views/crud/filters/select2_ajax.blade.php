@@ -151,24 +151,24 @@
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery(filterName, true)) {
-						$('li[filter-key='+filter_key+']').removeClass('active').addClass('active');
+						$('li[filter-key='+filterKey+']').removeClass('active').addClass('active');
 					}
 					else
 					{
-						$("li[filter-key="+filter_key+"]").removeClass("active");
-						$("li[filter-key="+filter_key+"]").find('.dropdown-menu').removeClass("show");
+						$("li[filter-key="+filterKey+"]").removeClass("active");
+						$("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
 					}
 				});
 
 				// when the dropdown is opened, autofocus on the select2
-				$('li[filter-key='+filter_key+']').on('shown.bs.dropdown', function () {
-					$('#filter_'+filter_key).select2('open');
+				$('li[filter-key='+filterKey+']').on('shown.bs.dropdown', function () {
+					$('#filter_'+filterKey).select2('open');
 				});
 
 				// clear filter event (used here and by the Remove all filters button)
-				$('li[filter-key='+filter_key+']').on('filter:clear', function(e) {
-					$('li[filter-key='+filter_key+']').removeClass('active');
-	                $('#filter_'+filter_key).val(null).trigger('change');
+				$('li[filter-key='+filterKey+']').on('filter:clear', function(e) {
+					$('li[filter-key='+filterKey+']').removeClass('active');
+	                $('#filter_'+filterKey).val(null).trigger('change');
 				});
             });
         });

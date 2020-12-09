@@ -142,4 +142,13 @@ trait Query
     {
         return $this->query->count();
     }
+
+    public function orderByWithPrefix($column_name, $column_direction = 'ASC')
+    {
+        if ($this->driverIsSql()) {
+            return $this->query->orderByRaw($this->model->getTableWithPrefix().'.'.$column_name.' '.$column_direction);
+        }
+
+        return $this->query->orderBy($column_name, $column_direction);
+    }
 }
