@@ -7,11 +7,23 @@
   <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
 
   <script>
+    // here we will check if the cached dataTables paginator length is conformable with current paginator settings.
+    // datatables caches the ajax responses with pageLength in LocalStorage so when changing this
+    // settings in controller users get unexpected results. To avoid that we will reset
+    // the table cache when both lengths don't match.
+
+    let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) ?? [];
+    var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
+
+    if($dtCachedInfo.length !== 0 && $dtCachedInfo.length !== $dtDefaultPageLength) {
+        localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
+    }
+
     @if ($crud->getPersistentTable())
 
         var saved_list_url = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url');
 
-        //check if saved url has any parameter or is empty after clearing filters.
+        // check if saved url has any parameter or is empty after clearing filters.
 
         if (saved_list_url && saved_list_url.indexOf('?') < 1) {
             var saved_list_url = false;
@@ -20,7 +32,7 @@
         }
 
     var arr =  window.location.href.split('?');
-        //check if url has parameters.
+        // check if url has parameters.
         if (arr.length > 1 && arr[1] !== '') {
                 // IT HAS! Check if it is our own persistence redirect.
                 if (window.location.search.indexOf('persistent-table=true') < 1) {
@@ -165,7 +177,7 @@
         @endif
         @endif
         autoWidth: false,
-        pageLength: {{ $crud->getDefaultPageLength() }},
+        pageLength: $dtDefaultPageLength,
         lengthMenu: @json($crud->getPageLengthMenu()),
         /* Disable initial sort */
         aaSorting: [],
