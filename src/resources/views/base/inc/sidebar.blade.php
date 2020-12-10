@@ -24,28 +24,25 @@
 @push('before_scripts')
   <script type="text/javascript">
     /* Recover sidebar state */
-    if (Boolean(sessionStorage.getItem('sidebar-collapsed'))) {
-      var body = document.getElementsByTagName('body')[0];
-      body.className = body.className.replace('sidebar-lg-show', '');
+    var body = document.getElementsByTagName('body')[0];
+    var sidebarDefault = body.classList.contains("sidebar-lg-show");
+    if (Boolean(sessionStorage.getItem('sidebar-collapsed')) && sidebarDefault) {
+      body.classList.remove("sidebar-lg-show");
     }
-
-    /* Store sidebar state */
-    var navbarToggler = document.getElementsByClassName("navbar-toggler");
-    for (var i = 0; i < navbarToggler.length; i++) {
-      navbarToggler[i].addEventListener('click', function(event) {
-        event.preventDefault();
-        if (Boolean(sessionStorage.getItem('sidebar-collapsed'))) {
-          sessionStorage.setItem('sidebar-collapsed', '');
-        } else {
-          sessionStorage.setItem('sidebar-collapsed', '1');
-        }
-      });
+    if (!Boolean(sessionStorage.getItem('sidebar-collapsed')) && !sidebarDefault) {
+      body.classList.add("sidebar-lg-show");
     }
   </script>
 @endpush
 
 @push('after_scripts')
   <script>
+      /* Store sidebar state */
+      $(function() {
+        $('.sidebar-toggler').click(function() {
+          sessionStorage.setItem('sidebar-collapsed', body.classList.contains("sidebar-lg-show") ? '1' : '');
+        });
+      });
       // Set active state on menu element
       var full_url = "{{ Request::fullUrl() }}";
       var $navLinks = $(".sidebar-nav li a, .app-header li a");
