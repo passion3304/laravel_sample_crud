@@ -29,17 +29,17 @@
 			      type: 'DELETE',
 			      success: function(result) {
 			          if (result == 1) {
+						  // Redraw the table
+						  crud.table.draw(false);
+
 			          	  // Show a success notification bubble
 			              new Noty({
 		                    type: "success",
 		                    text: "{!! '<strong>'.trans('backpack::crud.delete_confirmation_title').'</strong><br>'.trans('backpack::crud.delete_confirmation_message') !!}"
 		                  }).show();
 
-						// Hide the modal, if any
-						$('.modal').modal('hide');
-
-			              // Remove the row from the datatable
-						  crud.table.row($("#crudTable a[data-route='"+route+"']").parents('tr')).remove().draw(false);
+			              // Hide the modal, if any
+			              $('.modal').modal('hide');
 			          } else {
 			              // if the result is an array, it means 
 			              // we have notification bubbles to show
