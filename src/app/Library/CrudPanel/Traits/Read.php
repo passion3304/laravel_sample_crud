@@ -184,9 +184,7 @@ trait Read
      */
     public function setDefaultPageLength($value)
     {
-        if ($value === 0) {
-            abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
-        }
+        $this->abortIfInvalidPageLength($value);
 
         $this->setOperationSetting('defaultPageLength', $value);
     }
@@ -244,9 +242,7 @@ trait Read
             if (count($menu) !== count($menu, COUNT_RECURSIVE)) {
                 // developer defined as setPageLengthMenu([[50, 100, 300]]) or setPageLengthMenu([[50, 100, 300],['f','h','t']])
                 // we will apply the same labels as the values to the menu if developer didn't
-                if (in_array(0, $menu[0])) {
-                    abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
-                }
+                $this->abortIfInvalidPageLength($menu[0]);
 
                 if (! isset($menu[1]) || ! is_array($menu[1])) {
                     $menu[1] = $menu[0];
@@ -257,9 +253,7 @@ trait Read
             }
         } else {
             // developer added only a single value setPageLengthMenu(10)
-            if ($menu === 0) {
-                abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
-            }
+            $this->abortIfInvalidPageLength($menu);
 
             $menu = [[$menu], [$menu]];
         }
@@ -282,17 +276,13 @@ trait Read
             $values = array_keys($menu);
             $labels = array_values($menu);
 
-            if (in_array(0, $values)) {
-                abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
-            }
+            $this->abortIfInvalidPageLength($values);
 
             return [$values, $labels];
         } else {
             // developer defined length as setPageLengthMenu([50, 100, 300])
             // we will use the same values as labels
-            if (in_array(0, $menu)) {
-                abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
-            }
+            $this->abortIfInvalidPageLength($menu);
 
             return [$menu, $menu];
         }
@@ -316,6 +306,18 @@ trait Read
         $this->addCustomPageLengthToPageLengthMenu();
 
         return $this->getOperationSetting('pageLengthMenu');
+    }
+
+    /**
+     * Checks if the provided PageLength segment is valid
+     *
+     * @param array|int $value
+     * @return void
+     */
+    private function abortIfInvalidPageLength($value) {
+        if ($value === 0 || (is_array($value) && in_array(0, $value))) {
+            abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
+        }
     }
 
     /*
