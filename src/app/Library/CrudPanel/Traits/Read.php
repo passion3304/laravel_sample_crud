@@ -309,12 +309,13 @@ trait Read
     }
 
     /**
-     * Checks if the provided PageLength segment is valid
+     * Checks if the provided PageLength segment is valid.
      *
      * @param array|int $value
      * @return void
      */
-    private function abortIfInvalidPageLength($value) {
+    private function abortIfInvalidPageLength($value)
+    {
         if ($value === 0 || (is_array($value) && in_array(0, $value))) {
             abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
         }
