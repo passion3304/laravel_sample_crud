@@ -25,12 +25,14 @@
   <script type="text/javascript">
     /* Recover sidebar state */
     var body = document.getElementsByTagName('body')[0];
-    var sidebarDefault = body.classList.contains("sidebar-lg-show");
-    if (Boolean(sessionStorage.getItem('sidebar-collapsed')) && sidebarDefault) {
-      body.classList.remove("sidebar-lg-show");
-    }
-    if (!Boolean(sessionStorage.getItem('sidebar-collapsed')) && !sidebarDefault) {
-      body.classList.add("sidebar-lg-show");
+    if (sessionStorage.getItem("sidebar-collapsed") !== null) {
+      var sidebarDefault = body.classList.contains("sidebar-lg-show");
+      if (Boolean(sessionStorage.getItem('sidebar-collapsed')) && sidebarDefault) {
+        body.classList.remove("sidebar-lg-show");
+      }
+      if (!Boolean(sessionStorage.getItem('sidebar-collapsed')) && !sidebarDefault) {
+        body.classList.add("sidebar-lg-show");
+      }
     }
   </script>
 @endpush
