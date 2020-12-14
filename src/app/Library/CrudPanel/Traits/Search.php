@@ -66,7 +66,7 @@ trait Search
                 case 'email':
                 case 'text':
                 case 'textarea':
-                    $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
+                    $query->orWhere($query->getModel()->getTableWithPrefix().'.'.$column['name'], 'like', '%'.$searchTerm.'%');
                     break;
 
                 case 'date':
@@ -77,13 +77,13 @@ trait Search
                         break;
                     }
 
-                    $query->orWhereDate($column['name'], Carbon::parse($searchTerm));
+                    $query->orWhereDate($query->getModel()->getTableWithPrefix().'.'.$column['name'], Carbon::parse($searchTerm));
                     break;
 
                 case 'select':
                 case 'select_multiple':
                     $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                        $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
+                        $q->where($q->getModel()->getTableWithPrefix().'.'.$column['attribute'], 'like', '%'.$searchTerm.'%');
                     });
                     break;
 
