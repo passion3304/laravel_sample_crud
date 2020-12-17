@@ -4,6 +4,8 @@
   $field['value'] = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
   // make sure the value is a JSON string (not array, if it's cast in the model)
   $field['value'] = is_array($field['value']) ? json_encode($field['value']) : $field['value'];
+  $field['init_rows'] = $field['init_rows'] ?? 1;
+  $field['max_rows'] = $field['max_rows'] ?? false;
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -25,7 +27,11 @@
 
 
 <div class="container-repeatable-elements">
-    <div data-repeatable-holder="{{ $field['name'] }}"></div>
+    <div
+        data-repeatable-holder="{{ $field['name'] }}"
+        init-rows="{{$field['init_rows']}}"
+        max-rows="{{var_export($field['max_rows'])}}"
+    ></div>
 
     @push('before_scripts')
     <div class="col-md-12 well repeatable-element row m-1 p-2" data-repeatable-identifier="{{ $field['name'] }}">
@@ -118,6 +124,10 @@
 
             // element will be a jQuery wrapped DOM node
             var container = $('[data-repeatable-identifier='+field_name+']');
+            var container_holder = $('[data-repeatable-holder='+field_name+']');
+
+            var max_rows = container_holder.attr('max-rows');
+            var init_rows = container_holder.attr('init-rows');
 
             // make sure the inputs no longer have a "name" attribute,
             // so that the form will not send the inputs as request variables;
@@ -141,6 +151,7 @@
             container.remove();
 
             element.parent().find('.add-repeatable-element-button').click(function(){
+
                 newRepeatableElement(container, field_group_clone);
             });
 
@@ -151,7 +162,12 @@
                     newRepeatableElement(container, field_group_clone, repeatable_fields_values[i]);
                 }
             } else {
-                element.parent().find('.add-repeatable-element-button').trigger('click');
+                var container_rows = 0;
+                while(init_rows >= 1 && container_rows < max_rows) {
+                    init_rows--;
+                    container_rows++;
+                    element.parent().find('.add-repeatable-element-button').trigger('click');
+                }
             }
 
             if (element.closest('.modal-content').length) {
@@ -174,16 +190,26 @@
             var field_name = container.data('repeatable-identifier');
             var new_field_group = field_group.clone();
 
-            //this is the container for this repeatable group that holds it inside the main form.
+            // this is the container that holds the group of fields inside the main form.
             var container_holder = $('[data-repeatable-holder='+field_name+']');
+
+            var max_rows = container_holder.attr('max-rows');
 
             new_field_group.find('.delete-element').click(function(){
                 new_field_group.find('input, select, textarea').each(function(i, el) {
-                    //we trigger this event so fields can intercept when they are beeing deleted from the page
-                    //implemented because of ckeditor instances that stayed around when deleted from page
-                    //introducing unwanted js errors and high memory usage.
+                    // we trigger this event so fields can intercept when they are beeing deleted from the page
+                    // implemented because of ckeditor instances that stayed around when deleted from page
+                    // introducing unwanted js errors and high memory usage.
                     $(el).trigger('backpack_field.deleted');
                 });
+
+                // we re-enable the "Add Button" button in case it's hidden
+                let container_current_rows = container_holder.attr('number-of-rows') ?? 0;
+
+                container_holder.attr('number-of-rows', parseInt(container_current_rows)-1);
+                if(container_holder.attr('number-of-rows') < max_rows) {
+                    container_holder.parent().parent().find('.add-repeatable-element-button').removeClass('d-none');
+                }
                 $(this).parent().remove();
             });
 
@@ -203,8 +229,17 @@
                     }
                 });
             }
-            //we push the fields to the correct container in page.
+            // we push the fields to the correct container in page.
             container_holder.append(new_field_group);
+
+            // we check for maximum row limit, if hit we hide the "Add Row" button
+            let container_current_rows = container_holder.attr('number-of-rows') ?? 0;
+
+            container_holder.attr('number-of-rows', parseInt(container_current_rows)+1);
+
+            if(container_holder.attr('number-of-rows') >= max_rows) {
+                container_holder.parent().parent().find('.add-repeatable-element-button').addClass('d-none');
+            }
             initializeFieldsWithJavascript(container_holder);
         }
     </script>
