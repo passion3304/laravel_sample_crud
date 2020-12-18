@@ -5,7 +5,7 @@
   // make sure the value is a JSON string (not array, if it's cast in the model)
   $field['value'] = is_array($field['value']) ? json_encode($field['value']) : $field['value'];
   $field['init_rows'] = $field['init_rows'] ?? 1;
-  $field['max_rows'] = $field['max_rows'] ?? false;
+  $field['max_rows'] = $field['max_rows'] ?? 0;
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -126,8 +126,8 @@
             var container = $('[data-repeatable-identifier='+field_name+']');
             var container_holder = $('[data-repeatable-holder='+field_name+']');
 
-            var max_rows = container_holder.attr('max-rows');
-            var init_rows = container_holder.attr('init-rows');
+            var max_rows = Number(container_holder.attr('max-rows')) || Infinity;
+            var init_rows = Number(container_holder.attr('init-rows'));
 
             // make sure the inputs no longer have a "name" attribute,
             // so that the form will not send the inputs as request variables;
@@ -163,10 +163,10 @@
                 }
             } else {
                 var container_rows = 0;
-                while(init_rows >= 1 && container_rows < max_rows) {
-                    init_rows--;
+                var add_entry_button = element.parent().find('.add-repeatable-element-button');
+                for(let i = 0; i < Math.min(init_rows, max_rows || init_rows); i++) {
                     container_rows++;
-                    element.parent().find('.add-repeatable-element-button').trigger('click');
+                    add_entry_button.trigger('click');
                 }
             }
 
@@ -193,7 +193,7 @@
             // this is the container that holds the group of fields inside the main form.
             var container_holder = $('[data-repeatable-holder='+field_name+']');
 
-            var max_rows = container_holder.attr('max-rows');
+            var max_rows = Number(container_holder.attr('max-rows')) || Infinity;
 
             new_field_group.find('.delete-element').click(function(){
                 new_field_group.find('input, select, textarea').each(function(i, el) {
