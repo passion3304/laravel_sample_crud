@@ -23,11 +23,9 @@
 
 @push('before_scripts')
   <script type="text/javascript">
-    /* Recover sidebar state */
     // Recover sidebar state
     let sessionState = sessionStorage.getItem('sidebar-collapsed');
     if(sessionState) document.body.classList.toggle('sidebar-lg-show', sessionState === '1');
-    }
   </script>
 @endpush
 
