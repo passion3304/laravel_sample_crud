@@ -24,15 +24,9 @@
 @push('before_scripts')
   <script type="text/javascript">
     /* Recover sidebar state */
-    var body = document.getElementsByTagName('body')[0];
-    if (sessionStorage.getItem("sidebar-collapsed") !== null) {
-      var sidebarDefault = body.classList.contains("sidebar-lg-show");
-      if (Boolean(sessionStorage.getItem('sidebar-collapsed')) && sidebarDefault) {
-        body.classList.remove("sidebar-lg-show");
-      }
-      if (!Boolean(sessionStorage.getItem('sidebar-collapsed')) && !sidebarDefault) {
-        body.classList.add("sidebar-lg-show");
-      }
+    // Recover sidebar state
+    let sessionState = sessionStorage.getItem('sidebar-collapsed');
+    if(sessionState) document.body.classList.toggle('sidebar-lg-show', sessionState === '1');
     }
   </script>
 @endpush
