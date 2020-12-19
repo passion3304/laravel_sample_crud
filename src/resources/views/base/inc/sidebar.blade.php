@@ -39,12 +39,12 @@
 
 @push('after_scripts')
   <script>
-      /* Store sidebar state */
-      $(function() {
-        $('.sidebar-toggler').click(function() {
-          sessionStorage.setItem('sidebar-collapsed', body.classList.contains("sidebar-lg-show") ? '1' : '');
-        });
-      });
+      // Store sidebar state
+      document.querySelectorAll('.sidebar-toggler').forEach(toggler => 
+        toggler.addEventListener('click', () => 
+          sessionStorage.setItem('sidebar-collapsed', Number(!document.body.classList.contains('sidebar-lg-show')))
+        )
+      );
       // Set active state on menu element
       var full_url = "{{ Request::fullUrl() }}";
       var $navLinks = $(".sidebar-nav li a, .app-header li a");
