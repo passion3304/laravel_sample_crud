@@ -20,6 +20,7 @@
             'format' => config('backpack.base.default_date_format'),
             'applyLabel'=> trans('backpack::crud.apply'),
             'cancelLabel'=> trans('backpack::crud.cancel'),
+            'customRangeLabel' => trans('backpack::crud.custom_range')
         ],
 
 
