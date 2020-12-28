@@ -72,7 +72,7 @@
     <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     {{-- allow clear --}}
-    @if ($entity_model::isColumnNullable($field['name']))
+    @if ($field['allows_null'])
     <style type="text/css">
         .select2-selection__clear::after {
             content: ' {{ trans('backpack::crud.clear') }}';
