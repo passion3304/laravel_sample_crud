@@ -4,9 +4,9 @@
 
     // define the wrapper element
     $wrapperElement = $column['wrapper']['element'] ?? 'a';
-    $wrapperElement = !is_string($wrapperElement) && is_callable($wrapperElement)
-        ? $wrapperElement($crud, $column, $entry, $related_key)
-        : $wrapperElement ?? 'a';
+    if(!is_string($wrapperElement) && is_callable($wrapperElement)) {
+        $wrapperElement = $wrapperElement($crud, $column, $entry, $related_key);
+    }
 @endphp
 
-</{{$wrapperElement}}>
+</{{ $wrapperElement }}>
