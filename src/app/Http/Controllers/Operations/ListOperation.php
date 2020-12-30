@@ -95,7 +95,7 @@ trait ListOperation
         if (request()->input('order')) {
             // clear any past orderBy rules
             $this->crud->query->getQuery()->orders = null;
-            foreach((array)request()->input('order') as $order) {
+            foreach ((array) request()->input('order') as $order) {
                 $column_number = $order['column'];
                 $column_direction = $order['dir'];
                 $column = $this->crud->findColumnById($column_number);
@@ -109,7 +109,6 @@ trait ListOperation
                     $this->crud->customOrderBy($column, $column_direction);
                 }
             }
-
         }
 
         // show newest items first, by default (if no order has been set for the primary column)
