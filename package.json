@@ -10,13 +10,13 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "cross-env": "^7.0.2",
+        "cross-env": "^7.0.3",
         "css-loader": "^3.6.0",
-        "laravel-mix": "^5.0.7",
+        "laravel-mix": "^5.0.9",
         "lodash": "^4.17.20",
         "pace": "0.0.4",
         "resolve-url-loader": "^3.1.2",
-        "sass": "^1.28.0",
+        "sass": "^1.32.0",
         "sass-loader": "^9.0.3",
         "vue-template-compiler": "^2.6.12"
     },
@@ -31,13 +31,13 @@
         "bootstrap-iconpicker": "^1.8.2",
         "ckeditor": "^4.12.1",
         "cropperjs": "^1.5.9",
-        "datatables.net": "^1.10.22",
-        "datatables.net-bs4": "^1.10.22",
+        "datatables.net": "^1.10.23",
+        "datatables.net-bs4": "^1.10.23",
         "datatables.net-fixedheader": "^3.1.7",
         "datatables.net-fixedheader-bs4": "^3.1.7",
         "datatables.net-responsive": "^2.2.6",
         "datatables.net-responsive-bs4": "^2.2.6",
-        "easymde": "^2.12.1",
+        "easymde": "^2.13.0",
         "jquery": "^3.5.1",
         "jquery-colorbox": "^1.6.4",
         "jquery-cropper": "^1.0.1",
@@ -59,6 +59,6 @@
         "source-sans-pro": "^3.6",
         "summernote": "^0.8.18",
         "sweetalert": "^2.1.2",
-        "tinymce": "^5.5.1"
+        "tinymce": "^5.6.2"
     }
 }
