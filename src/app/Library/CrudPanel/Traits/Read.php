@@ -209,7 +209,6 @@ trait Read
         $labels = $this->getOperationSetting('pageLengthMenu')[1];
         // this is a condition that should be always true.
         if (is_array($values) && is_array($labels)) {
-
             for ($i = 0; $i < count($values); $i++) {
                 if ($values[$i] > $this->getDefaultPageLength() || $values[$i] === -1) {
                     array_splice($values, $i, 0, $this->getDefaultPageLength());

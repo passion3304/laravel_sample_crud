@@ -511,8 +511,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     }
 
     /**
-     * Tests if table paginator adds default option non-existent at time in the paginator.~
-     *
+     * Tests if table paginator adds default option non-existent at time in the paginator.~.
      */
     public function testCrudPanelPaginatorAddsDefaultOptionNonExistent()
     {
