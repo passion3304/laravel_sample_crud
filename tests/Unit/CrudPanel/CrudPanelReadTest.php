@@ -511,7 +511,8 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     }
 
     /**
-     * Tests if table paginator adds default option non-existent at time in the paginator.
+     * Tests if table paginator adds default option non-existent at time in the paginator.~
+     *
      */
     public function testCrudPanelPaginatorAddsDefaultOptionNonExistent()
     {
@@ -522,7 +523,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
         $this->assertCount(2, $this->crudPanel->getPageLengthMenu());
         $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
-        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0])[0], 40);
+        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0])[3], 40);
     }
 
     /**
@@ -537,6 +538,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $this->crudPanel->setDefaultPageLength(20);
         $this->assertCount(2, $this->crudPanel->getPageLengthMenu());
         $this->assertTrue(in_array(10, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
-        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0])[0], 20);
+        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0])[0], 10);
     }
 }

@@ -209,20 +209,19 @@ trait Read
         $labels = $this->getOperationSetting('pageLengthMenu')[1];
         // this is a condition that should be always true.
         if (is_array($values) && is_array($labels)) {
-            $position = array_search($this->getDefaultPageLength(), $values);
-            // if position is not false we already have that value in the pagination array
-            // we are just going to make it first element in array
-            if ($position !== false) {
-                array_unshift($values, $this->getDefaultPageLength());
-                array_unshift($labels, $labels[$position]);
-            } else {
-                // if it's not in array we add it as the first element
-                array_unshift($values, $this->getDefaultPageLength());
-                array_unshift($labels, $this->getDefaultPageLength());
+
+            for ($i = 0; $i < count($values); $i++) {
+                if ($values[$i] > $this->getDefaultPageLength() || $values[$i] === -1) {
+                    array_splice($values, $i, 0, $this->getDefaultPageLength());
+                    array_splice($labels, $i, 0, $this->getDefaultPageLength());
+                    break;
+                }
+                if ($i === count($values) - 1) {
+                    $values[] = $this->getDefaultPageLength();
+                    $labels[] = $this->getDefaultPageLength();
+                    break;
+                }
             }
-            //now make it unique.
-            $values = array_values(array_unique($values));
-            $labels = array_values(array_unique($labels));
         }
 
         $this->setOperationSetting('pageLengthMenu', [$values, $labels]);
