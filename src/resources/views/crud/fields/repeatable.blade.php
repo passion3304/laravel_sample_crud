@@ -186,7 +186,7 @@
                 });
                 $(this).parent().remove();
 
-                //we reassure row numbers
+                //we reassure row numbers on delete
                 setupElementRowsNumbers(container_holder);
             });
 
@@ -206,23 +206,38 @@
                     }
                 });
             }
-            //we push the fields to the correct container in page.
+            // we push the fields to the correct container in page.
             container_holder.append(new_field_group);
 
-            //after appending to the container we reassure row numbers
+            // after appending to the container we reassure row numbers
             setupElementRowsNumbers(container_holder);
+
+            // we also setup the custom selectors in the elements so we can use dependant functionality
+            setupElementCustomSelectors(container_holder);
 
             initializeFieldsWithJavascript(container_holder);
         }
 
-        //this function is responsible for managing rows numbers upon creation/deletion of elements
+        // this function is responsible for managing rows numbers upon creation/deletion of elements
         function setupElementRowsNumbers(container) {
             container.children().each(function(i, el) {
                 var rowNumber = i+1;
-                $(el).attr('data-repeatable-row-number', rowNumber);
+                $(el).attr('data-row-number', rowNumber);
                 //also attach the row number to all the input elements inside
                 $(el).find('input, select, textarea').each(function(i, el) {
-                    $(el).attr('data-repeatable-row-number', rowNumber);
+                    $(el).attr('data-row-number', rowNumber);
+                });
+            });
+        }
+
+        // this function is responsible for adding custom selectors to repeatable inputs that are selects and could be used with
+        // dependant fields functionality
+        function setupElementCustomSelectors(container) {
+            container.children().each(function(i, el) {
+                // attach a custom selector to this elements
+                $(el).find('select').each(function(i, select) {
+                    let selector = '[data-repeatable-input-name="%DEPENDENCY%"][data-row-number="%ROW%"],[data-repeatable-input-name="%DEPENDENCY%[]"][data-row-number="%ROW%"]';
+                    select.setAttribute('data-custom-selector', selector);
                 });
             });
         }

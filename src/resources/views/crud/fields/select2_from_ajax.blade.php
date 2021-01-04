@@ -212,24 +212,34 @@
         // when one of those dependencies changes value
         // reset the select2 value
         for (var i=0; i < $dependencies.length; i++) {
-            $dependency = $dependencies[i];
-            //if element has name it means is not in repeatable, because in repeatable we strip the names out.
-            if(typeof element.attr('name') != 'undefined') {
+            var $dependency = $dependencies[i];
+            //if element does not have a custom-selector attribute we use the name attribute
+            if(typeof element.attr('data-custom-selector') == 'undefined') {
                 form.find(`[name="${$dependency}"], [name="${$dependency}[]"]`).change(function(el) {
                         $(element.find('option:not([value=""])')).remove();
                         element.val(null).trigger("change");
                 });
             }else{
-                // this is a repeatable field, we will find the dependency based on row
-                let rowNumber = element.closest('div[data-repeatable-identifier]').attr('data-repeatable-row-number');
+                // we get the row number and custom selector from where element is called
+                let rowNumber = element.attr('data-row-number');
+                let selector = element.attr('data-custom-selector');
 
-                $(`[data-repeatable-input-name="${$dependency}"][data-repeatable-row-number="${rowNumber}"],[data-repeatable-input-name="${$dependency}[]"][data-repeatable-row-number="${rowNumber}"]`).change(function (el) {
+                // replace in the custom selector string the corresponding row and dependency name to match
+                selector = selector.replace(/%\w+%/g, function(replace) {
+                    if(replace == "%DEPENDENCY%") {
+                        return $dependency;
+                    }
+                    if(replace == "%ROW%") {
+                        return rowNumber;
+                    }
+                });
+
+                $(selector).change(function (el) {
                     $(element.find('option:not([value=""])')).remove();
                     element.val(null).trigger("change");
                 });
             }
         }
-
     }
 </script>
 @endpush
