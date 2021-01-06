@@ -253,7 +253,7 @@ trait Columns
         $columns = $this->columns();
 
         return collect($columns)->pluck('entity')->reject(function ($value, $key) {
-            return $value == null;
+            return $value == null || $value == false;
         })->toArray();
     }
 
@@ -379,7 +379,7 @@ trait Columns
 
         // check if it's a method on the model,
         // that means it's a relationship
-        if (! $columnExistsInDb && method_exists($this->model, $column['name'])) {
+        if (! $columnExistsInDb && method_exists($this->model, $column['name']) && $column['entity'] !== false) {
             $relatedModel = $this->model->{$column['name']}()->getRelated();
             $column['entity'] = $column['name'];
             $column['model'] = get_class($relatedModel);
