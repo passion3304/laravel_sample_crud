@@ -536,6 +536,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         $this->crudPanel->setPageLengthMenu($this->defaultPaginator);
         $this->crudPanel->setDefaultPageLength(20);
         $this->assertCount(2, $this->crudPanel->getPageLengthMenu());
+        $this->assertCount(3, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]);
         $this->assertTrue(in_array(10, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
         $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0])[0], 10);
     }
