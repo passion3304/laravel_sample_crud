@@ -511,19 +511,20 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
     }
 
     /**
-     * Tests if table paginator adds default option non-existent at time in the paginator.~.
+     * Tests if table paginator adds default option non-existent at time in the paginator.
      */
     public function testCrudPanelPaginatorAddsDefaultOptionNonExistent()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('list');
-        $this->crudPanel->setDefaultPageLength(40);
+        $this->crudPanel->setDefaultPageLength(25);
         $this->crudPanel->setPageLengthMenu($this->defaultPaginator);
 
         $this->assertCount(2, $this->crudPanel->getPageLengthMenu());
         $this->assertCount(4, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]);
-        $this->assertTrue(in_array(40, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
-        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0])[3], 40);
+        $this->assertTrue(in_array(25, $this->crudPanel->getOperationSetting('pageLengthMenu')[0]));
+        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[0]), [10, 20, 25, 30]);
+        $this->assertEquals(array_values($this->crudPanel->getPageLengthMenu()[1]), ['t1', 't2', 25, 't3']);
     }
 
     /**
