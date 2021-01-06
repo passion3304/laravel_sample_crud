@@ -50,4 +50,7 @@ function () {
         Route::post('edit-account-info', 'MyAccountController@postAccountInfoForm')->name('backpack.account.info.store');
         Route::post('change-password', 'MyAccountController@postChangePasswordForm')->name('backpack.account.password');
     }
+
+    // Backpack fallback route
+    Route::fallback('AdminController@notFound');
 });
