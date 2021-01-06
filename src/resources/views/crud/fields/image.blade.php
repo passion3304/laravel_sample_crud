@@ -1,6 +1,9 @@
 @php
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
     $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    if (isset($field['disk'])) {
+        $value = str_replace(Storage::disk($field['disk'])->url(''), '', $value);
+    }
     $value = $value
         ? preg_match('/^data\:image\//', $value)
             ? $value
