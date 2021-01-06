@@ -46,7 +46,7 @@ class AdminController extends Controller
     /**
      * Show the 404 error page.
      *
-     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function notFound()
     {
