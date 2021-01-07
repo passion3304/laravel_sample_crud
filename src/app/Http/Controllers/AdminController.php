@@ -48,7 +48,7 @@ class AdminController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function notFound()
+    public function backpackHttpNotFoundView()
     {
         return view('errors.404');
     }
