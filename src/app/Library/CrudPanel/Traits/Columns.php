@@ -253,7 +253,7 @@ trait Columns
         $columns = $this->columns();
 
         return collect($columns)->pluck('entity')->reject(function ($value, $key) {
-            return !$value;
+            return ! $value;
         })->toArray();
     }
 
