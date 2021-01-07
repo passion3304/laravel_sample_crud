@@ -1,13 +1,19 @@
 @php
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
     $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
-    $value = $value
-        ? preg_match('/^data\:image\//', $value)
-            ? $value
-            : (isset($field['disk'])
+
+    // if value isn't a base 64 image, generate URL
+    if($value && !preg_match('/^data\:image\//', $value)) {
+        try {
+            $value = isset($field['disk'])
                 ? Storage::disk($field['disk'])->url($prefix.$value)
-                : url($prefix.$value))
-        :''; // if validation failed, tha value will be base64, so no need to create a URL for it
+                : url($prefix.$value);
+        }
+        catch (Exception $e) {
+            // the driver does not support retrieving URLs
+            $value = url($prefix.$value);
+        }
+    }
 
     if (! function_exists('maximumServerUploadSizeInBytes')) {
         function maximumServerUploadSizeInBytes() {
