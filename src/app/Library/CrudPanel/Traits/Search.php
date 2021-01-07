@@ -66,7 +66,7 @@ trait Search
                 case 'email':
                 case 'text':
                 case 'textarea':
-                    $query->orWhere($this->getColumnWithTableNamePrefixed($query,$column), 'like', '%'.$searchTerm.'%');
+                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column), 'like', '%'.$searchTerm.'%');
                     break;
 
                 case 'date':
@@ -77,13 +77,13 @@ trait Search
                         break;
                     }
 
-                    $query->orWhereDate($this->getColumnWithTableNamePrefixed($query,$column), Carbon::parse($searchTerm));
+                    $query->orWhereDate($this->getColumnWithTableNamePrefixed($query, $column), Carbon::parse($searchTerm));
                     break;
 
                 case 'select':
                 case 'select_multiple':
                     $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                        $q->where($this->getColumnWithTableNamePrefixed($q,$column), 'like', '%'.$searchTerm.'%');
+                        $q->where($this->getColumnWithTableNamePrefixed($q, $column), 'like', '%'.$searchTerm.'%');
                     });
                     break;
 
@@ -333,7 +333,8 @@ trait Search
      * @param array $column
      * @return string
      */
-    public function getColumnWithTableNamePrefixed($query, $column) {
+    public function getColumnWithTableNamePrefixed($query, $column)
+    {
         return $query->getModel()->getTableWithPrefix().'.'.$column['attribute'];
     }
 }
