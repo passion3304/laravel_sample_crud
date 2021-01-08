@@ -82,8 +82,9 @@ trait ColumnsProtectedMethods
     {
         // check if method exists in model so it's a possible relation
         // but exclude possible matches if developer setup entity => false
-
-        $could_be_relation = method_exists($this->model, $column['name']) ? ! isset($column['entity']) || $column['entity'] !== false : isset($column['entity']) || $column['entity'] !== false;
+        $could_be_relation = method_exists($this->model, $column['name'])
+            ? !isset($column['entity']) || $column['entity'] !== false
+            : isset($column['entity']) && $column['entity'] !== false;
 
         if (! isset($column['type']) && $could_be_relation) {
             $column['type'] = 'relationship';
