@@ -113,18 +113,12 @@ trait ListOperation
         // if there was no order set, this will be the only one
         // if there was an order set, this will be the last one (after all others were applied)
         $orderBy = $this->crud->query->getQuery()->orders;
-        $hasOrderByPrimaryKey = false;
-        collect($orderBy)->each(function ($item, $key) use ($hasOrderByPrimaryKey) {
-            if (! isset($item['column'])) {
-                return false;
-            }
+        $modelKey = $this->crud->model->getKeyName();
 
-            if ($item['column'] == $this->crud->model->getKeyName()) {
-                $hasOrderByPrimaryKey = true;
-
-                return false;
-            }
+        $hasOrderByPrimaryKey = collect($orderBy)->some(function ($item) use ($modelKey) {
+            return isset($item['column']) && $item['column'] === $modelKey || isset($item['sql']) && str_contains($item['sql'], ".$modelKey ");
         });
+
         if (! $hasOrderByPrimaryKey) {
             $this->crud->orderByWithPrefix($this->crud->model->getKeyName(), 'DESC');
         }
