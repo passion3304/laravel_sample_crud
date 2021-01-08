@@ -379,8 +379,8 @@ trait Columns
 
         // check if method exists in model so it's a possible relation
         // but exclude possible matches if developer setup entity => false
-        $could_be_relation = method_exists($this->model, $column['name']) 
-            ? ! isset($column['entity']) || $column['entity'] !== false 
+        $could_be_relation = method_exists($this->model, $column['name'])
+            ? ! isset($column['entity']) || $column['entity'] !== false
             : isset($column['entity']) && $column['entity'] !== false;
 
         if (! $column_exists_in_db && $could_be_relation) {
