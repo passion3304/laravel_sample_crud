@@ -30,7 +30,7 @@
     <div
         data-repeatable-holder="{{ $field['name'] }}"
         init-rows="{{$field['init_rows']}}"
-        max-rows="{{var_export($field['max_rows'])}}"
+        max-rows="{{ $field['max_rows'] }}"
     ></div>
 
     @push('before_scripts')
