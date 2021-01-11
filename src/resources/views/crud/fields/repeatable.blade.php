@@ -131,7 +131,7 @@
 
             var max_rows = Number(container_holder.attr('data-max-rows')) || Infinity;
             var init_rows = Number(container_holder.attr('data-init-rows'));
-            var min_rows = Number(container_holder.attr('data-min-rows'));
+            var min_rows = Number(container_holder.attr('data-min-rows')) || Infinity;
 
             // make sure the inputs no longer have a "name" attribute,
             // so that the form will not send the inputs as request variables;
@@ -251,6 +251,11 @@
             // we check if we are above the minimum options, if yes we re-enable the delete buttons from rows
             if(container_holder.attr('number-of-rows') > min_rows) {
                 enableRemoveButtonsFromRepeatableContainer(container_holder);
+            }
+
+            // we check if we still under the minimum rows, in case yes we remove the delete buttons from container
+            if(container_holder.attr('number-of-rows') <= min_rows) {
+                hideRemoveButtonsFromRepeatableContainer(container_holder);
             }
 
             // we check for maximum row limit, if hit we hide the "Add Row" button
