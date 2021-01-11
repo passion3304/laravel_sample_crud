@@ -4,8 +4,10 @@
   $field['value'] = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
   // make sure the value is a JSON string (not array, if it's cast in the model)
   $field['value'] = is_array($field['value']) ? json_encode($field['value']) : $field['value'];
-  $field['init_rows'] = $field['init_rows'] ?? 1;
+
+  $field['init_rows'] = isset($field['init_rows']) ? $field['init_rows'] : ($field['min_rows'] ?? 1);
   $field['max_rows'] = $field['max_rows'] ?? 0;
+  $field['min_rows'] =  $field['min_rows'] ?? 0;
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -29,8 +31,9 @@
 <div class="container-repeatable-elements">
     <div
         data-repeatable-holder="{{ $field['name'] }}"
-        init-rows="{{$field['init_rows']}}"
-        max-rows="{{ $field['max_rows'] }}"
+        data-init-rows="{{ $field['init_rows'] }}"
+        data-max-rows="{{ $field['max_rows'] }}"
+        data-min-rows="{{ $field['min_rows'] }}"
     ></div>
 
     @push('before_scripts')
@@ -126,8 +129,9 @@
             var container = $('[data-repeatable-identifier='+field_name+']');
             var container_holder = $('[data-repeatable-holder='+field_name+']');
 
-            var max_rows = Number(container_holder.attr('max-rows')) || Infinity;
-            var init_rows = Number(container_holder.attr('init-rows'));
+            var max_rows = Number(container_holder.attr('data-max-rows')) || Infinity;
+            var init_rows = Number(container_holder.attr('data-init-rows'));
+            var min_rows = Number(container_holder.attr('data-min-rows'));
 
             // make sure the inputs no longer have a "name" attribute,
             // so that the form will not send the inputs as request variables;
@@ -151,7 +155,6 @@
             container.remove();
 
             element.parent().find('.add-repeatable-element-button').click(function(){
-
                 newRepeatableElement(container, field_group_clone);
             });
 
@@ -193,7 +196,8 @@
             // this is the container that holds the group of fields inside the main form.
             var container_holder = $('[data-repeatable-holder='+field_name+']');
 
-            var max_rows = Number(container_holder.attr('max-rows')) || Infinity;
+            var max_rows = Number(container_holder.attr('data-max-rows')) || Infinity;
+            var min_rows = Number(container_holder.attr('data-min-rows')) || Infinity;
 
             new_field_group.find('.delete-element').click(function(){
                 new_field_group.find('input, select, textarea').each(function(i, el) {
@@ -203,13 +207,21 @@
                     $(el).trigger('backpack_field.deleted');
                 });
 
-                // we re-enable the "Add Button" button in case it's hidden
+                // we update the container current number of rows
                 let container_current_rows = container_holder.attr('number-of-rows') ?? 0;
 
                 container_holder.attr('number-of-rows', parseInt(container_current_rows)-1);
+
+                // we re-enable the "Add Button" button in case it's hidden and we are under the max rows allowed
                 if(container_holder.attr('number-of-rows') < max_rows) {
                     container_holder.parent().parent().find('.add-repeatable-element-button').removeClass('d-none');
                 }
+
+                //we hide remove buttons in case the number of minimum rows have been reached
+                if(container_holder.attr('number-of-rows') <= min_rows) {
+                    hideRemoveButtonsFromRepeatableContainer(container_holder);
+                }
+
                 $(this).parent().remove();
             });
 
@@ -232,15 +244,31 @@
             // we push the fields to the correct container in page.
             container_holder.append(new_field_group);
 
-            // we check for maximum row limit, if hit we hide the "Add Row" button
             let container_current_rows = container_holder.attr('number-of-rows') ?? 0;
 
             container_holder.attr('number-of-rows', parseInt(container_current_rows)+1);
 
+            // we check if we are above the minimum options, if yes we re-enable the delete buttons from rows
+            if(container_holder.attr('number-of-rows') > min_rows) {
+                enableRemoveButtonsFromRepeatableContainer(container_holder);
+            }
+
+            // we check for maximum row limit, if hit we hide the "Add Row" button
             if(container_holder.attr('number-of-rows') >= max_rows) {
                 container_holder.parent().parent().find('.add-repeatable-element-button').addClass('d-none');
             }
+
             initializeFieldsWithJavascript(container_holder);
+        }
+
+        /* Find all "delete buttons" inside a repeatable container and add a class to hide them from page */
+        function hideRemoveButtonsFromRepeatableContainer(container) {
+            container.find('.delete-element').addClass('d-none');
+        }
+
+        /* Find all "delete buttons" inside a repeatable container and remove the non-display class so they show up in page */
+        function enableRemoveButtonsFromRepeatableContainer(container) {
+            container.find('.delete-element').removeClass('d-none');
         }
     </script>
   @endpush
