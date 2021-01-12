@@ -23,9 +23,12 @@
 
 @push('before_scripts')
   <script type="text/javascript">
+    // Save default sidebar class
+    let sidebarClass = (document.body.className.match(/sidebar-(sm|md|lg|xl)-show/) || ['sidebar-lg-show'])[0];
+
     // Recover sidebar state
     let sessionState = sessionStorage.getItem('sidebar-collapsed');
-    if(sessionState) document.body.classList.toggle('sidebar-lg-show', sessionState === '1');
+    if(sessionState) document.body.classList.toggle(sidebarClass, sessionState === '1');
   </script>
 @endpush
 
@@ -34,7 +37,7 @@
       // Store sidebar state
       document.querySelectorAll('.sidebar-toggler').forEach(toggler => 
         toggler.addEventListener('click', () => 
-          sessionStorage.setItem('sidebar-collapsed', Number(!document.body.classList.contains('sidebar-lg-show')))
+          sessionStorage.setItem('sidebar-collapsed', Number(!document.body.classList.contains(sidebarClass)))
         )
       );
       // Set active state on menu element
