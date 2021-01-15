@@ -377,7 +377,7 @@
                 // Report error since no translations are available
                 else {
                     console.error("No translations for attribute '" + $fieldAttribute + "' found.", item[$fieldAttribute]);
-                    return 'no translations available';
+                    return '{{ trans('backpack::crud.empty_translations') }}';
                 }
             } else {
                 return item[$fieldAttribute];
