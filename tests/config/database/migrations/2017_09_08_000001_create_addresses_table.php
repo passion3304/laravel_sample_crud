@@ -15,10 +15,10 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_details_id')->length(10)->unsigned();
-            $table->string('city');
-            $table->string('street');
-            $table->string('number');
+            $table->integer('account_details_id')->unsigned();
+            $table->string('city')->nullable();
+            $table->string('street')->nullable();
+            $table->string('number')->nullable();
             $table->timestamps();
 
             $table->foreign('account_details_id')

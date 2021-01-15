@@ -54,7 +54,8 @@
 	}
 
   /*  DataTables Loading State Visual Improvements  */
-
+	table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td.dtr-control:before, 
+	table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th.dtr-control:before,
 	#crudTable.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
 	#crudTable.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before {
 		background-color: transparent;
@@ -217,8 +218,19 @@
 		}
 	}
 
-	#crudTable thead>tr>th, table.dataTable thead>tr>td {
+	#crudTable thead>tr>th, table.dataTable thead>tr>th {
 		padding-right: 30px;
+	}
+
+	#crudTable_wrapper .dt-buttons .dt-button-collection,
+	#crudTable_wrapper tr td .btn-group .dropdown-menu {
+		max-height: 340px;
+		overflow-y: auto;
+	}
+
+	#crudTable_wrapper .dt-buttons .dt-button-collection {
+		padding: 0;
+		border: 0;
 	}
 
 	.navbar-filters li>a:active,

@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +20,7 @@ trait HasRelationshipFields
      */
     public function getConnectionWithExtraTypeMappings()
     {
-        $instance = new self;
-
-        $conn = DB::connection($instance->getConnectionName());
+        $conn = DB::connection($this->getConnectionName());
 
         // register the enum, json and jsonb column type, because Doctrine doesn't support it
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
@@ -39,7 +37,7 @@ trait HasRelationshipFields
      */
     public function getTableWithPrefix()
     {
-        $prefix = Config::get('database.connections.'.$this->getConnectionName().'.prefix');
+        $prefix = $this->getConnection()->getTablePrefix();
         $tableName = $this->getTable();
 
         return $prefix.$tableName;
@@ -74,7 +72,7 @@ trait HasRelationshipFields
         $table = $instance->getTableWithPrefix();
 
         // MongoDB columns are alway nullable
-        if ($conn->getConfig()['driver'] === 'mongodb') {
+        if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
             return true;
         }
 

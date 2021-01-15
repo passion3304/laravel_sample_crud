@@ -7,11 +7,23 @@
   <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
 
   <script>
+    // here we will check if the cached dataTables paginator length is conformable with current paginator settings.
+    // datatables caches the ajax responses with pageLength in LocalStorage so when changing this
+    // settings in controller users get unexpected results. To avoid that we will reset
+    // the table cache when both lengths don't match.
+
+    let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) ?? [];
+    var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
+
+    if($dtCachedInfo.length !== 0 && $dtCachedInfo.length !== $dtDefaultPageLength) {
+        localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
+    }
+
     @if ($crud->getPersistentTable())
 
         var saved_list_url = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url');
 
-        //check if saved url has any parameter or is empty after clearing filters.
+        // check if saved url has any parameter or is empty after clearing filters.
 
         if (saved_list_url && saved_list_url.indexOf('?') < 1) {
             var saved_list_url = false;
@@ -20,7 +32,7 @@
         }
 
     var arr =  window.location.href.split('?');
-        //check if url has parameters.
+        // check if url has parameters.
         if (arr.length > 1 && arr[1] !== '') {
                 // IT HAS! Check if it is our own persistence redirect.
                 if (window.location.search.indexOf('persistent-table=true') < 1) {
@@ -76,7 +88,11 @@
         fn.apply(window, args);
       },
       updateUrl : function (new_url) {
-        new_url = new_url.replace('/search', '');
+        url_start = "{{ url($crud->route) }}";
+        url_end = new_url.replace(url_start, '');
+        url_end = url_end.replace('/search', '');
+        new_url = url_start + url_end;
+
         window.history.pushState({}, '', new_url);
         localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
       },
@@ -135,9 +151,9 @@
 
             data.columns.forEach(function(item, index) {
                 var columnHeading = crud.table.columns().header()[index];
-                    if ($(columnHeading).attr('data-visible-in-table') == 'true') {
-                        return item.visible = true;
-                    }
+                if ($(columnHeading).attr('data-visible-in-table') == 'true') {
+                    return item.visible = true;
+                }
             });
         },
         @if($crud->getPersistentTableDuration())
@@ -161,7 +177,7 @@
         @endif
         @endif
         autoWidth: false,
-        pageLength: {{ $crud->getDefaultPageLength() }},
+        pageLength: $dtDefaultPageLength,
         lengthMenu: @json($crud->getPageLengthMenu()),
         /* Disable initial sort */
         aaSorting: [],
@@ -205,9 +221,9 @@
               "type": "POST"
           },
           dom:
-            "<'row hidden'<'col-sm-6 hidden-xs'i><'col-sm-6 hidden-print'f>>" +
+            "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row mt-2 '<'col-sm-6 col-md-4'l><'col-sm-2 col-md-4 text-center'B><'col-sm-6 col-md-4 hidden-print'p>>",
+            "<'row mt-2 d-print-none '<'col-sm-12 col-md-4'l><'col-sm-0 col-md-4 text-center'B><'col-sm-12 col-md-4 'p>>",
       }
   }
   </script>
@@ -309,10 +325,7 @@
         $(window).on('resize', function(e) {
           resizeCrudTableColumnWidths();
         });
-        $(document).on('expanded.pushMenu', function(e) {
-          resizeCrudTableColumnWidths();
-        });
-        $(document).on('collapsed.pushMenu', function(e) {
+        $('.sidebar-toggler').click(function() {
           resizeCrudTableColumnWidths();
         });
       @endif

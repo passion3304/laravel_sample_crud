@@ -34,12 +34,6 @@ class CrudPanelTest extends BaseCrudPanelTest
         $this->crudPanel->setModel('\Foo\Bar');
     }
 
-    public function testSetRouteName()
-    {
-        // TODO: check if we need an app instance to test this out
-        $this->markTestIncomplete();
-    }
-
     public function testSetUnknownRouteName()
     {
         $this->expectException(\Exception::class);
