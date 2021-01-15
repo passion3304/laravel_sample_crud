@@ -124,6 +124,7 @@ return [
     'filters'        => 'Filtros',
     'toggle_filters' => 'Alternar filtros',
     'remove_filters' => 'Remover filtros',
+    'apply' => 'Aplicar',
 
     // Fields
     'browse_uploads'            => 'Procurar uploads',

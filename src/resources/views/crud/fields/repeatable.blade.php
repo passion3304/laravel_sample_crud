@@ -8,6 +8,7 @@
 
 @include('crud::fields.inc.wrapper_start')
   <label>{!! $field['label'] !!}</label>
+  @include('crud::fields.inc.translatable_icon')
   <input
       type="hidden"
       name="{{ $field['name'] }}"
@@ -69,14 +70,14 @@
         }
         .container-repeatable-elements .delete-element {
           z-index: 2;
-          position: absolute!important;
+          position: absolute !important;
           margin-left: -24px;
           margin-top: 0px;
           height: 30px;
           width: 30px;
           border-radius: 15px;
           text-align: center;
-          background-color: #e8ebf0!important;;
+          background-color: #e8ebf0 !important;
         }
       </style>
   @endpush

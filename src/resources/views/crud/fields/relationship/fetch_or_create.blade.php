@@ -665,6 +665,9 @@ function bpFieldInitFetchOrCreateElement(element) {
         for (var i=0; i < $dependencies.length; i++) {
         $dependency = $dependencies[i];
         $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
+            //apart from setting selection to null, we clear the options until the next fetch from server happen.
+            $(element.find('option:not([value=""])')).remove();
+
             element.val(null).trigger("change");
         });
     }
