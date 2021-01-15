@@ -176,5 +176,5 @@ return [
     'related_entry_created_error' => 'Could not create related entry.',
 
     // returned when no translations found in select inputs
-    'empty_translations' => '(empty)'
+    'empty_translations' => '(empty)',
 ];
