@@ -2,6 +2,7 @@
 @php
 	$current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
     $entity_model = $crud->getRelationModel($field['entity'],  - 1);
+    $field['allows_null'] = $field['allows_null'] ?? $entity_model::isColumnNullable($field['name']);
 
     //if it's part of a relationship here we have the full related model, we want the key.
     if (is_object($current_value) && is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
@@ -25,7 +26,7 @@
         @include('crud::fields.inc.attributes')
         >
 
-        @if ($entity_model::isColumnNullable($field['name']))
+        @if ($field['allows_null'])
             <option value="">-</option>
         @endif
 
