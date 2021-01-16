@@ -30,38 +30,44 @@ if (! function_exists('backpack_authentication_column')) {
     }
 }
 
-if (! function_exists('backpack_input_parse')) {
+if (! function_exists('backpack_form_input')) {
     /**
-     * Parse the form submited input as it comes from request.
-     * Joins the multiple[] fields as a single key.
+     * Parse the submitted input in request('form') to an usable array.
+     * Joins the multiple[] fields in a single key and transform the dot notation fields into arrayed ones.
      *
-     * Parse the HasOne relation names like address[street] to dot notation
      *
      * @return array
      */
-    function backpack_input_parse($input)
+    function backpack_form_input()
     {
+        $input = request('form');
+
         $result = [];
         foreach ($input as $row) {
-            //converts fields like address[street] into adress.street names.
-            //if if is multiple replaces the name_field[] by name_field.
-            $parsedName = square_brackets_to_dots($row['name']);
+            // parse the input name to extract the "arg" when using HasOne/MorphOne (address[street]) returns street as arg, address as key
+            $start = strpos($row['name'], '[');
+            $input_arg = null;
+            if($start !== false) {
+                $end = strpos($row['name'], ']', $start + 1);
+                $length = $end - $start;
 
-            //we get the position of the first « . » in the string.
-            $pos = strpos($parsedName, '.');
-
-            //we check if we found a dot and if there is something after the dot
-            //if not we just return the string without the dot.
-            if ($pos !== false && ! isset($parsedName[$pos + 1])) {
-                $parsedName = substr($parsedName, 0, $pos);
+                $input_arg = substr($row['name'], $start + 1, $length - 1);
+                $input_arg = strlen($input_arg) >= 1 ? $input_arg : null;
+                $input_key = substr($row['name'], 0, $start);
+            }else{
+                $input_key = $row['name'];
             }
 
-            if (! isset($result[$parsedName])) {
-                $result[$parsedName] = $row['value'];
-            } else {
-                $result[$parsedName] = ! is_array($result[$parsedName]) ? [$result[$parsedName]] : $result[$parsedName];
+            if (is_null($input_arg)) {
+                if(! isset($result[$input_key])) {
+                    $result[$input_key] = $row['value'];
+                } else {
+                    $result[$input_key] = ! is_array($result[$input_key]) ? [$result[$input_key]] : $result[$input_key];
 
-                array_push($result[$parsedName], $row['value']);
+                    array_push($result[$input_key], $row['value']);
+                }
+            }else{
+                $result[$input_key][$input_arg] = $row['value'];
             }
         }
 
