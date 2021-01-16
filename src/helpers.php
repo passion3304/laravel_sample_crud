@@ -40,7 +40,7 @@ if (! function_exists('backpack_form_input')) {
      */
     function backpack_form_input()
     {
-        $input = request('form');
+        $input = request('form') ?? [];
 
         $result = [];
         foreach ($input as $row) {
