@@ -47,26 +47,26 @@ if (! function_exists('backpack_form_input')) {
             // parse the input name to extract the "arg" when using HasOne/MorphOne (address[street]) returns street as arg, address as key
             $start = strpos($row['name'], '[');
             $input_arg = null;
-            if($start !== false) {
+            if ($start !== false) {
                 $end = strpos($row['name'], ']', $start + 1);
                 $length = $end - $start;
 
                 $input_arg = substr($row['name'], $start + 1, $length - 1);
                 $input_arg = strlen($input_arg) >= 1 ? $input_arg : null;
                 $input_key = substr($row['name'], 0, $start);
-            }else{
+            } else {
                 $input_key = $row['name'];
             }
 
             if (is_null($input_arg)) {
-                if(! isset($result[$input_key])) {
+                if (! isset($result[$input_key])) {
                     $result[$input_key] = $row['value'];
                 } else {
                     $result[$input_key] = ! is_array($result[$input_key]) ? [$result[$input_key]] : $result[$input_key];
 
                     array_push($result[$input_key], $row['value']);
                 }
-            }else{
+            } else {
                 $result[$input_key][$input_arg] = $row['value'];
             }
         }
