@@ -266,12 +266,12 @@
             initializeFieldsWithJavascript(container_holder);
         }
 
-        /* Find all "delete buttons" inside a repeatable container and add a class to hide them from page */
+        // find all "delete buttons" inside a repeatable container and add a class to hide them from page
         function hideRemoveButtonsFromRepeatableContainer(container) {
             container.find('.delete-element').addClass('d-none');
         }
 
-        /* Find all "delete buttons" inside a repeatable container and remove the non-display class so they show up in page */
+        // find all "delete buttons" inside a repeatable container and remove the non-display class so they show up in page
         function enableRemoveButtonsFromRepeatableContainer(container) {
             container.find('.delete-element').removeClass('d-none');
         }
