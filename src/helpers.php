@@ -59,11 +59,9 @@ if (! function_exists('backpack_form_input')) {
             }
 
             if (is_null($input_arg)) {
-                if (! isset($result[$input_key])) {
-                    $result[$input_key] = $row['value'];
+                if (!isset($result[$input_key])) {
+                    $result[$input_key] = $start ? [$row['value']] : $row['value'];
                 } else {
-                    $result[$input_key] = ! is_array($result[$input_key]) ? [$result[$input_key]] : $result[$input_key];
-
                     array_push($result[$input_key], $row['value']);
                 }
             } else {
