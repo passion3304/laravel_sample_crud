@@ -5,6 +5,7 @@
     } else {
         $options = call_user_func($field['options'], $field['model']::query());
     }
+    $field['allows_null'] = $field['allows_null'] ?? true;
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -18,7 +19,7 @@
         @include('crud::fields.inc.attributes')
     	multiple>
 
-		@if (!isset($field['allows_null']) || $field['allows_null'])
+		@if ($field['allows_null'])
 			<option value="">-</option>
 		@endif
 
@@ -38,5 +39,5 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-    
+
 @include('crud::fields.inc.wrapper_end')
