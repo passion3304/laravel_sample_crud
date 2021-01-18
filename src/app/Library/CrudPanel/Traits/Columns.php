@@ -253,7 +253,7 @@ trait Columns
         $columns = $this->columns();
 
         return collect($columns)->pluck('entity')->reject(function ($value, $key) {
-            return $value == null;
+            return ! $value;
         })->toArray();
     }
 
@@ -370,19 +370,23 @@ trait Columns
         $column = $this->makeSureColumnHasModel($column);
 
         // check if the column exists in the database (as a db column)
-        $columnExistsInDb = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
+        $column_exists_in_db = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
 
         // make sure column has tableColumn, orderable and searchLogic
-        $column['tableColumn'] = $column['tableColumn'] ?? $columnExistsInDb;
-        $column['orderable'] = $column['orderable'] ?? $columnExistsInDb;
-        $column['searchLogic'] = $column['searchLogic'] ?? $columnExistsInDb;
+        $column['tableColumn'] = $column['tableColumn'] ?? $column_exists_in_db;
+        $column['orderable'] = $column['orderable'] ?? $column_exists_in_db;
+        $column['searchLogic'] = $column['searchLogic'] ?? $column_exists_in_db;
 
-        // check if it's a method on the model,
-        // that means it's a relationship
-        if (! $columnExistsInDb && method_exists($this->model, $column['name'])) {
-            $relatedModel = $this->model->{$column['name']}()->getRelated();
+        // check if method exists in model so it's a possible relation
+        // but exclude possible matches if developer setup entity => false
+        $could_be_relation = method_exists($this->model, $column['name'])
+            ? ! isset($column['entity']) || $column['entity'] !== false
+            : isset($column['entity']) && $column['entity'] !== false;
+
+        if (! $column_exists_in_db && $could_be_relation) {
+            $related_model = $this->model->{$column['name']}()->getRelated();
             $column['entity'] = $column['name'];
-            $column['model'] = get_class($relatedModel);
+            $column['model'] = get_class($related_model);
         }
 
         return $column;
