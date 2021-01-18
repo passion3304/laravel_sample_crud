@@ -8,12 +8,13 @@ jobs:
         
         strategy:
             # if one job fails, abort the next ones too, because they'll probably fail - best to save the minutes
-            fail-fast: true  
+            # fail-fast: true  
           
             # run all combinations of the following, to make sure they're working together
             matrix:
                 php: [7.3, 7.4]
                 laravel: [6.*, 7.*]
+                phpunit: [7.*, 8.*, 9.*]
                 dependency-version: [prefer-lowest, prefer-stable]
                 include:
                     -   laravel: 8.*
@@ -42,7 +43,7 @@ jobs:
 
             -   name: Install dependencies
                 run: |
-                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
             -   name: Execute tests
                 run: composer test
