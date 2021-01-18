@@ -43,7 +43,7 @@
         }
 
     var arr =  window.location.href.split('?');
-        //check if url has parameters.
+        // check if url has parameters.
         if (arr.length > 1 && arr[1] !== '') {
                 // IT HAS! Check if it is our own persistence redirect.
                 if (window.location.search.indexOf('persistent-table=true') < 1) {
@@ -189,7 +189,7 @@
         @endif
         @endif
         autoWidth: false,
-        pageLength: {{ $crud->getDefaultPageLength() }},
+        pageLength: $dtDefaultPageLength,
         lengthMenu: @json($crud->getPageLengthMenu()),
         /* Disable initial sort */
         aaSorting: [],

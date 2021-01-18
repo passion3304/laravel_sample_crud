@@ -6,17 +6,16 @@
     // by default set ajax query delay to 500ms
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    <?php $entity_model = $crud->model; ?>
-
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2FromAjaxElement"
-        data-column-nullable="{{ $entity_model::isColumnNullable($field['name'])?'true':'false' }}"
+        data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-placeholder="{{ $field['placeholder'] }}"
         data-minimum-input-length="{{ $field['minimum_input_length'] }}"
@@ -40,7 +39,7 @@
             @endphp
             @if ($item)
             {{-- allow clear --}}
-            @if ($entity_model::isColumnNullable($field['name']))
+            @if ($field['allows_null']))
             <option value="" selected>
                 {{ $field['placeholder'] }}
             </option>
@@ -73,7 +72,7 @@
     <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     {{-- allow clear --}}
-    @if ($entity_model::isColumnNullable($field['name']))
+    @if ($field['allows_null'])
     <style type="text/css">
         .select2-selection__clear::after {
             content: ' {{ trans('backpack::crud.clear') }}';

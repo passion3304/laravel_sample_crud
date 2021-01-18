@@ -93,19 +93,21 @@ trait ListOperation
         }
         // overwrite any order set in the setup() method with the datatables order
         if (request()->input('order')) {
-            $column_number = request()->input('order')[0]['column'];
-            $column_direction = request()->input('order')[0]['dir'];
-            $column = $this->crud->findColumnById($column_number);
-            if ($column['tableColumn']) {
-                // clear any past orderBy rules
-                $this->crud->query->getQuery()->orders = null;
-                // apply the current orderBy rules
-                $this->crud->query->orderByRaw($this->crud->model->getTableWithPrefix().'.'.$column['name'].' '.$column_direction);
-            }
+            // clear any past orderBy rules
+            $this->crud->query->getQuery()->orders = null;
+            foreach ((array) request()->input('order') as $order) {
+                $column_number = $order['column'];
+                $column_direction = $order['dir'];
+                $column = $this->crud->findColumnById($column_number);
+                if ($column['tableColumn']) {
+                    // apply the current orderBy rules
+                    $this->crud->orderByWithPrefix($column['name'], $column_direction);
+                }
 
-            // check for custom order logic in the column definition
-            if (isset($column['orderLogic'])) {
-                $this->crud->customOrderBy($column, $column_direction);
+                // check for custom order logic in the column definition
+                if (isset($column['orderLogic'])) {
+                    $this->crud->customOrderBy($column, $column_direction);
+                }
             }
         }
 
@@ -126,7 +128,7 @@ trait ListOperation
             }
         });
         if (! $hasOrderByPrimaryKey) {
-            $this->crud->query->orderByRaw($this->crud->model->getTableWithPrefix().'.'.$this->crud->model->getKeyName().' DESC');
+            $this->crud->orderByWithPrefix($this->crud->model->getKeyName(), 'DESC');
         }
 
         $entries = $this->crud->getEntries();

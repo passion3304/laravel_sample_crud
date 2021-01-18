@@ -12,7 +12,7 @@ trait AutoSet
      */
     public function setFromDb()
     {
-        if (! $this->driverIsMongoDb()) {
+        if ($this->driverIsSql()) {
             $this->getDbColumnTypes();
         }
 
@@ -221,7 +221,7 @@ trait AutoSet
     {
         $fillable = $this->model->getFillable();
 
-        if ($this->driverIsMongoDb()) {
+        if (! $this->driverIsSql()) {
             $columns = $fillable;
         } else {
             // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
