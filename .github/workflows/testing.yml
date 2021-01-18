@@ -8,7 +8,7 @@ jobs:
         
         strategy:
             # if one job fails, abort the next ones too, because they'll probably fail - best to save the minutes
-            # fail-fast: true  
+            fail-fast: false  
           
             # run all combinations of the following, to make sure they're working together
             matrix:
