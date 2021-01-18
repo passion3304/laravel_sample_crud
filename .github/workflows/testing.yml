@@ -24,7 +24,7 @@ jobs:
                     -   laravel: 6.*
                         testbench: 4.*
           
-        name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }}
+        name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }}, ${{ matrix.dependency-version }}
         
         steps:
             -   name: Checkout code
