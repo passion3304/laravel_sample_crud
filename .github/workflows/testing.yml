@@ -15,8 +15,11 @@ jobs:
                 php: [7.2.5, 7.3, 7.4, 8.0]
                 laravel: [6.*, 7.*, 8.*]
                 dependency-version: [prefer-lowest, prefer-stable]
+                include:
+                    - laravel: 8.*
+                      php: [7.3, 7.4, 8.0]
           
-        name: Ran tests on PHP ${{ matrix.php }} and Laravel ${{ matrix.laravel }}
+        name: PHP ${{ matrix.php }} & Laravel ${{ matrix.laravel }}
         
         steps:
             -   name: Checkout code
