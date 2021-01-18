@@ -330,7 +330,7 @@ trait Search
      * Return the column attribute (column in database) prefixed with table to use in search.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $column
+     * @param string $column
      * @return string
      */
     public function getColumnWithTableNamePrefixed($query, $column)
