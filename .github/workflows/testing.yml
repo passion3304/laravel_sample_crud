@@ -1,6 +1,10 @@
 name: PHP Tests
 
-on: [push]
+on:
+    push:
+    pull_request:
+    schedule:
+        - cron: '0 0 * * *'
 
 jobs:
     test:
@@ -23,7 +27,9 @@ jobs:
                         testbench: 5.*
                     -   laravel: 6.*
                         testbench: 4.*
-          
+        
+        if: matrix.php # do not run the job if the PHP version is not specified
+
         name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }} --prefer-${{ matrix.dependency-version }}
         
         steps:
