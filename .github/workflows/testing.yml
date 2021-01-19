@@ -2,7 +2,6 @@ name: PHP Tests
 
 on:
     push:
-    pull_request:
     schedule:
         - cron: '0 0 * * *'
 
@@ -24,6 +23,10 @@ jobs:
                 exclude:
                     -   php: 7.2
                         phpunit: 9.*
+                    -   laravel: 8.*
+                        php: 7.2
+                    -   laravel: 8.*
+                        phpunit: 8.*
 
         name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }} --prefer-${{ matrix.dependency-version }}
 
