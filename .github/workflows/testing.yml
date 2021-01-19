@@ -20,7 +20,7 @@ jobs:
                 laravel: [6.*, 7.*, 8.*]
                 phpunit: [8.*, 9.*]
                 dependency-version: [stable] # to add: lowest
-                experimental: false
+                experimental: [false]
                 exclude:
                     -   php: 7.2
                         phpunit: 9.*
