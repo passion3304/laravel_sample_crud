@@ -12,10 +12,10 @@ jobs:
           
             # run all combinations of the following, to make sure they're working together
             matrix:
-                php: [7.3, 7.4]
-                laravel: [6.*, 7.*]
-                phpunit: [8.*, 9.*]
-                dependency-version: [prefer-lowest, prefer-stable]
+                php: [7.3, 7.4] # to add: PHP 7.2.5+, PHP 8.*
+                laravel: [6.*, 7.*] # to add: Laravel 8.*
+                phpunit: [8.*, 9.*] # to add: PHPUnit 7.*
+                dependency-version: [stable] # to add: lowest
                 include:
                     -   laravel: 8.*
                         testbench: 6.*
@@ -24,7 +24,7 @@ jobs:
                     -   laravel: 6.*
                         testbench: 4.*
           
-        name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }}, ${{ matrix.dependency-version }}
+        name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }} --prefer-${{ matrix.dependency-version }}
         
         steps:
             -   name: Checkout code
@@ -44,6 +44,6 @@ jobs:
             -   name: Install dependencies
                 run: |
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
-                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+                    composer update --prefer-${{ matrix.dependency-version }} --prefer-dist --no-interaction
             -   name: Execute tests
                 run: composer test
