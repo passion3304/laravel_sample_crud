@@ -53,7 +53,7 @@ jobs:
             -   name: Install dependencies
                 if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 run: |
-                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
+                    composer require "laravel/framework:${{ matrix.laravel }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
                     composer update --prefer-${{ matrix.dependency-version }} --prefer-dist --no-interaction
             -   name: Execute tests
                 if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
