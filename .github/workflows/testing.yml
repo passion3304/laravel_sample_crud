@@ -16,7 +16,7 @@ jobs:
             # run all combinations of the following, to make sure they're working together
             matrix:
                 # os: [ubuntu-latest, macos-latest, windows-latest]
-                php: [7.2, 7.3, 7.4, 8.0]
+                php: [7.2, 7.3, 7.4] # to add: 8.0
                 laravel: [6.*, 7.*, 8.*]
                 phpunit: [8.*, 9.*]
                 dependency-version: [stable] # to add: lowest
