@@ -31,34 +31,30 @@ jobs:
 
         name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }} --prefer-${{ matrix.dependency-version }}
         
+        if: matrix.php!='' # do not run the job if the PHP version is not specified
+        
         steps:
             -   name: Checkout code
-                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 uses: actions/checkout@v2
 
             -   name: Install SQLite 3
-                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 run: |
                     sudo apt-get update
                     sudo apt-get install sqlite3
             -   name: Setup PHP
-                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
                     coverage: none
             -   name: Cache dependencies
-                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 uses: actions/cache@v1
                 with:
                     path: ~/.composer/cache/files
                     key: dependencies-${{ matrix.dependency-version }}-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-phpunit-${{ matrix.phpunit }}-composer-${{ hashFiles('composer.json') }}
             -   name: Install dependencies
-                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 run: |
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
                     composer update --prefer-${{ matrix.dependency-version }} --prefer-dist --no-interaction
             -   name: Execute tests
-                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 run: composer test
