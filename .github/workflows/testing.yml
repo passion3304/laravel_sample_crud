@@ -18,18 +18,12 @@ jobs:
             matrix:
                 # os: [ubuntu-latest, macos-latest, windows-latest]
                 php: [7.2, 7.3, 7.4, 8.0] # to add: PHP 7.2.5+, PHP 8.*
-                laravel: [6.*, 7.*]
+                laravel: [6.*, 7.*, 8.*]
                 phpunit: [8.*, 9.*] # to add: PHPUnit 7.*
                 dependency-version: [stable] # to add: lowest
-                include:
-                    -   laravel: 8.*
-                        testbench: 6.*
-                    -   laravel: 7.*
-                        testbench: 5.*
-                    -   laravel: 6.*
-                        testbench: 4.*
+                exclude:
                     -   php: 7.2
-                        phpunit: 8.*
+                        phpunit: 9.*
 
         name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }} --prefer-${{ matrix.dependency-version }}
 
