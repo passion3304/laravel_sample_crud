@@ -14,19 +14,19 @@
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
-    <coverage processUncoveredFiles="true">
-        <include>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src/PanelTraits/</directory>
             <file>./src/CrudPanel.php</file>
-        </include>
-        <exclude>
-            <file>./src/PanelTraits/AutoFocus.php</file>
-            <file>./src/PanelTraits/Errors.php</file>
-            <file>./src/PanelTraits/Filters.php</file>
-            <file>./src/PanelTraits/Query.php</file>
-            <file>./src/PanelTraits/Reorder.php</file>
-            <file>./src/PanelTraits/Views.php</file>
-            <file>./src/PanelTraits/ViewsAndRestoresRevisions.php</file>
-        </exclude>
-    </coverage>
+            <exclude>
+                <file>./src/PanelTraits/AutoFocus.php</file>
+                <file>./src/PanelTraits/Errors.php</file>
+                <file>./src/PanelTraits/Filters.php</file>
+                <file>./src/PanelTraits/Query.php</file>
+                <file>./src/PanelTraits/Reorder.php</file>
+                <file>./src/PanelTraits/Views.php</file>
+                <file>./src/PanelTraits/ViewsAndRestoresRevisions.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>
