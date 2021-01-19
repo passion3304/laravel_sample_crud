@@ -3,9 +3,12 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
 {
+    use RefreshDatabase;
+
     /**
      * @var CrudPanel
      */
@@ -28,9 +31,9 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
             '--path' => realpath(__DIR__.'/../../config/database/migrations'),
         ]);
 
-        $this->artisan('db:seed', ['--class' => 'UsersRolesTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'UsersTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'ArticlesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersRolesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\ArticlesTableSeeder']);
     }
 
     /**
