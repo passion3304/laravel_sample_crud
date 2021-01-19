@@ -13,7 +13,7 @@ jobs:
             # run all combinations of the following, to make sure they're working together
             matrix:
                 php: [7.3, 7.4] # to add: PHP 7.2.5+, PHP 8.*
-                laravel: [6.*, 7.*] # to add: Laravel 8.*
+                laravel: [6.*, 7.*, 8.*]
                 phpunit: [8.*, 9.*] # to add: PHPUnit 7.*
                 dependency-version: [stable] # to add: lowest
                 include:
