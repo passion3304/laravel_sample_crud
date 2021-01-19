@@ -30,8 +30,6 @@ jobs:
 
         name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }} --prefer-${{ matrix.dependency-version }}
         
-        continue-on-error: ${{ matrix.experimental }}
-        
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v2
