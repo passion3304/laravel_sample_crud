@@ -8,13 +8,15 @@ on:
 
 jobs:
     test:
+        runs-on: ubuntu-latest
+        
         strategy:
             # if one job fails, abort the next ones too, because they'll probably fail - best to save the minutes
             fail-fast: false  
           
             # run all combinations of the following, to make sure they're working together
             matrix:
-                os: [ubuntu-latest, macos-latest, windows-latest]
+                # os: [ubuntu-latest, macos-latest, windows-latest]
                 php: [7.3, 7.4] # to add: PHP 7.2.5+, PHP 8.*
                 laravel: [6.*, 7.*]
                 phpunit: [8.*, 9.*] # to add: PHPUnit 7.*
@@ -26,8 +28,6 @@ jobs:
                         testbench: 5.*
                     -   laravel: 6.*
                         testbench: 4.*
-        
-        runs-on: ${{ matrix.os }}
         
         # if: ${{ matrix.php }} # do not run the job if the PHP version is not specified
 
