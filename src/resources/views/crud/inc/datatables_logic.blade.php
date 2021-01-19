@@ -14,6 +14,16 @@
   <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
 
   <script>
+    // here we will check if the cached dataTables paginator length is conformable with current paginator settings.
+    // datatables caches the ajax responses with pageLength in LocalStorage so when changing this
+    // settings in controller users get unexpected results. To avoid that we will reset
+    // the table cache when both lengths don't match.
+    let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) ?? [];
+    var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
+
+    if($dtCachedInfo.length !== 0 && $dtCachedInfo.length !== $dtDefaultPageLength) {
+        localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
+    }
 
     // in this page we allways pass the alerts to localStorage because we can be redirected with
     // persistent table, and this way we guarantee non-duplicate alerts.
@@ -21,7 +31,7 @@
     $newAlerts = @json($backpack_alerts);
 
     Object.entries($newAlerts).forEach(([type, msg]) => {
-        if(typeof $oldAlerts[type] === undefined) {
+        if(typeof $oldAlerts[type] !== 'undefined') {
             $oldAlerts[type].push(msg);
         }else{
             $oldAlerts[type] = msg;
