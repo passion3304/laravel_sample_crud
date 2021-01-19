@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
-use Orchestra\Database\ConsoleServiceProvider;
 
 abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
 {
@@ -44,20 +43,6 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testing');
-    }
-
-    /**
-     * Get package providers.
-     *
-     * @param \Illuminate\Foundation\Application $app
-     *
-     * @return array
-     */
-    protected function getPackageProviders($app)
-    {
-        return [
-            ConsoleServiceProvider::class,
-        ];
     }
 
     /**
