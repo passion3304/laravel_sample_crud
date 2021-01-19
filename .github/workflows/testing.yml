@@ -31,8 +31,8 @@ jobs:
 
         name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }} --prefer-${{ matrix.dependency-version }}
         
-        if: matrix.php!='' # do not run the job if the PHP version is not specified
-        
+        if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
+
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v2
