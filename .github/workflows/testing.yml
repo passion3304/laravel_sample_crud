@@ -33,9 +33,11 @@ jobs:
         
         steps:
             -   name: Checkout code
+                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 uses: actions/checkout@v2
 
             -   name: Install SQLite 3
+                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 run: |
                     sudo apt-get update
                     sudo apt-get install sqlite3
@@ -58,4 +60,5 @@ jobs:
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
                     composer update --prefer-${{ matrix.dependency-version }} --prefer-dist --no-interaction
             -   name: Execute tests
+                if: ${{ matrix.php!='' }} # do not run the job if the PHP version is not specified
                 run: composer test
