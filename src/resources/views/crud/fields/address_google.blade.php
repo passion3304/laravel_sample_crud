@@ -67,6 +67,10 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             .ap-input-icon.ap-icon-clear {
                 right: 10px !important;
             }
+
+            .pac-container {
+                z-index: 1051;
+            }
         </style>
     @endpush
 
