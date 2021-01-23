@@ -1,6 +1,9 @@
 @php
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
     $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    if (isset($field['disk'])) {
+        $value = str_replace(Storage::disk($field['disk'])->url(''), '', $value);
+    }
 
     // if value isn't a base 64 image, generate URL
     if($value && !preg_match('/^data\:image\//', $value)) {
