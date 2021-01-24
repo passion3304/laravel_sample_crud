@@ -6,14 +6,16 @@
     if (! function_exists('getDiskUrl')) {
         function getDiskUrl($disk, $path) {
             try {
-                // make sure the value don't have disk base path on it
+                // make sure the value don't have disk base path on it, this is the same as `Storage::disk($disk)->url($prefix);`,
+                // we need this solution to deal with `S3` not supporting getting empty urls
+                // that could happen when there is no $prefix set.
                 $origin = substr(Storage::disk($disk)->url('/'), 0, -1);
                 $path = str_replace($origin, '', $path);
 
                 return Storage::disk($disk)->url($path);
             }
             catch (Exception $e) {
-                // the driver does not support retrieving URLs
+                // the driver does not support retrieving URLs (eg. SFTP)
                 return url($path);
             }
         }

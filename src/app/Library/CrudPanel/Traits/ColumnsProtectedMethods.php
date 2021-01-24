@@ -80,9 +80,13 @@ trait ColumnsProtectedMethods
      */
     protected function makeSureColumnHasType($column)
     {
-        // if it's got a method on the model with the same name
-        // then it should be a relationship
-        if (! isset($column['type']) && method_exists($this->model, $column['name'])) {
+        // check if method exists in model so it's a possible relation
+        // but exclude possible matches if developer setup entity => false
+        $could_be_relation = method_exists($this->model, $column['name'])
+            ? ! isset($column['entity']) || $column['entity'] !== false
+            : isset($column['entity']) && $column['entity'] !== false;
+
+        if (! isset($column['type']) && $could_be_relation) {
             $column['type'] = 'relationship';
         }
 
