@@ -1,5 +1,7 @@
 <?php
 
+namespace Backpack\CRUD\Tests\Config\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
