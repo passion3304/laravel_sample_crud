@@ -1,20 +1,21 @@
 @php
-    $prefix = isset($field['prefix']) ? $field['prefix'] : '';
+    $prefix = $field['prefix'] ?? '';
+    $disk = $field['disk'] ?? null;
     $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
-    if (isset($field['disk'])) {
-        $value = str_replace(Storage::disk($field['disk'])->url(''), '', $value);
-    }
 
-    // if value isn't a base 64 image, generate URL
-    if($value && !preg_match('/^data\:image\//', $value)) {
-        try {
-            $value = isset($field['disk'])
-                ? Storage::disk($field['disk'])->url($prefix.$value)
-                : url($prefix.$value);
-        }
-        catch (Exception $e) {
-            // the driver does not support retrieving URLs
-            $value = url($prefix.$value);
+    if (! function_exists('getDiskUrl')) {
+        function getDiskUrl($disk, $path) {
+            try {
+                // make sure the value don't have disk base path on it
+                $origin = substr(Storage::disk($disk)->url('/'), 0, -1);
+                $path = str_replace($origin, '', $path);
+
+                return Storage::disk($disk)->url($path);
+            }
+            catch (Exception $e) {
+                // the driver does not support retrieving URLs
+                return url($path);
+            }
         }
     }
 
@@ -41,6 +42,17 @@
         }
     }
 
+    // if value isn't a base 64 image, generate URL
+    if($value && !preg_match('/^data\:image\//', $value)) {
+        // make sure to append prefix once to value
+        $value = Str::start($value, $prefix);
+
+        // generate URL
+        $value = $disk
+            ? getDiskUrl($disk, $value)
+            : url($value);
+    }
+
     $max_image_size_in_bytes = $field['max_file_size'] ?? (int)maximumServerUploadSizeInBytes();
 
     $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
@@ -57,7 +69,7 @@
         <label>{!! $field['label'] !!}</label>
         @include('crud::fields.inc.translatable_icon')
     </div>
-    <!-- Wrap the image or canvas element with a block element (container) -->
+    {{-- Wrap the image or canvas element with a block element (container) --}}
     <div class="row">
         <div class="col-sm-6" data-handle="previewArea" style="margin-bottom: 20px;">
             <img data-handle="mainImage" src="">
