@@ -1,6 +1,6 @@
 @php
-    $prefix = $field['prefix'] ?? '';
-    $disk = $field['disk'] ?? null;
+    $field['prefix'] = $field['prefix'] ?? '';
+    $field['disk'] = $field['disk'] ?? null;
     $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
     if (! function_exists('getDiskUrl')) {
@@ -45,11 +45,11 @@
     // if value isn't a base 64 image, generate URL
     if($value && !preg_match('/^data\:image\//', $value)) {
         // make sure to append prefix once to value
-        $value = Str::start($value, $prefix);
+        $value = Str::start($value, $field['prefix']);
 
         // generate URL
-        $value = $disk
-            ? getDiskUrl($disk, $value)
+        $value = $field['disk']
+            ? getDiskUrl($field['disk'], $value)
             : url($value);
     }
 
