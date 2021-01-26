@@ -49,7 +49,7 @@ class AddSidebarContent extends Command
             $file_lines = file($disk->path($path), FILE_IGNORE_NEW_LINES);
 
             if ($this->getLastLineNumberThatContains($code, $file_lines)) {
-                return $this->info('Sidebar item already exists!');
+                return $this->comment('Sidebar item already existed.');
             }
 
             if ($disk->put($path, $contents.PHP_EOL.$code)) {

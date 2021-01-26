@@ -11,6 +11,7 @@
     $options_ids_array = $field['options']->pluck($model_instance->getKeyName())->toArray();
 
     $field['multiple'] = $field['multiple'] ?? true;
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -25,7 +26,7 @@
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_multiple'])
         {{ $field['multiple'] ? 'multiple' : '' }}>
 
-        @if (isset($field['allows_null']) && $field['allows_null']==true)
+        @if ($field['allows_null'])
             <option value="">-</option>
         @endif
 
