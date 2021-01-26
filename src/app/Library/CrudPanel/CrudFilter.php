@@ -291,6 +291,21 @@ class CrudFilter
     }
 
     /**
+     * Set the values for the current filter, for the filters who need values. For example
+     * the dropdown, select2 and select2 filters let the user select pre-determined
+     * values to filter with.
+     *
+     * Alias of the values() method.
+     *
+     * @param  array|function $value Key-value array with values for the user to pick from, or a function which also return a Key-value array.
+     * @return CrudFilter
+     */
+    public function options($value)
+    {
+        return $this->values($value);
+    }
+
+    /**
      * Set the blade view that will be used by the filter.
      * Should NOT include the namespace, that's defined separately using 'viewNamespace'.
      *
