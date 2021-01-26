@@ -114,7 +114,8 @@ trait ListOperation
         // show newest items first, by default (if no order has been set for the primary column)
         // if there was no order set, this will be the only one
         // if there was an order set, this will be the last one (after all others were applied)
-        $orderBy = $this->crud->query->getQuery()->orders;
+        // Note to self: `toBase()` returns also the orders contained in global scopes, while `getQuery()` don't.
+        $orderBy = $this->crud->query->toBase()->orders;
         $table = $this->crud->model->getTable();
         $key = $this->crud->model->getKeyName();
 
