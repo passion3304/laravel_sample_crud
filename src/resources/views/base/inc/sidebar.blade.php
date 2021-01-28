@@ -34,7 +34,7 @@
       sidebarTransition("none");
       document.body.classList.toggle(sidebarClass, sessionState === '1');
 
-      // re-enable the transition
+      // re-enable the transition, so that if the user clicks the hamburger menu, it does have a nice transition
       setTimeout(sidebarTransition, 100);
     }
   </script>
