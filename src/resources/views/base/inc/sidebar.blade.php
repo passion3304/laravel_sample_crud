@@ -30,7 +30,8 @@
     // Recover sidebar state
     let sessionState = sessionStorage.getItem('sidebar-collapsed');
     if(sessionState) {
-      // disable the transition animation temporarly
+      // disable the transition animation temporarily, so that if you're browsing across
+      // pages with the sidebar closed, the sidebar does not flicker into the view
       sidebarTransition("none");
       document.body.classList.toggle(sidebarClass, sessionState === '1');
 
