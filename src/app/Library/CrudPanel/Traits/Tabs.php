@@ -7,7 +7,7 @@ trait Tabs
     public function enableTabs()
     {
         $this->setOperationSetting('tabsEnabled', true);
-        $this->setOperationSetting('tabsType', config('backpack.crud.'.$this->getCurrentOperation().'.tabsType', 'horizontal'));
+        $this->setOperationSetting('tabsType', config('backpack.crud.operations.'.$this->getCurrentOperation().'.tabsType', 'horizontal'));
 
         return $this->tabsEnabled();
     }
