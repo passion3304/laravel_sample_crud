@@ -25,7 +25,7 @@
   <script type="text/javascript">
     // Save default sidebar class
     let sidebarClass = (document.body.className.match(/sidebar-(sm|md|lg|xl)-show/) || ['sidebar-lg-show'])[0];
-    let sidebarTransition = value => document.querySelector('.sidebar').style.transition = value || '';
+    let sidebarTransition = value => document.querySelector('.app-body > .sidebar').style.transition = value || '';
 
     // Recover sidebar state
     let sessionState = sessionStorage.getItem('sidebar-collapsed');
