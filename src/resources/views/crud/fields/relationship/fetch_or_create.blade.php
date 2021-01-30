@@ -676,34 +676,15 @@ function bpFieldInitFetchOrCreateElement(element) {
 
 if (typeof processItemText !== 'function') {
     function processItemText(item, $fieldAttribute) {
-        var $appLang = '{{app()->getLocale()}}';
-        if (typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null) {
-            // Return translated text if a translation is available
-            if(Object.keys(item[$fieldAttribute]).length >= 1) {
-                let $locale;
-                // Use current locale to get the translation
-                if ($appLang in item[$fieldAttribute]) {
-                    $locale = $appLang;
-                }
-                // Use fallback locale to get the translation
-                else if ("{{ Lang::getFallback() }}" in item[$fieldAttribute]) {
-                    $locale = "{{ Lang::getFallback() }}";
-                }
-                // Use first locale in array to get the translation
-                else {
-                    $locale = Object.keys(item[$fieldAttribute])[0];
-                }
+        var $appLang = '{{ app()->getLocale() }}';
+        var $appLangFallback = '{{ Lang::getFallback() }}';
+        var $emptyTranslation = '{{ trans("backpack::crud.empty_translations") }}';
+        var $itemField = item[$fieldAttribute];
 
-                return item[$fieldAttribute][$locale];
-            }
-            // Report error since no translations are available
-            else {
-                console.error("No translations for attribute '" + $fieldAttribute + "' found.", item[$fieldAttribute]);
-                return '{{ trans('backpack::crud.empty_translations') }}';
-            }
-        } else {
-            return item[$fieldAttribute];
-        }
+        // try to retreive the item in app language, then fallback to; fallback language, first entry, empty transation
+        return typeof $itemField === 'object' && $itemField !== null
+            ? $itemField[$appLang] ?? $itemField[$appLangFallback] ?? Object.values($itemField)[0] ?? $emptyTranslation
+            : $itemField;
     }
 }
             </script>
