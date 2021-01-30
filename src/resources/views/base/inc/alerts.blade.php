@@ -18,7 +18,7 @@
 
         // merge both php alerts and localstorage alerts
         Object.entries($alerts_from_php).forEach(([type, msg]) => {
-            if(typeof $alerts_from_php[type] !== 'undefined') {
+            if(typeof $alerts_from_localstorage[type] !== 'undefined') {
                 $alerts_from_localstorage[type].push(msg);
             } else {
                 $alerts_from_localstorage[type] = msg;
