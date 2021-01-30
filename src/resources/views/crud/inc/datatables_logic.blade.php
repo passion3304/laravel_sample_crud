@@ -30,11 +30,11 @@
     $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts')) ?? {};
     $newAlerts = @json($backpack_alerts);
 
-    Object.entries($newAlerts).forEach(([type, msg]) => {
+    Object.entries($newAlerts).forEach(([type, messages]) => {
         if(typeof $oldAlerts[type] !== 'undefined') {
-            $oldAlerts[type].push(msg);
+            $oldAlerts[type].push(...messages);
         } else {
-            $oldAlerts[type] = msg;
+            $oldAlerts[type] = messages;
         }
     });
 

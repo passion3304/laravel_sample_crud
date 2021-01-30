@@ -17,15 +17,13 @@
         var $alerts_from_localstorage = JSON.parse(localStorage.getItem('backpack_alerts')) ?? {};
 
         // merge both php alerts and localstorage alerts
-        Object.entries($alerts_from_php).forEach(([type, msg]) => {
+        Object.entries($alerts_from_php).forEach(([type, messages]) => {
             if(typeof $alerts_from_localstorage[type] !== 'undefined') {
-                $alerts_from_localstorage[type].push(msg);
+                $alerts_from_localstorage[type].push(...messages);
             } else {
-                $alerts_from_localstorage[type] = msg;
+                $alerts_from_localstorage[type] = messages;
             }
         });
-
-        console.log($alerts_from_localstorage);
 
         for (var type in $alerts_from_localstorage) {
             for(var message in $alerts_from_localstorage[type]) {
