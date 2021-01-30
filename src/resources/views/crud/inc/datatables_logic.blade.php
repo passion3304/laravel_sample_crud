@@ -5,7 +5,7 @@
     \Alert::flush();
  @endphp
 
-  <!-- DATA TABLES SCRIPT -->
+  {{-- DATA TABLES SCRIPT --}}
   <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -33,7 +33,7 @@
     Object.entries($newAlerts).forEach(([type, msg]) => {
         if(typeof $oldAlerts[type] !== 'undefined') {
             $oldAlerts[type].push(msg);
-        }else{
+        } else {
             $oldAlerts[type] = msg;
         }
     });
@@ -48,19 +48,19 @@
         //check if saved url has any parameter or is empty after clearing filters.
         if (saved_list_url && saved_list_url.indexOf('?') < 1) {
             var saved_list_url = false;
-        }else{
+        } else {
             var persistentUrl = saved_list_url+'&persistent-table=true';
         }
 
-    var arr =  window.location.href.split('?');
-        // check if url has parameters.
-        if (arr.length > 1 && arr[1] !== '') {
-                // IT HAS! Check if it is our own persistence redirect.
-                if (window.location.search.indexOf('persistent-table=true') < 1) {
-                    // IF NOT: we don't want to redirect the user.
-                    saved_list_url = false;
-                }
+    var arr = window.location.href.split('?');
+    // check if url has parameters.
+    if (arr.length > 1 && arr[1] !== '') {
+        // IT HAS! Check if it is our own persistence redirect.
+        if (window.location.search.indexOf('persistent-table=true') < 1) {
+            // IF NOT: we don't want to redirect the user.
+            saved_list_url = false;
         }
+    }
 
     @if($crud->getPersistentTableDuration())
         var saved_list_url_time = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url_time');
