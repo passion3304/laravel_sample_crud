@@ -671,7 +671,7 @@ function bpFieldInitFetchOrCreateElement(element) {
         for (var i=0; i < $dependencies.length; i++) {
             var $dependency = $dependencies[i];
             //if element does not have a custom-selector attribute we use the name attribute
-            if(typeof element.attr('data-custom-selector') == 'undefined') {
+            if(typeof element.attr('data-custom-selector') === 'undefined') {
                 form.find(`[name="${$dependency}"], [name="${$dependency}[]"]`).change(function(el) {
                         $(element.find('option:not([value=""])')).remove();
                         element.val(null).trigger("change");
@@ -682,14 +682,9 @@ function bpFieldInitFetchOrCreateElement(element) {
                 let selector = element.attr('data-custom-selector');
 
                 // replace in the custom selector string the corresponding row and dependency name to match
-                selector = selector.replace(/%\w+%/g, function(replace) {
-                    if(replace == "%DEPENDENCY%") {
-                        return $dependency;
-                    }
-                    if(replace == "%ROW%") {
-                        return rowNumber;
-                    }
-                });
+                    selector = selector
+                        .replaceAll('%DEPENDENCY%', $dependency)
+                        .replaceAll('%ROW%', rowNumber);
 
                 $(selector).change(function (el) {
                     $(element.find('option:not([value=""])')).remove();

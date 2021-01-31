@@ -237,8 +237,6 @@
 
             // we also setup the custom selectors in the elements so we can use dependant functionality
             setupElementCustomSelectors(container_holder);
-
-
             // increment the container current number of rows by +1
             updateRepeatableRowCount(container_holder, 1);
 
