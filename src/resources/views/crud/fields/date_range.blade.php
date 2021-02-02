@@ -117,7 +117,7 @@
 
                 $visibleInput.on('apply.daterangepicker hide.daterangepicker', function(e, picker){
                     $startInput.val( picker.startDate.format('YYYY-MM-DD HH:mm:ss') );
-                    $endInput.val( picker.endDate.format('YYYY-MM-DD H:mm:ss') );
+                    $endInput.val( picker.endDate.format('YYYY-MM-DD HH:mm:ss') );
                 });
         }
     </script>
@@ -125,4 +125,3 @@
 
 @endif
 {{-- End of Extra CSS and JS --}}
-
