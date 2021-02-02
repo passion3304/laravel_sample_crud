@@ -42,14 +42,4 @@ class AdminController extends Controller
         // The '/admin' route is not to be used as a page, because it breaks the menu's active state.
         return redirect(backpack_url('dashboard'));
     }
-
-    /**
-     * Show the 404 error page.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function backpackHttpNotFoundView()
-    {
-        return view('errors.404');
-    }
 }

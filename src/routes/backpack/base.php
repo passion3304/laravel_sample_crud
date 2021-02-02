@@ -53,5 +53,7 @@ function () {
 
     // This defines the fallback route when no matching route is found, is responsible for showing the 404 page.
     // NOTE: this should be the last registered route in this file.
-    Route::fallback('AdminController@backpackHttpNotFoundView');
+    Route::fallback(function () {
+        return abort('404');
+    });
 });
