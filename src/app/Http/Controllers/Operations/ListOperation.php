@@ -114,19 +114,16 @@ trait ListOperation
         // show newest items first, by default (if no order has been set for the primary column)
         // if there was no order set, this will be the only one
         // if there was an order set, this will be the last one (after all others were applied)
-        $orderBy = $this->crud->query->getQuery()->orders;
-        $hasOrderByPrimaryKey = false;
-        collect($orderBy)->each(function ($item, $key) use ($hasOrderByPrimaryKey) {
-            if (! isset($item['column'])) {
-                return false;
-            }
+        // Note to self: `toBase()` returns also the orders contained in global scopes, while `getQuery()` don't.
+        $orderBy = $this->crud->query->toBase()->orders;
+        $table = $this->crud->model->getTable();
+        $key = $this->crud->model->getKeyName();
 
-            if ($item['column'] == $this->crud->model->getKeyName()) {
-                $hasOrderByPrimaryKey = true;
-
-                return false;
-            }
+        $hasOrderByPrimaryKey = collect($orderBy)->some(function ($item) use ($key, $table) {
+            return (isset($item['column']) && $item['column'] === $key)
+                || (isset($item['sql']) && str_contains($item['sql'], "$table.$key"));
         });
+
         if (! $hasOrderByPrimaryKey) {
             $this->crud->orderByWithPrefix($this->crud->model->getKeyName(), 'DESC');
         }
