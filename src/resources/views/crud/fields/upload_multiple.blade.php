@@ -85,13 +85,13 @@
 		        	if ($.trim(container.html())=='') {
 		        		container.remove();
 		        	}
-		        	$("<input type='hidden' name='clear_"+fieldName+"[]' value='"+$(this).data('filename')+"'>").insertAfter(fileInput);
+		        	$("<input type='hidden' class='clearFiles-hidden' name='clear_"+fieldName+"[]' value='"+$(this).data('filename')+"'>").insertAfter(fileInput);
 		        });
 
 		        fileInput.change(function() {
 	                inputLabel.html("Files selected. After save, they will show up above.");
 		        	// remove the hidden input, so that the setXAttribute method is no longer triggered
-		        	$(this).next("input[type=hidden]").remove();
+					$(this).next("input[type=hidden]:not(.clearFiles-hidden)").remove();
 		        });
         	}
         </script>
