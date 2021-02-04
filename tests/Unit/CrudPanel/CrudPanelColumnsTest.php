@@ -2,6 +2,9 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\Unit\Models\Article;
+use Backpack\CRUD\Tests\Unit\Models\User;
+
 class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 {
     private $oneColumnArray = [
@@ -110,6 +113,87 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         ],
     ];
 
+    private $expectedRelationColumnsArray = [
+        'accountDetails' => [
+            'name'        => 'accountDetails',
+            'label'       => 'AccountDetails',
+            'type'        => 'relationship',
+            'key'         => 'accountDetails',
+            'priority'    => 0,
+            'tableColumn' => false,
+            'orderable'   => false,
+            'searchLogic' => false,
+            'entity'      => 'accountDetails',
+            'model'       => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
+        ],
+        'accountDetails__nickname' => [
+            'name'        => 'accountDetails.nickname',
+            'label'       => 'AccountDetails.nickname',
+            'type'        => 'text',
+            'key'         => 'accountDetails__nickname',
+            'priority'    => 1,
+            'tableColumn' => false,
+            'orderable'   => false,
+            'searchLogic' => false,
+        ],
+        'accountDetails__user' => [
+            'name'        => 'accountDetails.user',
+            'label'       => 'AccountDetails.user',
+            'type'        => 'text',
+            'key'         => 'accountDetails__user',
+            'priority'    => 2,
+            'tableColumn' => false,
+            'orderable'   => false,
+            'searchLogic' => false,
+        ],
+    ];
+
+    private $relationColumnArray = [
+        'name'      => 'nickname',
+        'type'      => 'select',
+        'entity'    => 'accountDetails',
+        'attribute' => 'nickname',
+    ];
+
+    private $expectedRelationColumnArray = [
+        'nickname' => [
+            'name'        => 'nickname',
+            'type'        => 'select',
+            'entity'      => 'accountDetails',
+            'attribute'   => 'nickname',
+            'label'       => 'Nickname',
+            'model'       => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
+            'key'         => 'nickname',
+            'tableColumn' => false,
+            'orderable'   => false,
+            'searchLogic' => false,
+            'priority'    => 0,
+        ],
+    ];
+
+    private $nestedRelationColumnArray = [
+        'name'      => 'nickname',
+        'type'      => 'select',
+        'entity'    => 'user.accountDetails',
+        'attribute' => 'nickname',
+    ];
+
+    private $expectedNestedRelationColumnArray = [
+        'nickname' => [
+            'name'        => 'nickname',
+            'type'        => 'select',
+            'entity'      => 'user.accountDetails',
+            'attribute'   => 'nickname',
+            'label'       => 'Nickname',
+            'model'       => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
+            'key'         => 'nickname',
+            'tableColumn' => false,
+            'orderable'   => false,
+            'searchLogic' => false,
+            'priority'    => 0,
+        ],
+    ];
+
     /**
      * Setup the test environment.
      *
@@ -157,6 +241,32 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->expectException(\ErrorException::class);
 
         $this->crudPanel->addColumns('column1');
+    }
+
+    public function testAddRelationsByName()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addColumn('accountDetails');
+        $this->crudPanel->addColumn('accountDetails.nickname');
+        $this->crudPanel->addColumn('accountDetails.user');
+
+        $this->assertEquals($this->expectedRelationColumnsArray, $this->crudPanel->columns());
+    }
+
+    public function testAddRelationColumn()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addColumn($this->relationColumnArray);
+
+        $this->assertEquals($this->expectedRelationColumnArray, $this->crudPanel->columns());
+    }
+
+    public function testAddNestedRelationColumn()
+    {
+        $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->addColumn($this->nestedRelationColumnArray);
+
+        $this->assertEquals($this->expectedNestedRelationColumnArray, $this->crudPanel->columns());
     }
 
     public function testMoveColumnBefore()
