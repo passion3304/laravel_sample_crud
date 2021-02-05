@@ -19,6 +19,7 @@
 .nav-tabs .nav-link:hover {
 	border-bottom: none;
 	color: #384c74;
+}
 
 form .select2-container--bootstrap .select2-selection--single,
 form .select2-container--bootstrap .select2-selection--multiple {
