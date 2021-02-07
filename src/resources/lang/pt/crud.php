@@ -18,11 +18,11 @@ return [
     'save_action_save_and_edit'        => 'Guardar e editar este item',
     'save_action_save_and_back'        => 'Guardar e voltar',
     'save_action_save_and_preview'     => 'Guardar e visualizar',
-    'save_action_changed_notification' => 'O comportamento padr„o depois de gravar foi alterado.',
+    'save_action_changed_notification' => 'O comportamento padr√£o depois de gravar foi alterado.',
 
     // Create form
     'add'                 => 'Adicionar',
-    'back_to_all'         => 'Voltar ‡ lista de ',
+    'back_to_all'         => 'Voltar √† lista de ',
     'cancel'              => 'Cancelar',
     'add_a_new'           => 'Adicionar ',
 
@@ -31,7 +31,7 @@ return [
     'save'                 => 'Gravar',
 
     // Translatable models
-    'edit_translations' => 'TraduÁ„o',
+    'edit_translations' => 'Tradu√ß√£o',
     'language'          => 'Idioma',
 
     // CRUD table view
@@ -39,62 +39,62 @@ return [
     'in_the_database'           => 'na base de dados',
     'list'                      => 'Lista',
     'reset'                     => 'Repor',
-    'actions'                   => 'AcÁıes',
+    'actions'                   => 'Ac√ß√µes',
     'preview'                   => 'Visualizar',
     'delete'                    => 'Apagar',
     'admin'                     => 'Administrar',
-    'details_row'               => 'Isto È a linha de detalhes. Modifique conforme quiser.',
+    'details_row'               => 'Isto √© a linha de detalhes. Modifique conforme quiser.',
     'details_row_loading_error' => 'Houve um erro ao carregar os detalhes. Por favor tente novamente.',
     'clone'                     => 'Clonar',
-    'clone_success'             => '<strong>Item clonado</strong><br>Um novo item foi adicionado com as mesmas informaÁıes que este.',
-    'clone_failure'             => '<strong>A clonagem falhou</strong><br>O novo item n„o pode ser criado. Por favor tente novamente.',
+    'clone_success'             => '<strong>Item clonado</strong><br>Um novo item foi adicionado com as mesmas informa√ß√µes que este.',
+    'clone_failure'             => '<strong>A clonagem falhou</strong><br>O novo item n√£o pode ser criado. Por favor tente novamente.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Tem a certeza que quer apagar este item?',
     'delete_confirmation_title'                   => 'Item apagado',
     'delete_confirmation_message'                 => 'O item foi apagado com sucesso.',
-    'delete_confirmation_not_title'               => 'N„o apagado',
-    'delete_confirmation_not_message'             => 'Ocorreu um erro. O item pode n„o ter sido apagado.',
-    'delete_confirmation_not_deleted_title'       => 'N„o apagado',
-    'delete_confirmation_not_deleted_message'     => 'O item n„o foi apagado.',
+    'delete_confirmation_not_title'               => 'N√£o apagado',
+    'delete_confirmation_not_message'             => 'Ocorreu um erro. O item pode n√£o ter sido apagado.',
+    'delete_confirmation_not_deleted_title'       => 'N√£o apagado',
+    'delete_confirmation_not_deleted_message'     => 'O item n√£o foi apagado.',
 
     // Bulk actions
     'bulk_no_entries_selected_title'   => 'Nenhum item seleccionado',
-    'bulk_no_entries_selected_message' => 'Por favor seleccione um ou mais itens para realizar uma acÁ„o em massa.',
+    'bulk_no_entries_selected_message' => 'Por favor seleccione um ou mais itens para realizar uma ac√ß√£o em massa.',
 
     // Bulk delete
     'bulk_delete_are_you_sure'   => 'Tem a certeza que quer apagar estes :number itens?',
     'bulk_delete_sucess_title'   => 'Itens apagados',
     'bulk_delete_sucess_message' => ' itens foram apagados',
     'bulk_delete_error_title'    => 'Ocorreu um erro ao apagar o item',
-    'bulk_delete_error_message'  => 'Um ou mais itens n„o puderam ser apagados',
+    'bulk_delete_error_message'  => 'Um ou mais itens n√£o puderam ser apagados',
 
     // Bulk clone
     'bulk_clone_are_you_sure'   => 'Tem a certeza que quer clonar estes :number itens?',
     'bulk_clone_sucess_title'   => 'Itens clonados',
     'bulk_clone_sucess_message' => ' itens foram clonados.',
     'bulk_clone_error_title'    => 'Ocorreu um erro ao clonar o item',
-    'bulk_clone_error_message'  => 'Um ou mais itens n„o puderam ser criados. Por favor tente novamente.',
+    'bulk_clone_error_message'  => 'Um ou mais itens n√£o puderam ser criados. Por favor tente novamente.',
 
     // Ajax errors
     'ajax_error_title' => 'Erro',
-    'ajax_error_text'  => 'Erro ao carregar a p·gina. Por favor actualize a p·gina.',
+    'ajax_error_text'  => 'Erro ao carregar a p√°gina. Por favor actualize a p√°gina.',
 
     // DataTables translation
-    'emptyTable'     => 'Sem dados disponÌveis na tabela',
+    'emptyTable'     => 'Sem dados dispon√≠veis na tabela',
     'info'           => 'A mostrar _START_ a _END_ de _TOTAL_ itens',
     'infoEmpty'      => 'Sem itens',
     'infoFiltered'   => '(filtrado de um total de _MAX_ itens)',
     'infoPostFix'    => '.',
     'thousands'      => ',',
-    'lengthMenu'     => '_MENU_ itens por p·gina',
+    'lengthMenu'     => '_MENU_ itens por p√°gina',
     'loadingRecords' => 'A carregar...',
     'processing'     => 'A processar...',
     'search'         => 'Procurar',
     'zeroRecords'    => 'Nenhum item encontrado',
     'paginate'       => [
         'first'    => 'Primeiro',
-        'last'     => '⁄ltimo',
+        'last'     => '√öltimo',
         'next'     => 'Seguinte',
         'previous' => 'Anterior',
     ],
@@ -109,11 +109,11 @@ return [
         'csv'               => 'CSV',
         'pdf'               => 'PDF',
         'print'             => 'Imprimir',
-        'column_visibility' => 'Colunas visÌveis',
+        'column_visibility' => 'Colunas vis√≠veis',
     ],
 
     // global crud - errors
-    'unauthorized_access' => 'Acesso n„o autorizado - n„o tem as permissıes necess·rias para ver esta p·gina.',
+    'unauthorized_access' => 'Acesso n√£o autorizado - n√£o tem as permiss√µes necess√°rias para ver esta p√°gina.',
     'please_fix'          => 'Por favor corrija os seguintes erros:',
 
     // global crud - success / error notification bubbles
@@ -124,13 +124,13 @@ return [
     'reorder'                      => 'Reordenar',
     'reorder_text'                 => 'Use \'arrastar e soltar\' para ordenar.',
     'reorder_success_title'        => 'Feito',
-    'reorder_success_message'      => 'A ordenaÁ„o foi gravada.',
+    'reorder_success_message'      => 'A ordena√ß√£o foi gravada.',
     'reorder_error_title'          => 'Erro',
-    'reorder_error_message'        => 'A ordenaÁ„o n„o foi gravada.',
+    'reorder_error_message'        => 'A ordena√ß√£o n√£o foi gravada.',
 
     // CRUD yes/no
     'yes' => 'Sim',
-    'no'  => 'N„o',
+    'no'  => 'N√£o',
 
     // CRUD filters navbar view
     'filters'        => 'Filtros',
@@ -141,10 +141,10 @@ return [
     //filters language strings
     'today' => 'Hoje',
     'yesterday' => 'Ontem',
-    'last_7_days' => '⁄ltimos 7 dias',
-    'last_30_days' => '⁄ltimos 30 dias',
-    'this_month' => 'Este mÍs',
-    'last_month' => 'MÍs passado',
+    'last_7_days' => '√öltimos 7 dias',
+    'last_30_days' => '√öltimos 30 dias',
+    'this_month' => 'Este m√™s',
+    'last_month' => 'M√™s passado',
     'custom_range' => 'Intervalo personalizado',
     'weekLabel' => 'S',
 
@@ -154,7 +154,7 @@ return [
     'select_files'              => 'Seleccionar ficheiros',
     'select_file'               => 'Seleccionar ficheiro',
     'clear'                     => 'Limpar',
-    'page_link'                 => 'Link da p·gina',
+    'page_link'                 => 'Link da p√°gina',
     'page_link_placeholder'     => 'http://example.com/a-sua-pagina',
     'internal_link'             => 'Link interno',
     'internal_link_placeholder' => 'Slug interno. Ex: \'admin/page\' (sem aspas) para \':url\'',
@@ -165,7 +165,7 @@ return [
     'select_entries'            => 'Selecionar itens',
 
     //Table field
-    'table_cant_add'    => 'N„o foi possÌvel adicionar novo :entity',
+    'table_cant_add'    => 'N√£o foi poss√≠vel adicionar novo :entity',
     'table_max_reached' => 'Limite de :max itens atingido',
 
     // File manager
@@ -173,5 +173,5 @@ return [
 
     // InlineCreateOperation
     'related_entry_created_success' => 'O item relacionado foi criado e selecionado.',
-    'related_entry_created_error' => 'N„o foi possÌvel adicionar o item relacionado.',
+    'related_entry_created_error' => 'N√£o foi poss√≠vel adicionar o item relacionado.',
 ];
