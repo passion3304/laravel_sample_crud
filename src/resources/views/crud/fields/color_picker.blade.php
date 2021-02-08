@@ -10,10 +10,10 @@
             value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
             data-init-function="bpFieldInitColorPickerElement"
             @include('crud::fields.inc.attributes')
-			>
-		<span class="input-group-append">
-			<span class="input-group-text colorpicker-input-addon"><i></i></span>
-		</span>
+        	>
+            <span class="input-group-append">
+                <span class="input-group-text colorpicker-input-addon"><i></i></span>
+            </span>
     </div>
 
     {{-- HINT --}}
@@ -34,12 +34,12 @@
     @push('crud_fields_styles')
 		<link rel="stylesheet" href="{{ asset('packages/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}" />
 		<style>
-			.input-group>.input-group-append>.input-group-text{
+			.input-group>.input-group-append>.input-group-text {
 				border: 1px solid rgba(0,40,100,.12);
 			}
-			.input-group>.input-group-append>.input-group-text:focus{
-				border-color: #9080f1;
+			.input-group>.input-group-append>.input-group-text:focus {
 				outline: 0;
+				border-color: #9080f1;
 				box-shadow: 0 0 0 2px #e1dcfb;
 			}
 		</style>
