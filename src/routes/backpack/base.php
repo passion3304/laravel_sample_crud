@@ -51,8 +51,9 @@ function () {
         Route::post('change-password', 'MyAccountController@postChangePasswordForm')->name('backpack.account.password');
     }
 
-    // This defines the fallback route when no matching route is found, is responsible for showing the 404 page.
-    // NOTE: this should be the last registered route in this file.
+    // NOTE: The fallback should be the last command in this file.
+    
+    // When no matching route is found, show the 404 page.
     Route::fallback(function () {
         abort('404');
     });
