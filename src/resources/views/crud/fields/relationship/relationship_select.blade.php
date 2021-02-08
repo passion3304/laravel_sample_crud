@@ -178,16 +178,6 @@
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2($select2Settings);
-             // if any dependencies have been declared
-            // when one of those dependencies changes value
-            // reset the select2 value
-            for (var i=0; i < $dependencies.length; i++) {
-                $dependency = $dependencies[i];
-                $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
-                    element.val(null).trigger("change");
-                });
-
-            }
         }
     }
 
