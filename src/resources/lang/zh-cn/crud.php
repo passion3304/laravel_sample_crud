@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => '保存并新增',
     'save_action_save_and_edit'        => '保存并继续编辑',
     'save_action_save_and_back'        => '保存并返回',
+    'save_action_save_and_preview'     => '保存并预览',
     'save_action_changed_notification' => '保存后的默认行为已更改.',
 
     // Create form
@@ -37,6 +38,7 @@ return [
     'all'                       => '全部 ',
     'in_the_database'           => '在数据库中',
     'list'                      => '列表',
+    'reset'                     => '重置',
     'actions'                   => '操作',
     'preview'                   => '预览',
     'delete'                    => '删除',
@@ -60,12 +62,19 @@ return [
     'bulk_no_entries_selected_title'   => '没有选中任何记录',
     'bulk_no_entries_selected_message' => '执行批量操作前，请选择一条或多条记录.',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'   => '确定要删除这 :number 条记录吗?',
     'bulk_delete_sucess_title'   => '删除记录',
     'bulk_delete_sucess_message' => ' 记录已经被删除',
     'bulk_delete_error_title'    => '删除失败',
     'bulk_delete_error_message'  => '无法删除一条或多条记录',
+
+    // Bulk clone
+    'bulk_clone_are_you_sure'   => '您确定要复制 :number 项纪录吗？',
+    'bulk_clone_sucess_title'   => '纪录已复制',
+    'bulk_clone_sucess_message' => ' 项纪录已被复制。',
+    'bulk_clone_error_title'    => '复制失败',
+    'bulk_clone_error_message'  => '无法复制一项或多项纪录，请稍后再试。',
 
     // Ajax errors
     'ajax_error_title' => '错误',
@@ -127,6 +136,17 @@ return [
     'filters'        => '筛选条件',
     'toggle_filters' => '切换筛选条件',
     'remove_filters' => '移除筛选条件',
+    'apply'          => '套用',
+
+    //filters language strings
+    'today' => '今天',
+    'yesterday' => '昨天',
+    'last_7_days' => '最近7天',
+    'last_30_days' => '最近30天',
+    'this_month' => '这个月',
+    'last_month' => '上个月',
+    'custom_range' => '自订范围',
+    'weekLabel' => '周',
 
     // Fields
     'browse_uploads'            => '查看已上传的文档',
@@ -140,6 +160,9 @@ return [
     'internal_link_placeholder' => '内部链接，例如: \'admin/page\' (no quotes) for \':url\'',
     'external_link'             => '外部链接',
     'choose_file'               => '选择文件',
+    'new_item'                  => '新项目',
+    'select_entry'              => '选择一个项目',
+    'select_entries'            => '选择多个项目',
 
     //Table field
     'table_cant_add'    => '不能再增加 :entity',
@@ -148,4 +171,7 @@ return [
     // File manager
     'file_manager' => '文件管理器',
 
+    // InlineCreateOperation
+    'related_entry_created_success' => '相关的纪录已被新增并选择。',
+    'related_entry_created_error' => '无法新增相关的纪录。',
 ];
