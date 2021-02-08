@@ -50,11 +50,4 @@ function () {
         Route::post('edit-account-info', 'MyAccountController@postAccountInfoForm')->name('backpack.account.info.store');
         Route::post('change-password', 'MyAccountController@postChangePasswordForm')->name('backpack.account.password');
     }
-
-    // NOTE: The fallback should be the last command in this file.
-
-    // When no matching route is found, show the 404 page.
-    Route::fallback(function () {
-        abort('404');
-    });
 });
