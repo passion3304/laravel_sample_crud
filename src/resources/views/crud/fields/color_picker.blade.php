@@ -11,9 +11,9 @@
             data-init-function="bpFieldInitColorPickerElement"
             @include('crud::fields.inc.attributes')
         	>
-            <span class="input-group-append">
-                <span class="input-group-text colorpicker-input-addon"><i></i></span>
-            </span>
+        <span class="input-group-append">
+            <span class="input-group-text colorpicker-input-addon"><i></i></span>
+        </span>
     </div>
 
     {{-- HINT --}}
