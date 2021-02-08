@@ -25,10 +25,19 @@
   <script type="text/javascript">
     // Save default sidebar class
     let sidebarClass = (document.body.className.match(/sidebar-(sm|md|lg|xl)-show/) || ['sidebar-lg-show'])[0];
+    let sidebarTransition = value => document.querySelector('.app-body > .sidebar').style.transition = value || '';
 
     // Recover sidebar state
     let sessionState = sessionStorage.getItem('sidebar-collapsed');
-    if(sessionState) document.body.classList.toggle(sidebarClass, sessionState === '1');
+    if (sessionState) {
+      // disable the transition animation temporarily, so that if you're browsing across
+      // pages with the sidebar closed, the sidebar does not flicker into the view
+      sidebarTransition("none");
+      document.body.classList.toggle(sidebarClass, sessionState === '1');
+
+      // re-enable the transition, so that if the user clicks the hamburger menu, it does have a nice transition
+      setTimeout(sidebarTransition, 100);
+    }
   </script>
 @endpush
 
