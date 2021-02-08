@@ -52,7 +52,7 @@ function () {
     }
 
     // NOTE: The fallback should be the last command in this file.
-    
+
     // When no matching route is found, show the 404 page.
     Route::fallback(function () {
         abort('404');
