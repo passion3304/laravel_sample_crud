@@ -370,10 +370,9 @@ trait Columns
         $column = $this->makeSureColumnHasPriority($column);
         $column = $this->makeSureColumnHasModel($column);
 
-        if(isset($column['entity']) && $column['entity'] !== false) {
+        if (isset($column['entity']) && $column['entity'] !== false) {
             $column['relation_type'] = $this->inferRelationTypeFromRelationship($column);
         }
-
 
         // check if the column exists in the database (as a db column)
         $column_exists_in_db = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);

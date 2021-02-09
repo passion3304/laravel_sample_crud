@@ -128,7 +128,8 @@ trait ColumnsProtectedMethods
         return $column;
     }
 
-    protected function makeSureColumnHasEntity($column) {
+    protected function makeSureColumnHasEntity($column)
+    {
         if (isset($column['entity'])) {
             return $column;
         }

@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
 use Backpack\CRUD\Tests\Unit\Models\User;
 
 class CrudPanelColumnsTest extends BaseDBCrudPanelTest
@@ -125,7 +124,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'entity'      => 'accountDetails',
             'model'       => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
-            'relation_type' => 'HasOne'
+            'relation_type' => 'HasOne',
         ],
         'accountDetails__nickname' => [
             'name'        => 'accountDetails.nickname',
@@ -138,7 +137,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'relation_type' => 'HasOne',
             'entity' => 'accountDetails.nickname',
-            'model' => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails'
+            'model' => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
         ],
         'accountDetails__user' => [
             'name'        => 'accountDetails.user',
@@ -151,7 +150,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'relation_type' => 'BelongsTo',
             'entity' => 'accountDetails.user',
-            'model' => 'Backpack\CRUD\Tests\Unit\Models\User'
+            'model' => 'Backpack\CRUD\Tests\Unit\Models\User',
         ],
     ];
 
@@ -175,7 +174,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'orderable'   => false,
             'searchLogic' => false,
             'priority'    => 0,
-            'relation_type' => 'HasOne'
+            'relation_type' => 'HasOne',
         ],
     ];
 
@@ -186,7 +185,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
     private $secondNestedRelationColumnArray = [
         'name'      => 'accountDetails.article',
         'attribute' => 'content',
-        'key'       => 'ac_article_content'
+        'key'       => 'ac_article_content',
     ];
 
     private $expectedNestedRelationColumnArray = [
@@ -201,7 +200,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'orderable'   => false,
             'searchLogic' => false,
             'priority'    => 0,
-            'relation_type' => 'BelongsTo'
+            'relation_type' => 'BelongsTo',
         ],
         'ac_article_content' => [
             'name'        => 'accountDetails.article',
@@ -215,7 +214,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
             'priority'    => 1,
             'relation_type' => 'BelongsTo',
-            'attribute' => 'content'
+            'attribute' => 'content',
         ],
     ];
 
@@ -285,8 +284,9 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 
         $this->assertEquals($this->expectedRelationColumnArray, $this->crudPanel->columns());
     }
+
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @group failing
      */
