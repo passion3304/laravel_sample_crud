@@ -139,11 +139,17 @@ trait ColumnsProtectedMethods
             return $column;
         }
 
-        //if the name is dot notation we are sure it's a relationship
+        // if the name is dot notation it might be a relationship
         if (strpos($column['name'], '.') !== false) {
-            $column['entity'] = $column['name'];
+            $possibleMethodName = Str::before($column['name'], '.');
 
-            return $column;
+            // if the first part of the string exists as method,
+            // it is a relationship
+            if (method_exists($this->model, $possibleMethodName)) {
+                $column['entity'] = $column['name'];
+
+                return $column;
+            }
         }
 
         // if there's a method on the model with this name
