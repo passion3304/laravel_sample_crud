@@ -161,7 +161,7 @@ return [
     'external_link'             => 'Link externo',
     'choose_file'               => 'Escolher ficheiro',
     'new_item'                  => 'Novo item',
-    'select_entry'              => 'Selecionar um item',
+    'select_entry'              => 'Selecione um item',
     'select_entries'            => 'Selecionar itens',
 
     //Table field
@@ -173,5 +173,5 @@ return [
 
     // InlineCreateOperation
     'related_entry_created_success' => 'O item relacionado foi criado e selecionado.',
-    'related_entry_created_error' => 'Não foi possível adicionar o item relacionado.',
+    'related_entry_created_error' => 'Não foi possível criar o item relacionado.',
 ];
