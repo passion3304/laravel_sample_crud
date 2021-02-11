@@ -359,7 +359,7 @@
             var $emptyTranslation = '{{ trans("backpack::crud.empty_translations") }}';
             var $itemField = item[$fieldAttribute];
 
-            // try to retreive the item in app language, then fallback to; fallback language, first entry, empty transation
+            // try to retreive the item in app language; then fallback language; then first entry; if nothing found empty translation string
             return typeof $itemField === 'object' && $itemField !== null
                 ? $itemField[$appLang] ?? $itemField[$appLangFallback] ?? Object.values($itemField)[0] ?? $emptyTranslation
                 : $itemField;
