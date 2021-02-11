@@ -23,29 +23,32 @@
 
 @push('before_scripts')
   <script type="text/javascript">
-    /* Recover sidebar state */
-    if (Boolean(sessionStorage.getItem('sidebar-collapsed'))) {
-      var body = document.getElementsByTagName('body')[0];
-      body.className = body.className.replace('sidebar-lg-show', '');
-    }
+    // Save default sidebar class
+    let sidebarClass = (document.body.className.match(/sidebar-(sm|md|lg|xl)-show/) || ['sidebar-lg-show'])[0];
+    let sidebarTransition = value => document.querySelector('.app-body > .sidebar').style.transition = value || '';
 
-    /* Store sidebar state */
-    var navbarToggler = document.getElementsByClassName("navbar-toggler");
-    for (var i = 0; i < navbarToggler.length; i++) {
-      navbarToggler[i].addEventListener('click', function(event) {
-        event.preventDefault();
-        if (Boolean(sessionStorage.getItem('sidebar-collapsed'))) {
-          sessionStorage.setItem('sidebar-collapsed', '');
-        } else {
-          sessionStorage.setItem('sidebar-collapsed', '1');
-        }
-      });
+    // Recover sidebar state
+    let sessionState = sessionStorage.getItem('sidebar-collapsed');
+    if (sessionState) {
+      // disable the transition animation temporarily, so that if you're browsing across
+      // pages with the sidebar closed, the sidebar does not flicker into the view
+      sidebarTransition("none");
+      document.body.classList.toggle(sidebarClass, sessionState === '1');
+
+      // re-enable the transition, so that if the user clicks the hamburger menu, it does have a nice transition
+      setTimeout(sidebarTransition, 100);
     }
   </script>
 @endpush
 
 @push('after_scripts')
   <script>
+      // Store sidebar state
+      document.querySelectorAll('.sidebar-toggler').forEach(toggler => 
+        toggler.addEventListener('click', () => 
+          sessionStorage.setItem('sidebar-collapsed', Number(!document.body.classList.contains(sidebarClass)))
+        )
+      );
       // Set active state on menu element
       var full_url = "{{ Request::fullUrl() }}";
       var $navLinks = $(".sidebar-nav li a, .app-header li a");
