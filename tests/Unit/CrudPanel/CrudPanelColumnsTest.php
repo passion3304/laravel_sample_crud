@@ -154,7 +154,9 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 
     public function testAddColumnNotArray()
     {
-        $this->expectException(\ErrorException::class);
+        $this->expectException(PHP_MAJOR_VERSION == 7 ? \ErrorException::class : \TypeError::class);
+        // Why? When calling count() on a non-countable entity,
+        // PHP 7.x will through ErrorException, but PHP 8.x will throw TypeError.
 
         $this->crudPanel->addColumns('column1');
     }
