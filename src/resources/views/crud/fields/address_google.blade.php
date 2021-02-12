@@ -67,6 +67,10 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
             .ap-input-icon.ap-icon-clear {
                 right: 10px !important;
             }
+
+            .pac-container {
+                z-index: 1051;
+            }
         </style>
     @endpush
 
@@ -113,6 +117,10 @@ if (isset($field['value']) && (is_array($field['value']) || is_object($field['va
                         $field.val("");
                     }
                 });
+
+                // Make sure pac container is closed on modals (inline create)
+                let modal = document.querySelector('.modal-dialog');
+                if(modal) modal.addEventListener('click', e => document.querySelector('.pac-container').style.display = "none");
             }
 
             //Function that will be called by Google Places Library
