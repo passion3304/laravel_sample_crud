@@ -3,7 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\ColumnType;
-use Doctrine\DBAL\DBALException;
+use Exception;
 
 class MyColumnTypeWithOtherConnection extends ColumnType
 {
@@ -829,8 +829,8 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
 
         try {
             $new_model_db_platform->getDoctrineTypeMapping('enum');
-        } catch (DBALException $e) {
-            $this->assertInstanceOf(DBALException::class, $e);
+        } catch (Exception $e) {
+            $this->assertInstanceOf(Exception::class, $e);
         }
         $this->crudPanel->setDoctrineTypesMapping();
 
