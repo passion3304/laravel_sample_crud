@@ -1,11 +1,11 @@
-<!-- address google
+{{-- address google
 
     This field allows you to present your user with google places auto-complete address.
 
     Options:
         - store_as_json - true/false - If true stores the places object, if false stores the selected address string
 
--->
+--}}
 
 <?php
 
@@ -86,14 +86,13 @@
 
                 var $addressConfig = element.data('google-address');
                 var $field = $('[name="' + $addressConfig.field + '"]');
-
                 var $storeAsJson = element.data('store-as-json');
 
                 if ($field.val().length) {
                     try {
                         var existingData = JSON.parse($field.val());
                         element.val(existingData.value);
-                    }catch(error) {
+                    } catch(error) {
                         element.val($field.val());
                     }
                 }
@@ -105,9 +104,7 @@
                 $autocomplete.addListener('place_changed', function fillInAddress() {
 
                     var place = $autocomplete.getPlace();
-
                     var value = element.val();
-
                     var latlng = place.geometry.location;
                     var data = {"value": value, "latlng": latlng};
 
@@ -118,17 +115,16 @@
 
                     if($storeAsJson) {
                         $field.val(JSON.stringify(data));
-                    }else{
+                    } else {
                         $field.val(value);
                     }
-
 
                 });
 
                 element.change(function(){
                     if(!$storeAsJson) {
                         $field.val(element.val());
-                    }else{
+                    } else {
                         if (!element.val().length) {
                             $field.val("");
                         }
@@ -152,11 +148,8 @@
                 });
             }
 
-
-
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete" async defer></script>
-
 
     @endpush
 
