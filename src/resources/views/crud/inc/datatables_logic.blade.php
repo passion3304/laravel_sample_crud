@@ -1,4 +1,11 @@
-  <!-- DATA TABLES SCRIPT -->
+ @php
+    // as it is possible that we can be redirected with persistent table we save the alerts in a variable
+    // and flush them from session, so we will get them later from localStorage.
+    $backpack_alerts = \Alert::getMessages();
+    \Alert::flush();
+ @endphp
+
+  {{-- DATA TABLES SCRIPT --}}
   <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -11,7 +18,6 @@
     // datatables caches the ajax responses with pageLength in LocalStorage so when changing this
     // settings in controller users get unexpected results. To avoid that we will reset
     // the table cache when both lengths don't match.
-
     let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) ?? [];
     var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
 
@@ -19,27 +25,42 @@
         localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
     }
 
+    // in this page we allways pass the alerts to localStorage because we can be redirected with
+    // persistent table, and this way we guarantee non-duplicate alerts.
+    $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts')) ?? {};
+    $newAlerts = @json($backpack_alerts);
+
+    Object.entries($newAlerts).forEach(([type, messages]) => {
+        if(typeof $oldAlerts[type] !== 'undefined') {
+            $oldAlerts[type].push(...messages);
+        } else {
+            $oldAlerts[type] = messages;
+        }
+    });
+
+    // always store the alerts in localStorage for this page
+    localStorage.setItem('backpack_alerts', JSON.stringify($oldAlerts));
+
     @if ($crud->getPersistentTable())
 
         var saved_list_url = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url');
 
-        // check if saved url has any parameter or is empty after clearing filters.
-
+        //check if saved url has any parameter or is empty after clearing filters.
         if (saved_list_url && saved_list_url.indexOf('?') < 1) {
             var saved_list_url = false;
-        }else{
+        } else {
             var persistentUrl = saved_list_url+'&persistent-table=true';
         }
 
-    var arr =  window.location.href.split('?');
-        // check if url has parameters.
-        if (arr.length > 1 && arr[1] !== '') {
-                // IT HAS! Check if it is our own persistence redirect.
-                if (window.location.search.indexOf('persistent-table=true') < 1) {
-                    // IF NOT: we don't want to redirect the user.
-                    saved_list_url = false;
-                }
+    var arr = window.location.href.split('?');
+    // check if url has parameters.
+    if (arr.length > 1 && arr[1] !== '') {
+        // IT HAS! Check if it is our own persistence redirect.
+        if (window.location.search.indexOf('persistent-table=true') < 1) {
+            // IF NOT: we don't want to redirect the user.
+            saved_list_url = false;
         }
+    }
 
     @if($crud->getPersistentTableDuration())
         var saved_list_url_time = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url_time');
@@ -49,19 +70,20 @@
             var $saved_time = new Date(parseInt(saved_list_url_time));
             $saved_time.setMinutes($saved_time.getMinutes() + {{$crud->getPersistentTableDuration()}});
 
-            //if the save time is not expired we force the filter redirection.
+            // if the save time is not expired we force the filter redirection.
             if($saved_time > $current_date) {
                 if (saved_list_url && persistentUrl!=window.location.href) {
                     window.location.href = persistentUrl;
                 }
             } else {
-            //persistent table expired, let's not redirect the user
+                // persistent table expired, let's not redirect the user
                 saved_list_url = false;
             }
         }
 
     @endif
         if (saved_list_url && persistentUrl!=window.location.href) {
+            // finally redirect the user.
             window.location.href = persistentUrl;
         }
     @endif
