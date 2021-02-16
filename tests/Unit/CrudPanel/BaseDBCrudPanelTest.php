@@ -3,10 +3,12 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
-use Orchestra\Database\ConsoleServiceProvider;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
 {
+    use RefreshDatabase;
+
     /**
      * @var CrudPanel
      */
@@ -29,9 +31,9 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
             '--path' => realpath(__DIR__.'/../../config/database/migrations'),
         ]);
 
-        $this->artisan('db:seed', ['--class' => 'UsersRolesTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'UsersTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'ArticlesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersRolesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\ArticlesTableSeeder']);
     }
 
     /**
@@ -44,20 +46,6 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testing');
-    }
-
-    /**
-     * Get package providers.
-     *
-     * @param \Illuminate\Foundation\Application $app
-     *
-     * @return array
-     */
-    protected function getPackageProviders($app)
-    {
-        return [
-            ConsoleServiceProvider::class,
-        ];
     }
 
     /**
