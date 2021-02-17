@@ -58,7 +58,7 @@
 				          }).show();
 
 						  crud.checkedItems = [];
-						  crud.table.ajax.reload();
+						  crud.table.draw(false);
 						},
 						error: function(result) {
 						  // Show an alert with the result
