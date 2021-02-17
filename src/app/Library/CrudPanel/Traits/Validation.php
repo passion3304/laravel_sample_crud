@@ -7,6 +7,17 @@ use Illuminate\Foundation\Http\FormRequest;
 trait Validation
 {
     /**
+     * Adds the required rules from an array and allows validation of that array.
+     *
+     * @param array $requiredFields
+     */
+    public function setValidationFromArray(array $requiredFields)
+    {
+        $this->setOperationSetting('requiredFields', array_keys($requiredFields));
+        $this->setOperationSetting('validationRules', $requiredFields);
+    }
+
+    /**
      * Mark a FormRequest file as required for the current operation, in Settings.
      * Adds the required rules to an array for easy access.
      *
@@ -71,6 +82,11 @@ trait Validation
             $request = app($formRequest);
         } else {
             $request = $this->getRequest();
+
+            if ($this->hasOperationSetting('validationRules')) {
+                $rules = $this->getOperationSetting('validationRules');
+                $request->validate($rules);
+            }
         }
 
         return $request;
