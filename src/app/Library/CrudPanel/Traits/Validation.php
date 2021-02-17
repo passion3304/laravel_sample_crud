@@ -11,10 +11,22 @@ trait Validation
      *
      * @param array $requiredFields
      */
-    public function setValidationFromArray(array $requiredFields)
+    public function setValidationFromArray(array $rules)
     {
-        $this->setOperationSetting('requiredFields', array_keys($requiredFields));
-        $this->setOperationSetting('validationRules', $requiredFields);
+        $requiredFields = [];
+
+        if (count($rules)) {
+            foreach ($rules as $key => $rule) {
+                if (
+                    (is_string($rule) && strpos($rule, 'required') !== false && strpos($rule, 'required_') === false) ||
+                    (is_array($rule) && array_search('required', $rule) !== false && array_search('required_', $rule) === false)
+                ) {
+                    $requiredFields[] = $key;
+                }
+            }
+        }
+        $this->setOperationSetting('requiredFields', $requiredFields);
+        $this->setOperationSetting('validationRules', $rules);
     }
 
     /**
