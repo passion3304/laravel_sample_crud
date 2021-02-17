@@ -119,10 +119,8 @@
 
                         $("li[filter-key="+filterKey+"]").removeClass("active");
                         $("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
-                        $('#filter_'+filterKey).val(null).trigger('change');
-
                     }
-                    }
+                }
 
                 }).on('select2:clear', function(e) {
                     // when the "x" clear all button is pressed, we update the table
