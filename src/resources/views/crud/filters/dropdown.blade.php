@@ -41,23 +41,16 @@
 @push('crud_list_scripts')
     <script>
 		jQuery(document).ready(function($) {
+            var dropdownFilterShouldUpdateUrl = false;
+            var filterKey = '{{ $filter->key }}';
 			$("li.dropdown[filter-key={{ $filter->key }}] .dropdown-menu a").click(function(e) {
 				e.preventDefault();
 
 				var value = $(this).attr('dropdownkey');
 				var parameter = $(this).attr('parameter');
 
-		    	// behaviour for ajax table
-				var ajax_table = $("#crudTable").DataTable();
-				var current_url = ajax_table.ajax.url();
-				var new_url = addOrUpdateUriParameter(current_url, parameter, value);
 
-				// replace the datatables ajax url with new_url and reload it
-				new_url = normalizeAmpersand(new_url.toString());
-				ajax_table.ajax.url(new_url).load();
-
-				// add filter to URL
-				crud.updateUrl(new_url);
+                var new_url = updateDatatablesOnFilterChange(crud, parameter, value, null, null, filterKey, true)
 
 				// mark this filter as active in the navbar-filters
 				// mark dropdown items active accordingly
@@ -74,7 +67,6 @@
 
 			// clear filter event (used here and by the Remove all filters button)
 			$("li[filter-key={{ $filter->key }}]").on('filter:clear', function(e) {
-				// console.log('dropdown filter cleared');
 				$("li[filter-key={{ $filter->key }}]").removeClass('active');
 				$("li[filter-key={{ $filter->key }}] .dropdown-menu a").removeClass('active');
 			});

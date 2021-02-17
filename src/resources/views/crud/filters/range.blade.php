@@ -75,6 +75,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 @push('crud_list_scripts')
 	<script>
 		jQuery(document).ready(function($) {
+            var shouldUpdateRangeFilterUrl = false;
 			$("li[filter-key={{ $filter->key }}] .from, li[filter-key={{ $filter->key }}] .to").change(function(e) {
 				e.preventDefault();
 				var from = $("li[filter-key={{ $filter->key }}] .from").val();
@@ -91,17 +92,11 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 				}
 				var parameter = '{{ $filter->name }}';
 
-				// behaviour for ajax table
-				var ajax_table = $('#crudTable').DataTable();
-				var current_url = ajax_table.ajax.url();
-				var new_url = addOrUpdateUriParameter(current_url, parameter, value);
-
-				// replace the datatables ajax url with new_url and reload it
-				new_url = normalizeAmpersand(new_url.toString());
-				ajax_table.ajax.url(new_url).load();
-
-				// add filter to URL
-				crud.updateUrl(new_url);
+				if(value === '' || !value) {
+                    var new_url = updateDatatablesOnFilterChange(crud, parameter, null, null, null, '{{ $filter->key }}', shouldUpdateRangeFilterUrl)
+                } else {
+                    var new_url = updateDatatablesOnFilterChange(crud, parameter, value, null, null, '{{ $filter->key }}', true)
+                }
 
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
@@ -119,7 +114,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 			// range clear button
 			$(".range-filter-{{ $filter->key }}-clear-button").click(function(e) {
 				e.preventDefault();
-
+                shouldUpdateRangeFilterUrl = true;
 				$('li[filter-key={{ $filter->key }}]').trigger('filter:clear');
 			})
 

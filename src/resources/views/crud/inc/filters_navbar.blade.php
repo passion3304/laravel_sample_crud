@@ -45,6 +45,35 @@
 
       }
 
+    function updateDatatablesOnFilterChange(crud, filterName, val, extra_param, extra_param_value, filterKey, update_url = false) {
+            // behaviour for ajax table
+            var ajax_table = $('#crudTable').DataTable();
+            var current_url = ajax_table.ajax.url();
+
+            var new_url = addOrUpdateUriParameter(current_url, filterName, val);
+
+            if (extra_param !== null) {
+                new_url = addOrUpdateUriParameter(new_url, extra_param , extra_param_value);
+            }
+
+            new_url = normalizeAmpersand(new_url.toString());
+
+
+            // add filter to URL
+            crud.updateUrl(new_url);
+
+            // when we are clearing ALL filters, we would not update the table url here, because this is done PER filter
+            // and we have a function that will do this update for us after all filters had been cleared.
+            if(update_url) {
+                // replace the datatables ajax url with new_url and reload it
+                ajax_table.ajax.url(new_url).load();
+            }
+
+            return new_url;
+
+        }
+
+
       function normalizeAmpersand(string) {
         return string.replace(/&amp;/g, "&").replace(/amp%3B/g, "");
       }

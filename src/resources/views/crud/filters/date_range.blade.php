@@ -89,7 +89,7 @@
 
   <script>
 
-  		function applyDateRangeFilter{{$filter->key}}(start, end) {
+  		function applyDateRangeFilter{{$filter->key}}(start, end, shouldUpdateUrl = false) {
 
   			if (start && end) {
   				var dates = {
@@ -103,15 +103,13 @@
   			}
 
             var parameter = '{{ $filter->name }}';
-	    	// behaviour for ajax table
-			var ajax_table = $('#crudTable').DataTable();
-			var current_url = ajax_table.ajax.url();
-			var new_url = addOrUpdateUriParameter(current_url, parameter, value);
-			// replace the datatables ajax url with new_url and reload it
-			new_url = normalizeAmpersand(new_url.toString());
-			ajax_table.ajax.url(new_url).load();
-			// add filter to URL
-			crud.updateUrl(new_url);
+
+            if(value === '' || !value) {
+                var new_url = updateDatatablesOnFilterChange(crud, parameter, null, null, null, '{{ $filter->key }}', shouldUpdateUrl)
+            } else {
+                var new_url = updateDatatablesOnFilterChange(crud, parameter, value, null, null, '{{ $filter->key }}', true)
+            }
+
 			// mark this filter as active in the navbar-filters
 			if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 				$('li[filter-key={{ $filter->key }}]').removeClass('active').addClass('active');
@@ -121,6 +119,8 @@
   		}
 
 		jQuery(document).ready(function($) {
+
+            var dateRangeShouldUpdateFilterUrl = false;
 
             moment.locale('{{app()->getLocale()}}');
 
@@ -149,7 +149,7 @@
 
 
             dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
-				applyDateRangeFilter{{$filter->key}}(picker.startDate, picker.endDate);
+				applyDateRangeFilter{{$filter->key}}(picker.startDate, picker.endDate, true);
 			});
 			$('li[filter-key={{ $filter->key }}]').on('hide.bs.dropdown', function () {
 				if($('.daterangepicker').is(':visible'))
@@ -162,7 +162,7 @@
 			// datepicker clear button
 			$(".daterangepicker-{{ $filter->key }}-clear-button").click(function(e) {
 				e.preventDefault();
-				applyDateRangeFilter{{$filter->key}}(null, null);
+				applyDateRangeFilter{{$filter->key}}(null, null, true);
 			});
 		});
   </script>

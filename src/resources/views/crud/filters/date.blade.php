@@ -50,6 +50,7 @@
 	<script src="{{ asset('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <script>
 		jQuery(document).ready(function($) {
+            var dateFilterShouldUpdateUrl = false;
 			var dateInput = $('#datepicker-{{ $filter->key }}').datepicker({
 				autoclose: true,
 				format: 'yyyy-mm-dd',
@@ -57,8 +58,7 @@
 			})
 			.on('changeDate', function(e) {
 				var d = new Date(e.date);
-				// console.log(e);
-				// console.log(d);
+
 				if (isNaN(d.getFullYear())) {
 					var value = '';
 				} else {
@@ -67,17 +67,11 @@
 
 				var parameter = '{{ $filter->name }}';
 
-		    	// behaviour for ajax table
-				var ajax_table = $('#crudTable').DataTable();
-				var current_url = ajax_table.ajax.url();
-				var new_url = addOrUpdateUriParameter(current_url, parameter, value);
-
-				// replace the datatables ajax url with new_url and reload it
-				new_url = normalizeAmpersand(new_url.toString());
-				ajax_table.ajax.url(new_url).load();
-
-				// add filter to URL
-				crud.updateUrl(new_url);
+		    	if(value === '' || !value) {
+                    var new_url = updateDatatablesOnFilterChange(crud, parameter, null, null, null, '{{ $filter->key }}', dateFilterShouldUpdateUrl)
+                } else {
+                    var new_url = updateDatatablesOnFilterChange(crud, parameter, value, null, null, '{{ $filter->key }}', true)
+                }
 
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
@@ -86,7 +80,7 @@
 			});
 
 			$('li[filter-key={{ $filter->key }}]').on('filter:clear', function(e) {
-				// console.log('date filter cleared');
+
 				$('li[filter-key={{ $filter->key }}]').removeClass('active');
 				$('#datepicker-{{ $filter->key }}').datepicker('update', '');
 				$('#datepicker-{{ $filter->key }}').trigger('changeDate');
@@ -95,7 +89,7 @@
 			// datepicker clear button
 			$(".datepicker-{{ $filter->key }}-clear-button").click(function(e) {
 				e.preventDefault();
-
+                dateFilterShouldUpdateUrl = true;
 				$('li[filter-key={{ $filter->key }}]').trigger('filter:clear');
 			})
 		});

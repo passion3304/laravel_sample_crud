@@ -133,33 +133,34 @@
 				        }
 				    }
 				}).on('change', function (evt) {
-					var val = $(this).val();
-					var val_text = $(this).select2('data')[0]?$(this).select2('data')[0].text:null;
-					var parameter = filterName;
+                        var val = $(this).val();
+                        var val_text = $(this).select2('data')[0]?$(this).select2('data')[0].text:null;
+                        var extra_param = filterName + '_text';
 
-			    	// behaviour for ajax table
-					var ajax_table = $('#crudTable').DataTable();
-					var current_url = ajax_table.ajax.url();
-					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					new_url = addOrUpdateUriParameter(new_url, parameter + '_text', val_text);
-					new_url = normalizeAmpersand(new_url.toString());
+                        if (!val_text) {
+                           return;
+                        }
 
-					// replace the datatables ajax url with new_url and reload it
-					ajax_table.ajax.url(new_url).load();
+                        var new_url = updateDatatablesOnFilterChange(crud, filterName, val, extra_param, val_text, filterKey);
 
-					// add filter to URL
-					crud.updateUrl(new_url);
 
-					// mark this filter as active in the navbar-filters
-					if (URI(new_url).hasQuery(filterName, true)) {
-						$('li[filter-key='+filterKey+']').addClass('active');
-					}
-					else
-					{
-						$("li[filter-key="+filterKey+"]").removeClass("active");
-						$("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
-					}
-				});
+                        // mark this filter as active in the navbar-filters
+                        if (URI(new_url).hasQuery(filterName, true)) {
+                            $('li[filter-key='+filterKey+']').removeClass('active').addClass('active');
+                        }
+                    }).on('select2:unselecting', function (e) {
+                        var extra_param = filterName + '_text';
+
+                        updateDatatablesOnFilterChange(crud, filterName, null, extra_param, null, filterKey, true);
+
+                        $('#filter_'+filterKey).val(null)
+                        $("li[filter-key="+filterKey+"]").removeClass("active");
+                        $("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
+
+
+                        e.stopPropagation();
+                        return false;
+                    });
 
 				// when the dropdown is opened, autofocus on the select2
 				$('li[filter-key='+filterKey+']').on('shown.bs.dropdown', function () {
