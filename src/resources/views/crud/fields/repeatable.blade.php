@@ -217,7 +217,15 @@
                 // set the value on field inputs, based on the JSON in the hidden input
                 new_field_group.find('input, select, textarea').each(function () {
                     if ($(this).data('repeatable-input-name')) {
-                        $(this).val(values[$(this).data('repeatable-input-name')]);
+
+                        // if the field provides a `data-value-prefix` attribute, we should respect that and add that prefix to the value.
+                        // this is different than using prefix in fields like text, number etc. In those cases the prefix is used
+                        // only for displaying purposes, when is set as `data-value-prefix` is when it is part of the value
+                        // like image field.
+
+                        let valuePrefix = $(this).data('value-prefix') ?? '';
+
+                        $(this).val(valuePrefix+values[$(this).data('repeatable-input-name')]);
 
                         // if it's a Select input with no options, also attach the values as a data attribute;
                         // this is done because the above val() call will do nothing if the options aren't there
