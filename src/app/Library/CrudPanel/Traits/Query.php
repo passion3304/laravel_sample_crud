@@ -74,8 +74,6 @@ trait Query
             return $this->query;
         }
 
-        $this->query->getQuery()->orders = null;
-
         $orderLogic = $column['orderLogic'];
 
         if (is_callable($orderLogic)) {
