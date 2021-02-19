@@ -279,7 +279,7 @@
                     url: $dataSource,
                     type: $method,
                     dataType: 'json',
-                    quietMillis: 250,
+                    delay: 250,
                     data: function (params) {
                         if ($includeAllFormFields) {
                             return {
