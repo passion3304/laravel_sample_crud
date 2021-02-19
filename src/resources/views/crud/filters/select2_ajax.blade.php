@@ -104,7 +104,7 @@
 				        url: '{{ $filter->values }}',
 				        dataType: 'json',
 				        type: $(this).attr('filter-method'),
-				        quietMillis: $(this).attr('filter-quiet-time'),
+				        delay: $(this).attr('filter-quiet-time'),
 
 				        processResults: function (data) {
                             //it's a paginated result
