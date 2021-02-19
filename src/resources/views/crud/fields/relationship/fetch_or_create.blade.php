@@ -610,7 +610,7 @@ function bpFieldInitFetchOrCreateElement(element) {
                     url: $dataSource,
                     type: $method,
                     dataType: 'json',
-                    quietMillis: 500,
+                    delay: 500,
                     data: function (params) {
                     if ($includeAllFormFields) {
                     return {
