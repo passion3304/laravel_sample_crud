@@ -1,7 +1,11 @@
 {{-- enumerate the values in an array  --}}
 @php
     $array = data_get($entry, $column['name']);
-    $suffix = isset($column['suffix']) ? $column['suffix'] : 'items';
+
+    $column['escaped'] = $column['escaped'] ?? false;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? 'items';
+    $column['text'] = '-';
 
     // the value should be an array wether or not attribute casting is used
     if (! is_array($array)) {
@@ -9,16 +13,12 @@
     }
 
     if($array && count($array)) {
-        $column['text'] = count($array).' '.$suffix;        
-    } else {
-        $column['text'] = '-';
+        $column['text'] = $column['prefix'].count($array).' '.$column['suffix'];
     }
-    
-    $column['escaped'] = $column['escaped'] ?? false;
 @endphp
 
 <span>
-	@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         @if($column['escaped'])
             {{ $column['text'] }}
         @else
