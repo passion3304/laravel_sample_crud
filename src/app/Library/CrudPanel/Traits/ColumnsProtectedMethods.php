@@ -80,7 +80,7 @@ trait ColumnsProtectedMethods
      */
     protected function makeSureColumnHasType($column)
     {
-        $could_be_relation = isset($column['entity']) && $column['entity'] !== false ? true : false;
+        $could_be_relation = isset($column['entity']) && $column['entity'] !== false;
 
         if (! isset($column['type']) && $could_be_relation) {
             $column['type'] = 'relationship';
