@@ -48,6 +48,9 @@
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
     $field['include_all_form_fields'] = $field['include_all_form_fields'] ?? true;
 
+    // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
+    $field['delay'] = $field['delay'] ?? 500;
+
 
 
 $activeInlineCreate = !empty($field['inline_create']) ? true : false;
@@ -121,6 +124,7 @@ if($activeInlineCreate) {
         data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
         data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
+        data-ajax-delay="{{ $field['delay'] }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -514,6 +518,7 @@ function bpFieldInitFetchOrCreateElement(element) {
     var $appLang = element.attr('data-app-current-lang');
     var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
     var $multiple = element.prop('multiple');
+    var $ajaxDelay = element.attr('data-ajax-delay');
 
     var FetchOrCreateAjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
@@ -610,7 +615,7 @@ function bpFieldInitFetchOrCreateElement(element) {
                     url: $dataSource,
                     type: $method,
                     dataType: 'json',
-                    delay: 500,
+                    delay: $ajaxDelay,
                     data: function (params) {
                     if ($includeAllFormFields) {
                     return {
