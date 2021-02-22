@@ -41,16 +41,13 @@
 @push('crud_list_scripts')
     <script>
 		jQuery(document).ready(function($) {
-            var dropdownFilterShouldUpdateUrl = false;
-            var filterKey = '{{ $filter->key }}';
 			$("li.dropdown[filter-key={{ $filter->key }}] .dropdown-menu a").click(function(e) {
 				e.preventDefault();
 
 				var value = $(this).attr('dropdownkey');
 				var parameter = $(this).attr('parameter');
 
-
-                var new_url = updateDatatablesOnFilterChange(crud, parameter, value, null, null, filterKey, true)
+                var new_url = updateDatatablesOnFilterChange(parameter, value, true);
 
 				// mark this filter as active in the navbar-filters
 				// mark dropdown items active accordingly

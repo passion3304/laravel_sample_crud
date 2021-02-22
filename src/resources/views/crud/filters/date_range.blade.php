@@ -89,7 +89,7 @@
 
   <script>
 
-  		function applyDateRangeFilter{{$filter->key}}(start, end, shouldUpdateUrl = false) {
+  		function applyDateRangeFilter{{$filter->key}}(start, end) {
 
   			if (start && end) {
   				var dates = {
@@ -104,11 +104,7 @@
 
             var parameter = '{{ $filter->name }}';
 
-            if(value === '' || !value) {
-                var new_url = updateDatatablesOnFilterChange(crud, parameter, null, null, null, '{{ $filter->key }}', shouldUpdateUrl)
-            } else {
-                var new_url = updateDatatablesOnFilterChange(crud, parameter, value, null, null, '{{ $filter->key }}', true)
-            }
+			var new_url = updateDatatablesOnFilterChange(parameter, value, true);
 
 			// mark this filter as active in the navbar-filters
 			if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
@@ -149,7 +145,7 @@
 
 
             dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
-				applyDateRangeFilter{{$filter->key}}(picker.startDate, picker.endDate, true);
+				applyDateRangeFilter{{$filter->key}}(picker.startDate, picker.endDate);
 			});
 			$('li[filter-key={{ $filter->key }}]').on('hide.bs.dropdown', function () {
 				if($('.daterangepicker').is(':visible'))
@@ -162,7 +158,7 @@
 			// datepicker clear button
 			$(".daterangepicker-{{ $filter->key }}-clear-button").click(function(e) {
 				e.preventDefault();
-				applyDateRangeFilter{{$filter->key}}(null, null, true);
+				applyDateRangeFilter{{$filter->key}}(null, null);
 			});
 		});
   </script>

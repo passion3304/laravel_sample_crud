@@ -91,11 +91,11 @@
                         value = values.length ? JSON.stringify(values) : '';
                     }
 
-                    if (value === '' || !value) {
+                    if (!value) {
                         return;
                     }
 
-                    var new_url = updateDatatablesOnFilterChange(crud, filterName, value, null, null, filterKey, true);
+                    var new_url = updateDatatablesOnFilterChange(filterName, value, true);
 
                     // mark this filter as active in the navbar-filters
                     if (URI(new_url).hasQuery(filterName, true)) {
@@ -114,17 +114,17 @@
                         });
 
                         if (!currentElementValue.length) {
+                            updateDatatablesOnFilterChange(filterName, null, true);
 
-                        updateDatatablesOnFilterChange(crud, filterName, null, null, null, filterKey, true);
-
-                        $("li[filter-key="+filterKey+"]").removeClass("active");
-                        $("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
+                            $("li[filter-key="+filterKey+"]").removeClass("active");
+                            $("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
+                        }
                     }
-                }
 
                 }).on('select2:clear', function(e) {
                     // when the "x" clear all button is pressed, we update the table
-                    updateDatatablesOnFilterChange(crud, filterName, null, null, null, filterKey, true);
+                    updateDatatablesOnFilterChange(filterName, null, true);
+
                     $("li[filter-key="+filterKey+"]").removeClass("active");
 					$("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
                 });

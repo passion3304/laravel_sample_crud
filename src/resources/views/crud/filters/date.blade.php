@@ -50,7 +50,7 @@
 	<script src="{{ asset('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <script>
 		jQuery(document).ready(function($) {
-            var dateFilterShouldUpdateUrl = false;
+            var shouldUpdateUrl = false;
 			var dateInput = $('#datepicker-{{ $filter->key }}').datepicker({
 				autoclose: true,
 				format: 'yyyy-mm-dd',
@@ -67,11 +67,8 @@
 
 				var parameter = '{{ $filter->name }}';
 
-		    	if(value === '' || !value) {
-                    var new_url = updateDatatablesOnFilterChange(crud, parameter, null, null, null, '{{ $filter->key }}', dateFilterShouldUpdateUrl)
-                } else {
-                    var new_url = updateDatatablesOnFilterChange(crud, parameter, value, null, null, '{{ $filter->key }}', true)
-                }
+				var new_url = updateDatatablesOnFilterChange(parameter, value, value || shouldUpdateUrl);
+				shouldUpdateUrl = false;
 
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
@@ -89,7 +86,7 @@
 			// datepicker clear button
 			$(".datepicker-{{ $filter->key }}-clear-button").click(function(e) {
 				e.preventDefault();
-                dateFilterShouldUpdateUrl = true;
+                shouldUpdateUrl = true;
 				$('li[filter-key={{ $filter->key }}]').trigger('filter:clear');
 			})
 		});

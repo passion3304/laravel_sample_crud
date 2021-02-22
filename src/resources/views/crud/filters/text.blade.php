@@ -40,11 +40,9 @@
 				var parameter = '{{ $filter->name }}';
 				var value = $(this).val();
 
-		    	if (value) {
-                    var new_url = updateDatatablesOnFilterChange(crud, parameter, value, null, null, '{{ $filter->key }}', true);
-                }else{
-                    var new_url = updateDatatablesOnFilterChange(crud, parameter, null, null, null, '{{ $filter->key }}', shouldUpdateUrl);
-                }
+				var new_url = updateDatatablesOnFilterChange(parameter, value, value || shouldUpdateUrl);
+				shouldUpdateUrl = false;
+
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 					$('li[filter-key={{ $filter->key }}]').removeClass('active').addClass('active');

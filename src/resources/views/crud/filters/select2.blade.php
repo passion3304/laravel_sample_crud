@@ -94,7 +94,7 @@
                        return;
                     }
 
-                    var new_url = updateDatatablesOnFilterChange(crud, filterName, value, null, null, filterKey, true);
+                    var new_url = updateDatatablesOnFilterChange(filterName, value, true);
 
                     // mark this filter as active in the navbar-filters
                     if (URI(new_url).hasQuery(filterName, true)) {
@@ -102,7 +102,7 @@
                     }
 				}).on('select2:unselecting', function (e) {
 
-                    updateDatatablesOnFilterChange(crud, filterName, null, null, null, filterKey, true);
+                    updateDatatablesOnFilterChange(filterName, null, true);
 
                     $('#filter_'+filterKey).val(null)
                     $("li[filter-key="+filterKey+"]").removeClass("active");

@@ -137,12 +137,14 @@
                         var val_text = $(this).select2('data')[0]?$(this).select2('data')[0].text:null;
                         var extra_param = filterName + '_text';
 
+                        console.log(val_text);
+
                         if (!val_text) {
                            return;
                         }
 
-                        var new_url = updateDatatablesOnFilterChange(crud, filterName, val, extra_param, val_text, filterKey);
-
+                        updateDatatablesOnFilterChange(filterName, val);
+                        var new_url = updateDatatablesOnFilterChange(extra_param, val_text, true);
 
                         // mark this filter as active in the navbar-filters
                         if (URI(new_url).hasQuery(filterName, true)) {
@@ -151,15 +153,12 @@
                     }).on('select2:unselecting', function (e) {
                         var extra_param = filterName + '_text';
 
-                        updateDatatablesOnFilterChange(crud, filterName, null, extra_param, null, filterKey, true);
+                        updateDatatablesOnFilterChange(filterName, null);
+                        updateDatatablesOnFilterChange(extra_param, null, true);
 
                         $('#filter_'+filterKey).val(null)
                         $("li[filter-key="+filterKey+"]").removeClass("active");
                         $("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
-
-
-                        e.stopPropagation();
-                        return false;
                     });
 
 				// when the dropdown is opened, autofocus on the select2
