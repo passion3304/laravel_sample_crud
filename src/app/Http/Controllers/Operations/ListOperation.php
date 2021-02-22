@@ -96,8 +96,12 @@ trait ListOperation
             // clear any past orderBy rules
             $this->crud->query->getQuery()->orders = null;
             foreach ((array) request()->input('order') as $order) {
-                $column_number = $order['column'];
+                $column_number = (int)$order['column'];
                 $column_direction = $order['dir'];
+
+                if(!in_array(strtolower($order['dir']), ['asc', 'desc'])) {
+                    $column_direction = 'asc';
+                }
                 $column = $this->crud->findColumnById($column_number);
                 if ($column['tableColumn']) {
                     // apply the current orderBy rules
