@@ -97,7 +97,7 @@ trait ListOperation
             $this->crud->query->getQuery()->orders = null;
             foreach ((array) request()->input('order') as $order) {
                 $column_number = (int) $order['column'];
-                $column_direction = (string)$order['dir'];
+                $column_direction = (string) $order['dir'];
 
                 if (! in_array(strtolower($order['dir']), ['asc', 'desc'])) {
                     $column_direction = 'asc';
