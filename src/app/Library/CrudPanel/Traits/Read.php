@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Exception;
+
 /**
  * Properties and methods used by the List operation.
  */
@@ -82,8 +84,30 @@ trait Read
     {
         $relationships = $this->getColumnsRelationships();
 
-        if (count($relationships)) {
-            $this->with($relationships);
+        foreach($relationships as $relation) {
+            if(strpos($relation, '.') !== false) {
+
+                $relation_parts = explode('.', $relation);
+                $last_relation_part = array_pop($relation_parts);
+
+                $last_valid_relation_method = array_reduce(array_splice($relation_parts, 0, count($relation_parts)), function ($obj, $method) {
+                    try {
+                        $result = $obj->$method();
+                        return $result->getRelated();
+                    } catch (Exception $e) {
+                        return $method;
+                    }
+                }, $this->model);
+
+                // when this keys don't match means the last part of the relation string is the attribute in the relation and
+                // not a nested relation. In that case, we should eager load the relation but not the attribute
+                if($last_valid_relation_method != $last_relation_part) {
+                    // remove the last part of the relation string because it is the attribute in the relationship
+                    $relation = substr($relation, 0, strrpos( $relation, '.') );
+
+                }
+            }
+            $this->with($relation);
         }
     }
 
@@ -102,7 +126,6 @@ trait Read
         foreach ($entries as $key => $entry) {
             $entry->addFakes($this->getFakeColumnsAsArray());
         }
-
         return $entries;
     }
 
