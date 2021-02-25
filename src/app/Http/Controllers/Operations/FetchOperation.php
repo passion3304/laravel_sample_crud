@@ -81,7 +81,7 @@ trait FetchOperation
             $config['query']->get();
         }
 
-        $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array'];
+        $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array', 'json'];
 
         // if the query builder brings any where clause already defined by the user we must
         // ensure that the where prevails and we should only use our search as a complement to the query constraints.
