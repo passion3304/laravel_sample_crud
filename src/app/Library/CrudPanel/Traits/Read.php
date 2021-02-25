@@ -93,6 +93,7 @@ trait Read
                     try {
                         $result = $obj->$method();
                         $last_valid_relation_method = $method;
+
                         return $result->getRelated();
                     } catch (Exception $e) {
                         return;
