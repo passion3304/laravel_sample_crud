@@ -5,7 +5,7 @@
         $field['inline_create'] = [true];
     }
     $field['multiple'] = $field['multiple'] ?? $crud->relationAllowsMultiple($field['relation_type']);
-    $field['ajax'] = $field['ajax'] ?? false;
+    $field['ajax'] = $field['ajax'] ?? isset($field['data_source']);
     $field['placeholder'] = $field['placeholder'] ?? ($field['multiple'] ? trans('backpack::crud.select_entries') : trans('backpack::crud.select_entry'));
     $field['attribute'] = $field['attribute'] ?? (new $field['model'])->identifiableAttribute();
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
@@ -37,4 +37,3 @@
 @endphp
 
 @include('crud::fields.relationship.'.$field['type'])
-
