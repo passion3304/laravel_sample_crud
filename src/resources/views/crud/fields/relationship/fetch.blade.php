@@ -16,8 +16,12 @@
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['placeholder'] = $field['placeholder'] ?? ($field['multiple'] ? trans('backpack::crud.select_entries') : trans('backpack::crud.select_entry'));
     $field['include_all_form_fields'] = $field['include_all_form_fields'] ?? true;
-    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+
+    // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
+    $field['delay'] = $field['delay'] ?? 500;
 
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
@@ -73,6 +77,7 @@
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
         data-current-value="{{ $field['value'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
+        data-ajax-delay="{{ $field['delay'] }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -186,6 +191,7 @@
         var $allows_null = element.attr('data-column-nullable') == 'true' ? true : false;
         var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $multiple = element.prop('multiple');
+        var $ajaxDelay = element.attr('data-ajax-delay');
 
         var FetchAjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
@@ -277,7 +283,7 @@
                     url: $dataSource,
                     type: $method,
                     dataType: 'json',
-                    quietMillis: 250,
+                    delay: $ajaxDelay,
                     data: function (params) {
                         if ($includeAllFormFields) {
                             return {

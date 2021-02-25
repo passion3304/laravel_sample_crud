@@ -1,4 +1,9 @@
 {{-- Select2 Ajax Backpack CRUD filter --}}
+
+@php
+    $filter->options['quiet_time'] = $filter->options['quiet_time'] ?? $filter->options['delay'] ?? 500;
+@endphp
+
 <li filter-name="{{ $filter->name }}"
     filter-type="{{ $filter->type }}"
     filter-key="{{ $filter->key }}"
@@ -18,7 +23,7 @@
                 data-select-attribute="{{ $filter->options['select_attribute'] ?? 'name' }}"
                 filter-minimum-input-length="{{ $filter->options['minimum_input_length'] ?? 2 }}"
                 filter-method="{{ $filter->options['method'] ?? 'GET' }}"
-                filter-quiet-time="{{ $filter->options['quiet_time'] ?? 500 }}"
+                filter-quiet-time="{{ $filter->options['quiet_time'] }}"
             >
 				@if (Request::get($filter->name))
 					<option value="{{ Request::get($filter->name) }}" selected="selected"> {{ Request::get($filter->name.'_text') ?? 'Previous selection' }} </option>
@@ -104,7 +109,7 @@
 				        url: '{{ $filter->values }}',
 				        dataType: 'json',
 				        type: $(this).attr('filter-method'),
-				        quietMillis: $(this).attr('filter-quiet-time'),
+				        delay: $(this).attr('filter-quiet-time'),
 
 				        processResults: function (data) {
                             //it's a paginated result
