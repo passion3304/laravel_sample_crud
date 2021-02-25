@@ -87,15 +87,15 @@ trait Read
         foreach ($relationships as $relation) {
             if (strpos($relation, '.') !== false) {
                 $relation_parts = explode('.', $relation);
-                $last_relation_part = array_pop($relation_parts);
+                $last_relation_part = $last_valid_relation_method = end($relation_parts);
 
-                $last_valid_relation_method = array_reduce(array_splice($relation_parts, 0, count($relation_parts)), function ($obj, $method) {
+                array_reduce(array_splice($relation_parts, 0, count($relation_parts)), function ($obj, $method) use (&$last_valid_relation_method) {
                     try {
                         $result = $obj->$method();
-
+                        $last_valid_relation_method = $method;
                         return $result->getRelated();
                     } catch (Exception $e) {
-                        return $method;
+                        return;
                     }
                 }, $this->model);
 
