@@ -142,7 +142,6 @@
                         var val_text = $(this).select2('data')[0]?$(this).select2('data')[0].text:null;
                         var extra_param = filterName + '_text';
 
-                        console.log(val_text);
 
                         if (!val_text) {
                            return;
