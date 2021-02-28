@@ -45,7 +45,7 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
      *
      * @return bool|null
      */
-    protected function generateSlug(Model $model, string $event)
+    protected function generateSlug(Model $model, string $event): void
     {
         // If the "slugging" event returns a value, abort
         if ($this->fireSluggingEvent($model, $event) !== null) {
@@ -64,7 +64,7 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
      *
      * @return mixed
      */
-    protected function fireSluggingEvent(Model $model, string $event)
+    protected function fireSluggingEvent(Model $model, string $event): ?array
     {
         return $this->events->until('eloquent.slugging: '.get_class($model), [$model, $event]);
     }
@@ -77,7 +77,7 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
      *
      * @return void
      */
-    protected function fireSluggedEvent(Model $model, string $status)
+    protected function fireSluggedEvent(Model $model, string $status): void
     {
         $this->events->dispatch('eloquent.slugged: '.get_class($model), [$model, $status]);
     }
