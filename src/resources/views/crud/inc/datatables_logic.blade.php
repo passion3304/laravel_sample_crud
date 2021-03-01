@@ -20,8 +20,9 @@
     // the table cache when both lengths don't match.
     let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) ?? [];
     var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
+    let $dtStoredPageLength = localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength');
 
-    if($dtCachedInfo.length !== 0 && $dtCachedInfo.length !== $dtDefaultPageLength) {
+    if(!$dtStoredPageLength && $dtCachedInfo.length !== 0 && $dtCachedInfo.length !== $dtDefaultPageLength) {
         localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
     }
 
@@ -299,6 +300,13 @@
               text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
           }).show();
       });
+
+        // when changing page length in datatables, save it into localStorage
+        // so in next requests we know if the length changed by user
+        // or by developer in the controller.
+        $('#crudTable').on( 'length.dt', function ( e, settings, len ) {
+            localStorage.setItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength', len);
+        });
 
       // make sure AJAX requests include XSRF token
       $.ajaxPrefilter(function(options, originalOptions, xhr) {

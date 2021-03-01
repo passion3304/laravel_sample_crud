@@ -48,6 +48,9 @@
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
     $field['include_all_form_fields'] = $field['include_all_form_fields'] ?? true;
 
+    // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
+    $field['delay'] = $field['delay'] ?? 500;
+
 
 
 $activeInlineCreate = !empty($field['inline_create']) ? true : false;
@@ -121,6 +124,7 @@ if($activeInlineCreate) {
         data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
         data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
+        data-ajax-delay="{{ $field['delay'] }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -209,7 +213,6 @@ var fetchDefaultEntry = function (element) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $fetchUrl = element.attr('data-data-source');
-    var $appLang = element.attr('data-app-current-lang');
     var $return = {};
     return new Promise(function (resolve, reject) {
         $.ajax({
@@ -223,10 +226,10 @@ var fetchDefaultEntry = function (element) {
                 // we want only the first to be default.
                 if (typeof result.data !== "undefined"){
                     $key = result.data[0][$relatedKeyName];
-                    $value = processItemText(result.data[0], $relatedAttribute, $appLang);
+                    $value = processItemText(result.data[0], $relatedAttribute);
                 }else{
                     $key = result[0][$relatedKeyName];
-                    $value = processItemText(result[0], $relatedAttribute, $appLang);
+                    $value = processItemText(result[0], $relatedAttribute);
                 }
 
                 $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
@@ -329,14 +332,13 @@ function ajaxSearch(element, created) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $searchString = created[$relatedAttribute];
-    var $appLang = element.attr('data-app-current-lang');
 
     //we run the promise with ajax call to search endpoint to check if we got the created entity back
     //in case we do, we add it to the selected options.
     performAjaxSearch(element, $searchString).then(result => {
         var inCreated = $.map(result.data, function (item) {
-            var $itemText = processItemText(item, $relatedAttribute, $appLang);
-            var $createdText = processItemText(created, $relatedAttribute, $appLang);
+            var $itemText = processItemText(item, $relatedAttribute);
+            var $createdText = processItemText(created, $relatedAttribute);
             if($itemText == $createdText) {
                     return {
                         text: $itemText,
@@ -471,9 +473,8 @@ function selectOption(element, option) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $multiple = element.prop('multiple');
-    var $appLang = element.attr('data-app-current-lang');
 
-    var $optionText = processItemText(option, $relatedAttribute, $appLang);
+    var $optionText = processItemText(option, $relatedAttribute);
 
     var $option = new Option($optionText, option[$relatedKeyName]);
 
@@ -511,9 +512,9 @@ function bpFieldInitFetchOrCreateElement(element) {
     var $dependencies = JSON.parse(element.attr('data-dependencies'));
     var $modelKey = element.attr('data-model-local-key');
     var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
-    var $appLang = element.attr('data-app-current-lang');
     var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
     var $multiple = element.prop('multiple');
+    var $ajaxDelay = element.attr('data-ajax-delay');
 
     var FetchOrCreateAjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
@@ -548,7 +549,7 @@ function bpFieldInitFetchOrCreateElement(element) {
 
             FetchOrCreateAjaxFetchSelectedEntry(element).then(result => {
                 result.forEach(function(item) {
-                $itemText = processItemText(item, $fieldAttribute, $appLang);
+                $itemText = processItemText(item, $fieldAttribute);
                 $itemValue = item[$connectedEntityKeyName];
                 //add current key to be selected later.
                 optionsForSelect.push($itemValue);
@@ -610,7 +611,7 @@ function bpFieldInitFetchOrCreateElement(element) {
                     url: $dataSource,
                     type: $method,
                     dataType: 'json',
-                    quietMillis: 500,
+                    delay: $ajaxDelay,
                     data: function (params) {
                     if ($includeAllFormFields) {
                     return {
@@ -632,7 +633,7 @@ function bpFieldInitFetchOrCreateElement(element) {
                 if(data.data) {
                 var result = {
                     results: $.map(data.data, function (item) {
-                        var $itemText = processItemText(item, $fieldAttribute, $appLang);
+                        var $itemText = processItemText(item, $fieldAttribute);
 
                         return {
                             text: $itemText,
@@ -646,7 +647,7 @@ function bpFieldInitFetchOrCreateElement(element) {
                 }else {
                     var result = {
                         results: $.map(data, function (item) {
-                            var $itemText = processItemText(item, $fieldAttribute, $appLang);
+                            var $itemText = processItemText(item, $fieldAttribute);
 
                             return {
                                 text: $itemText,
@@ -696,20 +697,20 @@ function bpFieldInitFetchOrCreateElement(element) {
     }
 }
 
+
 if (typeof processItemText !== 'function') {
-    function processItemText(item, $fieldAttribute, $appLang) {
-        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
-            if(item[$fieldAttribute][$appLang] != 'undefined') {
-                return item[$fieldAttribute][$appLang];
-            }else{
-                return item[$fieldAttribute][0];
-            }
-            }else{
-                return item[$fieldAttribute];
-            }
+    function processItemText(item, $fieldAttribute) {
+        var $appLang = '{{ app()->getLocale() }}';
+        var $appLangFallback = '{{ Lang::getFallback() }}';
+        var $emptyTranslation = '{{ trans("backpack::crud.empty_translations") }}';
+        var $itemField = item[$fieldAttribute];
+
+        // try to retreive the item in app language; then fallback language; then first entry; if nothing found empty translation string
+        return typeof $itemField === 'object' && $itemField !== null
+            ? $itemField[$appLang] ?? $itemField[$appLangFallback] ?? Object.values($itemField)[0] ?? $emptyTranslation
+            : $itemField;
     }
 }
-
             </script>
         @endpush
 
