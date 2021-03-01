@@ -94,6 +94,16 @@ trait Validation
                     (is_string($rule) && strpos($rule, 'required') !== false && strpos($rule, 'required_') === false) ||
                     (is_array($rule) && array_search('required', $rule) !== false && array_search('required_', $rule) === false)
                 ) {
+                    if (strpos($key, '.') !== false) {
+                        // Convert dot to array notation
+                        $key = \Str::of($key)
+                            ->explode('.')
+                            ->map(function ($value, $key) {
+                                return $key ? "[$value]" : $value;
+                            })
+                            ->join('');
+                    }
+
                     $requiredFields[] = $key;
                 }
             }
