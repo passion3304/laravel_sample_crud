@@ -116,6 +116,12 @@
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2({
+                @if (app()->getLocale() !== 'en')
+                    @php
+                        $currentLocale = str_replace('_', '-', app()->getLocale());
+                    @endphp
+                language: "{{ $currentLocale }}",
+                @endif
                 theme: 'bootstrap',
                 multiple: true,
                 placeholder: $placeholder,

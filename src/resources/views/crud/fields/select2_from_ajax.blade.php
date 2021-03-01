@@ -135,6 +135,12 @@
         }
         //init the element
         $(element).select2({
+            @if (app()->getLocale() !== 'en')
+                @php
+                    $currentLocale = str_replace('_', '-', app()->getLocale());
+                @endphp
+            language: "{{ $currentLocale }}",
+            @endif
             theme: 'bootstrap',
             multiple: false,
             placeholder: $placeholder,

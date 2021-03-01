@@ -98,6 +98,12 @@
                 var selectKey = $(this).attr('data-select-key');
 
             	$(this).select2({
+					@if (app()->getLocale() !== 'en')
+                        @php
+                            $currentLocale = str_replace('_', '-', app()->getLocale());
+                        @endphp
+                    language: "{{ $currentLocale }}",
+                    @endif
 				    theme: "bootstrap",
 				    minimumInputLength: $(this).attr('filter-minimum-input-length'),
 	            	allowClear: true,

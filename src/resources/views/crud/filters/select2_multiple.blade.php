@@ -77,6 +77,12 @@
                 var filter_key = $(this).attr('data-filter-key');
 
                 $(this).select2({
+					@if (app()->getLocale() !== 'en')
+                        @php
+                            $currentLocale = str_replace('_', '-', app()->getLocale());
+                        @endphp
+                    language: "{{ $currentLocale }}",
+                    @endif
                 	allowClear: true,
 					closeOnSelect: false,
 					theme: "bootstrap",
