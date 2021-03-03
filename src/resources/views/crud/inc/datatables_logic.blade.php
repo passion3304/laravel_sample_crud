@@ -263,7 +263,11 @@
       $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
+      @if(is_null($crud->getSubheading()))
       $("#datatable_info_stack").html($('#crudTable_info')).css('display','inline-flex').addClass('animated fadeIn');
+      @else
+      $('#crudTable_info').css('display','none');
+      @endif
 
       @if($crud->getOperationSetting('resetButton') ?? true)
         // create the reset button
