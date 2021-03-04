@@ -326,7 +326,7 @@ trait Filters
      * - CRUD::addFilter(['name' => 'price', 'type' => 'range'], false, function($value) {});
      * - CRUD::filter('price')->type('range')->whenActive(function($value) {});
      *
-     * And if the developer uses the CrudField object as Field in his CrudController:
+     * And if the developer uses the CrudField object as Field in their CrudController:
      * - Filter::name('price')->type('range')->whenActive(function($value) {});
      *
      * @param  string $name The name of the column in the db, or model attribute.

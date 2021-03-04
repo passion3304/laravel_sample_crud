@@ -408,7 +408,7 @@ trait Columns
      * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
      * - CRUD::column('price')->type('number');
      *
-     * And if the developer uses the CrudColumn object as Column in his CrudController:
+     * And if the developer uses the CrudColumn object as Column in their CrudController:
      * - Column::name('price')->type('number');
      *
      * @param  string $name The name of the column in the db, or model attribute.

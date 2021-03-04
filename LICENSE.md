@@ -35,7 +35,7 @@
 13. **Should Backpack be included in a commercial package or product** (that is sold, leased or rented to third-parties) **aimed at the same target audience or similar, a special sublicensing agreement is required** - contact <hello@backpackforlaravel.com>.
 
 14. **By using Backpack in production without a valid license code for that project, issued by the copyright holder, the user is considered to be breaching the terms of the current license, and agrees to be subject to punishments including but not limited to:**
-- having his administration panel stop working, interrupted, disabled or removed;
+- having their administration panel stop working, interrupted, disabled or removed;
 - being removed or banned from the Backpack community;
 - being publicly disclosed as untrustworthy, in a "Wall of Shame" section, on partner websites, on social networks like Twitter, Facebook and LinkedIn, or any other way the copyright holder sees fit;
 
