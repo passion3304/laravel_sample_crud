@@ -13,6 +13,7 @@
         $field['attributes']['class'] = 'radio';
     }
 
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
     $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitRadioElement';
 @endphp
 
