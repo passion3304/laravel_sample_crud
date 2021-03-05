@@ -12,6 +12,10 @@
 
     $column['text'] = $checkValue == false ? $exportUncheckedText : $exportCheckedText;
     $column['escaped'] = $column['escaped'] ?? true;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
+    
+    $column['text'] = $column['prefix'].$column['text'].$column['suffix'];
 @endphp
 
 <span>

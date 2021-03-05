@@ -364,10 +364,15 @@ trait Columns
     {
         $column = $this->makeSureColumnHasName($column);
         $column = $this->makeSureColumnHasLabel($column);
+        $column = $this->makeSureColumnHasEntity($column);
         $column = $this->makeSureColumnHasType($column);
         $column = $this->makeSureColumnHasKey($column);
         $column = $this->makeSureColumnHasPriority($column);
         $column = $this->makeSureColumnHasModel($column);
+
+        if (isset($column['entity']) && $column['entity'] !== false) {
+            $column['relation_type'] = $this->inferRelationTypeFromRelationship($column);
+        }
 
         // check if the column exists in the database (as a db column)
         $column_exists_in_db = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
@@ -376,18 +381,6 @@ trait Columns
         $column['tableColumn'] = $column['tableColumn'] ?? $column_exists_in_db;
         $column['orderable'] = $column['orderable'] ?? $column_exists_in_db;
         $column['searchLogic'] = $column['searchLogic'] ?? $column_exists_in_db;
-
-        // check if method exists in model so it's a possible relation
-        // but exclude possible matches if developer setup entity => false
-        $could_be_relation = method_exists($this->model, $column['name'])
-            ? ! isset($column['entity']) || $column['entity'] !== false
-            : isset($column['entity']) && $column['entity'] !== false;
-
-        if (! $column_exists_in_db && $could_be_relation) {
-            $related_model = $this->model->{$column['name']}()->getRelated();
-            $column['entity'] = $column['name'];
-            $column['model'] = get_class($related_model);
-        }
 
         return $column;
     }
@@ -415,7 +408,7 @@ trait Columns
      * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
      * - CRUD::column('price')->type('number');
      *
-     * And if the developer uses the CrudColumn object as Column in his CrudController:
+     * And if the developer uses the CrudColumn object as Column in their CrudController:
      * - Column::name('price')->type('number');
      *
      * @param  string $name The name of the column in the db, or model attribute.

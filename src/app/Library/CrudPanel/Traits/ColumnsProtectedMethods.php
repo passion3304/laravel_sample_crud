@@ -80,11 +80,7 @@ trait ColumnsProtectedMethods
      */
     protected function makeSureColumnHasType($column)
     {
-        // check if method exists in model so it's a possible relation
-        // but exclude possible matches if developer setup entity => false
-        $could_be_relation = method_exists($this->model, $column['name'])
-            ? ! isset($column['entity']) || $column['entity'] !== false
-            : isset($column['entity']) && $column['entity'] !== false;
+        $could_be_relation = isset($column['entity']) && $column['entity'] !== false;
 
         if (! isset($column['type']) && $could_be_relation) {
             $column['type'] = 'relationship';
@@ -132,6 +128,52 @@ trait ColumnsProtectedMethods
         return $column;
     }
 
+    protected function makeSureColumnHasEntity($column)
+    {
+        if (isset($column['entity'])) {
+            return $column;
+        }
+
+        // if the name is an array it's definitely not a relationship
+        if (is_array($column['name'])) {
+            return $column;
+        }
+
+        // if the name is dot notation it might be a relationship
+        if (strpos($column['name'], '.') !== false) {
+            $possibleMethodName = Str::before($column['name'], '.');
+
+            // if the first part of the string exists as method,
+            // it is a relationship
+            if (method_exists($this->model, $possibleMethodName)) {
+                $column['entity'] = $column['name'];
+
+                return $column;
+            }
+        }
+
+        // if there's a method on the model with this name
+        if (method_exists($this->model, $column['name'])) {
+            $column['entity'] = $column['name'];
+
+            return $column;
+        }
+
+        // if the name ends with _id and that method exists,
+        // we can probably use it as an entity
+        if (Str::endsWith($column['name'], '_id')) {
+            $possibleMethodName = Str::replaceLast('_id', '', $column['name']);
+
+            if (method_exists($this->model, $possibleMethodName)) {
+                $column['entity'] = $possibleMethodName;
+
+                return $column;
+            }
+        }
+
+        return $column;
+    }
+
     /**
      * If an entity has been defined for the column, but no model,
      * determine the model from that relationship.
@@ -143,7 +185,7 @@ trait ColumnsProtectedMethods
     {
         // if this is a relation type field and no corresponding model was specified,
         // get it from the relation method defined in the main model
-        if (isset($column['entity']) && ! isset($column['model'])) {
+        if (isset($column['entity']) && $column['entity'] !== false && ! isset($column['model'])) {
             $column['model'] = $this->getRelationModel($column['entity']);
         }
 

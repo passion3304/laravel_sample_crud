@@ -35,7 +35,7 @@ return [
             // the time the table will be persisted in minutes
             // after this the table info is cleared from localStorage.
             // use false to never force localStorage clear. (default)
-            // keep in mind: User can clear his localStorage whenever he wants.
+            // keep in mind: User can clear their localStorage whenever they want.
 
             'persistentTableDuration' => false,
 

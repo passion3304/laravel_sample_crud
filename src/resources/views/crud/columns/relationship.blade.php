@@ -1,8 +1,6 @@
 {{-- relationships (switchboard; supports both single and multiple: 1-1, 1-n, n-n) --}}
 @php
-   $relationshipType = new ReflectionClass($entry->{$column['name']}());
-   $relationshipType = $relationshipType->getShortName();
-   $allows_multiple = $crud->guessIfFieldHasMultipleFromRelationType($relationshipType);
+   $allows_multiple = $crud->guessIfFieldHasMultipleFromRelationType($column['relation_type']);
 @endphp
 
 @if ($allows_multiple)

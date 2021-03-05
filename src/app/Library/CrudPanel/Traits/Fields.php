@@ -481,7 +481,7 @@ trait Fields
      * - CRUD::addField(['name' => 'price', 'type' => 'number']);
      * - CRUD::field('price')->type('number');
      *
-     * And if the developer uses the CrudField object as Field in his CrudController:
+     * And if the developer uses the CrudField object as Field in their CrudController:
      * - Field::name('price')->type('number');
      *
      * @param  string $name The name of the column in the db, or model attribute.

@@ -69,7 +69,7 @@ trait InlineCreateOperation
 
     /**
      * Runs the store() function in controller like a regular crud create form.
-     * Developer might overwrite this if he wants some custom save behaviour when added on the fly.
+     * Developer might overwrite this if they want some custom save behaviour when added on the fly.
      *
      * @return void
      */

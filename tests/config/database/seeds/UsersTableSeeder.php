@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([[
             'id'             => 1,
             'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
+            'email'          => $faker->unique()->safeEmail,
             'password'       => bcrypt('secret'),
             'remember_token' => Str::random(10),
             'created_at'     => $now,
@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([[
             'id'             => 2,
             'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
+            'email'          => $faker->unique()->safeEmail,
             'password'       => bcrypt('secret'),
             'remember_token' => Str::random(10),
             'created_at'     => $now,
