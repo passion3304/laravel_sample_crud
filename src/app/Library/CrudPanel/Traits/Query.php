@@ -143,7 +143,6 @@ trait Query
         return $this->query->count();
     }
 
-
     /**
      * Apply table prefix in the order clause if the query contains JOINS clauses.
      *
