@@ -143,9 +143,17 @@ trait Query
         return $this->query->count();
     }
 
+
+    /**
+     * Apply table prefix in the order clause if the query contains JOINS clauses.
+     *
+     * @param string $column_name
+     * @param string $column_direction
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function orderByWithPrefix($column_name, $column_direction = 'ASC')
     {
-        if ($this->driverIsSql()) {
+        if (null !== $this->query->getQuery()->joins) {
             return $this->query->orderByRaw($this->model->getTableWithPrefix().'.'.$column_name.' '.$column_direction);
         }
 
