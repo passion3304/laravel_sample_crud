@@ -46,7 +46,7 @@ return [
     'details_row'               => 'Esta es la fila de detalles. Modificar a su gusto.',
     'details_row_loading_error' => 'Se ha producido un error al cargar los datos. Por favor, intente de nuevo.',
     'clone'                     => 'Clonar',
-    'clone_success'             => '<strong>elemento clonado</strong><br>Se creó un nuevo elemento con la misma información que este.',
+    'clone_success'             => '<strong>Elemento clonado</strong><br>Se creó un nuevo elemento con la misma información que este.',
     'clone_failure'             => '<strong>La clonación falló</strong><br>No se puede crear el nuevo elemento. Inténtalo de nuevo.',
 
     // Confirmation messages and bubbles
