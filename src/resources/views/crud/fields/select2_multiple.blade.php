@@ -73,7 +73,7 @@
         <!-- include select2 js-->
         <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
         @if (app()->getLocale() !== 'en')
-        <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+        <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
         @endif
         <script>
             function bpFieldInitSelect2MultipleElement(element) {
@@ -82,12 +82,9 @@
                 if (!element.hasClass("select2-hidden-accessible"))
                     {
                         var $obj = element.select2({
-                            @if (app()->getLocale() !== 'en')
-                                @php
-                                    $currentLocale = str_replace('_', '-', app()->getLocale());
-                                @endphp
-                            language: "{{ $currentLocale }}",
-                            @endif
+@if (app()->getLocale() !== 'en')
+                            language: "{{ str_replace('_', '-', app()->getLocale()) }}",
+@endif
                             theme: "bootstrap"
                         });
 

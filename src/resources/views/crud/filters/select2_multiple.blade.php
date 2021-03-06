@@ -66,7 +66,7 @@
 	<!-- include select2 js-->
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
     @endif
 
     <script>
@@ -77,12 +77,9 @@
                 var filter_key = $(this).attr('data-filter-key');
 
                 $(this).select2({
-					@if (app()->getLocale() !== 'en')
-                        @php
-                            $currentLocale = str_replace('_', '-', app()->getLocale());
-                        @endphp
-                    language: "{{ $currentLocale }}",
-                    @endif
+@if (app()->getLocale() !== 'en')
+                   language: "{{ str_replace('_', '-', app()->getLocale()) }}",
+@endif
                 	allowClear: true,
 					closeOnSelect: false,
 					theme: "bootstrap",
