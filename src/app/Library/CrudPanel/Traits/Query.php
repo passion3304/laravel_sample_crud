@@ -152,7 +152,7 @@ trait Query
      */
     public function orderByWithPrefix($column_name, $column_direction = 'ASC')
     {
-        if (null !== $this->query->getQuery()->joins) {
+        if ($this->query->getQuery()->joins !== null) {
             return $this->query->orderByRaw($this->model->getTableWithPrefix().'.'.$column_name.' '.$column_direction);
         }
 
