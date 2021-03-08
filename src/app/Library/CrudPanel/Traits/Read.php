@@ -86,25 +86,17 @@ trait Read
 
         foreach ($relationships as $relation) {
             if (strpos($relation, '.') !== false) {
-                $relation_parts = explode('.', $relation);
-                $last_relation_part = $last_valid_relation_method = end($relation_parts);
+                $parts = explode('.', $relation);
+                $model = $this->model;
 
-                array_reduce(array_splice($relation_parts, 0, count($relation_parts)), function ($obj, $method) use (&$last_valid_relation_method) {
+                // Iterate over each relation part to find the valid relations without attributes
+                // We should eager load the relation but not the attribute
+                foreach ($parts as $i => $part) {
                     try {
-                        $result = $obj->$method();
-                        $last_valid_relation_method = $method;
-
-                        return $result->getRelated();
+                        $model = $model->$part()->getRelated();
                     } catch (Exception $e) {
-                        return;
+                        $relation = join('.', array_slice($parts, 0, $i));
                     }
-                }, $this->model);
-
-                // when this keys don't match means the last part of the relation string is the attribute in the relation and
-                // not a nested relation. In that case, we should eager load the relation but not the attribute
-                if ($last_valid_relation_method != $last_relation_part) {
-                    // remove the last part of the relation string because it is the attribute in the relationship
-                    $relation = substr($relation, 0, strrpos($relation, '.'));
                 }
             }
             $this->with($relation);
