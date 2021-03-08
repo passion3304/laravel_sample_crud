@@ -176,7 +176,6 @@
 
                 // set the option keys as selected.
                 $(element).val(optionsForSelect);
-                $(element).trigger('change');
             });
         }
 
