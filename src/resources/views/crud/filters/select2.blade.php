@@ -106,7 +106,7 @@
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery(parameter, true)) {
-						$("li[filter-key="+filter_key+"]").removeClass('active').addClass('active');
+						$("li[filter-key="+filter_key+"]").addClass('active');
 					}
 					else
 					{

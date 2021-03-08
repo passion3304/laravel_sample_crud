@@ -146,11 +146,8 @@
 					var ajax_table = $('#crudTable').DataTable();
 					var current_url = ajax_table.ajax.url();
 					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					if (val_text) {
-	                    new_url = addOrUpdateUriParameter(new_url, parameter + '_text', val_text);
-					}
+					new_url = addOrUpdateUriParameter(new_url, parameter + '_text', val_text);
 					new_url = normalizeAmpersand(new_url.toString());
-
 
 					// replace the datatables ajax url with new_url and reload it
 					ajax_table.ajax.url(new_url).load();
@@ -160,7 +157,7 @@
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery(filterName, true)) {
-						$('li[filter-key='+filterKey+']').removeClass('active').addClass('active');
+						$('li[filter-key='+filterKey+']').addClass('active');
 					}
 					else
 					{
