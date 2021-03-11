@@ -149,6 +149,8 @@ trait ColumnsProtectedMethods
             if (method_exists($model, $possibleMethodName)) {
                 $parts = explode('.', $column['name']);
                 $relation = $column['name'];
+                $attribute_in_relation = false;
+
                 // here we are going to iterate through all relation parts to check
                 // if the attribute is present in the relation string.
                 foreach ($parts as $i => $part) {
@@ -156,13 +158,19 @@ trait ColumnsProtectedMethods
                         $model = $model->$part()->getRelated();
                     } catch (\Exception $e) {
                         $relation = join('.', array_slice($parts, 0, $i));
+                        $attribute_in_relation = true;
                     }
                 }
 
-                if((isset($column['type']) && $column['type'] !== 'text') || !isset($column['type'])) {
+                if(!isset($column['type'])) {
                     $column['name'] = $column['entity'] = $relation;
                 }
-                $column['attribute'] = $column['attribute'] ?? end($parts);
+
+                // if the user setup the attribute in relation string, we are not going to infer that attribute from model
+                // instead we get the defined attribute by the user.
+                if($attribute_in_relation) {
+                    $column['attribute'] = $column['attribute'] ?? end($parts);
+                }
 
                 return $column;
             }
