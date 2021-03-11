@@ -162,13 +162,13 @@ trait ColumnsProtectedMethods
                     }
                 }
 
-                if(!isset($column['type'])) {
+                if (! isset($column['type'])) {
                     $column['name'] = $column['entity'] = $relation;
                 }
 
                 // if the user setup the attribute in relation string, we are not going to infer that attribute from model
                 // instead we get the defined attribute by the user.
-                if($attribute_in_relation) {
+                if ($attribute_in_relation) {
                     $column['attribute'] = $column['attribute'] ?? end($parts);
                 }
 

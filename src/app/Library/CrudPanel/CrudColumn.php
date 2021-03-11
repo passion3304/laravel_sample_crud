@@ -32,7 +32,6 @@ class CrudColumn
 
     public function __construct($name)
     {
-
         $generated_key = str_replace('.', '__', $name);
 
         $column = $this->crud()->firstColumnWhere('key', $generated_key);
