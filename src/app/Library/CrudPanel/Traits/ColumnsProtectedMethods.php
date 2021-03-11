@@ -142,11 +142,27 @@ trait ColumnsProtectedMethods
         // if the name is dot notation it might be a relationship
         if (strpos($column['name'], '.') !== false) {
             $possibleMethodName = Str::before($column['name'], '.');
+            $model = $this->model;
 
             // if the first part of the string exists as method,
             // it is a relationship
-            if (method_exists($this->model, $possibleMethodName)) {
-                $column['entity'] = $column['name'];
+            if (method_exists($model, $possibleMethodName)) {
+                $parts = explode('.', $column['name']);
+                $relation = $column['name'];
+                // here we are going to iterate through all relation parts to check
+                // if the attribute is present in the relation string.
+                foreach ($parts as $i => $part) {
+                    try {
+                        $model = $model->$part()->getRelated();
+                    } catch (\Exception $e) {
+                        $relation = join('.', array_slice($parts, 0, $i));
+                    }
+                }
+
+                if((isset($column['type']) && $column['type'] !== 'text') || !isset($column['type'])) {
+                    $column['name'] = $column['entity'] = $relation;
+                }
+                $column['attribute'] = $column['attribute'] ?? end($parts);
 
                 return $column;
             }
