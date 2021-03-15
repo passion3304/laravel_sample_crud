@@ -96,12 +96,14 @@ trait Validation
                 ) {
                     if (strpos($key, '.') !== false) {
                         // Convert dot to array notation
-                        $key = \Str::of($key)
-                            ->explode('.')
-                            ->map(function ($value, $key) {
-                                return $key ? "[$value]" : $value;
-                            })
-                            ->join('');
+                        $entity_array = explode('.', $key);
+                        $name_string = '';
+
+                        foreach ($entity_array as $arr_key => $array_entity) {
+                            $name_string .= ($arr_key == 0) ? $array_entity : '['.$array_entity.']';
+                        }
+
+                        $key = $name_string;
                     }
 
                     $requiredFields[] = $key;
