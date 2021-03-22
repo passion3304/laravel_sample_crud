@@ -88,7 +88,7 @@ class SlugService extends \Cviebrock\EloquentSluggable\Services\SlugService
 
         $method = $config['uniqueSuffix'];
         if ($method === null) {
-            $suffix = $this->generateSuffix($slug, $separator, $list);
+            $suffix = $this->generateSuffix($slug, $separator, $list, $config['firstUniqueSuffix']);
         } elseif (is_callable($method)) {
             $suffix = call_user_func($method, $slug, $separator, $list);
         } else {
