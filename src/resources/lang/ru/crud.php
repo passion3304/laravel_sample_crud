@@ -62,12 +62,19 @@ return [
     'bulk_no_entries_selected_title'          => 'Записи не выбраны',
     'bulk_no_entries_selected_message'        => 'Пожалуйста, выберите один или несколько элементов, чтобы выполнить массовое действие с ними',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'                => 'Вы уверены, что хотите удалить :number записей?',
     'bulk_delete_sucess_title'                => 'Записи удалены',
     'bulk_delete_sucess_message'              => ' элементов было удалено',
     'bulk_delete_error_title'                 => 'Ошибка!',
     'bulk_delete_error_message'               => 'Некоторые из выбранных элементов не могут быть удалены',
+
+    // Bulk clone
+    'bulk_clone_are_you_sure'                 => 'Подтвердите копирование записей(:number)',
+    'bulk_clone_sucess_title'                 => 'Записи скопированы успешно!',
+    'bulk_clone_sucess_message'               => ' элементов было скопировано.',
+    'bulk_clone_error_title'                  => 'Ошибка!',
+    'bulk_clone_error_message'                => 'Одна или более записей, не может быть скопирована. Пожалуйста попробуйте повторить операцию.',
 
     // Ajax errors
     'ajax_error_title'                        => 'Ошибка!',
@@ -129,6 +136,17 @@ return [
     'filters'                                 => 'Фильтры',
     'toggle_filters'                          => 'Переключить фильтры',
     'remove_filters'                          => 'Очистить фильтры',
+    'apply'                                   => 'Принять',
+
+    //filters language strings
+    'today'                                   => 'Сегодня',
+    'yesterday'                               => 'Вчера',
+    'last_7_days'                             => 'Последние 7 дней',
+    'last_30_days'                            => 'Последние 30 дней',
+    'this_month'                              => 'Текущий месяц',
+    'last_month'                              => 'Последний месяц',
+    'custom_range'                            => 'Выбрать даты',
+    'weekLabel'                               => 'W',
 
     // Fields
     'browse_uploads'                          => 'Загрузить файлы',
@@ -156,4 +174,7 @@ return [
     // InlineCreateOperation
     'related_entry_created_success'           => 'Связанная запись создана и выбрана.',
     'related_entry_created_error'             => 'Не удалось создать связанную запись.',
+
+    // returned when no translations found in select inputs
+    'empty_translations' => '(пусто)',
 ];
