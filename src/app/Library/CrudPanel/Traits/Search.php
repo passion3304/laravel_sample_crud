@@ -335,6 +335,6 @@ trait Search
      */
     public function getColumnWithTableNamePrefixed($query, $column)
     {
-        return $query->getModel()->getTableWithPrefix().'.'.$column;
+        return $query->getModel()->getTable().'.'.$column;
     }
 }
