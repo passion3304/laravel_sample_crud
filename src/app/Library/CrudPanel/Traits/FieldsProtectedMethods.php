@@ -198,7 +198,7 @@ trait FieldsProtectedMethods
         // if there's a model defined, but no attribute
         // guess an attribute using the indentifiableAttribute functionality in CrudTrait
         if (isset($field['model']) && ! isset($field['attribute'])) {
-            if(method_exists($field['model'], 'identifiableAttribute')) {
+            if (method_exists($field['model'], 'identifiableAttribute')) {
                 $field['attribute'] = call_user_func([(new $field['model']), 'identifiableAttribute']);
             }
         }
