@@ -103,7 +103,7 @@ trait ShowOperation
 
             // remove columns that have visibleInShow set as false
             if (isset($column['visibleInShow'])) {
-                if ((is_callable($column['visibleInShow']) && $column['visibleInShow']($this->data['entry']) === false) || $column['visibleInShow'] == false) {
+                if ((is_callable($column['visibleInShow']) && $column['visibleInShow']($this->data['entry']) === false) || $column['visibleInShow'] === false) {
                     $this->crud->removeColumn($column['key']);
                 }
             }
