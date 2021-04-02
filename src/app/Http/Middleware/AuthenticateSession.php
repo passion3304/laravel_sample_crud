@@ -90,13 +90,12 @@ class AuthenticateSession
      */
     protected function logout($request)
     {
-
         $this->guard()->logoutCurrentDevice();
 
         $request->session()->flush();
 
         \Alert::error('Your password was changed in another browser session. Please login again using the new password.')->flash();
-        
+
         throw new AuthenticationException('Unauthenticated.', [backpack_guard_name()], backpack_url('login'));
     }
 
