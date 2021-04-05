@@ -74,7 +74,7 @@ return [
     'bulk_clone_sucess_title'                 => 'Записи скопированы успешно!',
     'bulk_clone_sucess_message'               => ' элементов было скопировано.',
     'bulk_clone_error_title'                  => 'Ошибка!',
-    'bulk_clone_error_message'                => 'Одна или более записей, не может быть скопирована. Пожалуйста попробуйте повторить операцию.',
+    'bulk_clone_error_message'                => 'Одна или более записей не может быть скопирована. Пожалуйста, попробуйте повторить операцию.',
 
     // Ajax errors
     'ajax_error_title'                        => 'Ошибка!',
