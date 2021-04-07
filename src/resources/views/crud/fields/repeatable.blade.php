@@ -223,8 +223,9 @@
                         // only for displaying purposes, when is set as `data-value-prefix` is when it is part of the value
                         // like image field.
                         let valuePrefix = $(this).data('value-prefix') ?? '';
+                        let valueWithPrefix = $(this).data('repeatable-input-name') ? valuePrefix+values[$(this).data('repeatable-input-name')] : values[$(this).data('repeatable-input-name')];
 
-                        $(this).val(valuePrefix+values[$(this).data('repeatable-input-name')]);
+                        $(this).val(valueWithPrefix);
 
                         // if it's a Select input with no options, also attach the values as a data attribute;
                         // this is done because the above val() call will do nothing if the options aren't there
