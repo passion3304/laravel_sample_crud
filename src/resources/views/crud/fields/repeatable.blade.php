@@ -223,7 +223,12 @@
                         // only for displaying purposes, when is set as `data-value-prefix` is when it is part of the value
                         // like image field.
                         let valuePrefix = $(this).data('value-prefix') ?? '';
-                        let valueWithPrefix = $(this).data('repeatable-input-name') ? valuePrefix+values[$(this).data('repeatable-input-name')] : values[$(this).data('repeatable-input-name')];
+
+                        // only apply the prefix when the value is string and not empty.
+                        let valueWithPrefix = typeof values[$(this).data('repeatable-input-name')] === 'string' &&
+                                                values[$(this).data('repeatable-input-name')].length ?
+                                                    valuePrefix+values[$(this).data('repeatable-input-name')] :
+                                                    values[$(this).data('repeatable-input-name')];
 
                         $(this).val(valueWithPrefix);
 
