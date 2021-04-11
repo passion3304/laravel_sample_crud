@@ -40,8 +40,10 @@ trait Read
     {
         $id = $this->getCurrentEntryId();
 
-        if (! $id) {
-            return false;
+        if (is_bool($id)) {
+            if (!$id) {
+                return false;
+            }
         }
 
         return $this->getEntry($id);
