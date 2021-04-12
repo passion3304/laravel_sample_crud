@@ -41,7 +41,7 @@ trait Read
         $id = $this->getCurrentEntryId();
 
         if (is_bool($id)) {
-            if (!$id) {
+            if (! $id) {
                 return false;
             }
         }
