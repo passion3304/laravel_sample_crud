@@ -54,7 +54,7 @@ return [
     'delete_confirmation_title'                   => 'Запис видалено',
     'delete_confirmation_message'                 => 'Запис успішно видалено.',
     'delete_confirmation_not_title'               => 'НЕ видалено',
-    'delete_confirmation_not_message'             => "Сталася помилка. Будь ласка спробуйте ще раз.",
+    'delete_confirmation_not_message'             => 'Сталася помилка. Будь ласка спробуйте ще раз.',
     'delete_confirmation_not_deleted_title'       => 'Не видалено',
     'delete_confirmation_not_deleted_message'     => 'Нічого не трапилося. Ваш запис у безпеці.',
 
