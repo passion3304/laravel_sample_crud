@@ -49,15 +49,12 @@ abstract class BasePrefixedDBCrudPanelTest extends BaseCrudPanelTest
     {
         $app['config']->set('database.default', 'testing');
         DB::connection('testing')->setTablePrefix('test_');
-
     }
 
     protected function defineDatabaseMigrations()
     {
         DB::connection('testing')->getSchemaGrammar()->setTablePrefix('test_');
         $this->artisan('migrate', ['--database' => 'testing']);
-
-
     }
 
     /**
