@@ -157,11 +157,11 @@
         var $currentValue = $item ? $value : {};
 
         //we reselect the previously selected options if any.
-        for(var option of Object.entries($currentValue)) {
+        Object.entries($currentValue).forEach(function(option) {
             selectedOptions.push(option[0]);
             var $option = new Option(option[1], option[0]);
             $(element).append($option);
-        };
+        });
 
         if (!$allows_null && $item === false) {
             element.find('option:eq(0)').prop('selected', true);

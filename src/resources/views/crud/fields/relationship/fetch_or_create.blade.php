@@ -275,9 +275,10 @@ function setupInlineCreateButtons(element) {
             var $toPass = $form.serializeArray();
         }else{
             if(typeof $includeMainFormFields !== "boolean") {
-            var $fields = JSON.parse($includeMainFormFields);
-            var $serializedForm = $form.serializeArray();
-            var $toPass = [];
+                var $fields = JSON.parse($includeMainFormFields);
+                var $serializedForm = $form.serializeArray();
+                var $toPass = [];
+
                 $fields.forEach(function(value, index) {
                     $valueFromForm = $serializedForm.filter(function(field) {
                         return field.name === value
@@ -577,11 +578,11 @@ function bpFieldInitFetchOrCreateElement(element) {
     var selectedOptions = [];
     var $currentValue = $item ? $value : {};
     //we reselect the previously selected options if any.
-    for(var option of Object.entries($currentValue)) {
+    Object.entries($currentValue).forEach(function(option) {
         selectedOptions.push(option[0]);
         var $option = new Option(option[1], option[0]);
         $(element).append($option);
-    };
+    });
 
     $(element).val(selectedOptions);
 
