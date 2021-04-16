@@ -3,7 +3,7 @@
     <input type="checkbox"
     		class="crud_bulk_actions_row_checkbox"
     		data-primary-key-value="{{ $entry->getKey() }}"
-    		style="width: 16px; height: 16px;"
+    		style="width: 16px; height: 16px; vertical-align: middle; margin-bottom: 2px;"
     		>
 </span>
 
