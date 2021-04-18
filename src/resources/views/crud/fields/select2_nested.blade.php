@@ -16,7 +16,7 @@
             } else {
                 $selected = '';
             }
-            echo "<option value='".$entry->getKey()."' '.$selected.'>";
+            echo '<option value="'.$entry->getKey().'"'.$selected.'>';
             echo str_repeat("-", (int)$entry->depth > 1 ? (int)$entry->depth - 1 : 0).' '.$entry->{$field['attribute']};
             echo "</option>";
         }
