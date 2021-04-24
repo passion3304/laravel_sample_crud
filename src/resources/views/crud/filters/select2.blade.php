@@ -6,7 +6,16 @@
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0">
       <div class="form-group backpack-filter mb-0">
-			<select id="filter_{{ $filter->key }}" name="filter_{{ $filter->key }}" data-filter-key="{{ $filter->key }}" class="form-control input-sm select2" data-filter-type="select2" data-filter-name="{{ $filter->name }}" placeholder="{{ $filter->placeholder }}">
+			<select 
+				id="filter_{{ $filter->key }}"
+				name="filter_{{ $filter->key }}"
+				class="form-control input-sm select2"
+				placeholder="{{ $filter->placeholder }}"
+				data-filter-key="{{ $filter->key }}"
+				data-filter-type="select2"
+				data-filter-name="{{ $filter->name }}"
+				data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+				>
 				<option value="">-</option>
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)
@@ -81,9 +90,6 @@
             	$(this).attr('data-filter-enabled', 'true');
 
             	var obj = $(this).select2({
-@if (app()->getLocale() !== 'en')
-                    language: "{{ str_replace('_', '-', app()->getLocale()) }}",
-@endif
 	            	allowClear: true,
 		            closeOnSelect: false,
 					theme: "bootstrap",

@@ -21,6 +21,7 @@
                 data-filter-name="{{ $filter->name }}"
                 data-select-key="{{ $filter->options['select_key'] ?? 'id' }}"
                 data-select-attribute="{{ $filter->options['select_attribute'] ?? 'name' }}"
+                data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
                 filter-minimum-input-length="{{ $filter->options['minimum_input_length'] ?? 2 }}"
                 filter-method="{{ $filter->options['method'] ?? 'GET' }}"
                 filter-quiet-time="{{ $filter->options['quiet_time'] }}"
@@ -98,9 +99,6 @@
                 var selectKey = $(this).attr('data-select-key');
 
             	$(this).select2({
-@if (app()->getLocale() !== 'en')
-					language: "{{ str_replace('_', '-', app()->getLocale()) }}",
-@endif
 				    theme: "bootstrap",
 				    minimumInputLength: $(this).attr('filter-minimum-input-length'),
 	            	allowClear: true,
