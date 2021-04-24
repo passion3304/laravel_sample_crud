@@ -23,6 +23,7 @@
         data-init-function="bpFieldInitSelect2MultipleElement"
         data-select-all="{{ var_export($field['select_all'] ?? false)}}"
         data-options-for-js="{{json_encode(array_values($options_ids_array))}}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_multiple'])
         {{ $field['multiple'] ? 'multiple' : '' }}>
 
@@ -82,9 +83,6 @@
                 if (!element.hasClass("select2-hidden-accessible"))
                     {
                         var $obj = element.select2({
-@if (app()->getLocale() !== 'en')
-                            language: "{{ str_replace('_', '-', app()->getLocale()) }}",
-@endif
                             theme: "bootstrap"
                         });
 

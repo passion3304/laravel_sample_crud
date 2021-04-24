@@ -25,6 +25,7 @@
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'false' }}"
         data-ajax-delay="{{ $field['delay'] }}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
         multiple>
 
@@ -116,9 +117,6 @@
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2({
-@if (app()->getLocale() !== 'en')
-                language: "{{ str_replace('_', '-', app()->getLocale()) }}",
-@endif
                 theme: 'bootstrap',
                 multiple: true,
                 placeholder: $placeholder,

@@ -8,6 +8,7 @@
         name="{{ $field['name'] }}@if (isset($field['allows_multiple']) && $field['allows_multiple']==true)[]@endif"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2FromArrayElement"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_from_array'])
         @if (isset($field['allows_multiple']) && $field['allows_multiple']==true)multiple @endif
         >
@@ -78,9 +79,6 @@
             if (!element.hasClass("select2-hidden-accessible"))
                 {
                     element.select2({
-@if (app()->getLocale() !== 'en')
-                        language: "{{ str_replace('_', '-', app()->getLocale()) }}",
-@endif
                         theme: "bootstrap"
                     }).on('select2:unselect', function(e) {
                         if ($(this).attr('multiple') && $(this).val().length == 0) {

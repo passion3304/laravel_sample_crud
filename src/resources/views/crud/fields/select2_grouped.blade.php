@@ -20,6 +20,7 @@
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2GroupedElement"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
         >
 
@@ -88,9 +89,6 @@
                 if (!element.hasClass("select2-hidden-accessible"))
                 {
                     element.select2({
-@if (app()->getLocale() !== 'en')
-                        language: "{{ str_replace('_', '-', app()->getLocale()) }}",
-@endif
                         theme: "bootstrap"
                     });
                 }
