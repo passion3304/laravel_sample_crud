@@ -125,6 +125,7 @@ if($activeInlineCreate) {
         data-app-current-lang="{{ app()->getLocale() }}"
         data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
         data-ajax-delay="{{ $field['delay'] }}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -164,7 +165,7 @@ if($activeInlineCreate) {
             <!-- include select2 js-->
             <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
             @if (app()->getLocale() !== 'en')
-            <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+            <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
             @endif
             <script>
 
