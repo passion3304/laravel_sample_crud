@@ -417,26 +417,4 @@ trait SaveActions
 
         $this->addSaveActions($defaultSaveActions);
     }
-
-    /**
-     * Here we check if user should be warned before leaving the page.
-     *
-     * @return bool
-     */
-    public function getWarnBeforeLeave(): bool
-    {
-        return $this->getOperationSetting('warnBeforeLeave') ?? config('backpack.crud.operations.'.$this->getCurrentOperation().'.warnBeforeLeave') ?? false;
-    }
-
-    /**
-     * Change the variable that determines if user should be warned before leaving the page.
-     *
-     * @param bool $value
-     *
-     * @return void
-     */
-    public function setWarnBeforeLeave(bool $value = true)
-    {
-        $this->setOperationSetting('warnBeforeLeave', $value);
-    }
 }

@@ -65,7 +65,7 @@
       // trigger the javascript for all fields that have their js defined in a separate method
       initializeFieldsWithJavascript('form');
 
-      @if($crud->getWarnBeforeLeave())
+      @if($crud->getWarnBeforeLeaving())
       window.addEventListener('beforeunload', preventUnload);
       @endif
 
