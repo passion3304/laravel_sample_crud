@@ -40,6 +40,8 @@
     <div class="col-md-12 well repeatable-element row m-1 p-2" data-repeatable-identifier="{{ $field['name'] }}">
       @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
         <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
+        <button type="button" class="close move-element-up"><span aria-hidden="true"><i class="la la-angle-up"></i></span></button>
+        <button type="button" class="close move-element-down"><span aria-hidden="true"><i class="la la-angle-down"></i></span></button>
         @foreach($field['fields'] as $subfield)
           @php
               $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
@@ -77,7 +79,9 @@
           border-radius: 5px;
           background-color: #f0f3f94f;
         }
-        .container-repeatable-elements .delete-element {
+        .container-repeatable-elements .delete-element,
+        .container-repeatable-elements .move-element-up,
+        .container-repeatable-elements .move-element-down {
           z-index: 2;
           position: absolute !important;
           margin-left: -24px;
@@ -87,6 +91,21 @@
           border-radius: 15px;
           text-align: center;
           background-color: #e8ebf0 !important;
+        }
+        .container-repeatable-elements .move-element-up {
+            top: 45px;
+        }
+        .container-repeatable-elements [data-row-number='1'] .move-element-up {
+            display: none;
+        }
+        .container-repeatable-elements [data-row-number='1'] .move-element-down {
+            top: 45px;
+        }
+        .container-repeatable-elements .move-element-down {
+            top: 80px;
+        }
+        .container-repeatable-elements [data-row-number]:last-of-type .move-element-down {
+            display: none;
         }
       </style>
   @endpush
@@ -101,21 +120,29 @@
          */
         function repeatableInputToObj(container_name) {
             var arr = [];
-            var obj = {};
 
             var container = $('[data-repeatable-holder='+container_name+']');
 
             container.find('.well').each(function () {
-                $(this).find('input, select, textarea').each(function () {
-                    if ($(this).data('repeatable-input-name')) {
-                        obj[$(this).data('repeatable-input-name')] = $(this).val();
-                    }
-                });
-                arr.push(obj);
-                obj = {};
+                arr.push(repeatableElementToObj($(this)));
             });
 
             return arr;
+        }
+
+        /**
+         * Takes all inputs in a repeatable element and makes them an object.
+         */
+        function repeatableElementToObj(element) {
+            var obj = {};
+
+            element.find('input, select, textarea').each(function () {
+                if ($(this).data('repeatable-input-name')) {
+                    obj[$(this).data('repeatable-input-name')] = $(this).val();
+                }
+            });
+
+            return obj;
         }
 
         /**
@@ -188,7 +215,7 @@
         /**
          * Adds a new field group to the repeatable input.
          */
-        function newRepeatableElement(container, field_group, values) {
+        function newRepeatableElement(container, field_group, values, position) {
 
             var field_name = container.data('repeatable-identifier');
             var new_field_group = field_group.clone();
@@ -211,6 +238,36 @@
 
                 //we reassure row numbers on delete
                 setupElementRowsNumbers(container_holder);
+            });
+
+            new_field_group.find('.move-element-up, .move-element-down').click(function(){
+                var $repeatableElement = $(this).parent();
+
+                // get existing values
+                var values = repeatableElementToObj($repeatableElement);
+                var index;
+
+                if ($(this).is('.move-element-up')) {
+                    index = $repeatableElement.index() - 1;
+                } else {
+                    index = $repeatableElement.index() + 1;
+                }
+
+                if (index < 0) return;
+
+                // trigger delete for existing element
+                new_field_group.find('input, select, textarea').each(function(i, el) {
+                    // we trigger this event so fields can intercept when they are beeing deleted from the page
+                    // implemented because of ckeditor instances that stayed around when deleted from page
+                    // introducing unwanted js errors and high memory usage.
+                    $(el).trigger('backpack_field.deleted');
+                });
+
+                // remove element
+                $repeatableElement.remove();
+
+                // create new element with existing values in desired position
+                newRepeatableElement(container, field_group, values, index);
             });
 
             if (values != null) {
@@ -237,7 +294,13 @@
                 });
             }
             // we push the fields to the correct container in page.
-            container_holder.append(new_field_group);
+            var $children = container_holder.children();
+
+            if (!Number.isInteger(position) || $children.length - 1 < position) {
+                container_holder.append(new_field_group);
+            } else {
+                container_holder.children().eq(position).before(new_field_group);
+            }
 
             // after appending to the container we reassure row numbers
             setupElementRowsNumbers(container_holder);
@@ -248,6 +311,13 @@
             updateRepeatableRowCount(container_holder, 1);
 
             initializeFieldsWithJavascript(container_holder);
+
+            if (Number.isInteger(position)) {
+                // Trigger change for elements that have moved
+                new_field_group.find('input, select, textarea').each(function(i, el) {
+                    $(el).trigger('change');
+                });
+            }
         }
 
         // this function is responsible for managing rows numbers upon creation/deletion of elements
@@ -286,6 +356,9 @@
 
             // show or hide delete button
             container.find('.delete-element').toggleClass('d-none', current_rows <= min_rows);
+
+            // show or hide move buttons
+            container.find('.move-element-up, .move-element-down').toggleClass('d-none', current_rows <= 1);
 
             // show or hide new item button
             container.parent().parent().find('.add-repeatable-element-button').toggleClass('d-none', current_rows >= max_rows);
