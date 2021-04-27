@@ -263,6 +263,9 @@
                     $(el).trigger('backpack_field.deleted');
                 });
 
+                // decrement the container current number of rows by -1
+                updateRepeatableRowCount(container_holder, -1);
+
                 // remove element
                 $repeatableElement.remove();
 
