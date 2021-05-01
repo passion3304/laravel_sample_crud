@@ -25,7 +25,7 @@
         "@digitallyhappy/backstrap": "^0.3.4",
         "animate.css": "^3.7.2",
         "bootstrap": "^4.6.0",
-        "bootstrap-colorpicker": "^3.2.0",
+        "bootstrap-colorpicker": "^3.3.0",
         "bootstrap-datepicker": "^1.9.0",
         "bootstrap-daterangepicker": "^3.1.0",
         "bootstrap-iconpicker": "^1.8.2",
