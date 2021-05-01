@@ -263,10 +263,10 @@
       $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
-      @if(is_null($crud->getSubheading()))
-      $("#datatable_info_stack").html($('#crudTable_info')).css('display','inline-flex').addClass('animated fadeIn');
+      @if($crud->getSubheading())
+      $('#crudTable_info').hide();
       @else
-      $('#crudTable_info').css('display','none');
+      $("#datatable_info_stack").html($('#crudTable_info')).css('display','inline-flex').addClass('animated fadeIn');
       @endif
 
       @if($crud->getOperationSetting('resetButton') ?? true)
