@@ -7,7 +7,7 @@
         $field['value'] = $field['value']->format('Y-m-d');
     }
 
-    $field['value'] = oldOrFallback($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '';
+    $field['value'] = oldValueDefaultOrFallback($field, '');
     $field['attributes']['style'] = $field['attributes']['style'] ?? 'background-color: white!important;';
     $field['attributes']['readonly'] = $field['attributes']['readonly'] ?? 'readonly';
 

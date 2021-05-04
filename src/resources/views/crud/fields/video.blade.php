@@ -1,7 +1,7 @@
 <!-- text input -->
 <?php
 
-$value = oldOrFallback($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '';
+$value = oldValueDefaultOrFallback($field, '');
 
 // if attribute casting is used, convert to JSON
 if (is_array($value)) {

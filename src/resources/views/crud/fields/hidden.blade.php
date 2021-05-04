@@ -9,7 +9,7 @@
   <input
   	type="hidden"
     name="{{ $field['name'] }}"
-    value="{{ oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '' }}"
+    value="{{ oldValueDefaultOrFallback($field, '') }}"
     @include('crud::fields.inc.attributes')
   	>
 @include('crud::fields.inc.wrapper_end')

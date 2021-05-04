@@ -7,7 +7,7 @@
         <input
         	type="text"
         	name="{{ $field['name'] }}"
-            value="{{ oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '' }}"
+            value="{{ oldValueDefaultOrFallback($field, '') }}"
             data-init-function="bpFieldInitColorPickerElement"
             @include('crud::fields.inc.attributes')
         	>

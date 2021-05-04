@@ -7,7 +7,7 @@ if (isset($field['value']) && ($field['value'] instanceof \Carbon\CarbonInterfac
     $field['value'] = $field['value']->toDateTimeString();
 }
 
-$timestamp = strtotime(oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '');
+$timestamp = strtotime(oldValueDefaultOrFallback($field, ''));
 
 $value = $timestamp ? strftime('%Y-%m-%dT%H:%M:%S', $timestamp) : '';
 @endphp

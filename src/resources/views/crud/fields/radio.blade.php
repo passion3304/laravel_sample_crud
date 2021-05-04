@@ -1,6 +1,6 @@
 <!-- radio -->
 @php
-    $optionValue = oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '';
+    $optionValue = oldValueDefaultOrFallback($field, '');
 
 
     // check if attribute is casted, if it is, we get back un-casted values
