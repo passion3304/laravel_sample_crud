@@ -1,7 +1,44 @@
 {{-- Date Range Backpack CRUD filter --}}
 
+@php
+    $filter->options['date_range_options'] = array_replace_recursive([
+		'timePicker' => false,
+    	'alwaysShowCalendars' => true,
+        'autoUpdateInput' => true,
+        'startDate' => \Carbon\Carbon::now()->toDateTimeString(),
+        'endDate' => \Carbon\Carbon::now()->toDateTimeString(),
+        'ranges' => [
+            trans('backpack::crud.today') =>  [\Carbon\Carbon::now()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->endOfDay()->toDateTimeString()],
+            trans('backpack::crud.yesterday') => [\Carbon\Carbon::now()->subDay()->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->subDay()->endOfDay()->toDateTimeString()],
+            trans('backpack::crud.last_7_days') => [\Carbon\Carbon::now()->subDays(6)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
+            trans('backpack::crud.last_30_days') => [\Carbon\Carbon::now()->subDays(29)->startOfDay()->toDateTimeString(), \Carbon\Carbon::now()->toDateTimeString()],
+            trans('backpack::crud.this_month') => [\Carbon\Carbon::now()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->endOfMonth()->toDateTimeString()],
+            trans('backpack::crud.last_month') => [\Carbon\Carbon::now()->subMonth()->startOfMonth()->toDateTimeString(), \Carbon\Carbon::now()->subMonth()->endOfMonth()->toDateTimeString()]
+        ],
+        'locale' => [
+            'firstDay' => 0,
+            'format' => config('backpack.base.default_date_format'),
+            'applyLabel'=> trans('backpack::crud.apply'),
+            'cancelLabel'=> trans('backpack::crud.cancel'),
+            'customRangeLabel' => trans('backpack::crud.custom_range')
+        ],
+
+
+    ], $filter->options['date_range_options'] ?? []);
+
+    //if filter is active we override developer init values
+    if($filter->currentValue) {
+	    $dates = (array)json_decode($filter->currentValue);
+        $filter->options['date_range_options']['startDate'] = $dates['from'];
+        $filter->options['date_range_options']['endDate'] = $dates['to'];
+    }
+
+@endphp
+
+
 <li filter-name="{{ $filter->name }}"
-	filter-type="{{ $filter->type }}"
+    filter-type="{{ $filter->type }}"
+    filter-key="{{ $filter->key }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
 	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
 	<div class="dropdown-menu p-0">
@@ -11,22 +48,11 @@
 		          <span class="input-group-text"><i class="la la-calendar"></i></span>
 		        </div>
 		        <input class="form-control pull-right"
-		        		id="daterangepicker-{{ $filter->name }}"
+		        		id="daterangepicker-{{ $filter->key }}"
 		        		type="text"
-		        		@if ($filter->currentValue)
-							@php
-								$dates = (array)json_decode($filter->currentValue);
-								$start_date = $dates['from'];
-								$end_date = $dates['to'];
-					        	$date_range = implode(' ~ ', $dates);
-					        	$date_range = str_replace('-', '/', $date_range);
-					        	$date_range = str_replace('~', '-', $date_range);
-
-					        @endphp
-					        placeholder="{{ $date_range }}"
-						@endif
+                        data-bs-daterangepicker="{{ json_encode($filter->options['date_range_options'] ?? []) }}"
 		        		>
-		        <div class="input-group-append daterangepicker-{{ $filter->name }}-clear-button">
+		        <div class="input-group-append daterangepicker-{{ $filter->key }}-clear-button">
 		          <a class="input-group-text" href=""><i class="la la-times"></i></a>
 		        </div>
 		    </div>
@@ -58,84 +84,86 @@
 {{-- push things in the after_scripts section --}}
 
 @push('crud_list_scripts')
-	<script type="text/javascript" src="{{ asset('packages/moment/min/moment.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('packages/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
   <script>
 
-  		function applyDateRangeFilter{{$filter->name}}(start, end) {
+  		function applyDateRangeFilter{{$filter->key}}(start, end) {
+
   			if (start && end) {
   				var dates = {
-					'from': start.format('YYYY-MM-DD'),
-					'to': end.format('YYYY-MM-DD')
-				};
-				var value = JSON.stringify(dates);
+					'from': start.format('YYYY-MM-DD HH:mm:ss '),
+					'to': end.format('YYYY-MM-DD HH:mm:ss')
+                };
+
+                var value = JSON.stringify(dates);
   			} else {
-  				//this change to empty string,because addOrUpdateUriParameter method just judgment string
   				var value = '';
   			}
-			var parameter = '{{ $filter->name }}';
 
+            var parameter = '{{ $filter->name }}';
 	    	// behaviour for ajax table
 			var ajax_table = $('#crudTable').DataTable();
 			var current_url = ajax_table.ajax.url();
 			var new_url = addOrUpdateUriParameter(current_url, parameter, value);
-
 			// replace the datatables ajax url with new_url and reload it
 			new_url = normalizeAmpersand(new_url.toString());
 			ajax_table.ajax.url(new_url).load();
-
 			// add filter to URL
 			crud.updateUrl(new_url);
-
 			// mark this filter as active in the navbar-filters
 			if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-				$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
-			}
-			else
-			{
-				$('li[filter-name={{ $filter->name }}]').trigger('filter:clear');
+				$('li[filter-key={{ $filter->key }}]').removeClass('active').addClass('active');
+			} else {
+				$('li[filter-key={{ $filter->key }}]').trigger('filter:clear');
 			}
   		}
 
 		jQuery(document).ready(function($) {
-			var dateRangeInput = $('#daterangepicker-{{ $filter->name }}').daterangepicker({
-				timePicker: false,
-		        ranges: {
-		            'Today': [moment().startOf('day'), moment().endOf('day')],
-		            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-		            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		            'This Month': [moment().startOf('month'), moment().endOf('month')],
-		            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-		        },
-				@if ($filter->currentValue)
-		        startDate: moment("{{ $start_date }}"),
-		        endDate: moment("{{ $end_date }}"),
-				@endif
-				alwaysShowCalendars: true,
-				autoUpdateInput: true
-			});
 
-			dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
-				applyDateRangeFilter{{$filter->name}}(picker.startDate, picker.endDate);
-			});
+            moment.locale('{{app()->getLocale()}}');
 
-			$('li[filter-name={{ $filter->name }}]').on('hide.bs.dropdown', function () {
+			var dateRangeInput = $('#daterangepicker-{{ $filter->key }}');
+
+            $config = dateRangeInput.data('bs-daterangepicker');
+
+            $ranges = $config.ranges;
+            $config.ranges = {};
+
+            //if developer configured ranges we convert it to moment() dates.
+            for (var key in $ranges) {
+                if ($ranges.hasOwnProperty(key)) {
+                    $config.ranges[key] = $.map($ranges[key], function($val) {
+                        return moment($val);
+                    });
+                }
+            }
+
+            $config.startDate = moment($config.startDate);
+
+            $config.endDate = moment($config.endDate);
+
+
+            dateRangeInput.daterangepicker($config);
+
+
+            dateRangeInput.on('apply.daterangepicker', function(ev, picker) {
+				applyDateRangeFilter{{$filter->key}}(picker.startDate, picker.endDate);
+			});
+			$('li[filter-key={{ $filter->key }}]').on('hide.bs.dropdown', function () {
 				if($('.daterangepicker').is(':visible'))
 			    return false;
 			});
-
-			$('li[filter-name={{ $filter->name }}]').on('filter:clear', function(e) {
-				// console.log('daterangepicker filter cleared');
+			$('li[filter-key={{ $filter->key }}]').on('filter:clear', function(e) {
 				//if triggered by remove filters click just remove active class,no need to send ajax
-				$('li[filter-name={{ $filter->name }}]').removeClass('active');
+				$('li[filter-key={{ $filter->key }}]').removeClass('active');
 			});
-
 			// datepicker clear button
-			$(".daterangepicker-{{ $filter->name }}-clear-button").click(function(e) {
+			$(".daterangepicker-{{ $filter->key }}-clear-button").click(function(e) {
 				e.preventDefault();
-				applyDateRangeFilter{{$filter->name}}(null, null);
-			})
+				applyDateRangeFilter{{$filter->key}}(null, null);
+			});
 		});
   </script>
 @endpush

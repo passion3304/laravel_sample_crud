@@ -163,24 +163,28 @@ $field['wrapper']['data-video'] = '';
                 url: null
             };
 
-            $.getJSON(api, function( data ){
+            $.ajax({
+                dataType: "jsonp",
+                url: api,
+                crossDomain: true,
+                success: function (data) {
+                    if (typeof(data.items[0]) != "undefined") {
+                        var v = data.items[0].snippet;
 
-                if (typeof(data.items[0]) != "undefined") {
-                    var v = data.items[0].snippet;
+                        video.id = videoId;
+                        video.title = v.title;
+                        video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
+                        video.url = 'https://www.youtube.com/watch?v=' + video.id;
 
-                    video.id = videoId;
-                    video.title = v.title;
-                    video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
-                    video.url = 'https://www.youtube.com/watch?v=' + video.id;
-
-                    callback(video);
+                        callback(video);
+                    }
                 }
             });
         };
 
         var fetchVimeo = function( videoId, callback ){
 
-            var api = 'https://vimeo.com/api/v2/video/' + videoId + '.json?callback=?';
+            var api = `https://vimeo.com/api/v2/video/${videoId}.json`;
 
             var video = {
                 provider: 'vimeo',
@@ -190,17 +194,16 @@ $field['wrapper']['data-video'] = '';
                 url: null
             };
 
-            $.getJSON(api, function( data ){
+            fetch(api).then(response => {
+                if(response.ok) {
+                    response.json().then(([v]) => {
+                        video.id = v.id;
+                        video.title = v.title;
+                        video.image = v.thumbnail_large || v.thumbnail_small;
+                        video.url = v.url;
 
-                if (typeof(data[0]) != "undefined") {
-                    var v = data[0];
-
-                    video.id = v.id;
-                    video.title = v.title;
-                    video.image = v.thumbnail_large || v.thumbnail_small;
-                    video.url = v.url;
-
-                    callback(video);
+                        callback(video);
+                    });
                 }
             });
         };

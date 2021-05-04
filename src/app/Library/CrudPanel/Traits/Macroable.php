@@ -12,7 +12,7 @@ trait Macroable
 
     /**
      * In addition to registering the macro, throw an error if the method already exists on the object
-     * so the developer knows why his macro is not being registered.
+     * so the developer knows why their macro is not being registered.
      *
      * @param string          $name
      * @param object|callable $macro

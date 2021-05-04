@@ -18,7 +18,7 @@
         <small>{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}.</small>
 
         @if ($crud->hasAccess('list'))
-          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="la la-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+          <small><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
         @endif
     </h2>
 </div>
@@ -218,13 +218,13 @@ function tree_element($entry, $key, $all_entries, $crud)
       color: #c33;
     }
 </style>
-<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css') }}">
-<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/reorder.css') }}">
+<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css').'?v='.config('backpack.base.cachebusting_string') }}">
+<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/reorder.css').'?v='.config('backpack.base.cachebusting_string') }}">
 @endsection
 
 @section('after_scripts')
-<script src="{{ asset('packages/backpack/crud/js/crud.js') }}" type="text/javascript" ></script>
-<script src="{{ asset('packages/backpack/crud/js/reorder.js') }}" type="text/javascript" ></script>
+<script src="{{ asset('packages/backpack/crud/js/crud.js').'?v='.config('backpack.base.cachebusting_string') }}" type="text/javascript" ></script>
+<script src="{{ asset('packages/backpack/crud/js/reorder.js').'?v='.config('backpack.base.cachebusting_string') }}" type="text/javascript" ></script>
 <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}" type="text/javascript" ></script>
 <script src="{{ asset('packages/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript" ></script>
 
@@ -263,7 +263,7 @@ function tree_element($entry, $key, $all_entries, $crud)
 
         // send it with POST
         $.ajax({
-            url: '{{ Request::url() }}',
+            url: '{{ url(Request::path()) }}',
             type: 'POST',
             data: { tree: arraied },
         })

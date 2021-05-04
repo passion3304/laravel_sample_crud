@@ -1,12 +1,31 @@
 {{-- Select2 Ajax Backpack CRUD filter --}}
 
+@php
+    $filter->options['quiet_time'] = $filter->options['quiet_time'] ?? $filter->options['delay'] ?? 500;
+@endphp
+
 <li filter-name="{{ $filter->name }}"
-	filter-type="{{ $filter->type }}"
+    filter-type="{{ $filter->type }}"
+    filter-key="{{ $filter->key }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0 ajax-select">
 	    <div class="form-group mb-0">
-	    	<select id="filter_{{ $filter->name }}" name="filter_{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2_ajax" data-filter-name="{{ $filter->name }}" placeholder="{{ $filter->placeholder }}">
+            <select
+                id="filter_{{ $filter->key }}"
+                name="filter_{{ $filter->name }}"
+                class="form-control input-sm select2"
+                placeholder="{{ $filter->placeholder }}"
+                data-filter-key="{{ $filter->key }}"
+                data-filter-type="select2_ajax"
+                data-filter-name="{{ $filter->name }}"
+                data-select-key="{{ $filter->options['select_key'] ?? 'id' }}"
+                data-select-attribute="{{ $filter->options['select_attribute'] ?? 'name' }}"
+                data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+                filter-minimum-input-length="{{ $filter->options['minimum_input_length'] ?? 2 }}"
+                filter-method="{{ $filter->options['method'] ?? 'GET' }}"
+                filter-quiet-time="{{ $filter->options['quiet_time'] }}"
+            >
 				@if (Request::get($filter->name))
 					<option value="{{ Request::get($filter->name) }}" selected="selected"> {{ Request::get($filter->name.'_text') ?? 'Previous selection' }} </option>
 				@endif
@@ -58,13 +77,14 @@
 	<!-- include select2 js-->
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
     @endif
 
     <script>
         jQuery(document).ready(function($) {
             // trigger select2 for each untriggered select2 box
-            $('#filter_{{ $filter->name }}').each(function () {
+            //TODO: Is it really necessary to foreach an ID when it must be UNIQUE ?
+            $('#filter_{{ $filter->key }}').each(function () {
 
             	// if the filter has already been initialised, do nothing
             	if ($(this).attr('data-initialised')) {
@@ -74,10 +94,13 @@
             	}
 
             	var filterName = $(this).attr('data-filter-name');
+                var filterKey = $(this).attr('data-filter-key');
+                var selectAttribute = $(this).attr('data-select-attribute');
+                var selectKey = $(this).attr('data-select-key');
 
             	$(this).select2({
 				    theme: "bootstrap",
-				    minimumInputLength: 2,
+				    minimumInputLength: $(this).attr('filter-minimum-input-length'),
 	            	allowClear: true,
 	        	    placeholder: $(this).attr('placeholder'),
 					closeOnSelect: false,
@@ -86,22 +109,33 @@
 				    ajax: {
 				        url: '{{ $filter->values }}',
 				        dataType: 'json',
-				        type: 'GET',
-				        quietMillis: 50,
-				        // data: function (term) {
-				        //     return {
-				        //         term: term
-				        //     };
-				        // },
+				        type: $(this).attr('filter-method'),
+				        delay: $(this).attr('filter-quiet-time'),
+
 				        processResults: function (data) {
-				            return {
-				                results: $.map(data, function (item, i) {
-				                    return {
-				                        text: item,
-				                        id: i
-				                    }
-				                })
-				            };
+                            //it's a paginated result
+                            if(Array.isArray(data.data)) {
+                                if(data.data.length > 0) {
+                               return {
+                                    results: $.map(data.data, function (item) {
+                                     return {
+                                        text: item[selectAttribute],
+                                        id: item[selectKey]
+                                    }
+                                })
+                                };
+                                }
+                            }else{
+                                //it's non-paginated result
+                                return {
+                                    results: $.map(data, function (item, i) {
+                                        return {
+                                            text: item,
+                                            id: i
+                                        }
+                                    })
+                                };
+                            }
 				        }
 				    }
 				}).on('change', function (evt) {
@@ -113,11 +147,8 @@
 					var ajax_table = $('#crudTable').DataTable();
 					var current_url = ajax_table.ajax.url();
 					var new_url = addOrUpdateUriParameter(current_url, parameter, val);
-					if (val_text) {
-	                    new_url = addOrUpdateUriParameter(new_url, parameter + '_text', val_text);
-					}
+					new_url = addOrUpdateUriParameter(new_url, parameter + '_text', val_text);
 					new_url = normalizeAmpersand(new_url.toString());
-
 
 					// replace the datatables ajax url with new_url and reload it
 					ajax_table.ajax.url(new_url).load();
@@ -127,25 +158,24 @@
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery(filterName, true)) {
-						$('li[filter-name='+filterName+']').removeClass('active').addClass('active');
+						$('li[filter-key='+filterKey+']').addClass('active');
 					}
 					else
 					{
-						$("li[filter-name="+filterName+"]").removeClass("active");
-						$("li[filter-name="+filterName+"]").find('.dropdown-menu').removeClass("show");
+						$("li[filter-key="+filterKey+"]").removeClass("active");
+						$("li[filter-key="+filterKey+"]").find('.dropdown-menu').removeClass("show");
 					}
 				});
 
 				// when the dropdown is opened, autofocus on the select2
-				$('li[filter-name='+filterName+']').on('shown.bs.dropdown', function () {
-					$('#filter_'+filterName).select2('open');
+				$('li[filter-key='+filterKey+']').on('shown.bs.dropdown', function () {
+					$('#filter_'+filterKey).select2('open');
 				});
 
 				// clear filter event (used here and by the Remove all filters button)
-				$('li[filter-name='+filterName+']').on('filter:clear', function(e) {
-					// console.log('select2 filter cleared');
-					$('li[filter-name='+filterName+']').removeClass('active');
-	                $('#filter_'+filterName).val(null).trigger('change');
+				$('li[filter-key='+filterKey+']').on('filter:clear', function(e) {
+					$('li[filter-key='+filterKey+']').removeClass('active');
+	                $('#filter_'+filterKey).val(null).trigger('change');
 				});
             });
         });
@@ -153,4 +183,3 @@
 @endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
-

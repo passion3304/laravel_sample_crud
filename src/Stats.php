@@ -50,6 +50,7 @@ trait Stats
         $url = 'https://backpackforlaravel.com/api/stats';
         $method = 'PUT';
         $stats = [
+            'URL'                   => url('') ?? false,
             'HTTP_HOST'             => $_SERVER['HTTP_HOST'] ?? false,
             'APP_URL'               => $_SERVER['APP_URL'] ?? false,
             'APP_ENV'               => $this->app->environment() ?? false,
@@ -64,6 +65,7 @@ trait Stats
             'LARAVEL_VERSION'       => $this->app->version() ?? false,
             'BACKPACK_CRUD_VERSION' => \PackageVersions\Versions::getVersion('backpack/crud') ?? false,
             'BACKPACK_LICENSE'      => config('backpack.base.license_code') ?? false,
+            'BACKPACK_URL'          => backpack_url('') ?? false,
         ];
 
         // send this info to the main website to store it in the db

@@ -1,11 +1,17 @@
 <!-- select2 multiple -->
 @php
     if (!isset($field['options'])) {
-        $options = $field['model']::all();
+        $field['options'] = $field['model']::all();
     } else {
-        $options = call_user_func($field['options'], $field['model']::query());
+        $field['options'] = call_user_func($field['options'], $field['model']::query());
     }
-    $multiple = isset($field['multiple']) && $field['multiple']===false ? '': 'multiple';
+
+    //build option keys array to use with Select All in javascript.
+    $model_instance = new $field['model'];
+    $options_ids_array = $field['options']->pluck($model_instance->getKeyName())->toArray();
+
+    $field['multiple'] = $field['multiple'] ?? true;
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -16,15 +22,17 @@
         style="width: 100%"
         data-init-function="bpFieldInitSelect2MultipleElement"
         data-select-all="{{ var_export($field['select_all'] ?? false)}}"
+        data-options-for-js="{{json_encode(array_values($options_ids_array))}}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_multiple'])
-        {{$multiple}}>
+        {{ $field['multiple'] ? 'multiple' : '' }}>
 
-        @if (isset($field['allows_null']) && $field['allows_null']==true)
+        @if ($field['allows_null'])
             <option value="">-</option>
         @endif
 
         @if (isset($field['model']))
-            @foreach ($options as $option)
+            @foreach ($field['options'] as $option)
                 @if( (old(square_brackets_to_dots($field["name"])) && in_array($option->getKey(), old($field["name"]))) || (is_null(old(square_brackets_to_dots($field["name"]))) && isset($field['value']) && in_array($option->getKey(), $field['value']->pluck($option->getKeyName(), $option->getKeyName())->toArray())))
                     <option value="{{ $option->getKey() }}" selected>{{ $option->{$field['attribute']} }}</option>
                 @else
@@ -66,25 +74,20 @@
         <!-- include select2 js-->
         <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
         @if (app()->getLocale() !== 'en')
-        <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+        <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
         @endif
         <script>
             function bpFieldInitSelect2MultipleElement(element) {
 
                 var $select_all = element.attr('data-select-all');
-
                 if (!element.hasClass("select2-hidden-accessible"))
                     {
                         var $obj = element.select2({
                             theme: "bootstrap"
                         });
 
-                        var options = [];
-                        @if (count($options))
-                            @foreach ($options as $option)
-                                options.push('{{ $option->getKey() }}');
-                            @endforeach
-                        @endif
+                        //get options ids stored in the field.
+                        var options = JSON.parse(element.attr('data-options-for-js'));
 
                         if($select_all) {
                             element.parent().find('.clear').on("click", function () {

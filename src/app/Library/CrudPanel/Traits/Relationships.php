@@ -10,7 +10,7 @@ trait Relationships
      * From the field entity we get the relation instance.
      *
      * @param array $entity
-     * @return void
+     * @return object
      */
     public function getRelationInstance($field)
     {

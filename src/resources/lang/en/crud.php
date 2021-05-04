@@ -45,9 +45,9 @@ return [
     'admin'                     => 'Admin',
     'details_row'               => 'This is the details row. Modify as you please.',
     'details_row_loading_error' => 'There was an error loading the details. Please retry.',
-    'clone' => 'Clone',
-    'clone_success' => '<strong>Entry cloned</strong><br>A new entry has been added, with the same information as this one.',
-    'clone_failure' => '<strong>Cloning failed</strong><br>The new entry could not be created. Please try again.',
+    'clone'                     => 'Clone',
+    'clone_success'             => '<strong>Entry cloned</strong><br>A new entry has been added, with the same information as this one.',
+    'clone_failure'             => '<strong>Cloning failed</strong><br>The new entry could not be created. Please try again.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Are you sure you want to delete this item?',
@@ -62,12 +62,19 @@ return [
     'bulk_no_entries_selected_title'   => 'No entries selected',
     'bulk_no_entries_selected_message' => 'Please select one or more items to perform a bulk action on them.',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'   => 'Are you sure you want to delete these :number entries?',
     'bulk_delete_sucess_title'   => 'Entries deleted',
     'bulk_delete_sucess_message' => ' items have been deleted',
     'bulk_delete_error_title'    => 'Delete failed',
     'bulk_delete_error_message'  => 'One or more items could not be deleted',
+
+    // Bulk clone
+    'bulk_clone_are_you_sure'   => 'Are you sure you want to clone these :number entries?',
+    'bulk_clone_sucess_title'   => 'Entries cloned',
+    'bulk_clone_sucess_message' => ' items have been cloned.',
+    'bulk_clone_error_title'    => 'Cloning failed',
+    'bulk_clone_error_message'  => 'One or more entries could not be created. Please try again.',
 
     // Ajax errors
     'ajax_error_title' => 'Error',
@@ -129,6 +136,17 @@ return [
     'filters'        => 'Filters',
     'toggle_filters' => 'Toggle filters',
     'remove_filters' => 'Remove filters',
+    'apply' => 'Apply',
+
+    //filters language strings
+    'today' => 'Today',
+    'yesterday' => 'Yesterday',
+    'last_7_days' => 'Last 7 Days',
+    'last_30_days' => 'Last 30 Days',
+    'this_month' => 'This Month',
+    'last_month' => 'Last Month',
+    'custom_range' => 'Custom Range',
+    'weekLabel' => 'W',
 
     // Fields
     'browse_uploads'            => 'Browse uploads',
@@ -156,4 +174,7 @@ return [
     // InlineCreateOperation
     'related_entry_created_success' => 'Related entry has been created and selected.',
     'related_entry_created_error' => 'Could not create related entry.',
+
+    // returned when no translations found in select inputs
+    'empty_translations' => '(empty)',
 ];

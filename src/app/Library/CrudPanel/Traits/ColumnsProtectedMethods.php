@@ -18,15 +18,22 @@ trait ColumnsProtectedMethods
         $allColumns = Arr::add($allColumns, $column['key'], $column);
 
         $this->setOperationSetting('columns', $allColumns);
+    }
 
-        // make sure the column has a priority in terms of visibility
-        // if no priority has been defined, use the order in the array plus one
-        if (! array_key_exists('priority', $column)) {
-            $position_in_columns_array = (int) array_search($column['key'], array_keys($this->columns()));
-            $allColumns[$column['key']]['priority'] = $position_in_columns_array + 1;
-        }
+    /**
+     * If a column priority has not been defined, provide a default one.
+     *
+     * @param array $column Column definition array.
+     * @return array         Proper array defining the column.
+     */
+    protected function makeSureColumnHasPriority($column)
+    {
+        $columns_count = $this->countColumnsWithoutActions();
+        $assumed_priority = $columns_count ? $columns_count : 0;
 
-        $this->setOperationSetting('columns', $allColumns);
+        $column['priority'] = $column['priority'] ?? $assumed_priority;
+
+        return $column;
     }
 
     /**
@@ -73,9 +80,9 @@ trait ColumnsProtectedMethods
      */
     protected function makeSureColumnHasType($column)
     {
-        // if it's got a method on the model with the same name
-        // then it should be a relationship
-        if (! isset($column['type']) && method_exists($this->model, $column['name'])) {
+        $could_be_relation = isset($column['entity']) && $column['entity'] !== false;
+
+        if (! isset($column['type']) && $could_be_relation) {
             $column['type'] = 'relationship';
         }
 
@@ -121,6 +128,52 @@ trait ColumnsProtectedMethods
         return $column;
     }
 
+    protected function makeSureColumnHasEntity($column)
+    {
+        if (isset($column['entity'])) {
+            return $column;
+        }
+
+        // if the name is an array it's definitely not a relationship
+        if (is_array($column['name'])) {
+            return $column;
+        }
+
+        // if the name is dot notation it might be a relationship
+        if (strpos($column['name'], '.') !== false) {
+            $possibleMethodName = Str::before($column['name'], '.');
+
+            // if the first part of the string exists as method,
+            // it is a relationship
+            if (method_exists($this->model, $possibleMethodName)) {
+                $column['entity'] = $column['name'];
+
+                return $column;
+            }
+        }
+
+        // if there's a method on the model with this name
+        if (method_exists($this->model, $column['name'])) {
+            $column['entity'] = $column['name'];
+
+            return $column;
+        }
+
+        // if the name ends with _id and that method exists,
+        // we can probably use it as an entity
+        if (Str::endsWith($column['name'], '_id')) {
+            $possibleMethodName = Str::replaceLast('_id', '', $column['name']);
+
+            if (method_exists($this->model, $possibleMethodName)) {
+                $column['entity'] = $possibleMethodName;
+
+                return $column;
+            }
+        }
+
+        return $column;
+    }
+
     /**
      * If an entity has been defined for the column, but no model,
      * determine the model from that relationship.
@@ -132,7 +185,7 @@ trait ColumnsProtectedMethods
     {
         // if this is a relation type field and no corresponding model was specified,
         // get it from the relation method defined in the main model
-        if (isset($column['entity']) && ! isset($column['model'])) {
+        if (isset($column['entity']) && $column['entity'] !== false && ! isset($column['model'])) {
             $column['model'] = $this->getRelationModel($column['entity']);
         }
 
@@ -177,7 +230,7 @@ trait ColumnsProtectedMethods
     {
         static $cache = [];
 
-        if ($this->driverIsMongoDb()) {
+        if (! $this->driverIsSql()) {
             return true;
         }
 

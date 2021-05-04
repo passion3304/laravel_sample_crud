@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +20,11 @@ trait HasRelationshipFields
      */
     public function getConnectionWithExtraTypeMappings()
     {
-        $instance = new self;
+        $conn = DB::connection($this->getConnectionName());
 
-        $conn = DB::connection($instance->getConnectionName());
-
-        // register the enum, json and jsonb column type, because Doctrine doesn't support it
+        // register the enum, and jsonb types
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json_array');
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json');
 
         return $conn;
     }
@@ -39,7 +36,7 @@ trait HasRelationshipFields
      */
     public function getTableWithPrefix()
     {
-        $prefix = Config::get('database.connections.'.$this->getConnectionName().'.prefix');
+        $prefix = $this->getConnection()->getTablePrefix();
         $tableName = $this->getTable();
 
         return $prefix.$tableName;
@@ -54,7 +51,7 @@ trait HasRelationshipFields
     public function getColumnType($columnName)
     {
         $conn = $this->getConnectionWithExtraTypeMappings();
-        $table = $this->getTableWithPrefix();
+        $table = $this->getTable();
 
         return $conn->getSchemaBuilder()->getColumnType($table, $columnName);
     }
@@ -74,7 +71,7 @@ trait HasRelationshipFields
         $table = $instance->getTableWithPrefix();
 
         // MongoDB columns are alway nullable
-        if ($conn->getConfig()['driver'] === 'mongodb') {
+        if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
             return true;
         }
 

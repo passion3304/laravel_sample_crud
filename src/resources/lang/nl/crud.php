@@ -62,12 +62,19 @@ return [
     'bulk_no_entries_selected_title'   => 'Geen items geselecteerd.',
     'bulk_no_entries_selected_message' => 'Selecteer tenminste een item om een bulkactie uit te voeren.',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'   => 'Weet je zeker dat je deze :number items wilt verwijderen?',
     'bulk_delete_sucess_title'   => 'Items verwijderd',
     'bulk_delete_sucess_message' => ' items zijn verwijderd',
     'bulk_delete_error_title'    => 'Verwijderen mislukt',
     'bulk_delete_error_message'  => 'Een of meerdere items konden niet worden verwijderd',
+
+    // Bulk clone
+    'bulk_clone_are_you_sure'   => 'Weet je zeker dat je deze :number items wilt klonen?',
+    'bulk_clone_sucess_title'   => 'Items gekloond',
+    'bulk_clone_sucess_message' => ' items zijn gekloond.',
+    'bulk_clone_error_title'    => 'Klonen mislukt',
+    'bulk_clone_error_message'  => 'Een of meerdere items konden niet worden gekloond. Probeer het opnieuw.',
 
     // Ajax errors
     'ajax_error_title' => 'Fout',
@@ -129,6 +136,17 @@ return [
     'filters'        => 'Filters',
     'toggle_filters' => 'Schakel filters',
     'remove_filters' => 'Verwijder filters',
+    'apply' => 'Toepassen',
+
+    //filters language strings
+    'today' => 'Vandaag',
+    'yesterday' => 'Gisteren',
+    'last_7_days' => 'Afgelopen 7 dagen',
+    'last_30_days' => 'Afgelopen 30 dagen',
+    'this_month' => 'Deze maand',
+    'last_month' => 'Afgelopen maand',
+    'custom_range' => 'Aangepast bereik',
+    'weekLabel' => 'W',
 
     // Fields
     'browse_uploads'            => 'Blader uploads',
@@ -142,6 +160,9 @@ return [
     'internal_link_placeholder' => 'Interne slug. B.v.: \'admin/page\' (geen quotes) voor \':url\'',
     'external_link'             => 'Externe link',
     'choose_file'               => 'Kies bestand',
+    'new_item'                  => 'Nieuw item',
+    'select_entry'              => 'Selecteer een item',
+    'select_entries'            => 'Selecteer items',
 
     //Table field
     'table_cant_add'    => 'Kan nieuwe :entity niet toevoegen',
@@ -153,4 +174,7 @@ return [
     // InlineCreateOperation
     'related_entry_created_success' => 'Gerelateerd item is aangemaakt en geselecteerd.',
     'related_entry_created_error' => 'Gerelateerd item kon niet worden aangemaakt.',
+
+    // returned when no translations found in select inputs
+    'empty_translations' => '(leeg)',
 ];

@@ -27,10 +27,14 @@ class ChartController
         }
 
         if ($this->chart) {
-            return $this->chart->api();
+            $response = $this->chart->api();
+        } else {
+            $response = $this->api();
         }
 
-        return $this->api();
+        return response($response)->withHeaders([
+            'Content-Type' => 'application/json',
+        ]);
     }
 
     /**

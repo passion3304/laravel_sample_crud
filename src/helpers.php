@@ -30,6 +30,49 @@ if (! function_exists('backpack_authentication_column')) {
     }
 }
 
+if (! function_exists('backpack_form_input')) {
+    /**
+     * Parse the submitted input in request('form') to an usable array.
+     * Joins the multiple[] fields in a single key and transform the dot notation fields into arrayed ones.
+     *
+     *
+     * @return array
+     */
+    function backpack_form_input()
+    {
+        $input = request('form') ?? [];
+
+        $result = [];
+        foreach ($input as $row) {
+            // parse the input name to extract the "arg" when using HasOne/MorphOne (address[street]) returns street as arg, address as key
+            $start = strpos($row['name'], '[');
+            $input_arg = null;
+            if ($start !== false) {
+                $end = strpos($row['name'], ']', $start + 1);
+                $length = $end - $start;
+
+                $input_arg = substr($row['name'], $start + 1, $length - 1);
+                $input_arg = strlen($input_arg) >= 1 ? $input_arg : null;
+                $input_key = substr($row['name'], 0, $start);
+            } else {
+                $input_key = $row['name'];
+            }
+
+            if (is_null($input_arg)) {
+                if (! isset($result[$input_key])) {
+                    $result[$input_key] = $start ? [$row['value']] : $row['value'];
+                } else {
+                    array_push($result[$input_key], $row['value']);
+                }
+            } else {
+                $result[$input_key][$input_arg] = $row['value'];
+            }
+        }
+
+        return $result;
+    }
+}
+
 if (! function_exists('backpack_users_have_email')) {
     /**
      * Check if the email column is present on the user table.
@@ -55,7 +98,7 @@ if (! function_exists('backpack_avatar_url')) {
      */
     function backpack_avatar_url($user)
     {
-        $firstLetter = $user->getAttribute('name') ? $user->name[0] : 'A';
+        $firstLetter = $user->getAttribute('name') ? mb_substr($user->name, 0, 1, 'UTF-8') : 'A';
         $placeholder = 'https://placehold.it/160x160/00a65a/ffffff/&text='.$firstLetter;
 
         switch (config('backpack.base.avatar_type')) {

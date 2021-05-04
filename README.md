@@ -11,11 +11,13 @@
     <br>
     <a href="https://packagist.org/packages/backpack/crud" title="Latest Version on Packagist"><img src="https://img.shields.io/packagist/v/backpack/crud.svg?style=flat-square"></a>
     <a href="https://packagist.org/packages/backpack/crud" title="Total Downloads"><img src="https://img.shields.io/packagist/dt/backpack/crud.svg?style=flat-square"></a>
+    <a href="https://github.com/Laravel-Backpack/CRUD/commits/master" title="Last commit"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/laravel-backpack/crud"></a>
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud" title="Quality Score"><img src="https://img.shields.io/scrutinizer/g/laravel-backpack/crud.svg?style=flat-square"></a>
     <a href="https://travis-ci.org/Laravel-Backpack/CRUD" title="Build Status"><img src="https://img.shields.io/travis/Laravel-Backpack/CRUD/master.svg?style=flat-square"></a>
     <a href="https://styleci.io/repos/53581270" title="Style CI"><img src="https://styleci.io/repos/53581270/shield"></a>
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://img.shields.io/scrutinizer/coverage/g/laravel-backpack/crud.svg?style=flat-square"></a>
     <a href="LICENSE.md" title="Software License"><img src="https://img.shields.io/badge/License-dual-blue"></a>
+    <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
     <br><br>
     <a href="https://backpackforlaravel.com/">Website</a> | 
     <a href="https://backpackforlaravel.com/docs/">Documentation</a> | 
@@ -53,6 +55,12 @@ Quickly build an admin interface for your Eloquent models. Then customize every 
 
 But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to overwrite a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
 
+## Screenshots
+
+![https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif](https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif)
+
+The GIF above should give you with a good idea about what Backpack will help you build. But you can also see it in action in our [live demo](https://demo.backpackforlaravel.com/admin), to get a deeper understanding of how Backpack admin panels look & feel and the amount of features it provides.
+
 ## Getting started
 
 Start with the ["Getting Started" series](https://backpackforlaravel.com/docs/4.0/introduction) in our docs. We try to nudge you towards creating a Backpack acccount, but you don't _need_ one, if you're just trying it out.
@@ -65,7 +73,7 @@ Alternatively, if you don't have 20 minutes right now, subscribe to our [drip em
 ## Install
 
 Installation guides:
-- [Install Backpack 4.1 on Laravel 6 or 7](https://backpackforlaravel.com/docs/4.1/installation) - recommended;
+- [Install Backpack 4.1 on Laravel 6, 7 or 8](https://backpackforlaravel.com/docs/4.1/installation) - recommended;
 - [Install Backpack 4.0 on Laravel 5.8, 6 or 7](https://backpackforlaravel.com/docs/4.0/installation) - last feature update was 21st Apr 2020;
 - [Install Backpack 3.6 on Laravel 5.8 or 6.x](https://backpackforlaravel.com/docs/3.6/installation) - last feature update was 17th Sep 2019;
 - [Install Backpack 3.5 on Laravel 5.5, 5.6, 5.7](https://backpackforlaravel.com/docs/3.5/installation) - last feature update was 27th Feb 2019;
@@ -73,23 +81,19 @@ Installation guides:
 - [Install Backpack 3.x on Laravel 5.3](https://laravel-backpack.readme.io/docs/installation-on-laravel-53) - last feature update was 02 Feb 2017;
 - [Install Backpack 3.x on Laravel 5.2](https://laravel-backpack.readme.io/docs/installation) - deprecated, lacks a lot of features;
 
-## Screenshots
-
-![https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif](https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif)
-
-Play around in our [live demo](https://demo.backpackforlaravel.com/admin).
-
 ## Change Log
 
 For the current release (4.1.x) please see [the Releases tab](https://github.com/Laravel-Backpack/CRUD/releases). For previous versions (Backpack <=4.0.x), please see our old [CHANGELOG](CHANGELOG.md) file.
 
 ## Contributing Guidelines
 
-Please see [CONTRIBUTING](CONTRIBUTING.md).
+This project stands by [The Whole Fruit Manifesto](https://github.com/the-whole-fruit/manifesto). We believe that “_writing good code_” is not only about “_writing good code_”. It’s also about the words around it. That’s why, to make sure your contribution is well received, we ask you to [read and keep in mind the ONE=MOR framework and guidelines](https://github.com/the-whole-fruit/manifesto) when writing comment blocks, PR titles, PR descriptions, and in general, when writing to our community. 
+
+For tasks & details about how you can help our project, please see [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Security
 
-If you discover any security related issues, please email hello@tabacitu.ro instead of using the issue tracker.
+If you discover any security related issues, please email tabacitu@backpackforlaravel.com instead of using the issue tracker.
 
 It's _heavily_ recommended that you **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email about 3-4 emails per year. Sometimes less.
 
@@ -97,13 +101,14 @@ It's _heavily_ recommended that you **[subscribe to the Backpack Newsletter](htt
 
 - [Cristian Tabacitu](http://tabacitu.ro) - creator & lead maintainer;
 - [Pedro Martins](https://github.com/pxpm) - maintainer;
+- [António Almeida](https://github.com/promatik) - maintainer;
 - [All Contributors][link-contributors]
 
 Special thanks go to:
-- [Owen Melbourne](https://github.com/OwenMelbz), [Oliver Ziegler](https://github.com/OliverZiegler), [Thomas Swonke](https://github.com/tswonke), [Catalin Tudorache](https://github.com/tumf87), [Abby Janke](https://github.com/AbbyJanke), [David Lloyd](https://github.com/lloy0076), [António Almeida](https://github.com/promatik) - A LOT of new features, bug fixing, support, feedback and code review;
+- [Owen Melbourne](https://github.com/OwenMelbz), [Oliver Ziegler](https://github.com/OliverZiegler), [Thomas Swonke](https://github.com/tswonke), [Catalin Tudorache](https://github.com/tumf87), [Abby Janke](https://github.com/AbbyJanke), [David Lloyd](https://github.com/lloy0076) - A LOT of new features, bug fixing, support, feedback and code review;
 - [Łukasz Holeczek](https://coreui.io/) - creator of CoreUI (used in Backpack v4);
 - [Abdullah Almsaeed](https://adminlte.io/) - creator of AdminLTE (used in Backpack v3);
-- [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was a big inspiration for this package;
+- [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was a big inspiration for Backpack v1 & v2;
 
 ## License
 

@@ -48,7 +48,7 @@ trait BulkDeleteOperation
     {
         $this->crud->hasAccessOrFail('bulkDelete');
 
-        $entries = request()->input('entries');
+        $entries = request()->input('entries', []);
         $deletedEntries = [];
 
         foreach ($entries as $key => $id) {

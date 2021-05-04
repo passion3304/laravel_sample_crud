@@ -23,6 +23,7 @@ trait FetchOperation
         if (count($matches[1])) {
             foreach ($matches[1] as $methodName) {
                 Route::post($segment.'/fetch/'.Str::kebab($methodName), [
+                    'as'        => $segment.'.fetch'.Str::studly($methodName),
                     'uses'      => $controller.'@fetch'.$methodName,
                     'operation' => 'FetchOperation',
                 ]);
@@ -80,11 +81,11 @@ trait FetchOperation
             $config['query']->get();
         }
 
-        $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array'];
+        $textColumnTypes = ['string', 'json_string', 'text', 'longText', 'json_array', 'json'];
 
         // if the query builder brings any where clause already defined by the user we must
         // ensure that the where prevails and we should only use our search as a complement to the query constraints.
-        // e.g user want only the active products, so in fetch he would return something like:
+        // e.g user want only the active products, so in fetch they would return something like:
         // .... 'query' => function($model) { return $model->where('active', 1); }
         // So it reads: SELECT ... WHERE active = 1 AND (XXX = x OR YYY = y) and not SELECT ... WHERE active = 1 AND XXX = x OR YYY = y;
 
@@ -100,10 +101,10 @@ trait FetchOperation
                         $tempQuery = $query->{$operation}($searchColumn, $search_string);
                     }
                 }
-                // If developer provide an empty searchable_attributes array it means he don't want us to search
+                // If developer provide an empty searchable_attributes array it means they don't want us to search
                 // in any specific column, or try to guess the column from model identifiableAttribute.
                 // In that scenario we will not have any $tempQuery here, so we just return the query, is up to the developer
-                // to do his own search.
+                // to do their own search.
                 return $tempQuery ?? $query;
             });
         } else {

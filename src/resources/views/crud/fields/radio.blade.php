@@ -2,11 +2,18 @@
 @php
     $optionValue = oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '';
 
+
+    // check if attribute is casted, if it is, we get back un-casted values
+    if(Arr::get($crud->model->getCasts(), $field['name']) === 'boolean') {
+        $optionValue = (int) $optionValue;
+    }
+
     // if the class isn't overwritten, use 'radio'
     if (!isset($field['attributes']['class'])) {
         $field['attributes']['class'] = 'radio';
     }
 
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
     $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitRadioElement';
 @endphp
 

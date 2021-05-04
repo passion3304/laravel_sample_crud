@@ -135,6 +135,7 @@ requestInfoOn:
 # keys must be GitHub usernames
 requestInfoUserstoExclude:
   - tabacitu
+  - pxpm
 
 # ---------------------------------------------------------------------------------------------
 #

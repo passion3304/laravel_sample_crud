@@ -4,6 +4,9 @@ $defaultOptions = [
     'file_picker_callback' => 'elFinderBrowser',
     'selector' => 'textarea.tinymce',
     'plugins' => 'image,link,media,anchor',
+    //these two options allow tinymce to save the path of images "/upload/image.jpg" instead of the relative server path "../../../uploads/image.jpg"
+    'relative_urls' =>  false,
+    'remove_script_host' => true,
 ];
 
 $field['options'] = array_merge($defaultOptions, $field['options'] ?? []);
@@ -15,7 +18,7 @@ $field['options'] = array_merge($defaultOptions, $field['options'] ?? []);
     <textarea
         name="{{ $field['name'] }}"
         data-init-function="bpFieldInitTinyMceElement"
-        data-options="{{ trim(json_encode($field['options'])) }}"
+        data-options='{!! trim(json_encode($field['options'])) !!}'
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control tinymce'])
         >{{ oldOrFallback($field['name'],'') ?? $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
