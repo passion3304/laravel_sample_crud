@@ -2,6 +2,8 @@
 
 <?php
     $field['store_as_json'] = $field['store_as_json'] ?? false;
+
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
     $field['wrapper']['algolia-wrapper'] = $field['wrapper']['algolia-wrapper'] ?? 'true';
     $field['config'] = [
         'field' => $field['name'],
