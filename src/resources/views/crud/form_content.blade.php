@@ -53,19 +53,28 @@
       });
     }
 
-    function preventUnload(event) {
-      // Cancel the event as stated by the standard.
-      event.preventDefault();
-      // Older browsers supported custom message
-      event.returnValue = '';
-    }
-
     jQuery('document').ready(function($){
 
       // trigger the javascript for all fields that have their js defined in a separate method
       initializeFieldsWithJavascript('form');
 
+      // Retrieves the current form data
+      function getFormData() {
+        return new URLSearchParams(new FormData(document.querySelector("main form"))).toString();
+      }
+
+      // Prevents unloading of page if form data was changed
+      function preventUnload(event) {
+        if (initData !== getFormData()) {
+          // Cancel the event as stated by the standard.
+          event.preventDefault();
+          // Older browsers supported custom message
+          event.returnValue = '';
+        }
+      }
+
       @if($crud->getWarnBeforeLeaving())
+      const initData = getFormData();
       window.addEventListener('beforeunload', preventUnload);
       @endif
 
