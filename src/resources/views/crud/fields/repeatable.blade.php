@@ -92,6 +92,14 @@
           text-align: center;
           background-color: #e8ebf0 !important;
         }
+        .container-repeatable-elements .move-element-up,
+        .container-repeatable-elements .move-element-down {
+            height: 24px;
+            width: 24px;
+            margin-left: -21px;
+            font-size: 1rem;
+        }
+
         .container-repeatable-elements .move-element-up {
             top: 45px;
         }
@@ -102,7 +110,7 @@
             top: 45px;
         }
         .container-repeatable-elements .move-element-down {
-            top: 80px;
+            top: 74px;
         }
         .container-repeatable-elements [data-row-number]:last-of-type .move-element-down {
             display: none;
@@ -245,12 +253,12 @@
 
                 // get existing values
                 var values = repeatableElementToObj($repeatableElement);
-                var index;
+                var index = $repeatableElement.index();
 
                 if ($(this).is('.move-element-up')) {
-                    index = $repeatableElement.index() - 1;
+                    index -= 1;
                 } else {
-                    index = $repeatableElement.index() + 1;
+                    index += 1;
                 }
 
                 if (index < 0) return;
