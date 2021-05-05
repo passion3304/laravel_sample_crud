@@ -254,7 +254,7 @@ if (! function_exists('is_countable')) {
     }
 }
 
-if (! function_exists('oldOrFallback')) {
+if (! function_exists('oldValueDefaultOrFallback')) {
     /**
      * This function allows us to setup a default value in case there is an old value, but is forcelly null
      * by Laravel middleware ConvertEmptyStringsToNull.
