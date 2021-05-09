@@ -39,9 +39,15 @@
     @push('before_scripts')
     <div class="col-md-12 well repeatable-element row m-1 p-2" data-repeatable-identifier="{{ $field['name'] }}">
       @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
-        <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
-        <button type="button" class="close move-element-up"><span aria-hidden="true"><i class="la la-angle-up"></i></span></button>
-        <button type="button" class="close move-element-down"><span aria-hidden="true"><i class="la la-angle-down"></i></span></button>
+        <div class="controls">
+            <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
+            <button type="button" class="close move-element-up">
+                <svg viewBox="0 0 64 80"><path d="M46.8,36.7c-4.3-4.3-8.7-8.7-13-13c-1-1-2.6-1-3.5,0c-4.3,4.3-8.7,8.7-13,13c-2.3,2.3,1.3,5.8,3.5,3.5c4.3-4.3,8.7-8.7,13-13c-1.2,0-2.4,0-3.5,0c4.3,4.3,8.7,8.7,13,13C45.5,42.5,49,39,46.8,36.7L46.8,36.7z"/></svg>
+            </button>
+            <button type="button" class="close move-element-down">
+                <svg viewBox="0 0 64 80"><path d="M17.2,30.3c4.3,4.3,8.7,8.7,13,13c1,1,2.6,1,3.5,0c4.3-4.3,8.7-8.7,13-13c2.3-2.3-1.3-5.8-3.5-3.5c-4.3,4.3-8.7,8.7-13,13c1.2,0,2.4,0,3.5,0c-4.3-4.3-8.7-8.7-13-13C18.5,24.5,15,28,17.2,30.3L17.2,30.3z"/></svg>
+            </button>
+        </div>
         @foreach($field['fields'] as $subfield)
           @php
               $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
@@ -79,40 +85,31 @@
           border-radius: 5px;
           background-color: #f0f3f94f;
         }
-        .container-repeatable-elements .delete-element,
-        .container-repeatable-elements .move-element-up,
-        .container-repeatable-elements .move-element-down {
-          z-index: 2;
+        .container-repeatable-elements .controls {
+          display: flex;
+          flex-direction: column;
+          align-content: center;
           position: absolute !important;
-          margin-left: -24px;
-          margin-top: 0px;
-          height: 30px;
-          width: 30px;
-          border-radius: 15px;
-          text-align: center;
-          background-color: #e8ebf0 !important;
-        }
-        .container-repeatable-elements .move-element-up,
-        .container-repeatable-elements .move-element-down {
-            height: 24px;
-            width: 24px;
-            margin-left: -21px;
-            font-size: 1rem;
+          left: -16px;
+          z-index: 2;
         }
 
-        .container-repeatable-elements .move-element-up {
-            top: 45px;
+        .container-repeatable-elements .controls button {
+          height: 30px;
+          width: 30px;
+          border-radius: 50%;
+          background-color: #e8ebf0 !important;
+          margin-bottom: 2px;
+          overflow: hidden;
         }
-        .container-repeatable-elements [data-row-number='1'] .move-element-up {
-            display: none;
+        .container-repeatable-elements .controls button.move-element-up,
+        .container-repeatable-elements .controls button.move-element-down {
+            height: 24px;
+            width: 24px;
+            margin: 2px auto;
         }
-        .container-repeatable-elements [data-row-number='1'] .move-element-down {
-            top: 45px;
-        }
-        .container-repeatable-elements .move-element-down {
-            top: 74px;
-        }
-        .container-repeatable-elements [data-row-number]:last-of-type .move-element-down {
+        .container-repeatable-elements .repeatable-element:first-of-type .move-element-up,
+        .container-repeatable-elements .repeatable-element:last-of-type .move-element-down {
             display: none;
         }
       </style>
@@ -242,24 +239,19 @@
                 // decrement the container current number of rows by -1
                 updateRepeatableRowCount(container_holder, -1);
 
-                $(this).parent().remove();
+                $(this).closest('.repeatable-element').remove();
 
                 //we reassure row numbers on delete
                 setupElementRowsNumbers(container_holder);
             });
 
             new_field_group.find('.move-element-up, .move-element-down').click(function(){
-                var $repeatableElement = $(this).parent();
+                var $repeatableElement = $(this).closest('.repeatable-element');
 
                 // get existing values
                 var values = repeatableElementToObj($repeatableElement);
                 var index = $repeatableElement.index();
-
-                if ($(this).is('.move-element-up')) {
-                    index -= 1;
-                } else {
-                    index += 1;
-                }
+                index += $(this).is('.move-element-up') ? -1 : 1;
 
                 if (index < 0) return;
 
