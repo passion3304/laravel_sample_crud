@@ -4,6 +4,9 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\Article;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns
+ */
 class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
 {
     private $emptyFakeColumnsArray = ['extras'];
