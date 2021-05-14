@@ -68,22 +68,7 @@ class AddCustomRouteContent extends Command
                 $this->error('Could not write to file: '.$path);
             }
         } else {
-            $command = 'php artisan vendor:publish --provider="Backpack\Base\BaseServiceProvider" --tag=custom_routes';
-
-            $process = new Process($command, null, null, null, 300, null);
-
-            $process->run(function ($type, $buffer) {
-                if (Process::ERR === $type) {
-                    $this->line($buffer);
-                } else {
-                    $this->line($buffer);
-                }
-            });
-
-            // executes after the command finishes
-            if (! $process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
+            Artisan::call('vendor:publish', ['--provider' => 'Backpack\CRUD\BackpackServiceProvider', '--tag' => 'custom_routes']);
 
             $this->handle();
         }
