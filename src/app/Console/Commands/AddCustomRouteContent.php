@@ -4,8 +4,6 @@ namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class AddCustomRouteContent extends Command
 {
