@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
 class AddCustomRouteContent extends Command
