@@ -219,7 +219,7 @@ trait Create
         foreach ($relation_fields as $relation_field) {
             $attributeKey = $this->parseRelationFieldNamesFromHtml([$relation_field])[0]['name'];
 
-            if (! is_null(Arr::get($data, $attributeKey)) && isset($relation_field['pivot']) && $relation_field['pivot'] !== true) {
+            if (isset($relation_field['pivot']) && $relation_field['pivot'] !== true) {
                 $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
                 $fieldData = Arr::get($relationData, 'relations.'.$key, []);
                 if (! array_key_exists('model', $fieldData)) {
