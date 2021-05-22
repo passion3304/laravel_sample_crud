@@ -54,7 +54,7 @@ return [
     'delete_confirmation_title'                   => 'আইটেম মুছে ফেলা হয়েছে।',
     'delete_confirmation_message'                 => 'আইটেমটি সফলভাবে মুছে ফেলা হয়েছে।',
     'delete_confirmation_not_title'               => 'মুছে ফেলা হয়নি।',
-    'delete_confirmation_not_message'             => "একটি ত্রুটি পাওয়া গিয়েছে আপনার আইটেম মুছে ফেলা নাও হতে পারে।",
+    'delete_confirmation_not_message'             => 'একটি ত্রুটি পাওয়া গিয়েছে আপনার আইটেম মুছে ফেলা নাও হতে পারে।',
     'delete_confirmation_not_deleted_title'       => 'মুছে ফেলা হয়নি।',
     'delete_confirmation_not_deleted_message'     => 'কিছুই ঘটেনি। আপনার আইটেমটি নিরাপদে আছে।',
 
