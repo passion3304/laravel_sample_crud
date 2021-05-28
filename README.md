@@ -109,6 +109,7 @@ Special thanks go to:
 - [Łukasz Holeczek](https://coreui.io/) - creator of CoreUI (used in Backpack v4);
 - [Abdullah Almsaeed](https://adminlte.io/) - creator of AdminLTE (used in Backpack v3);
 - [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was a big inspiration for Backpack v1 & v2;
+- [Taylor Otwell](https://github.com/taylorotwell) & Laravel contributors (of course);
 
 ## License
 
