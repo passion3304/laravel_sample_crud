@@ -3,11 +3,9 @@
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Database\Eloquent\Model;
 
 class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
 {
-
     /**
      * SluggableObserver constructor.
      *
@@ -18,5 +16,4 @@ class SluggableObserver extends \Cviebrock\EloquentSluggable\SluggableObserver
     {
         parent::__construct($slugService, $events);
     }
-
 }
