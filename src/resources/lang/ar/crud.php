@@ -67,6 +67,7 @@ return [
     'save_action_save_and_edit'               => 'حفظ هذا العنصر وتعديله',
     'save_action_save_and_back'               => 'حفظ و رجوع',
     'save_action_save_and_new'                => 'حفظ وعنصر جديد',
+    'save_action_save_and_preview'            => 'حفظ ومعاينة',
     'reorder_error_title'                     => 'خطأ',
     'page_link'                               => 'رابط الصفحة',
     'external_link'                           => 'رابط خارجي',
