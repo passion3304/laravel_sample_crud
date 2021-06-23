@@ -135,6 +135,7 @@ We've spend more than 10.000 hours creating, polishing and maintaining administr
 If you are looking for a developer/team to help you build an admin panel on Laravel, look no further. You'll have a difficult time finding someone with more experience & enthusiasm for admin panels. This is _what we do_. [Contact us](https://backpackforlaravel.com/need-freelancer-or-development-team).
 
 
+
 [ico-version]: https://img.shields.io/packagist/v/dick/crud.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/tabacitu/crud.svg?style=flat-square
