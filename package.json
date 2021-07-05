@@ -30,7 +30,7 @@
         "bootstrap-daterangepicker": "^3.1.0",
         "bootstrap-iconpicker": "^1.8.2",
         "ckeditor": "^4.12.1",
-        "cropperjs": "^1.5.11",
+        "cropperjs": "^1.5.12",
         "datatables.net": "^1.10.25",
         "datatables.net-bs4": "^1.10.23",
         "datatables.net-fixedheader": "^3.1.8",
