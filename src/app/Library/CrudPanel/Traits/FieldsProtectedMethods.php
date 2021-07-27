@@ -151,24 +151,6 @@ trait FieldsProtectedMethods
         return $field;
     }
 
-    protected function makeSureFieldHasRelationshipData($field)
-    {
-        // only do this if "entity" is defined on the field
-        if (! isset($field['entity'])) {
-            return $field;
-        }
-
-        $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field);
-
-        if (! empty($extraFieldAttributes)) {
-            $field = array_merge($field, $extraFieldAttributes);
-        } else {
-            abort(500, 'Unable to process relationship data: '.$field['name']);
-        }
-
-        return $field;
-    }
-
     protected function overwriteFieldNameFromEntity($field)
     {
         // if the entity doesn't have a dot, it means we don't need to overwrite the name
