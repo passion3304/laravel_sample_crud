@@ -119,16 +119,18 @@ trait Relationships
         return $fields;
     }
 
-    protected function changeBelongsToNamesFromRelationshipToForeignKey($data) {
+    protected function changeBelongsToNamesFromRelationshipToForeignKey($data)
+    {
         $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
 
         foreach ($belongs_to_fields as $relation_field) {
             $relation = $this->getRelationInstance($relation_field);
-            if(Arr::has($data, $relation->getRelationName())) {
+            if (Arr::has($data, $relation->getRelationName())) {
                 $data[$relation->getForeignKeyName()] = Arr::get($data, $relation->getRelationName());
                 unset($data[$relation->getRelationName()]);
             }
         }
+
         return $data;
     }
 
