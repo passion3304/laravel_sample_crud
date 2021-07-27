@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait Relationships
 {
@@ -15,33 +16,20 @@ trait Relationships
     public function getRelationInstance($field)
     {
         $entity = $this->getOnlyRelationEntity($field);
-        $entity_array = explode('.', $entity);
-        $relation_model = $this->getRelationModel($entity);
+        $possible_method = Str::before($entity, '.');
+        $model = $this->model;
 
-        $related_method = Arr::last($entity_array);
-        if (count(explode('.', $entity)) == count(explode('.', $field['entity']))) {
-            $relation_model = $this->getRelationModel($entity, -1);
-        }
-        $relation_model = new $relation_model();
-
-        //if counts are diferent means that last element of entity is the field in relation.
-        if (count(explode('.', $entity)) != count(explode('.', $field['entity']))) {
-            if (in_array($related_method, $relation_model->getFillable())) {
-                if (count($entity_array) > 1) {
-                    $related_method = $entity_array[(count($entity_array) - 2)];
-                    $relation_model = $this->getRelationModel($entity, -2);
-                } else {
-                    $relation_model = $this->model;
-                }
+        if (method_exists($model, $possible_method)) {
+            $parts = explode('.', $entity);
+            // here we are going to iterate through all relation parts to check
+            // if the attribute is present in the relation string.
+            foreach ($parts as $i => $part) {
+                $relation = $model->$part();
+                $model = $relation->getRelated();
             }
-        }
-        if (count($entity_array) == 1) {
-            if (method_exists($this->model, $related_method)) {
-                return $this->model->{$related_method}();
-            }
-        }
 
-        return $relation_model->{$related_method}();
+            return $relation;
+        }
     }
 
     /**
@@ -70,6 +58,41 @@ trait Relationships
         return Arr::last(explode('\\', get_class($relation)));
     }
 
+    public function getOnlyRelationEntity($relation_field)
+    {
+        $relation_model = $this->getRelationModel($relation_field['entity'], -1);
+        $related_method = Str::afterLast($relation_field['entity'], '.');
+
+        if (! method_exists($relation_model, $related_method)) {
+            return Str::beforeLast($relation_field['entity'], '.');
+        }
+
+        return $relation_field['entity'];
+    }
+
+    /**
+     * Get the fields for relationships, according to the relation type. It looks only for direct
+     * relations - it will NOT look through relationships of relationships.
+     *
+     * @param string|array $relation_types Eloquent relation class or array of Eloquent relation classes. Eg: BelongsTo
+     *
+     * @return array The fields with corresponding relation types.
+     */
+    public function getFieldsWithRelationType($relation_types): array
+    {
+        $relation_types = (array) $relation_types;
+
+        return collect($this->fields())
+            ->where('model')
+            ->whereIn('relation_type', $relation_types)
+            ->filter(function ($item) {
+                $related_model = get_class($this->model->{Str::before($item['entity'], '.')}()->getRelated());
+
+                return Str::contains($item['entity'], '.') && $item['model'] !== $related_model ? false : true;
+            })
+            ->toArray();
+    }
+
     /**
      * Parse the field name back to the related entity after the form is submited.
      * Its called in getAllFieldNames().
@@ -94,6 +117,19 @@ trait Relationships
         }
 
         return $fields;
+    }
+
+    protected function changeBelongsToNamesFromRelationshipToForeignKey($data) {
+        $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
+
+        foreach ($belongs_to_fields as $relation_field) {
+            $relation = $this->getRelationInstance($relation_field);
+            if(Arr::has($data, $relation->getRelationName())) {
+                $data[$relation->getForeignKeyName()] = Arr::get($data, $relation->getRelationName());
+                unset($data[$relation->getRelationName()]);
+            }
+        }
+        return $data;
     }
 
     /**
