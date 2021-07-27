@@ -109,7 +109,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     private $articleInputBelongsToRelationName = [
         [
             'name' => 'user',
-        ]
+        ],
     ];
 
     public function testCreate()
@@ -150,7 +150,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->nickname, $account_details_nickname);
-        
     }
 
     public function testCreateBelongsToWithRelationName()
