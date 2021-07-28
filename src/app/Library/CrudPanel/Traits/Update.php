@@ -26,7 +26,7 @@ trait Update
         $data = $this->compactFakeFields($data);
         $item = $this->model->findOrFail($id);
 
-        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data, $this->getFields());
+        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
 
         $this->createRelations($item, $data);
 
