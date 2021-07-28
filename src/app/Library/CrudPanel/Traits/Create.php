@@ -25,11 +25,10 @@ trait Create
     {
         $data = $this->decodeJsonCastedAttributes($data);
         $data = $this->compactFakeFields($data);
+        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
 
         // omit the n-n relationships when updating the eloquent item
         $nn_relationships = Arr::pluck($this->getRelationFieldsWithPivot(), 'name');
-
-        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data, $this->getFields());
 
         $item = $this->model->create(Arr::except($data, $nn_relationships));
 
