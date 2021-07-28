@@ -22,7 +22,6 @@ trait Relationships
         if (method_exists($model, $possible_method)) {
             $parts = explode('.', $entity);
             // here we are going to iterate through all relation parts to check
-            // if the attribute is present in the relation string.
             foreach ($parts as $i => $part) {
                 $relation = $model->$part();
                 $model = $relation->getRelated();
