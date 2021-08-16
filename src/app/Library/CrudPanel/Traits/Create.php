@@ -25,9 +25,11 @@ trait Create
     {
         $data = $this->decodeJsonCastedAttributes($data);
         $data = $this->compactFakeFields($data);
+        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
 
         // omit the n-n relationships when updating the eloquent item
         $nn_relationships = Arr::pluck($this->getRelationFieldsWithPivot(), 'name');
+
         $item = $this->model->create(Arr::except($data, $nn_relationships));
 
         // if there are any relationships available, also sync those
@@ -219,7 +221,7 @@ trait Create
         foreach ($relation_fields as $relation_field) {
             $attributeKey = $this->parseRelationFieldNamesFromHtml([$relation_field])[0]['name'];
 
-            if (isset($relation_field['pivot']) && $relation_field['pivot'] !== true) {
+            if (! is_null(Arr::get($data, $attributeKey)) && isset($relation_field['pivot']) && $relation_field['pivot'] !== true) {
                 $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
                 $fieldData = Arr::get($relationData, 'relations.'.$key, []);
                 if (! array_key_exists('model', $fieldData)) {
@@ -236,26 +238,5 @@ trait Create
         }
 
         return $relationData;
-    }
-
-    public function getOnlyRelationEntity($relation_field)
-    {
-        $entity_array = explode('.', $relation_field['entity']);
-
-        $relation_model = $this->getRelationModel($relation_field['entity'], -1);
-
-        $related_method = Arr::last($entity_array);
-
-        if (! method_exists($relation_model, $related_method)) {
-            if (count($entity_array) <= 1) {
-                return $relation_field['entity'];
-            } else {
-                array_pop($entity_array);
-            }
-
-            return implode('.', $entity_array);
-        }
-
-        return $relation_field['entity'];
     }
 }
