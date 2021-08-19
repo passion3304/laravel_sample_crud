@@ -40,7 +40,7 @@ trait Read
     {
         $id = $this->getCurrentEntryId();
 
-        if (! $id) {
+        if ($id === false) {
             return false;
         }
 

@@ -93,7 +93,7 @@
 
   			if (start && end) {
   				var dates = {
-					'from': start.format('YYYY-MM-DD HH:mm:ss '),
+					'from': start.format('YYYY-MM-DD HH:mm:ss'),
 					'to': end.format('YYYY-MM-DD HH:mm:ss')
                 };
 

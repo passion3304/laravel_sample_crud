@@ -4,6 +4,9 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Config;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Views
+ */
 class CrudPanelViewsTest extends BaseCrudPanelTest
 {
     private $customView = 'path/to/custom/view';
