@@ -55,7 +55,7 @@ class RequireDevTools extends Command
         });
 
         // Create an auth.json file
-        if (!$details) {
+        if (! $details) {
             $this->info(' Creating auth.json file with DevTools auth details');
 
             $this->line(' (Find your access token details on https://backpackforlaravel.com/user/tokens)');
