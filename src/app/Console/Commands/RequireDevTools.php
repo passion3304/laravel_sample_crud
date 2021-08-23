@@ -25,7 +25,7 @@ class RequireDevTools extends Command
      *
      * @var string
      */
-    protected $description = 'Install DevTools with its requirements on dev.';
+    protected $description = 'Require Backpack DevTools on dev.';
 
     /**
      * Execute the console command.
