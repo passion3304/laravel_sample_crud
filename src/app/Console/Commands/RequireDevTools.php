@@ -50,6 +50,8 @@ class RequireDevTools extends Command
         $process->run(function ($type, $buffer) use (&$details) {
             if ($type !== Process::ERR && $buffer !== '') {
                 $details = json_decode($buffer);
+            } elseif (File::exists('auth.json')) {
+                $details = json_decode(File::get('auth.json'), true)['http-basic']['backpackforlaravel.com'] ?? false;
             }
             $this->progressBar->advance();
         });
@@ -63,9 +65,25 @@ class RequireDevTools extends Command
             $password = $this->ask('Access token password');
 
             $process = new Process(['composer', 'config', 'http-basic.backpackforlaravel.com', $username, $password]);
-            $process->run(function ($type, $buffer) {
+            $process->run(function ($type, $buffer) use ($username, $password) {
                 if ($type === Process::ERR) {
-                    $this->error('Could not write to auth.json file.');
+                    $authFile = [
+                        'http-basic' => [
+                            'backpackforlaravel.com' => [
+                                'username' => $username,
+                                'password' => $password,
+                            ],
+                        ],
+                    ];
+
+                    if (File::exists('auth.json')) {
+                        $currentFile = json_decode(File::get('auth.json'), true);
+                        if (!($currentFile['http-basic']['backpackforlaravel.com'] ?? false)) {
+                            $authFile = array_merge_recursive($authFile, $currentFile);
+                        }
+                    }
+
+                    File::put('auth.json', json_encode($authFile, JSON_PRETTY_PRINT));
                 }
                 $this->progressBar->advance();
             });
