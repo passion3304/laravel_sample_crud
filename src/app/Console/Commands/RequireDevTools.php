@@ -17,7 +17,7 @@ class RequireDevTools extends Command
      *
      * @var string
      */
-    protected $signature = 'backpack:devtools:require
+    protected $signature = 'backpack:require:devtools
                                 {--debug} : Show process output or not. Useful for debugging.';
 
     /**
