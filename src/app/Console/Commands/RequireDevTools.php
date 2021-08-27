@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Console\Commands;
 
 use File;
 use Illuminate\Console\Command;
+use Str;
 use Symfony\Component\Process\Process;
 
 class RequireDevTools extends Command
@@ -67,6 +68,7 @@ class RequireDevTools extends Command
             $process = new Process(['composer', 'config', 'http-basic.backpackforlaravel.com', $username, $password]);
             $process->run(function ($type, $buffer) use ($username, $password) {
                 if ($type === Process::ERR) {
+                    // Fallback
                     $authFile = [
                         'http-basic' => [
                             'backpackforlaravel.com' => [
@@ -84,6 +86,51 @@ class RequireDevTools extends Command
                     }
 
                     File::put('auth.json', json_encode($authFile, JSON_PRETTY_PRINT));
+                }
+                $this->progressBar->advance();
+            });
+        }
+
+        // Check if repositories exists
+        $details = null;
+        $process = new Process(['composer', 'config', 'repositories.backpack/devtools']);
+        $process->run(function ($type, $buffer) use (&$details) {
+            if ($type !== Process::ERR && $buffer !== '') {
+                $details = json_decode($buffer);
+            } else {
+                $details = json_decode(File::get('composer.json'), true)['repositories']['backpack/devtools'] ?? false;
+            }
+            $this->progressBar->advance();
+        });
+
+        // Create repositories
+        if (!$details) {
+            $this->info(' Creating repositories entry in composer.json');
+
+            $process = new Process(['composer', 'config', 'repositories.backpack/devtools', 'vcs', 'https://github.com/laravel-backpack/DevTools']);
+            $process->run(function ($type, $buffer) {
+                if ($type === Process::ERR) {
+                    // Fallback
+                    $composerJson = Str::of(File::get('composer.json'));
+
+                    $currentRepositories = json_decode($composerJson, true)['repositories'] ?? false;
+
+                    $repositories = Str::of(json_encode([
+                        'repositories' => [
+                            'backpack/devtools' => [
+                                'type' => 'vcs',
+                                'url' => 'https://github.com/laravel-backpack/DevTools',
+                            ],
+                        ],
+                    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+                    $composerJson = $currentRepositories
+                        // Replace current repositories
+                        ? preg_replace('/"repositories":\s{\r?\n/', $repositories->match("/\{\n\s+([\s\S]+)\n\s{4}\}/m")->append(",\n"), $composerJson)
+                        // Append to the end of the file
+                        : preg_replace("/\r?\n}/", $repositories->replaceFirst('{', ','), $composerJson);
+
+                    File::put('composer.json', $composerJson);
                 }
                 $this->progressBar->advance();
             });
