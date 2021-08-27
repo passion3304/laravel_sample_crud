@@ -26,7 +26,7 @@ class RequireDevTools extends Command
      *
      * @var string
      */
-    protected $description = 'Install DevTools with its requirements on dev.';
+    protected $description = 'Require Backpack DevTools on dev.';
 
     /**
      * Execute the console command.
@@ -42,7 +42,7 @@ class RequireDevTools extends Command
 
         $this->progressBar->start();
 
-        $this->info(' DevTools installation started. Please wait...');
+        $this->info(' Requiring DevTools. Please wait...');
         $this->progressBar->advance();
 
         // Check if auth exists
@@ -58,8 +58,8 @@ class RequireDevTools extends Command
         });
 
         // Create an auth.json file
-        if (!$details) {
-            $this->info(' Creating auth.json file with DevTools auth details');
+        if (! $details) {
+            $this->info(' Creating auth.json file with your authentication token');
 
             $this->line(' (Find your access token details on https://backpackforlaravel.com/user/tokens)');
             $username = $this->ask('Access token username');
@@ -144,11 +144,11 @@ class RequireDevTools extends Command
 
         // Finish
         $this->progressBar->finish();
-        $this->info(' DevTools installation finished.');
+        $this->info(' DevTools is now required.');
 
         // DevTools inside installer
         $this->info('');
-        $this->info(' DevTools requirements started. Please wait...');
+        $this->info(' Now running the DevTools installation command.');
         $this->call('backpack:devtools:install');
     }
 }
