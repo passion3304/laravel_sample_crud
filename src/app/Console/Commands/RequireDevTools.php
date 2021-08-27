@@ -80,7 +80,7 @@ class RequireDevTools extends Command
 
                     if (File::exists('auth.json')) {
                         $currentFile = json_decode(File::get('auth.json'), true);
-                        if (!($currentFile['http-basic']['backpackforlaravel.com'] ?? false)) {
+                        if (! ($currentFile['http-basic']['backpackforlaravel.com'] ?? false)) {
                             $authFile = array_merge_recursive($authFile, $currentFile);
                         }
                     }
@@ -104,7 +104,7 @@ class RequireDevTools extends Command
         });
 
         // Create repositories
-        if (!$details) {
+        if (! $details) {
             $this->info(' Creating repositories entry in composer.json');
 
             $process = new Process(['composer', 'config', 'repositories.backpack/devtools', 'vcs', 'https://github.com/laravel-backpack/DevTools']);
