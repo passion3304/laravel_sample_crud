@@ -137,7 +137,7 @@ class RequireDevTools extends Command
         }
 
         // Require package
-        $process = new Process(['composer', 'require', '--dev', 'backpack/devtools']);
+        $process = new Process(['composer', 'require', '--dev', '--with-all-dependencies', 'backpack/devtools']);
         $process->run(function ($type, $buffer) {
             $this->progressBar->advance();
         });
