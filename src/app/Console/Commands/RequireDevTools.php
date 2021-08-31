@@ -107,7 +107,7 @@ class RequireDevTools extends Command
         if (! $details) {
             $this->info(' Creating repositories entry in composer.json');
 
-            $process = new Process(['composer', 'config', 'repositories.backpack/devtools', 'vcs', 'https://github.com/laravel-backpack/DevTools']);
+            $process = new Process(['composer', 'config', 'repositories.backpack/devtools', 'composer', 'https://repo.backpackforlaravel.com']);
             $process->run(function ($type, $buffer) {
                 if ($type === Process::ERR) {
                     // Fallback
@@ -118,8 +118,8 @@ class RequireDevTools extends Command
                     $repositories = Str::of(json_encode([
                         'repositories' => [
                             'backpack/devtools' => [
-                                'type' => 'vcs',
-                                'url' => 'https://github.com/laravel-backpack/DevTools',
+                                'type' => 'composer',
+                                'url' => 'https://repo.backpackforlaravel.com',
                             ],
                         ],
                     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
