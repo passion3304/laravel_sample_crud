@@ -22,6 +22,17 @@
 
     <!-- CRUD FORM CONTENT - crud_fields_styles stack -->
     @stack('crud_fields_styles')
+
+    {{-- Temporary fix on 4.1 --}}
+    <style>
+      .form-group.required label:not(:empty):not(.form-check-label)::after {
+        content: '';
+      }
+      .form-group.required > label:not(:empty):not(.form-check-label)::after {
+        content: ' *';
+        color: #ff0000;
+      }
+    </style>
 @endsection
 
 @section('after_scripts')
