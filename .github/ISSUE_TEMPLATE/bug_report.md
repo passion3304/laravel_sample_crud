@@ -24,6 +24,10 @@ labels: triage
 
 ??
 
+### Is it a bug in the latest version of Backpack?
+
+After I run ```composer update backpack/crud``` the bug... is it still there?
+
 ### Backpack, Laravel, PHP, DB version
 
 When I run ```php artisan backpack:version``` the output is:

@@ -109,6 +109,7 @@ Special thanks go to:
 - [Łukasz Holeczek](https://coreui.io/) - creator of CoreUI (used in Backpack v4);
 - [Abdullah Almsaeed](https://adminlte.io/) - creator of AdminLTE (used in Backpack v3);
 - [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was a big inspiration for Backpack v1 & v2;
+- [Taylor Otwell](https://github.com/taylorotwell) & Laravel contributors (of course);
 
 ## License
 
@@ -132,6 +133,7 @@ When installing Backpack, require its minor version (currently ```4.1.*```). For
 We've spend more than 10.000 hours creating, polishing and maintaining administration panels on Laravel. We've developed e-Commerce, e-Learning, ERPs, social networks, payment gateways and much more. We've worked on admin panels _so much_, that we've created one of the most popular packages for Laravel - just from making public what was repetitive in our projects.
 
 If you are looking for a developer/team to help you build an admin panel on Laravel, look no further. You'll have a difficult time finding someone with more experience & enthusiasm for admin panels. This is _what we do_. [Contact us](https://backpackforlaravel.com/need-freelancer-or-development-team).
+
 
 
 [ico-version]: https://img.shields.io/packagist/v/dick/crud.svg?style=flat-square

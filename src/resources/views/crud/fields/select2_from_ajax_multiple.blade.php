@@ -25,6 +25,7 @@
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'false' }}"
         data-ajax-delay="{{ $field['delay'] }}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
         multiple>
 
@@ -69,7 +70,7 @@
     <!-- include select2 js-->
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
     @endif
     @endpush
 

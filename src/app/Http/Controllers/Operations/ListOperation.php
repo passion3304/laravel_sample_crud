@@ -99,7 +99,7 @@ trait ListOperation
                 $column_number = (int) $order['column'];
                 $column_direction = (strtolower((string) $order['dir']) == 'asc' ? 'ASC' : 'DESC');
                 $column = $this->crud->findColumnById($column_number);
-                if ($column['tableColumn']) {
+                if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
                     // apply the current orderBy rules
                     $this->crud->orderByWithPrefix($column['name'], $column_direction);
                 }
