@@ -21,6 +21,7 @@
                 data-filter-name="{{ $filter->name }}"
                 data-select-key="{{ $filter->options['select_key'] ?? 'id' }}"
                 data-select-attribute="{{ $filter->options['select_attribute'] ?? 'name' }}"
+                data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
                 filter-minimum-input-length="{{ $filter->options['minimum_input_length'] ?? 2 }}"
                 filter-method="{{ $filter->options['method'] ?? 'GET' }}"
                 filter-quiet-time="{{ $filter->options['quiet_time'] }}"
@@ -76,7 +77,7 @@
 	<!-- include select2 js-->
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
     @endif
 
     <script>

@@ -51,7 +51,7 @@ trait HasRelationshipFields
     public function getColumnType($columnName)
     {
         $conn = $this->getConnectionWithExtraTypeMappings();
-        $table = $this->getTableWithPrefix();
+        $table = $this->getTable();
 
         return $conn->getSchemaBuilder()->getColumnType($table, $columnName);
     }

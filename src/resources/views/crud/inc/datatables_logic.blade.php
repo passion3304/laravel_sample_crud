@@ -18,7 +18,8 @@
     // datatables caches the ajax responses with pageLength in LocalStorage so when changing this
     // settings in controller users get unexpected results. To avoid that we will reset
     // the table cache when both lengths don't match.
-    let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) ?? [];
+    let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}'))
+        ? JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) : [];
     var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
     let $dtStoredPageLength = localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength');
 
@@ -28,7 +29,8 @@
 
     // in this page we allways pass the alerts to localStorage because we can be redirected with
     // persistent table, and this way we guarantee non-duplicate alerts.
-    $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts')) ?? {};
+    $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts'))
+        ? JSON.parse(localStorage.getItem('backpack_alerts')) : {};
     $newAlerts = @json($backpack_alerts);
 
     Object.entries($newAlerts).forEach(([type, messages]) => {
@@ -263,7 +265,11 @@
       $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
+      @if($crud->getSubheading())
+      $('#crudTable_info').hide();
+      @else
       $("#datatable_info_stack").html($('#crudTable_info')).css('display','inline-flex').addClass('animated fadeIn');
+      @endif
 
       @if($crud->getOperationSetting('resetButton') ?? true)
         // create the reset button
