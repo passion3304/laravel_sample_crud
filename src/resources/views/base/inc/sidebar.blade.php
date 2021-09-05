@@ -25,7 +25,7 @@
   <script type="text/javascript">
     // Save default sidebar class
     let sidebarClass = (document.body.className.match(/sidebar-(sm|md|lg|xl)-show/) || ['sidebar-lg-show'])[0];
-    let sidebarTransition = function() {
+    let sidebarTransition = function(value) {
         document.querySelector('.app-body > .sidebar').style.transition = value || '';
     };
 

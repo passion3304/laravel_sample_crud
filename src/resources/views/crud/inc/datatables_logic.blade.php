@@ -36,7 +36,7 @@
 
     Object.entries($newAlerts).forEach(function(type) {
         if(typeof $oldAlerts[type[0]] !== 'undefined') {
-            type[1].map(function(msg) {
+            type[1].forEach(function(msg) {
                 $oldAlerts[type[0]].push(msg);
             });
         } else {

@@ -160,8 +160,7 @@
         //we reselect the previously selected options if any.
         Object.entries($currentValue).forEach(function(option) {
             selectedOptions.push(option[0]);
-            var $option = new Option(option[1], option[0]);
-            $(element).append($option);
+            $(element).val(selectedOptions);
         });
 
         if (!$allows_null && $item === false) {
