@@ -226,7 +226,7 @@
                         let value = values[$(this).data('repeatable-input-name')];
 
                         // only apply the prefix when the value is string and not empty.
-                        if(typeof value === 'string' && value.length) {
+                        if(typeof value === 'string' && value.length && !value.startsWith("data:image/png;base64")) {
                             value = prefix + value;
                         }
 
