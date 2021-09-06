@@ -1,17 +1,20 @@
 {{-- single relationships (1-1, 1-n) --}}
 @php
     $column['escaped'] = $column['escaped'] ?? true;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
     $column['limit'] = $column['limit'] ?? 40;
     $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
 
     $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
-    foreach ($attributes as $key => $text) {
+    foreach ($attributes as $key => &$text) {
         $text = Str::limit($text, $column['limit'], '[...]');
     }
 @endphp
 
 <span>
     @if(count($attributes))
+        {{ $column['prefix'] }}
         @foreach($attributes as $key => $text)
             @php
                 $related_key = $key;
@@ -29,6 +32,7 @@
                 @if(!$loop->last), @endif
             </span>
         @endforeach
+        {{ $column['suffix'] }}
     @else
         -
     @endif

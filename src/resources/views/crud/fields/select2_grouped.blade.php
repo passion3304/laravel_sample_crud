@@ -1,13 +1,13 @@
 <!-- select2 -->
 @php
     $current_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     @php
-        $entity_model = $crud->model;
         $related_model = $crud->getRelationModel($field['entity']);
         $group_by_model = (new $related_model)->{$field['group_by']}()->getRelated();
         $categories = $group_by_model::with($field['group_by_relationship_back'])->get();
@@ -20,10 +20,11 @@
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2GroupedElement"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
         >
 
-            @if ($entity_model::isColumnNullable($field['name']))
+            @if ($field['allows_null'])
                 <option value="">-</option>
             @endif
 
@@ -81,7 +82,7 @@
         <!-- include select2 js-->
         <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
         @if (app()->getLocale() !== 'en')
-        <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+        <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
         @endif
         <script>
             function bpFieldInitSelect2GroupedElement(element) {

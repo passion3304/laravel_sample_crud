@@ -1,7 +1,6 @@
 <!-- select2 -->
 @php
     $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
-    $entity_model = $crud->model;
 
     //if it's part of a relationship here we have the full related model, we want the key.
     if (is_object($current_value) && is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
@@ -12,6 +11,7 @@
     } else {
         $options = call_user_func($field['options'], $field['model']::query());
     }
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -23,10 +23,11 @@
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2Element"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
         >
 
-        @if ($entity_model::isColumnNullable($field['name']))
+        @if ($field['allows_null'])
             <option value="">-</option>
         @endif
 
@@ -67,7 +68,7 @@
         <!-- include select2 js-->
         <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
         @if (app()->getLocale() !== 'en')
-        <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+        <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
         @endif
         <script>
             function bpFieldInitSelect2Element(element) {

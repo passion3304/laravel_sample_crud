@@ -12,7 +12,7 @@
     // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
-    if ($current_value != false) {
+    if ($current_value !== false) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
@@ -47,6 +47,9 @@
 
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
     $field['include_all_form_fields'] = $field['include_all_form_fields'] ?? true;
+
+    // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
+    $field['delay'] = $field['delay'] ?? 500;
 
 
 
@@ -121,6 +124,8 @@ if($activeInlineCreate) {
         data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
         data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
+        data-ajax-delay="{{ $field['delay'] }}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -160,7 +165,7 @@ if($activeInlineCreate) {
             <!-- include select2 js-->
             <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
             @if (app()->getLocale() !== 'en')
-            <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+            <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
             @endif
             <script>
 
@@ -209,7 +214,6 @@ var fetchDefaultEntry = function (element) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $fetchUrl = element.attr('data-data-source');
-    var $appLang = element.attr('data-app-current-lang');
     var $return = {};
     return new Promise(function (resolve, reject) {
         $.ajax({
@@ -223,14 +227,14 @@ var fetchDefaultEntry = function (element) {
                 // we want only the first to be default.
                 if (typeof result.data !== "undefined"){
                     $key = result.data[0][$relatedKeyName];
-                    $value = processItemText(result.data[0], $relatedAttribute, $appLang);
+                    $value = processItemText(result.data[0], $relatedAttribute);
                 }else{
                     $key = result[0][$relatedKeyName];
-                    $value = processItemText(result[0], $relatedAttribute, $appLang);
+                    $value = processItemText(result[0], $relatedAttribute);
                 }
 
-                $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
-                $return = {...$return, ...$pair};
+                $return[$relatedKeyName] = $key;
+                $return[$relatedAttribute] = $value;
 
                 $(element).attr('data-current-value', JSON.stringify($return));
                 resolve($return);
@@ -272,11 +276,14 @@ function setupInlineCreateButtons(element) {
             var $toPass = $form.serializeArray();
         }else{
             if(typeof $includeMainFormFields !== "boolean") {
-            var $fields = JSON.parse($includeMainFormFields);
-            var $serializedForm = $form.serializeArray();
-            var $toPass = [];
+                var $fields = JSON.parse($includeMainFormFields);
+                var $serializedForm = $form.serializeArray();
+                var $toPass = [];
+
                 $fields.forEach(function(value, index) {
-                    $valueFromForm = $serializedForm.filter(field => field.name === value);
+                    $valueFromForm = $serializedForm.filter(function(field) {
+                        return field.name === value
+                    });
                     $toPass.push($valueFromForm[0]);
 
                 });
@@ -329,14 +336,13 @@ function ajaxSearch(element, created) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $searchString = created[$relatedAttribute];
-    var $appLang = element.attr('data-app-current-lang');
 
     //we run the promise with ajax call to search endpoint to check if we got the created entity back
     //in case we do, we add it to the selected options.
-    performAjaxSearch(element, $searchString).then(result => {
+    performAjaxSearch(element, $searchString).then(function(result) {
         var inCreated = $.map(result.data, function (item) {
-            var $itemText = processItemText(item, $relatedAttribute, $appLang);
-            var $createdText = processItemText(created, $relatedAttribute, $appLang);
+            var $itemText = processItemText(item, $relatedAttribute);
+            var $createdText = processItemText(created, $relatedAttribute);
             if($itemText == $createdText) {
                     return {
                         text: $itemText,
@@ -471,9 +477,8 @@ function selectOption(element, option) {
     var $relatedAttribute = element.attr('data-field-attribute');
     var $relatedKeyName = element.attr('data-connected-entity-key-name');
     var $multiple = element.prop('multiple');
-    var $appLang = element.attr('data-app-current-lang');
 
-    var $optionText = processItemText(option, $relatedAttribute, $appLang);
+    var $optionText = processItemText(option, $relatedAttribute);
 
     var $option = new Option($optionText, option[$relatedKeyName]);
 
@@ -511,128 +516,125 @@ function bpFieldInitFetchOrCreateElement(element) {
     var $dependencies = JSON.parse(element.attr('data-dependencies'));
     var $modelKey = element.attr('data-model-local-key');
     var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
-    var $appLang = element.attr('data-app-current-lang');
     var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
     var $multiple = element.prop('multiple');
+    var $ajaxDelay = element.attr('data-ajax-delay');
 
     var FetchOrCreateAjaxFetchSelectedEntry = function (element) {
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: $dataSource,
-                    data: {
-                        'keys': $selectedOptions
-                    },
-                    type: $method,
-                    success: function (result) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: $dataSource,
+                data: {
+                    'keys': $selectedOptions
+                },
+                type: $method,
+                success: function (result) {
 
-                        resolve(result);
-                    },
-                    error: function (result) {
-                        reject(result);
-                    }
-                });
+                    resolve(result);
+                },
+                error: function (result) {
+                    reject(result);
+                }
             });
-        };
+        });
+    };
 
-       if($allows_null && !$multiple) {
+    if($allows_null && !$multiple) {
         $(element).append('<option value="">'+$placeholder+'</option>');
-       }
+    }
 
-        if (typeof $selectedOptions !== typeof undefined &&
-            $selectedOptions !== false &&
-                $selectedOptions != '' &&
-                $selectedOptions != null &&
-                $selectedOptions != [])
-        {
-            var optionsForSelect = [];
+    if (typeof $selectedOptions !== typeof undefined &&
+        $selectedOptions !== false &&
+            $selectedOptions != '' &&
+            $selectedOptions != null &&
+            $selectedOptions != [])
+    {
+        var optionsForSelect = [];
 
-            FetchOrCreateAjaxFetchSelectedEntry(element).then(result => {
-                result.forEach(function(item) {
-                $itemText = processItemText(item, $fieldAttribute, $appLang);
+        FetchOrCreateAjaxFetchSelectedEntry(element).then(function(result) {
+            result.forEach(function(item) {
+                $itemText = processItemText(item, $fieldAttribute);
                 $itemValue = item[$connectedEntityKeyName];
                 //add current key to be selected later.
                 optionsForSelect.push($itemValue);
 
                 //create the option in the select
                 $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
+            });
+
+            // set the option keys as selected.
+            $(element).val(optionsForSelect);
+            $(element).trigger('change');
         });
+    }
 
-        // set the option keys as selected.
-        $(element).val(optionsForSelect);
-        $(element).trigger('change');
+    var $item = false;
+
+    var $value = JSON.parse(element.attr('data-current-value'))
+
+    if(Object.keys($value).length > 0) {
+        $item = true;
+    }
+
+    var selectedOptions = [];
+    var $currentValue = $item ? $value : {};
+    //we reselect the previously selected options if any.
+    Object.entries($currentValue).forEach(function(option) {
+        selectedOptions.push(option[0]);
+        var $option = new Option(option[1], option[0]);
+        $(element).append($option);
     });
-}
 
-            var $item = false;
+    $(element).val(selectedOptions);
 
-            var $value = JSON.parse(element.attr('data-current-value'))
+    //null is not allowed we fetch some default entry
+    if(!$allows_null && !$item && $selectedOptions == null) {
+        fetchDefaultEntry(element).then(function(result) {
+            $(element).append('<option value="'+result[$modelKey]+'">'+result[$fieldAttribute]+'</option>');
+            $(element).val(result[$modelKey]);
+            $(element).trigger('change');
+        });
+    }
 
-            if(Object.keys($value).length > 0) {
-                $item = true;
+    //Checks if field is not beeing inserted in one inline create modal and setup buttons
+    if($inlineField == "false") {
+        setupInlineCreateButtons(element);
+    }
+
+    if (!element.hasClass("select2-hidden-accessible")) {
+
+        element.select2({
+        theme: "bootstrap",
+        placeholder: $placeholder,
+        minimumInputLength: $minimumInputLength,
+        allowClear: $allows_null,
+        ajax: {
+        url: $dataSource,
+        type: $method,
+        dataType: 'json',
+        delay: $ajaxDelay,
+        data: function (params) {
+            if ($includeAllFormFields) {
+                return {
+                    q: params.term, // search term
+                    page: params.page, // pagination
+                    form: form.serializeArray() // all other form inputs
+                };
+            } else {
+                return {
+                    q: params.term, // search term
+                    page: params.page, // pagination
+                };
             }
-            var selectedOptions = [];
-            var $currentValue = $item ? $value : '';
-
-            //we reselect the previously selected options if any.
-            for (const [key, value] of Object.entries($currentValue)) {
-                selectedOptions.push(key);
-                var $option = new Option(value, key);
-                $(element).append($option);
-            }
-
-            $(element).val(selectedOptions);
-
-            //null is not allowed we fetch some default entry
-            if(!$allows_null && !$item && $selectedOptions == null) {
-                fetchDefaultEntry(element).then(result => {
-                    $(element).append('<option value="'+result[$modelKey]+'">'+result[$fieldAttribute]+'</option>');
-                    $(element).val(result[$modelKey]);
-                    $(element).trigger('change');
-                });
-            }
-
-
-
-        //Checks if field is not beeing inserted in one inline create modal and setup buttons
-        if($inlineField == "false") {
-            setupInlineCreateButtons(element);
-        }
-
-            if (!element.hasClass("select2-hidden-accessible")) {
-
-
-                    element.select2({
-                    theme: "bootstrap",
-                    placeholder: $placeholder,
-                    minimumInputLength: $minimumInputLength,
-                    allowClear: $allows_null,
-                    ajax: {
-                    url: $dataSource,
-                    type: $method,
-                    dataType: 'json',
-                    quietMillis: 500,
-                    data: function (params) {
-                    if ($includeAllFormFields) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page, // pagination
-                        form: form.serializeArray() // all other form inputs
-                    };
-                } else {
-                    return {
-                        q: params.term, // search term
-                        page: params.page, // pagination
-                    };
-                }
-            },
-            processResults: function (data, params) {
-                params.page = params.page || 1;
-                //if we have data.data here it means we returned a paginated instance from controller.
-                //otherwise we returned one or more entries unpaginated.
-                if(data.data) {
+        },
+        processResults: function (data, params) {
+            params.page = params.page || 1;
+            //if we have data.data here it means we returned a paginated instance from controller.
+            //otherwise we returned one or more entries unpaginated.
+            if(data.data) {
                 var result = {
                     results: $.map(data.data, function (item) {
-                        var $itemText = processItemText(item, $fieldAttribute, $appLang);
+                        var $itemText = processItemText(item, $fieldAttribute);
 
                         return {
                             text: $itemText,
@@ -643,49 +645,71 @@ function bpFieldInitFetchOrCreateElement(element) {
                             more: data.current_page < data.last_page
                     }
                 };
-                }else {
-                    var result = {
-                        results: $.map(data, function (item) {
-                            var $itemText = processItemText(item, $fieldAttribute, $appLang);
+            }else {
+                var result = {
+                    results: $.map(data, function (item) {
+                        var $itemText = processItemText(item, $fieldAttribute);
 
-                            return {
-                                text: $itemText,
-                                id: item[$connectedEntityKeyName]
-                            }
-                        }),
-                        pagination: {
-                            more: false,
+                        return {
+                            text: $itemText,
+                            id: item[$connectedEntityKeyName]
                         }
+                    }),
+                    pagination: {
+                        more: false,
                     }
                 }
+            }
 
-                return result;
-            },
-            cache: true
+            return result;
         },
+        cache: true
+        },
+        });
+
+        // if any dependencies have been declared
+        // when one of those dependencies changes value
+        // reset the select2 value
+        for (var i=0; i < $dependencies.length; i++) {
+            var $dependency = $dependencies[i];
+            //if element does not have a custom-selector attribute we use the name attribute
+            if(typeof element.attr('data-custom-selector') === 'undefined') {
+                form.find('[name="'+$dependency+'"], [name="'+$dependency+'[]"]').change(function(el) {
+                        $(element.find('option:not([value=""])')).remove();
+                        element.val(null).trigger("change");
+                });
+            }else{
+                // we get the row number and custom selector from where element is called
+                let rowNumber = element.attr('data-row-number');
+                let selector = element.attr('data-custom-selector');
+
+                // replace in the custom selector string the corresponding row and dependency name to match
+                    selector = selector
+                        .replaceAll('%DEPENDENCY%', $dependency)
+                        .replaceAll('%ROW%', rowNumber);
+
+                $(selector).change(function (el) {
+                    $(element.find('option:not([value=""])')).remove();
+                    element.val(null).trigger("change");
                 });
             }
-
-        for (var i=0; i < $dependencies.length; i++) {
-        $dependency = $dependencies[i];
-        $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
-            element.val(null).trigger("change");
-        });
-    }
-
         }
-if (typeof processItemText !== 'function') {
-    function processItemText(item, $fieldAttribute, $appLang) {
-        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
-                if(item[$fieldAttribute][$appLang] != 'undefined') {
-                    return item[$fieldAttribute][$appLang];
-                }else{
-                    return item[$fieldAttribute][0];
-                }
-            }else{
-                return item[$fieldAttribute];
-            }
+    }
 }
+
+
+if (typeof processItemText !== 'function') {
+    function processItemText(item, $fieldAttribute) {
+        var $appLang = '{{ app()->getLocale() }}';
+        var $appLangFallback = '{{ Lang::getFallback() }}';
+        var $emptyTranslation = '{{ trans("backpack::crud.empty_translations") }}';
+        var $itemField = item[$fieldAttribute];
+
+        // try to retreive the item in app language; then fallback language; then first entry; if nothing found empty translation string
+        return typeof $itemField === 'object' && $itemField !== null
+        ? $itemField[$appLang] ? $itemField[$appLang] : $itemField[$appLangFallback] ? $itemField[$appLangFallback] : Object.values($itemField)[0] ? Object.values($itemField)[0] : $emptyTranslation
+            : $itemField;
+    }
 }
             </script>
         @endpush

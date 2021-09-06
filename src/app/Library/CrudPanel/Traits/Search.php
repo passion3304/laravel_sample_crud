@@ -66,7 +66,7 @@ trait Search
                 case 'email':
                 case 'text':
                 case 'textarea':
-                    $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
+                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), 'like', '%'.$searchTerm.'%');
                     break;
 
                 case 'date':
@@ -77,13 +77,13 @@ trait Search
                         break;
                     }
 
-                    $query->orWhereDate($column['name'], Carbon::parse($searchTerm));
+                    $query->orWhereDate($this->getColumnWithTableNamePrefixed($query, $column['name']), Carbon::parse($searchTerm));
                     break;
 
                 case 'select':
                 case 'select_multiple':
                     $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                        $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
+                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), 'like', '%'.$searchTerm.'%');
                     });
                     break;
 
@@ -327,5 +327,17 @@ trait Search
             'recordsFiltered' => $filteredRows,
             'data'            => $rows,
         ];
+    }
+
+    /**
+     * Return the column attribute (column in database) prefixed with table to use in search.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $column
+     * @return string
+     */
+    public function getColumnWithTableNamePrefixed($query, $column)
+    {
+        return $query->getModel()->getTable().'.'.$column;
     }
 }

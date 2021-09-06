@@ -29,11 +29,16 @@
     $end_default = $field['default'][1] ?? date('Y-m-d H:i:s');
 
     // make sure the datepicker configuration has at least these defaults
-    $field['date_range_options'] = array_merge([
-        'format' => 'dd/mm/yyyy',
+    $field['date_range_options'] = array_replace_recursive([
         'autoApply' => true,
         'startDate' => $start_default,
         'endDate' => $end_default,
+        'locale' => [
+            'firstDay' => 0,
+            'format' => config('backpack.base.default_date_format'),
+            'applyLabel'=> trans('backpack::crud.apply'),
+            'cancelLabel'=> trans('backpack::crud.cancel'),
+        ],
     ], $field['date_range_options'] ?? []);
 ?>
 
@@ -76,13 +81,16 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-    <script type="text/javascript" src="{{ asset('packages/moment/min/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('packages/moment/min/moment-with-locales.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script>
         function bpFieldInitDateRangeElement(element) {
+
+                moment.locale('{{app()->getLocale()}}');
+
                 var $visibleInput = element;
-                var $startInput = $visibleInput.closest('.form-group').find('.datepicker-range-start');
-                var $endInput = $visibleInput.closest('.form-group').find('.datepicker-range-end');
+                var $startInput = $visibleInput.closest('.input-group').parent().find('.datepicker-range-start');
+                var $endInput = $visibleInput.closest('.input-group').parent().find('.datepicker-range-end');
 
                 var $configuration = $visibleInput.data('bs-daterangepicker');
                 // set the startDate and endDate to the defaults
@@ -109,7 +117,7 @@
 
                 $visibleInput.on('apply.daterangepicker hide.daterangepicker', function(e, picker){
                     $startInput.val( picker.startDate.format('YYYY-MM-DD HH:mm:ss') );
-                    $endInput.val( picker.endDate.format('YYYY-MM-DD H:mm:ss') );
+                    $endInput.val( picker.endDate.format('YYYY-MM-DD HH:mm:ss') );
                 });
         }
     </script>
@@ -117,4 +125,3 @@
 
 @endif
 {{-- End of Extra CSS and JS --}}
-

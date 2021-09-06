@@ -137,11 +137,36 @@ class CrudPanel
     /**
      * Check if the database connection driver is using mongodb.
      *
+     * DEPRECATION NOTICE: This method is no longer used and will be removed in future versions of Backpack
+     *
+     * @deprecated
      * @return bool
      */
     private function driverIsMongoDb()
     {
         return $this->getSchema()->getConnection()->getConfig()['driver'] === 'mongodb';
+    }
+
+    /**
+     * Check if the database connection is any sql driver.
+     *
+     * @return bool
+     */
+    private function driverIsSql()
+    {
+        $driver = $this->getSchema()->getConnection()->getConfig('driver');
+
+        return in_array($driver, $this->getSqlDriverList());
+    }
+
+    /**
+     * Get SQL driver list.
+     *
+     * @return array
+     */
+    public function getSqlDriverList()
+    {
+        return ['mysql', 'sqlsrv', 'sqlite', 'pgsql'];
     }
 
     /**
@@ -173,7 +198,6 @@ class CrudPanel
         }
 
         $this->route = route($complete_route, $parameters);
-        $this->initButtons();
     }
 
     /**

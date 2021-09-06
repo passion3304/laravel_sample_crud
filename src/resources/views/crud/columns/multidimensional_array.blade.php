@@ -20,10 +20,13 @@
     }
 
     $column['escaped'] = $column['escaped'] ?? true;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
 @endphp
 
 <span>
     @if(!empty($list))
+        {{ $column['prefix'] }}
         @foreach($list[$column['visible_key']] as $key => $text)
             @php
                 $column['text'] = $text;
@@ -42,6 +45,7 @@
                 @if(!$loop->last), @endif
             </span>
         @endforeach
+        {{ $column['suffix'] }}
     @else
         -
     @endif

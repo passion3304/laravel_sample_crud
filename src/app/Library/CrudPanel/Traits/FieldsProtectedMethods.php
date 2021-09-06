@@ -151,24 +151,6 @@ trait FieldsProtectedMethods
         return $field;
     }
 
-    protected function makeSureFieldHasRelationshipData($field)
-    {
-        // only do this if "entity" is defined on the field
-        if (! isset($field['entity'])) {
-            return $field;
-        }
-
-        $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field);
-
-        if (! empty($extraFieldAttributes)) {
-            $field = array_merge($field, $extraFieldAttributes);
-        } else {
-            abort(500, 'Unable to process relationship data: '.$field['name']);
-        }
-
-        return $field;
-    }
-
     protected function overwriteFieldNameFromEntity($field)
     {
         // if the entity doesn't have a dot, it means we don't need to overwrite the name
@@ -196,8 +178,8 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasAttribute($field)
     {
         // if there's a model defined, but no attribute
-        // guess an attribute using the indentifiableAttribute functionality in CrudTrait
-        if (isset($field['model']) && ! isset($field['attribute'])) {
+        // guess an attribute using the identifiableAttribute functionality in CrudTrait
+        if (isset($field['model']) && ! isset($field['attribute']) && method_exists($field['model'], 'identifiableAttribute')) {
             $field['attribute'] = call_user_func([(new $field['model']), 'identifiableAttribute']);
         }
 
