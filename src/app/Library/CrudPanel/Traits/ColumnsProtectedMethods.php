@@ -146,7 +146,7 @@ trait ColumnsProtectedMethods
             // if the first part of the string exists as method,
             // it is a relationship
             if (method_exists($this->model, $possibleMethodName)) {
-                if(!$this->makeSureMethodDoesNotRequireParameters($this->model, $possibleMethodName)) {
+                if (! $this->makeSureMethodDoesNotRequireParameters($this->model, $possibleMethodName)) {
                     $column['entity'] = false;
                 }
                 $column['entity'] = isset($column['entity']) ? $column['entity'] : $column['name'];
@@ -157,7 +157,7 @@ trait ColumnsProtectedMethods
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $column['name'])) {
-            if(!$this->makeSureMethodDoesNotRequireParameters($this->model, $column['name'])) {
+            if (! $this->makeSureMethodDoesNotRequireParameters($this->model, $column['name'])) {
                 $column['entity'] = false;
             }
             $column['entity'] = isset($column['entity']) ? $column['entity'] : $column['name'];
@@ -171,8 +171,7 @@ trait ColumnsProtectedMethods
             $possibleMethodName = Str::replaceLast('_id', '', $column['name']);
 
             if (method_exists($this->model, $possibleMethodName)) {
-
-                if(!$this->makeSureMethodDoesNotRequireParameters($this->model, $possibleMethodName)) {
+                if (! $this->makeSureMethodDoesNotRequireParameters($this->model, $possibleMethodName)) {
                     $column['entity'] = false;
                 }
 
@@ -188,14 +187,15 @@ trait ColumnsProtectedMethods
     /**
      * Relation methods does not require parameters.
      *
-     * @param object $model 
+     * @param object $model
      * @param string $method
-     * @return boolean
+     * @return bool
      */
-    private function makeSureMethodDoesNotRequireParameters($model, $method) {
+    private function makeSureMethodDoesNotRequireParameters($model, $method)
+    {
         $reflectClassMethod = new \ReflectionMethod(get_class($model), $method);
-                
-        if($reflectClassMethod->getNumberOfParameters() > 0) {
+
+        if ($reflectClassMethod->getNumberOfParameters() > 0) {
             return false;
         }
 
