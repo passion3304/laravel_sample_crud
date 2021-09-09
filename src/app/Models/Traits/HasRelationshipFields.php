@@ -45,8 +45,8 @@ trait HasRelationshipFields
     /**
      * Get the column type for a certain db column.
      *
-     * @param  string $columnName Name of the column in the db table.
-     * @return string             Db column type.
+     * @param  string  $columnName  Name of the column in the db table.
+     * @return string Db column type.
      */
     public function getColumnType($columnName)
     {
@@ -59,7 +59,7 @@ trait HasRelationshipFields
     /**
      * Checks if the given column name is nullable.
      *
-     * @param string $column_name The name of the db column.
+     * @param  string  $column_name  The name of the db column.
      * @return bool
      */
     public static function isColumnNullable($column_name)
