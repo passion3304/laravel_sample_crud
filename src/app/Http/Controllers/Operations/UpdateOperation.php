@@ -9,9 +9,9 @@ trait UpdateOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param string $name       Name of the current entity (singular). Used as first URL segment.
-     * @param string $routeName  Prefix of the route name.
-     * @param string $controller Name of the current CrudController.
+     * @param  string  $name  Name of the current entity (singular). Used as first URL segment.
+     * @param  string  $routeName  Prefix of the route name.
+     * @param  string  $controller  Name of the current CrudController.
      */
     protected function setupUpdateRoutes($segment, $routeName, $controller)
     {
@@ -57,8 +57,7 @@ trait UpdateOperation
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return \Illuminate\Contracts\View\View
      */
     public function edit($id)

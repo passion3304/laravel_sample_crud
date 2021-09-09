@@ -11,8 +11,7 @@ trait Views
     /**
      * Sets the create template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setCreateView($view)
@@ -33,7 +32,7 @@ trait Views
     /**
      * Sets the create content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setCreateContentClass(string $class)
     {
@@ -57,8 +56,7 @@ trait Views
     /**
      * Sets the list template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setListView($view)
@@ -79,7 +77,7 @@ trait Views
     /**
      * Sets the list content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setListContentClass(string $class)
     {
@@ -99,8 +97,7 @@ trait Views
     /**
      * Sets the details row template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setDetailsRowView($view)
@@ -121,8 +118,7 @@ trait Views
     /**
      * Sets the show template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setShowView($view)
@@ -143,7 +139,7 @@ trait Views
     /**
      * Sets the edit content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setShowContentClass(string $class)
     {
@@ -167,8 +163,7 @@ trait Views
     /**
      * Sets the edit template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setEditView($view)
@@ -189,7 +184,7 @@ trait Views
     /**
      * Sets the edit content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setEditContentClass(string $class)
     {
@@ -209,8 +204,7 @@ trait Views
     /**
      * Sets the reorder template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setReorderView($view)
@@ -231,7 +225,7 @@ trait Views
     /**
      * Sets the reorder content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setReorderContentClass(string $class)
     {

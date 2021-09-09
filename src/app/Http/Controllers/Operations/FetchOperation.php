@@ -10,9 +10,9 @@ trait FetchOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param string $segment    Name of the current entity (singular). Used as first URL segment.
-     * @param string $routeName  Prefix of the route name.
-     * @param string $controller Name of the current CrudController.
+     * @param  string  $segment  Name of the current entity (singular). Used as first URL segment.
+     * @param  string  $routeName  Prefix of the route name.
+     * @param  string  $controller  Name of the current CrudController.
      */
     protected function setupFetchOperationRoutes($segment, $routeName, $controller)
     {
@@ -34,7 +34,7 @@ trait FetchOperation
     /**
      * Gets items from database and returns to selects.
      *
-     * @param string|array $arg
+     * @param  string|array  $arg
      * @return \Illuminate\Http\JsonResponse|Illuminate\Database\Eloquent\Collection|Illuminate\Pagination\LengthAwarePaginator
      */
     private function fetch($arg)
