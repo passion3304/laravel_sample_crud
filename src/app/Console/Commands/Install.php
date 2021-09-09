@@ -64,6 +64,9 @@ class Install extends Command
         $this->note('More info and payment on https://backpackforlaravel.com/products/devtools');
 
         if ($this->confirm('Would you like to also install Backpack DevTools?', true)) {
+            exec('composer dump-autoload');
+            sleep(2);
+
             $this->call('backpack:require:devtools');
         }
     }
