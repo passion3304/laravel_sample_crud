@@ -10,7 +10,7 @@ trait Relationships
     /**
      * From the field entity we get the relation instance.
      *
-     * @param array $entity
+     * @param  array  $entity
      * @return object
      */
     public function getRelationInstance($field)
@@ -34,7 +34,7 @@ trait Relationships
     /**
      * Grabs an relation instance and returns the class name of the related model.
      *
-     * @param array $field
+     * @param  array  $field
      * @return string
      */
     public function inferFieldModelFromRelationship($field)
@@ -47,7 +47,7 @@ trait Relationships
     /**
      * Return the relation type from a given field: BelongsTo, HasOne ... etc.
      *
-     * @param array $field
+     * @param  array  $field
      * @return string
      */
     public function inferRelationTypeFromRelationship($field)
@@ -73,8 +73,7 @@ trait Relationships
      * Get the fields for relationships, according to the relation type. It looks only for direct
      * relations - it will NOT look through relationships of relationships.
      *
-     * @param string|array $relation_types Eloquent relation class or array of Eloquent relation classes. Eg: BelongsTo
-     *
+     * @param  string|array  $relation_types  Eloquent relation class or array of Eloquent relation classes. Eg: BelongsTo
      * @return array The fields with corresponding relation types.
      */
     public function getFieldsWithRelationType($relation_types): array
@@ -96,7 +95,7 @@ trait Relationships
      * Parse the field name back to the related entity after the form is submited.
      * Its called in getAllFieldNames().
      *
-     * @param array $fields
+     * @param  array  $fields
      * @return array
      */
     public function parseRelationFieldNamesFromHtml($fields)
@@ -136,7 +135,7 @@ trait Relationships
     /**
      * Based on relation type returns the default field type.
      *
-     * @param string $relation_type
+     * @param  string  $relation_type
      * @return bool
      */
     public function inferFieldTypeFromFieldRelation($field)
@@ -158,7 +157,7 @@ trait Relationships
     /**
      * Based on relation type returns if relation allows multiple entities.
      *
-     * @param string $relation_type
+     * @param  string  $relation_type
      * @return bool
      */
     public function guessIfFieldHasMultipleFromRelationType($relation_type)
@@ -181,7 +180,7 @@ trait Relationships
     /**
      * Based on relation type returns if relation has a pivot table.
      *
-     * @param string $relation_type
+     * @param  string  $relation_type
      * @return bool
      */
     public function guessIfFieldHasPivotFromRelationType($relation_type)

@@ -41,8 +41,7 @@ abstract class BasePrefixedDBCrudPanelTest extends BaseCrudPanelTest
     /**
      * Define environment setup.
      *
-     * @param \Illuminate\Foundation\Application $app
-     *
+     * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
     protected function getEnvironmentSetUp($app)
@@ -60,8 +59,8 @@ abstract class BasePrefixedDBCrudPanelTest extends BaseCrudPanelTest
     /**
      * Assert that the attributes of a model entry are equal to the expected array of attributes.
      *
-     * @param array                               $expected attributes
-     * @param \Illuminate\Database\Eloquent\Model $actual   model
+     * @param  array  $expected  attributes
+     * @param  \Illuminate\Database\Eloquent\Model  $actual  model
      */
     protected function assertEntryEquals($expected, $actual)
     {
