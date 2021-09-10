@@ -10,7 +10,6 @@ use Symfony\Component\Process\Process;
 class RequireDevTools extends Command
 {
     use \Backpack\CRUD\app\Console\Commands\Traits\PrettyCommandOutput;
-    
 
     protected $progressBar;
 
