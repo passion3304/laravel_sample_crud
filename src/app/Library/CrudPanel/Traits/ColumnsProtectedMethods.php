@@ -158,7 +158,7 @@ trait ColumnsProtectedMethods
         if (method_exists($this->model, $column['name'])) {
 
             // if it has parameters it's not a relation method.
-            $column['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $column['name'];
+            $column['entity'] = $this->modelMethodHasParameters($this->model, $column['name']) ? false : $column['name'];
 
             return $column;
         }
