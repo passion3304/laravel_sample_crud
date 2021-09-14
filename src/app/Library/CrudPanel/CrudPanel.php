@@ -490,7 +490,7 @@ class CrudPanel
     }
 
     /**
-     * Check if the method in the given model has any parameters
+     * Check if the method in the given model has any parameters.
      *
      * @param  object  $model
      * @param  string  $method
