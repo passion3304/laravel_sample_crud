@@ -12,11 +12,10 @@ trait Sluggable
     /**
      * Query scope for finding "similar" slugs, used to determine uniqueness.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string                                $attribute
-     * @param array                                 $config
-     * @param string                                $slug
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $attribute
+     * @param  array  $config
+     * @param  string  $slug
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFindSimilarSlugs(Builder $query, string $attribute, array $config, string $slug): Builder

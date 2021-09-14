@@ -14,9 +14,8 @@ trait Macroable
      * In addition to registering the macro, throw an error if the method already exists on the object
      * so the developer knows why their macro is not being registered.
      *
-     * @param string          $name
-     * @param object|callable $macro
-     *
+     * @param  string  $name
+     * @param  object|callable  $macro
      * @return void
      */
     public static function macro($name, $macro)
