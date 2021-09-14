@@ -492,4 +492,22 @@ class CrudPanel
 
         return $results;
     }
+
+    /**
+     * Check if a the method has any parameters in the model.
+     *
+     * @param object $model
+     * @param string $method
+     * @return bool
+     */
+    private function modelMethodHasParameters($model, $method)
+    {
+        $reflectClassMethod = new \ReflectionMethod(get_class($model), $method);
+
+        if ($reflectClassMethod->getNumberOfParameters() > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }
