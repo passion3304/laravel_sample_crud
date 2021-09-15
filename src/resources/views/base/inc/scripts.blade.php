@@ -62,4 +62,15 @@
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         location.hash = e.target.hash.replace("#tab_", "#");
     });
+
+    $(document).ajaxComplete(function(e, result) {
+        if(result.responseJSON.exception !== undefined) {
+            const err = result.responseJSON;
+            const iframe = document.createElement('iframe');
+            iframe.src = `${document.location.origin}/admin/error-frame?exception=${err.exception}&file=${err.file}&line=${err.line}&message=${err.message}`;
+            iframe.style = "position: absolute;width:90vw;height:90vh;border:0;box-shadow:0 0 6rem;transform:translate(5vw, 5vh);border-radius:.5rem;background-color: #FFF;";
+            document.body.appendChild(iframe);
+        }
+    });
+
 </script>
