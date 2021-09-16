@@ -65,9 +65,9 @@ class AddSidebarContent extends Command
     /**
      * Parse the given file stream and return the line number where a string is found.
      *
-     * @param  string $needle   The string that's being searched for.
-     * @param  array $haystack  The file where the search is being performed.
-     * @return bool|int         The last line number where the string was found. Or false.
+     * @param  string  $needle  The string that's being searched for.
+     * @param  array  $haystack  The file where the search is being performed.
+     * @return bool|int The last line number where the string was found. Or false.
      */
     private function getLastLineNumberThatContains($needle, $haystack)
     {

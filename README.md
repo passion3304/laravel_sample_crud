@@ -30,6 +30,7 @@
     <a href="https://backpackforlaravel.com/newsletter">Newsletter</a>
 </p>
 
+
 Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its features:
 
 - List operation
