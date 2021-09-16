@@ -64,9 +64,6 @@ class Install extends Command
         $this->note('But it\'s a paid tool. For more info, payment and access, please visit https://backpackforlaravel.com/products/devtools');
 
         if ($this->confirm('Would you like to install Backpack DevTools?', false)) {
-            exec('composer dump-autoload');
-            sleep(2);
-
             $this->call('backpack:require:devtools');
         }
     }
