@@ -151,7 +151,7 @@ class RequireDevTools extends Command
         $this->info(' Now running the DevTools installation command.');
 
         app()->registerDeferredProvider(\Backpack\DevTools\DevToolsServiceProvider::class);
-        
+
         $this->call('backpack:devtools:install');
     }
 }
