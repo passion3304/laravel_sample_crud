@@ -35,7 +35,7 @@ class RequireDevTools extends Command
      */
     public function handle()
     {
-        $this->progressBar = $this->output->createProgressBar(15);
+        $this->progressBar = $this->output->createProgressBar(29);
         $this->progressBar->minSecondsBetweenRedraws(0);
         $this->progressBar->maxSecondsBetweenRedraws(120);
         $this->progressBar->setRedrawFrequency(1);
@@ -138,6 +138,7 @@ class RequireDevTools extends Command
 
         // Require package
         $process = new Process(['composer', 'require', '--dev', '--with-all-dependencies', 'backpack/devtools']);
+        $process->setTimeout(300);
         $process->run(function ($type, $buffer) {
             $this->progressBar->advance();
         });
@@ -151,7 +152,9 @@ class RequireDevTools extends Command
         $this->info(' Now running the DevTools installation command.');
 
         // manually include the command in the run-time
-        include base_path('vendor/backpack/devtools/src/Console/Commands/InstallDevTools.php');
+        if (! class_exists(\Backpack\DevTools\Console\Commands\InstallDevTools::class)) {
+            include base_path('vendor/backpack/devtools/src/Console/Commands/InstallDevTools.php');
+        }
 
         $this->call(\Backpack\DevTools\Console\Commands\InstallDevTools::class);
     }
