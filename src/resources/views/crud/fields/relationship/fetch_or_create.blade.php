@@ -12,7 +12,7 @@
     // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
-    if ($current_value !== false) {
+    if ($current_value !== false && !empty($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
