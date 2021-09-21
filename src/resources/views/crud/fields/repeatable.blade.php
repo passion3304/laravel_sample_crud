@@ -281,7 +281,7 @@
                         // this is different than using prefix in fields like text, number etc. In those cases the prefix is used
                         // only for displaying purposes, when is set as `data-value-prefix` is when it is part of the value
                         // like image field.
-                        let prefix = $(this).data('value-prefix') ?? '';
+                        let prefix = $(this).data('value-prefix') ? $(this).data('value-prefix') : '';
                         let value = values[$(this).data('repeatable-input-name')];
 
                         // only apply the prefix when the value is string and not empty.
