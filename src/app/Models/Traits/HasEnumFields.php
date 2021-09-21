@@ -20,7 +20,13 @@ trait HasEnumFields
 
         $instance = new static(); // create an instance of the model to be able to get the table name
         $connectionName = $instance->getConnectionName();
-        $type = DB::connection($connectionName)->select(DB::raw('SHOW COLUMNS FROM `'.$table_prefix.$instance->getTable().'` WHERE Field = "'.$field_name.'"'))[0]->Type;
+
+        try {
+            $type = DB::connection($connectionName)->select(DB::raw('SHOW COLUMNS FROM `'.$table_prefix.$instance->getTable().'` WHERE Field = "'.$field_name.'"'))[0]->Type;
+        } catch (\Exception $e) {
+            abort(500, 'Enum field type is not supported - it only works on MySQL.');
+        }
+
         preg_match('/^enum\((.*)\)$/', $type, $matches);
         $enum = [];
         foreach (explode(',', $matches[1]) as $value) {
