@@ -18,7 +18,7 @@
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
 
-    if ($current_value != false) {
+    if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
