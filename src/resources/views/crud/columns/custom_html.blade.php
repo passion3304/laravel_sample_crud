@@ -1,6 +1,6 @@
 @php
     $column['text'] = $column['value'] ?? '';
-    $column['escaped'] = $column['escaped'] ?? false;
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
 

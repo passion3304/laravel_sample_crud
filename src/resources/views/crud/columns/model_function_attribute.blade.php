@@ -3,7 +3,7 @@
 	$model_function = $entry->{$column['function_name']}(...($column['function_parameters'] ?? []));
     $value = $model_function ? $model_function->{$column['attribute']} : '';
 
-    $column['escaped'] = $column['escaped'] ?? false;
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['limit']   = $column['limit'] ?? 40;
     $column['prefix']  = $column['prefix'] ?? '';
     $column['suffix']  = $column['suffix'] ?? '';

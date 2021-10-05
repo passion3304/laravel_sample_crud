@@ -1,6 +1,6 @@
 {{-- closure function column type --}}
 @php
-    $column['escaped'] = $column['escaped'] ?? false;
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['text'] = $column['function']($entry);
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
