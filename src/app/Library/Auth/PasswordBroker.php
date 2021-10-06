@@ -12,6 +12,8 @@ use Illuminate\Auth\Passwords\PasswordBroker as OriginalPasswordBroker;
  */
 class PasswordBroker extends OriginalPasswordBroker
 {
+
+    public const RESET_THROTTLED = 'backpack::passwords.throttled';
     /**
      * Send a password reset link to a user.
      *
@@ -29,7 +31,8 @@ class PasswordBroker extends OriginalPasswordBroker
             return static::INVALID_USER;
         }
 
-        if ($this->tokens->recentlyCreatedToken($user)) {
+        if (method_exists($this->tokens, 'recentlyCreatedToken') &&
+            $this->tokens->recentlyCreatedToken($user)) {
             return static::RESET_THROTTLED;
         }
 

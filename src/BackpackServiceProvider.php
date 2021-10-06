@@ -268,7 +268,8 @@ class BackpackServiceProvider extends ServiceProvider
             'backpack' => [
                 'provider'  => 'backpack',
                 'table'     => 'password_resets',
-                'expire'    => 60,
+                'expire'   => 60,
+                'throttle' => 60, // Allows a user to request 1 token per 60 seconds
             ],
         ];
 
