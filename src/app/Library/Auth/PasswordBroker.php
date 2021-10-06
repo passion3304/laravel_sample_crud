@@ -12,8 +12,8 @@ use Illuminate\Auth\Passwords\PasswordBroker as OriginalPasswordBroker;
  */
 class PasswordBroker extends OriginalPasswordBroker
 {
-
     public const RESET_THROTTLED = 'backpack::passwords.throttled';
+
     /**
      * Send a password reset link to a user.
      *
