@@ -55,7 +55,7 @@ class CrudField
     /**
      * Create a CrudField object with the parameter as its name.
      *
-     * @param  string $name Name of the column in the db, or model attribute.
+     * @param  string  $name  Name of the column in the db, or model attribute.
      * @return CrudField
      */
     public static function name($name)
@@ -76,7 +76,7 @@ class CrudField
     /**
      * Remove an attribute from the current field definition array.
      *
-     * @param  string $attribute Name of the attribute being removed.
+     * @param  string  $attribute  Name of the attribute being removed.
      * @return CrudField
      */
     public function forget($attribute)
@@ -89,7 +89,7 @@ class CrudField
     /**
      * Move the current field after another field.
      *
-     * @param  string $destinationField Name of the destination field.
+     * @param  string  $destinationField  Name of the destination field.
      * @return CrudField
      */
     public function after($destinationField)
@@ -103,7 +103,7 @@ class CrudField
     /**
      * Move the current field before another field.
      *
-     * @param  string $destinationField Name of the destination field.
+     * @param  string  $destinationField  Name of the destination field.
      * @return CrudField
      */
     public function before($destinationField)
@@ -152,7 +152,7 @@ class CrudField
      * ->wrapper(['class' => 'form-group col-md-6'])
      * ->size(6).
      *
-     * @param  int $numberOfColumns How many columns should this field span across (1-12)?
+     * @param  int  $numberOfColumns  How many columns should this field span across (1-12)?
      * @return CrudField
      */
     public function size($numberOfColumns)
@@ -169,8 +169,8 @@ class CrudField
     /**
      * Set the value for a certain attribute on the CrudField object.
      *
-     * @param string $attribute Name of the attribute.
-     * @param mixed $value     Value of that attribute.
+     * @param  string  $attribute  Name of the attribute.
+     * @param  mixed  $value  Value of that attribute.
      */
     private function setAttributeValue($attribute, $value)
     {
@@ -181,7 +181,7 @@ class CrudField
      * Replace all field attributes on the CrudField object
      * with the given array of attribute-value pairs.
      *
-     * @param array $array Array of attributes and their values.
+     * @param  array  $array  Array of attributes and their values.
      */
     private function setAllAttributeValues($array)
     {
@@ -248,9 +248,8 @@ class CrudField
      *
      * Eg: type('number') will set the "type" attribute to "number"
      *
-     * @param  string $method     The method being called that doesn't exist.
-     * @param  array $parameters  The arguments when that method was called.
-     *
+     * @param  string  $method  The method being called that doesn't exist.
+     * @param  array  $parameters  The arguments when that method was called.
      * @return CrudField
      */
     public function __call($method, $parameters)

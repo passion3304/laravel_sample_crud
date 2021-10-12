@@ -44,10 +44,10 @@ trait Filters
     /**
      * Add a filter to the CRUD table view.
      *
-     * @param array               $options       Name, type, label, etc.
-     * @param bool|array|\Closure $values        The HTML for the filter.
-     * @param bool|\Closure       $filterLogic   Query modification (filtering) logic when filter is active.
-     * @param bool|\Closure       $fallbackLogic Query modification (filtering) logic when filter is not active.
+     * @param  array  $options  Name, type, label, etc.
+     * @param  bool|array|\Closure  $values  The HTML for the filter.
+     * @param  bool|\Closure  $filterLogic  Query modification (filtering) logic when filter is active.
+     * @param  bool|\Closure  $fallbackLogic  Query modification (filtering) logic when filter is not active.
      */
     public function addFilter($options, $values = false, $filterLogic = false, $fallbackLogic = false)
     {
@@ -61,10 +61,10 @@ trait Filters
      * Add a filter to the CrudPanel object using the Settings API.
      * The filter will NOT get applied.
      *
-     * @param array               $options       Name, type, label, etc.
-     * @param bool|array|\Closure $values        The HTML for the filter.
-     * @param bool|\Closure       $filterLogic   Query modification (filtering) logic when filter is active.
-     * @param bool|\Closure       $fallbackLogic Query modification (filtering) logic when filter is not active.
+     * @param  array  $options  Name, type, label, etc.
+     * @param  bool|array|\Closure  $values  The HTML for the filter.
+     * @param  bool|\Closure  $filterLogic  Query modification (filtering) logic when filter is active.
+     * @param  bool|\Closure  $fallbackLogic  Query modification (filtering) logic when filter is not active.
      */
     protected function addFilterToCollection($options, $values = false, $filterLogic = false, $fallbackLogic = false)
     {
@@ -91,7 +91,7 @@ trait Filters
      * Add a filter by specifying the entire CrudFilter object.
      * The filter logic does NOT get applied.
      *
-     * @param CrudFilter $object
+     * @param  CrudFilter  $object
      */
     public function addCrudFilter($object)
     {
@@ -101,8 +101,8 @@ trait Filters
     /**
      * Apply the filter.
      *
-     * @param CrudFilter              $filter
-     * @param ParameterBag|array|null $input
+     * @param  CrudFilter  $filter
+     * @param  ParameterBag|array|null  $input
      */
     public function applyFilter(CrudFilter $filter, $input = null)
     {
@@ -135,8 +135,7 @@ trait Filters
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return null|CrudFilter
      */
     public function getFilter($name)
@@ -147,8 +146,7 @@ trait Filters
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return bool
      */
     public function hasActiveFilter($name)
@@ -161,9 +159,8 @@ trait Filters
     /**
      * Modify the attributes of a filter.
      *
-     * @param string $name          The filter name.
-     * @param array  $modifications An array of changes to be made.
-     *
+     * @param  string  $name  The filter name.
+     * @param  array  $modifications  An array of changes to be made.
      * @return CrudFilter The filter that has suffered modifications, for daisychaining methods.
      */
     public function modifyFilter($name, $modifications)
@@ -213,7 +210,7 @@ trait Filters
     /**
      * Move the most recently added filter after the given target filter.
      *
-     * @param string|array $destination The target filter name or array.
+     * @param  string|array  $destination  The target filter name or array.
      */
     public function afterFilter($destination)
     {
@@ -225,7 +222,7 @@ trait Filters
     /**
      * Move the most recently added filter before the given target filter.
      *
-     * @param string|array $destination The target filter name or array.
+     * @param  string|array  $destination  The target filter name or array.
      */
     public function beforeFilter($destination)
     {
@@ -261,9 +258,9 @@ trait Filters
     /**
      * Move the most recently added filter before or after the given target filter. Default is before.
      *
-     * @param string|array $target      The target filter name or array.
-     * @param string|array $destination The destination filter name or array.
-     * @param bool         $before      If true, the filter will be moved before the target filter, otherwise it will be moved after it.
+     * @param  string|array  $target  The target filter name or array.
+     * @param  string|array  $destination  The destination filter name or array.
+     * @param  bool  $before  If true, the filter will be moved before the target filter, otherwise it will be moved after it.
      */
     public function moveFilter($target, $where, $destination)
     {
@@ -297,8 +294,8 @@ trait Filters
     /**
      * Check if a filter exists, by any given attribute.
      *
-     * @param  string  $attribute   Attribute name on that filter definition array.
-     * @param  string  $value       Value of that attribute on that filter definition array.
+     * @param  string  $attribute  Attribute name on that filter definition array.
+     * @param  string  $value  Value of that attribute on that filter definition array.
      * @return bool
      */
     public function hasFilterWhere($attribute, $value)
@@ -309,8 +306,8 @@ trait Filters
     /**
      * Get the first filter where a given attribute has the given value.
      *
-     * @param  string  $attribute   Attribute name on that filter definition array.
-     * @param  string  $value       Value of that attribute on that filter definition array.
+     * @param  string  $attribute  Attribute name on that filter definition array.
+     * @param  string  $value  Value of that attribute on that filter definition array.
      * @return bool
      */
     public function firstFilterWhere($attribute, $value)
@@ -329,7 +326,7 @@ trait Filters
      * And if the developer uses the CrudField object as Field in their CrudController:
      * - Filter::name('price')->type('range')->whenActive(function($value) {});
      *
-     * @param  string $name The name of the column in the db, or model attribute.
+     * @param  string  $name  The name of the column in the db, or model attribute.
      * @return CrudField
      */
     public function filter($name)
