@@ -30,11 +30,11 @@ function () {
         Route::post('register', 'Auth\RegisterController@register');
 
         // if not otherwise configured, setup the password recovery routes
-        if (config('backpack.base.setup_password_recovery_routes', true)) {
+        if (config('backpack.base.setup_password_recovery_routes', true)) { 
             Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('backpack.auth.password.reset');
             Route::post('password/reset', 'Auth\ResetPasswordController@reset');
             Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('backpack.auth.password.reset.token');
-            Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('backpack.auth.password.email');
+            Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('backpack.auth.password.email')->middleware('backpack.throttle.password.recovery:'.config('backpack.base.password_recovery_throttle_access'));
         }
     }
 
