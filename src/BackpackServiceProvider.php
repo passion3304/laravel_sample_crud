@@ -276,7 +276,7 @@ class BackpackServiceProvider extends ServiceProvider
                 'provider'  => 'backpack',
                 'table'     => 'password_resets',
                 'expire'   => 60,
-                'throttle' => 60, // Allows a user to request 1 token per 60 seconds
+                'throttle' => config('backpack.base.password_recovery_throttle_notifications'),
             ],
         ];
 
