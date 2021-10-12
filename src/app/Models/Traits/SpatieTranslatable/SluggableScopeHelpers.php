@@ -12,9 +12,8 @@ trait SluggableScopeHelpers
     /**
      * Query scope for finding a model by its primary slug.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $scope
-     * @param string                                $slug
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $scope
+     * @param  string  $slug
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWhereSlug(Builder $scope, string $slug): Builder

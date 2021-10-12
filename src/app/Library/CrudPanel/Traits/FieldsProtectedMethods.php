@@ -10,7 +10,7 @@ trait FieldsProtectedMethods
     /**
      * If field has entity we want to get the relation type from it.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasRelationType($field)
@@ -23,7 +23,7 @@ trait FieldsProtectedMethods
     /**
      * If field has entity we want to make sure it also has a model for that relation.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasModel($field)
@@ -36,7 +36,7 @@ trait FieldsProtectedMethods
     /**
      * Based on relation type we can guess if pivot is set.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasPivot($field)
@@ -49,7 +49,7 @@ trait FieldsProtectedMethods
     /**
      * Based on relation type we can try to guess if it is a multiple field.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasMultiple($field)
@@ -64,7 +64,7 @@ trait FieldsProtectedMethods
     /**
      * In case field name is dot notation we want to convert it to a valid HTML array field name for validation purposes.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function overwriteFieldNameFromDotNotationToArray($field)
@@ -87,7 +87,7 @@ trait FieldsProtectedMethods
      * If the field_definition_array array is a string, it means the programmer was lazy
      * and has only passed the name of the field. Turn that into a proper array.
      *
-     * @param  string|array $field The field definition array (or string).
+     * @param  string|array  $field  The field definition array (or string).
      * @return array
      */
     protected function makeSureFieldHasName($field)
@@ -190,8 +190,8 @@ trait FieldsProtectedMethods
      * Set the label of a field, if it's missing, by capitalizing the name and replacing
      * underscores with spaces.
      *
-     * @param  array $field Field definition array.
-     * @return array        Field definition array that contains label too.
+     * @param  array  $field  Field definition array.
+     * @return array Field definition array that contains label too.
      */
     protected function makeSureFieldHasLabel($field)
     {
@@ -208,8 +208,8 @@ trait FieldsProtectedMethods
      * Set the type of a field, if it's missing, by inferring it from the
      * db column type.
      *
-     * @param  array $field Field definition array.
-     * @return array        Field definition array that contains type too.
+     * @param  array  $field  Field definition array.
+     * @return array Field definition array that contains type too.
      */
     protected function makeSureFieldHasType($field)
     {
@@ -223,7 +223,7 @@ trait FieldsProtectedMethods
     /**
      * Enable the tabs functionality, if a field has a tab defined.
      *
-     * @param  array $field Field definition array.
+     * @param  array  $field  Field definition array.
      * @return void
      */
     protected function enableTabsIfFieldUsesThem($field)
@@ -239,7 +239,7 @@ trait FieldsProtectedMethods
     /**
      * Add a field to the current operation, using the Settings API.
      *
-     * @param  array $field Field definition array.
+     * @param  array  $field  Field definition array.
      */
     protected function addFieldToOperationSettings($field)
     {
@@ -259,8 +259,8 @@ trait FieldsProtectedMethods
      * - name (if the name is a string)
      * - name1_name2_name3 (if the name is an array)
      *
-     * @param  array $field Field definition array.
-     * @return string       The string that should be used as array key.
+     * @param  array  $field  Field definition array.
+     * @return string The string that should be used as array key.
      */
     protected function getFieldKey($field)
     {

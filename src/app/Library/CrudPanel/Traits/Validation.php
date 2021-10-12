@@ -10,7 +10,7 @@ trait Validation
      * Mark a FormRequest file as required for the current operation, in Settings.
      * Adds the required rules to an array for easy access.
      *
-     * @param string $class Class that extends FormRequest
+     * @param  string  $class  Class that extends FormRequest
      */
     public function setValidation($class)
     {
@@ -37,7 +37,7 @@ trait Validation
     /**
      * Mark a FormRequest file as required for the current operation, in Settings.
      *
-     * @param string $class Class that extends FormRequest
+     * @param  string  $class  Class that extends FormRequest
      */
     public function setFormRequest($class)
     {
@@ -80,7 +80,7 @@ trait Validation
      * Parse a FormRequest class, figure out what inputs are required
      * and store this knowledge in the current object.
      *
-     * @param string $class Class that extends FormRequest
+     * @param  string  $class  Class that extends FormRequest
      */
     public function setRequiredFields($class)
     {
@@ -118,9 +118,8 @@ trait Validation
      * Check the current object to see if an input is required
      * for the given operation.
      *
-     * @param string $inputKey  Field or input name.
-     * @param string $operation create / update
-     *
+     * @param  string  $inputKey  Field or input name.
+     * @param  string  $operation  create / update
      * @return bool
      */
     public function isRequired($inputKey)

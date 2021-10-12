@@ -15,7 +15,7 @@ trait HasFakeFields
     /**
      * Add fake fields as regular attributes, even though they are stored as JSON.
      *
-     * @param array $columns - the database columns that contain the JSONs
+     * @param  array  $columns  - the database columns that contain the JSONs
      */
     public function addFakes($columns = ['extras'])
     {
@@ -41,8 +41,7 @@ trait HasFakeFields
     /**
      * Return the entity with fake fields as attributes.
      *
-     * @param array $columns - the database columns that contain the JSONs
-     *
+     * @param  array  $columns  - the database columns that contain the JSONs
      * @return Model
      */
     public function withFakes($columns = [])
@@ -64,7 +63,6 @@ trait HasFakeFields
      * Determine if this fake column should be json_decoded.
      *
      * @param $column string fake column name
-     *
      * @return bool
      */
     public function shouldDecodeFake($column)
@@ -76,7 +74,6 @@ trait HasFakeFields
      * Determine if this fake column should get json_encoded or not.
      *
      * @param $column string fake column name
-     *
      * @return bool
      */
     public function shouldEncodeFake($column)

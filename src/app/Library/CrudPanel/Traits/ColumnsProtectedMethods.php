@@ -10,7 +10,7 @@ trait ColumnsProtectedMethods
     /**
      * Add a column to the current operation, using the Setting API.
      *
-     * @param array $column Column definition array.
+     * @param  array  $column  Column definition array.
      */
     protected function addColumnToOperationSettings($column)
     {
@@ -23,8 +23,8 @@ trait ColumnsProtectedMethods
     /**
      * If a column priority has not been defined, provide a default one.
      *
-     * @param array $column Column definition array.
-     * @return array         Proper array defining the column.
+     * @param  array  $column  Column definition array.
+     * @return array Proper array defining the column.
      */
     protected function makeSureColumnHasPriority($column)
     {
@@ -40,8 +40,8 @@ trait ColumnsProtectedMethods
      * If the field definition array is actually a string, it means the programmer was lazy
      * and has only passed the name of the column. Turn that into a proper array.
      *
-     * @param array $column Column definition array.
-     * @return array         Proper array defining the column.
+     * @param  array  $column  Column definition array.
+     * @return array Proper array defining the column.
      */
     protected function makeSureColumnHasName($column)
     {
@@ -60,8 +60,8 @@ trait ColumnsProtectedMethods
      * If a column array is missing the "label" attribute, an ugly error would be show.
      * So we add the field Name as a label - it's better than nothing.
      *
-     * @param array     $column  Column definition array.
-     * @return array            Proper array defining the column.
+     * @param  array  $column  Column definition array.
+     * @return array Proper array defining the column.
      */
     protected function makeSureColumnHasLabel($column)
     {
@@ -75,8 +75,8 @@ trait ColumnsProtectedMethods
     /**
      * If a column definition is missing the type, set a default.
      *
-     * @param array $column Column definition array.
-     * @return array        Column definition array with type.
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with type.
      */
     protected function makeSureColumnHasType($column)
     {
@@ -98,8 +98,8 @@ trait ColumnsProtectedMethods
      * The key is used when storing all columns using the Settings API,
      * it is used as the "key" of the associative array that holds all columns.
      *
-     * @param array $column Column definition array.
-     * @return array        Column definition array with key.
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with key.
      */
     protected function makeSureColumnHasKey($column)
     {
@@ -116,8 +116,8 @@ trait ColumnsProtectedMethods
      * By defining this array a developer can wrap the text into an anchor (link),
      * span, div or whatever they want.
      *
-     * @param array $column Column definition array.
-     * @return array        Column definition array with wrapper.
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with wrapper.
      */
     protected function makeSureColumnHasWrapper($column)
     {
@@ -178,8 +178,8 @@ trait ColumnsProtectedMethods
      * If an entity has been defined for the column, but no model,
      * determine the model from that relationship.
      *
-     * @param array $column Column definition array.
-     * @return array        Column definition array with model.
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with model.
      */
     protected function makeSureColumnHasModel($column)
     {
@@ -195,8 +195,8 @@ trait ColumnsProtectedMethods
     /**
      * Move the most recently added column before or after the given target column. Default is before.
      *
-     * @param string|array $targetColumn The target column name or array.
-     * @param bool         $before       If true, the column will be moved before the target column, otherwise it will be moved after it.
+     * @param  string|array  $targetColumn  The target column name or array.
+     * @param  bool  $before  If true, the column will be moved before the target column, otherwise it will be moved after it.
      */
     protected function moveColumn($targetColumn, $before = true)
     {
@@ -221,9 +221,8 @@ trait ColumnsProtectedMethods
     /**
      * Check if the column exists in the database, as a DB column.
      *
-     * @param string $table
-     * @param string $name
-     *
+     * @param  string  $table
+     * @param  string  $name
      * @return bool
      */
     protected function hasDatabaseColumn($table, $name)
