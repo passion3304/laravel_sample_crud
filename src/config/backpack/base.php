@@ -199,11 +199,11 @@ return [
 
     // the ThrottleRequests Laravel middleware is used to prevent abuse from your recovery password functionality.
     // here you can configure how many attempts a user can make to recover the password in a given time.
-    
+
     // how much time to wait between password reset request notification ? User should be allow to attempt 1 request every: ? (defaults to 1 request every 60 seconds)
     // this is the time to wait for the email to arrive before trying to reset again
     'password_recovery_throttle_notifications' => 60, // time in seconds
-    
+
     // how many times in any given time period should the user be allowed to attempt a password reset? (defaults to 2,5 - 2 times every 5 minutes.)
     // take into account that user migth wrongly type an email at first, is plausible, so atleast allow one more shoot.
     'password_recovery_throttle_access' => '2,5', // 2 - how many times // 5 - interval in minutes

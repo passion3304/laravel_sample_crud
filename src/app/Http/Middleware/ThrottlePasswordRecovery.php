@@ -4,7 +4,7 @@ namespace Backpack\CRUD\app\Http\Middleware;
 
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Validation\ValidationException;
- 
+
 class ThrottlePasswordRecovery extends ThrottleRequests
 {
     /**
@@ -21,6 +21,5 @@ class ThrottlePasswordRecovery extends ThrottleRequests
         return ValidationException::withMessages([
             'email' => [trans('backpack::passwords.throttled_request')],
         ]);
-
     }
 }

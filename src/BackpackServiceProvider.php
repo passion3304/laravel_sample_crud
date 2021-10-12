@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -97,7 +97,7 @@ class BackpackServiceProvider extends ServiceProvider
 
         // register internal backpack middleware for throttling the password recovery functionality
         // but only if functionality is enabled by developer in config
-        if(config('backpack.base.setup_password_recovery_routes')) {
+        if (config('backpack.base.setup_password_recovery_routes')) {
             $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
         }
     }
