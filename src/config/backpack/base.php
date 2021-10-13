@@ -193,21 +193,6 @@ return [
     // Warning: if you disable this, the password recovery routes (below) will be disabled too!
     'setup_auth_routes' => true,
 
-    // Set this to false if you would like to skip adding the password recovery routes
-    // (you then need to manually define the routes in your web.php)
-    'setup_password_recovery_routes' => true,
-
-    // the ThrottleRequests Laravel middleware is used to prevent abuse from your recovery password functionality.
-    // here you can configure how many attempts a user can make to recover the password in a given time.
-
-    // how much time to wait between password reset request notification ? User should be allow to attempt 1 request every: ? (defaults to 1 request every 60 seconds)
-    // this is the time to wait for the email to arrive before trying to reset again
-    'password_recovery_throttle_notifications' => 60, // time in seconds
-
-    // how many times in any given time period should the user be allowed to attempt a password reset? (defaults to 2,5 - 2 times every 5 minutes.)
-    // take into account that user migth wrongly type an email at first, is plausible, so atleast allow one more shoot.
-    'password_recovery_throttle_access' => '2,5', // 2 - how many times // 5 - interval in minutes
-
     // Set this to false if you would like to skip adding the dashboard routes
     // (you then need to overwrite the login route on your AuthController)
     'setup_dashboard_routes' => true,
@@ -215,6 +200,31 @@ return [
     // Set this to false if you would like to skip adding "my account" routes
     // (you then need to manually define the routes in your web.php)
     'setup_my_account_routes' => true,
+
+    // Set this to false if you would like to skip adding the password recovery routes
+    // (you then need to manually define the routes in your web.php)
+    'setup_password_recovery_routes' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Security
+    |--------------------------------------------------------------------------
+    */
+
+    // Backpack will prevent visitors from requesting password recovery too many times
+    // for a certain email, to make sure they cannot be spammed that way.
+    // How many seconds should a visitor wait, after they've requested a
+    // password reset, before they can try again for the same email?
+    'password_recovery_throttle_notifications' => 60, // time in seconds
+
+    // Backpack will prevent an IP from trying to reset the password too many times,
+    // so that a malicious actor cannot try too many emails, too see if they have
+    // accounts or to increase the AWS/SendGrid/etc bill.
+    //
+    // How many times in any given time period should the user be allowed to
+    // attempt a password reset? Take into account that user might wrongly
+    // type an email at first, so at least allow one more try.
+    'password_recovery_throttle_access' => '2,5', // (defaults to 2,5 - 2 times every 5 minutes)
 
     /*
     |--------------------------------------------------------------------------

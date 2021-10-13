@@ -66,5 +66,6 @@ return [
     'confirm_email'        => 'Confirmar Email',
     'choose_new_password'  => 'Escolher nova password',
     'confirm_new_password' => 'Confirmar nova password',
-
+    'throttled' => 'Foi efectuado um pedido de recuperação de password recentemente. Verifique o seu email.',
+    'throttled_request' => 'Excedeu o limite de tentativas. Aguarde alguns minutos e tente novamente.',
 ];

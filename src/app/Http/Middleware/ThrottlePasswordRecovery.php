@@ -19,7 +19,7 @@ class ThrottlePasswordRecovery extends ThrottleRequests
     protected function buildException($request, $key, $maxAttempts, $responseCallback = null)
     {
         return ValidationException::withMessages([
-            'email' => [trans('backpack::passwords.throttled_request')],
+            'email' => [trans('backpack::base.throttled_request')],
         ]);
     }
 }
