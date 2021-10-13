@@ -22,6 +22,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-init-function="bpFieldInitSelect2Element"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
@@ -73,9 +74,13 @@
         <script>
             function bpFieldInitSelect2Element(element) {
                 // element will be a jQuery wrapped DOM node
-                if (!element.hasClass("select2-hidden-accessible")) {
+                if (!element.hasClass("select2-hidden-accessible")) 
+                {
+                    let $isFieldInline = element.data('field-is-inline');
+                    
                     element.select2({
-                        theme: "bootstrap"
+                        theme: "bootstrap",
+                        dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
                     });
                 }
             }
