@@ -15,9 +15,8 @@ trait Update
     /**
      * Update a row in the database.
      *
-     * @param int   $id   The entity's id
-     * @param array $data All inputs to be updated.
-     *
+     * @param  int  $id  The entity's id
+     * @param  array  $data  All inputs to be updated.
      * @return object
      */
     public function update($id, $data)
@@ -25,6 +24,8 @@ trait Update
         $data = $this->decodeJsonCastedAttributes($data);
         $data = $this->compactFakeFields($data);
         $item = $this->model->findOrFail($id);
+
+        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
 
         $this->createRelations($item, $data);
 
@@ -41,8 +42,7 @@ trait Update
     /**
      * Get all fields needed for the EDIT ENTRY form.
      *
-     * @param int $id The id of the entry that is being edited.
-     *
+     * @param  int  $id  The id of the entry that is being edited.
      * @return array The fields with attributes, fake attributes and values.
      */
     public function getUpdateFields($id = false)
@@ -79,9 +79,8 @@ trait Update
     /**
      * Get the value of the 'name' attribute from the declared relation model in the given field.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model The current CRUD model.
-     * @param array                               $field The CRUD field array.
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model  The current CRUD model.
+     * @param  array  $field  The CRUD field array.
      * @return mixed The value of the 'name' attribute from the relation model.
      */
     private function getModelAttributeValue($model, $field)

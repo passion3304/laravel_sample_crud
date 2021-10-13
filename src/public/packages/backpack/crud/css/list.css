@@ -54,9 +54,7 @@
 	}
 
   /*  DataTables Loading State Visual Improvements  */
-
-	#crudTable.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
-	#crudTable.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before {
+	#crudTable.dataTable.dtr-inline.collapsed>tbody>tr>.dtr-control:before {
 		background-color: transparent;
 		color: #636161;
 		font-family: 'Line Awesome Free';
@@ -65,8 +63,18 @@
 		content: "\f142";
 		font-size: 21px;
 		box-shadow: none;
-		/*margin-top: 8px;*/
 		border: none;
+		display: inline;
+		position: relative;
+		left: 0;
+		top: 0;
+		margin: 4px 8px;
+	}
+
+	#crudTable.dataTable.dtr-inline.collapsed>tbody>tr>.dtr-control>span {
+		display: flex;
+		align-items: center;
+		margin-top: 2px;
 	}
 
 	.dt-buttons {
@@ -82,8 +90,27 @@
 		vertical-align: middle;
 	}
 
-	#crudTable.has-hidden-columns .details-control {
+	#crudTable td > span {
+		vertical-align: middle;
+	}
+	#crudTable .details-control,
+	#crudTable .dtr-control {
+		margin-left: 8px;
+		/* padding-left: 0px; */
+	}
+
+	#crudTable.has-hidden-columns .details-control,
+	#crudTable.has-hidden-columns .dtr-control {
 		/*display: none;*/
+		margin-left: 0px;
+		padding-left: 0px;
+		display: flex;
+	}
+
+	#crudTable tbody > tr > td:first-of-type:empty,
+	#crudTable thead > tr > th:first-of-type:empty,
+	#crudTable tfoot > tr > th:first-of-type:empty {
+		padding: 0;
 	}
 
 	div.dataTables_wrapper div.dataTables_length select {
@@ -203,6 +230,18 @@
 		min-height: calc(100% - 98px);
 	}
 
+	.dataTables_empty {
+		padding: 10px!important;
+	}
+
+	#datatable_search_stack {
+		min-height: 35px;
+	}
+
+	#crudTable thead>tr>th:not(.sorting_disabled), table.dataTable thead>tr>td {		
+		padding-right: 30px;
+	}
+
 	@media(max-width: 576px) {
 		#datatable_search_stack {
 			margin-top: .5rem;
@@ -217,8 +256,16 @@
 		}
 	}
 
-	#crudTable thead>tr>th, table.dataTable thead>tr>td {
-		padding-right: 30px;
+
+	#crudTable_wrapper .dt-buttons .dt-button-collection,
+	#crudTable_wrapper tr td .btn-group .dropdown-menu {
+		max-height: 340px;
+		overflow-y: auto;
+	}
+
+	#crudTable_wrapper .dt-buttons .dt-button-collection {
+		padding: 0;
+		border: 0;
 	}
 
 	.navbar-filters li>a:active,

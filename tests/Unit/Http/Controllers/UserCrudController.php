@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\Tests\Unit\Http\Controllers;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Illuminate\Support\Facades\Response;
 
 class UserCrudController extends CrudController
 {
@@ -15,11 +14,16 @@ class UserCrudController extends CrudController
 
     protected function edit($id)
     {
-        return Response('edit');
+        return response('edit');
     }
 
     protected function update($id)
     {
-        return Response('update');
+        return response('update');
+    }
+
+    protected function index()
+    {
+        return response('index');
     }
 }

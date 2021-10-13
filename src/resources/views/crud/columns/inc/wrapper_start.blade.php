@@ -10,7 +10,7 @@
 @endphp
 
 <{{ $column['wrapper']['element'] ?? 'a' }}
-@foreach(Arr::where($column['wrapper'],function($value, $key) { return $key != 'element'; }) as $element => $value)
+@foreach(Arr::except($column['wrapper'], 'element') as $element => $value)
     {{$element}}="{{$value}}"
 @endforeach
 >

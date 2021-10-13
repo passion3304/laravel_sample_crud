@@ -9,6 +9,7 @@ return [
     */
 
     'registration_closed'    => 'Reģistrācija aizvērta.',
+    'no_email_column'        => 'Lietotājiem nav piesaistītas e-pasta adreses.',
     'first_page_you_see'     => 'Pirmā lapa ko redzat pēc pieslēgšanās',
     'login_status'           => 'Pieslēgšanās statuss',
     'logged_in'              => 'Jūs esat pieslēgušies!',
@@ -40,6 +41,8 @@ return [
     'cancel'                 => 'Atcelt',
     'error'                  => 'Kļūda',
     'success'                => 'Darbība veiksmīga',
+    'warning'                => 'Brīdinājums',
+    'notice'                 => 'Paziņojums',
     'old_password_incorrect' => 'Vecā parole nav pareiza.',
     'password_dont_match'    => 'Paroles nesakrīt.',
     'password_empty'         => 'Pārliecinies vai abi paroļu lauki ir aizpildīti.',
@@ -47,6 +50,8 @@ return [
     'account_updated'        => 'Konta rediģēšana veiksmīga.',
     'unknown_error'          => 'Nezināma kļūda. Lūdzu mēģini vēlreiz.',
     'error_saving'           => 'Kļūda saglabājot. Lūdzu mēģini vēlreiz.',
+    'welcome'                => 'Laipni lūgti!',
+    'use_sidebar'            => 'Izmantojiet sānjoslu pa kreisi, lai izveidotu, rediģētu vai izdzēstu saturu.',
 
     'password_reset' => [
         'greeting' => 'Labdien!',

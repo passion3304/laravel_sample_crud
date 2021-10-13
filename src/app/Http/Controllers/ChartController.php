@@ -27,10 +27,14 @@ class ChartController
         }
 
         if ($this->chart) {
-            return $this->chart->api();
+            $response = $this->chart->api();
+        } else {
+            $response = $this->api();
         }
 
-        return $this->api();
+        return response($response)->withHeaders([
+            'Content-Type' => 'application/json',
+        ]);
     }
 
     /**
@@ -47,7 +51,7 @@ class ChartController
      * Set the path where the chart widget will find the JS file (or files)
      * needeed to set up the charting.
      *
-     * @param string|array $path Full URL to the JS file of the charting library. Or array.
+     * @param  string|array  $path  Full URL to the JS file of the charting library. Or array.
      */
     protected function setLibraryFilePath($path)
     {
@@ -59,7 +63,7 @@ class ChartController
      * Because the dataset always includes the name of the charting library,
      * we can use that to determine which JS file we should be loading from the CDN.
      *
-     * @param string $dataset Class name of the dataset of the current chart.
+     * @param  string  $dataset  Class name of the dataset of the current chart.
      */
     protected function setLibraryFilePathFromDatasetType($dataset)
     {

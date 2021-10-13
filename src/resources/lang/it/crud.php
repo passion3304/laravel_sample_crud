@@ -62,12 +62,19 @@ return [
     'bulk_no_entries_selected_title'   => 'Nessun record selezionato',
     'bulk_no_entries_selected_message' => 'Seleziona uno o più record su cui effettuare l\'operazione.',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'   => 'Sei sicuro di voler eliminare :number record?',
     'bulk_delete_sucess_title'   => 'Record eliminati',
     'bulk_delete_sucess_message' => ' record sono stati eliminati',
     'bulk_delete_error_title'    => 'Record non eliminati',
     'bulk_delete_error_message'  => 'Non è stato possibile eliminare uno o più record',
+
+    // Bulk clone
+    'bulk_clone_are_you_sure'   => 'Sei sicuro di voler clonare :number record?',
+    'bulk_clone_sucess_title'   => 'Record clonati',
+    'bulk_clone_sucess_message' => ' record sono stati clonati.',
+    'bulk_clone_error_title'    => 'Record non clonati',
+    'bulk_clone_error_message'  => 'Non è stato possibile clonare uno o più record. Per favore, riprova.',
 
     // Ajax errors
     'ajax_error_title' => 'Errore',
@@ -129,6 +136,17 @@ return [
     'filters'        => 'Filtri',
     'toggle_filters' => 'Attiva/disattiva filtri',
     'remove_filters' => 'Rimuovi filtri',
+    'apply' => 'Applica',
+
+    //filters language strings
+    'today' => 'Oggi',
+    'yesterday' => 'Domani',
+    'last_7_days' => 'Ultimi 7 giorni',
+    'last_30_days' => 'Ultimi 30 giorni',
+    'this_month' => 'Questo mese',
+    'last_month' => 'Mese precedente',
+    'custom_range' => 'Intervallo di date',
+    'weekLabel' => 'W',
 
     // Fields
     'browse_uploads'            => 'Sfoglia file caricati',

@@ -1,5 +1,7 @@
 <?php
 
+namespace Backpack\CRUD\Tests\Config\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -13,13 +15,13 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
+        $faker = \Faker\Factory::create();
         $now = \Carbon\Carbon::now();
 
         DB::table('users')->insert([[
             'id'             => 1,
             'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
+            'email'          => $faker->unique()->safeEmail,
             'password'       => bcrypt('secret'),
             'remember_token' => Str::random(10),
             'created_at'     => $now,
@@ -29,7 +31,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([[
             'id'             => 2,
             'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
+            'email'          => $faker->unique()->safeEmail,
             'password'       => bcrypt('secret'),
             'remember_token' => Str::random(10),
             'created_at'     => $now,

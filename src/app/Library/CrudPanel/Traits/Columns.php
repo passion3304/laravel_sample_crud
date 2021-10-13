@@ -26,7 +26,7 @@ trait Columns
     /**
      * Add a bunch of column names and their details to the CRUD object.
      *
-     * @param array|string $columns
+     * @param  array|string  $columns
      */
     public function setColumns($columns)
     {
@@ -61,8 +61,7 @@ trait Columns
     /**
      * Add a column at the end of to the CRUD object's "columns" array.
      *
-     * @param array|string $column
-     *
+     * @param  array|string  $column
      * @return self
      */
     public function addColumn($column)
@@ -76,7 +75,7 @@ trait Columns
     /**
      * Add multiple columns at the end of the CRUD object's "columns" array.
      *
-     * @param array $columns
+     * @param  array  $columns
      */
     public function addColumns($columns)
     {
@@ -90,7 +89,7 @@ trait Columns
     /**
      * Move the most recently added column after the given target column.
      *
-     * @param string|array $targetColumn The target column name or array.
+     * @param  string|array  $targetColumn  The target column name or array.
      */
     public function afterColumn($targetColumn)
     {
@@ -100,7 +99,7 @@ trait Columns
     /**
      * Move the most recently added column before the given target column.
      *
-     * @param string|array $targetColumn The target column name or array.
+     * @param  string|array  $targetColumn  The target column name or array.
      */
     public function beforeColumn($targetColumn)
     {
@@ -125,8 +124,7 @@ trait Columns
     /**
      * Add the default column type to the given Column, inferring the type from the database column type.
      *
-     * @param array $column
-     *
+     * @param  array  $column
      * @return array|bool
      */
     public function addDefaultTypeToColumn($column)
@@ -143,7 +141,7 @@ trait Columns
     /**
      * Remove a column from the CRUD panel by name.
      *
-     * @param string $columnKey The column key.
+     * @param  string  $columnKey  The column key.
      */
     public function removeColumn($columnKey)
     {
@@ -155,7 +153,7 @@ trait Columns
     /**
      * Remove multiple columns from the CRUD panel by name.
      *
-     * @param array $columns Array of column names.
+     * @param  array  $columns  Array of column names.
      */
     public function removeColumns($columns)
     {
@@ -176,8 +174,9 @@ trait Columns
 
     /**
      * Remove an attribute from one column's definition array.
-     * @param  string $column     The name of the column.
-     * @param  string $attribute The name of the attribute being removed.
+     *
+     * @param  string  $column  The name of the column.
+     * @param  string  $attribute  The name of the attribute being removed.
      */
     public function removeColumnAttribute($column, $attribute)
     {
@@ -191,8 +190,8 @@ trait Columns
     /**
      * Change attributes for multiple columns.
      *
-     * @param array $columns
-     * @param array $attributes
+     * @param  array  $columns
+     * @param  array  $attributes
      */
     public function setColumnsDetails($columns, $attributes)
     {
@@ -204,8 +203,8 @@ trait Columns
     /**
      * Change attributes for a certain column.
      *
-     * @param string $columnKey           Column key.
-     * @param array  $attributesAndValues
+     * @param  string  $columnKey  Column key.
+     * @param  array  $attributesAndValues
      */
     public function setColumnDetails($columnKey, $attributesAndValues)
     {
@@ -224,8 +223,8 @@ trait Columns
      * Alias for setColumnDetails().
      * Provides a consistent syntax with Fields, Buttons, Filters modify functionality.
      *
-     * @param string $column     Column name.
-     * @param array  $attributes
+     * @param  string  $column  Column name.
+     * @param  array  $attributes
      */
     public function modifyColumn($column, $attributes)
     {
@@ -235,8 +234,8 @@ trait Columns
     /**
      * Set label for a specific column.
      *
-     * @param string $column
-     * @param string $label
+     * @param  string  $column
+     * @param  string  $label
      */
     public function setColumnLabel($column, $label)
     {
@@ -253,7 +252,7 @@ trait Columns
         $columns = $this->columns();
 
         return collect($columns)->pluck('entity')->reject(function ($value, $key) {
-            return $value == null;
+            return ! $value;
         })->toArray();
     }
 
@@ -261,7 +260,7 @@ trait Columns
      * Order the CRUD columns. If certain columns are missing from the given order array, they will be pushed to the
      * new columns array in the original order.
      *
-     * @param array $order An array of column names in the desired order.
+     * @param  array  $order  An array of column names in the desired order.
      */
     public function orderColumns($order)
     {
@@ -283,8 +282,7 @@ trait Columns
     /**
      * Get a column by the id, from the associative array.
      *
-     * @param int $column_number Placement inside the columns array.
-     *
+     * @param  int  $column_number  Placement inside the columns array.
      * @return array Column details.
      */
     public function findColumnById($column_number)
@@ -309,8 +307,7 @@ trait Columns
      * Set a certain priority for the actions column
      * in the CRUD table view. Usually set to 10000 in order to hide it.
      *
-     * @param int $number The priority, from 1 to infinity. Lower is better.
-     *
+     * @param  int  $number  The priority, from 1 to infinity. Lower is better.
      * @return self
      */
     public function setActionsColumnPriority($number)
@@ -323,8 +320,8 @@ trait Columns
     /**
      * Check if a column exists, by any given attribute.
      *
-     * @param  string  $attribute   Attribute name on that column definition array.
-     * @param  string  $value       Value of that attribute on that column definition array.
+     * @param  string  $attribute  Attribute name on that column definition array.
+     * @param  string  $value  Value of that attribute on that column definition array.
      * @return bool
      */
     public function hasColumnWhere($attribute, $value)
@@ -339,8 +336,8 @@ trait Columns
     /**
      * Get the first column where a given attribute has the given value.
      *
-     * @param  string  $attribute   Attribute name on that column definition array.
-     * @param  string  $value       Value of that attribute on that column definition array.
+     * @param  string  $attribute  Attribute name on that column definition array.
+     * @param  string  $value  Value of that attribute on that column definition array.
      * @return bool
      */
     public function firstColumnWhere($attribute, $value)
@@ -357,34 +354,47 @@ trait Columns
      * This method checks that all necessary attributes are set.
      * If not, it tries to guess them.
      *
-     * @param  string|array $column The column definition array OR column name as string.
-     * @return array                Proper column definition array.
+     * @param  string|array  $column  The column definition array OR column name as string.
+     * @return array Proper column definition array.
      */
     public function makeSureColumnHasNeededAttributes($column)
     {
         $column = $this->makeSureColumnHasName($column);
         $column = $this->makeSureColumnHasLabel($column);
+        $column = $this->makeSureColumnHasEntity($column);
         $column = $this->makeSureColumnHasType($column);
         $column = $this->makeSureColumnHasKey($column);
+        $column = $this->makeSureColumnHasPriority($column);
         $column = $this->makeSureColumnHasModel($column);
 
-        // check if the column exists in the database (as a db column)
-        $columnExistsInDb = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
-
-        // make sure column has tableColumn, orderable and searchLogic
-        $column['tableColumn'] = $column['tableColumn'] ?? $columnExistsInDb;
-        $column['orderable'] = $column['orderable'] ?? $columnExistsInDb;
-        $column['searchLogic'] = $column['searchLogic'] ?? $columnExistsInDb;
-
-        // check if it's a method on the model,
-        // that means it's a relationship
-        if (! $columnExistsInDb && method_exists($this->model, $column['name'])) {
-            $relatedModel = $this->model->{$column['name']}()->getRelated();
-            $column['entity'] = $column['name'];
-            $column['model'] = get_class($relatedModel);
+        if (isset($column['entity']) && $column['entity'] !== false) {
+            $column['relation_type'] = $this->inferRelationTypeFromRelationship($column);
         }
 
+        // check if the column exists in the database (as a db column)
+        $column_exists_in_db = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
+
+        // make sure column has tableColumn, orderable and searchLogic
+        $column['tableColumn'] = $column['tableColumn'] ?? $column_exists_in_db;
+        $column['orderable'] = $column['orderable'] ?? $column_exists_in_db;
+        $column['searchLogic'] = $column['searchLogic'] ?? $column_exists_in_db;
+
         return $column;
+    }
+
+    /**
+     * Count the number of columns added so far.
+     *
+     * It will not take into account the action
+     * columns (columns with buttons, checkbox).
+     *
+     * @return int
+     */
+    public function countColumnsWithoutActions()
+    {
+        return collect($this->columns())->filter(function ($column, $key) {
+            return ! isset($column['hasActions']) || $column['hasActions'] == false;
+        })->count();
     }
 
     /**
@@ -395,10 +405,10 @@ trait Columns
      * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
      * - CRUD::column('price')->type('number');
      *
-     * And if the developer uses the CrudColumn object as Column in his CrudController:
+     * And if the developer uses the CrudColumn object as Column in their CrudController:
      * - Column::name('price')->type('number');
      *
-     * @param  string $name The name of the column in the db, or model attribute.
+     * @param  string  $name  The name of the column in the db, or model attribute.
      * @return CrudColumn
      */
     public function column($name)

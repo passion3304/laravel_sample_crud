@@ -16,7 +16,7 @@
             } else {
                 $selected = '';
             }
-            echo "<option value='".$entry->getKey()."' '.$selected.'>";
+            echo '<option value="'.$entry->getKey().'"'.$selected.'>';
             echo str_repeat("-", (int)$entry->depth > 1 ? (int)$entry->depth - 1 : 0).' '.$entry->{$field['attribute']};
             echo "</option>";
         }
@@ -32,20 +32,25 @@
             }
         }
     }
+
+    $entity_model = $crud->getRelationModel($field['entity'], -1);
+
+    $field['allows_null'] = $field['allows_null'] ?? $entity_model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
-    <?php $entity_model = $crud->getRelationModel($field['entity'], -1); ?>
+
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2NestedElement"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
         >
 
-        @if ($entity_model::isColumnNullable($field['name']))
+        @if ($field['allows_null'])
             <option value="">-</option>
         @endif
 
@@ -90,7 +95,7 @@
         <!-- include select2 js-->
         <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
         @if (app()->getLocale() !== 'en')
-        <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+        <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
         @endif
         <script>
             function bpFieldInitSelect2NestedElement(element) {

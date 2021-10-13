@@ -18,7 +18,7 @@ class MyAccountController extends Controller
     }
 
     /**
-     * Show the user a form to change his personal information & password.
+     * Show the user a form to change their personal information & password.
      */
     public function getAccountInfoForm()
     {

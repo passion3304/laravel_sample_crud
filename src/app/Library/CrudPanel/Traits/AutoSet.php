@@ -12,7 +12,7 @@ trait AutoSet
      */
     public function setFromDb()
     {
-        if (! $this->driverIsMongoDb()) {
+        if ($this->driverIsSql()) {
             $this->getDbColumnTypes();
         }
 
@@ -90,8 +90,7 @@ trait AutoSet
     /**
      * Infer a field type, judging from the database column type.
      *
-     * @param string $field Field name.
-     *
+     * @param  string  $field  Field name.
      * @return string Field type.
      */
     protected function inferFieldTypeFromDbColumnType($fieldName)
@@ -166,7 +165,7 @@ trait AutoSet
     public function setDoctrineTypesMapping()
     {
         $types = ['enum' => 'string'];
-        $platform = $this->getSchema()->getConnection()->getDoctrineConnection()->getDatabasePlatform();
+        $platform = $this->getSchema()->getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
         foreach ($types as $type_key => $type_value) {
             if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
                 $platform->registerDoctrineTypeMapping($type_key, $type_value);
@@ -177,8 +176,7 @@ trait AutoSet
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
      *
-     * @param string $value The value.
-     *
+     * @param  string  $value  The value.
      * @return string The transformed value.
      */
     public function makeLabel($value)
@@ -201,8 +199,7 @@ trait AutoSet
     /**
      * Change the way labels are made.
      *
-     * @param callable $labeller A function that receives a string and returns the formatted string, after stripping down useless characters.
-     *
+     * @param  callable  $labeller  A function that receives a string and returns the formatted string, after stripping down useless characters.
      * @return self
      */
     public function setLabeller(callable $labeller)
@@ -221,7 +218,7 @@ trait AutoSet
     {
         $fillable = $this->model->getFillable();
 
-        if ($this->driverIsMongoDb()) {
+        if (! $this->driverIsSql()) {
             $columns = $fillable;
         } else {
             // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model

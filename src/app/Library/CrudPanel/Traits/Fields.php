@@ -29,8 +29,8 @@ trait Fields
      * Everything else Backpack can probably guess. This method makes sure  the
      * field definition array is complete, by guessing missing attributes.
      *
-     * @param  string|array $field  The definition of a field (string or array).
-     * @return array                The correct definition of that field.
+     * @param  string|array  $field  The definition of a field (string or array).
+     * @return array The correct definition of that field.
      */
     public function makeSureFieldHasNecessaryAttributes($field)
     {
@@ -56,8 +56,7 @@ trait Fields
     /**
      * Add a field to the create/update form or both.
      *
-     * @param string|array $field The new field.
-     *
+     * @param  string|array  $field  The new field.
      * @return self
      */
     public function addField($field)
@@ -73,7 +72,7 @@ trait Fields
     /**
      * Add multiple fields to the create/update form or both.
      *
-     * @param array  $fields The new fields.
+     * @param  array  $fields  The new fields.
      */
     public function addFields($fields)
     {
@@ -87,7 +86,7 @@ trait Fields
     /**
      * Move the most recently added field after the given target field.
      *
-     * @param string $targetFieldName The target field name.
+     * @param  string  $targetFieldName  The target field name.
      */
     public function afterField($targetFieldName)
     {
@@ -99,7 +98,7 @@ trait Fields
     /**
      * Move the most recently added field before the given target field.
      *
-     * @param string $targetFieldName The target field name.
+     * @param  string  $targetFieldName  The target field name.
      */
     public function beforeField($targetFieldName)
     {
@@ -126,7 +125,7 @@ trait Fields
     /**
      * Remove a certain field from the create/update/both forms by its name.
      *
-     * @param string $name Field name (as defined with the addField() procedure)
+     * @param  string  $name  Field name (as defined with the addField() procedure)
      */
     public function removeField($name)
     {
@@ -140,7 +139,7 @@ trait Fields
     /**
      * Remove many fields from the create/update/both forms by their name.
      *
-     * @param array $array_of_names A simple array of the names of the fields to be removed.
+     * @param  array  $array_of_names  A simple array of the names of the fields to be removed.
      */
     public function removeFields($array_of_names)
     {
@@ -166,8 +165,9 @@ trait Fields
 
     /**
      * Remove an attribute from one field's definition array.
-     * @param  string $field     The name of the field.
-     * @param  string $attribute The name of the attribute being removed.
+     *
+     * @param  string  $field  The name of the field.
+     * @param  string  $attribute  The name of the attribute being removed.
      */
     public function removeFieldAttribute($field, $attribute)
     {
@@ -181,8 +181,8 @@ trait Fields
     /**
      * Update value of a given key for a current field.
      *
-     * @param string $fieldName         The field name
-     * @param array  $modifications An array of changes to be made.
+     * @param  string  $fieldName  The field name
+     * @param  array  $modifications  An array of changes to be made.
      */
     public function modifyField($fieldName, $modifications)
     {
@@ -202,8 +202,8 @@ trait Fields
     /**
      * Set label for a specific field.
      *
-     * @param string $field
-     * @param string $label
+     * @param  string  $field
+     * @param  string  $label
      */
     public function setFieldLabel($field, $label)
     {
@@ -214,8 +214,7 @@ trait Fields
      * Check if field is the first of its type in the given fields array.
      * It's used in each field_type.blade.php to determine wether to push the css and js content or not (we only need to push the js and css for a field the first time it's loaded in the form, not any subsequent times).
      *
-     * @param array $field The current field being tested if it's the first of its type.
-     *
+     * @param  array  $field  The current field being tested if it's the first of its type.
      * @return bool true/false
      */
     public function checkIfFieldIsFirstOfItsType($field)
@@ -274,7 +273,7 @@ trait Fields
      * Order the CRUD fields. If certain fields are missing from the given order array, they will be
      * pushed to the new fields array in the original order.
      *
-     * @param array $order An array of field names in the desired order.
+     * @param  array  $order  An array of field names in the desired order.
      */
     public function orderFields($order)
     {
@@ -297,9 +296,8 @@ trait Fields
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
      *
-     * @param string   $form create/update/both - defaults to 'both'
-     * @param bool|int $id   id of the entity - defaults to false
-     *
+     * @param  string  $form  create/update/both - defaults to 'both'
+     * @param  bool|int  $id  id of the entity - defaults to false
      * @return bool
      */
     public function hasUploadFields()
@@ -329,7 +327,7 @@ trait Fields
     /**
      * Set an array of field type names as already loaded for the current operation.
      *
-     * @param array $fieldTypes
+     * @param  array  $fieldTypes
      */
     public function setLoadedFieldTypes($fieldTypes)
     {
@@ -340,7 +338,7 @@ trait Fields
      * Get a namespaced version of the field type name.
      * Appends the 'view_namespace' attribute of the field to the `type', using dot notation.
      *
-     * @param  mixed $field
+     * @param  mixed  $field
      * @return string Namespaced version of the field type name. Ex: 'text', 'custom.view.path.text'
      */
     public function getFieldTypeWithNamespace($field)
@@ -360,8 +358,8 @@ trait Fields
     /**
      * Add a new field type to the loadedFieldTypes array.
      *
-     * @param string $field Field array
-     * @return  bool Successful operation true/false.
+     * @param  string  $field  Field array
+     * @return bool Successful operation true/false.
      */
     public function addLoadedFieldType($field)
     {
@@ -382,8 +380,8 @@ trait Fields
      * Alias of the addLoadedFieldType() method.
      * Adds a new field type to the loadedFieldTypes array.
      *
-     * @param string $field Field array
-     * @return  bool Successful operation true/false.
+     * @param  string  $field  Field array
+     * @return bool Successful operation true/false.
      */
     public function markFieldTypeAsLoaded($field)
     {
@@ -393,8 +391,8 @@ trait Fields
     /**
      * Check if a field type's reasources (CSS and JS) have already been loaded.
      *
-     * @param string $field Field array
-     * @return  bool Whether the field type has been marked as loaded.
+     * @param  string  $field  Field array
+     * @return bool Whether the field type has been marked as loaded.
      */
     public function fieldTypeLoaded($field)
     {
@@ -404,8 +402,8 @@ trait Fields
     /**
      * Check if a field type's reasources (CSS and JS) have NOT been loaded.
      *
-     * @param string $field Field array
-     * @return  bool Whether the field type has NOT been marked as loaded.
+     * @param  string  $field  Field array
+     * @return bool Whether the field type has NOT been marked as loaded.
      */
     public function fieldTypeNotLoaded($field)
     {
@@ -446,8 +444,8 @@ trait Fields
     /**
      * Check if a field exists, by any given attribute.
      *
-     * @param  string  $attribute   Attribute name on that field definition array.
-     * @param  string  $value       Value of that attribute on that field definition array.
+     * @param  string  $attribute  Attribute name on that field definition array.
+     * @param  string  $value  Value of that attribute on that field definition array.
      * @return bool
      */
     public function hasFieldWhere($attribute, $value)
@@ -462,8 +460,8 @@ trait Fields
     /**
      * Get the first field where a given attribute has the given value.
      *
-     * @param  string  $attribute   Attribute name on that field definition array.
-     * @param  string  $value       Value of that attribute on that field definition array.
+     * @param  string  $attribute  Attribute name on that field definition array.
+     * @param  string  $value  Value of that attribute on that field definition array.
      * @return bool
      */
     public function firstFieldWhere($attribute, $value)
@@ -481,10 +479,10 @@ trait Fields
      * - CRUD::addField(['name' => 'price', 'type' => 'number']);
      * - CRUD::field('price')->type('number');
      *
-     * And if the developer uses the CrudField object as Field in his CrudController:
+     * And if the developer uses the CrudField object as Field in their CrudController:
      * - Field::name('price')->type('number');
      *
-     * @param  string $name The name of the column in the db, or model attribute.
+     * @param  string  $name  The name of the column in the db, or model attribute.
      * @return CrudField
      */
     public function field($name)
