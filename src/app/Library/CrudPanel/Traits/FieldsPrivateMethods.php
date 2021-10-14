@@ -7,10 +7,9 @@ trait FieldsPrivateMethods
     /**
      * Move the most recently added field before or after the given target field. Default is before.
      *
-     * @param array  $fields          The form fields.
-     * @param string $targetFieldName The target field name.
-     * @param bool   $before          If true, the field will be moved before the target field, otherwise it will be moved after it.
-     *
+     * @param  array  $fields  The form fields.
+     * @param  string  $targetFieldName  The target field name.
+     * @param  bool  $before  If true, the field will be moved before the target field, otherwise it will be moved after it.
      * @return array
      */
     private function moveField($fields, $targetFieldName, $before = true)
@@ -37,9 +36,8 @@ trait FieldsPrivateMethods
     /**
      * Apply the given order to the fields and return the new array.
      *
-     * @param array $fields The fields array.
-     * @param array $order  The desired field order array.
-     *
+     * @param  array  $fields  The fields array.
+     * @param  array  $order  The desired field order array.
      * @return array The ordered fields array.
      */
     private function applyOrderToFields($fields, $order)
@@ -63,7 +61,7 @@ trait FieldsPrivateMethods
     /**
      * Apply the given callback to the form fields.
      *
-     * @param callable $callback The callback function to run for the given form fields.
+     * @param  callable  $callback  The callback function to run for the given form fields.
      */
     private function transformFields(callable $callback)
     {

@@ -18,7 +18,7 @@
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
 
-    if ($current_value != false) {
+    if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
@@ -155,12 +155,13 @@
             $item = true;
         }
         var selectedOptions = [];
-        var $currentValue = $item ? $value : '';
+        var $currentValue = $item ? $value : {};
 
-        for (const [key, value] of Object.entries($currentValue)) {
-            selectedOptions.push(key);
+        //we reselect the previously selected options if any.
+        Object.entries($currentValue).forEach(function(option) {
+            selectedOptions.push(option[0]);
             $(element).val(selectedOptions);
-        }
+        });
 
         if (!$allows_null && $item === false) {
             element.find('option:eq(0)').prop('selected', true);
