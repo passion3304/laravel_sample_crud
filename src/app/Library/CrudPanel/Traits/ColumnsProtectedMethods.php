@@ -150,9 +150,9 @@ trait ColumnsProtectedMethods
 
                 // if it has parameters it's not a relation method.
                 $column['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $column['name'];
-            if (method_exists($model, $possibleMethodName)) {
-                $parts = explode('.', $column['name']);
-                $relation = $column['name'];
+            
+                $parts = explode('.', $column['entity']);
+
                 $attribute_in_relation = false;
 
                 // here we are going to iterate through all relation parts to check
@@ -161,15 +161,9 @@ trait ColumnsProtectedMethods
                     try {
                         $model = $model->$part()->getRelated();
                     } catch (\Exception $e) {
-                        $relation = join('.', array_slice($parts, 0, $i));
                         $attribute_in_relation = true;
                     }
                 }
-
-                if (! isset($column['type'])) {
-                    $column['name'] = $column['entity'] = $relation;
-                }
-
                 // if the user setup the attribute in relation string, we are not going to infer that attribute from model
                 // instead we get the defined attribute by the user.
                 if ($attribute_in_relation) {

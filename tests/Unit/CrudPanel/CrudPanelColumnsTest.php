@@ -130,7 +130,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'relation_type' => 'HasOne',
         ],
         'accountDetails__nickname' => [
-            'name'        => 'accountDetails',
+            'name'        => 'accountDetails.nickname',
             'label'       => 'AccountDetails.nickname',
             'type'        => 'relationship',
             'key'         => 'accountDetails__nickname',
@@ -140,7 +140,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'orderable'   => false,
             'searchLogic' => false,
             'relation_type' => 'HasOne',
-            'entity' => 'accountDetails',
+            'entity' => 'accountDetails.nickname',
             'model' => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
         ],
         'accountDetails__user' => [
