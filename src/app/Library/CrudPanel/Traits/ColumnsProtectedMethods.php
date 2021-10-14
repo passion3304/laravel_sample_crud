@@ -150,7 +150,7 @@ trait ColumnsProtectedMethods
 
                 // if it has parameters it's not a relation method.
                 $column['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $column['name'];
-            
+
                 $parts = explode('.', $column['entity']);
 
                 $attribute_in_relation = false;
