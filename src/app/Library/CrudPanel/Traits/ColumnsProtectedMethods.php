@@ -142,7 +142,7 @@ trait ColumnsProtectedMethods
         // if the name is dot notation it might be a relationship
         if (strpos($column['name'], '.') !== false) {
             $possibleMethodName = Str::before($column['name'], '.');
-            
+
             // if the first part of the string exists as method,
             // it is a relationship
             if (method_exists($this->model, $possibleMethodName)) {
