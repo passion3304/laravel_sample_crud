@@ -49,6 +49,14 @@
       document.querySelectorAll('.sidebar-toggler').forEach(function(toggler) {
         toggler.addEventListener('click', function() {
           sessionStorage.setItem('sidebar-collapsed', Number(!document.body.classList.contains(sidebarClass)))
+          // wait for the sidebar animation to end (250ms) and then update the table headers because datatables uses a cached version
+          // and dont update this values if there are dom changes after the table is draw. The sidebar toggling makes
+          // the table change width, so the headers need to be adjusted accordingly.
+          setTimeout(function() {
+            if(typeof crud !== "undefined" && crud.table) {
+              crud.table.fixedHeader.adjust();
+            }
+          }, 300);
         })
       });
       // Set active state on menu element
