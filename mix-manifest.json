@@ -13,6 +13,7 @@
     "/src/public/packages/source-sans-pro/source-sans-pro.css": "/src/public/packages/source-sans-pro/source-sans-pro.css",
     "/src/public/packages/source-sans-pro/source-sans-variable.css": "/src/public/packages/source-sans-pro/source-sans-variable.css",
     "/src/public/packages/animate.css/animate.min.css": "/src/public/packages/animate.css/animate.min.css",
+    "/src/public/packages/animate.css/animate.compat.css": "/src/public/packages/animate.css/animate.compat.css",
     "/src/public/packages/noty/noty.css": "/src/public/packages/noty/noty.css",
     "/src/public/packages/noty/noty.css.map": "/src/public/packages/noty/noty.css.map",
     "/src/public/packages/noty/noty.js": "/src/public/packages/noty/noty.js",
@@ -134,5 +135,6 @@
     "/src/public/packages/datatables.net-responsive/package.json": "/src/public/packages/datatables.net-responsive/package.json",
     "/src/public/packages/datatables.net-responsive-bs4/License.txt": "/src/public/packages/datatables.net-responsive-bs4/License.txt",
     "/src/public/packages/datatables.net-responsive-bs4/Readme.md": "/src/public/packages/datatables.net-responsive-bs4/Readme.md",
-    "/src/public/packages/datatables.net-responsive-bs4/package.json": "/src/public/packages/datatables.net-responsive-bs4/package.json"
+    "/src/public/packages/datatables.net-responsive-bs4/package.json": "/src/public/packages/datatables.net-responsive-bs4/package.json",
+    "/src/public/packages/URI.js/URI.min.js": "/src/public/packages/URI.js/URI.min.js"
 }
