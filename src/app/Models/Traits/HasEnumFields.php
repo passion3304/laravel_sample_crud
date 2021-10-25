@@ -24,7 +24,7 @@ trait HasEnumFields
         try {
             $type = DB::connection($connectionName)->select(DB::raw('SHOW COLUMNS FROM `'.$table_prefix.$instance->getTable().'` WHERE Field = "'.$field_name.'"'))[0]->Type;
         } catch (\Exception $e) {
-            abort(500, 'Enum field type is not supported - it only works on MySQL.');
+            abort(500, 'Enum field type is not supported - it only works on MySQL. Please use select_from_array instead.');
         }
 
         preg_match('/^enum\((.*)\)$/', $type, $matches);

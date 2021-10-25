@@ -12,7 +12,7 @@
     // and format it to JSON, so that select2 can parse it
     $current_value = old(square_brackets_to_dots($field['name'])) ?? old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
 
-    if ($current_value !== false) {
+    if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
@@ -104,11 +104,11 @@ if($activeInlineCreate) {
         @endif
 <select
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-original-name="{{ $field['name'] }}"
         style="width: 100%"
         data-force-select="{{ var_export($field['inline_create']['force_select']) }}"
         data-init-function="bpFieldInitFetchOrCreateElement"
-        data-is-inline="{{ $inlineCreate ?? 'false' }}"
         data-allows-null="{{var_export($field['allows_null'])}}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
@@ -504,7 +504,7 @@ function selectOption(element, option) {
 
 function bpFieldInitFetchOrCreateElement(element) {
     var form = element.closest('form');
-    var $inlineField = element.attr('data-is-inline');
+    var $isFieldInline = element.data('field-is-inline');
     var $ajax = element.attr('data-field-ajax') == 'true' ? true : false;
     var $placeholder = element.attr('data-placeholder');
     var $minimumInputLength = element.attr('data-minimum-input-length');
@@ -597,7 +597,7 @@ function bpFieldInitFetchOrCreateElement(element) {
     }
 
     //Checks if field is not beeing inserted in one inline create modal and setup buttons
-    if($inlineField == "false") {
+    if(!$isFieldInline) {
         setupInlineCreateButtons(element);
     }
 
@@ -610,6 +610,7 @@ function bpFieldInitFetchOrCreateElement(element) {
         allowClear: $allows_null,
         ajax: {
         url: $dataSource,
+        dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body,
         type: $method,
         dataType: 'json',
         delay: $ajaxDelay,

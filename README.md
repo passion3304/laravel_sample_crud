@@ -30,6 +30,7 @@
     <a href="https://backpackforlaravel.com/newsletter">Newsletter</a>
 </p>
 
+
 Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its features:
 
 - List operation
@@ -93,9 +94,9 @@ For tasks & details about how you can help our project, please see [CONTRIBUTING
 
 ## Security
 
-If you discover any security related issues, please email tabacitu@backpackforlaravel.com instead of using the issue tracker.
+If you discover any security related issues, please email hello@backpackforlaravel.com instead of using the issue tracker. Alternatively, please disclose the issue on [huntr.dev](https://huntr.dev/) to also get a small bounty ($25-40).
 
-It's _heavily_ recommended that you **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email about 3-4 emails per year. Sometimes less.
+> It's _heavily_ recommended that you **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email about 3-4 emails per year. Sometimes less.
 
 ## Credits
 
