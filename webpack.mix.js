@@ -27,6 +27,12 @@ mix.sass('src/resources/assets/scss/bundle.scss', 'src/public/packages/backpack/
       processCssUrls: false
     });
 
+// merge all needed CSS into a big bundle file (this time with a blue primary color)
+mix.sass('src/resources/assets/scss/blue-bundle.scss', 'src/public/packages/backpack/base/css/')
+	.options({
+      processCssUrls: false
+    });
+
 // copy the Backstrap CSS
 mix.copy('node_modules/@digitallyhappy/backstrap/dist/css', 'src/public/packages/@digitallyhappy/backstrap/css');
 

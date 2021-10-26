@@ -1,8 +1,11 @@
 {
     "/src/public/packages/backpack/base/js/bundle.js": "/src/public/packages/backpack/base/js/bundle.js",
+    "/src/public/packages/backpack/base/css/blue-bundle.css": "/src/public/packages/backpack/base/css/blue-bundle.css",
     "/src/public/packages/backpack/base/css/bundle.css": "/src/public/packages/backpack/base/css/bundle.css",
-    "/src/public/packages/@digitallyhappy/backstrap/css/overlay.css": "/src/public/packages/@digitallyhappy/backstrap/css/overlay.css",
-    "/src/public/packages/@digitallyhappy/backstrap/css/overlay.css.map": "/src/public/packages/@digitallyhappy/backstrap/css/overlay.css.map",
+    "/src/public/packages/@digitallyhappy/backstrap/css/blue.css": "/src/public/packages/@digitallyhappy/backstrap/css/blue.css",
+    "/src/public/packages/@digitallyhappy/backstrap/css/blue.css.map": "/src/public/packages/@digitallyhappy/backstrap/css/blue.css.map",
+    "/src/public/packages/@digitallyhappy/backstrap/css/blue.min.css": "/src/public/packages/@digitallyhappy/backstrap/css/blue.min.css",
+    "/src/public/packages/@digitallyhappy/backstrap/css/blue.min.css.map": "/src/public/packages/@digitallyhappy/backstrap/css/blue.min.css.map",
     "/src/public/packages/@digitallyhappy/backstrap/css/style.css": "/src/public/packages/@digitallyhappy/backstrap/css/style.css",
     "/src/public/packages/@digitallyhappy/backstrap/css/style.css.map": "/src/public/packages/@digitallyhappy/backstrap/css/style.css.map",
     "/src/public/packages/@digitallyhappy/backstrap/css/style.min.css": "/src/public/packages/@digitallyhappy/backstrap/css/style.min.css",
