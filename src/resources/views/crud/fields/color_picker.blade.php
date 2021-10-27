@@ -28,7 +28,8 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-		<link rel="stylesheet" href="{{ asset('packages/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}" />
+        @loadCssOnce('packages/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')
+		@loadOnce('bpFieldInitColorPickerElement-custom-style')
 		<style>
 			.input-group>.input-group-append>.input-group-text {
 				border: 1px solid rgba(0,40,100,.12);
@@ -39,6 +40,7 @@
 				box-shadow: 0 0 0 2px #e1dcfb;
 			}
 		</style>
+        @endLoadOnce
     @endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}

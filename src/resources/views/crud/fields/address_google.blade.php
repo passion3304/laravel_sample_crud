@@ -150,7 +150,7 @@
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete" async defer></script>
 
-    @endLoadOnce
+        @endLoadOnce
     @endpush
 
 {{-- End of Extra CSS and JS --}}
