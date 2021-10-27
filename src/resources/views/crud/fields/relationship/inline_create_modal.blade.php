@@ -1,6 +1,5 @@
 @php
-
-    $loadedAssets = json_decode($parentLoadedAssets, true);
+    $loadedAssets = json_decode($parentLoadedAssets ?? '[]', true);
 
     //mark parent crud assets as loaded.
     foreach($loadedAssets as $asset) {
