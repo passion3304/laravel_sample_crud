@@ -34,7 +34,7 @@
     "require": {
         "laravel/framework": "^8.0",
         "prologue/alerts": "^0.4.1",
-        "digitallyhappy/assets": "^0.0.2",
+        "digitallyhappy/assets": "^1.0.0",
         "creativeorange/gravatar": "~1.0",
         "composer/package-versions-deprecated": "^1.8",
         "doctrine/dbal": "^2.5|^3.0",
