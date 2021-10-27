@@ -18,7 +18,7 @@
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
 
-    if ($current_value != false) {
+    if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
@@ -59,6 +59,7 @@
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitRelationshipSelectElement"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
@@ -68,7 +69,7 @@
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
         data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
-        data-app-current-lang="{{ app()->getLocale() }}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -96,25 +97,33 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
+@if ($crud->fieldTypeNotLoaded($field))
+    @php
+        $crud->markFieldTypeAsLoaded($field);
+    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        <!-- relationship field type css -->
-        @loadCssOnce('packages/select2/dist/css/select2.min.css')
-        @loadCssOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
+    <!-- include select2 css-->
+    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <!-- relationship field type js -->
-        @loadJsOnce('packages/select2/dist/js/select2.full.min.js')
-        @if (app()->getLocale() !== 'en')
-            @loadJsOnce('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js')
-        @endif
+    <!-- include select2 js-->
+    <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
+    @if (app()->getLocale() !== 'en')
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
+    @endif
+    @endpush
 
-        <!-- include field specific select2 js-->
-        @loadOnce('bpFieldInitRelationshipSelectElement')
-    <script>
+
+
+<!-- include field specific select2 js-->
+@push('crud_fields_scripts')
+<script>
     // if nullable, make sure the Clear button uses the translated string
     document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
 
@@ -126,7 +135,7 @@
      * @param  node element The jQuery-wrapped "select" element.
      * @return void
      */
-     function bpFieldInitRelationshipSelectElement(element) {
+    function bpFieldInitRelationshipSelectElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
         var $modelKey = element.attr('data-model-local-key');
@@ -135,9 +144,10 @@
         var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
-        var $selectedOptions = JSON.parse(element.attr('data-selected-options') ?? null);
+        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
+        var $isFieldInline = element.data('field-is-inline');
 
         var $item = false;
 
@@ -147,12 +157,13 @@
             $item = true;
         }
         var selectedOptions = [];
-        var $currentValue = $item ? $value : '';
+        var $currentValue = $item ? $value : {};
 
-        for (const [key, value] of Object.entries($currentValue)) {
-            selectedOptions.push(key);
+        //we reselect the previously selected options if any.
+        Object.entries($currentValue).forEach(function(option) {
+            selectedOptions.push(option[0]);
             $(element).val(selectedOptions);
-        }
+        });
 
         if (!$allows_null && $item === false) {
             element.find('option:eq(0)').prop('selected', true);
@@ -166,39 +177,15 @@
                 multiple: $multiple,
                 placeholder: $placeholder,
                 allowClear: $allowClear,
+                dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
             };
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2($select2Settings);
-             // if any dependencies have been declared
-            // when one of those dependencies changes value
-            // reset the select2 value
-            for (var i=0; i < $dependencies.length; i++) {
-                $dependency = $dependencies[i];
-                $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
-                    element.val(null).trigger("change");
-                });
-
-            }
         }
     }
-
-    if (typeof processItemText !== 'function') {
-    function processItemText(item, $fieldAttribute, $appLang) {
-        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
-                        if(item[$fieldAttribute][$appLang] != 'undefined') {
-                            return item[$fieldAttribute][$appLang];
-                        }else{
-                            return item[$fieldAttribute][0];
-                        }
-                    }else{
-                        return item[$fieldAttribute];
-                    }
-        }
-    }
-        </script>
-    @endLoadOnce
-    @endpush
-
+</script>
+@endpush
+@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

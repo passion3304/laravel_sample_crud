@@ -1,13 +1,13 @@
 @php
 $multiple = Arr::get($field, 'multiple', true);
 $sortable = Arr::get($field, 'sortable', false);
-$value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+$value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? ($multiple ? [] : '');
 
 if (!$multiple && is_array($value)) {
     $value = Arr::first($value);
 }
 
-$field['wrapper'] = $field['wrapperAttributes'] ?? [];
+$field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
 $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitBrowseMultipleElement';
 $field['wrapper']['data-elfinder-trigger-url'] = $field['wrapper']['data-elfinder-trigger-url'] ?? url(config('elfinder.route.prefix').'/popup/'.$field['name'].'?multiple=1');
 
@@ -59,7 +59,7 @@ if($sortable){
                 <button type="button" class="browse remove btn btn-sm btn-light">
                     <i class="la la-trash"></i>
                 </button>
-                @if($sortable)
+                @if($sortable && $multiple)
                     <button type="button" class="browse move btn btn-sm btn-light"><span class="la la-sort"></span></button>
                 @endif
             </div>
@@ -71,24 +71,25 @@ if($sortable){
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
+@if ($crud->fieldTypeNotLoaded($field))
+    @php
+        $crud->markFieldTypeAsLoaded($field);
+    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    @loadCssOnce('packages/jquery-colorbox/example2/colorbox.css')
-    @loadOnce('BrowseMultipleCss')
+        <link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
         <style>
             #cboxContent, #cboxLoadedContent, .cboxIframe {
                 background: transparent;
             }
         </style>
-    @endLoadOnce
     @endpush
 
     @push('crud_fields_scripts')
 
-        @loadJsOnce('packages/jquery-ui-dist/jquery-ui.min.js')
-        @loadJsOnce('packages/jquery-colorbox/jquery.colorbox-min.js')
-        @loadOnce('bpFieldInitBrowseMultipleElement')
+        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
         <script>
             // this global variable is used to remember what input to update with the file path
             // because elfinder is actually loaded in an iframe by colorbox
@@ -157,7 +158,6 @@ if($sortable){
                     var $paths = element.find('input').not('[type=hidden]').map(function (idx, item) {
                         return $(item).val();
                     }).toArray();
-
                     // save the JSON inside the hidden input
                     $input.val(JSON.stringify($paths));
                 });
@@ -173,7 +173,6 @@ if($sortable){
                     // clear button
                     element.on('click', 'button.clear', function (event) {
                         event.preventDefault();
-
                         $('.input-group', $list).remove();
                         element.trigger('saveToJson');
                     });
@@ -206,8 +205,8 @@ if($sortable){
                 }
             }
         </script>
-        @endLoadOnce
     @endpush
+@endif
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

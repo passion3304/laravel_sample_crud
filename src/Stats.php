@@ -50,6 +50,7 @@ trait Stats
         $url = 'https://backpackforlaravel.com/api/stats';
         $method = 'PUT';
         $stats = [
+            'URL'                   => url('') ?? false,
             'HTTP_HOST'             => $_SERVER['HTTP_HOST'] ?? false,
             'APP_URL'               => $_SERVER['APP_URL'] ?? false,
             'APP_ENV'               => $this->app->environment() ?? false,
@@ -64,6 +65,7 @@ trait Stats
             'LARAVEL_VERSION'       => $this->app->version() ?? false,
             'BACKPACK_CRUD_VERSION' => \PackageVersions\Versions::getVersion('backpack/crud') ?? false,
             'BACKPACK_LICENSE'      => config('backpack.base.license_code') ?? false,
+            'BACKPACK_URL'          => backpack_url('') ?? false,
         ];
 
         // send this info to the main website to store it in the db
@@ -80,10 +82,9 @@ trait Stats
      * It spins up a separate process for this, and doesn't listen for a reponse,
      * so it has minimal to no impact on pageload.
      *
-     * @param string $method  HTTP Method to use for the request.
-     * @param string $url     URL to point the request at.
-     * @param array  $payload The data you want sent to the URL.
-     *
+     * @param  string  $method  HTTP Method to use for the request.
+     * @param  string  $url  URL to point the request at.
+     * @param  array  $payload  The data you want sent to the URL.
      * @return void
      */
     private function makeCurlRequest($method, $url, $payload)
@@ -105,10 +106,9 @@ trait Stats
      * geographic location this is usually slower than CURL. However,
      * unlike CURL, it works on most machines, so it's reliable.
      *
-     * @param string $method  HTTP Method to use for the request.
-     * @param string $url     URL to point the request at.
-     * @param array  $payload The data you want sent to the URL.
-     *
+     * @param  string  $method  HTTP Method to use for the request.
+     * @param  string  $url  URL to point the request at.
+     * @param  array  $payload  The data you want sent to the URL.
      * @return void
      */
     private function makeGuzzleRequest($method, $url, $payload)

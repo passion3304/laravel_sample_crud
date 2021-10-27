@@ -4,7 +4,6 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     <div class="input-group colorpicker-component">
-
         <input
         	type="text"
         	name="{{ $field['name'] }}"
@@ -12,9 +11,9 @@
             data-init-function="bpFieldInitColorPickerElement"
             @include('crud::fields.inc.attributes')
         	>
-        <div class="input-group-addon">
-            <i class="color-preview-{{ $field['name'] }}"></i>
-        </div>
+        <span class="input-group-append">
+            <span class="input-group-text colorpicker-input-addon"><i></i></span>
+        </span>
     </div>
 
     {{-- HINT --}}
@@ -27,10 +26,20 @@
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
 
-{{-- FIELD CSS - will be loaded in the after_styles section --}}
-@push('crud_fields_styles')
-    @loadCssOnce('packages/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')
-@endpush
+    {{-- FIELD CSS - will be loaded in the after_styles section --}}
+    @push('crud_fields_styles')
+		<link rel="stylesheet" href="{{ asset('packages/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}" />
+		<style>
+			.input-group>.input-group-append>.input-group-text {
+				border: 1px solid rgba(0,40,100,.12);
+			}
+			.input-group>.input-group-append>.input-group-text:focus {
+				outline: 0;
+				border-color: #9080f1;
+				box-shadow: 0 0 0 2px #e1dcfb;
+			}
+		</style>
+    @endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
@@ -38,7 +47,7 @@
     @loadOnce('bpFieldInitColorPickerElement')
     <script>
         function bpFieldInitColorPickerElement(element) {
-            // https://itsjaviaguilar.com/bootstrap-colorpicker/
+            // https://itsjavi.com/bootstrap-colorpicker/
             var config = jQuery.extend({}, {!! isset($field['color_picker_options']) ? json_encode($field['color_picker_options']) : '{}' !!});
             var picker = element.parents('.colorpicker-component').colorpicker(config);
 

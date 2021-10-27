@@ -1,7 +1,6 @@
 <!-- select2 -->
 @php
     $current_value = old($field['name']) ?? $field['value'] ?? $field['default'] ?? '';
-    $entity_model = $crud->model;
 
     //if it's part of a relationship here we have the full related model, we want the key.
     if (is_object($current_value) && is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
@@ -12,6 +11,7 @@
     } else {
         $options = call_user_func($field['options'], $field['model']::query());
     }
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -22,11 +22,13 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-init-function="bpFieldInitSelect2Element"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
         >
 
-        @if ($entity_model::isColumnNullable($field['name']))
+        @if ($field['allows_null'])
             <option value="">-</option>
         @endif
 
@@ -49,34 +51,42 @@
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
+{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
+@if ($crud->fieldTypeNotLoaded($field))
+    @php
+        $crud->markFieldTypeAsLoaded($field);
+    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        <!-- select2 field type css -->
-        @loadCssOnce('packages/select2/dist/css/select2.min.css')
-        @loadCssOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
+        <!-- include select2 css-->
+        <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <!-- select2 field type js -->
-        @loadJsOnce('packages/select2/dist/js/select2.full.min.js')
+        <!-- include select2 js-->
+        <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
         @if (app()->getLocale() !== 'en')
-            @loadJsOnce('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js')
+        <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
         @endif
-        @loadOnce('bpFieldInitSelect2Element')
-            <script>
-                function bpFieldInitSelect2Element(element) {
-                    // element will be a jQuery wrapped DOM node
-                    if (!element.hasClass("select2-hidden-accessible")) {
-                        element.select2({
-                            theme: "bootstrap"
-                        });
-                    }
+        <script>
+            function bpFieldInitSelect2Element(element) {
+                // element will be a jQuery wrapped DOM node
+                if (!element.hasClass("select2-hidden-accessible")) 
+                {
+                    let $isFieldInline = element.data('field-is-inline');
+                    
+                    element.select2({
+                        theme: "bootstrap",
+                        dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
+                    });
                 }
-            </script>
-        @endLoadOnce
+            }
+        </script>
     @endpush
 
+@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

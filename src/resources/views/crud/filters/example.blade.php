@@ -1,7 +1,7 @@
 {{-- Example Backpack CRUD filter --}}
-
 <li filter-name="{{ $filter->name }}"
-	filter-type="{{ $filter->type }}"
+    filter-type="{{ $filter->type }}"
+    filter-key="{{ $filter->key }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu padding-10">
@@ -64,18 +64,18 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
-					$("li[filter-name={{ $filter->name }}]").removeClass('active').addClass('active');
+					$("li[filter-key={{ $filter->key }}]").removeClass('active').addClass('active');
 				}
 				else
 				{
-					$("li[filter-name={{ $filter->name }}]").trigger("filter:clear");
+					$("li[filter-key={{ $filter->key }}]").trigger("filter:clear");
 				}
 			});
 
 			// clear filter event (used here and by the Remove all filters button)
-			$("li[filter-name={{ $filter->name }}]").on('filter:clear', function(e) {
+			$("li[filter-key={{ $filter->key }}]").on('filter:clear', function(e) {
 				// console.log('dropdown filter cleared');
-				$("li[filter-name={{ $filter->name }}]").removeClass('active');
+				$("li[filter-key={{ $filter->key }}]").removeClass('active');
 			});
 		});
 	</script>

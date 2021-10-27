@@ -3,13 +3,16 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\ColumnType;
-use Doctrine\DBAL\DBALException;
+use Exception;
 
 class MyColumnTypeWithOtherConnection extends ColumnType
 {
     protected $connection = 'testing_2';
 }
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Autoset
+ */
 class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
 {
     private $expectedUnknownFieldType = 'text';
@@ -829,8 +832,8 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
 
         try {
             $new_model_db_platform->getDoctrineTypeMapping('enum');
-        } catch (DBALException $e) {
-            $this->assertInstanceOf(DBALException::class, $e);
+        } catch (Exception $e) {
+            $this->assertInstanceOf(Exception::class, $e);
         }
         $this->crudPanel->setDoctrineTypesMapping();
 

@@ -48,7 +48,7 @@ return [
     'password_empty'         => 'Make sure both password fields are filled out.',
     'password_updated'       => 'Password updated.',
     'account_updated'        => 'Account updated successfully.',
-    'unknown_error'          => 'An unknown error has occured. Please try again.',
+    'unknown_error'          => 'An unknown error has occurred. Please try again.',
     'error_saving'           => 'Error while saving. Please try again.',
     'welcome'                => 'Welcome!',
     'use_sidebar'            => 'Use the sidebar to the left to create, edit or delete content.',
@@ -66,5 +66,7 @@ return [
     'confirm_email'        => 'Confirm Email',
     'choose_new_password'  => 'Choose New Password',
     'confirm_new_password' => 'Confirm new password',
+    'throttled'            => 'You have already requested a password reset recently. Please check your email. If you do not receive our email, please retry later.',
+    'throttled_request'    => 'You have exceeded the limit of tries. Please wait a few minutes and try again.',
 
 ];

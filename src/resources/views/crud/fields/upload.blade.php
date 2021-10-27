@@ -1,11 +1,7 @@
 @php
-   if (!isset($field['wrapper']) || !isset($field['wrapper']['data-init-function'])){
-        $field['wrapper']['data-init-function'] = 'bpFieldInitUploadElement';
-    }
-
-    if (!isset($field['wrapper']) || !isset($field['wrapper']['data-field-name'])) {
-        $field['wrapper']['data-field-name'] = $field['name'];
-    }
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
+    $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitUploadElement';
+    $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
 @endphp
 
 <!-- text input -->
