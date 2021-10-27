@@ -14,7 +14,7 @@ class AssetManager
     /**
      * Adds the asset to the current loaded assets.
      *
-     * @param string $asset
+     * @param  string  $asset
      * @return void
      */
     public function markAssetAsLoaded($asset)
@@ -27,7 +27,7 @@ class AssetManager
     /**
      * Checks if the asset is already on loaded asset list.
      *
-     * @param string $asset
+     * @param  string  $asset
      * @return bool
      */
     public function isAssetLoaded($asset)
@@ -52,7 +52,7 @@ class AssetManager
     /**
      * Echoes the link to load the js file.
      *
-     * @param string $path
+     * @param  string  $path
      * @return string
      */
     public function echoJsFileLink($path)
@@ -63,7 +63,7 @@ class AssetManager
     /**
      * Echoes the link to load the css file.
      *
-     * @param string $path
+     * @param  string  $path
      * @return string
      */
     public function echoCssFileLink($path)
