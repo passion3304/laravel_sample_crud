@@ -47,10 +47,14 @@
                         $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
                         $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
                         $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
-                        $subfield['value'] = $row[$subfield['name']] ?? null;
-                        $subfield['attributes'] = ['data-repeatable-input-name' => $subfield['name']];
-                        $subfield['name'] = $field['name'].'['.$key.']['.$subfield['name'].']';
-                        
+                        if(!is_array($subfield['name'])) {
+                            if(isset($row[$subfield['name']])) {
+                                $subfield['value'] = $row[$subfield['name']];
+                            }
+                            $subfield['attributes']['data-repeatable-input-name'] = $subfield['name'];
+                        }else{
+                            $subfield['value'] = $row;
+                        }                       
                     @endphp
 
                     @include($fieldViewPath, ['field' => $subfield])
@@ -87,7 +91,6 @@
           $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
           $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
           $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
-          $subfield['attributes'] = ['data-repeatable-input-name' => $subfield['name']];
       @endphp
       @include($fieldViewPath, ['field' => $subfield])
     @endforeach
@@ -191,7 +194,7 @@
                 newRepeatableElement(container_holder, field_group_clone);
             });
 
-            var container_rows = $('.repeatable-element').length;
+            var container_rows = container_holder.children().length;
             var add_entry_button = element.parent().find('.add-repeatable-element-button');
             if(container_rows === 0) {
                 for(let i = 0; i < Math.min(init_rows, max_rows || init_rows); i++) {
@@ -209,6 +212,8 @@
             setupRepeatableReorderButtons(container_holder);
 
             updateRepeatableRowCount(container_holder);
+
+            updateRepeatableContainerNamesIndexes(container_holder)
 
             initializeFieldsWithJavascript(container_holder);
         }
@@ -343,8 +348,11 @@
                 var rowNumber = i+1;
                 $(el).attr('data-row-number', rowNumber);
                 //also attach the row number to all the input elements inside
-                $(el).find('input, select, textarea').each(function(i, el) {
-                    $(el).attr('data-row-number', rowNumber);
+                $(el).find('input, select, textarea').each(function(i, input) {
+                    // only add the row number to inputs that have name, so they are going to be submited in form
+                    if($(input).attr('name')) {
+                        $(input).attr('data-row-number', rowNumber);
+                    }
                 });
                 number_of_rows++;
             });
@@ -370,8 +378,15 @@
                 // updates the indexes in the array of repeatable inputs
                 $(repeatable).find('input, select, textarea').each(function(i, el) {
                     if(typeof $(el).attr('data-row-number') !== 'undefined') {
-                        let field_name = $(el).attr('data-repeatable-input-name') ?? $(el).parent().find('input[data-repeatable-input-name]').first().attr('data-repeatable-input-name');               
-                        $(el).attr('name', container.attr('data-repeatable-holder')+'['+index+']['+field_name+']');
+                        let field_name = $(el).attr('data-repeatable-input-name') ?? $(el).attr('name') ?? $(el).parent().find('input[data-repeatable-input-name]').first().attr('data-repeatable-input-name');
+                        let unprefixed_field_name = field_name.endsWith("[]") ? field_name.substring(0, field_name.length - 2) : field_name;
+                        
+                        if(typeof $(el).attr('data-repeatable-input-name') === 'undefined') {
+                            $(el).attr('data-repeatable-input-name', unprefixed_field_name);
+                        }
+        
+                        let prefix = field_name.endsWith("[]") ? '[]' : '';
+                        $(el).attr('name', container.attr('data-repeatable-holder')+'['+index+']['+unprefixed_field_name+']'+prefix);
                     }
                 });
             });
