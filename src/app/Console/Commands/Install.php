@@ -50,7 +50,9 @@ class Install extends Command
         ]);
 
         $this->line(" Creating users table (using Laravel's default migration)");
-        $this->executeArtisanProcess('migrate');
+        $this->executeArtisanProcess('migrate', [
+            '--no-interaction' => $this->option('no-interaction'),
+        ]);
 
         $this->line(" Creating App\Http\Middleware\CheckIfAdmin.php");
         $this->executeArtisanProcess('backpack:publish-middleware');
