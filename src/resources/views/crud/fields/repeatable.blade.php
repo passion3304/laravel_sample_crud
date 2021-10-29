@@ -51,8 +51,8 @@
                             if(isset($row[$subfield['name']])) {
                                 $subfield['value'] = $row[$subfield['name']];
                             }
-                            $subfield['attributes']['data-repeatable-input-name'] = $subfield['name'];
                         }else{
+                            
                             $subfield['value'] = $row;
                         }                       
                     @endphp
@@ -380,9 +380,8 @@
                     if(typeof $(el).attr('data-row-number') !== 'undefined') {
                         let field_name = $(el).attr('data-repeatable-input-name') ?? $(el).attr('name') ?? $(el).parent().find('input[data-repeatable-input-name]').first().attr('data-repeatable-input-name');
                         let unprefixed_field_name = field_name.endsWith("[]") ? field_name.substring(0, field_name.length - 2) : field_name;
-                        
                         if(typeof $(el).attr('data-repeatable-input-name') === 'undefined') {
-                            $(el).attr('data-repeatable-input-name', unprefixed_field_name);
+                            $(el).attr('data-repeatable-input-name', field_name);
                         }
         
                         let prefix = field_name.endsWith("[]") ? '[]' : '';

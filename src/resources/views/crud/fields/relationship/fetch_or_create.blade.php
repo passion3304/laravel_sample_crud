@@ -42,7 +42,6 @@
                 break;
         }
     }
-    $field['value'] = json_encode($current_value);
 
 
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
@@ -103,7 +102,7 @@ if($activeInlineCreate) {
             @include('crud::fields.relationship.inline_create_button', ['field' => $field])
         @endif
 <select
-        name="{{ $field['name'].($field['multiple']?'[]':'') }}"
+        name="{{ $field['name'].($field['multiple'] ? '[]' : '') }}"
         data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-original-name="{{ $field['name'] }}"
         style="width: 100%"
@@ -119,7 +118,6 @@ if($activeInlineCreate) {
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
-        data-current-value="{{ $field['value'] }}"
         data-field-ajax="{{var_export($field['ajax'])}}"
         data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
@@ -137,6 +135,14 @@ if($activeInlineCreate) {
         multiple
         @endif
         >
+
+        @if (!empty($current_value))
+            @foreach ($current_value as $key => $item)
+                <option value="{{ $key }}" selected>
+                    {{ $item }}
+                </option>
+            @endforeach
+        @endif
 
 </select>
  {{-- HINT --}}
@@ -516,7 +522,6 @@ function bpFieldInitFetchOrCreateElement(element) {
     var $dependencies = JSON.parse(element.attr('data-dependencies'));
     var $modelKey = element.attr('data-model-local-key');
     var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
-    var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
     var $multiple = element.prop('multiple');
     var $ajaxDelay = element.attr('data-ajax-delay');
 
@@ -541,59 +546,6 @@ function bpFieldInitFetchOrCreateElement(element) {
 
     if($allows_null && !$multiple) {
         $(element).append('<option value="">'+$placeholder+'</option>');
-    }
-
-    if (typeof $selectedOptions !== typeof undefined &&
-        $selectedOptions !== false &&
-            $selectedOptions != '' &&
-            $selectedOptions != null &&
-            $selectedOptions != [])
-    {
-        var optionsForSelect = [];
-
-        FetchOrCreateAjaxFetchSelectedEntry(element).then(function(result) {
-            result.forEach(function(item) {
-                $itemText = processItemText(item, $fieldAttribute);
-                $itemValue = item[$connectedEntityKeyName];
-                //add current key to be selected later.
-                optionsForSelect.push($itemValue);
-
-                //create the option in the select
-                $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
-            });
-
-            // set the option keys as selected.
-            $(element).val(optionsForSelect);
-            $(element).trigger('change');
-        });
-    }
-
-    var $item = false;
-
-    var $value = JSON.parse(element.attr('data-current-value'))
-
-    if(Object.keys($value).length > 0) {
-        $item = true;
-    }
-
-    var selectedOptions = [];
-    var $currentValue = $item ? $value : {};
-    //we reselect the previously selected options if any.
-    Object.entries($currentValue).forEach(function(option) {
-        selectedOptions.push(option[0]);
-        var $option = new Option(option[1], option[0]);
-        $(element).append($option);
-    });
-
-    $(element).val(selectedOptions);
-
-    //null is not allowed we fetch some default entry
-    if(!$allows_null && !$item && $selectedOptions == null) {
-        fetchDefaultEntry(element).then(function(result) {
-            $(element).append('<option value="'+result[$modelKey]+'">'+result[$fieldAttribute]+'</option>');
-            $(element).val(result[$modelKey]);
-            $(element).trigger('change');
-        });
     }
 
     //Checks if field is not beeing inserted in one inline create modal and setup buttons

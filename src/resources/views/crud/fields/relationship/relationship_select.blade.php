@@ -149,29 +149,6 @@
         var $allowClear = $allows_null;
         var $isFieldInline = element.data('field-is-inline');
 
-        var $item = false;
-
-        var $value = JSON.parse(element.attr('data-current-value'))
-
-        if(Object.keys($value).length > 0) {
-            $item = true;
-        }
-        var selectedOptions = [];
-        var $currentValue = $item ? $value : {};
-
-        //we reselect the previously selected options if any.
-        Object.entries($currentValue).forEach(function(option) {
-            selectedOptions.push(option[0]);
-            $(element).val(selectedOptions);
-        });
-
-        if (!$allows_null && $item === false) {
-            element.find('option:eq(0)').prop('selected', true);
-        }
-
-        $(element).attr('data-current-value',$(element).val());
-        $(element).trigger('change');
-
         var $select2Settings = {
                 theme: 'bootstrap',
                 multiple: $multiple,

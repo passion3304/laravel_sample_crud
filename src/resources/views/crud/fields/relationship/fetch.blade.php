@@ -55,7 +55,6 @@
                 break;
         }
     }
-    $field['value'] = json_encode($current_value);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -76,7 +75,6 @@
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
-        data-current-value="{{ $field['value'] }}"
         data-app-current-lang="{{ app()->getLocale() }}"
         data-ajax-delay="{{ $field['delay'] }}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
@@ -87,6 +85,14 @@
         multiple
         @endif
         >
+
+        @if (!empty($current_value))
+            @foreach ($current_value as $key => $item)
+                <option value="{{ $key }}" selected>
+                    {{ $item }}
+                </option>
+            @endforeach
+        @endif
     </select>
 
     {{-- HINT --}}
@@ -191,7 +197,6 @@
         var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $allows_null = element.attr('data-column-nullable') == 'true' ? true : false;
-        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $multiple = element.prop('multiple');
         var $ajaxDelay = element.attr('data-ajax-delay');
         var $isFieldInline = element.data('field-is-inline');
@@ -217,67 +222,7 @@
 
         if($allows_null && !$multiple) {
             $(element).append('<option value="">'+$placeholder+'</option>');
-        }
-
-
-        if (typeof $selectedOptions !== typeof undefined &&
-            $selectedOptions !== false &&
-            $selectedOptions != '' &&
-            $selectedOptions != null &&
-            $selectedOptions != [])
-        {
-            var optionsForSelect = [];
-            FetchAjaxFetchSelectedEntry(element).then(function(result) {
-                result.forEach(function(item) {
-                    $itemText = processItemText(item, $fieldAttribute);
-                    $itemValue = item[$connectedEntityKeyName];
-                    //add current key to be selected later.
-                    optionsForSelect.push($itemValue);
-
-                    //create the option in the select
-                    $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
-                });
-
-                // set the option keys as selected.
-                $(element).val(optionsForSelect);
-                $(element).trigger('change');
-            });
-        }
-
-        var $item = false;
-
-        var $value = JSON.parse(element.attr('data-current-value'))
-
-        if(Object.keys($value).length > 0) {
-            $item = true;
-        }
-
-        var $currentValue = $item ? $value : '';
-
-        //we reselect the previously selected options if any.
-        var selectedOptions = [];
-
-        var $currentValue = $item ? $value : {};
-
-        //we reselect the previously selected options if any.
-        Object.entries($currentValue).forEach(function(option) {
-            selectedOptions.push(option[0]);
-            var $option = new Option(option[1], option[0]);
-            $(element).append($option);
-        });
-
-        $(element).val(selectedOptions);
-
-
-        if (!$allows_null && $item === false && $selectedOptions == null) {
-            fetchDefaultEntry(element).then(function(result) {
-                var $item = JSON.parse(element.attr('data-current-value'));
-                $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
-                $(element).val($item[$modelKey]);
-                $(element).trigger('change');
-            });
-        }
-
+        }  
 
         var $select2Settings = {
                 theme: 'bootstrap',
