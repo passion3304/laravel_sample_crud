@@ -133,49 +133,6 @@
 <script>
     // if nullable, make sure the Clear button uses the translated string
     document.styleSheets[0].addRule('.select2-selection__clear::after','content:  "{{ trans('backpack::crud.clear') }}";');
-
-    // if this function is not already on page, for example in fetch_create we add it.
-    // this function is responsible for query the ajax endpoint and fetch a default entry
-    // in case the field does not allow null
-    if (!window.fetchDefaultEntry) {
-        var fetchDefaultEntry = function (element) {
-            var $fetchUrl = element.attr('data-data-source');
-            var $relatedAttribute = element.attr('data-field-attribute');
-            var $relatedKeyName = element.attr('data-connected-entity-key-name');
-            var $return = {};
-
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: $fetchUrl,
-                    data: {
-                        'q': ''
-                    },
-                    type: 'POST',
-                    success: function (result) {
-                        // if data is available here it means a paginated collection has been returned.
-                // we want only the first to be default.
-                if (typeof result.data !== "undefined"){
-                    $key = result.data[0][$relatedKeyName];
-                    $value = processItemText(result.data[0], $relatedAttribute);
-                }else{
-                    $key = result[0][$relatedKeyName];
-                    $value = processItemText(result[0], $relatedAttribute);
-                }
-
-                $return[$relatedKeyName] = $key;
-                $return[$relatedAttribute] = $value;
-
-                $(element).attr('data-current-value', JSON.stringify($return));
-                resolve($return);
-                    },
-                    error: function (result) {
-                        reject(result);
-                    }
-                });
-            });
-        };
-    }
-
     /**
      * Initialize Select2 on an element that wants the "Fetch" functionality.
      * This method gets called automatically by Backpack:
@@ -200,25 +157,6 @@
         var $multiple = element.prop('multiple');
         var $ajaxDelay = element.attr('data-ajax-delay');
         var $isFieldInline = element.data('field-is-inline');
-
-        var FetchAjaxFetchSelectedEntry = function (element) {
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: $dataSource,
-                    data: {
-                        'keys': $selectedOptions
-                    },
-                    type: $method,
-                    success: function (result) {
-
-                        resolve(result);
-                    },
-                    error: function (result) {
-                        reject(result);
-                    }
-                });
-            });
-        };
 
         if($allows_null && !$multiple) {
             $(element).append('<option value="">'+$placeholder+'</option>');

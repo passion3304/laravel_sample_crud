@@ -144,13 +144,13 @@ if($activeInlineCreate) {
             @endforeach
         @endif
 
-</select>
- {{-- HINT --}}
- @if (isset($field['hint']))
- <p class="help-block">{!! $field['hint'] !!}</p>
-@endif
+        </select>
+        {{-- HINT --}}
+        @if (isset($field['hint']))
+        <p class="help-block">{!! $field['hint'] !!}</p>
+        @endif
 
-@include('crud::fields.inc.wrapper_end')
+        @include('crud::fields.inc.wrapper_end')
 
         @if ($crud->fieldTypeNotLoaded($field))
         @php
