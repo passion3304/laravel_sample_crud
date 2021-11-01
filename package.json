@@ -12,7 +12,7 @@
     "devDependencies": {
         "cross-env": "^7.0.3",
         "css-loader": "^5.2.6",
-        "laravel-mix": "^6.0.31",
+        "laravel-mix": "^6.0.37",
         "lodash": "^4.17.21",
         "pace": "0.0.4",
         "resolve-url-loader": "^4.0.0",
