@@ -79,7 +79,7 @@ trait ShowOperation
 
         // set columns from db
         if ($setFromDb) {
-            $this->crud->setFromDb();
+            $this->crud->setFromDb(false, true);
         }
 
         // cycle through columns

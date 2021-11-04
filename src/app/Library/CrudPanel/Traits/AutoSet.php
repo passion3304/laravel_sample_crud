@@ -10,29 +10,27 @@ trait AutoSet
      *
      * @return void
      */
-    public function setFromDb()
+    public function setFromDb($setFields = true, $setColumns = true)
     {
         if ($this->driverIsSql()) {
             $this->getDbColumnTypes();
         }
 
-        array_map(function ($field) {
-            $new_field = [
-                'name'       => $field,
-                'label'      => $this->makeLabel($field),
-                'value'      => null,
-                'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
-                'type'       => $this->inferFieldTypeFromDbColumnType($field),
-                'values'     => [],
-                'attributes' => [],
-                'autoset'    => true,
-            ];
-
-            if (! isset($this->fields()[$field])) {
-                $this->addField($new_field);
+        array_map(function ($field) use ($setFields, $setColumns) {
+            if ($setFields && ! isset($this->fields()[$field])) {
+                $this->addField([
+                    'name'       => $field,
+                    'label'      => $this->makeLabel($field),
+                    'value'      => null,
+                    'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
+                    'type'       => $this->inferFieldTypeFromDbColumnType($field),
+                    'values'     => [],
+                    'attributes' => [],
+                    'autoset'    => true,
+                ]);
             }
 
-            if (! in_array($field, $this->model->getHidden()) && ! isset($this->columns()[$field])) {
+            if ($setColumns && ! in_array($field, $this->model->getHidden()) && ! isset($this->columns()[$field])) {
                 $this->addColumn([
                     'name'    => $field,
                     'label'   => $this->makeLabel($field),
