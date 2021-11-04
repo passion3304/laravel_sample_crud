@@ -4,6 +4,9 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\User;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Columns
+ */
 class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 {
     private $oneColumnArray = [
@@ -132,6 +135,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'type'        => 'relationship',
             'key'         => 'accountDetails__nickname',
             'priority'    => 1,
+            'attribute' => 'nickname',
             'tableColumn' => false,
             'orderable'   => false,
             'searchLogic' => false,

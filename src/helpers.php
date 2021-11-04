@@ -6,7 +6,6 @@ if (! function_exists('backpack_url')) {
      * the URL using the standard Laravel helpers.
      *
      * @param $path
-     *
      * @return string
      */
     function backpack_url($path = null, $parameters = [], $secure = null)
@@ -93,18 +92,17 @@ if (! function_exists('backpack_avatar_url')) {
      * Returns the avatar URL of a user.
      *
      * @param $user
-     *
      * @return string
      */
     function backpack_avatar_url($user)
     {
         $firstLetter = $user->getAttribute('name') ? mb_substr($user->name, 0, 1, 'UTF-8') : 'A';
-        $placeholder = 'https://placehold.it/160x160/00a65a/ffffff/&text='.$firstLetter;
+        $placeholder = 'https://via.placeholder.com/160x160/00a65a/ffffff/&text='.$firstLetter;
 
         switch (config('backpack.base.avatar_type')) {
             case 'gravatar':
                 if (backpack_users_have_email()) {
-                    return Gravatar::fallback('https://placehold.it/160x160/00a65a/ffffff/&text='.$firstLetter)->get($user->email);
+                    return Gravatar::fallback('https://via.placeholder.com/160x160/00a65a/ffffff/&text='.$firstLetter)->get($user->email);
                 } else {
                     return $placeholder;
                 }
@@ -127,7 +125,6 @@ if (! function_exists('backpack_middleware')) {
      * That middleware checks if the visitor is an admin.
      *
      * @param $path
-     *
      * @return string
      */
     function backpack_middleware()
@@ -176,9 +173,8 @@ if (! function_exists('mb_ucfirst')) {
      * Capitalize the first letter of a string,
      * even if that string is multi-byte (non-latin alphabet).
      *
-     * @param string   $string   String to have its first letter capitalized.
-     * @param encoding $encoding Character encoding
-     *
+     * @param  string  $string  String to have its first letter capitalized.
+     * @param  encoding  $encoding  Character encoding
      * @return string String with first letter capitalized.
      */
     function mb_ucfirst($string, $encoding = false)
@@ -199,7 +195,6 @@ if (! function_exists('backpack_view')) {
      * If that view doesn't exist, it will load the one from the original theme.
      *
      * @param string (see config/backpack/base.php)
-     *
      * @return string
      */
     function backpack_view($view)
@@ -227,7 +222,6 @@ if (! function_exists('square_brackets_to_dots')) {
      * Ex: array[0][property] turns into array.0.property.
      *
      * @param $path
-     *
      * @return string
      */
     function square_brackets_to_dots($string)
@@ -245,7 +239,6 @@ if (! function_exists('is_countable')) {
      * This function may be removed in future if PHP >= 7.3 becomes a requirement.
      *
      * @param $obj
-     *
      * @return bool
      */
     function is_countable($obj)

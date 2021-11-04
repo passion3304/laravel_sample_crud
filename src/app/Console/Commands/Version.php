@@ -44,8 +44,7 @@ class Version extends Command
     /**
      * Run a shell command in a separate process.
      *
-     * @param string $command Text to be executed.
-     *
+     * @param  string  $command  Text to be executed.
      * @return void
      */
     private function runConsoleCommand($command)

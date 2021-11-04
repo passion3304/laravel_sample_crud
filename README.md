@@ -30,6 +30,7 @@
     <a href="https://backpackforlaravel.com/newsletter">Newsletter</a>
 </p>
 
+
 Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its features:
 
 - List operation
@@ -93,9 +94,9 @@ For tasks & details about how you can help our project, please see [CONTRIBUTING
 
 ## Security
 
-If you discover any security related issues, please email tabacitu@backpackforlaravel.com instead of using the issue tracker.
+If you discover any security related issues, please email hello@backpackforlaravel.com instead of using the issue tracker. Alternatively, please disclose the issue on [huntr.dev](https://huntr.dev/) to also get a small bounty ($25-40).
 
-It's _heavily_ recommended that you **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email about 3-4 emails per year. Sometimes less.
+> It's _heavily_ recommended that you **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email about 3-4 emails per year. Sometimes less.
 
 ## Credits
 
@@ -109,6 +110,7 @@ Special thanks go to:
 - [Łukasz Holeczek](https://coreui.io/) - creator of CoreUI (used in Backpack v4);
 - [Abdullah Almsaeed](https://adminlte.io/) - creator of AdminLTE (used in Backpack v3);
 - [John Skoumbourdis](http://www.grocerycrud.com/) - Grocery CRUD for CodeIgniter was a big inspiration for Backpack v1 & v2;
+- [Taylor Otwell](https://github.com/taylorotwell) & Laravel contributors (of course);
 
 ## License
 
@@ -132,6 +134,7 @@ When installing Backpack, require its minor version (currently ```4.1.*```). For
 We've spend more than 10.000 hours creating, polishing and maintaining administration panels on Laravel. We've developed e-Commerce, e-Learning, ERPs, social networks, payment gateways and much more. We've worked on admin panels _so much_, that we've created one of the most popular packages for Laravel - just from making public what was repetitive in our projects.
 
 If you are looking for a developer/team to help you build an admin panel on Laravel, look no further. You'll have a difficult time finding someone with more experience & enthusiasm for admin panels. This is _what we do_. [Contact us](https://backpackforlaravel.com/need-freelancer-or-development-team).
+
 
 
 [ico-version]: https://img.shields.io/packagist/v/dick/crud.svg?style=flat-square

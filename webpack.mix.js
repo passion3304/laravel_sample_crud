@@ -27,6 +27,12 @@ mix.sass('src/resources/assets/scss/bundle.scss', 'src/public/packages/backpack/
       processCssUrls: false
     });
 
+// merge all needed CSS into a big bundle file (this time with a blue primary color)
+mix.sass('src/resources/assets/scss/blue-bundle.scss', 'src/public/packages/backpack/base/css/')
+	.options({
+      processCssUrls: false
+    });
+
 // copy the Backstrap CSS
 mix.copy('node_modules/@digitallyhappy/backstrap/dist/css', 'src/public/packages/@digitallyhappy/backstrap/css');
 
@@ -49,7 +55,9 @@ mix.copy('node_modules/bootstrap-datepicker/dist', 'src/public/packages/bootstra
 	.copy('node_modules/pc-bootstrap4-datetimepicker/build', 'src/public/packages/pc-bootstrap4-datetimepicker/build')
 	.copy('node_modules/cropperjs/dist', 'src/public/packages/cropperjs/dist')
 	.copy('node_modules/jquery-cropper/dist', 'src/public/packages/jquery-cropper/dist')
-	.copy('node_modules/ckeditor', 'src/public/packages/ckeditor')
+	// note that we change the directory name here;
+	// see https://github.com/Laravel-Backpack/CRUD/issues/3883 for details
+	.copy('node_modules/ckeditor4', 'src/public/packages/ckeditor')
 	.copy('node_modules/bootstrap-colorpicker/dist', 'src/public/packages/bootstrap-colorpicker/dist')
 	.copy('node_modules/bootstrap-iconpicker/bootstrap-iconpicker', 'src/public/packages/bootstrap-iconpicker/bootstrap-iconpicker')
 	.copy('node_modules/bootstrap-iconpicker/icon-fonts', 'src/public/packages/bootstrap-iconpicker/icon-fonts')

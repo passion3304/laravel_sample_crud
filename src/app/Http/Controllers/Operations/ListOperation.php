@@ -9,9 +9,9 @@ trait ListOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param string $segment    Name of the current entity (singular). Used as first URL segment.
-     * @param string $routeName  Prefix of the route name.
-     * @param string $controller Name of the current CrudController.
+     * @param  string  $segment  Name of the current entity (singular). Used as first URL segment.
+     * @param  string  $routeName  Prefix of the route name.
+     * @param  string  $controller  Name of the current CrudController.
      */
     protected function setupListRoutes($segment, $routeName, $controller)
     {
@@ -99,7 +99,7 @@ trait ListOperation
                 $column_number = (int) $order['column'];
                 $column_direction = (strtolower((string) $order['dir']) == 'asc' ? 'ASC' : 'DESC');
                 $column = $this->crud->findColumnById($column_number);
-                if ($column['tableColumn']) {
+                if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
                     // apply the current orderBy rules
                     $this->crud->orderByWithPrefix($column['name'], $column_direction);
                 }

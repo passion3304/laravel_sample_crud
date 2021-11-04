@@ -26,7 +26,7 @@
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
     $current_value = oldValueDefaultOrFallback($field, '');
-    if ($current_value != false) {
+    if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
@@ -65,6 +65,7 @@
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitFetchElement"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
@@ -155,8 +156,8 @@
                     $value = processItemText(result[0], $relatedAttribute);
                 }
 
-                $pair = { [$relatedKeyName] : $key, [$relatedAttribute] : $value}
-                $return = {...$return, ...$pair};
+                $return[$relatedKeyName] = $key;
+                $return[$relatedAttribute] = $value;
 
                 $(element).attr('data-current-value', JSON.stringify($return));
                 resolve($return);
@@ -193,6 +194,7 @@
         var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $multiple = element.prop('multiple');
         var $ajaxDelay = element.attr('data-ajax-delay');
+        var $isFieldInline = element.data('field-is-inline');
 
         var FetchAjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
@@ -225,7 +227,7 @@
             $selectedOptions != [])
         {
             var optionsForSelect = [];
-            FetchAjaxFetchSelectedEntry(element).then(result => {
+            FetchAjaxFetchSelectedEntry(element).then(function(result) {
                 result.forEach(function(item) {
                     $itemText = processItemText(item, $fieldAttribute);
                     $itemValue = item[$connectedEntityKeyName];
@@ -255,17 +257,20 @@
         //we reselect the previously selected options if any.
         var selectedOptions = [];
 
-        for (const [key, value] of Object.entries($currentValue)) {
-            selectedOptions.push(key);
-            var $option = new Option(value, key);
+        var $currentValue = $item ? $value : {};
+
+        //we reselect the previously selected options if any.
+        Object.entries($currentValue).forEach(function(option) {
+            selectedOptions.push(option[0]);
+            var $option = new Option(option[1], option[0]);
             $(element).append($option);
-        }
+        });
 
         $(element).val(selectedOptions);
 
 
         if (!$allows_null && $item === false && $selectedOptions == null) {
-            fetchDefaultEntry(element).then(result => {
+            fetchDefaultEntry(element).then(function(result) {
                 var $item = JSON.parse(element.attr('data-current-value'));
                 $(element).append('<option value="'+$item[$modelKey]+'">'+$item[$fieldAttribute]+'</option>');
                 $(element).val($item[$modelKey]);
@@ -280,6 +285,7 @@
                 placeholder: $placeholder,
                 minimumInputLength: $minimumInputLength,
                 allowClear: $allows_null,
+                dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body,
                 ajax: {
                     url: $dataSource,
                     type: $method,
@@ -349,7 +355,7 @@
                 var $dependency = $dependencies[i];
                 //if element does not have a custom-selector attribute we use the name attribute
                 if(typeof element.attr('data-custom-selector') == 'undefined') {
-                    form.find(`[name="${$dependency}"], [name="${$dependency}[]"]`).change(function(el) {
+                    form.find('[name="'+$dependency+'"], [name="'+$dependency+'[]"]').change(function(el) {
                             $(element.find('option:not([value=""])')).remove();
                             element.val(null).trigger("change");
                     });
@@ -381,7 +387,7 @@
 
             // try to retreive the item in app language; then fallback language; then first entry; if nothing found empty translation string
             return typeof $itemField === 'object' && $itemField !== null
-                ? $itemField[$appLang] ?? $itemField[$appLangFallback] ?? Object.values($itemField)[0] ?? $emptyTranslation
+                ? $itemField[$appLang] ? $itemField[$appLang] : $itemField[$appLangFallback] ? $itemField[$appLangFallback] : Object.values($itemField)[0] ? Object.values($itemField)[0] : $emptyTranslation
                 : $itemField;
         }
     }

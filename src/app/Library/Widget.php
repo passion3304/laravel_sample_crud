@@ -23,8 +23,7 @@ class Widget extends Fluent
      * If a widget with the same name exists, it will update the attributes of that one
      * instead of creating a new one.
      *
-     * @param string|array $attributes Either the name of the widget, or an array with the attributes the new widget should hold, including the name attribute.
-     *
+     * @param  string|array  $attributes  Either the name of the widget, or an array with the attributes the new widget should hold, including the name attribute.
      * @return Widget
      */
     public static function add($attributes = null)
@@ -71,7 +70,7 @@ class Widget extends Fluent
     /**
      * Remove an attribute from the current definition array.
      *
-     * @param  string $attribute Name of the attribute to forget (ex: class)
+     * @param  string  $attribute  Name of the attribute to forget (ex: class)
      * @return Widget
      */
     public function forget($attribute)
@@ -247,9 +246,8 @@ class Widget extends Fluent
      *
      * Eg: class('something') will set the "class" attribute to "something"
      *
-     * @param  string $method     The method being called that doesn't exist.
-     * @param  array $parameters  The arguments when that method was called.
-     *
+     * @param  string  $method  The method being called that doesn't exist.
+     * @param  array  $parameters  The arguments when that method was called.
      * @return Widget
      */
     public function __call($method, $parameters)

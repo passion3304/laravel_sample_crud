@@ -23,8 +23,7 @@ trait HasTranslations
     /**
      * Use the forced locale if present.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return mixed
      */
     public function getAttributeValue($key)
@@ -67,8 +66,7 @@ trait HasTranslations
     /**
      * Create translated items as json.
      *
-     * @param array $attributes
-     *
+     * @param  array  $attributes
      * @return static
      */
     public static function create(array $attributes = [])
@@ -95,9 +93,8 @@ trait HasTranslations
     /**
      * Update translated items as json.
      *
-     * @param array $attributes
-     * @param array $options
-     *
+     * @param  array  $attributes
+     * @param  array  $options
      * @return bool
      */
     public function update(array $attributes = [], array $options = [])
@@ -177,9 +174,8 @@ trait HasTranslations
     /**
      * Magic method to get the db entries already translated in the wanted locale.
      *
-     * @param string $method
-     * @param array  $parameters
-     *
+     * @param  string  $method
+     * @param  array  $parameters
      * @return
      */
     public function __call($method, $parameters)
