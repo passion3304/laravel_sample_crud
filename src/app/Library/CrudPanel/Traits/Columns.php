@@ -360,10 +360,10 @@ trait Columns
     public function makeSureColumnHasNeededAttributes($column)
     {
         $column = $this->makeSureColumnHasName($column);
+        $column = $this->makeSureColumnHasKey($column);
         $column = $this->makeSureColumnHasLabel($column);
         $column = $this->makeSureColumnHasEntity($column);
         $column = $this->makeSureColumnHasType($column);
-        $column = $this->makeSureColumnHasKey($column);
         $column = $this->makeSureColumnHasPriority($column);
         $column = $this->makeSureColumnHasModel($column);
 
