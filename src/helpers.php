@@ -252,9 +252,8 @@ if (! function_exists('oldValueDefaultOrFallback')) {
      * This function allows us to setup a default value in case there is an old value, but is forcelly null
      * by Laravel middleware ConvertEmptyStringsToNull.
      *
-     * @param string $field_name
-     * @param mixed $fallback
-     *
+     * @param  string  $field_name
+     * @param  mixed  $fallback
      * @return mixed
      */
     function oldValueDefaultOrFallback($field, $fallback, $field_name = null, $default = null, $value = null)
