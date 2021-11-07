@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\app\Http\Controllers;
 
-use Facade\FlareClient\Flare;
-use Facade\Ignition\ErrorPage\ErrorPageHandler;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -53,13 +51,6 @@ class AdminController extends Controller
      */
     public function errorFrame(Request $request)
     {
-        $handler = app(ErrorPageHandler::class);
-        $client = app()->make(Flare::class);
-
-        $exception = new $request->exception($request->message, 0, 1, $request->file, $request->line);
-
-        $report = $client->createReport($exception);
-
-        $handler->handleReport($report);
+        return view(backpack_view('error_frame'), $request);
     }
 }

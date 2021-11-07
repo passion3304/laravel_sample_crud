@@ -51,6 +51,6 @@ function () {
         Route::post('change-password', 'MyAccountController@postChangePasswordForm')->name('backpack.account.password');
     }
 
-    // error
-    Route::get('/error-frame', 'AdminController@errorFrame')->name('backpack.error-frame');
+    // error frame for datatables
+    Route::post('/error-frame', 'AdminController@errorFrame')->name('backpack.error-frame');
 });
