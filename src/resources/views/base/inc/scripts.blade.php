@@ -64,6 +64,7 @@
     });
 
     {{-- Error frame --}}
+    @if(config('app.debug'))
     $(document).ajaxComplete(function(e, result) {
         if(result.responseJSON?.exception !== undefined) {
             $.ajax({
@@ -77,5 +78,6 @@
             });
         }
     });
+    @endif
 
 </script>
