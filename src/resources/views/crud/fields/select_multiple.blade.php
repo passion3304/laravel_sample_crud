@@ -6,7 +6,10 @@
         $options = call_user_func($field['options'], $field['model']::query());
     }
     $field['allows_null'] = $field['allows_null'] ?? true;
-    $field['value'] = isset($field['value']) && is_array($field['value']) ? $options->whereIn((new $field['model'])->getKeyName(), $field['value']) : collect();
+
+    if(isset($field['value']) && is_array($field['value'])) {
+         $field['value'] = $options->whereIn((new $field['model'])->getKeyName(), $field['value']);
+    }
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
