@@ -71,6 +71,7 @@
                 url: `${document.location.origin}/admin/error-frame`,
                 method: 'POST',
                 data: result.responseJSON,
+                headers: {'Accept': 'application/text'}
             }).done(function(result) {
                 document.querySelector('.app-body').innerHTML += result;
                 const errorFrame = document.querySelector('.error-frame');
