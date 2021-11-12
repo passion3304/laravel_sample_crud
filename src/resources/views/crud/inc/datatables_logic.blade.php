@@ -373,3 +373,5 @@
   </script>
 
   @include('crud::inc.details_row_logic')
+  
+  @include('crud::inc.error_frame')

@@ -50,7 +50,4 @@ function () {
         Route::post('edit-account-info', 'MyAccountController@postAccountInfoForm')->name('backpack.account.info.store');
         Route::post('change-password', 'MyAccountController@postChangePasswordForm')->name('backpack.account.password');
     }
-
-    // error frame for datatables
-    Route::post('/error-frame', 'AdminController@errorFrame')->name('backpack.error-frame');
 });

@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class AdminController extends Controller
@@ -42,15 +41,5 @@ class AdminController extends Controller
     {
         // The '/admin' route is not to be used as a page, because it breaks the menu's active state.
         return redirect(backpack_url('dashboard'));
-    }
-
-    /**
-     * Show the error.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function errorFrame(Request $request)
-    {
-        return view(backpack_view('error_frame'), $request);
     }
 }

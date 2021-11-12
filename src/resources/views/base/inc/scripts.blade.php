@@ -65,18 +65,16 @@
 
     {{-- Error frame --}}
     @if(config('app.debug'))
-    $(document).ajaxComplete(function(e, result) {
+    $(document).ajaxComplete(function(e, result, settings) {
         if(result.responseJSON?.exception !== undefined) {
-            $.ajax({
-                url: `${document.location.origin}/admin/error-frame`,
-                method: 'POST',
-                data: result.responseJSON,
-                headers: {'Accept': 'application/text'}
-            }).done(function(result) {
-                document.querySelector('.app-body').innerHTML += result;
-                const errorFrame = document.querySelector('.error-frame');
-                errorFrame.querySelectorAll('.close, .background').forEach(e => e.onclick = () => errorFrame.remove());
-            });
+            settings.accepts = "text/html";
+            $.ajax(settings);
+        } else if(!result.responseText?.startsWith("{")) {
+            Noty.closeAll();
+            const errorFrame = document.querySelector('.error-frame');
+            errorFrame.classList.add('active');
+            errorFrame.querySelector('iframe').srcdoc = result.responseText;
+            errorFrame.querySelectorAll('.close, .background').forEach(e => e.onclick = () => errorFrame.classList.remove('active'));
         }
     });
     @endif
