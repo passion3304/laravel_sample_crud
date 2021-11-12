@@ -70,10 +70,10 @@ if($activeInlineCreate) {
         $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $routeEntity;
 
         //route to create a new entity
-        $field['inline_create']['create_route'] = route($field['inline_create']['entity']."-inline-create-save");
+        $field['inline_create']['create_route'] = $field['inline_create']['create_route'] ?? route($field['inline_create']['entity']."-inline-create-save");
 
         //route to modal
-        $field['inline_create']['modal_route'] = route($field['inline_create']['entity']."-inline-create");
+        $field['inline_create']['modal_route'] = $field['inline_create']['modal_route'] ?? route($field['inline_create']['entity']."-inline-create");
 
         //include main form fields in the request when asking for modal data,
         //allow the developer to modify the inline create modal
