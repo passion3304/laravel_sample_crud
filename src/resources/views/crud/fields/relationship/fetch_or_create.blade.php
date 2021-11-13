@@ -445,6 +445,7 @@ function triggerModal(element) {
         $modal.remove();
 
         //when modal is closed (canceled or success submited) we revert the "+ Add" loading state back to normal.
+        var $inlineCreateButtonElement = $(element).parent().find('.inline-create-button');
         $inlineCreateButtonElement.html($inlineCreateButtonElement.data('original-text'));
     });
 
