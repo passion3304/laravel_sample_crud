@@ -55,3 +55,21 @@
         <iframe></iframe>
     </div>
 </div>
+
+@if(config('app.debug'))
+<script>
+const errorFrame = document.querySelector('.error-frame');
+
+$(document).ajaxComplete((e, result, settings) => {
+    if(result.responseJSON?.exception !== undefined) {
+        $.ajax({...settings, accepts: "text/html", backpackExceptionHandler: true});
+    }
+    else if(settings.backpackExceptionHandler) {
+        Noty.closeAll();
+        errorFrame.classList.add('active');
+        errorFrame.querySelector('iframe').srcdoc = result.responseText;
+        errorFrame.querySelectorAll('.close, .background').forEach(e => e.onclick = () => errorFrame.classList.remove('active'));
+    }
+});
+</script>
+@endif
