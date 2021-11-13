@@ -316,6 +316,13 @@ function setupInlineCreateButtons(element) {
 
             },
             error: function (result) {
+                @if(!config('app.debug'))
+                new Noty({
+                    type: "error",
+                    text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
+                }).show();
+                @endif
+
                 $inlineCreateButtonElement.html($inlineCreateButtonElement.data('original-text'));
             }
         });
