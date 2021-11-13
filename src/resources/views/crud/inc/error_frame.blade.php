@@ -6,8 +6,8 @@
     top: 0;
 }
 .error-frame .content {
-    --width: 90vw;
-    --height: 80vh;
+    --width: 80vw;
+    --height: 90vh;
     position: absolute;
     width: var(--width);
     height: var(--height);
