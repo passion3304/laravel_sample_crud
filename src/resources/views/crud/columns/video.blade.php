@@ -1,6 +1,7 @@
 {{-- regular object attribute --}}
 @php
     $value = data_get($entry, $column['name']);
+    $column['default'] = $column['default'] ?? '-';
 
     if( !empty($value) ) {
 
@@ -22,6 +23,6 @@
         <i class="la la-{{$video->provider}}" style="transform: translateY(2px);"></i>
     </a><img src="{{$video->image}}" alt="{{$video->title}}" style="height: 25px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" />
     @else
-    {{ $column['default'] ?? '-' }}
+    {{ $column['default'] }}
     @endif
 </span>

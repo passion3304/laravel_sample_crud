@@ -1,13 +1,13 @@
 @php
-    $column['text'] = Illuminate\Mail\Markdown::parse($entry->{$column['name']} ?? '');
+    $value = Illuminate\Mail\Markdown::parse($entry->{$column['name']} ?? '');
+
     $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
+    $column['text'] = $column['default'] ?? '-';
 
-    if(!empty($column['text'])) {
-        $column['text'] = $column['prefix'].$column['text'].$column['suffix'];
-    }else{
-        $column['text'] = $column['default'] ?? null;
+    if(!empty($value)) {
+        $column['text'] = $column['prefix'].$value.$column['suffix'];
     }
 @endphp
 

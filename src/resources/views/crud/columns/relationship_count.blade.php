@@ -5,7 +5,7 @@
     $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? ' items';
-    $column['text'] = $column['default'] ?? '';
+    $column['text'] = $column['default'] ?? '-';
 
     if($value) {
         $column['text'] = $column['prefix'].$value.$column['suffix'];

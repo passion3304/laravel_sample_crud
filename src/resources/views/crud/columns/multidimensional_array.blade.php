@@ -22,6 +22,7 @@
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
+    $column['default'] = $column['default'] ?? '-';
 @endphp
 
 <span>
@@ -47,6 +48,6 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        {{ $column['default'] ?? '-' }}
+        {{ $column['default'] }}
     @endif
 </span>

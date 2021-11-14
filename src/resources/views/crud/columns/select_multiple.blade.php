@@ -5,6 +5,7 @@
     $column['suffix'] = $column['suffix'] ?? '';
     $column['limit'] = $column['limit'] ?? 40;
     $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
+    $column['default'] = $column['default'] ?? '-';
 
     $results = data_get($entry, $column['name']);
     $results_array = [];
@@ -41,6 +42,6 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        {{ $column['default'] ?? '-' }}
+        {{ $column['default'] }}
     @endif
 </span>

@@ -4,6 +4,7 @@
     $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
+    $column['default'] = $column['default'] ?? '-';
 
     // the value should be an array whether or not attribute casting is used
     if (!is_array($value)) {
@@ -34,6 +35,6 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        {{ $column['default'] ?? '-' }}
+        {{ $column['default'] }}
     @endif
 </span>

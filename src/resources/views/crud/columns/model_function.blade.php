@@ -6,9 +6,11 @@
     $column['limit']   = $column['limit'] ?? 40;
     $column['prefix']  = $column['prefix'] ?? '';
     $column['suffix']  = $column['suffix'] ?? '';
-    $column['text']    = $column['prefix'].
-                         Str::limit($value, $column['limit'], "[...]").
-                         $column['suffix'];
+    $column['text'] = $column['default'] ?? '-';
+
+    if(!empty($value)) {
+        $column['text'] = $column['prefix'].Str::limit($value, $column['limit'], "[...]").$column['suffix'];
+    }
 @endphp
 
 <span>

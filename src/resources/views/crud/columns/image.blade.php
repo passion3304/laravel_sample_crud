@@ -7,6 +7,7 @@
     $column['width'] = $column['width'] ?? "auto";
     $column['radius'] = $column['radius'] ?? "3px";
     $column['prefix'] = $column['prefix'] ?? '';
+    $column['default'] = $column['default'] ?? '';
 
     if (is_array($value)) {
       $value = json_encode($value);
@@ -28,7 +29,7 @@
 
 <span>
   @if( empty($value) )
-    {{ $column['default'] ?? '-' }}
+    {{ $column['default'] }}
   @else
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         <img src="{{ $src }}" style="

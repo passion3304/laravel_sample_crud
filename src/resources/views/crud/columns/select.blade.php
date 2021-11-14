@@ -5,6 +5,7 @@
     $column['suffix'] = $column['suffix'] ?? '';
     $column['limit'] = $column['limit'] ?? 40;
     $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
+    $column['default'] = $column['default'] ?? '-';
 
     $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
     foreach ($attributes as $key => &$text) {
@@ -34,6 +35,6 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        {{ $column['default'] ?? '-' }}
+        {{ $column['default'] }}
     @endif
 </span>
