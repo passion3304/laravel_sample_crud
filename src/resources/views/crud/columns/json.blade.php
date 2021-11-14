@@ -11,6 +11,8 @@
 
     if(!empty($column['text'])) {
         $column['text'] = $column['prefix'].$column['text'].$column['suffix'];
+    }else{
+        $column['text'] = $column['default'] ?? null;
     }
 @endphp
 

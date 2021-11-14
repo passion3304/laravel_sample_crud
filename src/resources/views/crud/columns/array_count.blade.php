@@ -5,9 +5,9 @@
     $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? 'items';
-    $column['text'] = '-';
+    $column['text'] = $column['default'] ?? '-';
 
-    // the value should be an array wether or not attribute casting is used
+    // the value should be an array whether or not attribute casting is used
     if (! is_array($array)) {
         $array = json_decode($array, true);
     }

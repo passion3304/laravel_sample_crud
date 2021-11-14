@@ -1,6 +1,6 @@
 {{-- regular object attribute --}}
 @php
-	$value = data_get($entry, $column['name']);
+	$value = data_get($entry, $column['name'], $column['default'] ?? null);
     $value = is_array($value) ? json_encode($value) : $value;
 
     $column['escaped'] = $column['escaped'] ?? true;

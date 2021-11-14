@@ -34,6 +34,6 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        -
+        {{ $column['default'] ?? '-' }}
     @endif
 </span>

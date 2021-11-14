@@ -51,6 +51,10 @@
     </table>
 
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+    
+    @else
+    
+    {{ $column['default'] ?? null }}
 
 	@endif
 </span>

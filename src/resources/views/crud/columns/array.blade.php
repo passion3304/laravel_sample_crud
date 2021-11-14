@@ -5,7 +5,7 @@
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
 
-    // the value should be an array wether or not attribute casting is used
+    // the value should be an array whether or not attribute casting is used
     if (!is_array($value)) {
         $value = json_decode($value, true);
     }
@@ -34,6 +34,6 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        -
+        {{ $column['default'] ?? '-' }}
     @endif
 </span>

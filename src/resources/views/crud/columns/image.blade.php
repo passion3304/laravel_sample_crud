@@ -28,7 +28,7 @@
 
 <span>
   @if( empty($value) )
-    -
+    {{ $column['default'] ?? '-' }}
   @else
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         <img src="{{ $src }}" style="

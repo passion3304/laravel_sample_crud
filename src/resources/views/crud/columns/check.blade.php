@@ -1,6 +1,6 @@
 {{-- checkbox with loose false/null/0 checking --}}
 @php
-    $checkValue = data_get($entry, $column['name']);
+    $checkValue = data_get($entry, $column['name'], $column['default'] ?? false);
 
     $checkedIcon = data_get($column, 'icons.checked', 'la-check-circle');
     $uncheckedIcon = data_get($column, 'icons.unchecked', 'la-circle');

@@ -1,6 +1,6 @@
 {{-- converts 1/true or 0/false to yes/no/lang --}}
 @php
-    $value = data_get($entry, $column['name']);
+    $value = data_get($entry, $column['name'], $column['default'] ?? false);
 
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';

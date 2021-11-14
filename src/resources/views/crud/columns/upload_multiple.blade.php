@@ -24,6 +24,6 @@
         @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
         @endforeach
     @else
-        -
+        {{ $column['default'] ?? '-' }}
     @endif
 </span>

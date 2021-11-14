@@ -1,6 +1,6 @@
 {{-- telephone link --}}
 @php
-    $value = data_get($entry, $column['name']);
+    $value = data_get($entry, $column['name'], $column['default'] ?? null);
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';

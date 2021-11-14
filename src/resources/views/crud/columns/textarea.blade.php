@@ -1,6 +1,6 @@
 {{-- regular object attribute --}}
 @php
-    $value = data_get($entry, $column['name']);
+    $value = data_get($entry, $column['name'], $column['default'] ?? null);
     $column['text'] = is_string($value) ? $value : '';
     $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';

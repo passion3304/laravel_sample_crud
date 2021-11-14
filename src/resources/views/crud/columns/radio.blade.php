@@ -1,6 +1,6 @@
 @php
 	$column['key'] = $column['key'] ?? $column['name'];
-    $column['text'] = $column['options'][data_get($entry, $column['key'])] ?? '';
+    $column['text'] = $column['options'][data_get($entry, $column['key'])] ?? $column['default'] ?? '';
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
