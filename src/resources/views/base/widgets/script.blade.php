@@ -1,13 +1,12 @@
+@php
+    $src = asset($widget['src'] ?? $widget['content'] ?? $widget['path']);
+    $attributes = collect($widget)->except(['name', 'section', 'type', 'stack', 'src', 'content', 'path'])
+@endphp
+
 @push($widget['stack'] ?? 'after_scripts')
-
-    <script src="{{ asset($widget['content'] ?? $widget['path']) }}"
-        {{-- Allow secure use of CDN assets by specifying integrity hash and crossorigin-anonymous  --}}
-        @isset($widget['integrity'])
-            integrity="{{ $widget['integrity'] }}"
-        @endisset
-        @isset($widget['crossorigin'])
-            crossorigin="{{ $widget['crossorigin'] }}"
-        @endisset
+    <script src="{{ $src }}"
+        @foreach($attributes as $key => $value)
+        {{ $key }}{!! $value === true || $value === '' ? '' : "=\"$value\"" !!}
+        @endforeach
     ></script>
-
 @endpush

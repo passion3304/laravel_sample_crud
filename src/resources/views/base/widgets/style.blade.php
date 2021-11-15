@@ -1,12 +1,15 @@
+@php
+    $widget['rel'] = $widget['rel'] ?? 'stylesheet';
+    $widget['type'] = $widget['type'] ?? 'text/css';
+
+    $href = asset($widget['href'] ?? $widget['content'] ?? $widget['path']);
+    $attributes = collect($widget)->except(['name', 'section', 'type', 'stack', 'href', 'content', 'path'])
+@endphp
+
 @push($widget['stack'] ?? 'after_styles')
-
-    <link href="{{ asset($widget['content'] ?? $widget['path']) }}" rel="stylesheet" type="text/css" 
-        @isset($widget['integrity'])
-            integrity="{{ $widget['integrity'] }}"
-        @endisset
-        @isset($widget['crossorigin'])
-            crossorigin="{{ $widget['crossorigin'] }}"
-        @endisset
-        >
-
+    <link href="{{ $href }}"
+        @foreach($attributes as $key => $value)
+        {{ $key }}{!! $value === true || $value === '' ? '' : "=\"$value\"" !!}
+        @endforeach
+    />
 @endpush
