@@ -385,7 +385,7 @@ class CrudPanel
                 //if attribute does not exist in main array we have more than one entry OR the attribute
                 //is an acessor that is not in $appends property of model.
                 if (! isset($entries[$attribute])) {
-                    //we first check if we don't have the attribute because it's and acessor that is not in appends.
+                    //we first check if we don't have the attribute because it's an acessor that is not in appends.
                     if ($model_instance->hasGetMutator($attribute) && isset($entries[$modelKey])) {
                         $entry_in_database = $model_instance->find($entries[$modelKey]);
                         $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
@@ -458,7 +458,7 @@ class CrudPanel
      */
     private function getRelatedEntries($model, $relationString)
     {
-        $relationArray = explode('.', $relationString);
+        $relationArray = explode('.', $this->getOnlyRelationEntity(['entity' => $relationString]));
         $firstRelationName = Arr::first($relationArray);
         $relation = $model->{$firstRelationName};
 
