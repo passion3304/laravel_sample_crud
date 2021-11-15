@@ -64,4 +64,6 @@
     });
 </script>
 
-@include('crud::inc.error_frame')
+@if(config('app.debug'))
+    @include('crud::inc.ajax_error_frame')
+@endif

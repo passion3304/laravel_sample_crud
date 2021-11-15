@@ -126,6 +126,7 @@ if($activeInlineCreate) {
         data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
         data-ajax-delay="{{ $field['delay'] }}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+        data-debug="{{ config('app.debug') }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -316,12 +317,12 @@ function setupInlineCreateButtons(element) {
 
             },
             error: function (result) {
-                @if(!config('app.debug'))
-                new Noty({
-                    type: "error",
-                    text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
-                }).show();
-                @endif
+                if(!element.data('debug')) {
+                   new Noty({
+                        type: "error",
+                        text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
+                    }).show();
+                }
 
                 $inlineCreateButtonElement.html($inlineCreateButtonElement.data('original-text'));
             }

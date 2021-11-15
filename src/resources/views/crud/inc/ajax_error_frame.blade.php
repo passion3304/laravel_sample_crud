@@ -1,11 +1,11 @@
 <style>
-.error-frame {
+.ajax-error-frame {
     display: none;
     position: fixed;
     z-index: 1020;
     top: 0;
 }
-.error-frame .content {
+.ajax-error-frame .content {
     --width: 80vw;
     --height: 90vh;
     position: absolute;
@@ -19,23 +19,23 @@
     flex-direction: column;
     overflow: hidden;
 }
-.error-frame iframe {
+.ajax-error-frame iframe {
     border: 0;
     height: 100%;
 }
-.error-frame .close {
+.ajax-error-frame .close {
     position: absolute;
     right: 0.8rem;
     top: 0.4rem;
     cursor: pointer;
 }
-.error-frame .background {
+.ajax-error-frame .background {
     position: absolute;
     background-color: #0002;
     width: 100vw;
     height: 100vh;
 }
-.error-frame.active {
+.ajax-error-frame.active {
     display: block;
     opacity: 0;
     animation-name: fadeIn;
@@ -48,7 +48,7 @@
 }
 </style>
 
-<div class="error-frame">
+<div class="ajax-error-frame">
     <div class="background"></div>
     <div class="content">
         <div class="close">×</div>
@@ -56,9 +56,8 @@
     </div>
 </div>
 
-@if(config('app.debug'))
 <script>
-const errorFrame = document.querySelector('.error-frame');
+const errorFrame = document.querySelector('.ajax-error-frame');
 
 $(document).ajaxComplete((e, result, settings) => {
     if(result.responseJSON?.exception !== undefined) {
@@ -72,4 +71,3 @@ $(document).ajaxComplete((e, result, settings) => {
     }
 });
 </script>
-@endif
