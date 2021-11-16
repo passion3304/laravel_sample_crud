@@ -146,7 +146,9 @@ trait ColumnsProtectedMethods
             // if the first part of the string exists as method,
             // it is a relationship
             if (method_exists($this->model, $possibleMethodName)) {
-                $column['entity'] = $column['name'];
+
+                // if it has parameters it's not a relation method.
+                $column['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $column['name'];
 
                 return $column;
             }
@@ -154,7 +156,9 @@ trait ColumnsProtectedMethods
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $column['name'])) {
-            $column['entity'] = $column['name'];
+
+            // if it has parameters it's not a relation method.
+            $column['entity'] = $this->modelMethodHasParameters($this->model, $column['name']) ? false : $column['name'];
 
             return $column;
         }
@@ -165,7 +169,9 @@ trait ColumnsProtectedMethods
             $possibleMethodName = Str::replaceLast('_id', '', $column['name']);
 
             if (method_exists($this->model, $possibleMethodName)) {
-                $column['entity'] = $possibleMethodName;
+
+                // if it has parameters it's not a relation method.
+                $column['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $possibleMethodName;
 
                 return $column;
             }

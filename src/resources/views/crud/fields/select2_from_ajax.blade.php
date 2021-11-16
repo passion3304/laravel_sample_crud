@@ -15,6 +15,7 @@
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2FromAjaxElement"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-placeholder="{{ $field['placeholder'] }}"
@@ -109,6 +110,7 @@
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
         var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
+        var $isFieldInline = element.data('field-is-inline');
 
         var select2AjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
@@ -141,6 +143,7 @@
             placeholder: $placeholder,
             minimumInputLength: $minimumInputLength,
             allowClear: $allowClear,
+            dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body,
             ajax: {
                 url: $dataSource,
                 type: $method,

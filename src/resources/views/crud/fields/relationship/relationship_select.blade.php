@@ -18,7 +18,7 @@
     $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
 
 
-    if ($current_value != false) {
+    if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
@@ -59,6 +59,7 @@
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitRelationshipSelectElement"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
@@ -146,6 +147,7 @@
         var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
+        var $isFieldInline = element.data('field-is-inline');
 
         var $item = false;
 
@@ -175,6 +177,7 @@
                 multiple: $multiple,
                 placeholder: $placeholder,
                 allowClear: $allowClear,
+                dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
             };
         if (!$(element).hasClass("select2-hidden-accessible"))
         {

@@ -1,10 +1,7 @@
-// @import "~bootstrap/scss/bootstrap";
-// @import "node_modules/@coreui/coreui/scss/coreui";
+// create a bundle CSS file for the default electric purple Backstrap style
+
 @import "node_modules/@digitallyhappy/backstrap/src/scss/style";
-@import "node_modules/@digitallyhappy/backstrap/src/scss/_variables";
 @import "node_modules/@coreui/coreui/scss/coreui";
 @import "node_modules/@digitallyhappy/backstrap/src/scss/_custom";
-// @import "node_modules/line-awesome/css/line-awesome";
-// @import "node_modules/source-sans-pro/source-sans-pro";
-@import "node_modules/animate.css/source/_base";
+@import "~animate.css/animate.compat.css";
 @import "node_modules/noty/src/noty";
