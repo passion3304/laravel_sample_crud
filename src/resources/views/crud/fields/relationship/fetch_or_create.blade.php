@@ -280,30 +280,16 @@ if($activeInlineCreate) {
 
                 },
                 error: function (result) {
-                    // Show an alert with the result
-                    swal({
-                        title: "error",
-                        text: "error",
-                        icon: "error",
-                        timer: 4000,
-                        buttons: false,
-                    });
+                    if(!element.data('debug')) {
+                    new Noty({
+                            type: "error",
+                            text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
+                        }).show();
+                    }
+                    $inlineCreateButtonElement.html($inlineCreateButtonElement.data('original-text'));
                 }
             });
-
-            },
-            error: function (result) {
-                if(!element.data('debug')) {
-                   new Noty({
-                        type: "error",
-                        text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
-                    }).show();
-                }
-
-                $inlineCreateButtonElement.html($inlineCreateButtonElement.data('original-text'));
-            }
         });
-
     }
 
     // when an entity is created we query the ajax endpoint to check if the created option is returned.
