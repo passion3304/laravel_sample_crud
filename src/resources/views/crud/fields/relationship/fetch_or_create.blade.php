@@ -69,10 +69,10 @@ if($activeInlineCreate) {
         $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $routeEntity;
 
         //route to create a new entity
-        $field['inline_create']['create_route'] = route($field['inline_create']['entity']."-inline-create-save");
+        $field['inline_create']['create_route'] = $field['inline_create']['create_route'] ?? route($field['inline_create']['entity']."-inline-create-save");
 
         //route to modal
-        $field['inline_create']['modal_route'] = route($field['inline_create']['entity']."-inline-create");
+        $field['inline_create']['modal_route'] = $field['inline_create']['modal_route'] ?? route($field['inline_create']['entity']."-inline-create");
 
         //include main form fields in the request when asking for modal data,
         //allow the developer to modify the inline create modal
@@ -124,6 +124,7 @@ if($activeInlineCreate) {
         data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
         data-ajax-delay="{{ $field['delay'] }}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+        data-debug="{{ config('app.debug') }}"
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.field_attributes')
@@ -290,6 +291,17 @@ if($activeInlineCreate) {
                 }
             });
 
+            },
+            error: function (result) {
+                if(!element.data('debug')) {
+                   new Noty({
+                        type: "error",
+                        text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
+                    }).show();
+                }
+
+                $inlineCreateButtonElement.html($inlineCreateButtonElement.data('original-text'));
+            }
         });
 
     }
