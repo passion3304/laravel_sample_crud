@@ -46,10 +46,6 @@
         }
     }
 
-
-
-    $field['value'] = json_encode($current_value);
-
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -67,7 +63,6 @@
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
-        data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
 
