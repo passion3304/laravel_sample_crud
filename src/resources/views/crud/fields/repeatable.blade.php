@@ -29,7 +29,7 @@
     >
     @if(!empty($field['value']))
         @foreach ($field['value'] as $key => $row)
-            @include('crud::fields.inc.repeatable_container', ['repeatable_container_values' => $row])
+            @include('crud::fields.inc.repeatable_container')
         @endforeach
     @endif
     </div>
