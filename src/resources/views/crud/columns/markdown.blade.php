@@ -1,11 +1,8 @@
 @php
-    $column['escaped'] = $column['escaped'] ?? true;
+    $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['text'] = $entry->{$column['name']} ?? '';
-
-    // if needed, strip out HTML from the text
-    $column['text'] = $column['escaped'] ? strip_tags($column['text']) : $column['text'];
 
     // turn the text into markdown
     $column['text'] = Illuminate\Mail\Markdown::parse($column['text']);
@@ -16,6 +13,10 @@
 @endphp
 
 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
-    {!! $column['text'] !!}
+    @if($column['escaped'])
+        {{ $column['text'] }}
+    @else
+        {!! $column['text'] !!}
+    @endif
 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 
