@@ -135,6 +135,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'type'        => 'relationship',
             'key'         => 'accountDetails__nickname',
             'priority'    => 1,
+            'attribute' => 'nickname',
             'tableColumn' => false,
             'orderable'   => false,
             'searchLogic' => false,

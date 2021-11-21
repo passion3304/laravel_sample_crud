@@ -6,7 +6,6 @@ No documentation can be 100% complete and Backpack's is no different, sorry for 
 - (C) what happened
 - (D) what have you already tried to fix it?
 
-
 # Idea for a new feature?
 
 **[Open an issue](https://github.com/laravel-backpack/crud) and tell the community you are willing to submit a PR.** We usually end up with better solutions when we talk about it and everybody pitches in with their opinion. Plus, some features might be better presented as a separate package, a tutorial or a code snippet.

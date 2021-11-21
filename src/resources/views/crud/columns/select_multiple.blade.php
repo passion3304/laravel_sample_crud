@@ -11,7 +11,7 @@
         $column['value'] = $column['value']($entry);
     }
 
-    if(!$column['value']->isEmpty()) {
+    if($column['value'] !== null && !$column['value']->isEmpty()) {
         $related_key = $column['value']->first()->getKeyName();
         $column['value'] = $column['value']->pluck($column['attribute'], $related_key)->toArray();
     }
