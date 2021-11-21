@@ -45,7 +45,6 @@
                 break;
         }
     }
-
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -78,7 +77,15 @@
 
         @if (count($field['options']))
             @foreach ($field['options'] as $key => $option)
-                    <option value="{{ $key }}">{{ $option }}</option>
+            @php
+                $selected = '';
+                if(!empty($current_value)) {
+                    if(in_array($key, array_keys($current_value->toArray()))) {
+                        $selected = 'selected';
+                    }
+                }
+            @endphp
+                    <option value="{{ $key }}" {{$selected}}>{{ $option }}</option>
             @endforeach
         @endif
     </select>
