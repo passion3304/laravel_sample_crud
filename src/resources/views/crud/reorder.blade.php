@@ -218,13 +218,9 @@ function tree_element($entry, $key, $all_entries, $crud)
       color: #c33;
     }
 </style>
-<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css').'?v='.config('backpack.base.cachebusting_string') }}">
-<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/reorder.css').'?v='.config('backpack.base.cachebusting_string') }}">
 @endsection
 
 @section('after_scripts')
-<script src="{{ asset('packages/backpack/crud/js/crud.js').'?v='.config('backpack.base.cachebusting_string') }}" type="text/javascript" ></script>
-<script src="{{ asset('packages/backpack/crud/js/reorder.js').'?v='.config('backpack.base.cachebusting_string') }}" type="text/javascript" ></script>
 <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}" type="text/javascript" ></script>
 <script src="{{ asset('packages/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript" ></script>
 
