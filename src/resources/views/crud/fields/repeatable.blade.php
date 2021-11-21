@@ -28,9 +28,13 @@
         data-min-rows="{{ $field['min_rows'] }}"
     >
     @if(!empty($field['value']))
-        @foreach ($field['value'] as $key => $row)
-            @include('crud::fields.inc.repeatable_container')
+        @foreach ($field['value'] as $row)
+            @include('crud::fields.inc.repeatable_row')
         @endforeach
+        @php
+            // the $row variable still exists. We don't need it anymore the loop is over, and would have impact in the following code.
+            unset($row);
+        @endphp
     @endif
     </div>
 </div>
@@ -43,7 +47,7 @@
 
 @include('crud::fields.inc.wrapper_end')
 @push('before_scripts')
-    @include('crud::fields.inc.repeatable_container')
+    @include('crud::fields.inc.repeatable_row')
 @endpush
 @if ($crud->fieldTypeNotLoaded($field))
   @php
@@ -127,6 +131,7 @@
             // this way we have a clean element we can clone when the user
             // wants to add a new group of inputs
             var container = $('[data-repeatable-identifier='+field_name+']').last();
+            
             // make sure the inputs get the data-repeatable-input-name
             // so we can know that they are inside repeatable
             container.find('input, select, textarea')
@@ -163,7 +168,6 @@
 
             updateRepeatableContainerNamesIndexes(container_holder)
 
-            initializeFieldsWithJavascript(container_holder);
         }
 
         /**
