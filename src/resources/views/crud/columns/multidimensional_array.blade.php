@@ -1,7 +1,7 @@
 {{-- enumerate the values in an array  --}}
 @php
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
-    $list[$column['visible_key']] = [];
+    $list = [];
 
     if(is_callable($column['value'])) {
         $column['value'] = $column['value']($entry);
@@ -13,7 +13,6 @@
     }
 
     if (is_array($column['value']) && count($column['value'])) {
-        $list = [];
         foreach ($column['value'] as $item) {
             if (isset($item->{$column['visible_key']})) {
                 $list[$column['visible_key']][] = $item->{$column['visible_key']};
