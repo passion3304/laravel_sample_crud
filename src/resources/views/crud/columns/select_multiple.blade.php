@@ -13,12 +13,14 @@
 
     if($column['value'] !== null && !$column['value']->isEmpty()) {
         $related_key = $column['value']->first()->getKeyName();
-        $column['value'] = $column['value']->pluck($column['attribute'], $related_key)->toArray();
+        $column['value'] = $column['value']->pluck($column['attribute'], $related_key);
     }
 
-    foreach ($column['value'] as $key => $text) {
-        $column['value'][$key] = Str::limit($text, $column['limit'], '[...]');
-    }
+    $column['value'] = $column['value']
+        ->each(function($value) use ($column) {
+            $value = Str::limit($value, $column['limit'], '[...]');
+        })
+        ->toArray();
 @endphp
 
 <span>
