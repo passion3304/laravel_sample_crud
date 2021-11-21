@@ -1,18 +1,22 @@
 {{-- email link --}}
 @php
-    $value = data_get($entry, $column['name'], $column['default'] ?? null);
-
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['limit'] = $column['limit'] ?? 40;
-    $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    $column['wrapper']['href'] = $column['wrapper']['href'] ?? 'mailto:'.$value;
-    $column['text'] = '-';
+    $column['text'] = $column['default'] ?? '-';
 
-    if(!empty($value)) {
-        $column['text'] = $column['prefix'].Str::limit(strip_tags($value), $column['limit'], "[...]").$column['suffix'];
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
     }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].Str::limit(strip_tags($column['value']), $column['limit'], "[...]").$column['suffix'];
+    }
+
+    $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
+    $column['wrapper']['href'] = $column['wrapper']['href'] ?? 'mailto:'.$column['value'];
 @endphp
 
 <span>

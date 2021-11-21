@@ -1,53 +1,56 @@
 @php
-    $value = data_get($entry, $column['name']);
-    $column['default'] = $column['default'] ?? '-';
+	$column['value'] = $column['value'] ?? data_get($entry, $column['name']);
+    $column['columns'] = $column['columns'] ?? ['value' => 'Value'];
 
-    // make sure columns are defined
-    if (!isset($column['columns'])) {
-        $column['columns'] = ['value' => "Value"];
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
     }
 
-    // if this attribute isn't using attribute casting, decode it
-    if (is_string($value)) {
-        $value = json_decode($value);
+	// if this attribute isn't using attribute casting, decode it
+	if (is_string($column['value'])) {
+	    $column['value'] = json_decode($column['value']);
     }
 @endphp
 
 <span>
-    @if ($value && count($column['columns']))
-        @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+    @if ($column['value'] && count($column['columns']))
 
-        <table class="table table-bordered table-condensed table-striped m-b-0">
-            <thead>
-                <tr>
-                    @foreach($column['columns'] as $tableColumnKey => $tableColumnLabel)
-                    <th>{{ $tableColumnLabel }}</th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($value as $tableRow)
-                <tr>
-                    @foreach($column['columns'] as $tableColumnKey => $tableColumnLabel)
-                        <td>
-                            @if(is_array($tableRow) && isset($tableRow[$tableColumnKey]))
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
 
-                                {{ $tableRow[$tableColumnKey] }}
+    <table class="table table-bordered table-condensed table-striped m-b-0">
+		<thead>
+			<tr>
+				@foreach($column['columns'] as $tableColumnKey => $tableColumnLabel)
+				<th>{{ $tableColumnLabel }}</th>
+				@endforeach
+			</tr>
+		</thead>
+		<tbody>
+			@foreach ($column['value'] as $tableRow)
+			<tr>
+				@foreach($column['columns'] as $tableColumnKey => $tableColumnLabel)
+					<td>
+						@if( is_array($tableRow) && isset($tableRow[$tableColumnKey]) )
 
-                            @elseif(is_object($tableRow) && property_exists($tableRow, $tableColumnKey))
+                            {{ $tableRow[$tableColumnKey] }}
 
-                                {{ $tableRow->{$tableColumnKey} }}
+                        @elseif( is_object($tableRow) && property_exists($tableRow, $tableColumnKey) )
 
-                            @endif
-                        </td>
-                    @endforeach
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                            {{ $tableRow->{$tableColumnKey} }}
 
-        @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+                        @endif
+					</td>
+				@endforeach
+			</tr>
+			@endforeach
+		</tbody>
+    </table>
+
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+    
     @else
-        {{ $column['default'] }}
+    
+    {{ $column['default'] ?? '-' }}
+
 	@endif
 </span>

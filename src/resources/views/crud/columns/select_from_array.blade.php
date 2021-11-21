@@ -1,25 +1,26 @@
 {{-- select_from_array column --}}
 @php
-    $values = data_get($entry, $column['name']);
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
+    $column['escaped'] = $column['escaped'] ?? true;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
+
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
     $list = [];
-    if ($values !== null) {
-        if (is_array($values)) {
-            foreach ($values as $key => $value) {
+    if ($column['value'] !== null) {
+        if (is_array($column['value'])) {
+            foreach ($column['value'] as $key => $value) {
                 if (! is_null($value)) {
                     $list[$key] = $column['options'][$value] ?? $value;
                 }
             }
         } else {
-            $value = $column['options'][$values] ?? $values;
-            $list[$values] = $value;
+            $list[$column['value']] = $column['options'][$column['value']] ?? $column['value'];
         }
     }
-
-
-    $column['escaped'] = $column['escaped'] ?? true;
-    $column['prefix'] = $column['prefix'] ?? '';
-    $column['suffix'] = $column['suffix'] ?? '';
-    $column['default'] = $column['default'] ?? '-';
 @endphp
 
 <span>
@@ -44,6 +45,6 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        {{ $column['default'] }}
+        {{ $column['default'] ?? '-' }}
     @endif
 </span>

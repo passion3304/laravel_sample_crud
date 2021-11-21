@@ -1,14 +1,17 @@
 {{-- closure function column type --}}
 @php
-    $value = $column['function']($entry);
-
+    $column['value'] = $column['value'] ?? $column['function'];
     $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['text'] = $column['default'] ?? '-';
 
-    if(!empty($value)) {
-        $column['text'] = $column['prefix'].$value.$column['suffix'];
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].$column['value'].$column['suffix'];
     }
 @endphp
 

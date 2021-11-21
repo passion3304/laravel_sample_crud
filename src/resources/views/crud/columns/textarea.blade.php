@@ -1,15 +1,17 @@
 {{-- regular object attribute --}}
 @php
-    $value = data_get($entry, $column['name'], $column['default'] ?? null);
-    $value = is_string($value) ? $value : '';
-
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
-    $column['text'] = '-';
+    $column['text'] = $column['default'] ?? '-';
 
-    if($value) {
-        $column['text'] = $column['prefix'].$value.$column['suffix'];
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].$column['value'].$column['suffix'];
     }
 @endphp
 
