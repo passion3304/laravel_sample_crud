@@ -26,7 +26,7 @@ if($sortable){
 }
 
 // make the field work either with casted attributes or plain json strings
-$value = is_string($value) ? json_decode($value) : $value;
+$value = is_string($value) && $multiple ? json_decode($value) : $value;
 
 @endphp
 
