@@ -1,7 +1,7 @@
 {{-- enumerate the values in an array  --}}
 @php
     $value = data_get($entry, $column['name']);
-    $column['escaped'] = $column['escaped'] ?? false;
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
 
