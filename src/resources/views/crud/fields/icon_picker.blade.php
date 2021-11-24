@@ -51,7 +51,7 @@
             @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/elusive-icons-2.0.0/css/elusive-icons.min.css')
             @break
         @case('meterialdesign')
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/material-design-1.1.1/css)/material-design-iconic-font.min.css')
+            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/material-design-1.1.1/css/material-design-iconic-font.min.css')
             @break
         @default
             @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/font-awesome-5.12.0-1/css/all.min.css')
