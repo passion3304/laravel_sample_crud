@@ -24,6 +24,10 @@ if ($multiple) {
 if($sortable){
     $field['wrapper']['sortable'] = "true";
 }
+
+// make the field work either with casted attributes or plain json strings
+$value = is_string($value) && $multiple ? json_decode($value) : $value;
+
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

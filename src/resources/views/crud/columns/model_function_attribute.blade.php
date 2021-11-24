@@ -1,7 +1,7 @@
 {{-- custom return value via attribute --}}
 @php
     $column['value'] = $column['value'] ?? $entry->{$column['function_name']}(...($column['function_parameters'] ?? []))->{$column['attribute']} ?? '';
-    $column['escaped'] = $column['escaped'] ?? false;
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['limit'] = $column['limit'] ?? 40;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';

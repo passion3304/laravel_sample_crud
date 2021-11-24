@@ -1,7 +1,7 @@
 {{-- relationship_count (works for n-n relationships) --}}
 @php
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
-    $column['escaped'] = $column['escaped'] ?? false;
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? ' items';
     $column['text'] = $column['default'] ?? '-';

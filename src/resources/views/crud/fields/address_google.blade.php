@@ -85,10 +85,11 @@
                 if(typeof google === "undefined") { return; }
 
                 var $addressConfig = element.data('google-address');
-                var $field = $('[name="' + $addressConfig.field + '"]');
-                var $storeAsJson = element.data('store-as-json');
 
-                if ($field.val().length) {
+                var $storeAsJson = element.data('store-as-json');
+                var $field = $(element).parent().children('input[type=hidden]');
+            
+                if ($field.val() && $field.val().length) {
                     try {
                         var existingData = JSON.parse($field.val());
                         element.val(existingData.value);
@@ -102,7 +103,6 @@
                     {types: ['geocode']});
 
                 $autocomplete.addListener('place_changed', function fillInAddress() {
-
                     var place = $autocomplete.getPlace();
                     var value = element.val();
                     var latlng = place.geometry.location;
