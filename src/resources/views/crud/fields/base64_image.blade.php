@@ -66,7 +66,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        @loadCssOnce('packages/cropperjs/dist/cropper.min.css')
+        @loadOnce('packages/cropperjs/dist/cropper.min.css')
         @loadOnce('bpFieldInitBase64CropperImageCss')
         <style>
             .hide {
@@ -118,8 +118,8 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        @loadJsOnce('packages/cropperjs/dist/cropper.min.js')
-        @loadJsOnce('packages/jquery-cropper/dist/jquery-cropper.min.js')
+        @loadOnce('packages/cropperjs/dist/cropper.min.js')
+        @loadOnce('packages/jquery-cropper/dist/jquery-cropper.min.js')
         @loadOnce('bpFieldInitBase64CropperImageElement')
         <script>
             function bpFieldInitBase64CropperImageElement(element) {

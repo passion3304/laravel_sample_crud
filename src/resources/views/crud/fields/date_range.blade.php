@@ -76,13 +76,13 @@
 
 {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
-    @loadCssOnce('packages/bootstrap-daterangepicker/daterangepicker.css')
+    @loadOnce('packages/bootstrap-daterangepicker/daterangepicker.css')
 @endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-    @loadJsOnce('packages/moment/min/moment-with-locales.min.js')
-    @loadJsOnce('packages/bootstrap-daterangepicker/daterangepicker.js')
+    @loadOnce('packages/moment/min/moment-with-locales.min.js')
+    @loadOnce('packages/bootstrap-daterangepicker/daterangepicker.js')
     @loadOnce('bpFieldInitDateRangeElement')
     <script>
         function bpFieldInitDateRangeElement(element) {

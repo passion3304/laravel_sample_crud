@@ -73,7 +73,7 @@
 
 @push('crud_fields_scripts')
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @loadJsOnce('packages/places.js/dist/cdn/places.min.js')
+    @loadOnce('packages/places.js/dist/cdn/places.min.js')
     @loadOnce('bpFieldInitAddressAlgoliaScripts')
     <script>
             window.AlgoliaPlaces = window.AlgoliaPlaces || {};

@@ -34,8 +34,8 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        @loadJsOnce('packages/ckeditor/ckeditor.js')
-        @loadJsOnce('packages/ckeditor/adapters/jquery.js')
+        @loadOnce('packages/ckeditor/ckeditor.js')
+        @loadOnce('packages/ckeditor/adapters/jquery.js')
         @loadOnce('bpFieldInitCKEditorElement')
         <script>
             function bpFieldInitCKEditorElement(element) {

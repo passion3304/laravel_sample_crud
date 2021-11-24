@@ -67,10 +67,10 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
     <!-- include select2 css-->
-    @loadCssOnce('packages/select2/dist/css/select2.min.css')
-    @loadCssOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
+    @loadOnce('packages/select2/dist/css/select2.min.css')
+    @loadOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
     {{-- allow clear --}}
-    @if ($field['allows_null'])
+    @if($field['allows_null'])
         @loadOnce('select2_from_ajax_custom_css')
         <style type="text/css">
             .select2-selection__clear::after {
@@ -84,9 +84,9 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
     <!-- include select2 js-->
-    @loadJsOnce('packages/select2/dist/js/select2.full.min.js')
+    @loadOnce('packages/select2/dist/js/select2.full.min.js')
     @if (app()->getLocale() !== 'en')
-        @loadJsOnce('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js')
+        @loadOnce('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js')
     @endif
 @endpush
 
@@ -190,8 +190,8 @@
             }
         }
     }
-</script>
-@endLoadOnce
+    </script>
+    @endLoadOnce
 @endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

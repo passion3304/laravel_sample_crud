@@ -34,7 +34,7 @@
 	{{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
 		<!-- include browse server css -->
-		@loadCssOnce('packages/jquery-colorbox/example2/colorbox.css')
+		@loadOnce('packages/jquery-colorbox/example2/colorbox.css')
 		@loadOnce('bpFieldInitBrowseStyle')
 		<style>
 			#cboxContent, #cboxLoadedContent, .cboxIframe {
@@ -46,7 +46,7 @@
 
     @push('crud_fields_scripts')
 		<!-- include browse server js -->
-		@loadJsOnce('packages/jquery-colorbox/jquery.colorbox-min.js')
+		@loadOnce('packages/jquery-colorbox/jquery.colorbox-min.js')
 		@loadOnce('bpFieldInitBrowseElement')
 		<script type="text/javascript">
 			// this global variable is used to remember what input to update with the file path

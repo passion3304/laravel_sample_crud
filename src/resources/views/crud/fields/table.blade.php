@@ -98,7 +98,7 @@
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
     {{-- YOUR JS HERE --}}
-    @loadJsOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+    @loadOnce('packages/jquery-ui-dist/jquery-ui.min.js')
     @loadOnce('bpFieldInitTableElement')
     <script>
           function bpFieldInitTableElement(element) {

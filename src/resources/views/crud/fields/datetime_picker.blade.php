@@ -38,16 +38,16 @@ if (isset($field['value']) && ($field['value'] instanceof \Carbon\CarbonInterfac
 
 {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
-    @loadCssOnce('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')
-    @loadCssOnce('packages/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css')
+    @loadOnce('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')
+    @loadOnce('packages/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css')
 @endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-    @loadJsOnce('packages/moment/min/moment.min.js')
-    @loadJsOnce('packages/pc-bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min.js')
+    @loadOnce('packages/moment/min/moment.min.js')
+    @loadOnce('packages/pc-bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min.js')
     @if ($field_language !== 'en')
-        @loadJsOnce('packages/moment/min/locales.min.js')
+        @loadOnce('packages/moment/min/locales.min.js')
     @endif
     @loadOnce('bpFieldInitDateTimePickerElement')
     <script>

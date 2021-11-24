@@ -44,14 +44,14 @@
 
 {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
-    @loadCssOnce('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')
+    @loadOnce('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')
 @endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-    @loadJsOnce('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')
+    @loadOnce('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')
     @if ($field_language !== 'en')
-        @loadJsOnce('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js')
+        @loadOnce('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js')
     @endif
     @loadOnce('bpFieldInitDatePickerElement')
     <script>

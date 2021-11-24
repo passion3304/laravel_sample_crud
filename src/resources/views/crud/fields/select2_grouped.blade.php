@@ -69,14 +69,14 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <!-- select2_grouped field type css -->
-        @loadCssOnce('packages/select2/dist/css/select2.min.css')
-        @loadCssOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
+        @loadOnce('packages/select2/dist/css/select2.min.css')
+        @loadOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <!-- select2_grouped field type js -->
-        @loadJsOnce('packages/select2/dist/js/select2.full.min.js')
+        @loadOnce('packages/select2/dist/js/select2.full.min.js')
         @if (app()->getLocale() !== 'en')
         <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
         @endif

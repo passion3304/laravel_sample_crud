@@ -30,7 +30,7 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
     <!-- include summernote css-->
-    @loadCssOnce('packages/summernote/dist/summernote-bs4.css')
+    @loadOnce('packages/summernote/dist/summernote-bs4.css')
     @loadOnce('summernoteCss')
     <style type="text/css">
         .note-editor.note-frame .note-status-output, .note-editor.note-airframe .note-status-output {
@@ -42,7 +42,7 @@
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
     <!-- include summernote js-->
-    @loadJsOnce('packages/summernote/dist/summernote-bs4.min.js')
+    @loadOnce('packages/summernote/dist/summernote-bs4.min.js')
     @loadOnce('bpFieldInitSummernoteElement')
     <script>
         function bpFieldInitSummernoteElement(element) {

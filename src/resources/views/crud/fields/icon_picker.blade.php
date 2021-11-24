@@ -33,41 +33,41 @@
     {{-- The chosen font --}}
     @switch ($field['iconset'])
         @case('ionicon')
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/ionicons-1.5.2/css/ionicons.min.css')
+            @loadOnce('packages/bootstrap-iconpicker/icon-fonts/ionicons-1.5.2/css/ionicons.min.css')
             @break
         @case('weathericon')
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/weather-icons-1.2.0/css/weather-icons.min.css')
+            @loadOnce('packages/bootstrap-iconpicker/icon-fonts/weather-icons-1.2.0/css/weather-icons.min.css')
             @break
         @case('mapicon')
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/map-icons-2.1.0/css/map-icons.min.css')
+            @loadOnce('packages/bootstrap-iconpicker/icon-fonts/map-icons-2.1.0/css/map-icons.min.css')
             @break
         @case('octicon')
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/octicons-2.1.2/css/octicons.min.css')
+            @loadOnce('packages/bootstrap-iconpicker/icon-fonts/octicons-2.1.2/css/octicons.min.css')
             @break
         @case('typicon')
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/typicons-2.0.6/css/typicons.min.css')
+            @loadOnce('packages/bootstrap-iconpicker/icon-fonts/typicons-2.0.6/css/typicons.min.css')
             @break
         @case('elusiveicon')
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/elusive-icons-2.0.0/css/elusive-icons.min.css')
+            @loadOnce('packages/bootstrap-iconpicker/icon-fonts/elusive-icons-2.0.0/css/elusive-icons.min.css')
             @break
         @case('meterialdesign')
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/material-design-1.1.1/css/material-design-iconic-font.min.css')
+            @loadOnce('packages/bootstrap-iconpicker/icon-fonts/material-design-1.1.1/css/material-design-iconic-font.min.css')
             @break
         @default
-            @loadCssOnce('packages/bootstrap-iconpicker/icon-fonts/font-awesome-5.12.0-1/css/all.min.css')
+            @loadOnce('packages/bootstrap-iconpicker/icon-fonts/font-awesome-5.12.0-1/css/all.min.css')
             @break
     @endswitch
 
     {{-- FIELD EXTRA CSS  --}}
     @push('crud_fields_styles')
         <!-- Bootstrap-Iconpicker -->
-        @loadCssOnce('packages/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css')
+        @loadOnce('packages/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css')
     @endpush
 
     {{-- FIELD EXTRA JS --}}
     @push('crud_fields_scripts')
         <!-- Bootstrap-Iconpicker -->
-        @loadJsOnce('packages/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js')
+        @loadOnce('packages/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js')
 
         {{-- Bootstrap-Iconpicker - set hidden input value --}}
         @loadOnce('bpFieldInitIconPickerElement')

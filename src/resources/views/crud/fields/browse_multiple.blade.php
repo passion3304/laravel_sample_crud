@@ -82,7 +82,7 @@ $value = is_string($value) && $multiple ? json_decode($value) : $value;
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        @loadCssOnce('packages/jquery-colorbox/example2/colorbox.css')
+        @loadOnce('packages/jquery-colorbox/example2/colorbox.css')
         @loadOnce('browse-multiple-field-custom-css')
         <style>
             #cboxContent, #cboxLoadedContent, .cboxIframe {
@@ -94,8 +94,8 @@ $value = is_string($value) && $multiple ? json_decode($value) : $value;
 
     @push('crud_fields_scripts')
 
-        @loadJsOnce('packages/jquery-ui-dist/jquery-ui.min.js')
-        @loadJsOnce('packages/jquery-colorbox/jquery.colorbox-min.js')
+        @loadOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+        @loadOnce('packages/jquery-colorbox/jquery.colorbox-min.js')
         @loadOnce('bpFieldInitBrowseMultipleElement')
         <script>
             // this global variable is used to remember what input to update with the file path

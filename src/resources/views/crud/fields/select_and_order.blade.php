@@ -94,7 +94,7 @@
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-@loadJsOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+@loadOnce('packages/jquery-ui-dist/jquery-ui.min.js')
 @loadOnce('bpFieldInitSelectAndOrderElement')
 <script>
   function bpFieldInitSelectAndOrderElement(element) {

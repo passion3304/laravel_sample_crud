@@ -28,7 +28,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        @loadCssOnce('packages/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')
+        @loadOnce('packages/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')
 		@loadOnce('bpFieldInitColorPickerElement-custom-style')
 		<style>
 			.input-group>.input-group-append>.input-group-text {
@@ -45,7 +45,7 @@
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-    @loadJsOnce('packages/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')
+    @loadOnce('packages/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')
     @loadOnce('bpFieldInitColorPickerElement')
     <script>
         function bpFieldInitColorPickerElement(element) {

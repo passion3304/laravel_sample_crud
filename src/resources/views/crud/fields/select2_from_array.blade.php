@@ -61,16 +61,16 @@
 {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
     <!-- include select2 css-->
-    @loadCssOnce('packages/select2/dist/css/select2.min.css')
-    @loadCssOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
+    @loadOnce('packages/select2/dist/css/select2.min.css')
+    @loadOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
 @endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
     <!-- include select2 js-->
-    @loadJsOnce('packages/select2/dist/js/select2.full.min.js')
+    @loadOnce('packages/select2/dist/js/select2.full.min.js')
     @if (app()->getLocale() !== 'en')
-        @loadJsOnce('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js')
+        @loadOnce('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js')
     @endif
     @loadOnce('bpFieldInitSelect2FromArrayElement')
     <script>

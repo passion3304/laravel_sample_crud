@@ -23,7 +23,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        @loadCssOnce('packages/easymde/dist/easymde.min.css')
+        @loadOnce('packages/easymde/dist/easymde.min.css')
         @loadOnce('easymdeCss')
         <style type="text/css">
             .editor-toolbar {
@@ -36,7 +36,7 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        @loadJsOnce('packages/easymde/dist/easymde.min.js')
+        @loadOnce('packages/easymde/dist/easymde.min.js')
         @loadOnce('bpFieldInitEasyMdeElement')
         <script>
             function bpFieldInitEasyMdeElement(element) {
