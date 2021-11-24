@@ -35,10 +35,10 @@
 @push('after_scripts')
   @if (is_array($path))
     @foreach ($path as $string)
-      <script src="{{ $string }}" charset="utf-8"></script>
+     @loadJsOnce($string)
     @endforeach
   @elseif (is_string($path))
-    <script src="{{ $path }}" charset="utf-8"></script>
+    @loadJsOnce($path)
   @endif
 
   {!! $chart->script() !!}
