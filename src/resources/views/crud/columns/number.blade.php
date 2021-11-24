@@ -1,17 +1,21 @@
 {{-- regular object attribute --}}
 @php
-    $value = data_get($entry, $column['name']);
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['decimals'] = $column['decimals'] ?? 0;
     $column['dec_point'] = $column['dec_point'] ?? '.';
     $column['thousands_sep'] = $column['thousands_sep'] ?? ',';
-    $column['text'] = '';
+    $column['text'] = $column['default'] ?? '-';
 
-    if (!is_null($value)) {
-        $value = number_format($value, $column['decimals'], $column['dec_point'], $column['thousands_sep']);
-        $column['text'] = $column['prefix'].$value.$column['suffix'];
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+    
+    if (!is_null($column['value'])) {
+        $column['value'] = number_format($column['value'], $column['decimals'], $column['dec_point'], $column['thousands_sep']);
+        $column['text'] = $column['prefix'].$column['value'].$column['suffix'];
     }
 @endphp
 

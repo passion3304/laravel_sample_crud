@@ -12,6 +12,10 @@
 
     $field['multiple'] = $field['multiple'] ?? true;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+
+    if(isset($field['value']) && is_array($field['value'])) {
+         $field['value'] = $field['options']->whereIn((new $field['model'])->getKeyName(), $field['value']);
+    }
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

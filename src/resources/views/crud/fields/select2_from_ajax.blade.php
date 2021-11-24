@@ -106,27 +106,7 @@
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
-        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $isFieldInline = element.data('field-is-inline');
-
-        var select2AjaxFetchSelectedEntry = function (element) {
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: $dataSource,
-                    data: {
-                        'keys': $selectedOptions
-                    },
-                    type: $method,
-                    success: function (result) {
-
-                        resolve(result);
-                    },
-                    error: function (result) {
-                        reject(result);
-                    }
-                });
-            });
-        };
 
         // do not initialise select2s that have already been initialised
         if ($(element).hasClass("select2-hidden-accessible"))
@@ -181,31 +161,6 @@
                 cache: true
             },
         });
-
-        // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
-        // we have stored from the field and append those options in the select.
-        if (typeof $selectedOptions !== typeof undefined &&
-            $selectedOptions !== false &&
-            $selectedOptions != '' &&
-            $selectedOptions != null &&
-            $selectedOptions != [])
-        {
-            var optionsForSelect = [];
-            select2AjaxFetchSelectedEntry(element).then(function(result) {
-                result.forEach(function(item) {
-                    $itemText = item[$fieldAttribute];
-                    $itemValue = item[$connectedEntityKeyName];
-                    //add current key to be selected later.
-                    optionsForSelect.push($itemValue);
-
-                    //create the option in the select
-                    $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
-                });
-
-                // set the option keys as selected.
-                $(element).val(optionsForSelect);
-            });
-        }
 
         // if any dependencies have been declared
         // when one of those dependencies changes value

@@ -48,12 +48,17 @@
 @push('crud_list_scripts')
 	<!-- include select2 js-->
 	<script src="{{ asset('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+	@php $language = $filter->options['language'] ?? \App::getLocale(); @endphp
+	@if ($language !== 'en')
+	<script charset="UTF-8" src="{{ asset('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$language.'.min.js') }}"></script>
+	@endif
   <script>
 		jQuery(document).ready(function($) {
 			var dateInput = $('#datepicker-{{ $filter->key }}').datepicker({
 				autoclose: true,
 				format: 'yyyy-mm-dd',
-				todayHighlight: true
+				todayHighlight: true,
+				language: '{{ $language }}',
 			})
 			.on('changeDate', function(e) {
 				var d = new Date(e.date);

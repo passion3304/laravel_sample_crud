@@ -1,19 +1,22 @@
 {{-- enumerate the values in an array  --}}
 @php
-    $array = data_get($entry, $column['name']);
-
-    $column['escaped'] = $column['escaped'] ?? false;
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
-    $column['suffix'] = $column['suffix'] ?? 'items';
-    $column['text'] = '-';
+    $column['suffix'] = $column['suffix'] ?? ' items';
+    $column['text'] = $column['default'] ?? '-';
 
-    // the value should be an array wether or not attribute casting is used
-    if (! is_array($array)) {
-        $array = json_decode($array, true);
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
     }
 
-    if($array && count($array)) {
-        $column['text'] = $column['prefix'].count($array).' '.$column['suffix'];
+    // the value should be an array whether or not attribute casting is used
+    if (! is_array($column['value'])) {
+        $column['value'] = json_decode($column['value'], true);
+    }
+
+    if($column['value'] && count($column['value'])) {
+        $column['text'] = $column['prefix'].count($column['value']).$column['suffix'];
     }
 @endphp
 
