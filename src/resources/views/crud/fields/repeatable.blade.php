@@ -48,7 +48,7 @@
 @include('crud::fields.inc.wrapper_end')
 
 @push('before_scripts')
-    @include('crud::fields.inc.repeatable_row')
+    @include('crud::fields.inc.repeatable_row', ['hidden' => true])
 @endpush
 
   {{-- FIELD EXTRA CSS  --}}

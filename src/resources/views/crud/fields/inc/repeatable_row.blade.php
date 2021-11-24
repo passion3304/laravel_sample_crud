@@ -1,4 +1,8 @@
 
+@if ($hidden ?? false)
+<div class="d-none">
+@endif
+
 <div class="col-md-12 well repeatable-element row m-1 p-2" data-repeatable-identifier="{{ $field['name'] }}">
     @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
     <div class="controls">
@@ -32,3 +36,8 @@
 
     @endif
 </div>
+
+
+@if ($hidden ?? false)
+</div>
+@endif
