@@ -1,16 +1,22 @@
+{{-- json --}}
 @php
-    $value = is_string($entry->{$column['name']}) ? 
-        json_decode($entry->{$column['name']}, true) : 
-        $entry->{$column['name']};
-
-    $column['text'] = json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    $column['value'] = $column['value'] ?? $entry->{$column['name']};
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'pre';
+    $column['text'] = $column['default'] ?? '-';
 
-    if(!empty($column['text'])) {
-        $column['text'] = $column['prefix'].$column['text'].$column['suffix'];
+    if(is_string($column['value'])) {
+        $column['value'] = json_decode($column['value'], true);
+    }
+
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].json_encode($column['value'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).$column['suffix'];
     }
 @endphp
 

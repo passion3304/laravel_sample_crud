@@ -1,20 +1,24 @@
 {{-- enumerate the values in an array  --}}
 @php
-    $value = data_get($entry, $column['name']);
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
 
-    // the value should be an array wether or not attribute casting is used
-    if (!is_array($value)) {
-        $value = json_decode($value, true);
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    // the value should be an array whether or not attribute casting is used
+    if (!is_array($column['value'])) {
+        $column['value'] = json_decode($column['value'], true);
     }
 @endphp
 
 <span>
-    @if($value && count($value))
+    @if($column['value'] && count($column['value']))
         {{ $column['prefix'] }}
-        @foreach($value as $key => $text)
+        @foreach($column['value'] as $key => $text)
             @php
                 $column['text'] = $text;
                 $related_key = $key;
@@ -34,6 +38,6 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        -
+        {{ $column['default'] ?? '-' }}
     @endif
 </span>
