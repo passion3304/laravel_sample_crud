@@ -1,9 +1,9 @@
-<input type="hidden" name="http_referrer" value={{ session('referrer_url_override') ?? old('http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
+<input type="hidden" name="_http_referrer" value={{ session('referrer_url_override') ?? old('_http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled() && count($crud->getTabs()))
     @include('crud::inc.show_tabbed_fields')
-    <input type="hidden" name="current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
+    <input type="hidden" name="_current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
 @else
   <div class="card">
     <div class="card-body row">
@@ -67,7 +67,7 @@
       // Save button has multiple actions: save and exit, save and edit, save and new
       var saveActions = $('#saveActions'),
       crudForm        = saveActions.parents('form'),
-      saveActionField = $('[name="save_action"]');
+      saveActionField = $('[name="_save_action"]');
 
       saveActions.on('click', '.dropdown-menu a', function(){
           var saveAction = $(this).data('value');
@@ -155,11 +155,11 @@
 
       $("a[data-toggle='tab']").click(function(){
           currentTabName = $(this).attr('tab_name');
-          $("input[name='current_tab']").val(currentTabName);
+          $("input[name='_current_tab']").val(currentTabName);
       });
 
       if (window.location.hash) {
-          $("input[name='current_tab']").val(window.location.hash.substr(1));
+          $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
 
       });

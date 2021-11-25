@@ -82,7 +82,7 @@ trait SaveActions
         //check for some mandatory fields
         $saveAction['name'] ?? abort(500, 'Please define save action name.');
         $saveAction['redirect'] = $saveAction['redirect'] ?? function ($crud, $request, $itemId) {
-            return $request->has('http_referrer') ? $request->get('http_referrer') : $crud->route;
+            return $request->has('_http_referrer') ? $request->get('_http_referrer') : $crud->route;
         };
         $saveAction['visible'] = $saveAction['visible'] ?? true;
         $saveAction['button_text'] = $saveAction['button_text'] ?? $saveAction['name'];
@@ -304,7 +304,7 @@ trait SaveActions
     public function setSaveAction($forceSaveAction = null)
     {
         $saveAction = $forceSaveAction ?:
-            \Request::input('save_action', $this->getFallBackSaveAction());
+            \Request::input('_save_action', $this->getFallBackSaveAction());
 
         $showBubble = $this->getOperationSetting('showSaveActionChange') ?? config('backpack.crud.operations.'.$this->getCurrentOperation().'.showSaveActionChange') ?? true;
 
@@ -327,7 +327,7 @@ trait SaveActions
     public function performSaveAction($itemId = null)
     {
         $request = \Request::instance();
-        $saveAction = $request->input('save_action', $this->getFallBackSaveAction());
+        $saveAction = $request->input('_save_action', $this->getFallBackSaveAction());
         $itemId = $itemId ?: $request->input('id');
         $actions = $this->getOperationSetting('save_actions');
 
@@ -375,7 +375,7 @@ trait SaveActions
                     return $crud->hasAccess('list');
                 },
                 'redirect' => function ($crud, $request, $itemId = null) {
-                    return $request->has('http_referrer') ? $request->get('http_referrer') : $crud->route;
+                    return $request->has('_http_referrer') ? $request->get('_http_referrer') : $crud->route;
                 },
                 'button_text' => trans('backpack::crud.save_action_save_and_back'),
             ],
@@ -387,11 +387,11 @@ trait SaveActions
                 'redirect' => function ($crud, $request, $itemId = null) {
                     $itemId = $itemId ?: $request->input('id');
                     $redirectUrl = $crud->route.'/'.$itemId.'/edit';
-                    if ($request->has('locale')) {
-                        $redirectUrl .= '?locale='.$request->input('locale');
+                    if ($request->has('_locale')) {
+                        $redirectUrl .= '?_locale='.$request->input('_locale');
                     }
-                    if ($request->has('current_tab')) {
-                        $redirectUrl = $redirectUrl.'#'.$request->get('current_tab');
+                    if ($request->has('_current_tab')) {
+                        $redirectUrl = $redirectUrl.'#'.$request->get('_current_tab');
                     }
 
                     return $redirectUrl;
