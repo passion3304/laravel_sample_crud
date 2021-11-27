@@ -5,7 +5,7 @@
 
     // check if attribute is casted, if it is, we get back un-casted values
     if(Arr::get($crud->model->getCasts(), $field['name']) === 'boolean') {
-        $optionValue = $optionValue === true ? 1 : 0;
+        $optionValue = (int) $optionValue;
     }
 
     // if the class isn't overwritten, use 'radio'
@@ -13,6 +13,7 @@
         $field['attributes']['class'] = 'radio';
     }
 
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
     $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitRadioElement';
 @endphp
 
@@ -70,8 +71,8 @@
 
             // when one radio input is selected
             element.find('input[type=radio]').change(function(event) {
-                // the value gets updated in the hidden input
-                hiddenInput.val($(this).val());
+                // the value gets updated in the hidden input and the 'change' event is fired
+                hiddenInput.val($(this).val()).change();
                 // all other radios get unchecked
                 element.find('input[type=radio]').not(this).prop('checked', false);
             });

@@ -10,9 +10,9 @@ trait InlineCreateOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param string $segment    Name of the current entity (singular). Used as first URL segment.
-     * @param string $routeName  Prefix of the route name.
-     * @param string $controller Name of the current CrudController.
+     * @param  string  $segment  Name of the current entity (singular). Used as first URL segment.
+     * @param  string  $routeName  Prefix of the route name.
+     * @param  string  $controller  Name of the current CrudController.
      */
     protected function setupInlineCreateRoutes($segment, $routeName, $controller)
     {
@@ -69,7 +69,7 @@ trait InlineCreateOperation
 
     /**
      * Runs the store() function in controller like a regular crud create form.
-     * Developer might overwrite this if he wants some custom save behaviour when added on the fly.
+     * Developer might overwrite this if they want some custom save behaviour when added on the fly.
      *
      * @return void
      */

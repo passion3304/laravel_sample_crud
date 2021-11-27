@@ -30,7 +30,7 @@
                   $('.modal').modal('hide');
 
                   if (typeof crud !== 'undefined') {
-                    crud.table.ajax.reload();
+                    crud.table.draw(false);
                   }
               },
               error: function(result) {

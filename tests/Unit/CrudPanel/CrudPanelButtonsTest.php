@@ -4,6 +4,9 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudButton;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Buttons
+ */
 class CrudPanelButtonsTest extends BaseCrudPanelTest
 {
     private $defaultButtonNames = [];

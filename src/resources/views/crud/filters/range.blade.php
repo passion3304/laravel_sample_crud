@@ -120,7 +120,7 @@ END OF FILTER JAVSCRIPT CHECKLIST --}}
 			$(".range-filter-{{ $filter->key }}-clear-button").click(function(e) {
 				e.preventDefault();
 
-				$('li[filter-name={{ $filter->key }}]').trigger('filter:clear');
+				$('li[filter-key={{ $filter->key }}]').trigger('filter:clear');
 			})
 
 		});

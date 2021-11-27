@@ -10,29 +10,27 @@ trait AutoSet
      *
      * @return void
      */
-    public function setFromDb()
+    public function setFromDb($setFields = true, $setColumns = true)
     {
         if ($this->driverIsSql()) {
             $this->getDbColumnTypes();
         }
 
-        array_map(function ($field) {
-            $new_field = [
-                'name'       => $field,
-                'label'      => $this->makeLabel($field),
-                'value'      => null,
-                'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
-                'type'       => $this->inferFieldTypeFromDbColumnType($field),
-                'values'     => [],
-                'attributes' => [],
-                'autoset'    => true,
-            ];
-
-            if (! isset($this->fields()[$field])) {
-                $this->addField($new_field);
+        array_map(function ($field) use ($setFields, $setColumns) {
+            if ($setFields && ! isset($this->fields()[$field])) {
+                $this->addField([
+                    'name'       => $field,
+                    'label'      => $this->makeLabel($field),
+                    'value'      => null,
+                    'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
+                    'type'       => $this->inferFieldTypeFromDbColumnType($field),
+                    'values'     => [],
+                    'attributes' => [],
+                    'autoset'    => true,
+                ]);
             }
 
-            if (! in_array($field, $this->model->getHidden()) && ! in_array($field, $this->columns())) {
+            if ($setColumns && ! in_array($field, $this->model->getHidden()) && ! isset($this->columns()[$field])) {
                 $this->addColumn([
                     'name'    => $field,
                     'label'   => $this->makeLabel($field),
@@ -90,8 +88,7 @@ trait AutoSet
     /**
      * Infer a field type, judging from the database column type.
      *
-     * @param string $field Field name.
-     *
+     * @param  string  $field  Field name.
      * @return string Field type.
      */
     protected function inferFieldTypeFromDbColumnType($fieldName)
@@ -166,7 +163,7 @@ trait AutoSet
     public function setDoctrineTypesMapping()
     {
         $types = ['enum' => 'string'];
-        $platform = $this->getSchema()->getConnection()->getDoctrineConnection()->getDatabasePlatform();
+        $platform = $this->getSchema()->getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
         foreach ($types as $type_key => $type_value) {
             if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
                 $platform->registerDoctrineTypeMapping($type_key, $type_value);
@@ -177,8 +174,7 @@ trait AutoSet
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
      *
-     * @param string $value The value.
-     *
+     * @param  string  $value  The value.
      * @return string The transformed value.
      */
     public function makeLabel($value)
@@ -201,8 +197,7 @@ trait AutoSet
     /**
      * Change the way labels are made.
      *
-     * @param callable $labeller A function that receives a string and returns the formatted string, after stripping down useless characters.
-     *
+     * @param  callable  $labeller  A function that receives a string and returns the formatted string, after stripping down useless characters.
      * @return self
      */
     public function setLabeller(callable $labeller)

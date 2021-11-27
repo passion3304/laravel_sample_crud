@@ -42,7 +42,7 @@ trait SaveActions
     /**
      * Gets the save action that has the desired order.
      *
-     * @param int $order
+     * @param  int  $order
      * @return array
      */
     public function getSaveActionByOrder($order)
@@ -55,7 +55,7 @@ trait SaveActions
     /**
      * Allow the developer to register multiple save actions.
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function addSaveActions($saveActions)
@@ -73,7 +73,7 @@ trait SaveActions
     /**
      * Allow developers to register save action into CRUD.
      *
-     * @param array $saveAction
+     * @param  array  $saveAction
      * @return void
      */
     public function addSaveAction(array $saveAction)
@@ -100,8 +100,8 @@ trait SaveActions
     /**
      * Replaces setting order or forces some default.
      *
-     * @param string $saveAction
-     * @param int $wantedOrder
+     * @param  string  $saveAction
+     * @param  int  $wantedOrder
      * @return int
      */
     public function orderSaveAction(string $saveAction, int $wantedOrder)
@@ -127,7 +127,7 @@ trait SaveActions
     /**
      * Replace the current save actions with the ones provided.
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function replaceSaveActions($saveActions)
@@ -145,7 +145,7 @@ trait SaveActions
     /**
      * Alias function of replaceSaveActions() for CRUD consistency.
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function setSaveActions($saveActions)
@@ -156,7 +156,7 @@ trait SaveActions
     /**
      * Allow the developer to remove multiple save actions from settings.
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function removeSaveActions(array $saveActions)
@@ -169,7 +169,7 @@ trait SaveActions
     /**
      * Allow the developer to remove a save action from settings.
      *
-     * @param string $saveAction
+     * @param  string  $saveAction
      * @return void
      */
     public function removeSaveAction(string $saveAction)
@@ -184,7 +184,7 @@ trait SaveActions
     /**
      * Allow the developer to unset all save actions.
      *
-     * @param string $saveAction
+     * @param  string  $saveAction
      * @return void
      */
     public function removeAllSaveActions()
@@ -195,7 +195,7 @@ trait SaveActions
     /**
      * Allows the developer to set save actions order. It could be ['action1','action2'] or ['action1' => 1, 'action2' => 2].
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function orderSaveActions(array $saveActions)
@@ -248,7 +248,7 @@ trait SaveActions
     /**
      * Gets the current save action for this crud.
      *
-     * @param array $saveOptions
+     * @param  array  $saveOptions
      * @return array
      */
     public function getCurrentSaveAction($saveOptions)
@@ -298,8 +298,7 @@ trait SaveActions
     /**
      * Change the session variable that remembers what to do after the "Save" action.
      *
-     * @param string|null $forceSaveAction
-     *
+     * @param  string|null  $forceSaveAction
      * @return void
      */
     public function setSaveAction($forceSaveAction = null)
@@ -322,8 +321,7 @@ trait SaveActions
     /**
      * Redirect to the correct URL, depending on which save action has been selected.
      *
-     * @param string $itemId
-     *
+     * @param  string  $itemId
      * @return \Illuminate\Http\Response
      */
     public function performSaveAction($itemId = null)

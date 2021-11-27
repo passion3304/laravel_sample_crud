@@ -1,15 +1,20 @@
 <!-- select2 from array -->
+@php
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+@endphp
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     <select
         name="{{ $field['name'] }}@if (isset($field['allows_multiple']) && $field['allows_multiple']==true)[]@endif"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2FromArrayElement"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_from_array'])
         @if (isset($field['allows_multiple']) && $field['allows_multiple']==true)multiple @endif
         >
 
-        @if (isset($field['allows_null']) && $field['allows_null']==true)
+        @if ($field['allows_null'])
             <option value="">-</option>
         @endif
 
@@ -68,14 +73,17 @@
     <!-- include select2 js-->
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
     @endif
     <script>
         function bpFieldInitSelect2FromArrayElement(element) {
             if (!element.hasClass("select2-hidden-accessible"))
                 {
+                    let $isFieldInline = element.data('field-is-inline');
+
                     element.select2({
-                        theme: "bootstrap"
+                        theme: "bootstrap",
+                        dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
                     }).on('select2:unselect', function(e) {
                         if ($(this).attr('multiple') && $(this).val().length == 0) {
                             $(this).val(null).trigger('change');

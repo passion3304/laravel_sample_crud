@@ -1,18 +1,25 @@
 {{-- single relationships (1-1, 1-n) --}}
 @php
-    $column['escaped'] = $column['escaped'] ?? true;
-    $column['limit'] = $column['limit'] ?? 40;
     $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
+    $column['value'] = $column['value'] ?? $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
+    $column['escaped'] = $column['escaped'] ?? true;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
+    $column['limit'] = $column['limit'] ?? 40;
 
-    $attributes = $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
-    foreach ($attributes as $key => $text) {
-        $text = Str::limit($text, $column['limit'], '[...]');
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    foreach ($column['value'] as &$value) {
+        $value = Str::limit($value, $column['limit'], '[...]');
     }
 @endphp
 
 <span>
-    @if(count($attributes))
-        @foreach($attributes as $key => $text)
+    @if(count($column['value']))
+        {{ $column['prefix'] }}
+        @foreach($column['value'] as $key => $text)
             @php
                 $related_key = $key;
             @endphp
@@ -29,7 +36,8 @@
                 @if(!$loop->last), @endif
             </span>
         @endforeach
+        {{ $column['suffix'] }}
     @else
-        -
+        {{ $column['default'] ?? '-' }}
     @endif
 </span>

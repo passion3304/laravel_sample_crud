@@ -22,10 +22,9 @@ trait HasRelationshipFields
     {
         $conn = DB::connection($this->getConnectionName());
 
-        // register the enum, json and jsonb column type, because Doctrine doesn't support it
+        // register the enum, and jsonb types
         $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('json', 'json_array');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json_array');
+        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json');
 
         return $conn;
     }
@@ -46,13 +45,13 @@ trait HasRelationshipFields
     /**
      * Get the column type for a certain db column.
      *
-     * @param  string $columnName Name of the column in the db table.
-     * @return string             Db column type.
+     * @param  string  $columnName  Name of the column in the db table.
+     * @return string Db column type.
      */
     public function getColumnType($columnName)
     {
         $conn = $this->getConnectionWithExtraTypeMappings();
-        $table = $this->getTableWithPrefix();
+        $table = $this->getTable();
 
         return $conn->getSchemaBuilder()->getColumnType($table, $columnName);
     }
@@ -60,7 +59,7 @@ trait HasRelationshipFields
     /**
      * Checks if the given column name is nullable.
      *
-     * @param string $column_name The name of the db column.
+     * @param  string  $column_name  The name of the db column.
      * @return bool
      */
     public static function isColumnNullable($column_name)

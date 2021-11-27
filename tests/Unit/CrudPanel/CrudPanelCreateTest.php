@@ -7,6 +7,9 @@ use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Create
+ */
 class CrudPanelCreateTest extends BaseDBCrudPanelTest
 {
     private $nonRelationshipField = [
@@ -103,6 +106,12 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ],
     ];
 
+    private $articleInputBelongsToRelationName = [
+        [
+            'name' => 'user',
+        ],
+    ];
+
     public function testCreate()
     {
         $this->crudPanel->setModel(User::class);
@@ -121,26 +130,50 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEmpty($entry->articles);
     }
 
-    /**
-     * @group failing
-     */
     public function testCreateWithOneToOneRelationship()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addFields($this->userInputHasOneRelation);
         $faker = Factory::create();
+        $account_details_nickname = $faker->name;
         $inputData = [
             'name'     => $faker->name,
             'email'    => $faker->safeEmail,
             'password' => bcrypt($faker->password()),
             'accountDetails' => [
-                'nickname' => $faker->name,
+                'nickname' => $account_details_nickname,
                 'profile_picture' => 'test.jpg',
             ],
         ];
         $entry = $this->crudPanel->create($inputData);
-        $this->markTestIncomplete('Has one relation is not created in tests.');
+        $account_details = $entry->accountDetails()->first();
+
+        $this->assertEquals($account_details->nickname, $account_details_nickname);
+    }
+
+    public function testCreateBelongsToWithRelationName()
+    {
+        $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->addFields($this->articleInputFieldsOneToMany);
+        $this->crudPanel->removeField('user_id');
+        $this->crudPanel->addFields($this->articleInputBelongsToRelationName);
+        $faker = Factory::create();
+        $inputData = [
+            'content'     => $faker->text(),
+            'tags'        => $faker->words(3, true),
+            'user'     => 1,
+            'metas'       => null,
+            'extras'      => null,
+            'cast_metas'  => null,
+            'cast_tags'   => null,
+            'cast_extras' => null,
+        ];
+        $entry = $this->crudPanel->create($inputData);
+        $userEntry = User::find(1);
+        $article = Article::where('user_id', 1)->with('user')->get()->last();
+        $this->assertEquals($article->user_id, $entry->user_id);
+        $this->assertEquals($article->id, $entry->id);
     }
 
     public function testCreateWithOneToManyRelationship()

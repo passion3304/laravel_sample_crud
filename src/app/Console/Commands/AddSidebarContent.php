@@ -49,7 +49,7 @@ class AddSidebarContent extends Command
             $file_lines = file($disk->path($path), FILE_IGNORE_NEW_LINES);
 
             if ($this->getLastLineNumberThatContains($code, $file_lines)) {
-                return $this->info('Sidebar item already exists!');
+                return $this->comment('Sidebar item already existed.');
             }
 
             if ($disk->put($path, $contents.PHP_EOL.$code)) {
@@ -65,9 +65,9 @@ class AddSidebarContent extends Command
     /**
      * Parse the given file stream and return the line number where a string is found.
      *
-     * @param  string $needle   The string that's being searched for.
-     * @param  array $haystack  The file where the search is being performed.
-     * @return bool|int         The last line number where the string was found. Or false.
+     * @param  string  $needle  The string that's being searched for.
+     * @param  array  $haystack  The file where the search is being performed.
+     * @return bool|int The last line number where the string was found. Or false.
      */
     private function getLastLineNumberThatContains($needle, $haystack)
     {
