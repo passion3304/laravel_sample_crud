@@ -602,4 +602,22 @@ return [
         // "zu" => "Zulu"
     ],
 
+    'view_namespaces' => [
+        // 'buttons' => [ // TODO
+        //     'crud::buttons', // falls back to 'resources/views/vendor/backpack/crud/buttons'
+        // ],
+        // 'columns' => [ // TODO
+        //     'crud::columns', // falls back to 'resources/views/vendor/backpack/crud/columns'
+        // ],
+        'fields' => [
+            'crud::fields', // falls back to 'resources/views/vendor/backpack/crud/fields'
+        ],
+        // 'filters' => [ // TODO
+        //     'crud::filters', // falls back to 'resources/views/vendor/backpack/crud/filters'
+        // ],
+        // 'operations' => [ // MAYBE?!
+        //     'crud::operations', // falls back to 'resources/views/vendor/backpack/crud/operations'
+        // ],
+    ],
+
 ];
