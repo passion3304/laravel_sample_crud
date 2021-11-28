@@ -2,18 +2,17 @@
 {{-- Used in Backpack\MenuCRUD --}}
 
 <?php
-    $field['options'] = [
-        'page_link'     => trans('backpack::crud.page_link'),
-        'internal_link' => trans('backpack::crud.internal_link'),
-        'external_link' => trans('backpack::crud.external_link'),
-    ];
     $field['allows_null'] = $field['allows_null'] ?? false;
 
-    $pages = $field['page_model']::all();
+    $field['name']['type'] = $field['name']['type'] ?? $field['name'][0] ?? 'type';
+    $field['name']['link'] = $field['name']['link'] ?? $field['name'][1] ?? 'link';
+    $field['name']['page_id'] = $field['name']['page_id'] ?? $field['name'][2] ?? 'page_id';
 
-    $nameType = $field['name']['type'] ?? $field['name'][0] ?? 'type';
-    $nameLink = $field['name']['link'] ?? $field['name'][1] ?? 'link';
-    $namePageId = $field['name']['page_id'] ?? $field['name'][2] ?? 'page_id';
+    $field['options']['page_link'] = $field['options']['page_link'] ?? trans('backpack::crud.page_link');
+    $field['options']['internal_link'] = $field['options']['internal_link'] ?? trans('backpack::crud.internal_link');
+    $field['options']['external_link'] = $field['options']['external_link'] ?? trans('backpack::crud.external_link');
+
+    $field['pages'] = $field['pages'] ?? ($field['page_model'] ?? config('backpack.pagemanager.page_model_class'))::all();
 ?>
 
 @include('crud::fields.inc.wrapper_start')
@@ -22,14 +21,14 @@
 
     <div class="row" data-init-function="bpFieldInitPageOrLinkElement">
         {{-- hidden placeholders for content --}}
-        <input type="hidden" value="{{ $entry->$namePageId }}" name="{{ $namePageId }}" />
-        <input type="hidden" value="{{ $entry->$nameLink }}" name="{{ $nameLink }}" />
+        <input type="hidden" value="{{ $entry->{$field['name']['page_id']} }}" name="{{ $field['name']['page_id'] }}" />
+        <input type="hidden" value="{{ $entry->{$field['name']['link']} }}" name="{{ $field['name']['link'] }}" />
 
         <div class="col-sm-3">
             {{-- type select --}}
             <select
                 data-identifier="page_or_link_select"
-                name="{!! $nameType !!}"
+                name="{!! $field['name']['type'] !!}"
                 @include('crud::fields.inc.attributes')
                 >
 
@@ -39,7 +38,7 @@
 
                 @foreach ($field['options'] as $key => $value)
                     <option value="{{ $key }}"
-                        @if ($key === $entry->$nameType)
+                        @if ($key === $entry->{$field['name']['type']})
                             selected
                         @endif
                     >{{ $value }}</option>
@@ -48,15 +47,15 @@
         </div>
         <div class="col-sm-9">
             {{-- page slug input --}}
-            <div class="page_or_link_value page_link {{ $entry->$nameType === 'page_link' || (!$entry->$nameType && !$field['allows_null']) ? '' : 'd-none' }}">
+            <div class="page_or_link_value page_link {{ $entry->{$field['name']['type']} === 'page_link' || (!$entry->{$field['name']['type']} && !$field['allows_null']) ? '' : 'd-none' }}">
                 <select
                     class="form-control"
-                    for="{{ $namePageId }}"
+                    for="{{ $field['name']['page_id'] }}"
                     required
                     >
-                    @foreach ($pages as $page)
+                    @foreach ($field['pages'] as $page)
                         <option value="{{ $page->id }}"
-                            @if ($page->id === $entry->$namePageId)
+                            @if ($page->id === $entry->{$field['name']['page_id']})
                                 selected
                             @endif
                         >{{ $page->name }}</option>
@@ -65,39 +64,39 @@
             </div>
 
             {{-- internal link input --}}
-            <div class="page_or_link_value internal_link {{ $entry->$nameType === 'internal_link' ? '' : 'd-none' }}">
+            <div class="page_or_link_value internal_link {{ $entry->{$field['name']['type']} === 'internal_link' ? '' : 'd-none' }}">
                 <input
                     type="text"
                     class="form-control"
                     placeholder="{{ trans('backpack::crud.internal_link_placeholder', ['url', url(config('backpack.base.route_prefix').'/page')]) }}"
-                    for="{{ $nameLink }}"
+                    for="{{ $field['name']['link'] }}"
                     required
 
-                    @if ($entry->$nameType !== 'internal_link')
+                    @if ($entry->{$field['name']['type']} !== 'internal_link')
                         disabled="disabled"
                     @endif
 
-                    @if ($entry->$nameType === 'internal_link' && $entry->$nameLink)
-                        value="{{ $entry->$nameLink }}"
+                    @if ($entry->{$field['name']['type']} === 'internal_link' && $entry->{$field['name']['link']})
+                        value="{{ $entry->{$field['name']['link']} }}"
                     @endif
                     >
             </div>
 
             {{-- external link input --}}
-            <div class="page_or_link_value external_link {{ $entry->$nameType === 'external_link' ? '' : 'd-none' }}">
+            <div class="page_or_link_value external_link {{ $entry->{$field['name']['type']} === 'external_link' ? '' : 'd-none' }}">
                 <input
                     type="url"
                     class="form-control"
                     placeholder="{{ trans('backpack::crud.page_link_placeholder') }}"
-                    for="{{ $nameLink }}"
+                    for="{{ $field['name']['link'] }}"
                     required
 
-                    @if ($entry->$nameType !== 'external_link')
+                    @if ($entry->{$field['name']['type']} !== 'external_link')
                         disabled="disabled"
                     @endif
 
-                    @if ($entry->$nameType === 'external_link' && $entry->$nameLink)
-                        value="{{ $entry->$nameLink }}"
+                    @if ($entry->{$field['name']['type']} === 'external_link' && $entry->{$field['name']['link']})
+                        value="{{ $entry->{$field['name']['link']} }}"
                     @endif
                     >
             </div>
