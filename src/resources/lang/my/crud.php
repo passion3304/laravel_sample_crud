@@ -56,7 +56,7 @@ return [
     'delete_confirmation_not_title'               => 'ဖျက်၍မရပါ။',
     'delete_confirmation_not_message'             => "အမှားအယွင်းတစ်ခု ဖြစ်ပွားခဲ့သည်။ ဒေတာကို ဖျက်မထားပါ။",
     'delete_confirmation_not_deleted_title'       => 'ဖျက်၍မရပါ။',
-    'delete_confirmation_not_deleted_message'     => 'Nothing happened. Your item is safe.',
+    'delete_confirmation_not_deleted_message'     => 'ဘာမှမဖြစ်ပါ ဒေတာတွေအကုန်လုံခြုံပါတယ်။',
 
     // Bulk actions
     'bulk_no_entries_selected_title'   => 'ဒေတာကို ရွေးမထားပါ။',
@@ -83,20 +83,20 @@ return [
     // DataTables translation
     'emptyTable'     => 'ဇယားတွင်ဒေတာမရှိပါ။',
     'info'           => 'Showing _START_ to _END_ of _TOTAL_ entries',
-    'infoEmpty'      => 'No entries',
+    'infoEmpty'      => 'ဘာမှမရှိပါ။',
     'infoFiltered'   => '(filtered from _MAX_ total entries)',
     'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ entries per page',
-    'loadingRecords' => 'Loading...',
-    'processing'     => 'Processing...',
-    'search'         => 'Search',
-    'zeroRecords'    => 'No matching entries found',
+    'loadingRecords' => 'ခဏစောင့်‌ပါ။...',
+    'processing'     => 'ဆောင်ရွက်နေသည်။...',
+    'search'         => 'ရှာဖွေ',
+    'zeroRecords'    => 'ဘာ‌အချက်အလက်မျှမရှိပါ',
     'paginate'       => [
-        'first'    => 'First',
-        'last'     => 'Last',
-        'next'     => 'Next',
-        'previous' => 'Previous',
+        'first'    => 'ပထမ',
+        'last'     => 'နောက်ဆုံး',
+        'next'     => 'နောက်တစ်ခု',
+        'previous' => 'ရှေ့သို့',
     ],
     'aria' => [
         'sortAscending'  => ': activate to sort column ascending',
