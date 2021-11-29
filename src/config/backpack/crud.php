@@ -603,9 +603,9 @@ return [
     ],
 
     'view_namespaces' => [
-        // 'buttons' => [ // TODO
-        //     'crud::buttons', // falls back to 'resources/views/vendor/backpack/crud/buttons'
-        // ],
+        'buttons' => [ // TODO
+            'crud::buttons', // falls back to 'resources/views/vendor/backpack/crud/buttons'
+        ],
         'columns' => [ // TODO
             'crud::columns', // falls back to 'resources/views/vendor/backpack/crud/columns'
         ],
