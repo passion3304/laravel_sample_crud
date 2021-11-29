@@ -132,6 +132,20 @@ class CrudFilter
         return $this->viewNamespace.'.'.$this->view;
     }
 
+    /**
+     * Get an array of full paths to the filter view, including fallbacks
+     * as configured in the backpack/config/crud.php file
+     *
+     * @return array
+     */
+    public function getNamespacedViewWithFallbacks()
+    {
+        $type = $this->type;
+        return array_map(function ($item) use ($type) {
+            return $item.'.'.$type;
+        }, config('backpack.crud.view_namespaces.filters'));
+    }
+
     // ---------------------
     // FLUENT SYNTAX METHODS
     // ---------------------
