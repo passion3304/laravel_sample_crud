@@ -54,7 +54,7 @@ return [
     'delete_confirmation_title'                   => 'ဒေတာကို ဖျက်လိုက်သည်။',
     'delete_confirmation_message'                 => 'ဒေတာကို အောင်မြင်စွာ ဖျက်လိုက်ပါပြီ။',
     'delete_confirmation_not_title'               => 'ဖျက်၍မရပါ။',
-    'delete_confirmation_not_message'             => "အမှားအယွင်းတစ်ခု ဖြစ်ပွားခဲ့သည်။ ဒေတာကို ဖျက်မထားပါ။",
+    'delete_confirmation_not_message'             => 'အမှားအယွင်းတစ်ခု ဖြစ်ပွားခဲ့သည်။ ဒေတာကို ဖျက်မထားပါ။',
     'delete_confirmation_not_deleted_title'       => 'ဖျက်၍မရပါ။',
     'delete_confirmation_not_deleted_message'     => 'ဘာမှမဖြစ်ပါ ဒေတာတွေအကုန်လုံခြုံပါတယ်။',
 
