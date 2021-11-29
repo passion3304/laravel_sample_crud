@@ -266,7 +266,7 @@ class CrudButton
     /**
      * Get an array of full paths to the filter view, consisting of:
      * - the path given in the button definition
-     * - fallback view paths as configured in backpack/config/crud.php
+     * - fallback view paths as configured in backpack/config/crud.php.
      *
      * @return array
      */
