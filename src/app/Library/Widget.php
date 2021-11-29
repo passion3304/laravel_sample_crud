@@ -116,11 +116,10 @@ class Widget extends Fluent
         return $this;
     }
 
-
     /**
      * Get an array of full paths to the widget view, consisting of:
      * - the path given in the widget definition
-     * - fallback view paths as configured in backpack/config/base.php
+     * - fallback view paths as configured in backpack/config/base.php.
      *
      * @return array
      */
