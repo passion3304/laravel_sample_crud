@@ -615,9 +615,6 @@ return [
         'filters' => [ // TODO
             'crud::filters', // falls back to 'resources/views/vendor/backpack/crud/filters'
         ],
-        // 'operations' => [ // MAYBE?!
-        //     'crud::operations', // falls back to 'resources/views/vendor/backpack/crud/operations'
-        // ],
     ],
 
 ];
