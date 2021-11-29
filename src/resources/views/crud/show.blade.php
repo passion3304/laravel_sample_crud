@@ -56,7 +56,7 @@
 		                    <strong>{!! $column['label'] !!}:</strong>
 		                </td>
                         <td>
-							@includeFirst(['crud::columns.'.$column['type'], 'crud::columns.text'])
+							@includeFirst(['crud::columns.'.($column['type'] ?? 'text'), 'crud::columns.text'])
                         </td>
 		            </tr>
 		        @endforeach
