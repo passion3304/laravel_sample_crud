@@ -603,16 +603,16 @@ return [
     ],
 
     'view_namespaces' => [
-        'buttons' => [ // TODO
+        'buttons' => [
             'crud::buttons', // falls back to 'resources/views/vendor/backpack/crud/buttons'
         ],
-        'columns' => [ // TODO
+        'columns' => [
             'crud::columns', // falls back to 'resources/views/vendor/backpack/crud/columns'
         ],
         'fields' => [
             'crud::fields', // falls back to 'resources/views/vendor/backpack/crud/fields'
         ],
-        'filters' => [ // TODO
+        'filters' => [
             'crud::filters', // falls back to 'resources/views/vendor/backpack/crud/filters'
         ],
     ],
