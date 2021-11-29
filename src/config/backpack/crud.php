@@ -97,7 +97,7 @@ return [
             // - false - ONLY save inputs that have fields (safest)
             // - [x, y, z] - save ALL inputs, EXCEPT the ones given in this array
             'saveAllInputsExcept' => false,
-            // 'saveAllInputsExcept' => ['_token', '_method', 'http_referrer', 'current_tab', 'save_action'],
+            // 'saveAllInputsExcept' => ['_token', '_method', '_http_referrer', '_current_tab', '_save_action'],
         ],
 
         /*
@@ -133,7 +133,7 @@ return [
             // - false - Save ONLY inputs that have a field (safest, default);
             // - [x, y, z] - Save ALL inputs, EXCEPT the ones given in this array;
             'saveAllInputsExcept' => false,
-            // 'saveAllInputsExcept' => ['_token', '_method', 'http_referrer', 'current_tab', 'save_action'],
+            // 'saveAllInputsExcept' => ['_token', '_method', '_http_referrer', '_current_tab', '_save_action'],
         ],
 
         /*
