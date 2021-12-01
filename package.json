@@ -59,6 +59,6 @@
         "source-sans-pro": "^3.6",
         "summernote": "^0.8.20",
         "sweetalert": "^2.1.2",
-        "tinymce": "^5.10.0"
+        "tinymce": "^5.10.2"
     }
 }
