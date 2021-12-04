@@ -427,7 +427,7 @@ trait Fields
      * Returns the request without anything that might have been maliciously inserted.
      * Only specific field names that have been introduced with addField() are kept in the request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function getStrippedSaveRequest($request)

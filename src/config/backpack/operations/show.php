@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configurations for Backpack's ShowOperation
+ * Configurations for Backpack's ShowOperation.
  *
  * @see https://backpackforlaravel.com/docs/crud-operation-show
  */
