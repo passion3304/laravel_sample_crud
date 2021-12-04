@@ -1,16 +1,26 @@
 {{-- email link --}}
 @php
-    $value = data_get($entry, $column['name']);
-
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? true;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
     $column['limit'] = $column['limit'] ?? 40;
+    $column['text'] = $column['default'] ?? '-';
+
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].Str::limit(strip_tags($column['value']), $column['limit'], "[...]").$column['suffix'];
+    }
+
     $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
-    $column['wrapper']['href'] = $column['wrapper']['href'] ?? 'mailto:'.$value;
-    $column['text'] = Str::limit(strip_tags($value), $column['limit'], "[...]") ?? '-';
+    $column['wrapper']['href'] = $column['wrapper']['href'] ?? 'mailto:'.$column['value'];
 @endphp
 
 <span>
-	@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         @if($column['escaped'])
             {{ $column['text'] }}
         @else

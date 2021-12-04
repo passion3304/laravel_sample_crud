@@ -7,7 +7,7 @@ trait Tabs
     public function enableTabs()
     {
         $this->setOperationSetting('tabsEnabled', true);
-        $this->setOperationSetting('tabsType', config('backpack.crud.'.$this->getCurrentOperation().'.tabsType', 'horizontal'));
+        $this->setOperationSetting('tabsType', config('backpack.crud.operations.'.$this->getCurrentOperation().'.tabsType', 'horizontal'));
 
         return $this->tabsEnabled();
     }
@@ -72,8 +72,7 @@ trait Tabs
     }
 
     /**
-     * @param string $label
-     *
+     * @param  string  $label
      * @return bool
      */
     public function tabExists($label)
@@ -99,7 +98,6 @@ trait Tabs
 
     /**
      * @param $label
-     *
      * @return bool
      */
     public function isLastTab($label)
@@ -123,7 +121,6 @@ trait Tabs
 
     /**
      * @param $label
-     *
      * @return array|\Illuminate\Support\Collection
      */
     public function getTabFields($label)

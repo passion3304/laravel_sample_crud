@@ -1,12 +1,7 @@
 @php
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function'])){
-        $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitUploadMultipleElement';
-    }
-
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-field-name'])) {
-        $field['wrapperAttributes']['data-field-name'] = $field['name'];
-    }
-
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
+    $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitUploadMultipleElement';
+    $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
 @endphp
 
 <!-- upload multiple input -->
@@ -91,7 +86,7 @@
 		        fileInput.change(function() {
 	                inputLabel.html("Files selected. After save, they will show up above.");
 		        	// remove the hidden input, so that the setXAttribute method is no longer triggered
-		        	$(this).next("input[type=hidden]").remove();
+					$(this).next("input[type=hidden]:not([name='clear_"+fieldName+"[]'])").remove();
 		        });
         	}
         </script>

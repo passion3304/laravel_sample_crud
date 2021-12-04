@@ -35,7 +35,7 @@ return [
             // the time the table will be persisted in minutes
             // after this the table info is cleared from localStorage.
             // use false to never force localStorage clear. (default)
-            // keep in mind: User can clear his localStorage whenever he wants.
+            // keep in mind: User can clear their localStorage whenever they want.
 
             'persistentTableDuration' => false,
 
@@ -93,11 +93,14 @@ return [
             // Should we show a cancel button to the user?
             'showCancelButton' => true,
 
+            // Should we warn a user before leaving the page with unsaved changes?
+            'warnBeforeLeaving' => false,
+
             // Before saving the entry, how would you like the request to be stripped?
             // - false - ONLY save inputs that have fields (safest)
             // - [x, y, z] - save ALL inputs, EXCEPT the ones given in this array
             'saveAllInputsExcept' => false,
-            // 'saveAllInputsExcept' => ['_token', '_method', 'http_referrer', 'current_tab', 'save_action'],
+            // 'saveAllInputsExcept' => ['_token', '_method', '_http_referrer', '_current_tab', '_save_action'],
         ],
 
         /*
@@ -129,11 +132,14 @@ return [
             // Should we show a cancel button to the user?
             'showCancelButton' => true,
 
+            // Should we warn a user before leaving the page with unsaved changes?
+            'warnBeforeLeaving' => false,
+
             // Before saving the entry, how would you like the request to be stripped?
             // - false - Save ONLY inputs that have a field (safest, default);
             // - [x, y, z] - Save ALL inputs, EXCEPT the ones given in this array;
             'saveAllInputsExcept' => false,
-            // 'saveAllInputsExcept' => ['_token', '_method', 'http_referrer', 'current_tab', 'save_action'],
+            // 'saveAllInputsExcept' => ['_token', '_method', '_http_referrer', '_current_tab', '_save_action'],
         ],
 
         /*

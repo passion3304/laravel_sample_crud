@@ -10,7 +10,6 @@
 @include('crud::fields.inc.wrapper_start')
 
     <label>{!! $field['label'] !!}</label>
-    @include('crud::fields.inc.translatable_icon')
     <?php
         $entity_model = $crud->getModel();
 
@@ -23,7 +22,7 @@
 
         $dependencyArray = [];
 
-        //convert dependency array to simple matrix ( prymary id as key and array with secondaries id )
+        //convert dependency array to simple matrix ( primary id as key and array with secondaries id )
         foreach ($dependencies as $primary) {
             $dependencyArray[$primary->id] = [];
             foreach ($primary->{$primary_dependency['entity_secondary']} as $secondary) {
@@ -46,14 +45,14 @@
 
           $secondary_ids = [];
 
-          //create secondary dependency from primary relation, used to check what chekbox must be check from second checklist
+          //create secondary dependency from primary relation, used to check what checkbox must be checked from second checklist
           if (old($primary_dependency['name'])) {
               foreach (old($primary_dependency['name']) as $primary_item) {
                   foreach ($dependencyArray[$primary_item] as $second_item) {
                       $secondary_ids[$second_item] = $second_item;
                   }
               }
-          } else { //create dependecies from relation if not from validate error
+          } else { //create dependencies from relation if not from validate error
               foreach ($primary_array as $primary_item) {
                   foreach ($primary_item[$secondary_dependency['entity']] as $second_item) {
                       $secondary_ids[$second_item['id']] = $second_item['id'];
@@ -69,9 +68,9 @@
     <div class="container">
 
       <div class="row">
-
           <div class="col-sm-12">
               <label>{!! $primary_dependency['label'] !!}</label>
+              @include('crud::fields.inc.translatable_icon', ['field' => $primary_dependency])
           </div>
       </div>
 
@@ -122,6 +121,7 @@
       <div class="row">
           <div class="col-sm-12">
               <label>{!! $secondary_dependency['label'] !!}</label>
+              @include('crud::fields.inc.translatable_icon', ['field' => $secondary_dependency])
           </div>
       </div>
 
@@ -219,7 +219,7 @@
                 //check and disable secondies checkbox
                 thisField.find('input.secondary_list[value="'+value+'"]').prop( "checked", true );
                 thisField.find('input.secondary_list[value="'+value+'"]').prop( "disabled", true );
-                //remove hidden fields with secondary dependency if was setted
+                //remove hidden fields with secondary dependency if was set
                 var hidden = thisField.find('input.secondary_hidden[value="'+value+'"]');
                 if(hidden)
                   hidden.remove();

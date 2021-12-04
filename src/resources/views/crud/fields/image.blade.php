@@ -1,13 +1,25 @@
 @php
-    $prefix = isset($field['prefix']) ? $field['prefix'] : '';
+    $field['prefix'] = $field['prefix'] ?? '';
+    $field['disk'] = $field['disk'] ?? null;
     $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
-    $value = $value
-        ? preg_match('/^data\:image\//', $value)
-            ? $value
-            : (isset($field['disk'])
-                ? Storage::disk($field['disk'])->url($prefix.$value)
-                : url($prefix.$value))
-        :''; // if validation failed, tha value will be base64, so no need to create a URL for it
+
+    if (! function_exists('getDiskUrl')) {
+        function getDiskUrl($disk, $path) {
+            try {
+                // make sure the value don't have disk base path on it, this is the same as `Storage::disk($disk)->url($prefix);`,
+                // we need this solution to deal with `S3` not supporting getting empty urls
+                // that could happen when there is no $prefix set.
+                $origin = substr(Storage::disk($disk)->url('/'), 0, -1);
+                $path = str_replace($origin, '', $path);
+
+                return Storage::disk($disk)->url($path);
+            }
+            catch (Exception $e) {
+                // the driver does not support retrieving URLs (eg. SFTP)
+                return url($path);
+            }
+        }
+    }
 
     if (! function_exists('maximumServerUploadSizeInBytes')) {
         function maximumServerUploadSizeInBytes() {
@@ -32,6 +44,17 @@
         }
     }
 
+    // if value isn't a base 64 image, generate URL
+    if($value && !preg_match('/^data\:image\//', $value)) {
+        // make sure to append prefix once to value
+        $value = Str::start($value, $field['prefix']);
+
+        // generate URL
+        $value = $field['disk']
+            ? getDiskUrl($field['disk'], $value)
+            : url($value);
+    }
+
     $max_image_size_in_bytes = $field['max_file_size'] ?? (int)maximumServerUploadSizeInBytes();
 
     $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
@@ -48,7 +71,7 @@
         <label>{!! $field['label'] !!}</label>
         @include('crud::fields.inc.translatable_icon')
     </div>
-    <!-- Wrap the image or canvas element with a block element (container) -->
+    {{-- Wrap the image or canvas element with a block element (container) --}}
     <div class="row">
         <div class="col-sm-6" data-handle="previewArea" style="margin-bottom: 20px;">
             <img data-handle="mainImage" src="">
@@ -66,7 +89,7 @@
     <div class="btn-group">
         <div class="btn btn-light btn-sm btn-file">
             {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes')>
-            <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}" value="{{ $value }}">
+            <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}" data-value-prefix="{{ $field['prefix'] }}" value="{{ $value }}">
         </div>
         @if(isset($field['crop']) && $field['crop'])
         <button class="btn btn-light btn-sm" data-handle="rotateLeft" type="button" style="display: none;"><i class="la la-rotate-left"></i></button>
@@ -215,7 +238,7 @@
                         const maxImageSize = {{ $max_image_size_in_bytes }};
                         if(maxImageSize > 0 && file.size > maxImageSize) {
 
-                            alert(`Please pick an image smaller than ${maxImageSize} bytes.`);
+                            alert('Please pick an image smaller than '+maxImageSize+'  bytes.');
                         } else if (/^image\/\w+$/.test(file.type)) {
 
                             fileReader.readAsDataURL(file);
@@ -232,21 +255,8 @@
                                         $hiddenImage.val(imageURL);
                                         return true;
                                     });
-                                    $rotateLeft.click(function() {
-                                        $mainImage.cropper("rotate", 90);
-                                    });
-                                    $rotateRight.click(function() {
-                                        $mainImage.cropper("rotate", -90);
-                                    });
-                                    $zoomIn.click(function() {
-                                        $mainImage.cropper("zoom", 0.1);
-                                    });
-                                    $zoomOut.click(function() {
-                                        $mainImage.cropper("zoom", -0.1);
-                                    });
-                                    $reset.click(function() {
-                                        $mainImage.cropper("reset");
-                                    });
+
+
                                     $rotateLeft.show();
                                     $rotateRight.show();
                                     $zoomIn.show();
@@ -267,6 +277,30 @@
                             }).show();
                         }
                     });
+
+                    //moved the click binds outside change event, or we would register as many click events for the same amout of times
+                    //we triggered the image change
+                    if(crop) {
+                        $rotateLeft.click(function() {
+                            $mainImage.cropper("rotate", 90);
+                        });
+
+                        $rotateRight.click(function() {
+                            $mainImage.cropper("rotate", -90);
+                        });
+
+                        $zoomIn.click(function() {
+                            $mainImage.cropper("zoom", 0.1);
+                        });
+
+                        $zoomOut.click(function() {
+                            $mainImage.cropper("zoom", -0.1);
+                        });
+
+                        $reset.click(function() {
+                            $mainImage.cropper("reset");
+                        });
+                    }
             }
         </script>
 

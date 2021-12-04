@@ -23,10 +23,10 @@ trait HasUploadFields
      *     - if the value is null, deletes the file and sets null in the DB
      *     - if the value is different, stores the different file and updates DB value.
      *
-     * @param string $value            Value for that column sent from the input.
-     * @param string $attribute_name   Model attribute name (and column in the db).
-     * @param string $disk             Filesystem disk used to store files.
-     * @param string $destination_path Path in disk where to store the files.
+     * @param  string  $value  Value for that column sent from the input.
+     * @param  string  $attribute_name  Model attribute name (and column in the db).
+     * @param  string  $disk  Filesystem disk used to store files.
+     * @param  string  $destination_path  Path in disk where to store the files.
      */
     public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path)
     {
@@ -68,10 +68,10 @@ trait HasUploadFields
      *     - deletes the file
      *     - removes that file from the DB.
      *
-     * @param string $value            Value for that column sent from the input.
-     * @param string $attribute_name   Model attribute name (and column in the db).
-     * @param string $disk             Filesystem disk used to store files.
-     * @param string $destination_path Path in disk where to store the files.
+     * @param  string  $value  Value for that column sent from the input.
+     * @param  string  $attribute_name  Model attribute name (and column in the db).
+     * @param  string  $disk  Filesystem disk used to store files.
+     * @param  string  $destination_path  Path in disk where to store the files.
      */
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {

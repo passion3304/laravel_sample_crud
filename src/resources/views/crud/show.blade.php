@@ -31,22 +31,21 @@
 	<!-- Default box -->
 	  <div class="">
 	  	@if ($crud->model->translationEnabled())
-	    <div class="row">
-	    	<div class="col-md-12 mb-2">
-				<!-- Change translation button group -->
-				<div class="btn-group float-right">
-				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('locale')?request()->input('locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-					  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?locale={{ $key }}">{{ $locale }}</a>
-				  	@endforeach
-				  </ul>
+			<div class="row">
+				<div class="col-md-12 mb-2">
+					<!-- Change translation button group -->
+					<div class="btn-group float-right">
+					<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						@foreach ($crud->model->getAvailableLocales() as $key => $locale)
+							<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?_locale={{ $key }}">{{ $locale }}</a>
+						@endforeach
+					</ul>
+					</div>
 				</div>
 			</div>
-	    </div>
-	    @else
 	    @endif
 	    <div class="card no-padding no-border">
 			<table class="table table-striped mb-0">
@@ -57,19 +56,7 @@
 		                    <strong>{!! $column['label'] !!}:</strong>
 		                </td>
                         <td>
-							@if (!isset($column['type']))
-		                      @include('crud::columns.text')
-		                    @else
-		                      @if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
-		                        @include('vendor.backpack.crud.columns.'.$column['type'])
-		                      @else
-		                        @if(view()->exists('crud::columns.'.$column['type']))
-		                          @include('crud::columns.'.$column['type'])
-		                        @else
-		                          @include('crud::columns.text')
-		                        @endif
-		                      @endif
-		                    @endif
+							@includeFirst(['crud::columns.'.($column['type'] ?? 'text'), 'crud::columns.text'])
                         </td>
 		            </tr>
 		        @endforeach
@@ -88,15 +75,4 @@
 
 	</div>
 </div>
-@endsection
-
-
-@section('after_styles')
-	<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css') }}">
-	<link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/show.css') }}">
-@endsection
-
-@section('after_scripts')
-	<script src="{{ asset('packages/backpack/crud/js/crud.js') }}"></script>
-	<script src="{{ asset('packages/backpack/crud/js/show.js') }}"></script>
 @endsection

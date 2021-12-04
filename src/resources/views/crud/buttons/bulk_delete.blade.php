@@ -80,8 +80,13 @@
 								  }			          	  
 							}
 
-						  	crud.checkedItems = [];
-							  	crud.table.ajax.reload();
+							// Move to previous page in case of deleting all the items in table
+							if(crud.table.rows().count() === crud.checkedItems.length) {
+								crud.table.page("previous");
+							}
+
+							crud.checkedItems = [];
+							crud.table.draw(false);
 						},
 						error: function(result) {
 							// Show an alert with the result
