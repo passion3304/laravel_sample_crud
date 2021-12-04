@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configurations for Backpack's UpdateOperation
+ * Configurations for Backpack's UpdateOperation.
  *
  * @see https://backpackforlaravel.com/docs/crud-operation-update
  */

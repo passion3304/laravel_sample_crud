@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configurations for Backpack's CreateOperation
+ * Configurations for Backpack's CreateOperation.
  *
  * @see https://backpackforlaravel.com/docs/crud-operation-create
  */

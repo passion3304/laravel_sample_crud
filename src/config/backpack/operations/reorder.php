@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configurations for Backpack's ReorderOperation
+ * Configurations for Backpack's ReorderOperation.
  *
  * @see https://backpackforlaravel.com/docs/crud-operation-reorder
  */

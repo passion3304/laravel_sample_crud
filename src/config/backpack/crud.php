@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Backpack\CRUD preferences
+ * Backpack\CRUD preferences.
  */
 
 return [
