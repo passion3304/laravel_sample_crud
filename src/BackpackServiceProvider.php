@@ -242,7 +242,7 @@ class BackpackServiceProvider extends ServiceProvider
         $operationConfigs = scandir(__DIR__.'/config/backpack/operations/');
         $operationConfigs = array_diff($operationConfigs, ['.', '..']);
 
-        if (!count($operationConfigs)) {
+        if (! count($operationConfigs)) {
             return;
         }
 

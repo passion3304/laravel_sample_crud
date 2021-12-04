@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configurations for Backpack's ListOperation
+ * Configurations for Backpack's ListOperation.
  *
  * @see https://backpackforlaravel.com/docs/crud-operation-list
  */
