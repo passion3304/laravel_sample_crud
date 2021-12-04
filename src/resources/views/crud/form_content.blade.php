@@ -78,7 +78,7 @@
         }
       }
 
-      @if($crud->getWarnBeforeLeaving())
+      @if($crud->getOperationSetting('warnBeforeLeaving'))
       const initData = getFormData();
       window.addEventListener('beforeunload', preventUnload);
       @endif
