@@ -426,16 +426,19 @@ trait Fields
     /**
      * Returns the request without anything that might have been maliciously inserted.
      * Only specific field names that have been introduced with addField() are kept in the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
-    public function getStrippedSaveRequest()
+    public function getStrippedSaveRequest($request)
     {
         $setting = $this->getOperationSetting('strippedRequest');
 
         if (is_callable($setting)) {
-            return $setting($this->getRequest());
+            return $setting($request);
         }
 
-        return $this->getRequest()->only($this->getAllFieldNames());
+        return $request->only($this->getAllFieldNames());
     }
 
     /**
