@@ -35,9 +35,15 @@ return [
     // Should we warn a user before leaving the page with unsaved changes?
     'warnBeforeLeaving' => false,
 
-    // Before saving the entry, how would you like the request to be stripped?
-    // - false - ONLY save inputs that have fields (safest)
-    // - [x, y, z] - save ALL inputs, EXCEPT the ones given in this array
-    'saveAllInputsExcept' => false,
-    // 'saveAllInputsExcept' => ['_token', '_method', '_http_referrer', '_current_tab', '_save_action'],
+/**
+ * Before saving the entry, how would you like the request to be stripped?
+ * - false - fall back to Backpack's default (ONLY save inputs that have fields)
+ * - closure - process your own request (example removes all inputs that begin with underscode).
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @return array
+ */
+    // 'strippedRequest' => (function ($request) {
+    //     return $request->except('_token', '_method', '_http_referrer', '_current_tab', '_save_action');
+    // }),
 ];
