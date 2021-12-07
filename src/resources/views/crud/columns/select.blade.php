@@ -12,7 +12,7 @@
     }
 
     foreach ($column['value'] as &$value) {
-        $value = Str::limit($value, $column['limit'], '[...]');
+        $value = Str::limit($value, $column['limit'], '…');
     }
 @endphp
 
