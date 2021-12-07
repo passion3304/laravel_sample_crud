@@ -12,7 +12,7 @@
     }
 
     if(!empty($column['value'])) {
-        $column['text'] = $column['prefix'].Str::limit(strip_tags($column['value']), $column['limit'], "[...]").$column['suffix'];
+        $column['text'] = $column['prefix'].Str::limit(strip_tags($column['value']), $column['limit'], "…").$column['suffix'];
     }
 
     $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';

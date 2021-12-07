@@ -18,7 +18,7 @@
 
     $column['value'] = $column['value']
         ->each(function($value) use ($column) {
-            $value = Str::limit($value, $column['limit'], '[...]');
+            $value = Str::limit($value, $column['limit'], '…');
         })
         ->toArray();
 @endphp
