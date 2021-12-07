@@ -105,7 +105,7 @@
                     element.on('change blur', clearInput);
                     $place.on('clear', clearInput);
 
-                    if( $hiddenInput.val().length ){
+                    if( $hiddenInput.val() && $hiddenInput.val().length ){
                         var existingData = JSON.parse($hiddenInput.val());
                         element.val(existingData.value);
                     }

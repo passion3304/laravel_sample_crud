@@ -61,16 +61,6 @@ trait FetchOperation
         $config['searchable_attributes'] = $config['searchable_attributes'] ?? $model_instance->identifiableAttribute();
         $config['query'] = isset($config['query']) && is_callable($config['query']) ? $config['query']($model_instance) : $model_instance; // if a closure that has been passed as "query", use the closure - otherwise use the model
 
-        // FetchOperation is aware of an optional parameter 'keys' that will fetch you the entity/entities that match the provided keys
-        if (request()->has('keys')) {
-            $array_keys = request()->get('keys');
-            if (is_array($array_keys)) {
-                return $model_instance->whereIn($model_instance->getKeyName(), $array_keys)->get();
-            } else {
-                return $model_instance->where($model_instance->getKeyName(), $array_keys)->get();
-            }
-        }
-
         // FetchOperation sends an empty query to retrieve the default entry for select when field is not nullable.
         // Also sends an empty query in case we want to load all entities to emulate non-ajax fields
         // when using InlineCreate.

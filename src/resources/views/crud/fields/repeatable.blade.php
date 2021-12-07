@@ -1,9 +1,9 @@
 {{-- REPEATABLE FIELD TYPE --}}
 
 @php
-  $field['value'] = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
-  // make sure the value is a JSON string (not array, if it's cast in the model)
-  $field['value'] = is_array($field['value']) ? json_encode($field['value']) : $field['value'];
+  $field['value'] = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : [] ));
+  // make sure the value is always an array, even if stored as JSON in database
+  $field['value'] = is_string($field['value']) ? json_decode($field['value'], true) : $field['value'];
 
   $field['init_rows'] = $field['init_rows'] ?? $field['min_rows'] ?? 1;
   $field['max_rows'] = $field['max_rows'] ?? 0;
@@ -11,22 +11,14 @@
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
-  <label>{!! $field['label'] !!}</label>
-  @include('crud::fields.inc.translatable_icon')
-  <input
-      type="hidden"
-      name="{{ $field['name'] }}"
-      data-init-function="bpFieldInitRepeatableElement"
-      value="{{ $field['value'] }}"
-      @include('crud::fields.inc.attributes')
-  >
-
-  {{-- HINT --}}
-  @if (isset($field['hint']))
-      <p class="help-block text-muted text-sm">{!! $field['hint'] !!}</p>
-  @endif
-
-
+<label>{!! $field['label'] !!}</label>
+@include('crud::fields.inc.translatable_icon')
+<input
+    type="hidden"
+    name="{{ $field['name'] }}"
+    data-init-function="bpFieldInitRepeatableElement"
+    @include('crud::fields.inc.attributes')
+>
 
 <div class="container-repeatable-elements">
     <div
@@ -34,41 +26,29 @@
         data-init-rows="{{ $field['init_rows'] }}"
         data-max-rows="{{ $field['max_rows'] }}"
         data-min-rows="{{ $field['min_rows'] }}"
-    ></div>
-
-    @push('before_scripts')
-    <div class="col-md-12 well repeatable-element row m-1 p-2" data-repeatable-identifier="{{ $field['name'] }}">
-      @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
-        <div class="controls">
-            <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
-            <button type="button" class="close move-element-up">
-                <svg viewBox="0 0 64 80"><path d="M46.8,36.7c-4.3-4.3-8.7-8.7-13-13c-1-1-2.6-1-3.5,0c-4.3,4.3-8.7,8.7-13,13c-2.3,2.3,1.3,5.8,3.5,3.5c4.3-4.3,8.7-8.7,13-13c-1.2,0-2.4,0-3.5,0c4.3,4.3,8.7,8.7,13,13C45.5,42.5,49,39,46.8,36.7L46.8,36.7z"/></svg>
-            </button>
-            <button type="button" class="close move-element-down">
-                <svg viewBox="0 0 64 80"><path d="M17.2,30.3c4.3,4.3,8.7,8.7,13,13c1,1,2.6,1,3.5,0c4.3-4.3,8.7-8.7,13-13c2.3-2.3-1.3-5.8-3.5-3.5c-4.3,4.3-8.7,8.7-13,13c1.2,0,2.4,0,3.5,0c-4.3-4.3-8.7-8.7-13-13C18.5,24.5,15,28,17.2,30.3L17.2,30.3z"/></svg>
-            </button>
-        </div>
-        @foreach($field['fields'] as $subfield)
-          @php
-              $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
-              $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
-              $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
-          @endphp
-
-          @include($fieldViewPath, ['field' => $subfield])
+    >
+    @if(!empty($field['value']))
+        @foreach ($field['value'] as $row)
+            @include('crud::fields.inc.repeatable_row')
         @endforeach
-
-      @endif
+        @php
+            // the $row variable still exists. We don't need it anymore the loop is over, and would have impact in the following code.
+            unset($row);
+        @endphp
+    @endif
     </div>
-    @endpush
+</div>
 
-  </div>
-
-
-  <button type="button" class="btn btn-outline-primary btn-sm ml-1 add-repeatable-element-button">+ {{ $field['new_item_label'] ?? trans('backpack::crud.new_item') }}</button>
+{{-- HINT --}}
+@if (isset($field['hint']))
+    <p class="help-block text-muted text-sm">{!! $field['hint'] !!}</p>
+@endif
+<button type="button" class="btn btn-outline-primary btn-sm ml-1 add-repeatable-element-button">+ {{ $field['new_item_label'] ?? trans('backpack::crud.new_item') }}</button>
 
 @include('crud::fields.inc.wrapper_end')
-
+@push('before_scripts')
+    @include('crud::fields.inc.repeatable_row')
+@endpush
 @if ($crud->fieldTypeNotLoaded($field))
   @php
       $crud->markFieldTypeAsLoaded($field);
@@ -120,21 +100,6 @@
   @push('crud_fields_scripts')
       <script>
         /**
-         * Takes all inputs and makes them an object.
-         */
-        function repeatableInputToObj(container_name) {
-            var arr = [];
-
-            var container = $('[data-repeatable-holder='+container_name+']');
-
-            container.find('.well').each(function () {
-                arr.push(repeatableElementToObj($(this)));
-            });
-
-            return arr;
-        }
-
-        /**
          * Takes all inputs in a repeatable element and makes them an object.
          */
         function repeatableElementToObj(element) {
@@ -156,158 +121,69 @@
 
             var field_name = element.attr('name');
 
-            // element will be a jQuery wrapped DOM node
-            var container = $('[data-repeatable-identifier='+field_name+']');
             var container_holder = $('[data-repeatable-holder='+field_name+']');
 
             var init_rows = Number(container_holder.attr('data-init-rows'));
             var min_rows = Number(container_holder.attr('data-min-rows'));
             var max_rows = Number(container_holder.attr('data-max-rows')) || Infinity;
 
-            // make sure the inputs no longer have a "name" attribute,
-            // so that the form will not send the inputs as request variables;
-            // use a "data-repeatable-input-name" attribute to store the same information;
-            container.find('input, select, textarea')
-                    .each(function(){
-                        if ($(this).data('name')) {
-                            var name_attr = $(this).data('name');
-                            $(this).removeAttr("data-name");
-                        } else if ($(this).attr('name')) {
-                            var name_attr = $(this).attr('name');
-                            $(this).removeAttr("name");
-                        }
-                        $(this).attr('data-repeatable-input-name', name_attr)
-                    });
-
             // make a copy of the group of inputs in their default state
             // this way we have a clean element we can clone when the user
             // wants to add a new group of inputs
+            var container = $('[data-repeatable-identifier='+field_name+']').last();
+            
+            // make sure the inputs get the data-repeatable-input-name
+            // so we can know that they are inside repeatable
+            container.find('input, select, textarea')
+                    .each(function(){
+                        var name_attr = getCleanNameArgFromInput($(this));
+                        $(this).attr('data-repeatable-input-name', name_attr)
+                    });
+
             var field_group_clone = container.clone();
             container.remove();
-
+            
             element.parent().find('.add-repeatable-element-button').click(function(){
-                newRepeatableElement(container, field_group_clone);
+                newRepeatableElement(container_holder, field_group_clone);
             });
 
-            if (element.val()) {
-                var repeatable_fields_values = JSON.parse(element.val());
-
-                for (var i = 0; i < repeatable_fields_values.length; ++i) {
-                    newRepeatableElement(container, field_group_clone, repeatable_fields_values[i]);
-                }
-            } else {
-                var container_rows = 0;
-                var add_entry_button = element.parent().find('.add-repeatable-element-button');
+            var container_rows = container_holder.children().length;
+            var add_entry_button = element.parent().find('.add-repeatable-element-button');
+            if(container_rows === 0) {
                 for(let i = 0; i < Math.min(init_rows, max_rows || init_rows); i++) {
                     container_rows++;
                     add_entry_button.trigger('click');
                 }
             }
 
-            if (element.closest('.modal-content').length) {
-                element.closest('.modal-content').find('.save-block').click(function(){
-                    element.val(JSON.stringify(repeatableInputToObj(field_name)));
-                })
-            } else if (element.closest('form').length) {
-                element.closest('form').submit(function(){
-                    element.val(JSON.stringify(repeatableInputToObj(field_name)));
-                    return true;
-                })
-            }
+            setupElementRowsNumbers(container_holder);
+
+            setupElementCustomSelectors(container_holder);
+
+            setupRepeatableDeleteRowButtons(container_holder);
+
+            setupRepeatableReorderButtons(container_holder);
+
+            updateRepeatableRowCount(container_holder);
+
+            updateRepeatableContainerNamesIndexes(container_holder)
+
         }
 
         /**
          * Adds a new field group to the repeatable input.
          */
-        function newRepeatableElement(container, field_group, values, position) {
+        function newRepeatableElement(container_holder, field_group, repeatable_element, position) {
 
-            var field_name = container.data('repeatable-identifier');
-            var new_field_group = field_group.clone();
+            var new_field_group = field_group.clone();            
 
-            // this is the container that holds the group of fields inside the main form.
-            var container_holder = $('[data-repeatable-holder='+field_name+']');
-
-            new_field_group.find('.delete-element').click(function(){
-                new_field_group.find('input, select, textarea').each(function(i, el) {
-                    // we trigger this event so fields can intercept when they are beeing deleted from the page
-                    // implemented because of ckeditor instances that stayed around when deleted from page
-                    // introducing unwanted js errors and high memory usage.
-                    $(el).trigger('backpack_field.deleted');
-                });
-
-                // decrement the container current number of rows by -1
-                updateRepeatableRowCount(container_holder, -1);
-
-                $(this).closest('.repeatable-element').remove();
-
-                //we reassure row numbers on delete
-                setupElementRowsNumbers(container_holder);
-            });
-
-            new_field_group.find('.move-element-up, .move-element-down').click(function(){
-                var $repeatableElement = $(this).closest('.repeatable-element');
-
-                // get existing values
-                var values = repeatableElementToObj($repeatableElement);
-                var index = $repeatableElement.index();
-                index += $(this).is('.move-element-up') ? -1 : 1;
-
-                if (index < 0) return;
-
-                // trigger delete for existing element
-                new_field_group.find('input, select, textarea').each(function(i, el) {
-                    // we trigger this event so fields can intercept when they are beeing deleted from the page
-                    // implemented because of ckeditor instances that stayed around when deleted from page
-                    // introducing unwanted js errors and high memory usage.
-                    $(el).trigger('backpack_field.deleted');
-                });
-
-                // decrement the container current number of rows by -1
-                updateRepeatableRowCount(container_holder, -1);
-
-                // remove element
-                $repeatableElement.remove();
-
-                // create new element with existing values in desired position
-                newRepeatableElement(container, field_group, values, index);
-            });
-
-            if (values != null) {
-                // set the value on field inputs, based on the JSON in the hidden input
-                new_field_group.find('input, select, textarea').each(function () {
-                    if ($(this).data('repeatable-input-name') && values.hasOwnProperty($(this).data('repeatable-input-name'))) {
-
-                        // if the field provides a `data-value-prefix` attribute, we should respect that and add that prefix to the value.
-                        // this is different than using prefix in fields like text, number etc. In those cases the prefix is used
-                        // only for displaying purposes, when is set as `data-value-prefix` is when it is part of the value
-                        // like image field.
-                        let prefix = $(this).data('value-prefix') ? $(this).data('value-prefix') : '';
-                        let value = values[$(this).data('repeatable-input-name')];
-
-                        // only apply the prefix when the value is string and not empty.
-                        if(typeof value === 'string' && value.length && !value.startsWith("data:image/png;base64")) {
-                            value = prefix + value;
-                        }
-
-                        $(this).val(value);
-
-                        // if it's a Select input with no options, also attach the values as a data attribute;
-                        // this is done because the above val() call will do nothing if the options aren't there
-                        // so the fields themselves have to treat this use case, and look at data-selected-options
-                        // and create the options based on those values
-                        if ($(this).is('select') && $(this).children('option').length == 0) {
-                          $(this).attr('data-selected-options', JSON.stringify(value));
-                        }
-                    }
-                });
-            }
             // we push the fields to the correct container in page.
             var $children = container_holder.children();
 
             if (!Number.isInteger(position) || $children.length - 1 < position) {
                 container_holder.append(new_field_group);
             } else {
-                container_holder.children().eq(position).before(new_field_group);
+                $children.eq(position).before(repeatable_element);
             }
 
             // after appending to the container we reassure row numbers
@@ -315,8 +191,16 @@
 
             // we also setup the custom selectors in the elements so we can use dependant functionality
             setupElementCustomSelectors(container_holder);
-            // increment the container current number of rows by +1
-            updateRepeatableRowCount(container_holder, 1);
+
+            setupRepeatableDeleteRowButtons(container_holder);
+
+            setupRepeatableReorderButtons(container_holder);
+
+            // updates the row count in repeatable and handle the buttons state
+            updateRepeatableRowCount(container_holder);
+
+            // re-index the array names for the fields
+            updateRepeatableContainerNamesIndexes(container_holder);
 
             initializeFieldsWithJavascript(container_holder);
 
@@ -328,16 +212,104 @@
             }
         }
 
+        function setupRepeatableDeleteRowButtons(container) {
+            container.children().each(function(i, repeatable_group) {
+                setupRepeatableDeleteButtonEvent(repeatable_group);
+            });
+        }
+
+        function setupRepeatableDeleteButtonEvent(repeatable_group) {
+            let row = $(repeatable_group);
+            let delete_button = row.find('.delete-element');
+            
+            // remove previous events on this button
+            delete_button.off('click');
+
+            delete_button.click(function(){
+
+                let $repeatableElement = $(this).closest('.repeatable-element');
+                let container = $('[data-repeatable-holder='+$($repeatableElement).attr('data-repeatable-identifier')+']')
+
+                row.find('input, select, textarea').each(function(i, el) {
+                    // we trigger this event so fields can intercept when they are beeing deleted from the page
+                    // implemented because of ckeditor instances that stayed around when deleted from page
+                    // introducing unwanted js errors and high memory usage.
+                    $(el).trigger('backpack_field.deleted');
+                });
+
+                $repeatableElement.remove();
+
+                // updates the row count and handle button state
+                updateRepeatableRowCount(container);
+
+                //we reassure row numbers on delete
+                setupElementRowsNumbers(container);
+
+                updateRepeatableContainerNamesIndexes(container);
+            });
+        }
+
+        function setupRepeatableReorderButtons(container) {
+            container.children().each(function(i, repeatable_group) {
+                setupRepeatableReorderButtonEvent($(repeatable_group));
+            });
+        }
+
+        function setupRepeatableReorderButtonEvent(repeatable_group) {
+            let row = $(repeatable_group);
+            let reorder_buttons = row.find('.move-element-up, .move-element-down');
+            
+            // remove previous events on this button
+            reorder_buttons.off('click');
+
+            reorder_buttons.click(function(e){
+                
+                let $repeatableElement = $(e.target).closest('.repeatable-element');
+                let container = $('[data-repeatable-holder='+$($repeatableElement).attr('data-repeatable-identifier')+']')
+
+                // get existing values
+                //let values = repeatableElementToObj($repeatableElement);
+                let index = $repeatableElement.index();
+    
+                index += $(this).is('.move-element-up') ? -1 : 1;
+
+                if (index < 0) return;
+
+                // trigger delete for existing element
+                row.find('input, select, textarea').each(function(i, el) {
+                    // we trigger this event so fields can intercept when they are beeing deleted from the page
+                    // implemented because of ckeditor instances that stayed around when deleted from page
+                    // introducing unwanted js errors and high memory usage.
+                    $(el).trigger('backpack_field.deleted');
+                });
+
+                let $toCreate = $repeatableElement.clone();
+
+                // remove element
+                $repeatableElement.remove();
+
+                // create new element with existing values in desired position
+                newRepeatableElement(container, repeatable_group, $toCreate, index);
+            });
+        }
+
         // this function is responsible for managing rows numbers upon creation/deletion of elements
         function setupElementRowsNumbers(container) {
+            var number_of_rows = 0;
             container.children().each(function(i, el) {
                 var rowNumber = i+1;
                 $(el).attr('data-row-number', rowNumber);
                 //also attach the row number to all the input elements inside
-                $(el).find('input, select, textarea').each(function(i, el) {
-                    $(el).attr('data-row-number', rowNumber);
+                $(el).find('input, select, textarea').each(function(i, input) {
+                    // only add the row number to inputs that have name, so they are going to be submited in form
+                    if($(input).attr('name')) {
+                        $(input).attr('data-row-number', rowNumber);
+                    }
                 });
+                number_of_rows++;
             });
+
+            container.attr('number-of-rows', number_of_rows);
         }
 
         // this function is responsible for adding custom selectors to repeatable inputs that are selects and could be used with
@@ -352,15 +324,43 @@
             });
         }
 
-        // update the container current number of rows by the amount provided
-        function updateRepeatableRowCount(container, amount) {
+        function updateRepeatableContainerNamesIndexes(container) {
+            container.children().each(function(i, repeatable) {
+                var index = $(repeatable).attr('data-row-number')-1;
+                // updates the indexes in the array of repeatable inputs
+                $(repeatable).find('input, select, textarea').each(function(i, el) {
+                    if(typeof $(el).attr('data-row-number') !== 'undefined') {
+                        let field_name = $(el).attr('data-repeatable-input-name') ?? $(el).attr('name') ?? $(el).parent().find('input[data-repeatable-input-name]').first().attr('data-repeatable-input-name');
+                        let unprefixed_field_name = field_name.endsWith("[]") ? field_name.substring(0, field_name.length - 2) : field_name;
+                        if(typeof $(el).attr('data-repeatable-input-name') === 'undefined') {
+                            $(el).attr('data-repeatable-input-name', field_name);
+                        }
+        
+                        let prefix = field_name.endsWith("[]") ? '[]' : '';
+                        $(el).attr('name', container.attr('data-repeatable-holder')+'['+index+']['+unprefixed_field_name+']'+prefix);
+                    }
+                });
+            });
+        }
+
+        // return the clean name from the input
+        function getCleanNameArgFromInput(element) {
+            if (element.data('repeatable-input-name')) {
+                return element.data('repeatable-input-name');
+            }
+            if (element.data('name')) {
+                return element.data('name');       
+            } else if (element.attr('name')) {
+               return element.attr('name');
+            }
+        }
+
+        // update the container current number of rows and work out the buttons state
+        function updateRepeatableRowCount(container) {
             let max_rows = Number(container.attr('data-max-rows')) || Infinity;
             let min_rows = Number(container.attr('data-min-rows')) || 0;
 
-            let current_rows = Number(container.attr('number-of-rows')) || 0;
-            current_rows += amount;
-
-            container.attr('number-of-rows', current_rows);
+            let current_rows =  container.children().length;
 
             // show or hide delete button
             container.find('.delete-element').toggleClass('d-none', current_rows <= min_rows);
@@ -370,6 +370,7 @@
 
             // show or hide new item button
             container.parent().parent().find('.add-repeatable-element-button').toggleClass('d-none', current_rows >= max_rows);
+
         }
     </script>
   @endpush

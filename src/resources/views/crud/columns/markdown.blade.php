@@ -1,11 +1,17 @@
+{{-- markdown --}}
 @php
-    $column['text'] = Illuminate\Mail\Markdown::parse($entry->{$column['name']} ?? '');
+    $column['value'] = $column['value'] ?? $entry->{$column['name']};
     $column['escaped'] = $column['escaped'] ?? false;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
+    $column['text'] = $column['default'] ?? '-';
 
-    if(!empty($column['text'])) {
-        $column['text'] = $column['prefix'].$column['text'].$column['suffix'];
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].Illuminate\Mail\Markdown::parse($column['value']).$column['suffix'];
     }
 @endphp
 
