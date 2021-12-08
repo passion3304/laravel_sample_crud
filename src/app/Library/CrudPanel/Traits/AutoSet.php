@@ -17,7 +17,7 @@ trait AutoSet
         }
 
         array_map(function ($field) use ($setFields, $setColumns) {
-            if ($setFields && ! isset($this->fields()[$field])) {
+            if ($setFields && ! isset($this->getCleanStateFields()[$field])) {
                 $this->addField([
                     'name'       => $field,
                     'label'      => $this->makeLabel($field),

@@ -65,6 +65,14 @@ trait FieldsPrivateMethods
      */
     private function transformFields(callable $callback)
     {
-        $this->setOperationSetting('fields', $callback($this->fields()));
+        $this->setOperationSetting('fields', $callback($this->getCleanStateFields()));
+    }
+
+    /**
+     * Returns the fields as they are stored inside operation setting, not running the 
+     * presentation callbacks like converting the `dot.names` into `dot[names]` for html for example
+     */
+    private function getCleanStateFields() {
+        return $this->getOperationSetting('fields') ?? [];
     }
 }

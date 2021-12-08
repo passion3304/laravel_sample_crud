@@ -544,8 +544,20 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addField('accountDetails.nickname');
-        $field = $this->crudPanel->fields()['accountDetails[nickname]'];
-        $this->assertEquals($field['relation_type'], 'HasOne');
+        $fieldReadyForHtml = $this->crudPanel->fields()['accountDetails[nickname]'];
+        $fieldCleanState = $this->crudPanel->getCleanStateFields()['accountDetails.nickname'];
+        $this->assertEquals(Arr::except($fieldReadyForHtml, ['name']), Arr::except($fieldCleanState, ['name']));
+        $this->assertEquals($fieldCleanState['relation_type'], 'HasOne');
+    }
+
+    public function testFieldNameDotNotationIsRelationshipUsingFluentSynthax()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->field('accountDetails.nickname')->label('custom label');
+        $fieldReadyForHtml = $this->crudPanel->fields()['accountDetails[nickname]'];
+        $fieldCleanState = $this->crudPanel->getCleanStateFields()['accountDetails.nickname'];
+        $this->assertEquals(Arr::except($fieldReadyForHtml, ['name']), Arr::except($fieldCleanState, ['name']));
+        $this->assertEquals($fieldCleanState['relation_type'], 'HasOne');
     }
 
     public function testFieldNameIsRelationInCrudModel()
