@@ -25,6 +25,15 @@ trait Fields
     }
 
     /**
+     * Returns the fields as they are stored inside operation setting, not running the
+     * presentation callbacks like converting the `dot.names` into `dot[names]` for html for example.
+     */
+    public function getCleanStateFields()
+    {
+        return $this->getOperationSetting('fields') ?? [];
+    }
+
+    /**
      * The only REALLY MANDATORY attribute when defining a field is the 'name'.
      * Everything else Backpack can probably guess. This method makes sure  the
      * field definition array is complete, by guessing missing attributes.
