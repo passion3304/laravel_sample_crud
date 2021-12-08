@@ -40,6 +40,7 @@ mix.copy('node_modules/@digitallyhappy/backstrap/dist/css', 'src/public/packages
 mix.copy('node_modules/line-awesome/dist/line-awesome', 'src/public/packages/line-awesome')
 	.copy('node_modules/source-sans-pro', 'src/public/packages/source-sans-pro')
 	.copy('node_modules/animate.css/animate.min.css', 'src/public/packages/animate.css/animate.min.css')
+	.copy('node_modules/animate.css/animate.compat.css', 'src/public/packages/animate.css/animate.compat.css')
 	.copy('node_modules/noty/lib', 'src/public/packages/noty');
 
 
@@ -72,7 +73,8 @@ mix.copy('node_modules/bootstrap-datepicker/dist', 'src/public/packages/bootstra
 	.copy('node_modules/datatables.net-fixedheader-bs4', 'src/public/packages/datatables.net-fixedheader-bs4')
 	.copy('node_modules/datatables.net-responsive', 'src/public/packages/datatables.net-responsive')
 	.copy('node_modules/datatables.net-responsive-bs4', 'src/public/packages/datatables.net-responsive-bs4')
-	.copy('node_modules/places.js/dist', 'src/public/packages/places.js/dist');
+	.copy('node_modules/places.js/dist', 'src/public/packages/places.js/dist')
+	.copy('node_modules/urijs/src/URI.min.js', 'src/public/packages/URI.js/URI.min.js');
 
 // FOR MAINTAINERS
 // copy asset files from Base's public folder the main app's public folder

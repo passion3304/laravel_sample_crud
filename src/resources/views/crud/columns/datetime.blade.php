@@ -1,23 +1,26 @@
 {{-- localized datetime using carbon --}}
 @php
-    $value = data_get($entry, $column['name']);
-
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['format'] = $column['format'] ?? config('backpack.base.default_datetime_format');
-    $column['text'] = '';
+    $column['text'] = $column['default'] ?? '-';
 
-    if(!empty($value)) {
-        $column['text'] = \Carbon\Carbon::parse($value)
+    if(is_callable($column['value'])) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(!empty($column['value'])) {
+        $date = \Carbon\Carbon::parse($column['value'])
             ->locale(App::getLocale())
             ->isoFormat($column['format']);
 
-        $column['text'] = $column['prefix'].$column['text'].$column['suffix'];
+        $column['text'] = $column['prefix'].$date.$column['suffix'];
     }
 @endphp
 
-<span data-order="{{ $value ?? '' }}">
+<span data-order="{{ $column['value'] ?? '' }}">
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         @if($column['escaped'])
             {{ $column['text'] }}
