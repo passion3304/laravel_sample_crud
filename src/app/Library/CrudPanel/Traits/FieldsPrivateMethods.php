@@ -69,10 +69,11 @@ trait FieldsPrivateMethods
     }
 
     /**
-     * Returns the fields as they are stored inside operation setting, not running the 
-     * presentation callbacks like converting the `dot.names` into `dot[names]` for html for example
+     * Returns the fields as they are stored inside operation setting, not running the
+     * presentation callbacks like converting the `dot.names` into `dot[names]` for html for example.
      */
-    private function getCleanStateFields() {
+    private function getCleanStateFields()
+    {
         return $this->getOperationSetting('fields') ?? [];
     }
 }

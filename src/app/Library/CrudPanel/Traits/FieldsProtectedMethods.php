@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait FieldsProtectedMethods
@@ -84,16 +83,17 @@ trait FieldsProtectedMethods
     }
 
     /**
-     * Run the field name overwrite in multiple fields
+     * Run the field name overwrite in multiple fields.
      *
      * @param  array  $fields
      * @return array
      */
     public function overwriteFieldNamesFromDotNotationToArray($fields)
     {
-        foreach($fields as $key => $field) {
+        foreach ($fields as $key => $field) {
             $fields[$key] = $this->overwriteFieldNameFromDotNotationToArray($field);
         }
+
         return $fields;
     }
 
