@@ -67,5 +67,4 @@ trait FieldsPrivateMethods
     {
         $this->setOperationSetting('fields', $callback($this->getCleanStateFields()));
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\User;
 use Arr;
+use Backpack\CRUD\Tests\Unit\Models\User;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Fields
@@ -552,7 +552,7 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $this->assertEquals($fieldReadyForHtml['name'], 'accountDetails[nickname]');
         $this->assertEquals($fieldCleanState['name'], 'accountDetails.nickname');
     }
-    
+
     public function testFieldNameDotNotationIsRelationshipUsingFluentSynthax()
     {
         $this->crudPanel->setModel(User::class);
