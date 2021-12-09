@@ -1,9 +1,9 @@
-<input type="hidden" name="http_referrer" value={{ session('referrer_url_override') ?? old('http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
+<input type="hidden" name="_http_referrer" value={{ session('referrer_url_override') ?? old('_http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled() && count($crud->getTabs()))
     @include('crud::inc.show_tabbed_fields')
-    <input type="hidden" name="current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
+    <input type="hidden" name="_current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
 @else
   <div class="card">
     <div class="card-body row">
@@ -63,11 +63,30 @@
       // trigger the javascript for all fields that have their js defined in a separate method
       initializeFieldsWithJavascript('form');
 
+      // Retrieves the current form data
+      function getFormData() {
+        return new URLSearchParams(new FormData(document.querySelector("main form"))).toString();
+      }
+
+      // Prevents unloading of page if form data was changed
+      function preventUnload(event) {
+        if (initData !== getFormData()) {
+          // Cancel the event as stated by the standard.
+          event.preventDefault();
+          // Older browsers supported custom message
+          event.returnValue = '';
+        }
+      }
+
+      @if($crud->getOperationSetting('warnBeforeLeaving'))
+      const initData = getFormData();
+      window.addEventListener('beforeunload', preventUnload);
+      @endif
 
       // Save button has multiple actions: save and exit, save and edit, save and new
       var saveActions = $('#saveActions'),
       crudForm        = saveActions.parents('form'),
-      saveActionField = $('[name="save_action"]');
+      saveActionField = $('[name="_save_action"]');
 
       saveActions.on('click', '.dropdown-menu a', function(){
           var saveAction = $(this).data('value');
@@ -88,6 +107,7 @@
 
       // prevent duplicate entries on double-clicking the submit form
       crudForm.submit(function (event) {
+        window.removeEventListener('beforeunload', preventUnload);
         $("button[type=submit]").prop('disabled', true);
       });
 
@@ -155,11 +175,11 @@
 
       $("a[data-toggle='tab']").click(function(){
           currentTabName = $(this).attr('tab_name');
-          $("input[name='current_tab']").val(currentTabName);
+          $("input[name='_current_tab']").val(currentTabName);
       });
 
       if (window.location.hash) {
-          $("input[name='current_tab']").val(window.location.hash.substr(1));
+          $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
 
       });

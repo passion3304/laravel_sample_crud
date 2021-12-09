@@ -47,8 +47,8 @@ trait ShowOperation
                 'redirect' => function ($crud, $request, $itemId = null) {
                     $itemId = $itemId ?: $request->input('id');
                     $redirectUrl = $crud->route.'/'.$itemId.'/show';
-                    if ($request->has('locale')) {
-                        $redirectUrl .= '?locale='.$request->input('locale');
+                    if ($request->has('_locale')) {
+                        $redirectUrl .= '?_locale='.$request->input('_locale');
                     }
 
                     return $redirectUrl;

@@ -16,7 +16,7 @@
     }
 
     if(!empty($column['value'])) {
-        $column['text'] = $column['prefix'].Str::limit($column['value'], $column['limit'], '[...]').$column['suffix'];
+        $column['text'] = $column['prefix'].Str::limit($column['value'], $column['limit'], '…').$column['suffix'];
     }
 @endphp
 
