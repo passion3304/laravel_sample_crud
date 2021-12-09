@@ -4,7 +4,6 @@ namespace Backpack\CRUD\Tests\Config\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class MorphableSeeders extends Seeder
 {
@@ -22,7 +21,7 @@ class MorphableSeeders extends Seeder
             'title' => $faker->title,
             'created_at'     => $now,
             'updated_at'     => $now,
-        ],[
+        ], [
             'title' => $faker->title,
             'created_at'     => $now,
             'updated_at'     => $now,
@@ -32,7 +31,7 @@ class MorphableSeeders extends Seeder
             'title' => $faker->title,
             'created_at'     => $now,
             'updated_at'     => $now,
-        ],[
+        ], [
             'title' => $faker->title,
             'created_at'     => $now,
             'updated_at'     => $now,

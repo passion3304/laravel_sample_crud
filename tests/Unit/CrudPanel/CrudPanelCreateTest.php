@@ -4,7 +4,6 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\Article;
 use Backpack\CRUD\Tests\Unit\Models\User;
-use Backpack\CRUD\Tests\Unit\Models\Recommend;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
