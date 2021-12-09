@@ -106,9 +106,11 @@ trait ColumnsProtectedMethods
                 case 'encrypted:array':
                 case 'collection':
                 case 'encrypted:collection':
+                    $column['type'] = 'array';
+                    break;
                 case 'json':
                 case 'object':
-                    $column['type'] = 'array';
+                    $column['type'] = 'json';
                     break;
                 case 'bool':
                 case 'boolean':
