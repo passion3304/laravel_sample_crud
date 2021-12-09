@@ -115,19 +115,20 @@ trait Create
 
                 // if a JSON was passed instead of an array, turn it into an array
                 if (is_string($values)) {
-                    $values = json_decode($values);
+                    $values = json_decode($values, true);
                 }
 
                 $relation_data = [];
-                foreach ($values as $pivot_id) {
-                    $pivot_data = [];
-
-                    if (isset($field['pivotFields'])) {
-                        foreach ($field['pivotFields'] as $pivot_field_name) {
-                            $pivot_data[$pivot_field_name] = $data[$pivot_field_name][$pivot_id];
-                        }
+                if (isset($field['fields'])) {
+                    foreach ($values as $pivot_row) {
+                        $relation_data[$pivot_row[$field['name']]] = Arr::except($pivot_row, $field['name']);
                     }
-                    $relation_data[$pivot_id] = $pivot_data;
+                }
+
+                // if there is no relation data, and the values array is single dimensional we have
+                // an array of keys with no aditional pivot data. sync those.
+                if (empty($relation_data) && count($values) == count($values, COUNT_RECURSIVE)) {
+                    $relation_data = array_values($values);
                 }
 
                 $model->{$field['name']}()->sync($relation_data);
