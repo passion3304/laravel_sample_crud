@@ -46,18 +46,17 @@
 <button type="button" class="btn btn-outline-primary btn-sm ml-1 add-repeatable-element-button">+ {{ $field['new_item_label'] ?? trans('backpack::crud.new_item') }}</button>
 
 @include('crud::fields.inc.wrapper_end')
+
 @push('before_scripts')
-    @include('crud::fields.inc.repeatable_row')
+    @include('crud::fields.inc.repeatable_row', ['hidden' => true])
 @endpush
-@if ($crud->fieldTypeNotLoaded($field))
-  @php
-      $crud->markFieldTypeAsLoaded($field);
-  @endphp
+
   {{-- FIELD EXTRA CSS  --}}
   {{-- push things in the after_styles section --}}
 
   @push('crud_fields_styles')
       <!-- no styles -->
+      @loadOnce('repeatableFieldStyle')
       <style type="text/css">
         .repeatable-element {
           border: 1px solid rgba(0,40,100,.12);
@@ -92,12 +91,14 @@
             display: none;
         }
       </style>
+      @endLoadOnce
   @endpush
 
   {{-- FIELD EXTRA JS --}}
   {{-- push things in the after_scripts section --}}
 
   @push('crud_fields_scripts')
+      @loadOnce('bpFieldInitRepeatableElement')
       <script>
         /**
          * Takes all inputs in a repeatable element and makes them an object.
@@ -373,5 +374,5 @@
 
         }
     </script>
+    @endLoadOnce
   @endpush
-@endif

@@ -82,18 +82,21 @@ $value = is_string($value) && $multiple ? json_decode($value) : $value;
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        <link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
+        @loadOnce('packages/jquery-colorbox/example2/colorbox.css')
+        @loadOnce('browse-multiple-field-custom-css')
         <style>
             #cboxContent, #cboxLoadedContent, .cboxIframe {
                 background: transparent;
             }
         </style>
+        @endLoadOnce
     @endpush
 
     @push('crud_fields_scripts')
 
-        <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-        <script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
+        @loadOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+        @loadOnce('packages/jquery-colorbox/jquery.colorbox-min.js')
+        @loadOnce('bpFieldInitBrowseMultipleElement')
         <script>
             // this global variable is used to remember what input to update with the file path
             // because elfinder is actually loaded in an iframe by colorbox
@@ -209,6 +212,7 @@ $value = is_string($value) && $multiple ? json_decode($value) : $value;
                 }
             }
         </script>
+        @endLoadOnce
     @endpush
 @endif
 

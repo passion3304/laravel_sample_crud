@@ -60,24 +60,25 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <!-- include select2 css-->
-        <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+        @loadOnce('packages/select2/dist/css/select2.min.css')
+        @loadOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <!-- include select2 js-->
-        <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
+        @loadOnce('packages/select2/dist/js/select2.full.min.js')
         @if (app()->getLocale() !== 'en')
-        <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
+            @loadOnce('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js')
         @endif
+        @loadOnce('bpFieldInitSelect2Element')
         <script>
             function bpFieldInitSelect2Element(element) {
                 // element will be a jQuery wrapped DOM node
                 if (!element.hasClass("select2-hidden-accessible")) 
                 {
                     let $isFieldInline = element.data('field-is-inline');
-                    
+
                     element.select2({
                         theme: "bootstrap",
                         dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
@@ -85,6 +86,7 @@
                 }
             }
         </script>
+        @endLoadOnce
     @endpush
 
 @endif

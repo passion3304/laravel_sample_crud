@@ -41,22 +41,19 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
-    <link rel="stylesheet" href="{{ asset('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}">
-    @endpush
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
+@push('crud_fields_styles')
+    @loadOnce('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')
+@endpush
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
-    <script src="{{ asset('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
+    @loadOnce('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')
     @if ($field_language !== 'en')
-        <script charset="UTF-8" src="{{ asset('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js') }}"></script>
+        @loadOnce('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js')
     @endif
+    @loadOnce('bpFieldInitDatePickerElement')
     <script>
         if (jQuery.ui) {
             var datepicker = $.fn.datepicker.noConflict();
@@ -122,7 +119,7 @@
                 });
             }
     </script>
-    @endpush
+    @endLoadOnce
+@endpush
 
-@endif
 {{-- End of Extra CSS and JS --}}

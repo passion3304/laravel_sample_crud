@@ -63,39 +63,36 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
+@push('crud_fields_styles')
     <!-- include select2 css-->
-    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    @loadOnce('packages/select2/dist/css/select2.min.css')
+    @loadOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
     {{-- allow clear --}}
-    @if ($field['allows_null'])
-    <style type="text/css">
-        .select2-selection__clear::after {
-            content: ' {{ trans('backpack::crud.clear') }}';
-        }
-    </style>
+    @if($field['allows_null'])
+        @loadOnce('select2_from_ajax_custom_css')
+        <style type="text/css">
+            .select2-selection__clear::after {
+                content: ' {{ trans('backpack::crud.clear') }}';
+            }
+        </style>
+        @endLoadOnce
     @endif
-    @endpush
+@endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
+@push('crud_fields_scripts')
     <!-- include select2 js-->
-    <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
+    @loadOnce('packages/select2/dist/js/select2.full.min.js')
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
+        @loadOnce('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js')
     @endif
-    @endpush
-
-@endif
+@endpush
 
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
+@loadOnce('bpFieldInitSelect2FromAjaxElement')
 <script>
     function bpFieldInitSelect2FromAjaxElement(element) {
         var form = element.closest('form');
@@ -193,7 +190,8 @@
             }
         }
     }
-</script>
+    </script>
+    @endLoadOnce
 @endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
