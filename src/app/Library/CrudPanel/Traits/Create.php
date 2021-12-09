@@ -54,7 +54,7 @@ trait Create
      */
     public function getRelationFields()
     {
-        $fields = $this->fields();
+        $fields = $this->getCleanStateFields();
         $relationFields = [];
 
         foreach ($fields as $field) {
@@ -222,7 +222,7 @@ trait Create
 
         $relationData = [];
         foreach ($relation_fields as $relation_field) {
-            $attributeKey = $this->parseRelationFieldNamesFromHtml([$relation_field])[0]['name'];
+            $attributeKey = $relation_field['name'];
 
             if (! is_null(Arr::get($data, $attributeKey)) && isset($relation_field['pivot']) && $relation_field['pivot'] !== true) {
                 $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
