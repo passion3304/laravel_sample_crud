@@ -9,7 +9,7 @@ trait Validation
     /**
      * Adds the required rules from an array and allows validation of that array.
      *
-     * @param array $requiredFields
+     * @param  array  $requiredFields
      */
     public function setValidationFromArray(array $rules, array $messages = [])
     {
@@ -74,7 +74,7 @@ trait Validation
      */
     public function setValidation($classOrRulesArray = false, $messages = [])
     {
-        if (!$classOrRulesArray) {
+        if (! $classOrRulesArray) {
             $this->setValidationFromFields();
         } elseif (is_array($classOrRulesArray)) {
             $this->setValidationFromArray($classOrRulesArray, $messages);
