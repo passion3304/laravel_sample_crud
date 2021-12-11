@@ -7,7 +7,7 @@
     $column['limit'] = $column['limit'] ?? 40;
     $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
 
-    if(is_callable($column['value'])) {
+    if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
     }
 
