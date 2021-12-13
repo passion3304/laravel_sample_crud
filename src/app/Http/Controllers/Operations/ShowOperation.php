@@ -95,6 +95,11 @@ trait ShowOperation
             $this->crud->setFromDb(false, true);
         }
 
+        // if the model has timestamps, add columns for created_at and updated_at
+        if ($this->crud->get('show.timestamps') && $this->crud->model->usesTimestamps()) {
+            $this->crud->column($this->crud->model->getCreatedAtColumn())->type('datetime');
+            $this->crud->column($this->crud->model->getUpdatedAtColumn())->type('datetime');
+        }
         // remove the columns that usually don't make sense inside the Show operation
         $this->removeColumnsThatDontBelongInsideShowOperation();
 
