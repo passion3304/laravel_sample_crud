@@ -11,7 +11,7 @@
         $column['value'] = json_decode($column['value'], true);
     }
 
-    if(is_callable($column['value'])) {
+    if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
     }
 
