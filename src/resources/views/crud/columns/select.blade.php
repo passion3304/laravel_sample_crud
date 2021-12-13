@@ -7,12 +7,12 @@
     $column['suffix'] = $column['suffix'] ?? '';
     $column['limit'] = $column['limit'] ?? 40;
 
-    if(is_callable($column['value'])) {
+    if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
     }
 
     foreach ($column['value'] as &$value) {
-        $value = Str::limit($value, $column['limit'], '[...]');
+        $value = Str::limit($value, $column['limit'], '…');
     }
 @endphp
 

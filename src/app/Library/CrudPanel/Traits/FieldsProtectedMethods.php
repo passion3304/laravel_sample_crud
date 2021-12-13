@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait FieldsProtectedMethods
@@ -84,6 +83,21 @@ trait FieldsProtectedMethods
     }
 
     /**
+     * Run the field name overwrite in multiple fields.
+     *
+     * @param  array  $fields
+     * @return array
+     */
+    public function overwriteFieldNamesFromDotNotationToArray($fields)
+    {
+        foreach ($fields as $key => $field) {
+            $fields[$key] = $this->overwriteFieldNameFromDotNotationToArray($field);
+        }
+
+        return $fields;
+    }
+
+    /**
      * If the field_definition_array array is a string, it means the programmer was lazy
      * and has only passed the name of the field. Turn that into a proper array.
      *
@@ -146,30 +160,6 @@ trait FieldsProtectedMethods
 
                 return $field;
             }
-        }
-
-        return $field;
-    }
-
-    protected function overwriteFieldNameFromEntity($field)
-    {
-        // if the entity doesn't have a dot, it means we don't need to overwrite the name
-        if (! Str::contains($field['entity'], '.')) {
-            return $field;
-        }
-
-        // only 1-1 relationships are supported, if it's anything else, abort
-        if ($field['relation_type'] != 'HasOne') {
-            return $field;
-        }
-
-        if (count(explode('.', $field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
-            $field['name'] = implode('.', array_slice(explode('.', $field['entity']), 0, -1));
-            $relation = $this->getRelationInstance($field);
-            if (! empty($field['name'])) {
-                $field['name'] .= '.';
-            }
-            $field['name'] .= $relation->getForeignKeyName();
         }
 
         return $field;
@@ -246,7 +236,7 @@ trait FieldsProtectedMethods
         $fieldKey = $this->getFieldKey($field);
 
         $allFields = $this->getOperationSetting('fields');
-        $allFields = Arr::add($this->fields(), $fieldKey, $field);
+        $allFields = array_merge($this->getCleanStateFields(), [$fieldKey => $field]);
 
         $this->setOperationSetting('fields', $allFields);
     }

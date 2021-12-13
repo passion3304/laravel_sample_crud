@@ -7,12 +7,12 @@
     $column['limit'] = $column['limit'] ?? 40;
     $column['text'] = $column['default'] ?? '-';
 
-    if(is_callable($column['value'])) {
+    if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
     }
 
     if(!empty($column['value'])) {
-        $column['text'] = $column['prefix'].Str::limit(strip_tags($column['value']), $column['limit'], "[...]").$column['suffix'];
+        $column['text'] = $column['prefix'].Str::limit(strip_tags($column['value']), $column['limit'], "…").$column['suffix'];
     }
 
     $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';

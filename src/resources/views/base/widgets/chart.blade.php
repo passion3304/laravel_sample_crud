@@ -33,12 +33,13 @@
 @includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')
 
 @push('after_scripts')
+<!-- JavaScript Bundle with Popper -->
   @if (is_array($path))
     @foreach ($path as $string)
-      <script src="{{ $string }}" charset="utf-8"></script>
+     @loadScriptOnce($string)
     @endforeach
   @elseif (is_string($path))
-    <script src="{{ $path }}" charset="utf-8"></script>
+    @loadScriptOnce($path)
   @endif
 
   {!! $chart->script() !!}
