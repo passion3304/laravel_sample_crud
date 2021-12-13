@@ -75,8 +75,13 @@ trait ShowOperation
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
 
-        // get the info for that entry
-        $this->data['entry'] = $this->crud->getEntry($id);
+        // get the info for that entry (include softDeleted items if the trait is used)
+        if ($this->crud->get('show.softDeletes') && in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($this->crud->model))) {
+            $this->data['entry'] = $this->crud->getModel()->withTrashed()->findOrFail($id);
+        } else {
+            $this->data['entry'] = $this->crud->getEntry($id);
+        }
+
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
@@ -100,11 +105,14 @@ trait ShowOperation
             $this->crud->column($this->crud->model->getCreatedAtColumn())->type('datetime');
             $this->crud->column($this->crud->model->getUpdatedAtColumn())->type('datetime');
         }
+
+        // if the model has SoftDeletes, add column for deleted_at
+        if ($this->crud->get('show.softDeletes') && in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($this->crud->model))) {
+            $this->crud->column($this->crud->model->getDeletedAtColumn())->type('datetime');
+        }
+
         // remove the columns that usually don't make sense inside the Show operation
         $this->removeColumnsThatDontBelongInsideShowOperation();
-
-        // remove preview button from stack:line
-        $this->crud->removeButton('show');
     }
 
     protected function removeColumnsThatDontBelongInsideShowOperation()
