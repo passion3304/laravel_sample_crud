@@ -33,7 +33,7 @@ trait ShowOperation
         $this->crud->operation('show', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
 
-            if (!method_exists($this, 'setupShowOperation')) {
+            if (! method_exists($this, 'setupShowOperation')) {
                 $this->autoSetupShowOperation();
             }
         });
