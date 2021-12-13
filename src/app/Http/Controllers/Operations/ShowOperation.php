@@ -32,6 +32,10 @@ trait ShowOperation
 
         $this->crud->operation('show', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
+
+            if (!method_exists($this, 'setupShowOperation')) {
+                $this->autoSetupShowOperation();
+            }
         });
 
         $this->crud->operation('list', function () {
@@ -81,21 +85,14 @@ trait ShowOperation
     }
 
     /**
-     * Default behaviour for setupShowOperation, in case none has been
+     * Default behaviour for the Show Operation, in case none has been
      * provided by including a setupShowOperation() method in the CrudController.
      */
-    protected function setupShowOperation()
+    protected function autoSetupShowOperation()
     {
         // guess which columns to show, from the database table
         if ($this->crud->get('show.setFromDb')) {
             $this->crud->setFromDb(false, true);
-        }
-
-        // if the developer has chosen to include a modifyShowOperation() method
-        // in his/her CrudController, make sure to call it because they probably want to
-        // add a new column or remove an autoset column
-        if (method_exists($this, 'modifyShowOperation')) {
-            $this->modifyShowOperation();
         }
 
         // remove the columns that usually don't make sense inside the Show operation
