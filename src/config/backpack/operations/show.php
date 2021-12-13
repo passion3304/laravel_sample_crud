@@ -10,4 +10,10 @@ return [
     // Define the size/looks of the content div for all CRUDs
     // To override per Controller use $this->crud->setShowContentClass('class-string')
     'contentClass' => 'col-md-8',
+
+    // Automatically add all columns from the db table?
+    'setFromDb'  => true,
+
+    // Automatically add created_at and updated_at columns, if model has timestamps?
+    'timestamps' => true,
 ];
