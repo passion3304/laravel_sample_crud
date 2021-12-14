@@ -165,8 +165,8 @@ class CrudField
     /**
      * Set an event to a certain closure. Will overwrite if existing.
      *
-     * @param  string   $event   Name of Eloquent Model event
-     * @param  \Closure $closure The function aka callback aka closure to run.
+     * @param  string  $event  Name of Eloquent Model event
+     * @param  \Closure  $closure  The function aka callback aka closure to run.
      * @return CrudField
      */
     public function on(string $event, \Closure $closure)

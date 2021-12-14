@@ -65,6 +65,7 @@ trait Fields
      * Eg. saving, saved, creating, created, updating, updated.
      *
      * @see https://laravel.com/docs/master/eloquent#events
+     *
      * @return void
      */
     public function registerFieldEvents()
