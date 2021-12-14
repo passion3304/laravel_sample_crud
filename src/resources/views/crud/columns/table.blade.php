@@ -2,7 +2,7 @@
 	$column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['columns'] = $column['columns'] ?? ['value' => 'Value'];
 
-    if(is_callable($column['value'])) {
+    if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
     }
 

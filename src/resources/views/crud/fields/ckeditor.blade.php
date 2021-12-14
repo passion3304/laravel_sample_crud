@@ -31,15 +31,12 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <script src="{{ asset('packages/ckeditor/ckeditor.js') }}"></script>
-        <script src="{{ asset('packages/ckeditor/adapters/jquery.js') }}"></script>
+        @loadOnce('packages/ckeditor/ckeditor.js')
+        @loadOnce('packages/ckeditor/adapters/jquery.js')
+        @loadOnce('bpFieldInitCKEditorElement')
         <script>
             function bpFieldInitCKEditorElement(element) {
 
@@ -53,9 +50,8 @@
                 element.ckeditor(element.data('options'));
             }
         </script>
+        @endLoadOnce
     @endpush
-
-@endif
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

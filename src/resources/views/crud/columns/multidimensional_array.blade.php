@@ -3,7 +3,7 @@
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $list = [];
 
-    if(is_callable($column['value'])) {
+    if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
     }
 
