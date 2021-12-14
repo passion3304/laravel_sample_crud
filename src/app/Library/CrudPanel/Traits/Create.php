@@ -104,14 +104,14 @@ trait Create
      * Sync the declared many-to-many associations through the pivot field.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model  The current CRUD model.
-     * @param  array  $data  The form data.
+     * @param  array  $input  The form input.
      */
-    public function syncPivot($model, $data)
+    public function syncPivot($model, $input)
     {
         $fields_with_relationships = $this->getRelationFields();
         foreach ($fields_with_relationships as $key => $field) {
             if (isset($field['pivot']) && $field['pivot']) {
-                $values = isset($data[$field['name']]) ? $data[$field['name']] : [];
+                $values = isset($input[$field['name']]) ? $input[$field['name']] : [];
 
                 // if a JSON was passed instead of an array, turn it into an array
                 if (is_string($values)) {
@@ -119,7 +119,7 @@ trait Create
                 }
 
                 $relation_data = [];
-                if (isset($field['fields'])) {
+                if (isset($field['pivotFields'])) {
                     foreach ($values as $pivot_row) {
                         $relation_data[$pivot_row[$field['name']]] = Arr::except($pivot_row, $field['name']);
                     }
@@ -134,8 +134,8 @@ trait Create
                 $model->{$field['name']}()->sync($relation_data);
             }
 
-            if (isset($field['morph']) && $field['morph'] && isset($data[$field['name']])) {
-                $values = $data[$field['name']];
+            if (isset($field['morph']) && $field['morph'] && isset($input[$field['name']])) {
+                $values = $input[$field['name']];
                 $model->{$field['name']}()->sync($values);
             }
         }
@@ -209,7 +209,7 @@ trait Create
      * Those will be nested accordingly in this relation array, so address relation will have a nested relation with country.
      *
      *
-     * @param  array  $data  The form data.
+     * @param  array  $input  The form data.
      * @return array The formatted relation data.
      */
     private function getRelationDataFromFormData($data)

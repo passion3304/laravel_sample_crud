@@ -441,7 +441,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
-        $this->crudPanel->addField(['name' => 'recommends', 'fields' => [
+        $this->crudPanel->addField(['name' => 'recommends', 'pivotFields' => [
             [
                 'name' => 'text',
             ],
@@ -489,7 +489,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addField([
             'name' => 'superArticles',
-            'fields' => [
+            'pivotFields' => [
                 [
                     'name' => 'notes',
                 ],
