@@ -122,7 +122,7 @@ trait FieldsProtectedMethods
      * try to determine the method on the model that defines the relationship, and pass it to
      * the field as 'entity'.
      *
-     * @param  array $field
+     * @param  array  $field
      * @return array
      */
     protected function makeSureFieldHasEntity($field)
