@@ -162,6 +162,20 @@ class CrudField
         return $this->save();
     }
 
+    /**
+     * Set an event to a certain closure. Will overwrite if existing.
+     *
+     * @param  string   $event   Name of Eloquent Model event
+     * @param  \Closure $closure The function aka callback aka closure to run.
+     * @return CrudField
+     */
+    public function on(string $event, \Closure $closure)
+    {
+        $this->attributes['events'][$event] = $closure;
+
+        return $this->save();
+    }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------
