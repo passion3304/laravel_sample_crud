@@ -23,8 +23,9 @@
     switch($field['relation_type']) {
         case 'BelongsTo':
         case 'BelongsToMany':
+        case 'MorphToMany':
             // if there is pivot fields we show the repeatable field
-            if(isset($field['fields'])) {
+            if(isset($field['pivotFields'])) {
                 $field['type'] = 'repeatable_relation';
             } else {
                 if(isset($field['inline_create'])) {
@@ -41,10 +42,9 @@
             }
         break;
         case 'MorphMany':
-        case 'MorphToMany':
         case 'HasMany':
             // if there are pivot fields we show the repeatable field
-            if(isset($field['fields'])) {
+            if(isset($field['pivotFields'])) {
                 $field['type'] = 'repeatable_relation';
             } else {
                 // we show a regular/ajax select

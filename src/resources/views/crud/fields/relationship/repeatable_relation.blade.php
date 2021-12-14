@@ -8,21 +8,23 @@
 
 @php
     $field['type'] = 'repeatable';
+    $field['fields'] = $field['pivotFields'];
     $inline_create = !isset($inlineCreate) && isset($pivotSelectorField['inline_create']) ? $pivotSelectorField['inline_create'] : false;
     $pivotSelectorField = $field['pivot_selector'] ?? [];
+    $pivotSelectorField['name'] = $field['name'];
     $pivotSelectorField['multiple'] = false;
     $pivotSelectorField['ajax'] = $pivotSelectorField['ajax'] ?? false;
     $pivotSelectorField['data_source'] = $pivotSelectorField['data_source'] ?? isset($pivotSelectorField['ajax']) && $pivotSelectorField['ajax'] ? url($crud->route.'/fetch/'.$field['entity']) : 'false';
-    $pivotSelectorField['minimum_input_length'] = $pivotSelectorField['minimum_input_length'] ?? 2,
-    $pivotSelectorField['delay'] = $pivotSelectorField['delay'] ?? 500,
-    $pivotSelectorField['placeholder'] = $pivotSelectorField['placeholder'] ?? trans('backpack::crud.select_entry'),
-    $pivotSelectorField['options'] = $pivotSelectorField['options'] ?? (function($query) { return $query; }),
+    $pivotSelectorField['minimum_input_length'] = $pivotSelectorField['minimum_input_length'] ?? 2;
+    $pivotSelectorField['delay'] = $pivotSelectorField['delay'] ?? 500;
+    $pivotSelectorField['placeholder'] = $pivotSelectorField['placeholder'] ?? trans('backpack::crud.select_entry');
 
     if($inline_create) {
         $field['inline_create'] = $inline_create;
     }
     switch ($field['relation_type']) {
         case 'MorphToMany':
+        case 'BelongsToMany':
             $field['fields'] = Arr::prepend($field['fields'], $pivotSelectorField);
             break;
         case 'MorphMany':
