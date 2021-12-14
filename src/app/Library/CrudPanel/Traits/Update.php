@@ -116,7 +116,7 @@ trait Update
                             foreach ($related_models as $related_model) {
                                 $item = [];
                                 switch ($relation_type) {
-                                    
+
                                     case 'HasMany':
                                     case 'MorphMany':
                                         // for any given related model, we get the value from pivot fields
@@ -138,6 +138,7 @@ trait Update
                                         break;
                                 }
                             }
+
                             return $result;
                         }
 
