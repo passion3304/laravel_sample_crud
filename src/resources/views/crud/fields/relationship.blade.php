@@ -24,23 +24,25 @@
         case 'BelongsTo':
         case 'BelongsToMany':
         case 'MorphToMany':
-            // if there is pivot fields we show the repeatable field
+            // if there are pivot fields we show the repeatable field
             if(isset($field['pivotFields'])) {
                 $field['type'] = 'repeatable_relation';
-            } else {
-                if(isset($field['inline_create'])) {
-                    // if the field is beeing inserted in an inline create modal
-                    // we don't allow modal over modal (for now ...) so we load fetch or select accordingly to field type.
-                    if(! isset($inlineCreate)) {
-                        $field['type'] = 'fetch_or_create';
-                    } else {
-                        $field['type'] = $field['ajax'] ? 'fetch' : 'relationship_select';
-                    }
-                } else {
-                    $field['type'] = $field['ajax'] ? 'fetch' : 'relationship_select';
-                }
+                break;
             }
-        break;
+    
+            if(!isset($field['inline_create'])) {
+                $field['type'] = $field['ajax'] ? 'fetch' : 'relationship_select';
+                break;
+            }
+    
+            // the field is beeing inserted in an inline create modal case $inlineCreate is set.
+            if(! isset($inlineCreate)) {
+                $field['type'] = 'fetch_or_create';
+                break;
+            }
+                
+    		$field['type'] = $field['ajax'] ? 'fetch' : 'relationship_select';
+            break;
         case 'MorphMany':
         case 'HasMany':
             // if there are pivot fields we show the repeatable field
