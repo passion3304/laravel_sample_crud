@@ -204,7 +204,7 @@ trait Create
 
         $relationDetails = [];
         foreach ($relation_fields as $relation_field) {
-            $attributeKey = $relation_field['name'];           
+            $attributeKey = $relation_field['name'];
             $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
             $fieldData = Arr::get($relationDetails, 'relations.'.$key, []);
             if (! array_key_exists('model', $fieldData)) {
@@ -216,8 +216,9 @@ trait Create
             $relatedAttribute = Arr::last(explode('.', $attributeKey));
             $fieldData['values'][$relatedAttribute] = Arr::get($input, $attributeKey);
 
-            Arr::set($relationDetails, 'relations.'.$key, $fieldData);         
+            Arr::set($relationDetails, 'relations.'.$key, $fieldData);
         }
+
         return $relationDetails;
     }
 }

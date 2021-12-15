@@ -199,7 +199,7 @@ trait Relationships
     }
 
     /**
-     * Get all relation fields that don't have pivot set
+     * Get all relation fields that don't have pivot set.
      *
      * @return array The fields with model key set.
      */
@@ -208,7 +208,7 @@ trait Relationships
         $all_relation_fields = $this->getRelationFields();
 
         return Arr::where($all_relation_fields, function ($value, $key) {
-            return isset($value['pivot']) && !$value['pivot'];
+            return isset($value['pivot']) && ! $value['pivot'];
         });
     }
 
