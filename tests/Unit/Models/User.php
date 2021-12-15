@@ -40,4 +40,29 @@ class User extends Model
     {
         return $this->name.'++';
     }
+
+    public function comment()
+    {
+        return $this->morphOne('Backpack\CRUD\Tests\Unit\Models\Comment', 'commentable');
+    }
+
+    public function recommends()
+    {
+        return $this->morphToMany('Backpack\CRUD\Tests\Unit\Models\Recommend', 'recommendable')->withPivot('text');
+    }
+
+    public function bills()
+    {
+        return $this->morphToMany('Backpack\CRUD\Tests\Unit\Models\Bill', 'billable');
+    }
+
+    public function stars()
+    {
+        return $this->morphMany('Backpack\CRUD\Tests\Unit\Models\Star', 'starable');
+    }
+
+    public function superArticles()
+    {
+        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Article', 'articles_user')->withPivot('notes');
+    }
 }
