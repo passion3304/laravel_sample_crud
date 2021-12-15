@@ -89,7 +89,6 @@ trait Update
         if (isset($field['entity']) && $field['entity'] !== false) {
             return $this->getModelAttributeValueFromRelationship($model, $field);
         }
-            
 
         if (is_string($field['name'])) {
             return $model->{$field['name']};
@@ -105,8 +104,8 @@ trait Update
         }
     }
 
-    private function getModelAttributeValueFromRelationship($model, $field) {
-        
+    private function getModelAttributeValueFromRelationship($model, $field)
+    {
         [$related_model, $relation_method] = $this->getModelAndMethodFromEntity($model, $field);
 
         if (! method_exists($related_model, $relation_method)) {
@@ -120,7 +119,7 @@ trait Update
             case 'HasMany':
             case 'BelongsToMany':
             case 'MorphToMany':
-                if (!isset($field['pivotFields'])) {
+                if (! isset($field['pivotFields'])) {
                     return $related_model->{$relation_method};
                 }
                 // we want to exclude the "self pivot field" since we already have it.
@@ -155,8 +154,9 @@ trait Update
                             break;
                     }
                 }
+
                 return $result;
-                
+
             break;
             case 'HasOne':
             case 'MorphOne':
@@ -169,10 +169,11 @@ trait Update
             break;
             default:
                 return $related_model->{$relation_method};
-        }        
+        }
     }
 
-    private function getModelAndMethodFromEntity($model, $field) {
+    private function getModelAndMethodFromEntity($model, $field)
+    {
         // HasOne and MorphOne relations contains the field in the relation string. We want only the relation part.
         $relational_entity = $this->getOnlyRelationEntity($field);
 
@@ -187,6 +188,5 @@ trait Update
         $relation_method = Str::afterLast($relational_entity, '.');
 
         return [$related_model, $relation_method];
-
     }
 }
