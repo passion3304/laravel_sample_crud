@@ -14,10 +14,8 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    // and format it to JSON, so that select2 can parse it
-    $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
-
-
+    $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? [];
+    
     if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
@@ -45,6 +43,9 @@
                 break;
         }
     }
+
+    $current_value = !is_array($current_value) ? $current_value->toArray() : $current_value;
+
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -80,7 +81,7 @@
             @php
                 $selected = '';
                 if(!empty($current_value)) {
-                    if(in_array($key, array_keys($current_value->toArray()))) {
+                    if(in_array($key, array_keys($current_value))) {
                         $selected = 'selected';
                     }
                 }

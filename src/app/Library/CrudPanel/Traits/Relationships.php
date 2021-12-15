@@ -189,11 +189,40 @@ trait Relationships
             case 'BelongsToMany':
             case 'HasManyThrough':
             case 'MorphMany':
-            case 'MorphOneOrMany':
             case 'MorphToMany':
+            case 'HasMany':
                 return true;
+            break;
             default:
                 return false;
         }
+    }
+
+    /**
+     * Get all relation fields that don't have pivot set
+     *
+     * @return array The fields with model key set.
+     */
+    public function getRelationFieldsWithoutPivot()
+    {
+        $all_relation_fields = $this->getRelationFields();
+
+        return Arr::where($all_relation_fields, function ($value, $key) {
+            return isset($value['pivot']) && !$value['pivot'];
+        });
+    }
+
+    /**
+     * Get all fields with n-n relation set (pivot table is true).
+     *
+     * @return array The fields with n-n relationships.
+     */
+    public function getRelationFieldsWithPivot()
+    {
+        $all_relation_fields = $this->getRelationFields();
+
+        return Arr::where($all_relation_fields, function ($value, $key) {
+            return isset($value['pivot']) && $value['pivot'];
+        });
     }
 }

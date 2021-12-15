@@ -523,4 +523,72 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertCount(1, $entry->fresh()->superArticles);
         $this->assertEquals('my first article note', $entry->fresh()->superArticles->first()->pivot->notes);
     }
+
+    public function testCreateHasOneWithNestedRelations()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('create');
+
+        $this->crudPanel->addFields([
+            [
+                'name' => 'accountDetails.nickname',
+            ],
+            [
+                'name' => 'accountDetails.profile_picture',
+            ],
+            [
+                'name' => 'accountDetails.article',
+            ],
+        ]);
+
+        $faker = Factory::create();
+
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'roles'          => [1, 2],
+            'accountDetails' => [
+                'nickname' => 'i_have_has_one',
+                'profile_picture' => 'ohh my picture 1.jpg',
+                'article' => 1,
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+        $account_details = $entry->accountDetails()->first();
+
+        $this->assertEquals($account_details->article, Article::find(1));
+    }
+
+    public function testMorphOneRelationship()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name' => 'comment.text',
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'comment'          => [
+                'text' => 'some test comment text',
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertEquals($inputData['comment']['text'], $entry->comment->text);
+
+        $inputData['comment']['text'] = 'updated comment text';
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertEquals($inputData['comment']['text'], $entry->fresh()->comment->text);
+    }
 }
