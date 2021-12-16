@@ -138,9 +138,11 @@ trait FieldsProtectedMethods
 
         //if the name is dot notation we are sure it's a relationship
         if (strpos($field['name'], '.') !== false) {
-            $possibleMethodName = Str::endsWith(Str::before($field['name'], '.'), '_id') ? Str::replaceLast('_id', '', Str::before($field['name'], '.')) : Str::before($field['name'], '.');
+            $possibleMethodName = Str::of($field['name'])->before('.');
             // if it has parameters it's not a relation method.
-            $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $possibleMethodName.'.'.Str::after($field['name'], '.');
+            $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $field['name'];
+
+            return $field;
         }
 
         // if there's a method on the model with this name
