@@ -213,9 +213,7 @@ trait Create
 
             // since we can have for example 3 fields for address relation, we make sure that at least once we set the relation details.
             $fieldDetails = Arr::get($relationDetails, 'relations.'.$key, []);
-
             $fieldDetails['model'] = $fieldDetails['model'] ?? $relation_field['model'];
-
             $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($attributeKey, -1);
 
             // this relations have the attribute as a last parameter, use it to create the array of details, eg: address.name
