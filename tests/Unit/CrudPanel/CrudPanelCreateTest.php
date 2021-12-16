@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Create
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships
  */
 class CrudPanelCreateTest extends BaseDBCrudPanelTest
 {
@@ -404,5 +405,122 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $entry = Article::find(1);
         $this->crudPanel->syncPivot($entry, $inputData);
+    }
+
+    public function testMorphToManySelectableRelationship()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField(['name' => 'bills'], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'bills'          => [1],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(1, $entry->bills);
+
+        $this->assertEquals(1, $entry->bills()->first()->id);
+
+        $inputData['bills'] = [1, 2];
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertCount(2, $entry->fresh()->bills);
+
+        $this->assertEquals([1, 2], $entry->fresh()->bills->pluck('id')->toArray());
+    }
+
+    public function testMorphToManyCreatableRelationship()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField(['name' => 'recommends', 'pivotFields' => [
+            [
+                'name' => 'text',
+            ],
+        ]], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'recommends'          => [
+                [
+                    'recommends' => 1,
+                    'text' => 'my pivot recommend field',
+                ],
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(1, $entry->recommends);
+
+        $this->assertEquals(1, $entry->recommends()->first()->id);
+
+        $inputData['recommends'] = [
+            [
+                'recommends' => 2,
+                'text' => 'I changed the recommend and the pivot text',
+            ],
+        ];
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertCount(1, $entry->fresh()->recommends);
+
+        $this->assertEquals(2, $entry->recommends()->first()->id);
+
+        $this->assertEquals('I changed the recommend and the pivot text', $entry->fresh()->recommends->first()->pivot->text);
+    }
+
+    public function testBelongsToManyWithPivotDataRelationship()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField([
+            'name' => 'superArticles',
+            'pivotFields' => [
+                [
+                    'name' => 'notes',
+                ],
+            ],
+        ]);
+
+        $faker = Factory::create();
+        $articleData = [
+            'content'     => $faker->text(),
+            'tags'        => $faker->words(3, true),
+            'user_id'     => 1,
+        ];
+
+        $article = Article::create($articleData);
+
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'superArticles'          => [
+                [
+                    'superArticles' => $article->id,
+                    'notes' => 'my first article note',
+                ],
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(1, $entry->fresh()->superArticles);
+        $this->assertEquals('my first article note', $entry->fresh()->superArticles->first()->pivot->notes);
     }
 }
