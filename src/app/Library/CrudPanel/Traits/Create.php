@@ -204,19 +204,26 @@ trait Create
 
         $relationDetails = [];
         foreach ($relation_fields as $relation_field) {
+            // use the field name as a search parameter 
             $attributeKey = $relation_field['name'];
-            $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
-            $fieldData = Arr::get($relationDetails, 'relations.'.$key, []);
-            if (! array_key_exists('model', $fieldData)) {
-                $fieldData['model'] = $relation_field['model'];
-            }
-            if (! array_key_exists('parent', $fieldData)) {
-                $fieldData['parent'] = $this->getRelationModel($attributeKey, -1);
-            }
-            $relatedAttribute = Arr::last(explode('.', $attributeKey));
-            $fieldData['values'][$relatedAttribute] = Arr::get($input, $attributeKey);
 
-            Arr::set($relationDetails, 'relations.'.$key, $fieldData);
+            // we split the entity into relations, eg: user.accountDetails.address (user -> HasOne accountDetails -> BelongsTo address).
+            // we specifically use only the relation entity because relations like HasOne and MorphOne use the attribute in the relation string
+            $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
+
+            // since we can have for example 3 fields for address relation, we make sure that atleast once we set the relation details.
+            $fieldDetails = Arr::get($relationDetails, 'relations.'.$key, []);
+            
+            $fieldDetails['model'] = $fieldDetails['model'] ?? $relation_field['model'];
+            
+            $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($attributeKey, -1);
+            
+            // this relations have the attribute as a last parameter, use it to create the array of details, eg: address.name
+            $relatedAttribute = Arr::last(explode('.', $attributeKey));
+
+            $fieldDetails['values'][$relatedAttribute] = Arr::get($input, $attributeKey);
+
+            Arr::set($relationDetails, 'relations.'.$key, $fieldDetails);
         }
 
         return $relationDetails;
