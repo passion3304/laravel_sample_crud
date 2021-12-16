@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait Create
 {
@@ -177,49 +178,48 @@ trait Create
     }
 
     /**
-     * Get a relation data array from the form data.
-     * For each relation defined in the fields through the entity attribute, set the model, the parent model and the
-     * attribute values.
+     * Get a relation data array from the form data. For each relation defined in the fields
+     * through the entity attribute, set the model, parent model and attribute values.
      *
      * We traverse this relation array later to create the relations, for example:
+     * - Current model HasOne Address
+     * - Address (line_1, country_id) BelongsTo Country through country_id in Address Model
      *
-     * Current model HasOne Address, this Address (line_1, country_id) BelongsTo Country through country_id in Address Model.
+     * So when editing current model crud user have two fields
+     * - address.line_1
+     * - address.country
+     * (we infer country_id from relation)
      *
-     * So when editing current model crud user have two fields address.line_1 and address.country (we infer country_id from relation)
-     *
-     * Those will be nested accordingly in this relation array, so address relation will have a nested relation with country.
-     *
+     * Those will be nested accordingly in this relation array, so address relation
+     * will have a nested relation with country.
      *
      * @param  array  $input  The form input.
      * @return array The formatted relation details.
      */
     private function getRelationDetailsFromInput($input)
     {
-        $relation_fields = $this->getRelationFieldsWithoutPivot();
+        $relationFields = $this->getRelationFieldsWithoutPivot();
 
         //remove fields that are not in the submitted form input
-        $relation_fields = array_filter($relation_fields, function ($item) use ($input) {
+        $relationFields = array_filter($relationFields, function ($item) use ($input) {
             return Arr::has($input, $item['name']);
         });
 
         $relationDetails = [];
-        foreach ($relation_fields as $relation_field) {
-            // use the field name as a search parameter
-            $attributeKey = $relation_field['name'];
+        foreach ($relationFields as $field) {
+            // we split the entity into relations, eg: user.accountDetails.address
+            // (user -> HasOne accountDetails -> BelongsTo address)
+            // we specifically use only the relation entity because relations like
+            // HasOne and MorphOne use the attribute in the relation string
+            $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($field)));
+            $attributeName = (string) Str::of($field['name'])->afterLast('.');
 
-            // we split the entity into relations, eg: user.accountDetails.address (user -> HasOne accountDetails -> BelongsTo address).
-            // we specifically use only the relation entity because relations like HasOne and MorphOne use the attribute in the relation string
-            $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
-
-            // since we can have for example 3 fields for address relation, we make sure that at least once we set the relation details.
+            // since we can have for example 3 fields for address relation,
+            // we make sure that at least once we set the relation details
             $fieldDetails = Arr::get($relationDetails, 'relations.'.$key, []);
-            $fieldDetails['model'] = $fieldDetails['model'] ?? $relation_field['model'];
-            $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($attributeKey, -1);
-
-            // this relations have the attribute as a last parameter, use it to create the array of details, eg: address.name
-            $relatedAttribute = Arr::last(explode('.', $attributeKey));
-
-            $fieldDetails['values'][$relatedAttribute] = Arr::get($input, $attributeKey);
+            $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
+            $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($field['name'], -1);
+            $fieldDetails['values'][$attributeName] = Arr::get($input, $field['name']);
 
             Arr::set($relationDetails, 'relations.'.$key, $fieldDetails);
         }

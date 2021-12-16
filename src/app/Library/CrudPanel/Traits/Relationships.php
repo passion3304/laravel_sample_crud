@@ -57,16 +57,16 @@ trait Relationships
         return Arr::last(explode('\\', get_class($relation)));
     }
 
-    public function getOnlyRelationEntity($relation_field)
+    public function getOnlyRelationEntity($field)
     {
-        $relation_model = $this->getRelationModel($relation_field['entity'], -1);
-        $related_method = Str::afterLast($relation_field['entity'], '.');
+        $model = $this->getRelationModel($field['entity'], -1);
+        $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.');
 
-        if (! method_exists($relation_model, $related_method)) {
-            return Str::beforeLast($relation_field['entity'], '.');
+        if (! method_exists($model, $lastSegmentAfterDot)) {
+            return (string) Str::of($field['entity'])->beforeLast('.');
         }
 
-        return $relation_field['entity'];
+        return $field['entity'];
     }
 
     /**
