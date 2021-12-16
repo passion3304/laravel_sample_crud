@@ -211,7 +211,7 @@ trait Create
             // we specifically use only the relation entity because relations like HasOne and MorphOne use the attribute in the relation string
             $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($relation_field)));
 
-            // since we can have for example 3 fields for address relation, we make sure that atleast once we set the relation details.
+            // since we can have for example 3 fields for address relation, we make sure that at least once we set the relation details.
             $fieldDetails = Arr::get($relationDetails, 'relations.'.$key, []);
 
             $fieldDetails['model'] = $fieldDetails['model'] ?? $relation_field['model'];
