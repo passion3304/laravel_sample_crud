@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\Article;
-use Backpack\CRUD\Tests\Unit\Models\User;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
+use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
@@ -592,7 +592,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertEquals($inputData['comment']['text'], $entry->fresh()->comment->text);
     }
-    
+
     public function testMorphManyCreatableRelationship()
     {
         $this->crudPanel->setModel(User::class);
@@ -703,7 +703,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'email'          => $faker->safeEmail,
             'password'       => bcrypt($faker->password()),
             'remember_token' => null,
-            'planets'          => [1,2],
+            'planets'          => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -736,7 +736,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'email'          => $faker->safeEmail,
             'password'       => bcrypt($faker->password()),
             'remember_token' => null,
-            'planets'          => [1,2],
+            'planets'          => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -769,7 +769,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'email'          => $faker->safeEmail,
             'password'       => bcrypt($faker->password()),
             'remember_token' => null,
-            'planets'          => [1,2],
+            'planets'          => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);

@@ -34,7 +34,8 @@ class Universe extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\User');
     }
 

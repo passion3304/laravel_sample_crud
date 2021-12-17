@@ -3,10 +3,10 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -181,7 +181,6 @@ trait Create
                 } else {
                     $this->createManyEntries($item, $relation, $relationMethod, $relationDetails);
                 }
-               
             }
             if (isset($relationDetails['relations'])) {
                 $this->createRelationsForItem($modelInstance, ['relations' => $relationDetails['relations']]);
@@ -191,8 +190,8 @@ trait Create
 
     /**
      * When using the HasMany/MorphMany relations as selectable elements we use this function to "mimic-sync" in those relations.
-     * Since HasMany/MorphMany does not have the `sync` method, we manually re-create it. 
-     * Here we add the entries that developer added and remove the ones that are not in the list. 
+     * Since HasMany/MorphMany does not have the `sync` method, we manually re-create it.
+     * Here we add the entries that developer added and remove the ones that are not in the list.
      * This removal process happens with the following rules:
      * - by default Backpack will behave like a `sync` from M-M relations: it deletes previous entries and add only the current ones.
      * - `force_delete` is configurable in the field, it's `true` by default. When false, if connecting column is nullable instead of deleting the row we set the column to null.
@@ -208,7 +207,7 @@ trait Create
         $relation_local_key = $relation->getLocalKeyName();
 
         $relation_column_is_nullable = $model_instance->isColumnNullable($relation_foreign_key);
-        
+
         if ($relation_values !== null) {
             // we add the new values into the relation
             $model_instance->whereIn($model_instance->getKeyName(), $relation_values)
@@ -262,7 +261,7 @@ trait Create
         $items = $relationDetails['values'][$relationMethod];
 
         $relation_local_key = $relation->getLocalKeyName();
-        
+
         $created_ids = [];
 
         foreach ($items as $item) {
