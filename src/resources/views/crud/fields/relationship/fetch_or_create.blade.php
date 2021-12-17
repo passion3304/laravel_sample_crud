@@ -100,8 +100,7 @@ if($activeInlineCreate) {
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.inline_create_button', ['field' => $field])
-        @endif
-        <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />    
+        @endif   
         <select
             name="{{ $field['name'].($field['multiple'] ? '[]' : '') }}"
             data-field-is-inline="{{var_export($inlineCreate ?? false)}}"

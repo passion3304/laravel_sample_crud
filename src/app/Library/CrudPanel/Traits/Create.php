@@ -216,33 +216,29 @@ trait Create
             // if developer provided a fallback id, we use it
             // if column is nullable we set it to null if developer didn't specify `force_delete => true`
             // if none of the above we delete the model from database
-            if ($relationDetails['fallback_id'] !== false) {
-                $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
-                    ->where($relation_foreign_key, $item->{$relation_local_key})
-                    ->update([$relation_foreign_key => $relationDetails['fallback_id']]);
+            $removed_entries = $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
+                                ->where($relation_foreign_key, $item->{$relation_local_key});
+
+            if ($relationDetails['fallback_id'] !== false) {   
+                $removed_entries->update([$relation_foreign_key => $relationDetails['fallback_id']]);
             } else {
                 if (! $relation_column_is_nullable || $force_delete) {
-                    $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
-                        ->where($relation_foreign_key, $item->{$relation_local_key})
-                        ->delete();
+                    $removed_entries->delete();
                 } else {
-                    $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
-                        ->where($relation_foreign_key, $item->{$relation_local_key})
-                        ->update([$relation_foreign_key => null]);
+                    $removed_entries->update([$relation_foreign_key => null]);
                 }
             }
         } else {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
+            $removed_entries = $model_instance->where($relation_foreign_key, $item->{$relation_local_key});
             if ($relationDetails['fallback_id'] !== false) {
-                $model_instance->where($relation_foreign_key, $item->{$relation_local_key})
-                    ->update([$relation_foreign_key => $relationDetails['fallback_id']]);
+                $removed_entries->update([$relation_foreign_key => $relationDetails['fallback_id']]);
             } else {
                 if (! $relation_column_is_nullable || $force_delete) {
-                    $model_instance->where($relation_foreign_key, $item->{$relation_local_key})->delete();
+                    $removed_entries->delete();
                 } else {
-                    $model_instance->where($relation_foreign_key, $item->{$relation_local_key})
-                        ->update([$relation_foreign_key => null]);
+                    $removed_entries->update([$relation_foreign_key => null]);
                 }
             }
         }
