@@ -65,4 +65,14 @@ class User extends Model
     {
         return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Article', 'articles_user')->withPivot('notes');
     }
+
+    public function universes() 
+    {
+        return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Universe');
+    }
+
+    public function planets() 
+    {
+        return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Planet');
+    }
 }

@@ -36,5 +36,11 @@ class MorphableSeeders extends Seeder
             'created_at'     => $now,
             'updated_at'     => $now,
         ]]);
+
+        DB::table('planets')->insert([[
+            'title' => $faker->title,
+        ], [
+            'title' => $faker->title,
+        ]]);
     }
 }

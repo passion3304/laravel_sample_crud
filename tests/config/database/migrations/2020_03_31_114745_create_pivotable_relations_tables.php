@@ -62,6 +62,18 @@ class CreatePivotableRelationsTables extends Migration
             $table->bigInteger('starable_id');
             $table->string('title')->nullable();
         });
+
+        Schema::create('universes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('user_id');
+            $table->string('title')->nullable();
+        });
+
+        Schema::create('planets', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('user_id')->nullable();
+            $table->string('title')->nullable();
+        });
     }
 
     public function down()
@@ -73,5 +85,7 @@ class CreatePivotableRelationsTables extends Migration
         Schema::dropIfExists('billables');
         Schema::dropIfExists('bills');
         Schema::dropIfExists('articles_users');
+        Schema::dropIfExists('planets');
+        Schema::dropIfExists('universes');
     }
 }

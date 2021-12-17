@@ -188,9 +188,7 @@ trait Relationships
         switch ($relation_type) {
             case 'BelongsToMany':
             case 'HasManyThrough':
-            case 'MorphMany':
             case 'MorphToMany':
-            case 'HasMany':
                 return true;
             break;
             default:
