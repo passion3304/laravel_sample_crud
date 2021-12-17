@@ -219,7 +219,7 @@ trait Create
             $removed_entries = $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
                                 ->where($relation_foreign_key, $item->{$relation_local_key});
 
-            if ($relationDetails['fallback_id'] !== false) {   
+            if ($relationDetails['fallback_id'] !== false) {
                 $removed_entries->update([$relation_foreign_key => $relationDetails['fallback_id']]);
             } else {
                 if (! $relation_column_is_nullable || $force_delete) {
