@@ -64,11 +64,7 @@ trait HasRelationshipFields
      */
     public static function isColumnNullable($column_name)
     {
-        // create an instance of the model to be able to get the table name
-        $instance = new static();
-
-        $conn = $instance->getConnectionWithExtraTypeMappings();
-        $table = $instance->getTableWithPrefix();
+        [$conn, $table] = self::getModelConnectionAndTable();
 
         // MongoDB columns are alway nullable
         if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
@@ -86,4 +82,55 @@ trait HasRelationshipFields
             return true;
         }
     }
+
+    /**
+     * Checks if the given column name has default value set.
+     *
+     * @param  string  $column_name  The name of the db column.
+     * @return bool
+     */
+    public static function dbColumnHasDefaultValue($column_name)
+    {
+        [$conn, $table] = self::getModelConnectionAndTable();        
+
+        // MongoDB columns don't have default values
+        if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
+            return false;
+        }
+
+        try {
+            // check if the column exists in the database
+            $column = $conn->getDoctrineColumn($table, $column_name);
+            // if the return value is a string there is some default set.
+            return is_string($column->getDefault()) ? true : false;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Return the db column default value
+     *
+     * @param  string  $column_name  The name of the db column.
+     * @return bool
+     */
+    public static function getDbColumnDefaultValue($column_name)
+    {
+        [$conn, $table] = self::getModelConnectionAndTable();
+
+        return $conn->getDoctrineColumn($table, $column_name)->getDefault();
+    }
+
+    /**
+     * Return the current model connection and table name.
+     */
+    private static function getModelConnectionAndTable() {
+        $conn = $instance = new static();
+        $conn = $instance->getConnectionWithExtraTypeMappings();
+        $table = $instance->getTableWithPrefix();
+
+        return [$conn, $table];
+    }
+
+    
 }

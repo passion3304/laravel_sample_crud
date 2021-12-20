@@ -45,6 +45,11 @@
             break;
         case 'MorphMany':
         case 'HasMany':
+            // when set, field value will default to what developer defines
+            $field['fallback_id'] = $field['fallback_id'] ?? false;
+            // when true, backpack ensures that the connecting entry is deleted when un-selected from relation
+            $field['force_delete'] = $field['force_delete'] ?? false;
+
             // if there are pivot fields we show the repeatable field
             if(isset($field['pivotFields'])) {
                 $field['type'] = 'repeatable_relation';

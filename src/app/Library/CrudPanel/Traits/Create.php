@@ -176,7 +176,7 @@ trait Create
                 // if relation values are null we can only attach, also we check if we sent a single dimensional array [1,2,3], or an array of arrays: [[1][2][3]]
                 // if is as single dimensional array we can only attach.
                 if ($relation_values === null || count($relation_values) == count($relation_values, COUNT_RECURSIVE)) {
-                    $this->attachManyRelation($item, $relation, $relationMethod, $relationDetails, $relation_values);
+                    $this->attachManyRelation($item, $relation, $relationDetails, $relation_values);
                 } else {
                     $this->createManyEntries($item, $relation, $relationMethod, $relationDetails);
                 }
@@ -198,14 +198,11 @@ trait Create
      *
      * @return void
      */
-    public function attachManyRelation($item, $relation, $relationMethod, $relationDetails, $relation_values)
+    public function attachManyRelation($item, $relation, $relationDetails, $relation_values)
     {
         $model_instance = $relation->getRelated();
-        $force_delete = $relationDetails['force_delete'];
         $relation_foreign_key = $relation->getForeignKeyName();
         $relation_local_key = $relation->getLocalKeyName();
-
-        $relation_column_is_nullable = $model_instance->isColumnNullable($relation_foreign_key);
 
         if ($relation_values !== null) {
             // we add the new values into the relation
@@ -219,27 +216,33 @@ trait Create
             $removed_entries = $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
                                 ->where($relation_foreign_key, $item->{$relation_local_key});
 
-            if ($relationDetails['fallback_id'] !== false) {
-                $removed_entries->update([$relation_foreign_key => $relationDetails['fallback_id']]);
-            } else {
-                if (! $relation_column_is_nullable || $force_delete) {
-                    $removed_entries->delete();
-                } else {
-                    $removed_entries->update([$relation_foreign_key => null]);
-                }
-            }
+            $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+            
         } else {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
             $removed_entries = $model_instance->where($relation_foreign_key, $item->{$relation_local_key});
-            if ($relationDetails['fallback_id'] !== false) {
-                $removed_entries->update([$relation_foreign_key => $relationDetails['fallback_id']]);
-            } else {
-                if (! $relation_column_is_nullable || $force_delete) {
-                    $removed_entries->delete();
-                } else {
-                    $removed_entries->update([$relation_foreign_key => null]);
-                }
+            $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+        }
+    }
+
+    private function handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key) {
+        $relation_column_is_nullable = $model_instance->isColumnNullable($relation_foreign_key);
+        $force_delete = $relationDetails['force_delete'];
+
+        if (isset($relationDetails['fallback_id']) && $relationDetails['fallback_id'] !== false) {
+            $removed_entries->update([$relation_foreign_key => $relationDetails['fallback_id']]);
+        } else {
+            if($force_delete) {
+                $removed_entries->delete();
+            // if column is not nullable we will check if there is some column default 
+            // provided in database schema. If there is, we use it as fallback.
+            }elseif (! $relation_column_is_nullable) {
+                if($model_instance->dbColumnHasDefaultValue($relation_foreign_key)) {
+                    $removed_entries->update([$relation_foreign_key => $model_instance->getDbColumnDefaultValue($relation_foreign_key)]);
+                } 
+            }else {
+                $removed_entries->update([$relation_foreign_key => null]);
             }
         }
     }
@@ -312,15 +315,20 @@ trait Create
             // HasOne and MorphOne use the attribute in the relation string
             $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($field)));
             $attributeName = (string) Str::of($field['name'])->afterLast('.');
-
+        
             // since we can have for example 3 fields for address relation,
             // we make sure that at least once we set the relation details
             $fieldDetails = Arr::get($relationDetails, 'relations.'.$key, []);
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
-            $fieldDetails['fallback_id'] = $fieldDetails['fallback_id'] ?? $field['fallback_id'] ?? false;
-            $fieldDetails['force_delete'] = $fieldDetails['force_delete'] ?? $field['force_delete'] ?? true;
             $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($field['name'], -1);
             $fieldDetails['values'][$attributeName] = Arr::get($input, $field['name']);
+
+            if(isset($field['fallback_id'])) {
+                $fieldDetails['fallback_id'] = $field['fallback_id'];
+            }
+            if(isset($field['force_delete'])) {
+                $fieldDetails['force_delete'] = $field['force_delete'];
+            }
 
             Arr::set($relationDetails, 'relations.'.$key, $fieldDetails);
         }

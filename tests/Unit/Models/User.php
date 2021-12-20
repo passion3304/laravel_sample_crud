@@ -75,4 +75,9 @@ class User extends Model
     {
         return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Planet');
     }
+
+    public function comets()
+    {
+        return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Comet');
+    }
 }

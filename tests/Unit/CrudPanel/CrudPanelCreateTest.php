@@ -4,6 +4,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\Article;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
+use Backpack\CRUD\Tests\Unit\Models\Comet;
 use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Arr;
@@ -347,10 +348,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEmpty($relationFields);
     }
 
-    public function testCreateOneToOneRelationships()
-    {
-    }
-
     public function testSyncPivot()
     {
         $this->crudPanel->setModel(User::class);
@@ -689,38 +686,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($inputData['universes'][0]['title'], $entry->fresh()->universes->first()->title);
     }
 
-    public function testHasManySelectableRelationship()
-    {
-        $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
-        $this->crudPanel->addField([
-            'name'    => 'planets',
-        ], 'both');
-
-        $faker = Factory::create();
-        $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
-            'remember_token' => null,
-            'planets'          => [1, 2],
-        ];
-
-        $entry = $this->crudPanel->create($inputData);
-
-        $this->assertCount(2, $entry->planets);
-
-        $inputData['planets'] = [1];
-
-        $this->crudPanel->update($entry->id, $inputData);
-
-        $this->assertCount(1, $entry->fresh()->planets);
-
-        $planets = Planet::all();
-
-        $this->assertCount(1, $planets);
-    }
-
     public function testHasManySelectableRelationshipWithoutForceDelete()
     {
         $this->crudPanel->setModel(User::class);
@@ -728,6 +693,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField([
             'name'    => 'planets',
             'force_delete' => false,
+            'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
@@ -761,6 +727,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField([
             'name'    => 'planets',
             'fallback_id' => 0,
+            'force_delete' => false
         ], 'both');
 
         $faker = Factory::create();
@@ -785,5 +752,72 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $planets = Planet::all();
         $this->assertCount(2, $planets);
         $this->assertEquals(0, $planets->first()->user_id);
+    }
+
+    public function testHasManySelectableRelationshipWithForceDelete()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'    => 'planets',
+            'force_delete' => true,
+            'fallback_id' => false
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'planets'          => [1, 2],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(2, $entry->planets);
+
+        $inputData['planets'] = [2];
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertCount(1, $entry->fresh()->planets);
+
+        $planets = Planet::all();
+        $this->assertCount(1, $planets);
+    }
+
+    public function testHasManySelectableRelationshipNonNullableForeignKeyAndDefaultInDatabase()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'    => 'comets',
+            'force_delete' => false,
+            'fallback_id' => false
+        ], 'both');
+        
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'comets'          => [1, 2],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(2, $entry->comets);
+
+        $inputData['comets'] = [2];
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertCount(1, $entry->fresh()->comets);
+
+        $comets = Comet::all();
+        $this->assertCount(2, $comets);
+        $this->assertEquals(0, $comets->first()->user_id);
     }
 }
