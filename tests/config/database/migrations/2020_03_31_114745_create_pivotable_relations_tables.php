@@ -93,6 +93,5 @@ class CreatePivotableRelationsTables extends Migration
         Schema::dropIfExists('planets');
         Schema::dropIfExists('universes');
         Schema::dropIfExists('comets');
-
     }
 }

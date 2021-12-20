@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\Article;
-use Backpack\CRUD\Tests\Unit\Models\Planet;
 use Backpack\CRUD\Tests\Unit\Models\Comet;
+use Backpack\CRUD\Tests\Unit\Models\Planet;
 use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Arr;
@@ -727,7 +727,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField([
             'name'    => 'planets',
             'fallback_id' => 0,
-            'force_delete' => false
+            'force_delete' => false,
         ], 'both');
 
         $faker = Factory::create();
@@ -761,7 +761,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField([
             'name'    => 'planets',
             'force_delete' => true,
-            'fallback_id' => false
+            'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
@@ -794,9 +794,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField([
             'name'    => 'comets',
             'force_delete' => false,
-            'fallback_id' => false
+            'fallback_id' => false,
         ], 'both');
-        
+
         $faker = Factory::create();
         $inputData = [
             'name'           => $faker->name,

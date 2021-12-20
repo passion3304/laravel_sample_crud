@@ -91,7 +91,7 @@ trait HasRelationshipFields
      */
     public static function dbColumnHasDefaultValue($column_name)
     {
-        [$conn, $table] = self::getModelConnectionAndTable();        
+        [$conn, $table] = self::getModelConnectionAndTable();
 
         // MongoDB columns don't have default values
         if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
@@ -109,7 +109,7 @@ trait HasRelationshipFields
     }
 
     /**
-     * Return the db column default value
+     * Return the db column default value.
      *
      * @param  string  $column_name  The name of the db column.
      * @return bool
@@ -124,13 +124,12 @@ trait HasRelationshipFields
     /**
      * Return the current model connection and table name.
      */
-    private static function getModelConnectionAndTable() {
+    private static function getModelConnectionAndTable()
+    {
         $conn = $instance = new static();
         $conn = $instance->getConnectionWithExtraTypeMappings();
         $table = $instance->getTableWithPrefix();
 
         return [$conn, $table];
     }
-
-    
 }
