@@ -14,7 +14,7 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    $current_value = oldValueDefaultOrFallback($field, '');
+    $current_value = oldValueDefaultOrFallback($field, []);
 
 
     if (!empty($current_value) || is_int($current_value)) {

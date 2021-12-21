@@ -273,10 +273,6 @@ if (! function_exists('oldValueDefaultOrFallback')) {
             return old(square_brackets_to_dots($field_name));
         }
 
-        if (array_key_exists('value', $field)) {
-            return $value;
-        }
-
-        return $default ?? $fallback;
+        return $value ?? $default ?? $fallback;
     }
 }
