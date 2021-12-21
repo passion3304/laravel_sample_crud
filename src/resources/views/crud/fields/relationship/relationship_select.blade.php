@@ -14,7 +14,6 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    // and format it to JSON, so that select2 can parse it
     $current_value = oldValueDefaultOrFallback($field, '');
 
 
@@ -46,9 +45,7 @@
         }
     }
 
-
-
-    $field['value'] = json_encode($current_value);
+    $current_value = !is_array($current_value) ? $current_value->toArray() : $current_value;
 
 @endphp
 
@@ -67,7 +64,6 @@
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
-        data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
 
@@ -83,7 +79,15 @@
 
         @if (count($field['options']))
             @foreach ($field['options'] as $key => $option)
-                    <option value="{{ $key }}">{{ $option }}</option>
+            @php
+                $selected = '';
+                if(!empty($current_value)) {
+                    if(in_array($key, array_keys($current_value))) {
+                        $selected = 'selected';
+                    }
+                }
+            @endphp
+                    <option value="{{ $key }}" {{$selected}}>{{ $option }}</option>
             @endforeach
         @endif
     </select>
@@ -144,33 +148,9 @@
         var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
-        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
         var $isFieldInline = element.data('field-is-inline');
-
-        var $item = false;
-
-        var $value = JSON.parse(element.attr('data-current-value'))
-
-        if(Object.keys($value).length > 0) {
-            $item = true;
-        }
-        var selectedOptions = [];
-        var $currentValue = $item ? $value : {};
-
-        //we reselect the previously selected options if any.
-        Object.entries($currentValue).forEach(function(option) {
-            selectedOptions.push(option[0]);
-            $(element).val(selectedOptions);
-        });
-
-        if (!$allows_null && $item === false) {
-            element.find('option:eq(0)').prop('selected', true);
-        }
-
-        $(element).attr('data-current-value',$(element).val());
-        $(element).trigger('change');
 
         var $select2Settings = {
                 theme: 'bootstrap',

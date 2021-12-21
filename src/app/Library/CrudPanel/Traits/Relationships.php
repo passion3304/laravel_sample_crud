@@ -57,16 +57,16 @@ trait Relationships
         return Arr::last(explode('\\', get_class($relation)));
     }
 
-    public function getOnlyRelationEntity($relation_field)
+    public function getOnlyRelationEntity($field)
     {
-        $relation_model = $this->getRelationModel($relation_field['entity'], -1);
-        $related_method = Str::afterLast($relation_field['entity'], '.');
+        $model = $this->getRelationModel($field['entity'], -1);
+        $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.');
 
-        if (! method_exists($relation_model, $related_method)) {
-            return Str::beforeLast($relation_field['entity'], '.');
+        if (! method_exists($model, $lastSegmentAfterDot)) {
+            return (string) Str::of($field['entity'])->beforeLast('.');
         }
 
-        return $relation_field['entity'];
+        return $field['entity'];
     }
 
     /**
@@ -189,11 +189,40 @@ trait Relationships
             case 'BelongsToMany':
             case 'HasManyThrough':
             case 'MorphMany':
-            case 'MorphOneOrMany':
             case 'MorphToMany':
+            case 'HasMany':
                 return true;
+            break;
             default:
                 return false;
         }
+    }
+
+    /**
+     * Get all relation fields that don't have pivot set.
+     *
+     * @return array The fields with model key set.
+     */
+    public function getRelationFieldsWithoutPivot()
+    {
+        $all_relation_fields = $this->getRelationFields();
+
+        return Arr::where($all_relation_fields, function ($value, $key) {
+            return isset($value['pivot']) && ! $value['pivot'];
+        });
+    }
+
+    /**
+     * Get all fields with n-n relation set (pivot table is true).
+     *
+     * @return array The fields with n-n relationships.
+     */
+    public function getRelationFieldsWithPivot()
+    {
+        $all_relation_fields = $this->getRelationFields();
+
+        return Arr::where($all_relation_fields, function ($value, $key) {
+            return isset($value['pivot']) && $value['pivot'];
+        });
     }
 }

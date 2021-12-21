@@ -55,14 +55,9 @@
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
-{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     @push('crud_fields_scripts')
-        <!-- no scripts -->
+    	@loadOnce('bpFieldInitUploadMultipleElement')
         <script>
         	function bpFieldInitUploadMultipleElement(element) {
         		var fieldName = element.attr('data-field-name');
@@ -90,5 +85,5 @@
 		        });
         	}
         </script>
+        @endLoadOnce
     @endpush
-@endif

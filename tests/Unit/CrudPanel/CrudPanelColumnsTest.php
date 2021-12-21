@@ -291,11 +291,6 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertEquals($this->expectedRelationColumnArray, $this->crudPanel->columns());
     }
 
-    /**
-     * Undocumented function.
-     *
-     * @group failing
-     */
     public function testAddNestedRelationColumn()
     {
         $this->crudPanel->setModel(User::class);

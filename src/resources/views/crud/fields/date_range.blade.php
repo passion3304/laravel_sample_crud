@@ -19,10 +19,14 @@
             return $formattedDate;
         }
     }
-
-    if (isset($entry)) {
-        $start_value = formatDate($entry, $field['name'][0]);
-        $end_value = formatDate($entry, $field['name'][1]);
+    if (isset($field['value'])) {
+        if (isset($entry) && ! is_array($field['value'])) {
+            $start_value = formatDate($entry, $field['name'][0]);
+            $end_value = formatDate($entry, $field['name'][1]);
+        } elseif (is_array($field['value'])) {
+            $start_value = $field['value'][$field['name'][0]];
+            $end_value = $field['value'][$field['name'][1]];
+        }
     }
 
     $start_default = $field['default'][0] ?? date('Y-m-d H:i:s');
@@ -69,20 +73,17 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.css') }}" />
-    @endpush
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
+@push('crud_fields_styles')
+    @loadOnce('packages/bootstrap-daterangepicker/daterangepicker.css')
+@endpush
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
-    <script type="text/javascript" src="{{ asset('packages/moment/min/moment-with-locales.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
+    @loadOnce('packages/moment/min/moment-with-locales.min.js')
+    @loadOnce('packages/bootstrap-daterangepicker/daterangepicker.js')
+    @loadOnce('bpFieldInitDateRangeElement')
     <script>
         function bpFieldInitDateRangeElement(element) {
 
@@ -121,7 +122,6 @@
                 });
         }
     </script>
-    @endpush
-
-@endif
+    @endLoadOnce
+@endpush
 {{-- End of Extra CSS and JS --}}

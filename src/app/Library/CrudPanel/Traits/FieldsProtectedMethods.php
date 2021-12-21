@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait FieldsProtectedMethods
@@ -84,6 +83,21 @@ trait FieldsProtectedMethods
     }
 
     /**
+     * Run the field name overwrite in multiple fields.
+     *
+     * @param  array  $fields
+     * @return array
+     */
+    public function overwriteFieldNamesFromDotNotationToArray($fields)
+    {
+        foreach ($fields as $key => $field) {
+            $fields[$key] = $this->overwriteFieldNameFromDotNotationToArray($field);
+        }
+
+        return $fields;
+    }
+
+    /**
      * If the field_definition_array array is a string, it means the programmer was lazy
      * and has only passed the name of the field. Turn that into a proper array.
      *
@@ -108,8 +122,8 @@ trait FieldsProtectedMethods
      * try to determine the method on the model that defines the relationship, and pass it to
      * the field as 'entity'.
      *
-     * @param  [type] $field [description]
-     * @return [type]        [description]
+     * @param  array  $field
+     * @return array
      */
     protected function makeSureFieldHasEntity($field)
     {
@@ -124,14 +138,17 @@ trait FieldsProtectedMethods
 
         //if the name is dot notation we are sure it's a relationship
         if (strpos($field['name'], '.') !== false) {
-            $field['entity'] = $field['name'];
+            $possibleMethodName = Str::of($field['name'])->before('.');
+            // if it has parameters it's not a relation method.
+            $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $field['name'];
 
             return $field;
         }
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $field['name'])) {
-            $field['entity'] = $field['name'];
+            // if it has parameters it's not a relation method.
+            $field['entity'] = $this->modelMethodHasParameters($this->model, $field['name']) ? false : $field['name'];
 
             return $field;
         }
@@ -142,34 +159,11 @@ trait FieldsProtectedMethods
             $possibleMethodName = Str::replaceLast('_id', '', $field['name']);
 
             if (method_exists($this->model, $possibleMethodName)) {
-                $field['entity'] = $possibleMethodName;
+                // if it has parameters it's not a relation method.
+                $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $possibleMethodName;
 
                 return $field;
             }
-        }
-
-        return $field;
-    }
-
-    protected function overwriteFieldNameFromEntity($field)
-    {
-        // if the entity doesn't have a dot, it means we don't need to overwrite the name
-        if (! Str::contains($field['entity'], '.')) {
-            return $field;
-        }
-
-        // only 1-1 relationships are supported, if it's anything else, abort
-        if ($field['relation_type'] != 'HasOne') {
-            return $field;
-        }
-
-        if (count(explode('.', $field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
-            $field['name'] = implode('.', array_slice(explode('.', $field['entity']), 0, -1));
-            $relation = $this->getRelationInstance($field);
-            if (! empty($field['name'])) {
-                $field['name'] .= '.';
-            }
-            $field['name'] .= $relation->getForeignKeyName();
         }
 
         return $field;
@@ -246,7 +240,7 @@ trait FieldsProtectedMethods
         $fieldKey = $this->getFieldKey($field);
 
         $allFields = $this->getOperationSetting('fields');
-        $allFields = Arr::add($this->fields(), $fieldKey, $field);
+        $allFields = array_merge($this->getCleanStateFields(), [$fieldKey => $field]);
 
         $this->setOperationSetting('fields', $allFields);
     }

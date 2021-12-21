@@ -65,6 +65,6 @@ trait FieldsPrivateMethods
      */
     private function transformFields(callable $callback)
     {
-        $this->setOperationSetting('fields', $callback($this->fields()));
+        $this->setOperationSetting('fields', $callback($this->getCleanStateFields()));
     }
 }

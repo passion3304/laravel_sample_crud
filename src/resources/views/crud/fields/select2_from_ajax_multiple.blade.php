@@ -54,34 +54,27 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
+@push('crud_fields_styles')
     <!-- include select2 css-->
-    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    @endpush
+    @loadOnce('packages/select2/dist/css/select2.min.css')
+    @loadOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
+@endpush
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
     <!-- include select2 js-->
-    <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
+    @loadOnce('packages/select2/dist/js/select2.full.min.js')
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
+        @loadOnce('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js')
     @endif
-    @endpush
-
-@endif
+@endpush
 
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
+@loadOnce('bpFieldInitSelect2FromAjaxMultipleElement')
 <script>
-
-
     function bpFieldInitSelect2FromAjaxMultipleElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
@@ -94,27 +87,7 @@
         var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
-        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse("[]");
         var $isFieldInline = element.data('field-is-inline');
-
-        var select2AjaxMultipleFetchSelectedEntries = function (element) {
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: $dataSource,
-                    data: {
-                        'keys': $selectedOptions
-                    },
-                    type: $method,
-                    success: function (result) {
-
-                        resolve(result);
-                    },
-                    error: function (result) {
-                        reject(result);
-                    }
-                });
-            });
-        };
 
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
@@ -163,26 +136,6 @@
             });
         }
 
-        // if we have selected options here we are on a repeatable field, we need to fetch the options with the keys
-        // we have stored from the field and append those options in the select.
-        if (typeof $selectedOptions !== typeof undefined && $selectedOptions !== false && $selectedOptions != '') {
-            var optionsForSelect = [];
-            select2AjaxMultipleFetchSelectedEntries(element).then(function(result) {
-                result.forEach(function(item) {
-                    $itemText = item[$fieldAttribute];
-                    $itemValue = item[$connectedEntityKeyName];
-                    //add current key to be selected later.
-                    optionsForSelect.push($itemValue);
-
-                    //create the option in the select
-                    $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
-                });
-
-                // set the option keys as selected.
-                $(element).val(optionsForSelect);
-            });
-        }
-
         // if any dependencies have been declared
         // when one of those dependencies changes value
         // reset the select2 value
@@ -212,6 +165,7 @@
         }
     }
 </script>
+@endLoadOnce
 @endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

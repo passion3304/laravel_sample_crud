@@ -15,11 +15,20 @@ trait Fields
     // ------------
 
     /**
-     * Get the CRUD fields for the current operation.
+     * Get the CRUD fields for the current operation with name processed to be usable in HTML.
      *
      * @return array
      */
     public function fields()
+    {
+        return $this->overwriteFieldNamesFromDotNotationToArray($this->getOperationSetting('fields') ?? []);
+    }
+
+    /**
+     * Returns the fields as they are stored inside operation setting, not running the
+     * presentation callbacks like converting the `dot.names` into `dot[names]` for html for example.
+     */
+    public function getCleanStateFields()
     {
         return $this->getOperationSetting('fields') ?? [];
     }
@@ -41,14 +50,12 @@ trait Fields
         if (isset($field['entity']) && $field['entity'] !== false) {
             $field = $this->makeSureFieldHasRelationType($field);
             $field = $this->makeSureFieldHasModel($field);
-            $field = $this->overwriteFieldNameFromEntity($field);
             $field = $this->makeSureFieldHasAttribute($field);
             $field = $this->makeSureFieldHasMultiple($field);
             $field = $this->makeSureFieldHasPivot($field);
         }
 
         $field = $this->makeSureFieldHasType($field);
-        $field = $this->overwriteFieldNameFromDotNotationToArray($field);
 
         return $field;
     }
@@ -118,7 +125,7 @@ trait Fields
             return false;
         }
 
-        $firstField = array_keys(array_slice($this->fields(), 0, 1))[0];
+        $firstField = array_keys(array_slice($this->getCleanFields(), 0, 1))[0];
         $this->beforeField($firstField);
     }
 
@@ -155,7 +162,7 @@ trait Fields
      */
     public function removeAllFields()
     {
-        $current_fields = $this->getCurrentFields();
+        $current_fields = $this->getCleanStateFields();
         if (! empty($current_fields)) {
             foreach ($current_fields as $field) {
                 $this->removeField($field['name']);
@@ -171,7 +178,7 @@ trait Fields
      */
     public function removeFieldAttribute($field, $attribute)
     {
-        $fields = $this->fields();
+        $fields = $this->getCleanStateFields();
 
         unset($fields[$field][$attribute]);
 
@@ -186,7 +193,7 @@ trait Fields
      */
     public function modifyField($fieldName, $modifications)
     {
-        $fieldsArray = $this->fields();
+        $fieldsArray = $this->getCleanStateFields();
         $field = $this->firstFieldWhere('name', $fieldName);
         $fieldKey = $this->getFieldKey($field);
 
@@ -219,7 +226,7 @@ trait Fields
      */
     public function checkIfFieldIsFirstOfItsType($field)
     {
-        $fields_array = $this->getCurrentFields();
+        $fields_array = $this->getCleanStateFields();
         $first_field = $this->getFirstOfItsTypeInArray($field['type'], $fields_array);
 
         if ($first_field && $field['name'] == $first_field['name']) {
@@ -236,7 +243,7 @@ trait Fields
      */
     public function decodeJsonCastedAttributes($data)
     {
-        $fields = $this->getFields();
+        $fields = $this->getCleanStateFields();
         $casted_attributes = $this->model->getCastedAttributes();
 
         foreach ($fields as $field) {
@@ -302,7 +309,7 @@ trait Fields
      */
     public function hasUploadFields()
     {
-        $fields = $this->getFields();
+        $fields = $this->getCleanStateFields();
         $upload_fields = Arr::where($fields, function ($value, $key) {
             return isset($value['upload']) && $value['upload'] == true;
         });
@@ -417,28 +424,25 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        //we need to parse field names in relation fields so they get posted/stored correctly
-        $fields = $this->parseRelationFieldNamesFromHtml($this->getCurrentFields());
-
-        return Arr::flatten(Arr::pluck($fields, 'name'));
+        return Arr::flatten(Arr::pluck($this->getCleanStateFields(), 'name'));
     }
 
     /**
      * Returns the request without anything that might have been maliciously inserted.
      * Only specific field names that have been introduced with addField() are kept in the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
-    public function getStrippedSaveRequest()
+    public function getStrippedSaveRequest($request)
     {
-        $setting = $this->getOperationSetting('saveAllInputsExcept');
-        if ($setting == false || $setting == null) {
-            return $this->getRequest()->only($this->getAllFieldNames());
+        $setting = $this->getOperationSetting('strippedRequest');
+
+        if (is_callable($setting)) {
+            return $setting($request);
         }
 
-        if (is_array($setting)) {
-            return $this->getRequest()->except($this->getOperationSetting('saveAllInputsExcept'));
-        }
-
-        return $this->getRequest()->only($this->getAllFieldNames());
+        return $request->only($this->getAllFieldNames());
     }
 
     /**
@@ -450,7 +454,7 @@ trait Fields
      */
     public function hasFieldWhere($attribute, $value)
     {
-        $match = Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
+        $match = Arr::first($this->getCleanStateFields(), function ($field, $fieldKey) use ($attribute, $value) {
             return isset($field[$attribute]) && $field[$attribute] == $value;
         });
 
@@ -466,7 +470,7 @@ trait Fields
      */
     public function firstFieldWhere($attribute, $value)
     {
-        return Arr::first($this->fields(), function ($field, $fieldKey) use ($attribute, $value) {
+        return Arr::first($this->getCleanStateFields(), function ($field, $fieldKey) use ($attribute, $value) {
             return isset($field[$attribute]) && $field[$attribute] == $value;
         });
     }
