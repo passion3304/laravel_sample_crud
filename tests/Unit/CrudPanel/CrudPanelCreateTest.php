@@ -5,6 +5,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 use Backpack\CRUD\Tests\Unit\Models\Article;
 use Backpack\CRUD\Tests\Unit\Models\Comet;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
+use Backpack\CRUD\Tests\Unit\Models\Universe;
 use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Arr;
@@ -627,6 +628,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $inputData['stars'] = [
             [
+                'id' => 1,
                 'title' => 'only one star with changed title',
             ],
         ];
@@ -636,6 +638,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertCount(1, $entry->fresh()->stars);
 
         $this->assertEquals($inputData['stars'][0]['title'], $entry->fresh()->stars->first()->title);
+        $this->assertEquals($inputData['stars'][0]['id'], $entry->fresh()->stars->first()->id);
     }
 
     public function testHasManyCreatableRelationship()
@@ -675,6 +678,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $inputData['universes'] = [
             [
+                'id' => 1,
                 'title' => 'only one star with changed title',
             ],
         ];
@@ -684,6 +688,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertCount(1, $entry->fresh()->universes);
 
         $this->assertEquals($inputData['universes'][0]['title'], $entry->fresh()->universes->first()->title);
+        $this->assertEquals($inputData['universes'][0]['id'], $entry->fresh()->universes->first()->id);
+        $this->assertEquals(1, Universe::all()->count());
     }
 
     public function testHasManySelectableRelationshipWithoutForceDelete()
@@ -714,6 +720,40 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->update($entry->id, $inputData);
 
         $this->assertCount(1, $entry->fresh()->planets);
+
+        $planets = Planet::all();
+
+        $this->assertCount(2, $planets);
+    }
+
+    public function testHasManySelectableRelationshipRemoveAllRelations()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'    => 'planets',
+            'force_delete' => false,
+            'fallback_id' => false,
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'planets'          => [1, 2],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(2, $entry->planets);
+
+        $inputData['planets'] = [];
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertCount(0, $entry->fresh()->planets);
 
         $planets = Planet::all();
 
