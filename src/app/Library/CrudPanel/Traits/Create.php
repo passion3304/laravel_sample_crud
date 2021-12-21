@@ -203,11 +203,12 @@ trait Create
         $model_instance = $relation->getRelated();
         $relation_foreign_key = $relation->getForeignKeyName();
         $relation_local_key = $relation->getLocalKeyName();
-        
+
         if ($relation_values === null) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
             $removed_entries = $model_instance->where($relation_foreign_key, $item->{$relation_local_key});
+
             return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
         }
         // we add the new values into the relation
