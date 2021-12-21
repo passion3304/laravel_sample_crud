@@ -590,7 +590,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertEquals($inputData['comment']['text'], $entry->fresh()->comment->text);
     }
-    
+
     public function testMorphManyCreatableRelationship()
     {
         $this->crudPanel->setModel(User::class);
@@ -725,7 +725,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertCount(2, $planets);
     }
-    
+
     public function testHasManySelectableRelationshipRemoveAllRelations()
     {
         $this->crudPanel->setModel(User::class);
