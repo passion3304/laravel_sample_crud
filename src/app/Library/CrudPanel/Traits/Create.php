@@ -198,7 +198,7 @@ trait Create
      *
      * @return void
      */
-    public function attachManyRelation($item, $relation, $relationDetails, $relation_values)
+    private function attachManyRelation($item, $relation, $relationDetails, $relation_values)
     {
         $model_instance = $relation->getRelated();
         $relation_foreign_key = $relation->getForeignKeyName();
@@ -238,8 +238,8 @@ trait Create
             // if column is not nullable we will check if there is some column default
             // provided in database schema. If there is, we use it as fallback.
             } elseif (! $relation_column_is_nullable) {
-                if ($model_instance->dbColumnHasDefaultValue($relation_foreign_key)) {
-                    $removed_entries->update([$relation_foreign_key => $model_instance->getDbColumnDefaultValue($relation_foreign_key)]);
+                if ($model_instance->dbColumnHasDefault($relation_foreign_key)) {
+                    $removed_entries->update([$relation_foreign_key => $model_instance->getDbColumnDefault($relation_foreign_key)]);
                 }
             } else {
                 $removed_entries->update([$relation_foreign_key => null]);
@@ -254,7 +254,7 @@ trait Create
      *
      * @return void
      */
-    public function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
+    private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
     {
         $items = $relationDetails['values'][$relationMethod];
 
