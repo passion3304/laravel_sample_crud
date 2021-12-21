@@ -2,7 +2,7 @@
 
     //in case entity is superNews we want the url friendly super-news
     $entityWithoutAttribute = $crud->getOnlyRelationEntity($field);
-    $routeEntity = Str::kebab($entityWithoutAttribute);
+    $routeEntity = Str::kebab(str_replace('_', '-', $entityWithoutAttribute));
 
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
