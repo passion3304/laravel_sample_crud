@@ -254,7 +254,7 @@ trait Create
      *
      * @return void
      */
-    public function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
+    private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
     {
         $items = $relationDetails['values'][$relationMethod];
 
