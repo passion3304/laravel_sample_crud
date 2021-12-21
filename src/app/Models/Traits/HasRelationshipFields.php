@@ -64,7 +64,7 @@ trait HasRelationshipFields
      */
     public static function isColumnNullable($column_name)
     {
-        [$conn, $table] = self::getModelConnectionAndTable();
+        [$conn, $table] = self::getConnectionAndTable();
 
         // MongoDB columns are alway nullable
         if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
@@ -89,9 +89,9 @@ trait HasRelationshipFields
      * @param  string  $column_name  The name of the db column.
      * @return bool
      */
-    public static function dbColumnHasDefaultValue($column_name)
+    public static function dbColumnHasDefault($column_name)
     {
-        [$conn, $table] = self::getModelConnectionAndTable();
+        [$conn, $table] = self::getConnectionAndTable();
 
         // MongoDB columns don't have default values
         if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
@@ -114,9 +114,9 @@ trait HasRelationshipFields
      * @param  string  $column_name  The name of the db column.
      * @return bool
      */
-    public static function getDbColumnDefaultValue($column_name)
+    public static function getDbColumnDefault($column_name)
     {
-        [$conn, $table] = self::getModelConnectionAndTable();
+        [$conn, $table] = self::getConnectionAndTable();
 
         return $conn->getDoctrineColumn($table, $column_name)->getDefault();
     }
@@ -124,7 +124,7 @@ trait HasRelationshipFields
     /**
      * Return the current model connection and table name.
      */
-    private static function getModelConnectionAndTable()
+    private static function getConnectionAndTable()
     {
         $conn = $instance = new static();
         $conn = $instance->getConnectionWithExtraTypeMappings();
