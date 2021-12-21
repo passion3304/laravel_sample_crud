@@ -720,6 +720,40 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertCount(2, $planets);
     }
 
+    public function testHasManySelectableRelationshipRemoveAllRelations()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'    => 'planets',
+            'force_delete' => false,
+            'fallback_id' => false,
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'planets'          => [1, 2],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(2, $entry->planets);
+
+        $inputData['planets'] = [];
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertCount(0, $entry->fresh()->planets);
+
+        $planets = Planet::all();
+
+        $this->assertCount(2, $planets);
+    }
+
     public function testHasManySelectableRelationshipWithFallbackId()
     {
         $this->crudPanel->setModel(User::class);
