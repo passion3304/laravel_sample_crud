@@ -228,23 +228,22 @@ trait Create
     private function handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key)
     {
         $relation_column_is_nullable = $model_instance->isColumnNullable($relation_foreign_key);
-        $force_delete = $relationDetails['force_delete'];
+        $force_delete = $relationDetails['force_delete'] ?? false;
+        $fallback_id = $relationDetails['fallback_id'] ?? false;
 
-        if (isset($relationDetails['fallback_id']) && $relationDetails['fallback_id'] !== false) {
-            $removed_entries->update([$relation_foreign_key => $relationDetails['fallback_id']]);
-        } else {
-            if ($force_delete) {
-                $removed_entries->delete();
-            // if column is not nullable we will check if there is some column default
-            // provided in database schema. If there is, we use it as fallback.
-            } elseif (! $relation_column_is_nullable) {
-                if ($model_instance->dbColumnHasDefault($relation_foreign_key)) {
-                    $removed_entries->update([$relation_foreign_key => $model_instance->getDbColumnDefault($relation_foreign_key)]);
-                }
-            } else {
-                $removed_entries->update([$relation_foreign_key => null]);
-            }
+        if ($fallback_id) {
+            return $removed_entries->update([$relation_foreign_key => $fallback_id]);
         }
+
+        if ($force_delete) {
+            return $removed_entries->delete();
+        }
+
+        if (! $relation_column_is_nullable && $model_instance->dbColumnHasDefault($relation_foreign_key)) {
+            return $removed_entries->update([$relation_foreign_key => $model_instance->getDbColumnDefault($relation_foreign_key)]);
+        }
+
+        return $removed_entries->update([$relation_foreign_key => null]);
     }
 
     /**
