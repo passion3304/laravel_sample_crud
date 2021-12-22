@@ -59,7 +59,6 @@
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-
     <select
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
