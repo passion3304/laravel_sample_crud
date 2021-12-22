@@ -196,7 +196,7 @@ trait Create
      * - `force_delete` is configurable in the field, it's `true` by default. When false, if connecting column is nullable instead of deleting the row we set the column to null.
      * - `fallback_id` could be provided. In this case instead of deleting we set the connecting key to whatever developer gives us.
      *
-     * @return void
+     * @return mixed
      */
     private function attachManyRelation($item, $relation, $relationDetails, $relation_values)
     {
@@ -204,25 +204,25 @@ trait Create
         $relation_foreign_key = $relation->getForeignKeyName();
         $relation_local_key = $relation->getLocalKeyName();
 
-        if ($relation_values !== null) {
-            // we add the new values into the relation
-            $model_instance->whereIn($model_instance->getKeyName(), $relation_values)
-                ->update([$relation_foreign_key => $item->{$relation_local_key}]);
-
-            // we clear up any values that were removed from model relation.
-            // if developer provided a fallback id, we use it
-            // if column is nullable we set it to null if developer didn't specify `force_delete => true`
-            // if none of the above we delete the model from database
-            $removed_entries = $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
-                                ->where($relation_foreign_key, $item->{$relation_local_key});
-
-            $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
-        } else {
+        if ($relation_values === null) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
             $removed_entries = $model_instance->where($relation_foreign_key, $item->{$relation_local_key});
-            $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+
+            return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
         }
+        // we add the new values into the relation
+        $model_instance->whereIn($model_instance->getKeyName(), $relation_values)
+            ->update([$relation_foreign_key => $item->{$relation_local_key}]);
+
+        // we clear up any values that were removed from model relation.
+        // if developer provided a fallback id, we use it
+        // if column is nullable we set it to null if developer didn't specify `force_delete => true`
+        // if none of the above we delete the model from database
+        $removed_entries = $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
+                            ->where($relation_foreign_key, $item->{$relation_local_key});
+
+        return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
     }
 
     private function handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key)
