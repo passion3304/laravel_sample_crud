@@ -1,5 +1,6 @@
 @php
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    $field['multiple'] = $field['allows_multiple'] ?? $field['multiple'] ?? false;
 @endphp
 <!-- select from array -->
 @include('crud::fields.inc.wrapper_start')
@@ -7,12 +8,12 @@
     @include('crud::fields.inc.translatable_icon')
     @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
-        name="{{ $field['name'] }}@if (isset($field['allows_multiple']) && $field['allows_multiple']==true)[]@endif"
+        name="{{ $field['name'] }}@if ($field['multiple'])[]@endif"
         @include('crud::fields.inc.attributes')
-        @if (isset($field['allows_multiple']) && $field['allows_multiple']==true)multiple @endif
+        @if ($field['multiple'])multiple @endif
         >
 
-        @if ($field['allows_null'])
+        @if ($field['allows_null'] && !$field['multiple'])
             <option value="">-</option>
         @endif
 
