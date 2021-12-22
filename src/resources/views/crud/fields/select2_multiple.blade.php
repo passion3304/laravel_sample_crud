@@ -12,7 +12,7 @@
 
     $field['multiple'] = true;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
-    $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entries'));
+    $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entries');
 
     if(isset($field['value']) && is_array($field['value'])) {
          $field['value'] = $field['options']->whereIn((new $field['model'])->getKeyName(), $field['value']);
