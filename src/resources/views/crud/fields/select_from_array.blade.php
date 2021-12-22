@@ -5,6 +5,7 @@
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
+    @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
         name="{{ $field['name'] }}@if (isset($field['allows_multiple']) && $field['allows_multiple']==true)[]@endif"
         @include('crud::fields.inc.attributes')
