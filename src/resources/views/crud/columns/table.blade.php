@@ -7,13 +7,13 @@
     }
 
 	// if this attribute isn't using attribute casting, decode it
-	if (is_string($value)) {
-	    $value = json_decode($value, true);
+	if (is_string($column['value'])) {
+	    $column['value'] = json_decode($column['value'], true);
     }
 
     // check if it is a multidimensional array, if not we turn $value into one
-    if (is_array($value) && count($value) == count($value, COUNT_RECURSIVE)) {
-        $value = array($value);
+    if (is_array($column['value']) && count($column['value']) === count($column['value'], COUNT_RECURSIVE)) {
+        $column['value'] = array($column['value']);
     }
 @endphp
 
