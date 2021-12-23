@@ -14,8 +14,9 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? [];
-    
+    $current_value = oldValueDefaultOrFallback($field, []);
+
+
     if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':

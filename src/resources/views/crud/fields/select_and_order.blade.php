@@ -1,6 +1,6 @@
 <!-- select_and_order -->
 @php
-    $values = old($field['name']) ?? $field['value'] ?? $field['default'] ?? [];
+    $values = oldValueDefaultOrFallback($field, []);
     $values = (array)$values;
 @endphp
 
