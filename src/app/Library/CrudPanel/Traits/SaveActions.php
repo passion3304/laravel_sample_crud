@@ -42,7 +42,7 @@ trait SaveActions
     /**
      * Gets the save action that has the desired order.
      *
-     * @param int $order
+     * @param  int  $order
      * @return array
      */
     public function getSaveActionByOrder($order)
@@ -55,7 +55,7 @@ trait SaveActions
     /**
      * Allow the developer to register multiple save actions.
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function addSaveActions($saveActions)
@@ -73,7 +73,7 @@ trait SaveActions
     /**
      * Allow developers to register save action into CRUD.
      *
-     * @param array $saveAction
+     * @param  array  $saveAction
      * @return void
      */
     public function addSaveAction(array $saveAction)
@@ -82,7 +82,7 @@ trait SaveActions
         //check for some mandatory fields
         $saveAction['name'] ?? abort(500, 'Please define save action name.');
         $saveAction['redirect'] = $saveAction['redirect'] ?? function ($crud, $request, $itemId) {
-            return $request->has('http_referrer') ? $request->get('http_referrer') : $crud->route;
+            return $request->has('_http_referrer') ? $request->get('_http_referrer') : $crud->route;
         };
         $saveAction['visible'] = $saveAction['visible'] ?? true;
         $saveAction['button_text'] = $saveAction['button_text'] ?? $saveAction['name'];
@@ -100,8 +100,8 @@ trait SaveActions
     /**
      * Replaces setting order or forces some default.
      *
-     * @param string $saveAction
-     * @param int $wantedOrder
+     * @param  string  $saveAction
+     * @param  int  $wantedOrder
      * @return int
      */
     public function orderSaveAction(string $saveAction, int $wantedOrder)
@@ -127,7 +127,7 @@ trait SaveActions
     /**
      * Replace the current save actions with the ones provided.
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function replaceSaveActions($saveActions)
@@ -145,7 +145,7 @@ trait SaveActions
     /**
      * Alias function of replaceSaveActions() for CRUD consistency.
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function setSaveActions($saveActions)
@@ -156,7 +156,7 @@ trait SaveActions
     /**
      * Allow the developer to remove multiple save actions from settings.
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function removeSaveActions(array $saveActions)
@@ -169,7 +169,7 @@ trait SaveActions
     /**
      * Allow the developer to remove a save action from settings.
      *
-     * @param string $saveAction
+     * @param  string  $saveAction
      * @return void
      */
     public function removeSaveAction(string $saveAction)
@@ -184,7 +184,7 @@ trait SaveActions
     /**
      * Allow the developer to unset all save actions.
      *
-     * @param string $saveAction
+     * @param  string  $saveAction
      * @return void
      */
     public function removeAllSaveActions()
@@ -195,7 +195,7 @@ trait SaveActions
     /**
      * Allows the developer to set save actions order. It could be ['action1','action2'] or ['action1' => 1, 'action2' => 2].
      *
-     * @param array $saveActions
+     * @param  array  $saveActions
      * @return void
      */
     public function orderSaveActions(array $saveActions)
@@ -248,7 +248,7 @@ trait SaveActions
     /**
      * Gets the current save action for this crud.
      *
-     * @param array $saveOptions
+     * @param  array  $saveOptions
      * @return array
      */
     public function getCurrentSaveAction($saveOptions)
@@ -298,14 +298,13 @@ trait SaveActions
     /**
      * Change the session variable that remembers what to do after the "Save" action.
      *
-     * @param string|null $forceSaveAction
-     *
+     * @param  string|null  $forceSaveAction
      * @return void
      */
     public function setSaveAction($forceSaveAction = null)
     {
         $saveAction = $forceSaveAction ?:
-            \Request::input('save_action', $this->getFallBackSaveAction());
+            \Request::input('_save_action', $this->getFallBackSaveAction());
 
         $showBubble = $this->getOperationSetting('showSaveActionChange') ?? config('backpack.crud.operations.'.$this->getCurrentOperation().'.showSaveActionChange') ?? true;
 
@@ -322,14 +321,13 @@ trait SaveActions
     /**
      * Redirect to the correct URL, depending on which save action has been selected.
      *
-     * @param string $itemId
-     *
+     * @param  string  $itemId
      * @return \Illuminate\Http\Response
      */
     public function performSaveAction($itemId = null)
     {
         $request = \Request::instance();
-        $saveAction = $request->input('save_action', $this->getFallBackSaveAction());
+        $saveAction = $request->input('_save_action', $this->getFallBackSaveAction());
         $itemId = $itemId ?: $request->input('id');
         $actions = $this->getOperationSetting('save_actions');
 
@@ -377,7 +375,7 @@ trait SaveActions
                     return $crud->hasAccess('list');
                 },
                 'redirect' => function ($crud, $request, $itemId = null) {
-                    return $request->has('http_referrer') ? $request->get('http_referrer') : $crud->route;
+                    return $request->has('_http_referrer') ? $request->get('_http_referrer') : $crud->route;
                 },
                 'button_text' => trans('backpack::crud.save_action_save_and_back'),
             ],
@@ -389,11 +387,11 @@ trait SaveActions
                 'redirect' => function ($crud, $request, $itemId = null) {
                     $itemId = $itemId ?: $request->input('id');
                     $redirectUrl = $crud->route.'/'.$itemId.'/edit';
-                    if ($request->has('locale')) {
-                        $redirectUrl .= '?locale='.$request->input('locale');
+                    if ($request->has('_locale')) {
+                        $redirectUrl .= '?_locale='.$request->input('_locale');
                     }
-                    if ($request->has('current_tab')) {
-                        $redirectUrl = $redirectUrl.'#'.$request->get('current_tab');
+                    if ($request->has('_current_tab')) {
+                        $redirectUrl = $redirectUrl.'#'.$request->get('_current_tab');
                     }
 
                     return $redirectUrl;

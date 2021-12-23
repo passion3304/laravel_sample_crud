@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
@@ -21,6 +22,7 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
         \Backpack\CRUD\app\Console\Commands\PublishView::class,
+        \Backpack\CRUD\app\Console\Commands\RequireDevTools::class,
     ];
 
     // Indicates if loading of the provider is deferred.
@@ -92,6 +94,12 @@ class BackpackServiceProvider extends ServiceProvider
         foreach ($middleware_class as $middleware_class) {
             $router->pushMiddlewareToGroup($middleware_key, $middleware_class);
         }
+
+        // register internal backpack middleware for throttling the password recovery functionality
+        // but only if functionality is enabled by developer in config
+        if (config('backpack.base.setup_password_recovery_routes')) {
+            $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
+        }
     }
 
     public function publishFiles()
@@ -141,8 +149,7 @@ class BackpackServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param \Illuminate\Routing\Router $router
-     *
+     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
     public function setupRoutes(Router $router)
@@ -161,8 +168,7 @@ class BackpackServiceProvider extends ServiceProvider
     /**
      * Load custom routes file.
      *
-     * @param \Illuminate\Routing\Router $router
-     *
+     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
     public function setupCustomRoutes(Router $router)
@@ -231,11 +237,29 @@ class BackpackServiceProvider extends ServiceProvider
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
     }
 
+    protected function mergeConfigFromOperationsDirectory()
+    {
+        $operationConfigs = scandir(__DIR__.'/config/backpack/operations/');
+        $operationConfigs = array_diff($operationConfigs, ['.', '..']);
+
+        if (! count($operationConfigs)) {
+            return;
+        }
+
+        foreach ($operationConfigs as $configFile) {
+            $this->mergeConfigFrom(
+                __DIR__.'/config/backpack/operations/'.$configFile,
+                'backpack.operations.'.substr($configFile, 0, strrpos($configFile, '.'))
+            );
+        }
+    }
+
     public function loadConfigs()
     {
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(__DIR__.'/config/backpack/crud.php', 'backpack.crud');
         $this->mergeConfigFrom(__DIR__.'/config/backpack/base.php', 'backpack.base');
+        $this->mergeConfigFromOperationsDirectory();
 
         // add the root disk to filesystem configuration
         app()->config['filesystems.disks.'.config('backpack.base.root_disk_name')] = [
@@ -269,7 +293,8 @@ class BackpackServiceProvider extends ServiceProvider
             'backpack' => [
                 'provider'  => 'backpack',
                 'table'     => 'password_resets',
-                'expire'    => 60,
+                'expire'   => 60,
+                'throttle' => config('backpack.base.password_recovery_throttle_notifications'),
             ],
         ];
 

@@ -1,12 +1,10 @@
 @php
-    $value = data_get($entry, $column['name']);
+	$column['value'] = $column['value'] ?? data_get($entry, $column['name']);
+    $column['columns'] = $column['columns'] ?? ['value' => 'Value'];
 
-    // make sure columns are defined
-    if (!isset($column['columns'])) {
-        $column['columns'] = ['value' => "Value"];
+    if($column['value'] instanceof \Closure) {
+        $column['value'] = $column['value']($entry);
     }
-
-	$columns = $column['columns'];
 
 	// if this attribute isn't using attribute casting, decode it
 	if (is_string($value)) {
@@ -20,24 +18,23 @@
 @endphp
 
 <span>
-    @if ($value && count($columns))
+    @if ($column['value'] && count($column['columns']))
 
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
 
     <table class="table table-bordered table-condensed table-striped m-b-0">
 		<thead>
 			<tr>
-				@foreach($columns as $tableColumnKey => $tableColumnLabel)
+				@foreach($column['columns'] as $tableColumnKey => $tableColumnLabel)
 				<th>{{ $tableColumnLabel }}</th>
 				@endforeach
 			</tr>
 		</thead>
 		<tbody>
-			@foreach ($value as $tableRow)
+			@foreach ($column['value'] as $tableRow)
 			<tr>
-				@foreach($columns as $tableColumnKey => $tableColumnLabel)
+				@foreach($column['columns'] as $tableColumnKey => $tableColumnLabel)
 					<td>
-
 						@if( is_array($tableRow) && isset($tableRow[$tableColumnKey]) )
 
                             {{ $tableRow[$tableColumnKey] }}
@@ -47,7 +44,6 @@
                             {{ $tableRow->{$tableColumnKey} }}
 
                         @endif
-
 					</td>
 				@endforeach
 			</tr>
@@ -56,6 +52,10 @@
     </table>
 
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
+    
+    @else
+    
+    {{ $column['default'] ?? '-' }}
 
 	@endif
 </span>

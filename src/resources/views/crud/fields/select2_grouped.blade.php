@@ -1,13 +1,13 @@
 <!-- select2 -->
 @php
     $current_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     @php
-        $entity_model = $crud->model;
         $related_model = $crud->getRelationModel($field['entity']);
         $group_by_model = (new $related_model)->{$field['group_by']}()->getRelated();
         $categories = $group_by_model::with($field['group_by_relationship_back'])->get();
@@ -20,10 +20,12 @@
         name="{{ $field['name'] }}"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2GroupedElement"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
         >
 
-            @if ($entity_model::isColumnNullable($field['name']))
+            @if ($field['allows_null'])
                 <option value="">-</option>
             @endif
 
@@ -63,38 +65,37 @@
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
-{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        <!-- include select2 css-->
-        <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+        <!-- select2_grouped field type css -->
+        @loadOnce('packages/select2/dist/css/select2.min.css')
+        @loadOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <!-- include select2 js-->
-        <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
+        <!-- select2_grouped field type js -->
+        @loadOnce('packages/select2/dist/js/select2.full.min.js')
         @if (app()->getLocale() !== 'en')
-        <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+        <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
         @endif
+        @loadOnce('bpFieldInitSelect2GroupedElement')
         <script>
             function bpFieldInitSelect2GroupedElement(element) {
                 if (!element.hasClass("select2-hidden-accessible"))
-                {
+                {   
+                    let $isFieldInline = element.data('field-is-inline');
+
                     element.select2({
-                        theme: "bootstrap"
+                        theme: "bootstrap",
+                        dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
                     });
                 }
             }
         </script>
+        @endLoadOnce
     @endpush
 
-@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

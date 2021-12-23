@@ -1,12 +1,10 @@
 @php
+    $loadedAssets = json_decode($parentLoadedAssets ?? '[]', true);
 
-    $loadedFields = json_decode($parentLoadedFields);
-
-    //mark parent crud fields as loaded.
-    foreach($loadedFields as $loadedField) {
-        $crud->markFieldTypeAsLoaded($loadedField);
+    //mark parent crud assets as loaded.
+    foreach($loadedAssets as $asset) {
+        Assets::markAsLoaded($asset);
     }
-
 @endphp
 <div class="modal fade" id="inline-create-dialog" tabindex="0" role="dialog" aria-labelledby="{{$entity}}-inline-create-dialog-label" aria-hidden="true">
 <div class="{{ $modalClass }}" role="document">

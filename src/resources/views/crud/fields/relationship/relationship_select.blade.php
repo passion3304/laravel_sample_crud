@@ -14,11 +14,9 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    // and format it to JSON, so that select2 can parse it
-    $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
-
-
-    if ($current_value != false) {
+    $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? [];
+    
+    if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
                 $current_value = $connected_entity
@@ -46,19 +44,19 @@
         }
     }
 
-
-
-    $field['value'] = json_encode($current_value);
+    $current_value = !is_array($current_value) ? $current_value->toArray() : $current_value;
 
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-
+    {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+    <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
     <select
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitRelationshipSelectElement"
+        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
@@ -66,9 +64,8 @@
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
-        data-current-value="{{ $field['value'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
-        data-app-current-lang="{{ app()->getLocale() }}"
+        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -76,13 +73,21 @@
         multiple
         @endif
         >
-        @if ($field['allows_null'])
+        @if ($field['allows_null'] && !$field['multiple'])
             <option value="">-</option>
         @endif
 
         @if (count($field['options']))
             @foreach ($field['options'] as $key => $option)
-                    <option value="{{ $key }}">{{ $option }}</option>
+            @php
+                $selected = '';
+                if(!empty($current_value)) {
+                    if(in_array($key, array_keys($current_value))) {
+                        $selected = 'selected';
+                    }
+                }
+            @endphp
+                    <option value="{{ $key }}" {{$selected}}>{{ $option }}</option>
             @endforeach
         @endif
     </select>
@@ -114,7 +119,7 @@
     <!-- include select2 js-->
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
     @endif
     @endpush
 
@@ -143,67 +148,22 @@
         var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
-        var $selectedOptions = typeof element.attr('data-selected-options') === 'string' ? JSON.parse(element.attr('data-selected-options')) : JSON.parse(null);
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
-
-        var $item = false;
-
-        var $value = JSON.parse(element.attr('data-current-value'))
-
-        if(Object.keys($value).length > 0) {
-            $item = true;
-        }
-        var selectedOptions = [];
-        var $currentValue = $item ? $value : '';
-
-        for (const [key, value] of Object.entries($currentValue)) {
-            selectedOptions.push(key);
-            $(element).val(selectedOptions);
-        }
-
-        if (!$allows_null && $item === false) {
-            element.find('option:eq(0)').prop('selected', true);
-        }
-
-        $(element).attr('data-current-value',$(element).val());
-        $(element).trigger('change');
+        var $isFieldInline = element.data('field-is-inline');
 
         var $select2Settings = {
                 theme: 'bootstrap',
                 multiple: $multiple,
                 placeholder: $placeholder,
                 allowClear: $allowClear,
+                dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
             };
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2($select2Settings);
-             // if any dependencies have been declared
-            // when one of those dependencies changes value
-            // reset the select2 value
-            for (var i=0; i < $dependencies.length; i++) {
-                $dependency = $dependencies[i];
-                $('input[name='+$dependency+'], select[name='+$dependency+'], checkbox[name='+$dependency+'], radio[name='+$dependency+'], textarea[name='+$dependency+']').change(function () {
-                    element.val(null).trigger("change");
-                });
-
-            }
         }
     }
-
-    if (typeof processItemText !== 'function') {
-    function processItemText(item, $fieldAttribute, $appLang) {
-        if(typeof item[$fieldAttribute] === 'object' && item[$fieldAttribute] !== null)  {
-                        if(item[$fieldAttribute][$appLang] != 'undefined') {
-                            return item[$fieldAttribute][$appLang];
-                        }else{
-                            return item[$fieldAttribute][0];
-                        }
-                    }else{
-                        return item[$fieldAttribute];
-                    }
-    }
-}
 </script>
 @endpush
 @endif

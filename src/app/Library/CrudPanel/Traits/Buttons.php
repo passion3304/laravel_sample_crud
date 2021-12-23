@@ -16,8 +16,8 @@ trait Buttons
      * they will be pushed to the end of the button collection.
      *
      *
-     * @param string      $stack           Stack where the buttons belongs. Options: top, line, bottom.
-     * @param array       $order           Ordered name of the buttons. ['update', 'delete', 'show']
+     * @param  string  $stack  Stack where the buttons belongs. Options: top, line, bottom.
+     * @param  array  $order  Ordered name of the buttons. ['update', 'delete', 'show']
      */
     public function orderButtons(string $stack, array $order)
     {
@@ -60,14 +60,13 @@ trait Buttons
     /**
      * Add a button to the CRUD table view.
      *
-     * @param string      $stack           Where should the button be visible? Options: top, line, bottom.
-     * @param string      $name            The name of the button. Unique.
-     * @param string      $type            Type of button: view or model_function.
-     * @param string      $content         The HTML for the button.
-     * @param bool|string $position        Position on the stack: beginning or end. If false, the position will be
-     *                                     'beginning' for the line stack or 'end' otherwise.
-     * @param bool        $replaceExisting True if a button with the same name on the given stack should be replaced.
-     *
+     * @param  string  $stack  Where should the button be visible? Options: top, line, bottom.
+     * @param  string  $name  The name of the button. Unique.
+     * @param  string  $type  Type of button: view or model_function.
+     * @param  string  $content  The HTML for the button.
+     * @param  bool|string  $position  Position on the stack: beginning or end. If false, the position will be
+     *                                 'beginning' for the line stack or 'end' otherwise.
+     * @param  bool  $replaceExisting  True if a button with the same name on the given stack should be replaced.
      * @return \Backpack\CRUD\app\Library\CrudPanel\CrudButton The new CRUD button.
      */
     public function addButton($stack, $name, $type, $content, $position = false, $replaceExisting = true)
@@ -102,9 +101,8 @@ trait Buttons
     /**
      * Modify the attributes of a button.
      *
-     * @param string $name          The button name.
-     * @param array  $modifications The attributes and their new values.
-     *
+     * @param  string  $name  The button name.
+     * @param  array  $modifications  The attributes and their new values.
      * @return CrudButton The button that has suffered the changes, for daisychaining methods.
      */
     public function modifyButton($name, $modifications = null)
@@ -130,8 +128,8 @@ trait Buttons
     /**
      * Remove a button from the CRUD panel.
      *
-     * @param string $name  Button name.
-     * @param string $stack Optional stack name.
+     * @param  string  $name  Button name.
+     * @param  string  $stack  Optional stack name.
      */
     public function removeButton($name, $stack = null)
     {
@@ -141,8 +139,8 @@ trait Buttons
     }
 
     /**
-     * @param array       $names Button names
-     * @param string|null $stack Optional stack name.
+     * @param  array  $names  Button names
+     * @param  string|null  $stack  Optional stack name.
      */
     public function removeButtons($names, $stack = null)
     {
@@ -175,9 +173,9 @@ trait Buttons
     /**
      * Move the most recently added button before or after the given target button. Default is before.
      *
-     * @param string|array $target      The target button name or array.
-     * @param string|array $destination The destination button name or array.
-     * @param bool         $before      If true, the button will be moved before the target button, otherwise it will be moved after it.
+     * @param  string|array  $target  The target button name or array.
+     * @param  string|array  $destination  The destination button name or array.
+     * @param  bool  $before  If true, the button will be moved before the target button, otherwise it will be moved after it.
      */
     public function moveButton($target, $where, $destination)
     {
@@ -211,8 +209,8 @@ trait Buttons
     /**
      * Check if a filter exists, by any given attribute.
      *
-     * @param  string  $attribute   Attribute name on that filter definition array.
-     * @param  string  $value       Value of that attribute on that filter definition array.
+     * @param  string  $attribute  Attribute name on that filter definition array.
+     * @param  string  $value  Value of that attribute on that filter definition array.
      * @return bool
      */
     public function hasButtonWhere($attribute, $value)
@@ -223,8 +221,8 @@ trait Buttons
     /**
      * Get the first filter where a given attribute has the given value.
      *
-     * @param  string  $attribute   Attribute name on that filter definition array.
-     * @param  string  $value       Value of that attribute on that filter definition array.
+     * @param  string  $attribute  Attribute name on that filter definition array.
+     * @param  string  $value  Value of that attribute on that filter definition array.
      * @return bool
      */
     public function firstButtonWhere($attribute, $value)
@@ -246,7 +244,7 @@ trait Buttons
     /**
      * Add a new button to the current CRUD operation.
      *
-     * @param  string|array $attributes Button name or array that contains name, stack, type and content.
+     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
      * @return \Backpack\CRUD\app\Library\CrudPanel\CrudButton
      */
     public function button($attributes = null)

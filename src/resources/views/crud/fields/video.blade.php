@@ -53,15 +53,11 @@ $field['wrapper']['data-video'] = '';
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
-{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
+
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    {{-- @push('crud_fields_styles')
+        @loadOnce('bpVideoFieldStyle')
         {{-- YOUR CSS HERE --}}
         <style media="screen">
             .video-previewSuffix {
@@ -90,11 +86,13 @@ $field['wrapper']['data-video'] = '';
                 background-size: cover;
                 background-position: center center; }
         </style>
+        @endLoadOnce
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         {{-- YOUR JS HERE --}}
+        @loadOnce('bpFieldInitVideoElement')
         <script>
 
         var tryYouTube = function( link ){
@@ -169,22 +167,22 @@ $field['wrapper']['data-video'] = '';
                 crossDomain: true,
                 success: function (data) {
                     if (typeof(data.items[0]) != "undefined") {
-                                    var v = data.items[0].snippet;
+                        var v = data.items[0].snippet;
 
-                                    video.id = videoId;
-                                    video.title = v.title;
-                                    video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
-                                    video.url = 'https://www.youtube.com/watch?v=' + video.id;
+                        video.id = videoId;
+                        video.title = v.title;
+                        video.image = v.thumbnails.maxres ? v.thumbnails.maxres.url : v.thumbnails.default.url;
+                        video.url = 'https://www.youtube.com/watch?v=' + video.id;
 
-                                    callback(video);
-                                }
+                        callback(video);
+                    }
                 }
             });
         };
 
         var fetchVimeo = function( videoId, callback ){
 
-            var api = 'https://vimeo.com/api/v2/video/' + videoId + '.json?callback=?';
+            var api = 'https://vimeo.com/api/v2/video/'+videoId+'.json';
 
             var video = {
                 provider: 'vimeo',
@@ -194,17 +192,18 @@ $field['wrapper']['data-video'] = '';
                 url: null
             };
 
-            $.getJSON(api, function( data ){
+            fetch(api).then(function(response) {
+                if(response.ok) {
+                    response.json().then(function(v) {
 
-                if (typeof(data[0]) != "undefined") {
-                    var v = data[0];
+                        v = v[0];
 
-                    video.id = v.id;
-                    video.title = v.title;
-                    video.image = v.thumbnail_large || v.thumbnail_small;
-                    video.url = v.url;
-
-                    callback(video);
+                        video.id = v.id;
+                        video.title = v.title;
+                        video.image = v.thumbnail_large || v.thumbnail_small;
+                        video.url = v.url;
+                        callback(video);
+                    });
                 }
             });
         };
@@ -362,8 +361,9 @@ $field['wrapper']['data-video'] = '';
             })
         });
         </script>
+        @endLoadOnce
 
     @endpush
-@endif
+
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

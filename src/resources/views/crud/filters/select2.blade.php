@@ -6,7 +6,16 @@
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0">
       <div class="form-group backpack-filter mb-0">
-			<select id="filter_{{ $filter->key }}" name="filter_{{ $filter->key }}" data-filter-key="{{ $filter->key }}" class="form-control input-sm select2" data-filter-type="select2" data-filter-name="{{ $filter->name }}" placeholder="{{ $filter->placeholder }}">
+			<select 
+				id="filter_{{ $filter->key }}"
+				name="filter_{{ $filter->key }}"
+				class="form-control input-sm select2"
+				placeholder="{{ $filter->placeholder }}"
+				data-filter-key="{{ $filter->key }}"
+				data-filter-type="select2"
+				data-filter-name="{{ $filter->name }}"
+				data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+				>
 				<option value="">-</option>
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)
@@ -67,7 +76,7 @@
 	<!-- include select2 js-->
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
     @endif
 
     <script>
@@ -106,7 +115,7 @@
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery(parameter, true)) {
-						$("li[filter-key="+filter_key+"]").removeClass('active').addClass('active');
+						$("li[filter-key="+filter_key+"]").addClass('active');
 					}
 					else
 					{

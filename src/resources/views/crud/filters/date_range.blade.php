@@ -20,6 +20,7 @@
             'format' => config('backpack.base.default_date_format'),
             'applyLabel'=> trans('backpack::crud.apply'),
             'cancelLabel'=> trans('backpack::crud.cancel'),
+            'customRangeLabel' => trans('backpack::crud.custom_range')
         ],
 
 
@@ -92,7 +93,7 @@
 
   			if (start && end) {
   				var dates = {
-					'from': start.format('YYYY-MM-DD HH:mm:ss '),
+					'from': start.format('YYYY-MM-DD HH:mm:ss'),
 					'to': end.format('YYYY-MM-DD HH:mm:ss')
                 };
 

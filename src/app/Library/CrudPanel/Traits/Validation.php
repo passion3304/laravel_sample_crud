@@ -7,15 +7,82 @@ use Illuminate\Foundation\Http\FormRequest;
 trait Validation
 {
     /**
+     * Adds the required rules from an array and allows validation of that array.
+     *
+     * @param  array  $requiredFields
+     */
+    public function setValidationFromArray(array $rules, array $messages = [])
+    {
+        $this->setRequiredFields($rules);
+        $this->setOperationSetting('validationRules', $rules);
+        $this->setOperationSetting('validationMessages', $messages);
+    }
+
+    /**
+     * Take the rules defined on fields and create a validation
+     * array from them.
+     */
+    public function setValidationFromFields()
+    {
+        $fields = $this->getOperationSetting('fields');
+
+        // construct the validation rules array
+        // (eg. ['name' => 'required|min:2'])
+        $rules = collect($fields)
+                    ->filter(function ($value, $key) {
+                        // only keep fields where 'validationRules' attribute is defined
+                        return array_key_exists('validationRules', $value);
+                    })->map(function ($item, $key) {
+                        // only keep the rules, not the entire field definition
+                        return $item['validationRules'];
+                    })->toArray();
+
+        // construct the validation messages array
+        // (eg. ['title.required' => 'You gotta write smth man.'])
+        $messages = [];
+        collect($fields)
+                    ->filter(function ($value, $key) {
+                        // only keep fields where 'validationMessages' attribute is defined
+                        return array_key_exists('validationMessages', $value);
+                    })->each(function ($item, $key) use (&$messages) {
+                        foreach ($item['validationMessages'] as $rule => $message) {
+                            $messages[$key.'.'.$rule] = $message;
+                        }
+                    });
+
+        $this->setValidationFromArray($rules, $messages);
+    }
+
+    /**
      * Mark a FormRequest file as required for the current operation, in Settings.
      * Adds the required rules to an array for easy access.
      *
-     * @param string $class Class that extends FormRequest
+     * @param  string  $class  Class that extends FormRequest
      */
-    public function setValidation($class)
+    public function setValidationFromRequest($class)
     {
         $this->setFormRequest($class);
         $this->setRequiredFields($class);
+    }
+
+    /**
+     * Mark a FormRequest file as required for the current operation, in Settings.
+     * Adds the required rules to an array for easy access.
+     *
+     * @param  string|array  $classOrRulesArray  Class that extends FormRequest or array of validation rules
+     * @param  array  $messages  Array of validation messages.
+     */
+    public function setValidation($classOrRulesArray = false, $messages = [])
+    {
+        if (! $classOrRulesArray) {
+            $this->setValidationFromFields();
+        } elseif (is_array($classOrRulesArray)) {
+            $this->setValidationFromArray($classOrRulesArray, $messages);
+        } elseif (is_string($classOrRulesArray) || is_class($classOrRulesArray)) {
+            $this->setValidationFromRequest($classOrRulesArray);
+        } else {
+            abort(500, 'Please pass setValidation() nothing, a rules array or a FormRequest class.');
+        }
     }
 
     /**
@@ -37,7 +104,7 @@ trait Validation
     /**
      * Mark a FormRequest file as required for the current operation, in Settings.
      *
-     * @param string $class Class that extends FormRequest
+     * @param  string  $class  Class that extends FormRequest
      */
     public function setFormRequest($class)
     {
@@ -71,6 +138,12 @@ trait Validation
             $request = app($formRequest);
         } else {
             $request = $this->getRequest();
+
+            if ($this->hasOperationSetting('validationRules')) {
+                $rules = $this->getOperationSetting('validationRules');
+                $messages = $this->getOperationSetting('validationMessages') ?? [];
+                $request->validate($rules, $messages);
+            }
         }
 
         return $request;
@@ -80,13 +153,18 @@ trait Validation
      * Parse a FormRequest class, figure out what inputs are required
      * and store this knowledge in the current object.
      *
-     * @param string $class Class that extends FormRequest
+     * @param  string|array  $classOrRulesArray  Class that extends FormRequest or rules array
      */
-    public function setRequiredFields($class)
+    public function setRequiredFields($classOrRulesArray)
     {
-        $formRequest = new $class();
-        $rules = $formRequest->rules();
         $requiredFields = [];
+
+        if (is_array($classOrRulesArray)) {
+            $rules = $classOrRulesArray;
+        } else {
+            $formRequest = new $classOrRulesArray();
+            $rules = $formRequest->rules();
+        }
 
         if (count($rules)) {
             foreach ($rules as $key => $rule) {
@@ -94,6 +172,18 @@ trait Validation
                     (is_string($rule) && strpos($rule, 'required') !== false && strpos($rule, 'required_') === false) ||
                     (is_array($rule) && array_search('required', $rule) !== false && array_search('required_', $rule) === false)
                 ) {
+                    if (strpos($key, '.') !== false) {
+                        // Convert dot to array notation
+                        $entity_array = explode('.', $key);
+                        $name_string = '';
+
+                        foreach ($entity_array as $arr_key => $array_entity) {
+                            $name_string .= ($arr_key == 0) ? $array_entity : '['.$array_entity.']';
+                        }
+
+                        $key = $name_string;
+                    }
+
                     $requiredFields[] = $key;
                 }
             }
@@ -106,9 +196,8 @@ trait Validation
      * Check the current object to see if an input is required
      * for the given operation.
      *
-     * @param string $inputKey  Field or input name.
-     * @param string $operation create / update
-     *
+     * @param  string  $inputKey  Field or input name.
+     * @param  string  $operation  create / update
      * @return bool
      */
     public function isRequired($inputKey)

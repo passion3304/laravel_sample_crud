@@ -136,6 +136,17 @@ return [
     'filters'        => '篩選',
     'toggle_filters' => '切換篩選',
     'remove_filters' => '移除篩選',
+    'apply'          => '套用',
+
+    //filters language strings
+    'today' => '今天',
+    'yesterday' => '昨天',
+    'last_7_days' => '最近7天',
+    'last_30_days' => '最近30天',
+    'this_month' => '這個月',
+    'last_month' => '上個月',
+    'custom_range' => '自訂範圍',
+    'weekLabel' => '週',
 
     // Fields
     'browse_uploads'            => '瀏覽已上傳的檔案',
@@ -149,9 +160,9 @@ return [
     'internal_link_placeholder' => '內部連結短碼，例如: \':url\' 後面加上 \'admin/page\' （去掉引號）',
     'external_link'             => '外部連結',
     'choose_file'               => '選擇檔案',
-    'new_item'                  => 'New Item',
-    'select_entry'              => 'Select an entry',
-    'select_entries'            => 'Select entries',
+    'new_item'                  => '新項目',
+    'select_entry'              => '選擇一個項目',
+    'select_entries'            => '選擇多個項目',
 
     //Table field
     'table_cant_add'    => '不能再增加 :entity',
