@@ -262,9 +262,10 @@ if (! function_exists('oldValueDefaultOrFallback')) {
         $old_inputs = session()->getOldInput();
         // if the input name is present in the old inputs we need to return earlier and not in a coalescing chain
         // otherwise `null` aka empty will not pass the condition and the field value would be returned.
-        if(\Arr::has($old_inputs, $input_name)) {
+        if (\Arr::has($old_inputs, $input_name)) {
             return \Arr::get($old_inputs, $input_name);
         }
+
         return $fallback_value;
     }
 }
