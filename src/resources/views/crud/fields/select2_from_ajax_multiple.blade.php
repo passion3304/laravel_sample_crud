@@ -2,7 +2,7 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
-    $old_value = oldValueDefaultOrFallback($field, false);
+    $old_value = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? false);
 
     // by default set ajax query delay to 500ms
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.

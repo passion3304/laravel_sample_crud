@@ -22,7 +22,7 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     <input type="hidden"
-           value="{{ oldValueDefaultOrFallback($field, '') }}"
+           value="{{ oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '') }}"
            name="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix']))

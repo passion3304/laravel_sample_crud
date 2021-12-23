@@ -5,7 +5,7 @@
     $min = isset($field['min']) && (int) $field['min'] > 0 ? $field['min'] : -1;
     $item_name = strtolower(isset($field['entity_singular']) && ! empty($field['entity_singular']) ? $field['entity_singular'] : $field['label']);
 
-    $items = oldValueDefaultOrFallback($field, '');
+    $items = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '');
 
     // make sure no matter the attribute casting
     // the $items variable contains a properly defined JSON string
