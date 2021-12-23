@@ -8,7 +8,10 @@
 
 @php
     $field['type'] = 'repeatable';
+    //each row represent a related entry in a database table. We should not "auto-add" one relationship if it's not the user intention.
+    $field['init_rows'] = 0;
     $field['fields'] = $field['pivotFields'];
+    $field['reorder'] = $field['reorder'] ?? false;
     $inline_create = !isset($inlineCreate) && isset($pivotSelectorField['inline_create']) ? $pivotSelectorField['inline_create'] : false;
     $pivotSelectorField = $field['pivot_selector'] ?? [];
     $pivotSelectorField['name'] = $field['name'];
@@ -28,6 +31,7 @@
             $field['fields'] = Arr::prepend($field['fields'], $pivotSelectorField);
             break;
         case 'MorphMany':
+        case 'HasMany':
             if(isset($entry)) {
                 $field['fields'] = Arr::prepend($field['fields'], [
                     'name' => $entry->{$field['name']}()->getLocalKeyName(),

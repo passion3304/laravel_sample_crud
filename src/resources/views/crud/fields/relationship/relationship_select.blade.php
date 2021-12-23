@@ -51,7 +51,8 @@
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-
+    {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+    <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
     <select
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
@@ -73,7 +74,7 @@
         multiple
         @endif
         >
-        @if ($field['allows_null'])
+        @if ($field['allows_null'] && !$field['multiple'])
             <option value="">-</option>
         @endif
 

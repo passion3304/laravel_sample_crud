@@ -100,51 +100,51 @@ if($activeInlineCreate) {
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.inline_create_button', ['field' => $field])
-        @endif
-    <select
-        name="{{ $field['name'].($field['multiple'] ? '[]' : '') }}"
-        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
-        data-original-name="{{ $field['name'] }}"
-        style="width: 100%"
-        data-force-select="{{ var_export($field['inline_create']['force_select']) }}"
-        data-init-function="bpFieldInitFetchOrCreateElement"
-        data-allows-null="{{var_export($field['allows_null'])}}"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
-        data-model-local-key="{{$crud->model->getKeyName()}}"
-        data-placeholder="{{ $field['placeholder'] }}"
-        data-data-source="{{ $field['data_source'] }}"
-        data-method="{{ $field['method'] ?? 'POST' }}"
-        data-minimum-input-length="{{ $field['minimum_input_length'] }}"
-        data-field-attribute="{{ $field['attribute'] }}"
-        data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
-        data-field-ajax="{{var_export($field['ajax'])}}"
-        data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
-        data-app-current-lang="{{ app()->getLocale() }}"
-        data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
-        data-ajax-delay="{{ $field['delay'] }}"
-        data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
-        data-debug="{{ config('app.debug') }}"
+        @endif   
+        <select
+            name="{{ $field['name'].($field['multiple'] ? '[]' : '') }}"
+            data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
+            data-original-name="{{ $field['name'] }}"
+            style="width: 100%"
+            data-force-select="{{ var_export($field['inline_create']['force_select']) }}"
+            data-init-function="bpFieldInitFetchOrCreateElement"
+            data-allows-null="{{var_export($field['allows_null'])}}"
+            data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
+            data-model-local-key="{{$crud->model->getKeyName()}}"
+            data-placeholder="{{ $field['placeholder'] }}"
+            data-data-source="{{ $field['data_source'] }}"
+            data-method="{{ $field['method'] ?? 'POST' }}"
+            data-minimum-input-length="{{ $field['minimum_input_length'] }}"
+            data-field-attribute="{{ $field['attribute'] }}"
+            data-connected-entity-key-name="{{ $connected_entity_key_name }}"
+            data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
+            data-field-ajax="{{var_export($field['ajax'])}}"
+            data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
+            data-app-current-lang="{{ app()->getLocale() }}"
+            data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
+            data-ajax-delay="{{ $field['delay'] }}"
+            data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+            data-debug="{{ config('app.debug') }}"
 
-        @if($activeInlineCreate)
-            @include('crud::fields.relationship.field_attributes')
-        @endif
+            @if($activeInlineCreate)
+                @include('crud::fields.relationship.field_attributes')
+            @endif
 
-        @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
+            @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
 
-        @if($field['multiple'])
-        multiple
-        @endif
-    >
-        @if (!empty($current_value))
-            @foreach ($current_value as $key => $item)
-                <option value="{{ $key }}" selected>
-                    {{ $item }}
-                </option>
-            @endforeach
-        @endif
+            @if($field['multiple'])
+            multiple
+            @endif
+        >
+            @if (!empty($current_value))
+                @foreach ($current_value as $key => $item)
+                    <option value="{{ $key }}" selected>
+                        {{ $item }}
+                    </option>
+                @endforeach
+            @endif
 
-    </select>
+        </select>
     {{-- HINT --}}
     @if (isset($field['hint']))
     <p class="help-block">{!! $field['hint'] !!}</p>

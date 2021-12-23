@@ -3,7 +3,9 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -169,11 +171,110 @@ trait Create
                 }
             } elseif ($relation instanceof HasOne || $relation instanceof MorphOne) {
                 $modelInstance = $relation->updateOrCreate([], $relationDetails['values']);
+            } elseif ($relation instanceof HasMany || $relation instanceof MorphMany) {
+                $relation_values = $relationDetails['values'][$relationMethod];
+                // if relation values are null we can only attach, also we check if we sent a single dimensional array [1,2,3], or an array of arrays: [[1][2][3]]
+                // if is as single dimensional array we can only attach.
+                if ($relation_values === null || count($relation_values) == count($relation_values, COUNT_RECURSIVE)) {
+                    $this->attachManyRelation($item, $relation, $relationDetails, $relation_values);
+                } else {
+                    $this->createManyEntries($item, $relation, $relationMethod, $relationDetails);
+                }
             }
-
             if (isset($relationDetails['relations'])) {
                 $this->createRelationsForItem($modelInstance, ['relations' => $relationDetails['relations']]);
             }
+        }
+    }
+
+    /**
+     * When using the HasMany/MorphMany relations as selectable elements we use this function to "mimic-sync" in those relations.
+     * Since HasMany/MorphMany does not have the `sync` method, we manually re-create it.
+     * Here we add the entries that developer added and remove the ones that are not in the list.
+     * This removal process happens with the following rules:
+     * - by default Backpack will behave like a `sync` from M-M relations: it deletes previous entries and add only the current ones.
+     * - `force_delete` is configurable in the field, it's `true` by default. When false, if connecting column is nullable instead of deleting the row we set the column to null.
+     * - `fallback_id` could be provided. In this case instead of deleting we set the connecting key to whatever developer gives us.
+     *
+     * @return mixed
+     */
+    private function attachManyRelation($item, $relation, $relationDetails, $relation_values)
+    {
+        $model_instance = $relation->getRelated();
+        $relation_foreign_key = $relation->getForeignKeyName();
+        $relation_local_key = $relation->getLocalKeyName();
+
+        if ($relation_values === null) {
+            // the developer cleared the selection
+            // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
+            $removed_entries = $model_instance->where($relation_foreign_key, $item->{$relation_local_key});
+
+            return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+        }
+        // we add the new values into the relation
+        $model_instance->whereIn($model_instance->getKeyName(), $relation_values)
+            ->update([$relation_foreign_key => $item->{$relation_local_key}]);
+
+        // we clear up any values that were removed from model relation.
+        // if developer provided a fallback id, we use it
+        // if column is nullable we set it to null if developer didn't specify `force_delete => true`
+        // if none of the above we delete the model from database
+        $removed_entries = $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
+                            ->where($relation_foreign_key, $item->{$relation_local_key});
+
+        return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+    }
+
+    private function handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key)
+    {
+        $relation_column_is_nullable = $model_instance->isColumnNullable($relation_foreign_key);
+        $force_delete = $relationDetails['force_delete'] ?? false;
+        $fallback_id = $relationDetails['fallback_id'] ?? false;
+
+        if ($fallback_id) {
+            return $removed_entries->update([$relation_foreign_key => $fallback_id]);
+        }
+
+        if ($force_delete) {
+            return $removed_entries->delete();
+        }
+
+        if (! $relation_column_is_nullable && $model_instance->dbColumnHasDefault($relation_foreign_key)) {
+            return $removed_entries->update([$relation_foreign_key => $model_instance->getDbColumnDefault($relation_foreign_key)]);
+        }
+
+        return $removed_entries->update([$relation_foreign_key => null]);
+    }
+
+    /**
+     * Handle HasMany/MorphMany relations when used as creatable entries in the crud.
+     * By using repeatable field, developer can allow the creation of such entries
+     * in the crud forms.
+     *
+     * @return void
+     */
+    private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
+    {
+        $items = $relationDetails['values'][$relationMethod];
+
+        $relation_local_key = $relation->getLocalKeyName();
+
+        $created_ids = [];
+
+        foreach ($items as $item) {
+            if (isset($item[$relation_local_key]) && ! empty($item[$relation_local_key])) {
+                $entry->{$relationMethod}()->updateOrCreate([$relation_local_key => $item[$relation_local_key]], Arr::except($item, $relation_local_key));
+            } else {
+                $created_ids[] = $entry->{$relationMethod}()->create($item)->{$relation_local_key};
+            }
+        }
+
+        // get from $items the sent ids, and merge the ones created.
+        $relatedItemsSent = array_merge(array_filter(Arr::pluck($items, $relation_local_key)), $created_ids);
+
+        if (! empty($relatedItemsSent)) {
+            // we perform the cleanup of removed database items
+            $entry->{$relationMethod}()->whereNotIn($relation_local_key, $relatedItemsSent)->delete();
         }
     }
 
@@ -220,6 +321,13 @@ trait Create
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
             $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($field['name'], -1);
             $fieldDetails['values'][$attributeName] = Arr::get($input, $field['name']);
+
+            if (isset($field['fallback_id'])) {
+                $fieldDetails['fallback_id'] = $field['fallback_id'];
+            }
+            if (isset($field['force_delete'])) {
+                $fieldDetails['force_delete'] = $field['force_delete'];
+            }
 
             Arr::set($relationDetails, 'relations.'.$key, $fieldDetails);
         }

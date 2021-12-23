@@ -8,6 +8,7 @@
   $field['init_rows'] = $field['init_rows'] ?? $field['min_rows'] ?? 1;
   $field['max_rows'] = $field['max_rows'] ?? 0;
   $field['min_rows'] =  $field['min_rows'] ?? 0;
+  $field['reorder'] = $field['reorder'] ?? true;
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
