@@ -167,9 +167,6 @@
             setupRepeatableReorderButtons(container_holder);
 
             updateRepeatableRowCount(container_holder);
-
-            updateRepeatableContainerNamesIndexes(container_holder)
-
         }
 
         /**
