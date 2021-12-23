@@ -27,8 +27,8 @@
                     if(isset($row[$subfield['name']]) || isset($row[$subfield['name'].'[]'])) {
                         $subfield['value'] = $row[$subfield['name']] ?? $row[$subfield['name'].'[]'];
                     }
-                }else{
                     $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.$subfield['name'].']';
+                }else{
                     $subfield['value'] = $row;
                 }
             }                       
