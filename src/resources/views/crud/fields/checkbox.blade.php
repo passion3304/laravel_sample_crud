@@ -1,13 +1,16 @@
 <!-- checkbox field -->
 
+@php
+  $field['value'] = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? 0);
+@endphp
 @include('crud::fields.inc.wrapper_start')
     @include('crud::fields.inc.translatable_icon')
     <div class="checkbox">
-        <input type="hidden" name="{{ $field['name'] }}" value="{{ oldValueDefaultOrFallback($field, 0) }}">
+        <input type="hidden" name="{{ $field['name'] }}" value="{{ $field['value'] }}">
     	  <input type="checkbox"
           data-init-function="bpFieldInitCheckbox"
 
-          @if (oldValueDefaultOrFallback($field, false))
+          @if ((bool)$field['value'])
                  checked="checked"
           @endif
 

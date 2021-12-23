@@ -33,7 +33,7 @@
         <input
             type="file"
             name="{{ $field['name'] }}"
-            value="{{ oldValueDefaultOrFallback($field, '') }}"
+            value="{{ oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '') }}"
             @include('crud::fields.inc.attributes', ['default_class' =>  isset($field['value']) && $field['value']!=null?'file_input backstrap-file-input':'file_input backstrap-file-input'])
         >
         <label class="backstrap-file-label" for="customFile"></label>

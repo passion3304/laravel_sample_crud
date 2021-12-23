@@ -14,7 +14,7 @@
         data-init-function="bpFieldInitSummernoteElement"
         data-options="{{ json_encode($field['options']) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control summernote'])
-        >{{ oldValueDefaultOrFallback($field, '') }}</textarea>
+        >{{ oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '') }}</textarea>
 
     {{-- HINT --}}
     @if (isset($field['hint']))

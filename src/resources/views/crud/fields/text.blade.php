@@ -9,7 +9,7 @@
         <input
             type="text"
             name="{{ $field['name'] }}"
-            value="{{ oldValueDefaultOrFallback($field, '') }}"
+            value="{{ oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '') }}"
             @include('crud::fields.inc.attributes')
         >
         @if(isset($field['suffix'])) <div class="input-group-append"><span class="input-group-text">{!! $field['suffix'] !!}</span></div> @endif

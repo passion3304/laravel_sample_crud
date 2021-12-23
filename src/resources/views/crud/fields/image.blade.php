@@ -1,7 +1,7 @@
 @php
     $field['prefix'] = $field['prefix'] ?? '';
     $field['disk'] = $field['disk'] ?? null;
-    $value = oldValueDefaultOrFallback($field, '');
+    $value = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '');
 
     if (! function_exists('getDiskUrl')) {
         function getDiskUrl($disk, $path) {
