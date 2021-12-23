@@ -276,7 +276,7 @@ if (! function_exists('oldValueDefaultOrFallback')) {
         if (array_key_exists('value', $field)) {
             return $value;
         }
-        
+
         return $default ?? $fallback;
     }
 }
