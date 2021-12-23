@@ -29,8 +29,8 @@
         data-min-rows="{{ $field['min_rows'] }}"
     >
     @if(!empty($field['value']))
-        @foreach ($field['value'] as $row)
-            @include('crud::fields.inc.repeatable_row')
+        @foreach ($field['value'] as $key => $row)
+            @include('crud::fields.inc.repeatable_row', ['repeatable_row_key' => $key])
         @endforeach
         @php
             // the $row variable still exists. We don't need it anymore the loop is over, and would have impact in the following code.

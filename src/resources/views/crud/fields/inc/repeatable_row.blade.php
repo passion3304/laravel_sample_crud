@@ -28,6 +28,7 @@
                         $subfield['value'] = $row[$subfield['name']] ?? $row[$subfield['name'].'[]'];
                     }
                 }else{
+                    $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.$subfield['name'].']';
                     $subfield['value'] = $row;
                 }
             }                       
