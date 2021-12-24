@@ -8,7 +8,7 @@
 		<input
 			type="text"
 			name="{{ $field['name'] }}"
-			value="{{ oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '') }}"
+			value="{{ old_input_value($field['name'], $field['value'] ?? $field['default'] ?? '') }}"
 			data-init-function="bpFieldInitBrowseElement"
 			data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup') }}"
 			@include('crud::fields.inc.attributes')

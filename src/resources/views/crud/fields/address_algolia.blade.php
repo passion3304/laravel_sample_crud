@@ -9,7 +9,7 @@
         'field' => $field['name'],
         'full' => $field['store_as_json'],
     ];
-    $field['value'] = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '');
+    $field['value'] = old_input_value($field['name'], $field['value'] ?? $field['default'] ?? '');
 
     // the field should work whether or not Laravel attribute casting is used
     if (isset($field['value']) && (is_array($field['value']) || is_object($field['value']))) {

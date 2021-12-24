@@ -14,7 +14,7 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    $current_value = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? []);
+    $current_value = old_input_value($field['name'], $field['value'] ?? $field['default'] ?? []);
 
 
     if (!empty($current_value) || is_int($current_value)) {
