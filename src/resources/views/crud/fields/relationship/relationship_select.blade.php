@@ -33,8 +33,10 @@
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name);
                     }
-
             break;
+
+            case 'NULL':
+                $current_value = [];
 
             default:
                 $current_value = $connected_entity
