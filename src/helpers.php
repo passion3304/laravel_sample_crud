@@ -247,7 +247,7 @@ if (! function_exists('is_countable')) {
     }
 }
 
-if (! function_exists('oldValueDefaultOrFallback')) {
+if (! function_exists('old_input_value')) {
     /**
      * This function allows us to setup a default value in case there is an old value, but is forcelly null
      * by Laravel middleware ConvertEmptyStringsToNull.
@@ -256,7 +256,7 @@ if (! function_exists('oldValueDefaultOrFallback')) {
      * @param  mixed  $fallback
      * @return mixed
      */
-    function oldValueDefaultOrFallback($input_name, $fallback_value = null)
+    function old_input_value($input_name, $fallback_value = null)
     {
         $input_name = square_brackets_to_dots($input_name);
         $old_inputs = session()->getOldInput();
