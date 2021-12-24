@@ -260,6 +260,7 @@ if (! function_exists('old_input_value')) {
     {
         $input_name = square_brackets_to_dots($input_name);
         $old_inputs = session()->getOldInput();
+        
         // if the input name is present in the old inputs we need to return earlier and not in a coalescing chain
         // otherwise `null` aka empty will not pass the condition and the field value would be returned.
         if (\Arr::has($old_inputs, $input_name)) {
