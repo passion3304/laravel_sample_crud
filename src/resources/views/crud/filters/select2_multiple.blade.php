@@ -6,7 +6,17 @@
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0">
       <div class="form-group backpack-filter mb-0">
-			<select id="filter_{{ $filter->key }}" name="filter_{{ $filter->key }}" data-filter-key="{{ $filter->key }}" data-filter-name="{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2_multiple" placeholder="{{ $filter->placeholder }}" multiple>
+			<select 
+				id="filter_{{ $filter->key }}"
+				name="filter_{{ $filter->key }}"
+				class="form-control input-sm select2"
+				placeholder="{{ $filter->placeholder }}"
+				data-filter-key="{{ $filter->key }}"
+				data-filter-type="select2_multiple"
+				data-filter-name="{{ $filter->name }}"
+				data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+				multiple
+				>
 				@if (is_array($filter->values) && count($filter->values))
 					@foreach($filter->values as $key => $value)
 						<option value="{{ $key }}"
@@ -66,7 +76,7 @@
 	<!-- include select2 js-->
     <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
     @endif
 
     <script>
@@ -86,11 +96,11 @@
 
                 $(this).change(function() {
 	                var value = '';
-	                if ($(this).val() !== null) {
+	                if (Array.isArray($(this).val())) {
 	                    // clean array from undefined, null, "".
 	                    var values = $(this).val().filter(function(e){ return e === 0 || e });
 	                    // stringify only if values is not empty. otherwise it will be '[]'.
-	                    value = values.length !== 0 ? JSON.stringify(values) : '';
+	                    value = values.length ? JSON.stringify(values) : '';
 	                }
 
 					var parameter = '{{ $filter->name }}';
@@ -109,7 +119,7 @@
 
 					// mark this filter as active in the navbar-filters
 					if (URI(new_url).hasQuery(filterName, true)) {
-						$("li[filter-key="+filter_key+"]").removeClass('active').addClass('active');
+						$("li[filter-key="+filter_key+"]").addClass('active');
 					}
 					else
 					{

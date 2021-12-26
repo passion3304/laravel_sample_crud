@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'                => '保存して作成',
     'save_action_save_and_edit'               => '保存して編集',
     'save_action_save_and_back'               => '保存して戻る',
+    'save_action_save_and_preview'            => '保存してプレビュー',
     'save_action_changed_notification'        => '保存後のデフォルト動作が変更されました。',
 
     // Create form
@@ -37,16 +38,20 @@ return [
     'all'                                     => '全 ',
     'in_the_database'                         => 'データベース上の',
     'list'                                    => '一覧',
+    'reset'                                   => 'リセット',
     'actions'                                 => '操作',
     'preview'                                 => '表示',
     'delete'                                  => '削除',
     'admin'                                   => '管理者',
     'details_row'                             => 'これは詳細列です。必要に応じて修正して下さい。',
-    'details_row_loading_error'               => '詳細列の読み込み時にエラーが発生しました。もう一度お試し下さい。',
+    'details_row_loading_error'               => '詳細列の読み込み時にエラーが発生しました。もう一度やり直して下さい。',
+    'clone'                                   => '複製',
+    'clone_success'                           => '<strong>データを複製しました</strong><br>このデータと同じ情報で新しいデータを追加しました。',
+    'clone_failure'                           => '<strong>複製に失敗しました</strong><br>新しいデータを作成できませんでした。もう一度やり直して下さい。',
 
     // Confirmation messages and bubbles
     'delete_confirm'                          => 'このデータを削除してもよろしいですか？',
-    'delete_confirmation_title'               => 'データを削除しました。',
+    'delete_confirmation_title'               => 'データを削除しました',
     'delete_confirmation_message'             => 'データは正常に削除されました。',
     'delete_confirmation_not_title'           => '削除できません',
     'delete_confirmation_not_message'         => 'エラーが発生しました。データは削除されませんでした。',
@@ -57,12 +62,19 @@ return [
     'bulk_no_entries_selected_title'          => 'データが未選択',
     'bulk_no_entries_selected_message'        => '一括操作を行うには、1 件以上データを選択して下さい。',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'                => ':number 件のデータを削除してもよろしいですか？',
-    'bulk_delete_sucess_title'                => '削除成功',
-    'bulk_delete_sucess_message'              => ' 件のデータを削除しました',
+    'bulk_delete_sucess_title'                => 'データを削除しました',
+    'bulk_delete_sucess_message'              => ' 件のデータを削除しました。',
     'bulk_delete_error_title'                 => '削除失敗',
     'bulk_delete_error_message'               => '1 件以上のデータを削除できません',
+
+    // Bulk clone
+    'bulk_clone_are_you_sure'                 => '本当にこの :number 件のデータを複製しますか？',
+    'bulk_clone_sucess_title'                 => 'データを複製しました',
+    'bulk_clone_sucess_message'               => ' 件のデータを複製しました。',
+    'bulk_clone_error_title'                  => '複製に失敗しました',
+    'bulk_clone_error_message'                => '1 件以上のデータを作成できませんでした。もう一度やり直して下さい。',
 
     // Ajax errors
     'ajax_error_title'                        => 'エラー',
@@ -124,6 +136,17 @@ return [
     'filters'                                 => 'フィルター',
     'toggle_filters'                          => 'フィルター切り替え',
     'remove_filters'                          => '全フィルターを削除',
+    'apply'                                   => '適用',
+
+    //filters language strings
+    'today'                                   => '今日',
+    'yesterday'                               => '昨日',
+    'last_7_days'                             => '過去7日間',
+    'last_30_days'                            => '過去30日間',
+    'this_month'                              => '今月',
+    'last_month'                              => '先月',
+    'custom_range'                            => 'カスタム',
+    'weekLabel'                               => 'W',
 
     // Fields
     'browse_uploads'                          => 'アップロードから選択',
@@ -137,6 +160,9 @@ return [
     'internal_link_placeholder'               => '内部スラッグ 例: \':url\' に続く \'admin/page\' (クォーテーション無し)',
     'external_link'                           => '外部リンク',
     'choose_file'                             => 'ファイルを選択',
+    'new_item'                                => '項目を追加',
+    'select_entry'                            => '項目を1つ選んでください',
+    'select_entries'                          => '項目を複数選んでください',
 
     // Table field
     'table_cant_add'                          => '新しい :entity を追加できません',
@@ -144,4 +170,11 @@ return [
 
     // File manager
     'file_manager'                            => 'ファイルマネージャー',
+
+    // InlineCreateOperation
+    'related_entry_created_success'           => '関連するデータが追加され、選択されました。',
+    'related_entry_created_error'             => '関連するデータを追加できませんでした。',
+
+    // returned when no translations found in select inputs
+    'empty_translations'                      => '(なし)',
 ];

@@ -18,4 +18,4 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')

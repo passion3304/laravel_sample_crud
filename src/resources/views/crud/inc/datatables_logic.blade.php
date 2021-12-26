@@ -1,4 +1,11 @@
-  <!-- DATA TABLES SCRIPT -->
+ @php
+    // as it is possible that we can be redirected with persistent table we save the alerts in a variable
+    // and flush them from session, so we will get them later from localStorage.
+    $backpack_alerts = \Alert::getMessages();
+    \Alert::flush();
+ @endphp
+
+  {{-- DATA TABLES SCRIPT --}}
   <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -7,27 +14,59 @@
   <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
 
   <script>
+    // here we will check if the cached dataTables paginator length is conformable with current paginator settings.
+    // datatables caches the ajax responses with pageLength in LocalStorage so when changing this
+    // settings in controller users get unexpected results. To avoid that we will reset
+    // the table cache when both lengths don't match.
+    let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}'))
+        ? JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) : [];
+    var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
+    let $dtStoredPageLength = localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength');
+
+    if(!$dtStoredPageLength && $dtCachedInfo.length !== 0 && $dtCachedInfo.length !== $dtDefaultPageLength) {
+        localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
+    }
+
+    // in this page we allways pass the alerts to localStorage because we can be redirected with
+    // persistent table, and this way we guarantee non-duplicate alerts.
+    $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts'))
+        ? JSON.parse(localStorage.getItem('backpack_alerts')) : {};
+
+    $newAlerts = @json($backpack_alerts);
+
+    Object.entries($newAlerts).forEach(function(type) {
+        if(typeof $oldAlerts[type[0]] !== 'undefined') {
+            type[1].forEach(function(msg) {
+                $oldAlerts[type[0]].push(msg);
+            });
+        } else {
+            $oldAlerts[type[0]] = type[1];
+        }
+    });
+
+    // always store the alerts in localStorage for this page
+    localStorage.setItem('backpack_alerts', JSON.stringify($oldAlerts));
+
     @if ($crud->getPersistentTable())
 
         var saved_list_url = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url');
 
         //check if saved url has any parameter or is empty after clearing filters.
-
         if (saved_list_url && saved_list_url.indexOf('?') < 1) {
             var saved_list_url = false;
-        }else{
+        } else {
             var persistentUrl = saved_list_url+'&persistent-table=true';
         }
 
-    var arr =  window.location.href.split('?');
-        //check if url has parameters.
-        if (arr.length > 1 && arr[1] !== '') {
-                // IT HAS! Check if it is our own persistence redirect.
-                if (window.location.search.indexOf('persistent-table=true') < 1) {
-                    // IF NOT: we don't want to redirect the user.
-                    saved_list_url = false;
-                }
+    var arr = window.location.href.split('?');
+    // check if url has parameters.
+    if (arr.length > 1 && arr[1] !== '') {
+        // IT HAS! Check if it is our own persistence redirect.
+        if (window.location.search.indexOf('persistent-table=true') < 1) {
+            // IF NOT: we don't want to redirect the user.
+            saved_list_url = false;
         }
+    }
 
     @if($crud->getPersistentTableDuration())
         var saved_list_url_time = localStorage.getItem('{{ Str::slug($crud->getRoute()) }}_list_url_time');
@@ -37,24 +76,25 @@
             var $saved_time = new Date(parseInt(saved_list_url_time));
             $saved_time.setMinutes($saved_time.getMinutes() + {{$crud->getPersistentTableDuration()}});
 
-            //if the save time is not expired we force the filter redirection.
+            // if the save time is not expired we force the filter redirection.
             if($saved_time > $current_date) {
                 if (saved_list_url && persistentUrl!=window.location.href) {
                     window.location.href = persistentUrl;
                 }
             } else {
-            //persistent table expired, let's not redirect the user
+                // persistent table expired, let's not redirect the user
                 saved_list_url = false;
             }
         }
 
     @endif
         if (saved_list_url && persistentUrl!=window.location.href) {
+            // finally redirect the user.
             window.location.href = persistentUrl;
         }
     @endif
 
-    var crud = {
+    window.crud = {
       exportButtons: JSON.parse('{!! json_encode($crud->get('list.export_buttons')) !!}'),
       functionsToRunOnDataTablesDrawEvent: [],
       addFunctionToDataTablesDrawEventQueue: function (functionName) {
@@ -165,7 +205,7 @@
         @endif
         @endif
         autoWidth: false,
-        pageLength: {{ $crud->getDefaultPageLength() }},
+        pageLength: $dtDefaultPageLength,
         lengthMenu: @json($crud->getPageLengthMenu()),
         /* Disable initial sort */
         aaSorting: [],
@@ -178,7 +218,7 @@
               "thousands":      "{{ trans('backpack::crud.thousands') }}",
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
-              "processing":     "<img src='{{ asset('packages/backpack/crud/img/ajax-loader.gif') }}' alt='{{ trans('backpack::crud.processing') }}'>",
+              "processing":     "<img src='{{ asset('packages/backpack/base/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
               "search": "_INPUT_",
               "searchPlaceholder": "{{ trans('backpack::crud.search') }}...",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
@@ -221,14 +261,18 @@
   <script type="text/javascript">
     jQuery(document).ready(function($) {
 
-      crud.table = $("#crudTable").DataTable(crud.dataTableConfiguration);
+      window.crud.table = $("#crudTable").DataTable(window.crud.dataTableConfiguration);
 
       // move search bar
       $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
       $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
+      @if($crud->getSubheading())
+      $('#crudTable_info').hide();
+      @else
       $("#datatable_info_stack").html($('#crudTable_info')).css('display','inline-flex').addClass('animated fadeIn');
+      @endif
 
       @if($crud->getOperationSetting('resetButton') ?? true)
         // create the reset button
@@ -265,6 +309,13 @@
               text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
           }).show();
       });
+
+        // when changing page length in datatables, save it into localStorage
+        // so in next requests we know if the length changed by user
+        // or by developer in the controller.
+        $('#crudTable').on( 'length.dt', function ( e, settings, len ) {
+            localStorage.setItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength', len);
+        });
 
       // make sure AJAX requests include XSRF token
       $.ajaxPrefilter(function(options, originalOptions, xhr) {
@@ -313,10 +364,7 @@
         $(window).on('resize', function(e) {
           resizeCrudTableColumnWidths();
         });
-        $(document).on('expanded.pushMenu', function(e) {
-          resizeCrudTableColumnWidths();
-        });
-        $(document).on('collapsed.pushMenu', function(e) {
+        $('.sidebar-toggler').click(function() {
           resizeCrudTableColumnWidths();
         });
       @endif

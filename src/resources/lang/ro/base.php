@@ -57,4 +57,6 @@ return [
         'button'   => 'Schimbă parola',
         'notice'   => 'Dacă nu ați facut dvs cererea, nu este nevoie să faceți nimic, parola nu va fi schimbată.',
     ],
+    'throttled'            => 'Ați cerut deja schimbarea parolei, de curând. Verificați email-ul primit pentru instrucțiuni. Dacă nu primiți email-ul, vă rugăm să încercați mai târziu.',
+    'throttled_request'    => 'Ați depășit limita de încercări. Așteptați câteva minute, apoi încercați din nou.',
 ];

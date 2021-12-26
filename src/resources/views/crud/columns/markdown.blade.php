@@ -1,6 +1,18 @@
+{{-- markdown --}}
 @php
-    $column['text'] = Illuminate\Mail\Markdown::parse($entry->{$column['name']} ?? '');
+    $column['value'] = $column['value'] ?? $entry->{$column['name']};
     $column['escaped'] = $column['escaped'] ?? false;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
+    $column['text'] = $column['default'] ?? '-';
+
+    if($column['value'] instanceof \Closure) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].Illuminate\Mail\Markdown::parse($column['value']).$column['suffix'];
+    }
 @endphp
 
 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')

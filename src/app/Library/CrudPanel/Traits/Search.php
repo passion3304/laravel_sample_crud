@@ -16,8 +16,7 @@ trait Search
     /**
      * Add conditions to the CRUD query for a particular search term.
      *
-     * @param string $searchTerm Whatever string the user types in the search bar.
-     *
+     * @param  string  $searchTerm  Whatever string the user types in the search bar.
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function applySearchTerm($searchTerm)
@@ -66,7 +65,7 @@ trait Search
                 case 'email':
                 case 'text':
                 case 'textarea':
-                    $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
+                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), 'like', '%'.$searchTerm.'%');
                     break;
 
                 case 'date':
@@ -77,13 +76,13 @@ trait Search
                         break;
                     }
 
-                    $query->orWhereDate($column['name'], Carbon::parse($searchTerm));
+                    $query->orWhereDate($this->getColumnWithTableNamePrefixed($query, $column['name']), Carbon::parse($searchTerm));
                     break;
 
                 case 'select':
                 case 'select_multiple':
                     $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                        $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
+                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), 'like', '%'.$searchTerm.'%');
                     });
                     break;
 
@@ -101,7 +100,7 @@ trait Search
     /**
      * Tell the list view to NOT show a reponsive DataTable.
      *
-     * @param bool $value
+     * @param  bool  $value
      */
     public function setResponsiveTable($value = true)
     {
@@ -145,7 +144,7 @@ trait Search
     /**
      * Tell the list view to NOT store datatable information in local storage.
      *
-     * @param bool $value
+     * @param  bool  $value
      */
     public function setPersistentTable($value = true)
     {
@@ -199,14 +198,16 @@ trait Search
     /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
      *
-     * @param \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
-     * @param bool|int                            $rowNumber The number shown to the user as row number (index);
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $entry  A db entry of the current entity;
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index);
      * @return array Array of HTML cell contents.
      */
     public function getRowViews($entry, $rowNumber = false)
     {
         $row_items = [];
+
+        // add an empty first column to support details row and/or data table modal
+        $row_items[] = '';
 
         foreach ($this->columns() as $key => $column) {
             $row_items[] = $this->getCellView($column, $entry, $rowNumber);
@@ -243,10 +244,9 @@ trait Search
     /**
      * Get the HTML of a cell, using the column types.
      *
-     * @param array                               $column
-     * @param \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
-     * @param bool|int                            $rowNumber The number shown to the user as row number (index);
-     *
+     * @param  array  $column
+     * @param  \Illuminate\Database\Eloquent\Model  $entry  A db entry of the current entity;
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index);
      * @return string
      */
     public function getCellView($column, $entry, $rowNumber = false)
@@ -257,8 +257,7 @@ trait Search
     /**
      * Get the name of the view to load for the cell.
      *
-     * @param array $column
-     *
+     * @param  array  $column
      * @return string
      */
     private function getCellViewName($column)
@@ -285,11 +284,10 @@ trait Search
     /**
      * Render the given view.
      *
-     * @param string   $view
-     * @param array    $column
-     * @param object   $entry
-     * @param bool|int $rowNumber The number shown to the user as row number (index)
-     *
+     * @param  string  $view
+     * @param  array  $column
+     * @param  object  $entry
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index)
      * @return string
      */
     private function renderCellView($view, $column, $entry, $rowNumber = false)
@@ -309,11 +307,10 @@ trait Search
     /**
      * Created the array to be fed to the data table.
      *
-     * @param array    $entries      Eloquent results.
-     * @param int      $totalRows
-     * @param int      $filteredRows
-     * @param bool|int $startIndex
-     *
+     * @param  array  $entries  Eloquent results.
+     * @param  int  $totalRows
+     * @param  int  $filteredRows
+     * @param  bool|int  $startIndex
      * @return array
      */
     public function getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex = false)
@@ -330,5 +327,17 @@ trait Search
             'recordsFiltered' => $filteredRows,
             'data'            => $rows,
         ];
+    }
+
+    /**
+     * Return the column attribute (column in database) prefixed with table to use in search.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $column
+     * @return string
+     */
+    public function getColumnWithTableNamePrefixed($query, $column)
+    {
+        return $query->getModel()->getTable().'.'.$column;
     }
 }

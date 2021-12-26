@@ -51,7 +51,7 @@ class ChartController
      * Set the path where the chart widget will find the JS file (or files)
      * needeed to set up the charting.
      *
-     * @param string|array $path Full URL to the JS file of the charting library. Or array.
+     * @param  string|array  $path  Full URL to the JS file of the charting library. Or array.
      */
     protected function setLibraryFilePath($path)
     {
@@ -63,7 +63,7 @@ class ChartController
      * Because the dataset always includes the name of the charting library,
      * we can use that to determine which JS file we should be loading from the CDN.
      *
-     * @param string $dataset Class name of the dataset of the current chart.
+     * @param  string  $dataset  Class name of the dataset of the current chart.
      */
     protected function setLibraryFilePathFromDatasetType($dataset)
     {
@@ -71,34 +71,34 @@ class ChartController
         // load the appropriate JS Library from CDN
         switch ($dataset) {
             case 'ConsoleTVs\Charts\Classes\Chartjs\Dataset':
-                $this->library = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js';
+                $this->library = 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js';
                 break;
 
             case 'ConsoleTVs\Charts\Classes\Highcharts\Dataset':
-                $this->library = 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.6/highcharts.js';
+                $this->library = 'https://cdn.jsdelivr.net/npm/highcharts@6.2.0/highcharts.min.js';
                 break;
 
             case 'ConsoleTVs\Charts\Classes\Fusioncharts\Dataset':
-                $this->library = 'https://cdn.jsdelivr.net/npm/fusioncharts@3.12.2/fusioncharts.js';
+                $this->library = 'https://cdn.jsdelivr.net/npm/fusioncharts@3.18.0/fusioncharts.min.js';
                 break;
 
             case 'ConsoleTVs\Charts\Classes\Echarts\Dataset':
-                $this->library = 'https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.2/echarts-en.min.js';
+                $this->library = 'https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts-en.min.js';
                 break;
 
             case 'ConsoleTVs\Charts\Classes\Frappe\Dataset':
-                $this->library = 'https://cdn.jsdelivr.net/npm/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js';
+                $this->library = 'https://cdn.jsdelivr.net/npm/frappe-charts@1.6.2/dist/frappe-charts.min.umd.min.js';
                 break;
 
             case 'ConsoleTVs\Charts\Classes\C3\Dataset':
                 $this->library = [
-                    'https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.7/c3.min.js',
+                    'https://cdn.jsdelivr.net/npm/d3@5.16.0/dist/d3.min.js',
+                    'https://cdn.jsdelivr.net/npm/c3@0.7.20/c3.min.js',
                 ];
                 break;
 
             default:
-                $this->library = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js';
+                $this->library = 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js';
                 break;
         }
     }

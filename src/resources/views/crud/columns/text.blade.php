@@ -1,13 +1,23 @@
 {{-- regular object attribute --}}
 @php
-	$value = data_get($entry, $column['name']);
-    $value = is_array($value) ? json_encode($value) : $value;
-
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? true;
     $column['limit'] = $column['limit'] ?? 40;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
-    $column['text'] = $column['prefix'].Str::limit($value, $column['limit'], '[...]').$column['suffix'];
+    $column['text'] = $column['default'] ?? '-';
+
+    if($column['value'] instanceof \Closure) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(is_array($column['value'])) {
+        $column['value'] = json_encode($column['value']);
+    }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].Str::limit($column['value'], $column['limit'], '…').$column['suffix'];
+    }
 @endphp
 
 <span>

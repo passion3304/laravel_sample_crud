@@ -6,6 +6,9 @@ use Backpack\CRUD\Tests\Unit\Models\Article;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs
+ */
 class CrudPanelTabsTest extends BaseDBCrudPanelTest
 {
     private $horizontalTabsType = 'horizontal';

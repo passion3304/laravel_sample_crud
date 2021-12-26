@@ -16,14 +16,13 @@ class CheckIfAdmin
      * the contents of this method to check that the logged in user
      * is an admin, and not a regular user.
      *
-     * Additionally, in Laravel 8+, you should change app/Providers/RouteServiceProvider::HOME
+     * Additionally, in Laravel 7+, you should change app/Providers/RouteServiceProvider::HOME
      * which defines the route where a logged in user (but not admin) gets redirected
      * when trying to access an admin route. By default it's '/home' but Backpack
      * does not have a '/home' route, use something you've built for your users
      * (again - users, not admins).
      *
      * @param [type] $user [description]
-     *
      * @return bool [description]
      */
     private function checkIfUserIsAdmin($user)
@@ -36,7 +35,6 @@ class CheckIfAdmin
      * Answer to unauthorized access request.
      *
      * @param [type] $request [description]
-     *
      * @return [type] [description]
      */
     private function respondToUnauthorizedRequest($request)
@@ -51,9 +49,8 @@ class CheckIfAdmin
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)

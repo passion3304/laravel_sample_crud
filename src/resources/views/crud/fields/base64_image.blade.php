@@ -63,14 +63,11 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        <link href="{{ asset('packages/cropperjs/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
+        @loadOnce('packages/cropperjs/dist/cropper.min.css')
+        @loadOnce('bpFieldInitBase64CropperImageCss')
         <style>
             .hide {
                 display: none;
@@ -116,12 +113,14 @@
                 display: block;
             }
         </style>
+        @endLoadOnce
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <script src="{{ asset('packages/cropperjs/dist/cropper.min.js') }}"></script>
-        <script src="{{ asset('packages/jquery-cropper/dist/jquery-cropper.min.js') }}"></script>
+        @loadOnce('packages/cropperjs/dist/cropper.min.js')
+        @loadOnce('packages/jquery-cropper/dist/jquery-cropper.min.js')
+        @loadOnce('bpFieldInitBase64CropperImageElement')
         <script>
             function bpFieldInitBase64CropperImageElement(element) {
                     // Find DOM elements under this form-group element
@@ -211,21 +210,7 @@
                                         $hiddenImage.val(imageURL);
                                         return true;
                                     });
-                                    $rotateLeft.click(function() {
-                                        $mainImage.cropper("rotate", 90);
-                                    });
-                                    $rotateRight.click(function() {
-                                        $mainImage.cropper("rotate", -90);
-                                    });
-                                    $zoomIn.click(function() {
-                                        $mainImage.cropper("zoom", 0.1);
-                                    });
-                                    $zoomOut.click(function() {
-                                        $mainImage.cropper("zoom", -0.1);
-                                    });
-                                    $reset.click(function() {
-                                        $mainImage.cropper("reset");
-                                    });
+
                                     $rotateLeft.show();
                                     $rotateRight.show();
                                     $zoomIn.show();
@@ -246,11 +231,33 @@
                             }).show();
                         }
                     });
+
+                    //moved the click binds outside change event, or we would register as many click events for the same amout of times
+                    //we triggered the image change
+                    if(crop) {
+                        $rotateLeft.click(function() {
+                            $mainImage.cropper("rotate", 90);
+                        });
+
+                        $rotateRight.click(function() {
+                            $mainImage.cropper("rotate", -90);
+                        });
+
+                        $zoomIn.click(function() {
+                            $mainImage.cropper("zoom", 0.1);
+                        });
+
+                        $zoomOut.click(function() {
+                            $mainImage.cropper("zoom", -0.1);
+                        });
+
+                        $reset.click(function() {
+                            $mainImage.cropper("reset");
+                        });
+                    }
             }
         </script>
-
-
+        @endLoadOnce
     @endpush
-@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

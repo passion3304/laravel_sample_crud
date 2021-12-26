@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait FieldsProtectedMethods
@@ -10,7 +9,7 @@ trait FieldsProtectedMethods
     /**
      * If field has entity we want to get the relation type from it.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasRelationType($field)
@@ -23,7 +22,7 @@ trait FieldsProtectedMethods
     /**
      * If field has entity we want to make sure it also has a model for that relation.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasModel($field)
@@ -36,7 +35,7 @@ trait FieldsProtectedMethods
     /**
      * Based on relation type we can guess if pivot is set.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasPivot($field)
@@ -49,7 +48,7 @@ trait FieldsProtectedMethods
     /**
      * Based on relation type we can try to guess if it is a multiple field.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasMultiple($field)
@@ -64,7 +63,7 @@ trait FieldsProtectedMethods
     /**
      * In case field name is dot notation we want to convert it to a valid HTML array field name for validation purposes.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     public function overwriteFieldNameFromDotNotationToArray($field)
@@ -84,10 +83,25 @@ trait FieldsProtectedMethods
     }
 
     /**
+     * Run the field name overwrite in multiple fields.
+     *
+     * @param  array  $fields
+     * @return array
+     */
+    public function overwriteFieldNamesFromDotNotationToArray($fields)
+    {
+        foreach ($fields as $key => $field) {
+            $fields[$key] = $this->overwriteFieldNameFromDotNotationToArray($field);
+        }
+
+        return $fields;
+    }
+
+    /**
      * If the field_definition_array array is a string, it means the programmer was lazy
      * and has only passed the name of the field. Turn that into a proper array.
      *
-     * @param  string|array $field The field definition array (or string).
+     * @param  string|array  $field  The field definition array (or string).
      * @return array
      */
     protected function makeSureFieldHasName($field)
@@ -108,8 +122,8 @@ trait FieldsProtectedMethods
      * try to determine the method on the model that defines the relationship, and pass it to
      * the field as 'entity'.
      *
-     * @param  [type] $field [description]
-     * @return [type]        [description]
+     * @param  array  $field
+     * @return array
      */
     protected function makeSureFieldHasEntity($field)
     {
@@ -124,14 +138,17 @@ trait FieldsProtectedMethods
 
         //if the name is dot notation we are sure it's a relationship
         if (strpos($field['name'], '.') !== false) {
-            $field['entity'] = $field['name'];
+            $possibleMethodName = Str::of($field['name'])->before('.');
+            // if it has parameters it's not a relation method.
+            $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $field['name'];
 
             return $field;
         }
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $field['name'])) {
-            $field['entity'] = $field['name'];
+            // if it has parameters it's not a relation method.
+            $field['entity'] = $this->modelMethodHasParameters($this->model, $field['name']) ? false : $field['name'];
 
             return $field;
         }
@@ -142,7 +159,8 @@ trait FieldsProtectedMethods
             $possibleMethodName = Str::replaceLast('_id', '', $field['name']);
 
             if (method_exists($this->model, $possibleMethodName)) {
-                $field['entity'] = $possibleMethodName;
+                // if it has parameters it's not a relation method.
+                $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $possibleMethodName;
 
                 return $field;
             }
@@ -151,53 +169,11 @@ trait FieldsProtectedMethods
         return $field;
     }
 
-    protected function makeSureFieldHasRelationshipData($field)
-    {
-        // only do this if "entity" is defined on the field
-        if (! isset($field['entity'])) {
-            return $field;
-        }
-
-        $extraFieldAttributes = $this->inferFieldAttributesFromRelationship($field);
-
-        if (! empty($extraFieldAttributes)) {
-            $field = array_merge($field, $extraFieldAttributes);
-        } else {
-            abort(500, 'Unable to process relationship data: '.$field['name']);
-        }
-
-        return $field;
-    }
-
-    protected function overwriteFieldNameFromEntity($field)
-    {
-        // if the entity doesn't have a dot, it means we don't need to overwrite the name
-        if (! Str::contains($field['entity'], '.')) {
-            return $field;
-        }
-
-        // only 1-1 relationships are supported, if it's anything else, abort
-        if ($field['relation_type'] != 'HasOne') {
-            return $field;
-        }
-
-        if (count(explode('.', $field['entity'])) == count(explode('.', $this->getOnlyRelationEntity($field)))) {
-            $field['name'] = implode('.', array_slice(explode('.', $field['entity']), 0, -1));
-            $relation = $this->getRelationInstance($field);
-            if (! empty($field['name'])) {
-                $field['name'] .= '.';
-            }
-            $field['name'] .= $relation->getForeignKeyName();
-        }
-
-        return $field;
-    }
-
     protected function makeSureFieldHasAttribute($field)
     {
         // if there's a model defined, but no attribute
-        // guess an attribute using the indentifiableAttribute functionality in CrudTrait
-        if (isset($field['model']) && ! isset($field['attribute'])) {
+        // guess an attribute using the identifiableAttribute functionality in CrudTrait
+        if (isset($field['model']) && ! isset($field['attribute']) && method_exists($field['model'], 'identifiableAttribute')) {
             $field['attribute'] = call_user_func([(new $field['model']), 'identifiableAttribute']);
         }
 
@@ -208,8 +184,8 @@ trait FieldsProtectedMethods
      * Set the label of a field, if it's missing, by capitalizing the name and replacing
      * underscores with spaces.
      *
-     * @param  array $field Field definition array.
-     * @return array        Field definition array that contains label too.
+     * @param  array  $field  Field definition array.
+     * @return array Field definition array that contains label too.
      */
     protected function makeSureFieldHasLabel($field)
     {
@@ -226,8 +202,8 @@ trait FieldsProtectedMethods
      * Set the type of a field, if it's missing, by inferring it from the
      * db column type.
      *
-     * @param  array $field Field definition array.
-     * @return array        Field definition array that contains type too.
+     * @param  array  $field  Field definition array.
+     * @return array Field definition array that contains type too.
      */
     protected function makeSureFieldHasType($field)
     {
@@ -241,7 +217,7 @@ trait FieldsProtectedMethods
     /**
      * Enable the tabs functionality, if a field has a tab defined.
      *
-     * @param  array $field Field definition array.
+     * @param  array  $field  Field definition array.
      * @return void
      */
     protected function enableTabsIfFieldUsesThem($field)
@@ -257,14 +233,14 @@ trait FieldsProtectedMethods
     /**
      * Add a field to the current operation, using the Settings API.
      *
-     * @param  array $field Field definition array.
+     * @param  array  $field  Field definition array.
      */
     protected function addFieldToOperationSettings($field)
     {
         $fieldKey = $this->getFieldKey($field);
 
         $allFields = $this->getOperationSetting('fields');
-        $allFields = Arr::add($this->fields(), $fieldKey, $field);
+        $allFields = array_merge($this->getCleanStateFields(), [$fieldKey => $field]);
 
         $this->setOperationSetting('fields', $allFields);
     }
@@ -277,8 +253,8 @@ trait FieldsProtectedMethods
      * - name (if the name is a string)
      * - name1_name2_name3 (if the name is an array)
      *
-     * @param  array $field Field definition array.
-     * @return string       The string that should be used as array key.
+     * @param  array  $field  Field definition array.
+     * @return string The string that should be used as array key.
      */
     protected function getFieldKey($field)
     {

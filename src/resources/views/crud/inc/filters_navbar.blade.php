@@ -18,7 +18,7 @@
   </nav>
 
 @push('crud_list_scripts')
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.2/URI.min.js" type="text/javascript"></script>
+	<script src="{{ asset('packages/URI.js/URI.min.js') }}" type="text/javascript"></script>
     <script>
       function addOrUpdateUriParameter(uri, parameter, value) {
             var new_url = normalizeAmpersand(uri);
@@ -39,7 +39,7 @@
               new_url = new_url.addQuery(parameter, value);
             }
 
-            $('#remove_filters_button').removeClass('invisible');
+            $('#remove_filters_button').toggleClass('invisible', !new_url.query());
 
         return new_url.toString();
 

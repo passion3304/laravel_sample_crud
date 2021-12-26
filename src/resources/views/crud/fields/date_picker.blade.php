@@ -41,22 +41,19 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
-    <link rel="stylesheet" href="{{ asset('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}">
-    @endpush
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
+@push('crud_fields_styles')
+    @loadOnce('packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')
+@endpush
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
-    <script src="{{ asset('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
+    @loadOnce('packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')
     @if ($field_language !== 'en')
-        <script charset="UTF-8" src="{{ asset('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js') }}"></script>
+        @loadOnce('packages/bootstrap-datepicker/dist/locales/bootstrap-datepicker.'.$field_language.'.min.js')
     @endif
+    @loadOnce('bpFieldInitDatePickerElement')
     <script>
         if (jQuery.ui) {
             var datepicker = $.fn.datepicker.noConflict();
@@ -69,7 +66,7 @@
 
         function bpFieldInitDatePickerElement(element) {
             var $fake = element,
-            $field = $fake.closest('.form-group').find('input[type="hidden"]'),
+                $field = $fake.closest('.input-group').parent().find('input[type="hidden"]'),
             $customConfig = $.extend({
                 format: 'dd/mm/yyyy'
             }, $fake.data('bs-datepicker'));
@@ -77,7 +74,7 @@
 
             var $existingVal = $field.val();
 
-                if( $existingVal.length ){
+                if( $existingVal && $existingVal.length ){
                     // Passing an ISO-8601 date string (YYYY-MM-DD) to the Date constructor results in
                     // varying behavior across browsers. Splitting and passing in parts of the date
                     // manually gives us more defined behavior.
@@ -122,7 +119,7 @@
                 });
             }
     </script>
-    @endpush
+    @endLoadOnce
+@endpush
 
-@endif
 {{-- End of Extra CSS and JS --}}

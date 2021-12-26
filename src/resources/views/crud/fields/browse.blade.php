@@ -4,26 +4,23 @@
 
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
-    <div class="controls">
-	    <div class="input-group">
-			<input
-				type="text"
-				name="{{ $field['name'] }}"
-		        value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
-		        data-init-function="bpFieldInitBrowseElement"
-		        data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup') }}"
-		        @include('crud::fields.inc.attributes')
+	<div class="input-group">
+		<input
+			type="text"
+			name="{{ $field['name'] }}"
+			value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '' }}"
+			data-init-function="bpFieldInitBrowseElement"
+			data-elfinder-trigger-url="{{ url(config('elfinder.route.prefix').'/popup') }}"
+			@include('crud::fields.inc.attributes')
 
-				@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
-			>
+			@if(!isset($field['readonly']) || $field['readonly']) readonly @endif
+		>
 
-			<span class="input-group-append">
-			  	<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm popup_selector"><i class="la la-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
-				<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm clear_elfinder_picker"><i class="la la-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
-			</span>
-		</div>
+		<span class="input-group-append">
+			<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm popup_selector"><i class="la la-cloud-upload"></i> {{ trans('backpack::crud.browse_uploads') }}</button>
+			<button type="button" data-inputid="{{ $field['name'] }}-filemanager" class="btn btn-light btn-sm clear_elfinder_picker"><i class="la la-eraser"></i> {{ trans('backpack::crud.clear') }}</button>
+		</span>
 	</div>
-
 	@if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
@@ -33,25 +30,24 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-	@php
-		$crud->markFieldTypeAsLoaded($field);
-	@endphp
 
 	{{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
 		<!-- include browse server css -->
-		<link href="{{ asset('packages/jquery-colorbox/example2/colorbox.css') }}" rel="stylesheet" type="text/css" />
+		@loadOnce('packages/jquery-colorbox/example2/colorbox.css')
+		@loadOnce('bpFieldInitBrowseStyle')
 		<style>
 			#cboxContent, #cboxLoadedContent, .cboxIframe {
 				background: transparent;
 			}
 		</style>
+		@endLoadOnce
 	@endpush
 
     @push('crud_fields_scripts')
 		<!-- include browse server js -->
-		<script src="{{ asset('packages/jquery-colorbox/jquery.colorbox-min.js') }}"></script>
+		@loadOnce('packages/jquery-colorbox/jquery.colorbox-min.js')
+		@loadOnce('bpFieldInitBrowseElement')
 		<script type="text/javascript">
 			// this global variable is used to remember what input to update with the file path
 			// because elfinder is actually loaded in an iframe by colorbox
@@ -88,9 +84,8 @@
 				});
 			}
 		</script>
+		@endLoadOnce
 	@endpush
-
-@endif
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

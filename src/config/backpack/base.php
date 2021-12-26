@@ -42,7 +42,8 @@ return [
 
     // CSS files that are loaded in all pages, using Laravel's asset() helper
     'styles' => [
-        'packages/backpack/base/css/bundle.css',
+        'packages/backpack/base/css/bundle.css', // has primary color electric purple (backpack default)
+        // 'packages/backpack/base/css/blue-bundle.css', // has primary color blue
 
         // Here's what's inside the bundle:
         // 'packages/@digitallyhappy/backstrap/css/style.min.css',
@@ -193,10 +194,6 @@ return [
     // Warning: if you disable this, the password recovery routes (below) will be disabled too!
     'setup_auth_routes' => true,
 
-    // Set this to false if you would like to skip adding the password recovery routes
-    // (you then need to manually define the routes in your web.php)
-    'setup_password_recovery_routes' => true,
-
     // Set this to false if you would like to skip adding the dashboard routes
     // (you then need to overwrite the login route on your AuthController)
     'setup_dashboard_routes' => true,
@@ -204,6 +201,32 @@ return [
     // Set this to false if you would like to skip adding "my account" routes
     // (you then need to manually define the routes in your web.php)
     'setup_my_account_routes' => true,
+
+    // Set this to false if you would like to skip adding the password recovery routes
+    // (you then need to manually define the routes in your web.php)
+    'setup_password_recovery_routes' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Security
+    |--------------------------------------------------------------------------
+    */
+
+    // Backpack will prevent visitors from requesting password recovery too many times
+    // for a certain email, to make sure they cannot be spammed that way.
+    // How many seconds should a visitor wait, after they've requested a
+    // password reset, before they can try again for the same email?
+    'password_recovery_throttle_notifications' => 600, // time in seconds
+
+    // Backpack will prevent an IP from trying to reset the password too many times,
+    // so that a malicious actor cannot try too many emails, too see if they have
+    // accounts or to increase the AWS/SendGrid/etc bill.
+    //
+    // How many times in any given time period should the user be allowed to
+    // attempt a password reset? Take into account that user might wrongly
+    // type an email at first, so at least allow one more try.
+    // Defaults to 3,10 - 3 times in 10 minutes.
+    'password_recovery_throttle_access' => '3,10',
 
     /*
     |--------------------------------------------------------------------------
@@ -243,9 +266,9 @@ return [
     'passwords' => 'backpack',
 
     // What kind of avatar will you like to show to the user?
-    // Default: gravatar (automatically use the gravatar for his email)
+    // Default: gravatar (automatically use the gravatar for their email)
     // Other options:
-    // - placehold (generic image with his first letter)
+    // - placehold (generic image with their first letter)
     // - example_method_name (specify the method on the User model that returns the URL)
     'avatar_type' => 'gravatar',
 
