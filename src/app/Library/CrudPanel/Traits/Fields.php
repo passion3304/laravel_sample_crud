@@ -61,6 +61,25 @@ trait Fields
     }
 
     /**
+     * Register all Eloquent Model events that are defined on fields.
+     * Eg. saving, saved, creating, created, updating, updated.
+     *
+     * @see https://laravel.com/docs/master/eloquent#events
+     *
+     * @return void
+     */
+    public function registerFieldEvents()
+    {
+        foreach ($this->getCleanStateFields() as $key => $field) {
+            if (isset($field['events'])) {
+                foreach ($field['events'] as $event => $closure) {
+                    $this->model->{$event}($closure);
+                }
+            }
+        }
+    }
+
+    /**
      * Add a field to the create/update form or both.
      *
      * @param  string|array  $field  The new field.
