@@ -29,6 +29,9 @@
                     }
                     $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.$subfield['name'].']';
                 }else{
+                    foreach ($subfield['name'] as $k => $item) {
+                        $subfield['name'][$k] = $field['name'].'['.$repeatable_row_key.']['.$item['name'].']';
+                    }
                     $subfield['value'] = $row;
                 }
             }                       
