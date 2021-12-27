@@ -1,7 +1,7 @@
 {{-- REPEATABLE FIELD TYPE --}}
 
 @php
-  $field['value'] = old_input_value($field['name'], $field['value'] ?? $field['default'] ?? []);
+  $field['value'] = old_empty_or_fallback($field['name'], [],  $field['value'] ?? $field['default']);
   // make sure the value is always an array, even if stored as JSON in database
   $field['value'] = is_string($field['value']) ? json_decode($field['value'], true) : $field['value'];
 

@@ -7,7 +7,7 @@
 {{-- 2. depth, lft attributes --}}
 
 @php
-    $current_value = old_input_value($field['name'], $field['value'] ?? $field['default'] ?? '');
+    $current_value = old_empty_or_fallback($field['name'], '',  $field['value'] ?? $field['default']);
 
     if (!function_exists('echoSelect2NestedEntry')) {
         function echoSelect2NestedEntry($entry, $field, $current_value) {

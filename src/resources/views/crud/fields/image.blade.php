@@ -1,7 +1,7 @@
 @php
     $field['prefix'] = $field['prefix'] ?? '';
     $field['disk'] = $field['disk'] ?? null;
-    $value = old_input_value($field['name'], $field['value'] ?? $field['default'] ?? '');
+    $value = old_empty_or_fallback($field['name'], '',  $field['value'] ?? $field['default']);
 
     if (! function_exists('getDiskUrl')) {
         function getDiskUrl($disk, $path) {

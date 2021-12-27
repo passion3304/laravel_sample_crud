@@ -8,7 +8,7 @@
         <input
         	type="number"
         	name="{{ $field['name'] }}"
-            value="{{ old_input_value($field['name'], $field['value'] ?? $field['default'] ?? '') }}"
+            value="{{ old_empty_or_fallback($field['name'], '',  $field['value'] ?? $field['default']) }}"
             @include('crud::fields.inc.attributes')
         	>
         @if(isset($field['suffix'])) <div class="input-group-append"><span class="input-group-text">{!! $field['suffix'] !!}</span></div> @endif

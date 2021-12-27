@@ -5,6 +5,7 @@
     @php
         $entity_model = $crud->model;
         $possible_values = $entity_model::getPossibleEnumValues($field['name']);
+        $field['value'] = old_empty_or_fallback($field['name'], '',  $field['value'] ?? $field['default']);
     @endphp
     <select
         name="{{ $field['name'] }}"
@@ -18,7 +19,7 @@
             @if (count($possible_values))
                 @foreach ($possible_values as $possible_value)
                     <option value="{{ $possible_value }}"
-                        @if (( old(square_brackets_to_dots($field['name'])) &&  old(square_brackets_to_dots($field['name'])) == $possible_value) || (isset($field['value']) && $field['value']==$possible_value))
+                        @if ($field['value']==$possible_value)
                             selected
                         @endif
                     >{{ $possible_value }}</option>

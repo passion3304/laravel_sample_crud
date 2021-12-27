@@ -1,6 +1,6 @@
 <!-- select -->
 @php
-	$current_value = old_input_value($field['name'], $field['value'] ?? $field['default'] ?? '');
+	$current_value = old_empty_or_fallback($field['name'], '',  $field['value'] ?? $field['default']);
     $entity_model = $crud->getRelationModel($field['entity'],  - 1);
     $field['allows_null'] = $field['allows_null'] ?? $entity_model::isColumnNullable($field['name']);
 

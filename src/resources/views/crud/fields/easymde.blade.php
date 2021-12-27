@@ -8,7 +8,7 @@
         data-easymdeAttributesRaw="{{ isset($field['easymdeAttributesRaw']) ? "{".$field['easymdeAttributesRaw']."}" : "{}" }}"
         data-easymdeAttributes="{{ isset($field['easymdeAttributes']) ? json_encode($field['easymdeAttributes']) : "{}" }}"
         @include('crud::fields.inc.attributes', ['default_class' => 'form-control'])
-    	>{{ old_input_value($field['name'], $field['value'] ?? $field['default'] ?? '') }}</textarea>
+    	>{{ old_empty_or_fallback($field['name'], '',  $field['value'] ?? $field['default']) }}</textarea>
 
     {{-- HINT --}}
     @if (isset($field['hint']))
