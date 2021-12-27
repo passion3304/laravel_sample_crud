@@ -306,6 +306,11 @@ trait Create
             return Arr::has($input, $item['name']);
         });
 
+        // exclude the already attached belongs to relations in the main entry but include nested belongs to.
+        $relationFields = Arr::where($relationFields, function ($field, $key) {
+            return $field['relation_type'] !== 'BelongsTo' || ($field['relation_type'] === 'BelongsTo' && Str::contains($field['name'], '.'));
+        });
+
         $relationDetails = [];
         foreach ($relationFields as $field) {
             // we split the entity into relations, eg: user.accountDetails.address
