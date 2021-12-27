@@ -145,6 +145,13 @@
     tr.dt-hasChild + tr td {
       display: table-cell;
     }
+
+    &:not(.has-details-row):not(.has-hidden-columns):not(.has-checkbox-column) {
+      tr th:first-child,
+      tr td:first-child {
+        display: none;
+      }
+    }
   }
 
   .dt-buttons .dt-button-collection,
