@@ -330,6 +330,13 @@
                 $(repeatable).find('input, select, textarea').each(function(i, el) {
                     if(typeof $(el).attr('data-row-number') !== 'undefined') {
                         let field_name = $(el).attr('data-repeatable-input-name') ?? $(el).attr('name') ?? $(el).parent().find('input[data-repeatable-input-name]').first().attr('data-repeatable-input-name');
+                        // if there are more than one "[" character, that means we already have the repeatable name
+                        // we need to parse that name to get the "actual" field name. 
+                        if(field_name.split('[').length - 1 > 1) {
+                            let field_name_position = field_name.lastIndexOf('[');
+                            // field name will contain the closing "]" that's why the last slice.
+                            field_name = field_name.substring(field_name_position + 1).slice(0,-1);
+                        }
                         let unprefixed_field_name = field_name.endsWith("[]") ? field_name.substring(0, field_name.length - 2) : field_name;
                         if(typeof $(el).attr('data-repeatable-input-name') === 'undefined') {
                             $(el).attr('data-repeatable-input-name', field_name);
