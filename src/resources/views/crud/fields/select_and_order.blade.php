@@ -101,7 +101,7 @@
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
 @loadOnce('packages/jquery-ui-dist/jquery-ui.min.js')
-@loadOnce('//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.2/jquery.ui.touch-punch.min.js')
+@loadOnce('packages/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js')
 
 @loadOnce('bpFieldInitSelectAndOrderElement')
 <script>
