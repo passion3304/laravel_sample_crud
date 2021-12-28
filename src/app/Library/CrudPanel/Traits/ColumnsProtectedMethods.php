@@ -88,6 +88,10 @@ trait ColumnsProtectedMethods
         // Set text as default column type
         $column['type'] = 'text';
 
+        if(method_exists($this->model, 'translationEnabledForModel') && $this->model->translationEnabledForModel() && array_key_exists($column['name'], $this->model->getTranslations())) {
+            return $column;
+        }
+
         $could_be_relation = Arr::get($column, 'entity', false) !== false;
 
         if ($could_be_relation) {
