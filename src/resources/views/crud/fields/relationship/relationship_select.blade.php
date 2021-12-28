@@ -14,8 +14,7 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    $current_value = old_empty_or_fallback($field['name'], [],  $field['value'] ?? $field['default']);
-
+    $current_value = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
 
     if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {

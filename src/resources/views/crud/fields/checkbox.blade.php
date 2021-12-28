@@ -1,7 +1,7 @@
 <!-- checkbox field -->
 
 @php
-  $field['value'] = old_empty_or_fallback($field['name'], 0,  $field['value'] ?? $field['default']);
+  $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 @endphp
 @include('crud::fields.inc.wrapper_start')
     @include('crud::fields.inc.translatable_icon')

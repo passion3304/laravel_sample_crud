@@ -5,7 +5,7 @@
     @php
         $entity_model = $crud->model;
         $possible_values = $entity_model::getPossibleEnumValues($field['name']);
-        $field['value'] = old_empty_or_fallback($field['name'], '',  $field['value'] ?? $field['default']);
+        $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
     @endphp
     <select
         name="{{ $field['name'] }}"
