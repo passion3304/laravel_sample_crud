@@ -90,6 +90,9 @@ trait UpdateOperation
         // execute the FormRequest authorization and validation, if one is required
         $request = $this->crud->validateRequest();
 
+        // register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
+
         // update the row in the db
         $item = $this->crud->update(
             $request->get($this->crud->model->getKeyName()),
