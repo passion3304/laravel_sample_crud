@@ -3,6 +3,9 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
     $old_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
+    $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entry');
+    $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
+    $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
 
     // by default set ajax query delay to 500ms
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
