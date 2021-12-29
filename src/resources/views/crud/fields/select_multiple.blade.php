@@ -7,7 +7,9 @@
     }
     $field['allows_null'] = $field['allows_null'] ?? true;
 
-    if(isset($field['value']) && is_array($field['value'])) {
+    $field['value'] = old_empty_or_null($field['name'], collect()) ??  $field['value'] ?? $field['default'] ?? collect();
+
+    if(!empty($field['value'])) {
          $field['value'] = $options->whereIn((new $field['model'])->getKeyName(), $field['value']);
     }
 @endphp
@@ -23,13 +25,9 @@
         @include('crud::fields.inc.attributes')
     	multiple>
 
-		@if ($field['allows_null'])
-			<option value="">-</option>
-		@endif
-
     	@if (count($options))
     		@foreach ($options as $option)
-				@if( (old(square_brackets_to_dots($field["name"])) && in_array($option->getKey(), old(square_brackets_to_dots($field["name"])))) || (is_null(old(square_brackets_to_dots($field["name"]))) && isset($field['value']) && in_array($option->getKey(), $field['value']->pluck($option->getKeyName(), $option->getKeyName())->toArray())))
+				@if(in_array($option->getKey(), $field['value']->pluck($option->getKeyName())->toArray()))
 					<option value="{{ $option->getKey() }}" selected>{{ $option->{$field['attribute']} }}</option>
 				@else
 					<option value="{{ $option->getKey() }}">{{ $option->{$field['attribute']} }}</option>
