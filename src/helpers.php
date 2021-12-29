@@ -253,15 +253,15 @@ if (! function_exists('old_empty_or_null')) {
      * returns NULL it two cases:
      * - if there is an old value, and it was empty or null
      * - if there is no old value
-     * (this is because of the ConvertsEmptyStringsToNull middleware)
+     * (this is because of the ConvertsEmptyStringsToNull middleware).
      *
      * In contrast, this method will return:
      * - the old value, if there actually is an old value for that key;
      * - the second parameter, if there is no old value for that key, but it was empty string or null;
      * - null, if there is no old value at all for that key;
      *
-     * @param  string $key
-     * @param  array|string $empty_value
+     * @param  string  $key
+     * @param  array|string  $empty_value
      * @return mixed
      */
     function old_empty_or_null($key, $empty_value = '')
