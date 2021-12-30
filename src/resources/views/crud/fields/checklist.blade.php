@@ -1,6 +1,6 @@
 <!-- checklist -->
 @php
-  $key_attribute = $field['model']->getKeyName();
+  $key_attribute = (new $field['model'])->getKeyName();
   $field['attribute'] = $field['attribute'] ?? (new $field['model'])->identifiableAttribute();
   $field['number_of_columns'] = $field['number_of_columns'] ?? 3;
 
