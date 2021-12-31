@@ -47,7 +47,12 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 {{ $crud->getOperationSetting('detailsRow') ? 'has-details-row' : ''}} {{ $crud->getOperationSetting('bulkActions') ? 'has-checkbox-column' : ''}}" cellspacing="0">
+        <table
+          id="crudTable"
+          class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
+          data-has-details-row="{{ $crud->getOperationSetting('detailsRow') ?? 0 }}"
+          data-has-bulk-actions="{{ $crud->getOperationSetting('bulkActions') ?? 0 }}"
+          cellspacing="0">
             <thead>
               <tr>
               <th 
@@ -61,7 +66,7 @@
 
                 {{-- Bulk checkbox --}}
                 @if($crud->getOperationSetting('bulkActions'))
-                  {!! View::make('crud::columns.inc.bulk_actions_checkbox_main')->render() !!}
+                  {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
                 @endif
               </th>
 
@@ -125,7 +130,7 @@
                 <th>
                   {{-- Bulk checkbox --}}
                   @if($crud->getOperationSetting('bulkActions'))
-                    {!! View::make('crud::columns.inc.bulk_actions_checkbox_main')->render() !!}
+                    {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
                   @endif
                 </th>
 

@@ -12,7 +12,7 @@
     border: none;
     box-shadow: none;
 
-    &>img {
+    & > img {
       top: calc(50% - 16px);
       left: calc(50% - 16px);
       position: absolute;
@@ -27,10 +27,10 @@
   #crudTable {
     margin-top: 0 !important;
 
-    &.dtr-inline.collapsed>tbody>tr>.dtr-control:before {
+    &.dtr-inline.collapsed > tbody > tr > .dtr-control:before {
       background-color: transparent;
       color: #636161;
-      font-family: 'Line Awesome Free';
+      font-family: "Line Awesome Free";
       font-weight: 900;
       width: 16px;
       content: "\f142";
@@ -41,21 +41,22 @@
       position: relative;
       top: 0;
       left: 0;
-      margin: 0 0 0 -.25rem;
+      margin: 0 0 0 -0.25rem;
     }
 
-    &.dtr-inline.collapsed>tbody>tr>.dtr-control:before {
+    &.dtr-inline.collapsed > tbody > tr > .dtr-control:before {
       top: 0;
     }
 
-    td, th {
+    td,
+    th {
       outline: none;
       vertical-align: middle;
     }
 
     thead > tr {
-      &>th:not(.sorting_disabled),
-      &>td {
+      & > th:not(.sorting_disabled),
+      & > td {
         padding-right: 30px;
       }
     }
@@ -83,22 +84,22 @@
       font-weight: 900;
     }
 
-    tbody>tr:first-of-type>td:first-of-type,
-    tbody>tr:not(.shown)+tr>td:first-of-type,
-    thead>tr>th:first-of-type,
-    tfoot>tr>th:first-of-type {
+    tbody > tr:first-of-type > td:first-of-type,
+    tbody > tr:not(.shown) + tr > td:first-of-type,
+    thead > tr > th:first-of-type,
+    tfoot > tr > th:first-of-type {
       padding: 0;
       min-height: 1rem;
     }
 
     &.has-hidden-columns .details-control {
-      margin-left: .4rem;
+      margin-left: 0.4rem;
     }
 
     &.has-hidden-columns {
       thead tr th:first-child,
       tfoot tr th:first-child {
-        padding-left: 1.35rem!important;
+        padding-left: 1.35rem !important;
       }
     }
 
@@ -108,7 +109,7 @@
 
     .crud_bulk_actions_checkbox {
       display: flex;
-      margin: 0 0 0 .625rem;
+      margin: 0 0 0 0.625rem;
     }
 
     .crud_bulk_actions_checkbox input {
@@ -118,27 +119,27 @@
 
     &:not(.has-hidden-columns) {
       tr td:first-child {
-        padding-top: 1.25rem!important;
+        padding-top: 1.25rem !important;
       }
     }
     tr th:first-child,
     tr td:first-child {
       display: flex;
       align-items: center;
-      padding: 1rem 0 1rem 0.6rem!important;
+      padding: 1rem 0 1rem 0.6rem !important;
     }
 
-    &.has-details-row {
+    &[data-has-details-row="1"] {
       thead tr th:first-child,
       tfoot tr th:first-child {
-        padding-left: 2.1rem!important;
+        padding-left: 2.1rem !important;
       }
     }
 
-    &.has-details-row.has-hidden-columns {
+    &[data-has-details-row="1"].has-hidden-columns {
       thead tr th:first-child,
       tfoot tr th:first-child {
-        padding-left: 2.725rem!important;
+        padding-left: 2.725rem !important;
       }
     }
 
@@ -146,7 +147,7 @@
       display: table-cell;
     }
 
-    &:not(.has-details-row):not(.has-hidden-columns):not(.has-checkbox-column) {
+    &:not(.has-hidden-columns)[data-has-details-row="0"][data-has-bulk-actions="0"] {
       tr th:first-child,
       tr td:first-child {
         display: none;
@@ -196,18 +197,18 @@
   li {
     margin: 0 2px;
 
-    &>a {
+    & > a {
       border-radius: 2px;
     }
   }
 
-  li>a:active,
-  .navbar-nav>.active>a,
-  .navbar-nav>.active>a:focus,
-  .navbar-nav>.active>a:hover,
-  .navbar-nav>.open>a,
-  .navbar-nav>.open>a:focus,
-  .navbar-nav>.open>a:hover {
+  li > a:active,
+  .navbar-nav > .active > a,
+  .navbar-nav > .active > a:focus,
+  .navbar-nav > .active > a:hover,
+  .navbar-nav > .open > a,
+  .navbar-nav > .open > a:focus,
+  .navbar-nav > .open > a:hover {
     background-color: #e4e7ea;
     border-radius: 3px;
   }
@@ -224,7 +225,7 @@
 }
 
 @media (min-width: 768px) {
-  .navbar-filters .navbar-nav>li>a {
+  .navbar-filters .navbar-nav > li > a {
     padding-top: 5px;
     padding-bottom: 5px;
   }
@@ -252,7 +253,7 @@
   }
 }
 
-@media(max-width: 576px) {
+@media (max-width: 576px) {
   .dataTables_filter {
     label {
       width: 100%;
@@ -266,40 +267,37 @@
 
 // Pagination
 .pagination {
-
-  &>.disabled {
-
-    &>a,
-    &>a:focus,
-    &>a:hover,
-    &>span,
-    &>span:focus,
-    &>span:hover {
+  & > .disabled {
+    & > a,
+    & > a:focus,
+    & > a:hover,
+    & > span,
+    & > span:focus,
+    & > span:hover {
       background: transparent;
     }
   }
 
-  &>li {
-
-    &>a {
+  & > li {
+    & > a {
       background: transparent;
       border: none;
       border-radius: 5px;
       color: #333;
     }
 
-    &>a:focus,
-    &>a:hover,
-    &>span:focus,
-    &>span:hover {
+    & > a:focus,
+    & > a:hover,
+    & > span:focus,
+    & > span:hover {
       background: white;
     }
   }
 
-  &>li:last-child>a,
-  &>li:last-child>span,
-  &>li:first-child>a,
-  &>li:first-child>span {
+  & > li:last-child > a,
+  & > li:last-child > span,
+  & > li:first-child > a,
+  & > li:first-child > span {
     border-radius: 5px;
   }
 }
@@ -332,4 +330,3 @@
 .fixed .wrapper {
   overflow: visible;
 }
-

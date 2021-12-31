@@ -224,7 +224,7 @@ trait Search
 
         // add the bulk actions checkbox to the first column
         if ($this->getOperationSetting('bulkActions')) {
-            $bulk_actions_checkbox = \View::make('crud::columns.inc.bulk_actions_checkbox_row', ['entry' => $entry])->render();
+            $bulk_actions_checkbox = \View::make('crud::columns.inc.bulk_actions_checkbox', ['entry' => $entry])->render();
             $row_items[0] = $bulk_actions_checkbox.$row_items[0];
         }
 
