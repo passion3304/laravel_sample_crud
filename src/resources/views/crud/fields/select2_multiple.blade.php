@@ -10,17 +10,21 @@
     $model_instance = new $field['model'];
     $options_ids_array = $field['options']->pluck($model_instance->getKeyName())->toArray();
 
-    $field['multiple'] = $field['multiple'] ?? true;
+    $field['multiple'] = true;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entries');
 
     if(isset($field['value']) && is_array($field['value'])) {
          $field['value'] = $field['options']->whereIn((new $field['model'])->getKeyName(), $field['value']);
     }
+
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
+    {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+    <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
     <select
         name="{{ $field['name'] }}[]"
         style="width: 100%"
@@ -29,12 +33,10 @@
         data-select-all="{{ var_export($field['select_all'] ?? false)}}"
         data-options-for-js="{{json_encode(array_values($options_ids_array))}}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+        data-allows-null="{{var_export($field['allows_null'])}}"
+        data-placeholder="{{$field['placeholder']}}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_multiple'])
-        {{ $field['multiple'] ? 'multiple' : '' }}>
-
-        @if ($field['allows_null'])
-            <option value="">-</option>
-        @endif
+        multiple>
 
         @if (isset($field['model']))
             @foreach ($field['options'] as $option)
@@ -84,9 +86,15 @@
                 if (!element.hasClass("select2-hidden-accessible"))
                 {
                     let $isFieldInline = element.data('field-is-inline');
+                    let $allowClear = element.data('allows-null');
+                    let $multiple = element.attr('multiple') ?? false;
+                    let $placeholder = element.attr('placeholder');
 
                     var $obj = element.select2({
                         theme: "bootstrap",
+                        allowClear: $allowClear,
+                        multiple: $multiple,
+                        placeholder: $placeholder,
                         dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
                     });
 
