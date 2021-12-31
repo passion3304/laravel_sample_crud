@@ -12,7 +12,7 @@
   }
 
   // calculate the value of the hidden input
-  $field['value'] = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? [];
+   $field['value'] = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
   if ($field['value'] instanceof Illuminate\Database\Eloquent\Collection) {
     $field['value'] = $field['value']->pluck($key_attribute)->toArray();
   } elseif (is_string($field['value'])){

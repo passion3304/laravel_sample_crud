@@ -2,7 +2,7 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
-    $old_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
+    $old_value = old_empty_or_null($field['name'], false) ??  $field['value'] ?? $field['default'] ?? false;
     $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entry');
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;

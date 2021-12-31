@@ -1,6 +1,6 @@
 <!-- select_and_order -->
 @php
-    $values = old($field['name']) ?? $field['value'] ?? $field['default'] ?? [];
+    $values = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
     $values = (array)$values;
 @endphp
 

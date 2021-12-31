@@ -14,8 +14,8 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? [];
-    
+    $current_value = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
+
     if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
@@ -32,8 +32,10 @@
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name);
                     }
-
             break;
+
+            case 'NULL':
+                $current_value = [];
 
             default:
                 $current_value = $connected_entity
