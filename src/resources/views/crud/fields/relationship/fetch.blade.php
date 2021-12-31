@@ -59,6 +59,8 @@
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
+    {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+    @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
@@ -84,6 +86,10 @@
         multiple
         @endif
         >
+
+        @if ($field['allows_null'] && !$field['multiple'])
+            <option value="">-</option>
+        @endif
 
         @if (!empty($current_value))
             @foreach ($current_value as $key => $item)
@@ -156,10 +162,6 @@
         var $multiple = element.prop('multiple');
         var $ajaxDelay = element.attr('data-ajax-delay');
         var $isFieldInline = element.data('field-is-inline');
-
-        if($allows_null && !$multiple) {
-            $(element).append('<option value="">'+$placeholder+'</option>');
-        }  
 
         var $select2Settings = {
                 theme: 'bootstrap',

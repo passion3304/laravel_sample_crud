@@ -7,6 +7,9 @@
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entry');
+    $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
+    $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

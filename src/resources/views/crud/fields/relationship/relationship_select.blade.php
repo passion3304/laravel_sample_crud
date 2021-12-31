@@ -53,19 +53,14 @@
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
-    <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
+    @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitRelationshipSelectElement"
         data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
-        data-model-local-key="{{$crud->model->getKeyName()}}"
         data-placeholder="{{ $field['placeholder'] }}"
-        data-field-attribute="{{ $field['attribute'] }}"
-        data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
 
@@ -75,6 +70,7 @@
         multiple
         @endif
         >
+
         @if ($field['allows_null'] && !$field['multiple'])
             <option value="">-</option>
         @endif
@@ -142,13 +138,7 @@
      * @return void
      */
     function bpFieldInitRelationshipSelectElement(element) {
-        var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
-        var $modelKey = element.attr('data-model-local-key');
-        var $fieldAttribute = element.attr('data-field-attribute');
-        var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
-        var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
-        var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
