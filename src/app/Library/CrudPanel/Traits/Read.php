@@ -147,25 +147,7 @@ trait Read
      */
     public function enableBulkActions()
     {
-        if ($this->getOperationSetting('bulkActions') == true) {
-            return;
-        }
-
         $this->setOperationSetting('bulkActions', true);
-
-        $this->addColumn([
-            'type'            => 'checkbox',
-            'name'            => 'bulk_actions',
-            'label'           => ' <span style="display:flex"><input type="checkbox" class="crud_bulk_actions_main_checkbox" style="width: 16px; height: 16px; margin: 2px 0;" /></span>',
-            'priority'        => 0,
-            'searchLogic'     => false,
-            'orderable'       => false,
-            'visibleInTable'  => true,
-            'visibleInModal'  => false,
-            'visibleInExport' => false,
-            'visibleInShow'   => false,
-            'hasActions'      => true,
-        ])->makeFirstColumn();
     }
 
     /**
