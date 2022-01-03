@@ -160,6 +160,9 @@
                 },
             }
         },
+        columnDefs: [
+            { responsivePriority: 1, targets: 1 },
+        ],
         fixedHeader: true,
         @else
         responsive: false,

@@ -45,9 +45,12 @@
 
           $secondary_ids = [];
 
+          $old_primary_dependency = old_empty_or_null($primary_dependency['name'], false) ?? false;
+          $old_secondary_dependency = old_empty_or_null($secondary_dependency['name'], false) ?? false;
+
           //create secondary dependency from primary relation, used to check what checkbox must be checked from second checklist
-          if (old($primary_dependency['name'])) {
-              foreach (old($primary_dependency['name']) as $primary_item) {
+          if ($old_primary_dependency) {
+              foreach ($old_primary_dependency as $primary_item) {
                   foreach ($dependencyArray[$primary_item] as $second_item) {
                       $secondary_ids[$second_item] = $second_item;
                   }
@@ -78,8 +81,8 @@
 
           <div class="hidden_fields_primary" data-name = "{{ $primary_dependency['name'] }}">
           @if(isset($field['value']))
-              @if(old($primary_dependency['name']))
-                  @foreach( old($primary_dependency['name']) as $item )
+              @if($old_primary_dependency)
+                  @foreach($old_primary_dependency as $item )
                   <input type="hidden" class="primary_hidden" name="{{ $primary_dependency['name'] }}[]" value="{{ $item }}">
                   @endforeach
               @else
@@ -108,7 +111,7 @@
                           @endforeach
                           value="{{ $connected_entity_entry->id }}"
 
-                          @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || ( old($primary_dependency["name"]) && in_array($connected_entity_entry->id, old( $primary_dependency["name"])) ) )
+                          @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || $old_primary_dependency && in_array($connected_entity_entry->id, $old_primary_dependency)))
                           checked = "checked"
                           @endif >
                           {{ $connected_entity_entry->{$primary_dependency['attribute']} }}
@@ -128,8 +131,8 @@
       <div class="row">
           <div class="hidden_fields_secondary" data-name="{{ $secondary_dependency['name'] }}">
             @if(isset($field['value']))
-              @if(old($secondary_dependency['name']))
-                @foreach( old($secondary_dependency['name']) as $item )
+              @if($old_secondary_dependency)
+                @foreach($old_secondary_dependency as $item )
                   <input type="hidden" class="secondary_hidden" name="{{ $secondary_dependency['name'] }}[]" value="{{ $item }}">
                 @endforeach
               @else
@@ -158,7 +161,7 @@
                           @endforeach
                            value="{{ $connected_entity_entry->id }}"
 
-                          @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->pluck('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || ( old($secondary_dependency['name']) &&   in_array($connected_entity_entry->id, old($secondary_dependency['name'])) )))
+                          @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->pluck('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || $old_secondary_dependency && in_array($connected_entity_entry->id, $old_secondary_dependency))))
                                checked = "checked"
                                @if(isset( $secondary_ids[$connected_entity_entry->id]))
                                 disabled = disabled

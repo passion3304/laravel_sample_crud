@@ -247,25 +247,34 @@ if (! function_exists('is_countable')) {
     }
 }
 
-if (! function_exists('oldValueDefaultOrFallback')) {
+if (! function_exists('old_empty_or_null')) {
     /**
-     * This function allows us to setup a default value in case there is an old value, but is forcelly null
-     * by Laravel middleware ConvertEmptyStringsToNull.
+     * This method is an alternative to Laravel's old() helper, which mistakenly
+     * returns NULL it two cases:
+     * - if there is an old value, and it was empty or null
+     * - if there is no old value
+     * (this is because of the ConvertsEmptyStringsToNull middleware).
      *
-     * @param  string  $field_name
-     * @param  mixed  $fallback
+     * In contrast, this method will return:
+     * - the old value, if there actually is an old value for that key;
+     * - the second parameter, if there is no old value for that key, but it was empty string or null;
+     * - null, if there is no old value at all for that key;
+     *
+     * @param  string  $key
+     * @param  array|string  $empty_value
      * @return mixed
      */
-    function oldValueDefaultOrFallback($input_name, $fallback_value = null)
+    function old_empty_or_null($key, $empty_value = '')
     {
-        $input_name = square_brackets_to_dots($input_name);
+        $key = square_brackets_to_dots($key);
         $old_inputs = session()->getOldInput();
+
         // if the input name is present in the old inputs we need to return earlier and not in a coalescing chain
         // otherwise `null` aka empty will not pass the condition and the field value would be returned.
-        if (\Arr::has($old_inputs, $input_name)) {
-            return \Arr::get($old_inputs, $input_name);
+        if (\Arr::has($old_inputs, $key)) {
+            return \Arr::get($old_inputs, $key) ?? $empty_value;
         }
 
-        return $fallback_value;
+        return null;
     }
 }

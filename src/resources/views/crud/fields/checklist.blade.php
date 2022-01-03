@@ -1,18 +1,18 @@
 <!-- checklist -->
 @php
-  $model = new $field['model'];
-  $key_attribute = $model->getKeyName();
-  $identifiable_attribute = $field['attribute'];
+  $key_attribute = (new $field['model'])->getKeyName();
+  $field['attribute'] = $field['attribute'] ?? (new $field['model'])->identifiableAttribute();
+  $field['number_of_columns'] = $field['number_of_columns'] ?? 3;
 
   // calculate the checklist options
   if (!isset($field['options'])) {
-      $field['options'] = $field['model']::all()->pluck($identifiable_attribute, $key_attribute)->toArray();
+      $field['options'] = $field['model']::all()->pluck($field['attribute'], $key_attribute)->toArray();
   } else {
       $field['options'] = call_user_func($field['options'], $field['model']::query());
   }
 
   // calculate the value of the hidden input
-   $field['value'] = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? []);
+   $field['value'] = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
   if ($field['value'] instanceof Illuminate\Database\Eloquent\Collection) {
     $field['value'] = $field['value']->pluck($key_attribute)->toArray();
   } elseif (is_string($field['value'])){
@@ -31,7 +31,7 @@
 
     <div class="row">
         @foreach ($field['options'] as $key => $option)
-            <div class="col-sm-{{ isset($field['number_of_columns']) ? intval(12/$field['number_of_columns']) : '4'}}">
+            <div class="col-sm-{{ intval(12/$field['number_of_columns']) }}">
                 <div class="checkbox">
                   <label class="font-weight-normal">
                     <input type="checkbox" value="{{ $key }}"> {{ $option }}

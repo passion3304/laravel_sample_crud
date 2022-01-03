@@ -1,7 +1,6 @@
 <!-- radio -->
 @php
-    $optionValue = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '');
-
+    $optionValue = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 
     // check if attribute is casted, if it is, we get back un-casted values
     if(Arr::get($crud->model->getCasts(), $field['name']) === 'boolean') {

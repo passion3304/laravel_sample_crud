@@ -68,6 +68,7 @@
     "/src/public/packages/ckeditor/CHANGES.md": "/src/public/packages/ckeditor/CHANGES.md",
     "/src/public/packages/ckeditor/LICENSE.md": "/src/public/packages/ckeditor/LICENSE.md",
     "/src/public/packages/ckeditor/README.md": "/src/public/packages/ckeditor/README.md",
+    "/src/public/packages/ckeditor/SECURITY.md": "/src/public/packages/ckeditor/SECURITY.md",
     "/src/public/packages/ckeditor/bender-runner.config.json": "/src/public/packages/ckeditor/bender-runner.config.json",
     "/src/public/packages/ckeditor/bower.json": "/src/public/packages/ckeditor/bower.json",
     "/src/public/packages/ckeditor/ckeditor.js": "/src/public/packages/ckeditor/ckeditor.js",

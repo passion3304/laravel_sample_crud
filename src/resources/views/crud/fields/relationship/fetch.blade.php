@@ -25,7 +25,7 @@
 
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
-    $current_value = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '');
+    $current_value = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
     if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
@@ -59,6 +59,8 @@
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
+    {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+    @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
@@ -84,6 +86,10 @@
         multiple
         @endif
         >
+
+        @if ($field['allows_null'] && !$field['multiple'])
+            <option value="">-</option>
+        @endif
 
         @if (!empty($current_value))
             @foreach ($current_value as $key => $item)
@@ -156,10 +162,6 @@
         var $multiple = element.prop('multiple');
         var $ajaxDelay = element.attr('data-ajax-delay');
         var $isFieldInline = element.data('field-is-inline');
-
-        if($allows_null && !$multiple) {
-            $(element).append('<option value="">'+$placeholder+'</option>');
-        }  
 
         var $select2Settings = {
                 theme: 'bootstrap',

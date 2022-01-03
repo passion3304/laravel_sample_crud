@@ -1,6 +1,6 @@
 <!-- select2 -->
 @php
-    $current_value = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '');
+    $current_value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 
     //if it's part of a relationship here we have the full related model, we want the key.
     if (is_object($current_value) && is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {

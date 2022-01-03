@@ -98,31 +98,35 @@ trait Create
      */
     public function syncPivot($model, $input)
     {
-        $fields_with_relationships = $this->getRelationFields();
-        foreach ($fields_with_relationships as $key => $field) {
-            if (isset($field['pivot']) && $field['pivot']) {
-                $values = isset($input[$field['name']]) ? $input[$field['name']] : [];
+        $fields_with_pivot = $this->getRelationFieldsWithPivot();
 
-                // if a JSON was passed instead of an array, turn it into an array
-                if (is_string($values)) {
-                    $values = json_decode($values, true);
-                }
+        //remove fields that are not in the submitted form input
+        $fields_with_pivot = array_filter($fields_with_pivot, function ($item) use ($input) {
+            return Arr::has($input, $item['name']);
+        });
 
-                $relation_data = [];
-                if (isset($field['pivotFields'])) {
-                    foreach ($values as $pivot_row) {
-                        $relation_data[$pivot_row[$field['name']]] = Arr::except($pivot_row, $field['name']);
-                    }
-                }
+        foreach ($fields_with_pivot as $key => $field) {
+            $values = $input[$field['name']] ?? [];
 
-                // if there is no relation data, and the values array is single dimensional we have
-                // an array of keys with no aditional pivot data. sync those.
-                if (empty($relation_data) && count($values) == count($values, COUNT_RECURSIVE)) {
-                    $relation_data = array_values($values);
-                }
-
-                $model->{$field['name']}()->sync($relation_data);
+            // if a JSON was passed instead of an array, turn it into an array
+            if (is_string($values)) {
+                $values = json_decode($values, true);
             }
+
+            $relation_data = [];
+            if (isset($field['pivotFields'])) {
+                foreach ($values as $pivot_row) {
+                    $relation_data[$pivot_row[$field['name']]] = Arr::except($pivot_row, $field['name']);
+                }
+            }
+
+            // if there is no relation data, and the values array is single dimensional we have
+            // an array of keys with no aditional pivot data. sync those.
+            if (empty($relation_data) && count($values) == count($values, COUNT_RECURSIVE)) {
+                $relation_data = array_values($values);
+            }
+
+            $model->{$field['name']}()->sync($relation_data);
 
             if (isset($field['morph']) && $field['morph'] && isset($input[$field['name']])) {
                 $values = $input[$field['name']];

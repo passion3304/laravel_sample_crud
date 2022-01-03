@@ -10,7 +10,7 @@
 
     // make sure the $field['value'] takes the proper value
     // and format it to JSON, so that select2 can parse it
-    $current_value = oldValueDefaultOrFallback($field['name'], $field['value'] ?? $field['default'] ?? '');
+    $current_value = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
 
     if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
@@ -100,7 +100,9 @@ if($activeInlineCreate) {
 
         @if($activeInlineCreate)
             @include('crud::fields.relationship.inline_create_button', ['field' => $field])
-        @endif   
+        @endif
+        {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+        @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif   
         <select
             name="{{ $field['name'].($field['multiple'] ? '[]' : '') }}"
             data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
@@ -136,6 +138,10 @@ if($activeInlineCreate) {
             multiple
             @endif
         >
+            @if ($field['allows_null'] && !$field['multiple'])
+                <option value="">-</option>
+            @endif
+
             @if (!empty($current_value))
                 @foreach ($current_value as $key => $item)
                     <option value="{{ $key }}" selected>
@@ -498,10 +504,6 @@ if($activeInlineCreate) {
                 });
             });
         };
-
-        if($allows_null && !$multiple) {
-            $(element).append('<option value="">'+$placeholder+'</option>');
-        }
 
         //Checks if field is not beeing inserted in one inline create modal and setup buttons
         if(!$isFieldInline) {
