@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Speichern und neu',
     'save_action_save_and_edit'        => 'Speichern und bearbeiten',
     'save_action_save_and_back'        => 'Speichern und zurück',
+    'save_action_save_and_preview'     => 'Speichern & Vorschau',
     'save_action_changed_notification' => 'Standardverhalten nach dem Speichern wurde geändert.',
 
     // Create form
