@@ -30,11 +30,11 @@
                     $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.$subfield['name'].']';
                 }else{
                     foreach ($subfield['name'] as $k => $item) {
-                        $subfield['name'][$k] = $field['name'].'['.$repeatable_row_key.']['.$item['name'].']';
+                        $subfield['name'][$k] = $field['name'].'['.$repeatable_row_key.']['.$item.']';
+                        $subfield['value'][$subfield['name'][$k]] = \Arr::get($row, $item);
                     }
-                    $subfield['value'] = $row;
                 }
-            }                       
+            }
         @endphp
 
         @include($fieldViewPath, ['field' => $subfield])
