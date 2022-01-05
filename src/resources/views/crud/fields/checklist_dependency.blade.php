@@ -29,7 +29,7 @@
                 $dependencyArray[$primary->id][] = $secondary->id;
             }
         }
-      
+
         $old_primary_dependency = old_empty_or_null($primary_dependency['name'], false) ?? false;
         $old_secondary_dependency = old_empty_or_null($secondary_dependency['name'], false) ?? false;
 
