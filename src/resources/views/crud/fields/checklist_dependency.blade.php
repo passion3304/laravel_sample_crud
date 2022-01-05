@@ -30,6 +30,9 @@
             }
         }
 
+        $old_primary_dependency = old_empty_or_null($primary_dependency['name'], false) ?? false;
+        $old_secondary_dependency = old_empty_or_null($secondary_dependency['name'], false) ?? false;
+
       //for update form, get initial state of the entity
       if (isset($id) && $id) {
 
@@ -44,10 +47,6 @@
           $primary_array = $entity_dependencies->{$primary_dependency['entity']}->toArray();
 
           $secondary_ids = [];
-
-          $old_primary_dependency = old_empty_or_null($primary_dependency['name'], false) ?? false;
-          $old_secondary_dependency = old_empty_or_null($secondary_dependency['name'], false) ?? false;
-
           //create secondary dependency from primary relation, used to check what checkbox must be checked from second checklist
           if ($old_primary_dependency) {
               foreach ($old_primary_dependency as $primary_item) {
