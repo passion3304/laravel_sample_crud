@@ -27,10 +27,14 @@
                     if(isset($row[$subfield['name']]) || isset($row[$subfield['name'].'[]'])) {
                         $subfield['value'] = $row[$subfield['name']] ?? $row[$subfield['name'].'[]'];
                     }
+                    $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.$subfield['name'].']';
                 }else{
-                    $subfield['value'] = $row;
+                    foreach ($subfield['name'] as $k => $item) {
+                        $subfield['name'][$k] = $field['name'].'['.$repeatable_row_key.']['.$item.']';
+                        $subfield['value'][$subfield['name'][$k]] = \Arr::get($row, $item);
+                    }
                 }
-            }                       
+            }
         @endphp
 
         @include($fieldViewPath, ['field' => $subfield])
