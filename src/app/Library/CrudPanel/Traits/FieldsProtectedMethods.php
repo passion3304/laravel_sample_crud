@@ -214,10 +214,12 @@ trait FieldsProtectedMethods
 
         if (isset($field['relation_type'])) {
             $field['type'] = 'relationship';
+
             return $field;
         }
 
         $field['type'] = $this->inferFieldTypeFromDbColumnType($field['name']);
+
         return $field;
     }
 
