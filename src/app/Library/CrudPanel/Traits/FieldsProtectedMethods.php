@@ -207,18 +207,9 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasType($field)
     {
-        // if a type is already set, do nothing
-        if (isset($field['type'])) {
-            return $field;
+        if (! isset($field['type'])) {
+            $field['type'] = isset($field['relation_type']) ? $this->inferFieldTypeFromFieldRelation($field) : $this->inferFieldTypeFromDbColumnType($field['name']);
         }
-
-        if (isset($field['relation_type'])) {
-            $field['type'] = 'relationship';
-
-            return $field;
-        }
-
-        $field['type'] = $this->inferFieldTypeFromDbColumnType($field['name']);
 
         return $field;
     }
