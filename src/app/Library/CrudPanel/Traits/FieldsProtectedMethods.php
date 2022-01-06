@@ -174,7 +174,7 @@ trait FieldsProtectedMethods
         // if there's a model defined, but no attribute
         // guess an attribute using the identifiableAttribute functionality in CrudTrait
         if (isset($field['model']) && ! isset($field['attribute']) && method_exists($field['model'], 'identifiableAttribute')) {
-            $field['attribute'] = call_user_func([(new $field['model']), 'identifiableAttribute']);
+            $field['attribute'] = call_user_func([(new $field['model']()), 'identifiableAttribute']);
         }
 
         return $field;
@@ -207,10 +207,17 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasType($field)
     {
-        if (! isset($field['type'])) {
-            $field['type'] = isset($field['relation_type']) ? $this->inferFieldTypeFromFieldRelation($field) : $this->inferFieldTypeFromDbColumnType($field['name']);
+        // if a type is already set, do nothing
+        if (isset($field['type'])) {
+            return $field;
         }
 
+        if (isset($field['relation_type'])) {
+            $field['type'] = 'relationship';
+            return $field;
+        }
+
+        $field['type'] = $this->inferFieldTypeFromDbColumnType($field['name']);
         return $field;
     }
 

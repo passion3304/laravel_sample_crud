@@ -24,7 +24,7 @@
     switch($field['relation_type']) {
         case 'HasOne':
         case 'MorphOne':
-            abort("The relationship field does not support {$field['relation_type']} at the moment. Please add a text/number/textarea/etc field, but use dot notation for its name. This will allow you to have a field that edits information directly on the related entry (eg. phone.number). See https://backpackforlaravel.com/docs/crud-fields#hasone-1-1-relationship for more information.");
+            abort(500, "The relationship field does not support {$field['relation_type']} at the moment. Please add a text/number/textarea/etc field, but use dot notation for its name. This will allow you to have a field that edits information directly on the related entry (eg. phone.number). See https://backpackforlaravel.com/docs/crud-fields#hasone-1-1-relationship for more information.");
             // TODO: if relationship has `isOneOfMany` on it, load a readonly select
             // TODO: if "fields" is not defined, tell the dev to define it (+ link to docs)
             // TODO: if "fields" is defined, load a repeatable field with one entry (and 1 entry max)
@@ -69,11 +69,11 @@
             break;
         case 'HasOneThrough':
         case 'HasManyThrough':
-            abort("The relationship field does not support {$field['relation_type']} at the moment. This is a 'readonly' relationship type. When we do add support for it, it the field only SHOW the related entries, NOT allow you to select/edit them.");
+            abort(500, "The relationship field does not support {$field['relation_type']} at the moment. This is a 'readonly' relationship type. When we do add support for it, it the field only SHOW the related entries, NOT allow you to select/edit them.");
             // TODO: load a readonly select for that chained relationship, and remove the abort above
             break;
         default:
-            abort("Unknown relationship type used with the 'relationship' field. Please let the Backpack team know of this new Laravel relationship, so they add support for it.");
+            abort(500, "Unknown relationship type used with the 'relationship' field. Please let the Backpack team know of this new Laravel relationship, so they add support for it.");
             break;
     }
 @endphp
