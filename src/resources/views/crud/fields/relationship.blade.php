@@ -50,7 +50,7 @@
         case 'MorphToMany':
             // if there are pivot fields we show the repeatable field
             if(isset($field['pivotFields'])) {
-                $field['type'] = 'relationship.repeatable_relation';
+                $field['type'] = 'relationship.entries';
                 break;
             }
 
@@ -76,7 +76,7 @@
 
             // if there are pivot fields we show the repeatable field
             if(isset($field['pivotFields'])) {
-                $field['type'] = 'relationship.repeatable_relation';
+                $field['type'] = 'relationship.entries';
             } else {
                 // we show a regular/ajax select
                 $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.select';
