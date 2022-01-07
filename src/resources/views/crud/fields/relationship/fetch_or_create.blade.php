@@ -129,7 +129,12 @@ if($activeInlineCreate) {
             data-debug="{{ config('app.debug') }}"
 
             @if($activeInlineCreate)
-                @include('crud::fields.relationship.field_attributes')
+                data-inline-create-route="{{$field['inline_create']['create_route'] ?? false}}"
+                data-inline-modal-route="{{$field['inline_create']['modal_route'] ?? false}}"
+
+                data-field-related-name="{{$field['inline_create']['entity']}}"
+                data-inline-create-button="{{ $field['inline_create']['entity'] }}-inline-create-{{$field['name']}}"
+                data-inline-allow-create="{{var_export($activeInlineCreate)}}"
             @endif
 
             @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
