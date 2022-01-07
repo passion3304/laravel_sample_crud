@@ -11,6 +11,9 @@
     // a crud field like this one.
     $field['type'] = 'fetch';
 
+    // this field can be used as a pivot selector for n-n relationships
+    $field['is_pivot_select'] = $field['is_pivot_select'] ?? false;
+
     $field['multiple'] = $field['multiple'] ?? $crud->guessIfFieldHasMultipleFromRelationType($field['relation_type']);
     $field['data_source'] = $field['data_source'] ?? url($crud->route.'/fetch/'.$routeEntity);
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
@@ -79,6 +82,7 @@
         data-app-current-lang="{{ app()->getLocale() }}"
         data-ajax-delay="{{ $field['delay'] }}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+        data-is-pivot-select="{{var_export($field['is_pivot_select'])}}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -162,6 +166,7 @@
         var $multiple = element.prop('multiple');
         var $ajaxDelay = element.attr('data-ajax-delay');
         var $isFieldInline = element.data('field-is-inline');
+        var $isPivotSelect = element.data('is-pivot-select');
 
         var $select2Settings = {
                 theme: 'bootstrap',
@@ -191,16 +196,37 @@
                     },
                     processResults: function (data, params) {
                         params.page = params.page || 1;
+                        
+                        // if field is a pivot selector we are gona get other pivot values so we can disable them from selection.
+                        if($isPivotSelect) {
+                            let pivots_container = $(element).closest('div[data-repeatable-holder='+$(element).data('repeatable-input-name')+']');
+                            var selected_values = [];
+                            
+                            $(pivots_container).children().each(function(i,container) {
+                                $(container).find('select').each(function(i, el) {
+                                    if(typeof $(el).attr('data-is-pivot-select') !== 'undefined' && $(el).attr('data-is-pivot-select') && $(el).val()) {      
+                                        selected_values.push($(el).val());  
+                                    }
+                                });
+                            });
+                        }
+                        
                         //if we have data.data here it means we returned a paginated instance from controller.
                         //otherwise we returned one or more entries unpaginated.
                         if(data.data) {
                         var result = {
                             results: $.map(data.data, function (item) {
                                 var $itemText = processItemText(item, $fieldAttribute);
+                                let disabled = false;
+                                
+                                if(selected_values && selected_values.some(e => e == item[$connectedEntityKeyName])) {
+                                    disabled = true;
+                                }
 
                                 return {
                                     text: $itemText,
-                                    id: item[$connectedEntityKeyName]
+                                    id: item[$connectedEntityKeyName],
+                                    disabled: disabled
                                 }
                             }),
                            pagination: {
@@ -211,10 +237,15 @@
                             var result = {
                                 results: $.map(data, function (item) {
                                     var $itemText = processItemText(item, $fieldAttribute);
+                                    let disabled = false;
+                                    if(selected_values.some(e => e == item[$connectedEntityKeyName])) {
+                                        disabled = true;
+                                    }
 
                                     return {
                                         text: $itemText,
-                                        id: item[$connectedEntityKeyName]
+                                        id: item[$connectedEntityKeyName],
+                                        disabled: disabled
                                     }
                                 }),
                                 pagination: {
