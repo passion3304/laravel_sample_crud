@@ -24,36 +24,51 @@
     switch($field['relation_type']) {
         case 'HasOne':
         case 'MorphOne':
-            abort(500, "The relationship field does not support {$field['relation_type']} at the moment. Please add a text/number/textarea/etc field, but use dot notation for its name. This will allow you to have a field that edits information directly on the related entry (eg. phone.number). See https://backpackforlaravel.com/docs/crud-fields#hasone-1-1-relationship for more information.");
-            // TODO: if relationship has `isOneOfMany` on it, load a readonly select
+            // if the related attribute was given, through dot notation
+            // then we show a text field for it
+            if (str_contains($field['entity'], '.')) {
+                $field['type'] = 'text';
+                break;
+            }
+
+            // TODO: if relationship has `isOneOfMany` on it, load a readonly select; this covers:
+            // - has One Of Many - hasOne(Order::class)->latestOfMany()
+            // - morph One Of Many - morphOne(Image::class)->latestOfMany()
+            $relationship = CRUD::getModel()->{$field['entity']}();
+            if ($relationship->isOneOfMany()) {
+                abort(500, "<strong>The relationship field type does not cover 'One of Many' relationships.</strong><br> Those relationship are only meant to be 'read', not 'created' or 'updated'. Please change your <code>{$field['name']}</code> field to use the 1-n relationship towards <code>{$field['model']}</code>, the one that does NOT have latestOfMany() or oldestOfMany(). See <a target='_blank' href='https://backpackforlaravel.com/docs/crud-fields#has-one-of-many-1-1-relationship-out-of-1-n-relationship'>the docs</a> for more information.");
+            }
+
+
+            // the dev is trying to create a field for the ENTIRE hasOne/morphOne relationship
+            abort(500, "<strong>The relationship field does not support <code>{$field['relation_type']}</code> that way.</strong><br> Please change your <code>{$field['name']}</code> field so that its <i>name</i> also includes the editable attribute on the related model, using dot notation (eg. <code>address.postal_code</code>). If you need to edit more attributes, add a new field for each one (eg. <code>address.postal_code</code>). See <a target='_blank' href='https://backpackforlaravel.com/docs/crud-fields#hasone-1-1-relationship'>the docs</a> for more information.");
             // TODO: if "fields" is not defined, tell the dev to define it (+ link to docs)
             // TODO: if "fields" is defined, load a repeatable field with one entry (and 1 entry max)
-            // TODO: remove the ugly abort from above
             break;
         case 'BelongsTo':
         case 'BelongsToMany':
         case 'MorphToMany':
             // if there are pivot fields we show the repeatable field
             if(isset($field['pivotFields'])) {
-                $field['type'] = 'repeatable_relation';
+                $field['type'] = 'relationship.repeatable_relation';
                 break;
             }
 
             if(!isset($field['inline_create'])) {
-                $field['type'] = $field['ajax'] ? 'fetch' : 'relationship_select';
+                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
                 break;
             }
 
             // the field is beeing inserted in an inline create modal case $inlineCreate is set.
             if(! isset($inlineCreate)) {
-                $field['type'] = 'fetch_or_create';
+                $field['type'] = 'relationship.fetch_or_create';
                 break;
             }
 
-    		$field['type'] = $field['ajax'] ? 'fetch' : 'relationship_select';
+    		$field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
             break;
-        case 'MorphMany':
         case 'HasMany':
+        case 'MorphMany':
             // when set, field value will default to what developer defines
             $field['fallback_id'] = $field['fallback_id'] ?? false;
             // when true, backpack ensures that the connecting entry is deleted when un-selected from relation
@@ -61,10 +76,10 @@
 
             // if there are pivot fields we show the repeatable field
             if(isset($field['pivotFields'])) {
-                $field['type'] = 'repeatable_relation';
+                $field['type'] = 'relationship.repeatable_relation';
             } else {
                 // we show a regular/ajax select
-                $field['type'] = $field['ajax'] ? 'fetch' : 'relationship_select';
+                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
             }
             break;
         case 'HasOneThrough':
@@ -72,10 +87,14 @@
             abort(500, "The relationship field does not support {$field['relation_type']} at the moment. This is a 'readonly' relationship type. When we do add support for it, it the field only SHOW the related entries, NOT allow you to select/edit them.");
             // TODO: load a readonly select for that chained relationship, and remove the abort above
             break;
+        case 'MorphTo':
+        case 'MorphedByMany':
+            abort(500, "The relationship field does not support {$field['relation_type']} at the moment, nobody asked for it yet. If you do, please let us know here - https://github.com/Laravel-Backpack/CRUD/issues");
+            // TODO: complex interface that allows you to select entries from multiple models
         default:
             abort(500, "Unknown relationship type used with the 'relationship' field. Please let the Backpack team know of this new Laravel relationship, so they add support for it.");
             break;
     }
 @endphp
 
-@include('crud::fields.relationship.'.$field['type'])
+@include('crud::fields.'.$field['type'])
