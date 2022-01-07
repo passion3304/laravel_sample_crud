@@ -7,6 +7,9 @@
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
+    // this field can be used as a pivot selector for n-n relationships
+    $field['is_pivot_selector'] = $field['is_pivot_selector'] ?? false;
+
     if (!isset($field['options'])) {
             $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name);
         } else {
@@ -63,6 +66,7 @@
         data-placeholder="{{ $field['placeholder'] }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+        data-is-pivot-selector={{var_export($field['is_pivot_selector'])}}
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -143,6 +147,54 @@
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
         var $isFieldInline = element.data('field-is-inline');
+        var $isPivotSelector = element.data('is-pivot-selector');
+        
+        const changePivotOptionState = function(pivot_selector, enable = true) {
+            let pivots_container = pivot_selector.closest('div[data-repeatable-holder='+pivot_selector.data('repeatable-input-name')+']');
+            
+            $(pivots_container).children().each(function(i,container) {
+                $(container).find('select').each(function(i, el) {
+                    
+                    if(typeof $(el).attr('data-is-pivot-selector') !== 'undefined' && $(el).attr('data-is-pivot-selector')) {
+                        if(enable ) {
+                            console.log('HEY!!!!!!!!!');
+                            console.log(pivot_selector.val())
+                            $(el).find('option[value='+pivot_selector.val()+']').prop('disabled',false);   
+                        }else{
+                            if($(el).val() !== pivot_selector.val()) {
+                                console.log('here');
+                                $(el).find('option[value='+pivot_selector.val()+']').prop('disabled',true);
+                            }
+                        }
+                    }
+                });
+            });
+        };
+
+        const disablePreviouslySelectedPivots = function(pivot_selector) {
+            let pivots_container = pivot_selector.closest('div[data-repeatable-holder='+pivot_selector.data('repeatable-input-name')+']');
+            let selected_values = [];
+            
+            $(pivots_container).children().each(function(i,container) {
+                $(container).find('select').each(function(i, el) {
+                    if(typeof $(el).attr('data-is-pivot-selector') !== 'undefined' && $(el).attr('data-is-pivot-selector') && $(el).val()) {
+                        selected_values.push($(el).val());
+                    }
+                });
+            });
+
+            $(pivots_container).children().each(function(i,container) {
+                $(container).find('select').each(function(i, el) {
+                    if(typeof $(el).attr('data-is-pivot-selector') !== 'undefined' && $(el).attr('data-is-pivot-selector')) {
+                        selected_values.forEach(function(value) {
+                            if(value !== $(el).val()) {
+                                $(el).find('option[value='+value+']').prop('disabled',true);
+                            }
+                        });
+                    }
+                });
+            });
+        };
 
         var $select2Settings = {
                 theme: 'bootstrap',
@@ -154,7 +206,23 @@
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2($select2Settings);
+            disablePreviouslySelectedPivots($(element));
         }
+
+        if($isPivotSelector) {
+            $(element).on('select2:selecting', function(e) {
+                if($(this).val()) {
+                    changePivotOptionState($(this)); 
+                }
+                return true;
+            });
+
+            $(element).on('select2:select', function(e) {
+                changePivotOptionState($(this), false);
+                return true;
+            });
+        }
+
     }
 </script>
 @endpush

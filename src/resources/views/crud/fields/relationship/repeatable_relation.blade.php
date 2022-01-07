@@ -15,6 +15,7 @@
     $inline_create = !isset($inlineCreate) && isset($pivotSelectorField['inline_create']) ? $pivotSelectorField['inline_create'] : false;
     $pivotSelectorField = $field['pivot_selector'] ?? [];
     $pivotSelectorField['name'] = $field['name'];
+    $pivotSelectorField['is_pivot_selector'] = true;
     $pivotSelectorField['multiple'] = false;
     $pivotSelectorField['ajax'] = $pivotSelectorField['ajax'] ?? false;
     $pivotSelectorField['data_source'] = $pivotSelectorField['data_source'] ?? isset($pivotSelectorField['ajax']) && $pivotSelectorField['ajax'] ? url($crud->route.'/fetch/'.$field['entity']) : 'false';
