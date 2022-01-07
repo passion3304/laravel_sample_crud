@@ -55,7 +55,7 @@
             }
 
             if(!isset($field['inline_create'])) {
-                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
+                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.select';
                 break;
             }
 
@@ -65,7 +65,7 @@
                 break;
             }
 
-    		$field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
+    		$field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.select';
             break;
         case 'HasMany':
         case 'MorphMany':
@@ -79,7 +79,7 @@
                 $field['type'] = 'relationship.repeatable_relation';
             } else {
                 // we show a regular/ajax select
-                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
+                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.select';
             }
             break;
         case 'HasOneThrough':
