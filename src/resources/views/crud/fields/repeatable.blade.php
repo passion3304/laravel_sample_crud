@@ -267,7 +267,6 @@
                 let container = $('[data-repeatable-holder='+$($repeatableElement).attr('data-repeatable-identifier')+']')
 
                 // get existing values
-                //let values = repeatableElementToObj($repeatableElement);
                 let index = $repeatableElement.index();
     
                 index += $(this).is('.move-element-up') ? -1 : 1;
@@ -330,20 +329,28 @@
                 $(repeatable).find('input, select, textarea').each(function(i, el) {
                     if(typeof $(el).attr('data-row-number') !== 'undefined') {
                         let field_name = $(el).attr('data-repeatable-input-name') ?? $(el).attr('name') ?? $(el).parent().find('input[data-repeatable-input-name]').first().attr('data-repeatable-input-name');
+                        let suffix = field_name.endsWith("[]") ? '[]' : '';
                         // if there are more than one "[" character, that means we already have the repeatable name
                         // we need to parse that name to get the "actual" field name. 
                         if(field_name.split('[').length - 1 > 1) {
                             let field_name_position = field_name.lastIndexOf('[');
                             // field name will contain the closing "]" that's why the last slice.
-                            field_name = field_name.substring(field_name_position + 1).slice(0,-1);
+                            field_name = field_name.substring(field_name_position + 1);
+                            if(field_name.endsWith("[]")) {
+                                // remove the last "]" and the array definition from field name "[]"
+                                field_name = field_name.slice(0,-3);
+                                suffix = "[]";
+                            }else{
+                                field_name = field_name.slice(0,-1);
+                            }
                         }
-                        let unprefixed_field_name = field_name.endsWith("[]") ? field_name.substring(0, field_name.length - 2) : field_name;
+                        let unsuffixed_field_name = field_name.endsWith("[]") ? field_name.slice(0,-2) : field_name;
                         if(typeof $(el).attr('data-repeatable-input-name') === 'undefined') {
                             $(el).attr('data-repeatable-input-name', field_name);
                         }
         
-                        let prefix = field_name.endsWith("[]") ? '[]' : '';
-                        $(el).attr('name', container.attr('data-repeatable-holder')+'['+index+']['+unprefixed_field_name+']'+prefix);
+                        
+                        $(el).attr('name', container.attr('data-repeatable-holder')+'['+index+']['+unsuffixed_field_name+']'+suffix);
                     }
                 });
             });
