@@ -7,7 +7,7 @@
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
-    // this field can be used as a pivot selector for n-n relationships
+    // this field can be used as a pivot select for n-n relationships
     $field['is_pivot_select'] = $field['is_pivot_select'] ?? false;
 
     if (!isset($field['options'])) {

@@ -50,7 +50,7 @@
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
 
-    // this field can be used as a pivot selector for n-n relationships
+    // this field can be used as a pivot select for n-n relationships
     $field['is_pivot_select'] = $field['is_pivot_select'] ?? false;
 
 
@@ -544,7 +544,7 @@
             processResults: function (data, params) {
                 params.page = params.page || 1;
 
-                // if field is a pivot selector we are gona get other pivot values so we can disable them from selection.
+                // if field is a pivot select we are gona get other pivot values so we can disable them from selection.
                 if($isPivotSelect) {
                     let pivots_container = $(element).closest('div[data-repeatable-holder='+$(element).data('repeatable-input-name')+']');
                     var selected_values = [];
