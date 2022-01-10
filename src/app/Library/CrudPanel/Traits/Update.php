@@ -96,8 +96,8 @@ trait Update
 
         if (is_array($field['name'])) {
             $result = [];
-            foreach ($field['name'] as $key => $value) {
-                $result = $model->{$value};
+            foreach ($field['name'] as $name) {
+                $result[] = $model->{$name};
             }
 
             return $result;

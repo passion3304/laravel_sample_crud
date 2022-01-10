@@ -19,13 +19,14 @@
             return $formattedDate;
         }
     }
+
     if (isset($field['value'])) {
         if (isset($entry) && ! is_array($field['value'])) {
             $start_value = formatDate($entry, $field['name'][0]);
             $end_value = formatDate($entry, $field['name'][1]);
         } elseif (is_array($field['value'])) {
-            $start_value = $field['value'][$field['name'][0]];
-            $end_value = $field['value'][$field['name'][1]];
+            $start_value = $field['value'][0];
+            $end_value = $field['value'][1];
         }
     }
 
