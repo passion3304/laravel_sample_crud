@@ -174,7 +174,17 @@ trait Create
                     $relation->dissociate()->save();
                 }
             } elseif ($relation instanceof HasOne || $relation instanceof MorphOne) {
-                $modelInstance = $relation->updateOrCreate([], $relationDetails['values']);
+                $relation_values = $relationDetails['values'][$relationMethod];
+
+                if ($relation_values === null) {
+                    $relation->delete();
+                    continue;
+                }
+                // if the values are not single dimension array, we want only the first entry of the array sent (repeatable row)
+                if (count($relation_values) != count($relation_values, COUNT_RECURSIVE)) {
+                    $relation_values = $relation_values[0];  
+                }
+                $modelInstance = $relation->updateOrCreate([], $relation_values);
             } elseif ($relation instanceof HasMany || $relation instanceof MorphMany) {
                 $relation_values = $relationDetails['values'][$relationMethod];
                 // if relation values are null we can only attach, also we check if we sent a single dimensional array [1,2,3], or an array of arrays: [[1][2][3]]

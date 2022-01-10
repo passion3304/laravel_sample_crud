@@ -31,6 +31,11 @@
                 break;
             }
 
+            if(isset($field['fields'])) {
+                $field['type'] = 'relationship.entry';
+                break;
+            }
+
             // TODO: if relationship has `isOneOfMany` on it, load a readonly select; this covers:
             // - has One Of Many - hasOne(Order::class)->latestOfMany()
             // - morph One Of Many - morphOne(Image::class)->latestOfMany()
