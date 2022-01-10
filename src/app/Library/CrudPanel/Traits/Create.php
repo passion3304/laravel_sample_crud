@@ -174,7 +174,7 @@ trait Create
                     $relation->dissociate()->save();
                 }
             } elseif ($relation instanceof HasOne || $relation instanceof MorphOne) {
-                $relation_values = $relationDetails['values'][$relationMethod] ??  $relationDetails['values'] ?? null;
+                $relation_values = $relationDetails['values'][$relationMethod] ?? $relationDetails['values'] ?? null;
 
                 if ($relation_values === null) {
                     $relation->delete();
