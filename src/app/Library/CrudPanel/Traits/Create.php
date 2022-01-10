@@ -182,7 +182,7 @@ trait Create
                 }
                 // if the values are not single dimension array, we want only the first entry of the array sent (repeatable row)
                 if (count($relation_values) != count($relation_values, COUNT_RECURSIVE)) {
-                    $relation_values = $relation_values[0];  
+                    $relation_values = $relation_values[0];
                 }
                 $modelInstance = $relation->updateOrCreate([], $relation_values);
             } elseif ($relation instanceof HasMany || $relation instanceof MorphMany) {
