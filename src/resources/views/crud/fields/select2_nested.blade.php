@@ -8,7 +8,9 @@
 
 @php
     $current_value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
-
+    if (!empty($current_value)) {
+        $current_value = is_object($current_value) ? $current_value->getKey() : $current_value;
+    }
     if (!function_exists('echoSelect2NestedEntry')) {
         function echoSelect2NestedEntry($entry, $field, $current_value) {
             if ($current_value == $entry->getKey()) {
