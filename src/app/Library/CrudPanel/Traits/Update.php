@@ -52,17 +52,7 @@ trait Update
         $entry = ($id != false) ? $this->getEntry($id) : $this->getCurrentEntry();
 
         foreach ($fields as &$field) {
-            // set the value
-            if (! isset($field['value'])) {
-                if (isset($field['subfields'])) {
-                    $field['value'] = [];
-                    foreach ($field['subfields'] as $subfield) {
-                        $field['value'][] = $entry->{$subfield['name']};
-                    }
-                } else {
-                    $field['value'] = $this->getModelAttributeValue($entry, $field);
-                }
-            }
+            $field['value'] = $field['value'] ?? $this->getModelAttributeValue($entry, $field);
         }
 
         // always have a hidden input for the entry id
