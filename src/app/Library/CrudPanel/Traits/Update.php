@@ -160,26 +160,27 @@ trait Update
             break;
             case 'HasOne':
             case 'MorphOne':
-                if(!method_exists($related_model, $relation_method)) {
+                if (! method_exists($related_model, $relation_method)) {
                     return;
                 }
 
-                if(Str::contains($field['entity'], '.')) {
+                if (Str::contains($field['entity'], '.')) {
                     return $related_model->{$relation_method}->{Str::afterLast($field['entity'], '.')};
                 }
 
-                if(!$related_model->{$relation_method}) {
+                if (! $related_model->{$relation_method}) {
                     return;
                 }
 
-                if($field['fields']) {
+                if ($field['fields']) {
                     $result = [];
-                    foreach($field['fields'] as $subfield) {  
+                    foreach ($field['fields'] as $subfield) {
                         $result[$subfield['name']] = $related_model->{$relation_method}->{$subfield['name']};
                     }
+
                     return [$result];
                 }
-                
+
                 return $related_model->{$relation_method};
 
                 break;
