@@ -15,6 +15,7 @@
     }
 
     $field['store_as_json'] = $field['store_as_json'] ?? false;
+    $field_language = isset($field['address_google_options']['language']) ? $field['address_google_options']['language'] : null;
 
 ?>
 
@@ -149,7 +150,7 @@
             }
 
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete" async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete&language={{$field_language}}" async defer></script>
 
     @endpush
 
