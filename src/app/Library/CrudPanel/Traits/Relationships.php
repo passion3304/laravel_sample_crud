@@ -133,28 +133,6 @@ trait Relationships
     }
 
     /**
-     * Based on relation type returns the default field type.
-     *
-     * @param  string  $relation_type
-     * @return bool
-     */
-    public function inferFieldTypeFromFieldRelation($field)
-    {
-        switch ($field['relation_type']) {
-            case 'BelongsToMany':
-            case 'HasMany':
-            case 'HasManyThrough':
-            case 'MorphMany':
-            case 'MorphToMany':
-            case 'BelongsTo':
-                return 'relationship';
-
-            default:
-                return 'text';
-        }
-    }
-
-    /**
      * Based on relation type returns if relation allows multiple entities.
      *
      * @param  string  $relation_type
