@@ -68,7 +68,7 @@
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitFetchElement"
-        data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
+        data-field-is-inline="{{ var_export($inlineCreate ?? false) }}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-model-local-key="{{$crud->model->getKeyName()}}"
@@ -82,7 +82,7 @@
         data-app-current-lang="{{ app()->getLocale() }}"
         data-ajax-delay="{{ $field['delay'] }}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
-        data-is-pivot-select="{{var_export($field['is_pivot_select'])}}"
+        data-is-pivot-select="{{ var_export($field['is_pivot_select']) }}"
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -196,30 +196,30 @@
                     },
                     processResults: function (data, params) {
                         params.page = params.page || 1;
-                        
-                        // if field is a pivot select we are gona get other pivot values so we can disable them from selection.
-                        if($isPivotSelect) {
+
+                        // if field is a pivot select, we are gonna get other pivot values,so we can disable them from selection.
+                        if ($isPivotSelect) {
                             let pivots_container = $(element).closest('div[data-repeatable-holder='+$(element).data('repeatable-input-name')+']');
                             var selected_values = [];
-                            
+
                             $(pivots_container).children().each(function(i,container) {
                                 $(container).find('select').each(function(i, el) {
-                                    if(typeof $(el).attr('data-is-pivot-select') !== 'undefined' && $(el).attr('data-is-pivot-select') && $(el).val()) {      
-                                        selected_values.push($(el).val());  
+                                    if(typeof $(el).attr('data-is-pivot-select') !== 'undefined' && $(el).attr('data-is-pivot-select') && $(el).val()) {
+                                        selected_values.push($(el).val());
                                     }
                                 });
                             });
                         }
-                        
+
                         //if we have data.data here it means we returned a paginated instance from controller.
                         //otherwise we returned one or more entries unpaginated.
-                        if(data.data) {
+                        if (data.data) {
                         var result = {
                             results: $.map(data.data, function (item) {
                                 var $itemText = processItemText(item, $fieldAttribute);
                                 let disabled = false;
-                                
-                                if(selected_values && selected_values.some(e => e == item[$connectedEntityKeyName])) {
+
+                                if (selected_values && selected_values.some(e => e == item[$connectedEntityKeyName])) {
                                     disabled = true;
                                 }
 
@@ -233,7 +233,7 @@
                                  more: data.current_page < data.last_page
                            }
                         };
-                        }else {
+                        } else {
                             var result = {
                                 results: $.map(data, function (item) {
                                     var $itemText = processItemText(item, $fieldAttribute);
@@ -269,12 +269,12 @@
             for (var i=0; i < $dependencies.length; i++) {
                 var $dependency = $dependencies[i];
                 //if element does not have a custom-selector attribute we use the name attribute
-                if(typeof element.attr('data-custom-selector') == 'undefined') {
+                if (typeof element.attr('data-custom-selector') == 'undefined') {
                     form.find('[name="'+$dependency+'"], [name="'+$dependency+'[]"]').change(function(el) {
                             $(element.find('option:not([value=""])')).remove();
                             element.val(null).trigger("change");
                     });
-                }else{
+                } else {
                     // we get the row number and custom selector from where element is called
                     let rowNumber = element.attr('data-row-number');
                     let selector = element.attr('data-custom-selector');
