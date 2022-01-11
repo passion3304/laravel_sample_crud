@@ -1,7 +1,6 @@
 <!--  relationship  -->
 
 @php
-
     //in case entity is superNews we want the url friendly super-news
     $entityWithoutAttribute = $crud->getOnlyRelationEntity($field);
     $routeEntity = Str::kebab(str_replace('_', '-', $entityWithoutAttribute));
@@ -22,23 +21,22 @@
                                     ->toArray();
                 break;
             case 'object':
-            if (is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
+                if (is_subclass_of(get_class($current_value), 'Illuminate\Database\Eloquent\Model') ) {
                     $current_value = [$current_value->{$connected_entity_key_name} => $current_value->{$field['attribute']}];
-                }else{
-                    if(! $current_value->isEmpty())  {
+                } else {
+                    if (! $current_value->isEmpty())  {
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name)
                                     ->toArray();
                     }
                 }
-            break;
+                break;
             default:
                 $current_value = $connected_entity
                                 ->where($connected_entity_key_name, $current_value)
                                 ->get()
                                 ->pluck($field['attribute'], $connected_entity_key_name)
                                 ->toArray();
-
                 break;
         }
     }
@@ -50,46 +48,48 @@
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
 
+    // this field can be used as a pivot select for n-n relationships
+    $field['is_pivot_select'] = $field['is_pivot_select'] ?? false;
 
 
-$activeInlineCreate = !empty($field['inline_create']) ? true : false;
+    $activeInlineCreate = !empty($field['inline_create']) ? true : false;
 
-if($activeInlineCreate) {
+    if($activeInlineCreate) {
 
 
-    //we check if this field is not beeing requested in some InlineCreate operation.
-    //this variable is setup by InlineCreate modal when loading the fields.
-    if(!isset($inlineCreate)) {
-        //by default, when creating an entity we want it to be selected/added to selection.
-        $field['inline_create']['force_select'] = $field['inline_create']['force_select'] ?? true;
+        //we check if this field is not beeing requested in some InlineCreate operation.
+        //this variable is setup by InlineCreate modal when loading the fields.
+        if(!isset($inlineCreate)) {
+            //by default, when creating an entity we want it to be selected/added to selection.
+            $field['inline_create']['force_select'] = $field['inline_create']['force_select'] ?? true;
 
-        $field['inline_create']['modal_class'] = $field['inline_create']['modal_class'] ?? 'modal-dialog';
+            $field['inline_create']['modal_class'] = $field['inline_create']['modal_class'] ?? 'modal-dialog';
 
-        //if user don't specify a different entity in inline_create we assume it's the same from $field['entity'] kebabed
-        $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $routeEntity;
+            //if user don't specify a different entity in inline_create we assume it's the same from $field['entity'] kebabed
+            $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $routeEntity;
 
-        //route to create a new entity
-        $field['inline_create']['create_route'] = $field['inline_create']['create_route'] ?? route($field['inline_create']['entity']."-inline-create-save");
+            //route to create a new entity
+            $field['inline_create']['create_route'] = $field['inline_create']['create_route'] ?? route($field['inline_create']['entity']."-inline-create-save");
 
-        //route to modal
-        $field['inline_create']['modal_route'] = $field['inline_create']['modal_route'] ?? route($field['inline_create']['entity']."-inline-create");
+            //route to modal
+            $field['inline_create']['modal_route'] = $field['inline_create']['modal_route'] ?? route($field['inline_create']['entity']."-inline-create");
 
-        //include main form fields in the request when asking for modal data,
-        //allow the developer to modify the inline create modal
-        //based on some field on the main form
-        $field['inline_create']['include_main_form_fields'] = $field['inline_create']['include_main_form_fields'] ?? false;
+            //include main form fields in the request when asking for modal data,
+            //allow the developer to modify the inline create modal
+            //based on some field on the main form
+            $field['inline_create']['include_main_form_fields'] = $field['inline_create']['include_main_form_fields'] ?? false;
 
-        if(!is_bool($field['inline_create']['include_main_form_fields'])) {
-            if(is_array($field['inline_create']['include_main_form_fields'])) {
-                $field['inline_create']['include_main_form_fields'] = json_encode($field['inline_create']['include_main_form_fields']);
-            }else{
-                //it is a string or treat it like
-                $arrayed_field = array($field['inline_create']['include_main_form_fields']);
-                $field['inline_create']['include_main_form_fields'] = json_encode($arrayed_field);
+            if(!is_bool($field['inline_create']['include_main_form_fields'])) {
+                if(is_array($field['inline_create']['include_main_form_fields'])) {
+                    $field['inline_create']['include_main_form_fields'] = json_encode($field['inline_create']['include_main_form_fields']);
+                }else{
+                    //it is a string or treat it like
+                    $arrayed_field = array($field['inline_create']['include_main_form_fields']);
+                    $field['inline_create']['include_main_form_fields'] = json_encode($arrayed_field);
+                }
             }
         }
     }
-}
 
 @endphp
 
@@ -102,17 +102,17 @@ if($activeInlineCreate) {
             @include('crud::fields.relationship.inline_create_button', ['field' => $field])
         @endif
         {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
-        @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif   
+        @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
         <select
             name="{{ $field['name'].($field['multiple'] ? '[]' : '') }}"
-            data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
+            data-field-is-inline="{{ var_export($inlineCreate ?? false) }}"
             data-original-name="{{ $field['name'] }}"
             style="width: 100%"
             data-force-select="{{ var_export($field['inline_create']['force_select']) }}"
             data-init-function="bpFieldInitFetchOrCreateElement"
-            data-allows-null="{{var_export($field['allows_null'])}}"
+            data-allows-null="{{ var_export($field['allows_null']) }}"
             data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
-            data-model-local-key="{{$crud->model->getKeyName()}}"
+            data-model-local-key="{{ $crud->model->getKeyName() }}"
             data-placeholder="{{ $field['placeholder'] }}"
             data-data-source="{{ $field['data_source'] }}"
             data-method="{{ $field['method'] ?? 'POST' }}"
@@ -120,13 +120,14 @@ if($activeInlineCreate) {
             data-field-attribute="{{ $field['attribute'] }}"
             data-connected-entity-key-name="{{ $connected_entity_key_name }}"
             data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
-            data-field-ajax="{{var_export($field['ajax'])}}"
+            data-field-ajax="{{ var_export($field['ajax']) }}"
             data-inline-modal-class="{{ $field['inline_create']['modal_class'] }}"
             data-app-current-lang="{{ app()->getLocale() }}"
             data-include-main-form-fields="{{ is_bool($field['inline_create']['include_main_form_fields']) ? var_export($field['inline_create']['include_main_form_fields']) : $field['inline_create']['include_main_form_fields'] }}"
             data-ajax-delay="{{ $field['delay'] }}"
             data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
             data-debug="{{ config('app.debug') }}"
+            data-is-pivot-select="{{ var_export($field['is_pivot_select']) }}"
 
             @if($activeInlineCreate)
                 @include('crud::fields.relationship.field_attributes')
@@ -242,10 +243,10 @@ if($activeInlineCreate) {
             }
 
             //prepare main form fields to be submited in case there are some.
-            if(typeof $includeMainFormFields === "boolean" && $includeMainFormFields === true) {
+            if (typeof $includeMainFormFields === "boolean" && $includeMainFormFields === true) {
                 var $toPass = $form.serializeArray();
-            }else{
-                if(typeof $includeMainFormFields !== "boolean") {
+            } else {
+                if (typeof $includeMainFormFields !== "boolean") {
                     var $fields = JSON.parse($includeMainFormFields);
                     var $serializedForm = $form.serializeArray();
                     var $toPass = [];
@@ -264,14 +265,14 @@ if($activeInlineCreate) {
             $.ajax({
                 url: $inlineModalRoute,
                 data: (function() {
-                    if($includeMainFormFields) {
+                    if ($includeMainFormFields) {
                         return {
                             'entity': $fieldEntity,
                             'modal_class' : $inlineModalClass,
                             'parent_loaded_fields' : $parentLoadedFields,
                             'main_form_fields' : $toPass
                         };
-                    }else{
+                    } else {
                         return {
                             'entity': $fieldEntity,
                             'modal_class' : $inlineModalClass,
@@ -286,7 +287,7 @@ if($activeInlineCreate) {
 
                 },
                 error: function (result) {
-                    if(!element.data('debug')) {
+                    if (!element.data('debug')) {
                     new Noty({
                             type: "error",
                             text: "<strong>{{ trans('backpack::crud.ajax_error_title') }}</strong><br>{{ trans('backpack::crud.ajax_error_text') }}"
@@ -310,7 +311,7 @@ if($activeInlineCreate) {
             var inCreated = $.map(result.data, function (item) {
                 var $itemText = processItemText(item, $relatedAttribute);
                 var $createdText = processItemText(created, $relatedAttribute);
-                if($itemText == $createdText) {
+                if ($itemText == $createdText) {
                         return {
                             text: $itemText,
                             id: item[$relatedKeyName]
@@ -318,7 +319,7 @@ if($activeInlineCreate) {
                     }
             });
 
-            if(inCreated.length) {
+            if (inCreated.length) {
                 selectOption(element, created);
             }
         });
@@ -376,18 +377,16 @@ if($activeInlineCreate) {
 
                     $createdEntity = result.data;
 
-                    if(!$force_select) {
+                    if (!$force_select) {
                         //if developer did not force the created entity to be selected we first try to
                         //check if created is still available upon model re-search.
                         ajaxSearch(element, result.data);
 
-                    }else{
+                    } else {
                         selectOption(element, result.data);
                     }
 
                     $modal.modal('hide');
-
-
 
                     new Noty({
                         type: "info",
@@ -426,7 +425,7 @@ if($activeInlineCreate) {
 
         $modal.on('shown.bs.modal', function (e) {
             $modal.on('keyup',  function (e) {
-            if($modal.is(':visible')) {
+            if ($modal.is(':visible')) {
                 var key = e.which;
                     if (key == 13) { //This is an ENTER
                     e.preventDefault();
@@ -451,7 +450,7 @@ if($activeInlineCreate) {
 
             $(element).append($option);
 
-            if($multiple) {
+            if ($multiple) {
                 //we get any options previously selected
                 var selectedOptions = $(element).val();
 
@@ -459,7 +458,7 @@ if($activeInlineCreate) {
                 selectedOptions.push(option[$relatedKeyName]);
                 $(element).val(selectedOptions);
 
-            }else{
+            } else {
                 $(element).val(option[$relatedKeyName]);
             }
 
@@ -485,6 +484,7 @@ if($activeInlineCreate) {
         var $allows_null = (element.attr('data-allows-null') == 'true') ? true : false;
         var $multiple = element.prop('multiple');
         var $ajaxDelay = element.attr('data-ajax-delay');
+        var $isPivotSelect = element.data('is-pivot-select');
 
         var FetchOrCreateAjaxFetchSelectedEntry = function (element) {
             return new Promise(function (resolve, reject) {
@@ -539,30 +539,56 @@ if($activeInlineCreate) {
             },
             processResults: function (data, params) {
                 params.page = params.page || 1;
+
+                // if field is a pivot select we are gona get other pivot values so we can disable them from selection.
+                if ($isPivotSelect) {
+                    let pivots_container = $(element).closest('div[data-repeatable-holder='+$(element).data('repeatable-input-name')+']');
+                    var selected_values = [];
+
+                    $(pivots_container).children().each(function(i,container) {
+                        $(container).find('select').each(function(i, el) {
+                            if(typeof $(el).attr('data-is-pivot-select') !== 'undefined' && $(el).attr('data-is-pivot-select') && $(el).val()) {
+                                selected_values.push($(el).val());
+                            }
+                        });
+                    });
+                }
                 //if we have data.data here it means we returned a paginated instance from controller.
                 //otherwise we returned one or more entries unpaginated.
-                if(data.data) {
+                if (data.data) {
                     var result = {
                         results: $.map(data.data, function (item) {
                             var $itemText = processItemText(item, $fieldAttribute);
+                            let disabled = false;
+
+                            if(selected_values && selected_values.some(e => e == item[$connectedEntityKeyName])) {
+                                disabled = true;
+                            }
 
                             return {
                                 text: $itemText,
-                                id: item[$connectedEntityKeyName]
+                                id: item[$connectedEntityKeyName],
+                                disabled: disabled
                             }
                         }),
                         pagination: {
                                 more: data.current_page < data.last_page
                         }
                     };
-                }else {
+                } else {
                     var result = {
                         results: $.map(data, function (item) {
                             var $itemText = processItemText(item, $fieldAttribute);
+                            let disabled = false;
+
+                            if(selected_values && selected_values.some(e => e == item[$connectedEntityKeyName])) {
+                                disabled = true;
+                            }
 
                             return {
                                 text: $itemText,
-                                id: item[$connectedEntityKeyName]
+                                id: item[$connectedEntityKeyName],
+                                disabled: disabled
                             }
                         }),
                         pagination: {
