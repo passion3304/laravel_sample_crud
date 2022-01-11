@@ -52,44 +52,44 @@
 
 
 
-$activeInlineCreate = !empty($field['inline_create']) ? true : false;
+    $activeInlineCreate = !empty($field['inline_create']) ? true : false;
 
-if($activeInlineCreate) {
+    if($activeInlineCreate) {
 
 
-    //we check if this field is not beeing requested in some InlineCreate operation.
-    //this variable is setup by InlineCreate modal when loading the fields.
-    if(!isset($inlineCreate)) {
-        //by default, when creating an entity we want it to be selected/added to selection.
-        $field['inline_create']['force_select'] = $field['inline_create']['force_select'] ?? true;
+        //we check if this field is not beeing requested in some InlineCreate operation.
+        //this variable is setup by InlineCreate modal when loading the fields.
+        if(!isset($inlineCreate)) {
+            //by default, when creating an entity we want it to be selected/added to selection.
+            $field['inline_create']['force_select'] = $field['inline_create']['force_select'] ?? true;
 
-        $field['inline_create']['modal_class'] = $field['inline_create']['modal_class'] ?? 'modal-dialog';
+            $field['inline_create']['modal_class'] = $field['inline_create']['modal_class'] ?? 'modal-dialog';
 
-        //if user don't specify a different entity in inline_create we assume it's the same from $field['entity'] kebabed
-        $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $routeEntity;
+            //if user don't specify a different entity in inline_create we assume it's the same from $field['entity'] kebabed
+            $field['inline_create']['entity'] = $field['inline_create']['entity'] ?? $routeEntity;
 
-        //route to create a new entity
-        $field['inline_create']['create_route'] = $field['inline_create']['create_route'] ?? route($field['inline_create']['entity']."-inline-create-save");
+            //route to create a new entity
+            $field['inline_create']['create_route'] = $field['inline_create']['create_route'] ?? route($field['inline_create']['entity']."-inline-create-save");
 
-        //route to modal
-        $field['inline_create']['modal_route'] = $field['inline_create']['modal_route'] ?? route($field['inline_create']['entity']."-inline-create");
+            //route to modal
+            $field['inline_create']['modal_route'] = $field['inline_create']['modal_route'] ?? route($field['inline_create']['entity']."-inline-create");
 
-        //include main form fields in the request when asking for modal data,
-        //allow the developer to modify the inline create modal
-        //based on some field on the main form
-        $field['inline_create']['include_main_form_fields'] = $field['inline_create']['include_main_form_fields'] ?? false;
+            //include main form fields in the request when asking for modal data,
+            //allow the developer to modify the inline create modal
+            //based on some field on the main form
+            $field['inline_create']['include_main_form_fields'] = $field['inline_create']['include_main_form_fields'] ?? false;
 
-        if(!is_bool($field['inline_create']['include_main_form_fields'])) {
-            if(is_array($field['inline_create']['include_main_form_fields'])) {
-                $field['inline_create']['include_main_form_fields'] = json_encode($field['inline_create']['include_main_form_fields']);
-            }else{
-                //it is a string or treat it like
-                $arrayed_field = array($field['inline_create']['include_main_form_fields']);
-                $field['inline_create']['include_main_form_fields'] = json_encode($arrayed_field);
+            if(!is_bool($field['inline_create']['include_main_form_fields'])) {
+                if(is_array($field['inline_create']['include_main_form_fields'])) {
+                    $field['inline_create']['include_main_form_fields'] = json_encode($field['inline_create']['include_main_form_fields']);
+                }else{
+                    //it is a string or treat it like
+                    $arrayed_field = array($field['inline_create']['include_main_form_fields']);
+                    $field['inline_create']['include_main_form_fields'] = json_encode($arrayed_field);
+                }
             }
         }
     }
-}
 
 @endphp
 
