@@ -167,9 +167,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                     'name' => 'nickname',
                 ],
                 [
-                    'name' => 'profile_picture'
-                ]
-            ]
+                    'name' => 'profile_picture',
+                ],
+            ],
         ]);
         $faker = Factory::create();
         $account_details_nickname = $faker->name;
