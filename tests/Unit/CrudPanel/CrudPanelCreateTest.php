@@ -156,6 +156,37 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($account_details->nickname, $account_details_nickname);
     }
 
+    public function testCreateWithOneToOneRelationshipUsingRepeatableInterface()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField([
+            'name' => 'accountDetails',
+            'fields' => [
+                [
+                    'name' => 'nickname',
+                ],
+                [
+                    'name' => 'profile_picture'
+                ]
+            ]
+        ]);
+        $faker = Factory::create();
+        $account_details_nickname = $faker->name;
+        $inputData = [
+            'name'     => $faker->name,
+            'email'    => $faker->safeEmail,
+            'password' => bcrypt($faker->password()),
+            'accountDetails' => [
+                ['nickname' => $account_details_nickname, 'profile_picture' => 'test.jpg'],
+            ],
+        ];
+        $entry = $this->crudPanel->create($inputData);
+        $account_details = $entry->accountDetails()->first();
+
+        $this->assertEquals($account_details->nickname, $account_details_nickname);
+    }
+
     public function testCreateBelongsToWithRelationName()
     {
         $this->crudPanel->setModel(Article::class);
