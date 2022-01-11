@@ -186,7 +186,7 @@ trait Create
                 if ($relation_values === null || array_key_exists($relationMethod, $relation_values)) {
                     $relation->delete();
                     continue;
-                }                
+                }
 
                 $modelInstance = $relation->updateOrCreate([], $relation_values);
             } elseif ($relation instanceof HasMany || $relation instanceof MorphMany) {
