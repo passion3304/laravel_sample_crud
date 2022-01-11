@@ -5,7 +5,7 @@
   // make sure the value is always an array, even if stored as JSON in database
   $field['value'] = is_string($field['value']) ? json_decode($field['value'], true) : $field['value'];
 
-  $field['init_rows'] = $field['init_rows'] ?? $field['min_rows'] ?? 1;
+  $field['init_rows'] = $field['init_rows'] ?? $field['min_rows'] ?? 0;
   $field['max_rows'] = $field['max_rows'] ?? 0;
   $field['min_rows'] =  $field['min_rows'] ?? 0;
   $field['reorder'] = $field['reorder'] ?? true;
