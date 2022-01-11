@@ -164,24 +164,26 @@ trait Update
                     return;
                 }
 
-                if (Str::contains($field['entity'], '.')) {
-                    return $related_model->{$relation_method}->{Str::afterLast($field['entity'], '.')};
+                $related_entry = $related_model->{$relation_method};
+
+                if (! $related_entry) {
+                    return;
                 }
 
-                if (! $related_model->{$relation_method}) {
-                    return;
+                if (Str::contains($field['entity'], '.')) {
+                    return $related_entry->{Str::afterLast($field['entity'], '.')};
                 }
 
                 if ($field['fields']) {
                     $result = [];
                     foreach ($field['fields'] as $subfield) {
-                        $result[$subfield['name']] = $related_model->{$relation_method}->{$subfield['name']};
+                        $result[$subfield['name']] = $related_entry->{$subfield['name']};
                     }
 
                     return [$result];
                 }
 
-                return $related_model->{$relation_method};
+                return $related_entry;
 
                 break;
             default:

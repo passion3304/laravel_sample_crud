@@ -176,14 +176,18 @@ trait Create
             } elseif ($relation instanceof HasOne || $relation instanceof MorphOne) {
                 $relation_values = $relationDetails['values'][$relationMethod] ?? $relationDetails['values'] ?? null;
 
-                if ($relation_values === null) {
-                    $relation->delete();
-                    continue;
-                }
                 // if the values are not single dimension array, we want only the first entry of the array sent (repeatable row)
                 if (count($relation_values) != count($relation_values, COUNT_RECURSIVE)) {
-                    $relation_values = $relation_values[0];
+                    $relation_values = current($relation_values);
                 }
+
+                // if the relation values are null, or the method still exists as a key in the array of values, delete the entry
+                // otherwise method would already be stripped from this array by the coallescing, unless it's null/empty
+                if ($relation_values === null || array_key_exists($relationMethod, $relation_values)) {
+                    $relation->delete();
+                    continue;
+                }                
+
                 $modelInstance = $relation->updateOrCreate([], $relation_values);
             } elseif ($relation instanceof HasMany || $relation instanceof MorphMany) {
                 $relation_values = $relationDetails['values'][$relationMethod];
