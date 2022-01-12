@@ -203,15 +203,15 @@ trait Create
      * (C) save an entire related entry (eg. passport)
      * (D) delete the entire related entry (eg. passport)
      *
-     * @param  \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Eloquent\Relations\MorphOne $relation
-     * @param  string $relationMethod  The name of the relationship method on the main Model.
-     * @param  array $relationDetails  Details about that relationship. For example:
-     *                                 [
-     *                                      'model' => 'App\Models\Passport',
-     *                                      'parent' => 'App\Models\Pet',
-     *                                      'entity' => 'passport',
-     *                                      'attribute' => 'passport',
-     *                                      'values' => **THE TRICKY BIT**,
+     * @param  \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Eloquent\Relations\MorphOne  $relation
+     * @param  string  $relationMethod  The name of the relationship method on the main Model.
+     * @param  array  $relationDetails  Details about that relationship. For example:
+     *                                  [
+     *                                  'model' => 'App\Models\Passport',
+     *                                  'parent' => 'App\Models\Pet',
+     *                                  'entity' => 'passport',
+     *                                  'attribute' => 'passport',
+     *                                  'values' => **THE TRICKY BIT**,
      *                                  ]
      * @return Model|null
      */
@@ -230,6 +230,7 @@ trait Create
             // Scenario D
             if (is_null($relationMethodValue) && $relationDetails['entity'] === $relationMethod) {
                 $relation->delete();
+
                 return null;
             }
 
