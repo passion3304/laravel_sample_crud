@@ -99,7 +99,7 @@
         @include('crud::fields.inc.translatable_icon')
 
         @if($activeInlineCreate)
-            @include('crud::fields.relationship.inline_create_button', ['field' => $field])
+            @include('crud::fields.relationship.inc.inline_create_button', ['field' => $field])
         @endif
         {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
         @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
@@ -130,7 +130,12 @@
             data-is-pivot-select="{{ var_export($field['is_pivot_select']) }}"
 
             @if($activeInlineCreate)
-                @include('crud::fields.relationship.field_attributes')
+                data-inline-create-route="{{$field['inline_create']['create_route'] ?? false}}"
+                data-inline-modal-route="{{$field['inline_create']['modal_route'] ?? false}}"
+
+                data-field-related-name="{{$field['inline_create']['entity']}}"
+                data-inline-create-button="{{ $field['inline_create']['entity'] }}-inline-create-{{$field['name']}}"
+                data-inline-allow-create="{{var_export($activeInlineCreate)}}"
             @endif
 
             @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_field'])
