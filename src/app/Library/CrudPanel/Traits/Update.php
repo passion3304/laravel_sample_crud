@@ -157,7 +157,7 @@ trait Update
 
                 return $result;
 
-            break;
+                break;
             case 'HasOne':
             case 'MorphOne':
                 if (! method_exists($related_model, $relation_method)) {

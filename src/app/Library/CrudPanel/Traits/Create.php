@@ -174,15 +174,29 @@ trait Create
                     $relation->dissociate()->save();
                 }
             } elseif ($relation instanceof HasOne || $relation instanceof MorphOne) {
+                // For HasOne and MorphOne relationships, the dev might want to a few different things:
+                // (A) save an attribute on the related entry (eg. passport.number)
+                // (B) save an entire related entry (eg. passport)
+                // (C) delete the entire related entry (eg. passport)
+                // so let's see which one it is, from $relationDetails, which will contain:
+                // [
+                //     'model' => 'App\Models\Passport',
+                //     'parent' => 'App\Models\Pet',
+                //     'values' => **THE TRICKY BIT**,
+                // ]
+                // And the values can be:
+                //      - (A) ['number' => 1315, 'name' => 'Something'] (if passed using a text/number/etc field)
+                //      - (B) ['passport' => [['number' => 1314, 'name' => 'Something']]] (if passed using a repeatable field)
+                //      - (C) ['passport' => null] (if deleted from the repeatable field)
                 $relation_values = $relationDetails['values'][$relationMethod] ?? $relationDetails['values'] ?? null;
 
-                // if the values are not single dimension array, we want only the first entry of the array sent (repeatable row)
+                // For Scenario (B), if the values are not single-dimension array, get only the first entry of the array
                 if (count($relation_values) != count($relation_values, COUNT_RECURSIVE)) {
                     $relation_values = current($relation_values);
                 }
 
-                // if the relation values are null, or the method still exists as a key in the array of values, delete the entry
-                // otherwise method would already be stripped from this array by the coallescing, unless it's null/empty
+                // For Scenario (C), if the relation values are null (or the method still exists as a key in the array of values),
+                // delete the entry; otherwise method would already be stripped from this array by the coallescing, unless it's null/empty
                 if ($relation_values === null || array_key_exists($relationMethod, $relation_values)) {
                     $relation->delete();
                     continue;
@@ -191,7 +205,9 @@ trait Create
                 $modelInstance = $relation->updateOrCreate([], $relation_values);
             } elseif ($relation instanceof HasMany || $relation instanceof MorphMany) {
                 $relation_values = $relationDetails['values'][$relationMethod];
-                // if relation values are null we can only attach, also we check if we sent a single dimensional array [1,2,3], or an array of arrays: [[1][2][3]]
+                // if relation values are null we can only attach, also we check if we sent
+                // - a single dimensional array: [1,2,3]
+                // - an array of arrays: [[1][2][3]]
                 // if is as single dimensional array we can only attach.
                 if ($relation_values === null || count($relation_values) == count($relation_values, COUNT_RECURSIVE)) {
                     $this->attachManyRelation($item, $relation, $relationDetails, $relation_values);
