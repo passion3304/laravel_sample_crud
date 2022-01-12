@@ -18,7 +18,7 @@
     </div>
     @foreach($field['fields'] as $subfield)
         @php
-            $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
+            $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield, $field['is_pivot_select'] ?? true);
             $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
             $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
             if(isset($row)) {
