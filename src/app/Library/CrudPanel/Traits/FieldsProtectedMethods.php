@@ -137,8 +137,9 @@ trait FieldsProtectedMethods
         }
 
         // if the field is a subfield we can't workout relationships from it
-        if($field['is_subfield']) {
+        if ($field['is_subfield']) {
             $field['entity'] = false;
+
             return $field;
         }
 
