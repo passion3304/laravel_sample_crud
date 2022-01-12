@@ -29,10 +29,10 @@
         {!! csrf_field() !!}
 
         <!-- load the view from the application if it exists, otherwise load the one in the package -->
-        @if(view()->exists('vendor.backpack.crud.fields.relationship.form_content'))
-            @include('vendor.backpack.crud.fields.relationship.form_content', [ 'fields' => $fields, 'action' => $action])
+        @if(view()->exists('vendor.backpack.crud.fields.relationship.inc.form_content'))
+            @include('vendor.backpack.crud.fields.relationship.inc.form_content', [ 'fields' => $fields, 'action' => $action])
         @else
-            @include('crud::fields.relationship.form_content', [ 'fields' => $fields, 'action' => $action])
+            @include('crud::fields.relationship.inc.form_content', [ 'fields' => $fields, 'action' => $action])
         @endif
 
 

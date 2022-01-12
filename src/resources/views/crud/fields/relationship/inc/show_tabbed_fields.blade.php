@@ -27,11 +27,11 @@
 @if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
 <div class="card">
     <div class="card-body row">
-    @include('crud::fields.relationship.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
+    @include('crud::fields.relationship.inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
     </div>
 </div>
 @else
-    @include('crud::fields.relationship.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
+    @include('crud::fields.relationship.inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
 @endif
 
 <div class="tab-container {{ $horizontalTabs ? '' : 'container'}} mb-2">
@@ -51,7 +51,7 @@
             <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="inline_tab_{{ Str::slug($tab, "") }}">
 
                 <div class="row">
-                @include('crud::fields.relationship.show_fields', ['fields' => $crud->getTabFields($tab)])
+                @include('crud::fields.relationship.inc.show_fields', ['fields' => $crud->getTabFields($tab)])
                 </div>
             </div>
             @endforeach
