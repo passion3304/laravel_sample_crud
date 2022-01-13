@@ -4,7 +4,7 @@
 @endif
 
 <div class="col-md-12 well repeatable-element row m-1 p-2" data-repeatable-identifier="{{ $field['name'] }}">
-    @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
+    @if (isset($field['subfields']) && is_array($field['subfields']) && count($field['subfields']))
     <div class="controls">
         <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
         @if ($field['reorder'])
@@ -16,7 +16,7 @@
         </button>
         @endif
     </div>
-    @foreach($field['fields'] as $subfield)
+    @foreach($field['subfields'] as $subfield)
         @php
             // make sure the field is an array
             if (is_string($subfield)) {
