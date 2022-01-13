@@ -66,11 +66,18 @@ trait Create
                 array_push($relationFields, $field);
             }
 
-            if (isset($field['subfields']) &&
+            // if a field has an array name AND subfields
+            // then take those fields into account (check if they have relationships);
+            // this is done in particular for the checklist_dependency field,
+            // but other fields could use it too, in the future;
+            if (is_array($field['name']) &&
+                isset($field['subfields']) &&
                 is_array($field['subfields']) &&
                 count($field['subfields'])) {
                 foreach ($field['subfields'] as $subfield) {
-                    array_push($relationFields, $subfield);
+                    if (isset($subfield['model']) && $subfield['model'] !== false) {
+                        array_push($relationFields, $subfield);
+                    }
                 }
             }
         }
