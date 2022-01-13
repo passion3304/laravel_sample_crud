@@ -18,9 +18,16 @@
     </div>
     @foreach($field['fields'] as $subfield)
         @php
-            $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield, $field['is_pivot_select'] ?? true);
+            // make sure the field is an array
+            if (is_string($subfield)) {
+                $subfield = ['name' => $subfield];
+            }
+            // avoid relationship field type
+            $subfield['entity'] = $subfield['entity'] ?? false;
+            $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
             $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
             $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
+
             if(isset($row)) {
                 if(!is_array($subfield['name'])) {
                     // this is a fix for 4.1 repeatable names that when the field was multiple, saved the keys with `[]` in the end. Eg: `tags[]` instead of `tags`

@@ -177,7 +177,8 @@ trait Update
                 if ($field['fields']) {
                     $result = [];
                     foreach ($field['fields'] as $subfield) {
-                        $result[$subfield['name']] = $related_entry->{$subfield['name']};
+                        $name = is_string($subfield) ? $subfield : $subfield['name'];
+                        $result[$name] = $related_entry->{$name};
                     }
 
                     return [$result];

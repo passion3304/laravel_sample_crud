@@ -39,13 +39,10 @@ trait Fields
      * field definition array is complete, by guessing missing attributes.
      *
      * @param  string|array  $field  The definition of a field (string or array).
-     * @param  bool  $is_subfield  Tells backpack if field is a subfield
      * @return array The correct definition of that field.
      */
-    public function makeSureFieldHasNecessaryAttributes($field, $is_subfield = false)
+    public function makeSureFieldHasNecessaryAttributes($field)
     {
-        $field['is_subfield'] = $is_subfield;
-
         $field = $this->makeSureFieldHasName($field);
         $field = $this->makeSureFieldHasEntity($field);
         $field = $this->makeSureFieldHasLabel($field);

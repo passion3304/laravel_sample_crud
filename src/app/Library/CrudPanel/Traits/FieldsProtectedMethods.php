@@ -136,13 +136,6 @@ trait FieldsProtectedMethods
             return $field;
         }
 
-        // if the field is a subfield we can't workout relationships from it
-        if ($field['is_subfield']) {
-            $field['entity'] = false;
-
-            return $field;
-        }
-
         //if the name is dot notation we are sure it's a relationship
         if (strpos($field['name'], '.') !== false) {
             $possibleMethodName = Str::of($field['name'])->before('.');
