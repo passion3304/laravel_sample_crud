@@ -16,18 +16,17 @@
     $pivotSelectorField['is_pivot_select'] = true;
     $pivotSelectorField['multiple'] = false;
     $pivotSelectorField['allows_null'] = false;
-    $pivotSelectorField['entity'] = $field['entity'];
+    $pivotSelectorField['entity'] = $field['name'];
     $pivotSelectorField['model'] = $field['model'];
     
-    $pivotSelectorField['ajax'] = $pivotSelectorField['ajax'] ?? false;
-    $pivotSelectorField['data_source'] = $pivotSelectorField['data_source'] ?? isset($pivotSelectorField['ajax']) && $pivotSelectorField['ajax'] ? url($crud->route.'/fetch/'.$field['entity']) : 'false';
+    $pivotSelectorField['ajax'] = $inline_create !== false ? true : ($pivotSelectorField['ajax'] ?? false);
+    $pivotSelectorField['data_source'] = $pivotSelectorField['data_source'] ?? ($pivotSelectorField['ajax'] ? url($crud->route.'/fetch/'.$field['entity']) : 'false');
     $pivotSelectorField['minimum_input_length'] = $pivotSelectorField['minimum_input_length'] ?? 2;
     $pivotSelectorField['delay'] = $pivotSelectorField['delay'] ?? 500;
     $pivotSelectorField['placeholder'] = $pivotSelectorField['placeholder'] ?? trans('backpack::crud.select_entry');
     $pivotSelectorField['type'] = $inline_create !== false ? 'fetch_or_create' : ($pivotSelectorField['ajax'] ? 'fetch' : 'select');
     $pivotSelectorField['view_namespace'] = 'crud::fields.relationship';
-    $pivotSelectorField['attribute'] = $pivotSelectorField['attribute'] ?? (new $field['model'])->identifiableAttribute();
-    
+    $pivotSelectorField['attribute'] = $pivotSelectorField['attribute'] ?? (new $field['model'])->identifiableAttribute();    
     
     if($inline_create) {
         $field['inline_create'] = $inline_create;
