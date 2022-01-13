@@ -40,22 +40,27 @@
             }
 
 
-            // the dev is trying to create a field for the ENTIRE hasOne/morphOne relationship
-            abort(500, "<strong>The relationship field does not support <code>{$field['relation_type']}</code> that way.</strong><br> Please change your <code>{$field['name']}</code> field so that its <i>name</i> also includes the editable attribute on the related model, using dot notation (eg. <code>address.postal_code</code>). If you need to edit more attributes, add a new field for each one (eg. <code>address.postal_code</code>). See <a target='_blank' href='https://backpackforlaravel.com/docs/crud-fields#hasone-1-1-relationship'>the docs</a> for more information.");
-            // TODO: if "fields" is not defined, tell the dev to define it (+ link to docs)
-            // TODO: if "fields" is defined, load a repeatable field with one entry (and 1 entry max)
+            // -----
+            // The dev is trying to create a field for the ENTIRE hasOne/morphOne relationship
+            // -----
+            // if "subfields" is not defined, tell the dev to define it (+ link to docs)
+            if (!isset($field['fields'])) {
+                abort(500, "<strong>Please define <code>subfields</code> on your <code>{$field['model']}</code> field.</strong><br>That way, you can allow the admin to edit the attributes on that related entry (through the hasOne relationship).<br>See <a target='_blank' href='https://backpackforlaravel.com/docs/crud-fields#crud-how-to#hasone-1-1-relationship'>the docs</a> for more information.");
+            }
+            // if "subfields" is defined, load a repeatable field with one entry (and 1 entry max)
+            $field['type'] = 'relationship.entry';
             break;
         case 'BelongsTo':
         case 'BelongsToMany':
         case 'MorphToMany':
             // if there are pivot fields we show the repeatable field
             if(isset($field['pivotFields'])) {
-                $field['type'] = 'relationship.repeatable_relation';
+                $field['type'] = 'relationship.entries';
                 break;
             }
 
             if(!isset($field['inline_create'])) {
-                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
+                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.select';
                 break;
             }
 
@@ -65,7 +70,7 @@
                 break;
             }
 
-    		$field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
+    		$field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.select';
             break;
         case 'HasMany':
         case 'MorphMany':
@@ -76,10 +81,10 @@
 
             // if there are pivot fields we show the repeatable field
             if(isset($field['pivotFields'])) {
-                $field['type'] = 'relationship.repeatable_relation';
+                $field['type'] = 'relationship.entries';
             } else {
                 // we show a regular/ajax select
-                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.relationship_select';
+                $field['type'] = $field['ajax'] ? 'relationship.fetch' : 'relationship.select';
             }
             break;
         case 'HasOneThrough':

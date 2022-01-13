@@ -55,7 +55,7 @@ trait InlineCreateOperation
         }
 
         return view(
-            'crud::fields.relationship.inline_create_modal',
+            'crud::fields.relationship.inc.inline_create_modal',
             [
                 'fields' => $this->crud->getCreateFields(),
                 'action' => 'create',

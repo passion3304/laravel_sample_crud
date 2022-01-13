@@ -79,6 +79,7 @@
       <div class="row">
 
           <div class="hidden_fields_primary" data-name = "{{ $primary_dependency['name'] }}">
+          <input type="hidden" name="{{$primary_dependency['name']}}" value="" />
           @if(isset($field['value']))
               @if($old_primary_dependency)
                   @foreach($old_primary_dependency as $item )
@@ -129,6 +130,7 @@
 
       <div class="row">
           <div class="hidden_fields_secondary" data-name="{{ $secondary_dependency['name'] }}">
+            <input type="hidden" name="{{$secondary_dependency['name']}}" value="" />
             @if(isset($field['value']))
               @if($old_secondary_dependency)
                 @foreach($old_secondary_dependency as $item )

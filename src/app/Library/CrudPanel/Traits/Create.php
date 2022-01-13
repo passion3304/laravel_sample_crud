@@ -181,10 +181,12 @@ trait Create
                     $relation->dissociate()->save();
                 }
             } elseif ($relation instanceof HasOne || $relation instanceof MorphOne) {
-                $modelInstance = $relation->updateOrCreate([], $relationDetails['values']);
+                $modelInstance = $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
             } elseif ($relation instanceof HasMany || $relation instanceof MorphMany) {
                 $relation_values = $relationDetails['values'][$relationMethod];
-                // if relation values are null we can only attach, also we check if we sent a single dimensional array [1,2,3], or an array of arrays: [[1][2][3]]
+                // if relation values are null we can only attach, also we check if we sent
+                // - a single dimensional array: [1,2,3]
+                // - an array of arrays: [[1][2][3]]
                 // if is as single dimensional array we can only attach.
                 if ($relation_values === null || count($relation_values) == count($relation_values, COUNT_RECURSIVE)) {
                     $this->attachManyRelation($item, $relation, $relationDetails, $relation_values);
@@ -196,6 +198,57 @@ trait Create
                 $this->createRelationsForItem($modelInstance, ['relations' => $relationDetails['relations']]);
             }
         }
+    }
+
+    /**
+     * Save the attributes of a given HasOne or MorphOne relationship on the
+     * related entry, create or delete it, depending on what was sent in the form.
+     *
+     * For HasOne and MorphOne relationships, the dev might want to a few different things:
+     * (A) save an attribute on the related entry (eg. passport.number)
+     * (B) set an attribute on the related entry to NULL (eg. slug.slug)
+     * (C) save an entire related entry (eg. passport)
+     * (D) delete the entire related entry (eg. passport)
+     *
+     * @param  \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Eloquent\Relations\MorphOne  $relation
+     * @param  string  $relationMethod  The name of the relationship method on the main Model.
+     * @param  array  $relationDetails  Details about that relationship. For example:
+     *                                  [
+     *                                  'model' => 'App\Models\Passport',
+     *                                  'parent' => 'App\Models\Pet',
+     *                                  'entity' => 'passport',
+     *                                  'attribute' => 'passport',
+     *                                  'values' => **THE TRICKY BIT**,
+     *                                  ]
+     * @return Model|null
+     */
+    private function createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails)
+    {
+        // Let's see which scenario we're treating, depending on the contents of $relationDetails:
+        //      - (A) ['number' => 1315, 'name' => 'Something'] (if passed using a text/number/etc field)
+        //      - (B) ['slug' => null] (if the 'slug' attribute on the 'slug' related entry needs to be cleared)
+        //      - (C) ['passport' => [['number' => 1314, 'name' => 'Something']]] (if passed using a repeatable field)
+        //      - (D) ['passport' => null] (if deleted from the repeatable field)
+
+        // Scenario C or D
+        if (array_key_exists($relationMethod, $relationDetails['values'])) {
+            $relationMethodValue = $relationDetails['values'][$relationMethod];
+
+            // Scenario D
+            if (is_null($relationMethodValue) && $relationDetails['entity'] === $relationMethod) {
+                $relation->delete();
+
+                return null;
+            }
+
+            // Scenario C (when it's an array inside an array, because it's been added as one item inside a repeatable field)
+            if (gettype($relationMethodValue) == 'array' && count($relationMethodValue) != count($relationMethodValue, COUNT_RECURSIVE)) {
+                return $relation->updateOrCreate([], current($relationMethodValue));
+            }
+        }
+
+        // Scenario A or B
+        return $relation->updateOrCreate([], $relationDetails['values']);
     }
 
     /**
@@ -336,6 +389,8 @@ trait Create
             $fieldDetails = Arr::get($relationDetails, 'relations.'.$key, []);
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
             $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($field['name'], -1);
+            $fieldDetails['entity'] = $fieldDetails['entity'] ?? $field['entity'];
+            $fieldDetails['attribute'] = $fieldDetails['attribute'] ?? $field['attribute'];
             $fieldDetails['values'][$attributeName] = Arr::get($input, $field['name']);
 
             if (isset($field['fallback_id'])) {
