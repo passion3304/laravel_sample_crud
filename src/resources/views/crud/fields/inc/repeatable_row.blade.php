@@ -1,9 +1,3 @@
-
-@php
-    if(isset($field['orderColumn']) && $field['orderColumn'] !== false) {
-        $reorder_input_name = isset($row) ? $field['name'].'['.$repeatable_row_key.']['.$field['orderColumn'].']' : $field['orderColumn'];
-    }
-@endphp
 @if ($hidden ?? false)
 <div class="d-none">
 @endif
