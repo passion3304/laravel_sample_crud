@@ -8,7 +8,9 @@
 
 @php
     $field['type'] = 'repeatable';
-    $field['fields'] = $field['pivotFields'];
+    //each row represent a related entry in a database table. We should not "auto-add" one relationship if it's not the user intention.
+    $field['init_rows'] = 0;
+    $field['subfields'] = $field['subfields'] ?? [];
     $field['reorder'] = $field['reorder'] ?? false;
     
     $pivotSelectorField = $field['pivotSelect'] ?? [];
@@ -27,12 +29,12 @@
     switch ($field['relation_type']) {
         case 'MorphToMany':
         case 'BelongsToMany':
-            $field['fields'] = Arr::prepend($field['fields'], $pivotSelectorField);
+            $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
             break;
         case 'MorphMany':
         case 'HasMany':
             if(isset($entry)) {
-                $field['fields'] = Arr::prepend($field['fields'], [
+                $field['subfields'] = Arr::prepend($field['subfields'], [
                     'name' => $entry->{$field['name']}()->getLocalKeyName(),
                     'type' => 'hidden',
                 ]);

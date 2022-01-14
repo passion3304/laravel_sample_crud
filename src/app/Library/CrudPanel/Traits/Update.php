@@ -52,17 +52,7 @@ trait Update
         $entry = ($id != false) ? $this->getEntry($id) : $this->getCurrentEntry();
 
         foreach ($fields as &$field) {
-            // set the value
-            if (! isset($field['value'])) {
-                if (isset($field['subfields'])) {
-                    $field['value'] = [];
-                    foreach ($field['subfields'] as $subfield) {
-                        $field['value'][] = $entry->{$subfield['name']};
-                    }
-                } else {
-                    $field['value'] = $this->getModelAttributeValue($entry, $field);
-                }
-            }
+            $field['value'] = $field['value'] ?? $this->getModelAttributeValue($entry, $field);
         }
 
         // always have a hidden input for the entry id
@@ -96,8 +86,8 @@ trait Update
 
         if (is_array($field['name'])) {
             $result = [];
-            foreach ($field['name'] as $key => $value) {
-                $result = $model->{$value};
+            foreach ($field['name'] as $name) {
+                $result[] = $model->{$name};
             }
 
             return $result;
@@ -119,11 +109,12 @@ trait Update
             case 'HasMany':
             case 'BelongsToMany':
             case 'MorphToMany':
-                if (! isset($field['pivotFields'])) {
+                // use subfields aka. pivotFields
+                if (! isset($field['subfields'])) {
                     return $related_model->{$relation_method};
                 }
                 // we want to exclude the "self pivot field" since we already have it.
-                $pivot_fields = Arr::where($field['pivotFields'], function ($item) use ($field) {
+                $pivot_fields = Arr::where($field['subfields'], function ($item) use ($field) {
                     return $field['name'] != $item['name'];
                 });
                 $related_models = $related_model->{$relation_method};
@@ -174,9 +165,9 @@ trait Update
                     return $related_entry->{Str::afterLast($field['entity'], '.')};
                 }
 
-                if ($field['fields']) {
+                if ($field['subfields']) {
                     $result = [];
-                    foreach ($field['fields'] as $subfield) {
+                    foreach ($field['subfields'] as $subfield) {
                         $name = is_string($subfield) ? $subfield : $subfield['name'];
                         $result[$name] = $related_entry->{$name};
                     }

@@ -20,6 +20,7 @@
     // if field is not ajax but user wants to use InlineCreate
     // we make minimum_input_length = 0 so when user open we show the entries like a regular select
     $field['minimum_input_length'] = ($field['ajax'] !== true) ? 0 : ($field['minimum_input_length'] ?? 2);
+    $field['subfields'] = $field['subfields'] ?? false;
 
     switch($field['relation_type']) {
         case 'HasOne':
@@ -44,7 +45,7 @@
             // The dev is trying to create a field for the ENTIRE hasOne/morphOne relationship
             // -----
             // if "subfields" is not defined, tell the dev to define it (+ link to docs)
-            if (!isset($field['fields'])) {
+            if (!is_array($field['subfields'])) {
                 abort(500, "<strong>Please define <code>subfields</code> on your <code>{$field['model']}</code> field.</strong><br>That way, you can allow the admin to edit the attributes on that related entry (through the hasOne relationship).<br>See <a target='_blank' href='https://backpackforlaravel.com/docs/crud-fields#crud-how-to#hasone-1-1-relationship'>the docs</a> for more information.");
             }
             // if "subfields" is defined, load a repeatable field with one entry (and 1 entry max)
@@ -54,7 +55,7 @@
         case 'BelongsToMany':
         case 'MorphToMany':
             // if there are pivot fields we show the repeatable field
-            if(isset($field['pivotFields'])) {
+            if(is_array($field['subfields'])) {
                 $field['type'] = 'relationship.entries';
                 break;
             }
@@ -80,7 +81,7 @@
             $field['force_delete'] = $field['force_delete'] ?? false;
 
             // if there are pivot fields we show the repeatable field
-            if(isset($field['pivotFields'])) {
+            if(is_array($field['subfields'])) {
                 $field['type'] = 'relationship.entries';
             } else {
                 // we show a regular/ajax select
