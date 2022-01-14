@@ -8,8 +8,9 @@
   $field['init_rows'] = $field['init_rows'] ?? $field['min_rows'] ?? 0;
   $field['max_rows'] = $field['max_rows'] ?? 0;
   $field['min_rows'] =  $field['min_rows'] ?? 0;
-  $field['reorder'] = $field['reorder'] ?? true;
   $field['subfields'] = $field['subfields'] ?? $field['fields'] ?? [];
+  $field['reorder'] = $field['reorder'] ?? true;
+  
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -303,6 +304,10 @@
                     // only add the row number to inputs that have name, so they are going to be submited in form
                     if($(input).attr('name')) {
                         $(input).attr('data-row-number', rowNumber);
+                    }
+
+                    if($(input).hasClass('order_hidden_input')) {
+                        $(input).val(rowNumber);
                     }
                 });
                 number_of_rows++;

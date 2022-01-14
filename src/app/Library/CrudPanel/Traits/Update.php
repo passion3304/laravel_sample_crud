@@ -117,8 +117,15 @@ trait Update
                 $pivot_fields = Arr::where($field['subfields'], function ($item) use ($field) {
                     return $field['name'] != $item['name'];
                 });
+
+                // if isset orderColum add it to the pivot_fields array so it can be fetched.
+                if(isset($field['orderColumn'])) {
+                    $pivot_fields[] = ['name' => $field['orderColumn']];
+                }
+
                 $related_models = $related_model->{$relation_method};
                 $result = [];
+
                 // for any given model, we grab the attributes that belong to our pivot table.
                 foreach ($related_models as $related_model) {
                     $item = [];
@@ -140,12 +147,17 @@ trait Update
                             foreach ($pivot_fields as $pivot_field) {
                                 $item[$pivot_field['name']] = $related_model->pivot->{$pivot_field['name']};
                             }
+                            
                             $item[$field['name']] = $related_model->getKey();
                             $result[] = $item;
                             break;
                     }
                 }
 
+                // if orderColumn is set, return the results ordered by that same column
+                if(isset($field['orderColumn'])) {
+                    usort($result, fn($a, $b) => $a[$field['orderColumn']] <=> $b[$field['orderColumn']]);
+                }
                 return $result;
 
                 break;
