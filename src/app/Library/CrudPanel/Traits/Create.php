@@ -121,7 +121,7 @@ trait Create
             }
 
             $relation_data = [];
-            if (isset($field['pivotFields'])) {
+            if (isset($field['subfields'])) {
                 foreach ($values as $pivot_row) {
                     $relation_data[$pivot_row[$field['name']]] = Arr::except($pivot_row, $field['name']);
                 }
