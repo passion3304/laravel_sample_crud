@@ -18,11 +18,12 @@
     </div>
     @foreach($field['fields'] as $subfield)
         @php
-            // make sure the field is an array
+            // make sure the field definition is an array
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
             }
-            // avoid relationship field type
+            // all subfields are considered text fields if not otherwise specified
+            $subfield['type'] = $subfield['type'] ?? 'text';
             $subfield['entity'] = $subfield['entity'] ?? false;
             $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
             $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
