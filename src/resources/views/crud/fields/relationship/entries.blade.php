@@ -57,24 +57,6 @@
                     'type' => 'hidden',
                 ]);
             }
-        default: {
-            switch(gettype($field['reorder'])) {
-                case 'string' : {
-                    $field['subfields'] = Arr::prepend($field['subfields'], [
-                        'name' => $field['reorder'],
-                        'type' => 'hidden',
-                        'attributes' => [
-                            'data-reorder-input' => true
-                        ]
-                    ]);
-                }
-                break;
-                case 'array' : {
-                    $field['subfields'] = Arr::prepend($field['subfields'], $field['reorder']);
-                }
-                break;
-            }
-        }
         break;
     }
 @endphp
