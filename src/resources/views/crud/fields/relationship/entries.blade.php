@@ -26,11 +26,29 @@
     $pivotSelectorField['minimum_input_length'] = $pivotSelectorField['minimum_input_length'] ?? 2;
     $pivotSelectorField['delay'] = $pivotSelectorField['delay'] ?? 500;
     $pivotSelectorField['placeholder'] = $pivotSelectorField['placeholder'] ?? trans('backpack::crud.select_entry');
+
+    switch(gettype($field['reorder'])) {
+        case 'string' : {
+            $field['subfields'] = Arr::prepend($field['subfields'], [
+                'name' => $field['reorder'],
+                'type' => 'hidden',
+                'attributes' => [
+                    'data-reorder-input' => true
+                ]
+            ]);
+        }
+        break;
+        case 'array' : {
+            $field['subfields'] = Arr::prepend($field['subfields'], $field['reorder']);
+        }
+        break;
+    }
     
     switch ($field['relation_type']) {
         case 'MorphToMany':
         case 'BelongsToMany':
             $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
+            break;
         case 'MorphMany':
         case 'HasMany':
             if(isset($entry)) {
