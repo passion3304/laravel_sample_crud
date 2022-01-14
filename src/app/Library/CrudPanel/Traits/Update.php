@@ -118,14 +118,14 @@ trait Update
                     return $field['name'] != $item['name'];
                 });
 
-                switch(gettype($field['reorder'] ?? false)) {
-                    case 'string' : {
+                switch (gettype($field['reorder'] ?? false)) {
+                    case 'string':
                         $pivot_fields[] = ['name' => $field['reorder']];
-                    }
+
                     break;
-                    case 'array' : {
+                    case 'array':
                         $pivot_fields[] = $field['reorder'];
-                    }
+
                 }
 
                 $related_models = $related_model->{$relation_method};
