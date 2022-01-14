@@ -9,7 +9,7 @@
   $field['max_rows'] = $field['max_rows'] ?? 0;
   $field['min_rows'] =  $field['min_rows'] ?? 0;
   $field['reorder'] = $field['reorder'] ?? true;
-  $field['subfields'] = $field['subfields'] ?? $field['fields'] ?? $field['pivot_fields'] ?? [];
+  $field['subfields'] = $field['subfields'] ?? $field['fields'] ?? [];
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
