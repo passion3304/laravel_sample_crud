@@ -14,6 +14,7 @@
     $pivotSelectorField = $field['pivotSelect'] ?? [];
     $inline_create = !isset($inlineCreate) && isset($pivotSelectorField['inline_create']) ? $pivotSelectorField['inline_create'] : false;
     $pivotSelectorField['name'] = $field['name'];
+    $pivotSelectorField['type'] = 'relationship';
     $pivotSelectorField['is_pivot_select'] = true;
     $pivotSelectorField['multiple'] = false;
     $pivotSelectorField['entity'] = $field['name'];    
