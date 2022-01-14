@@ -15,7 +15,6 @@
         </button>
         @endif
     </div>
-    @if($field['reorder'] && isset($field['orderColumn']) && $field['orderColumn'] !== false)<input type="hidden" class="order_hidden_input" name="{{$reorder_input_name}}" value="" />@endif
     @foreach($field['subfields'] as $subfield)
         @php
             // make sure the field definition is an array
