@@ -11,7 +11,6 @@
     //each row represent a related entry in a database table. We should not "auto-add" one relationship if it's not the user intention.
     $field['init_rows'] = 0;
     $field['subfields'] = $field['subfields'] ?? [];
-    $field['orderColumn'] = $field['orderColumn'] ?? false;
     $field['reorder'] = $field['reorder'] ?? false;
     
     $pivotSelectorField = $field['pivotSelect'] ?? [];
