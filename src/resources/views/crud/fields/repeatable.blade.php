@@ -10,6 +10,19 @@
   $field['min_rows'] =  $field['min_rows'] ?? 0;
   $field['subfields'] = $field['subfields'] ?? $field['fields'] ?? [];
   $field['reorder'] = $field['reorder'] ?? true;
+
+  if($field['reorder'] !== false) {
+     switch(gettype($field['reorder'])) {
+         case 'string': {
+            usort($field['value'], fn($a, $b) => $a[$field['reorder']] <=> $b[$field['reorder']]);
+         }
+         break;
+         case 'array': {
+            usort($field['value'], fn($a, $b) => $a[$field['reorder']['name']] <=> $b[$field['reorder']['name']]);
+         }
+         break;
+     }
+  }
   
 @endphp
 
@@ -306,7 +319,7 @@
                         $(input).attr('data-row-number', rowNumber);
                     }
 
-                    if($(input).hasClass('order_hidden_input')) {
+                    if($(input).is('[data-reorder-input]')) {
                         $(input).val(rowNumber);
                     }
                 });

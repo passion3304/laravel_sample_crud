@@ -12,7 +12,7 @@
     $field['init_rows'] = 0;
     $field['subfields'] = $field['subfields'] ?? [];
     $field['orderColumn'] = $field['orderColumn'] ?? false;
-    $field['reorder'] = $field['reorder'] ?? ($field['orderColumn'] ? true : false);
+    $field['reorder'] = $field['reorder'] ?? false;
     
     $pivotSelectorField = $field['pivotSelect'] ?? [];
     $inline_create = !isset($inlineCreate) && isset($pivotSelectorField['inline_create']) ? $pivotSelectorField['inline_create'] : false;
@@ -31,7 +31,6 @@
         case 'MorphToMany':
         case 'BelongsToMany':
             $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
-            break;
         case 'MorphMany':
         case 'HasMany':
             if(isset($entry)) {
@@ -40,7 +39,25 @@
                     'type' => 'hidden',
                 ]);
             }
-            break;
+        default: {
+            switch(gettype($field['reorder'])) {
+                case 'string' : {
+                    $field['subfields'] = Arr::prepend($field['subfields'], [
+                        'name' => $field['reorder'],
+                        'type' => 'hidden',
+                        'attributes' => [
+                            'data-reorder-input' => true
+                        ]
+                    ]);
+                }
+                break;
+                case 'array' : {
+                    $field['subfields'] = Arr::prepend($field['subfields'], $field['reorder']);
+                }
+                break;
+            }
+        }
+        break;
     }
 @endphp
 

@@ -118,9 +118,14 @@ trait Update
                     return $field['name'] != $item['name'];
                 });
 
-                // if isset orderColum add it to the pivot_fields array so it can be fetched.
-                if(isset($field['orderColumn'])) {
-                    $pivot_fields[] = ['name' => $field['orderColumn']];
+                switch(gettype($field['reorder'] ?? false)) {
+                    case 'string' : {
+                        $pivot_fields[] = ['name' => $field['reorder']];
+                    }
+                    break;
+                    case 'array' : {
+                        $pivot_fields[] = $field['reorder'];
+                    }
                 }
 
                 $related_models = $related_model->{$relation_method};
@@ -154,10 +159,6 @@ trait Update
                     }
                 }
 
-                // if orderColumn is set, return the results ordered by that same column
-                if(isset($field['orderColumn'])) {
-                    usort($result, fn($a, $b) => $a[$field['orderColumn']] <=> $b[$field['orderColumn']]);
-                }
                 return $result;
 
                 break;
