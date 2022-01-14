@@ -152,7 +152,7 @@ trait Update
                             foreach ($pivot_fields as $pivot_field) {
                                 $item[$pivot_field['name']] = $related_model->pivot->{$pivot_field['name']};
                             }
-                            
+
                             $item[$field['name']] = $related_model->getKey();
                             $result[] = $item;
                             break;
