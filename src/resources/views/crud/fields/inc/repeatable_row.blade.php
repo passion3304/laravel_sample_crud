@@ -4,7 +4,7 @@
 @endif
 
 <div class="col-md-12 well repeatable-element row m-1 p-2" data-repeatable-identifier="{{ $field['name'] }}">
-    @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
+    @if (isset($field['subfields']) && is_array($field['subfields']) && count($field['subfields']))
     <div class="controls">
         <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
         @if ($field['reorder'])
@@ -16,21 +16,33 @@
         </button>
         @endif
     </div>
-    @foreach($field['fields'] as $subfield)
+    @foreach($field['subfields'] as $subfield)
         @php
+            // make sure the field definition is an array
+            if (is_string($subfield)) {
+                $subfield = ['name' => $subfield];
+            }
+            // all subfields are considered text fields if not otherwise specified
+            $subfield['type'] = $subfield['type'] ?? 'text';
+            $subfield['entity'] = $subfield['entity'] ?? false;
             $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
             $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
             $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
+
             if(isset($row)) {
                 if(!is_array($subfield['name'])) {
                     // this is a fix for 4.1 repeatable names that when the field was multiple, saved the keys with `[]` in the end. Eg: `tags[]` instead of `tags`
                     if(isset($row[$subfield['name']]) || isset($row[$subfield['name'].'[]'])) {
                         $subfield['value'] = $row[$subfield['name']] ?? $row[$subfield['name'].'[]'];
                     }
+                    $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.$subfield['name'].']';
                 }else{
-                    $subfield['value'] = $row;
+                    foreach ($subfield['name'] as $k => $item) {
+                        $subfield['name'][$k] = $field['name'].'['.$repeatable_row_key.']['.$item.']';
+                        $subfield['value'][$subfield['name'][$k]] = \Arr::get($row, $item);
+                    }
                 }
-            }                       
+            }
         @endphp
 
         @include($fieldViewPath, ['field' => $subfield])

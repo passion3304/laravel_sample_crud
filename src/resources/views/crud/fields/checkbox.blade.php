@@ -1,13 +1,16 @@
 <!-- checkbox field -->
 
+@php
+  $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
+@endphp
 @include('crud::fields.inc.wrapper_start')
     @include('crud::fields.inc.translatable_icon')
     <div class="checkbox">
-        <input type="hidden" name="{{ $field['name'] }}" value="{{ old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? 0 }}">
+        <input type="hidden" name="{{ $field['name'] }}" value="{{ $field['value'] }}">
     	  <input type="checkbox"
           data-init-function="bpFieldInitCheckbox"
 
-          @if (old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false)
+          @if ((bool)$field['value'])
                  checked="checked"
           @endif
 

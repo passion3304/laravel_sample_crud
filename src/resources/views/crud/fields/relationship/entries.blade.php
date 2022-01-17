@@ -10,30 +10,31 @@
     $field['type'] = 'repeatable';
     //each row represent a related entry in a database table. We should not "auto-add" one relationship if it's not the user intention.
     $field['init_rows'] = 0;
-    $field['fields'] = $field['pivotFields'];
+    $field['subfields'] = $field['subfields'] ?? [];
     $field['reorder'] = $field['reorder'] ?? false;
+    
+    $pivotSelectorField = $field['pivotSelect'] ?? [];
     $inline_create = !isset($inlineCreate) && isset($pivotSelectorField['inline_create']) ? $pivotSelectorField['inline_create'] : false;
-    $pivotSelectorField = $field['pivot_selector'] ?? [];
     $pivotSelectorField['name'] = $field['name'];
+    $pivotSelectorField['type'] = 'relationship';
+    $pivotSelectorField['is_pivot_select'] = true;
     $pivotSelectorField['multiple'] = false;
-    $pivotSelectorField['ajax'] = $pivotSelectorField['ajax'] ?? false;
-    $pivotSelectorField['data_source'] = $pivotSelectorField['data_source'] ?? isset($pivotSelectorField['ajax']) && $pivotSelectorField['ajax'] ? url($crud->route.'/fetch/'.$field['entity']) : 'false';
+    $pivotSelectorField['entity'] = $field['name'];    
+    $pivotSelectorField['ajax'] = $inline_create !== false ? true : ($pivotSelectorField['ajax'] ?? false);
+    $pivotSelectorField['data_source'] = $pivotSelectorField['data_source'] ?? ($pivotSelectorField['ajax'] ? url($crud->route.'/fetch/'.$field['entity']) : 'false');
     $pivotSelectorField['minimum_input_length'] = $pivotSelectorField['minimum_input_length'] ?? 2;
     $pivotSelectorField['delay'] = $pivotSelectorField['delay'] ?? 500;
     $pivotSelectorField['placeholder'] = $pivotSelectorField['placeholder'] ?? trans('backpack::crud.select_entry');
-
-    if($inline_create) {
-        $field['inline_create'] = $inline_create;
-    }
+    
     switch ($field['relation_type']) {
         case 'MorphToMany':
         case 'BelongsToMany':
-            $field['fields'] = Arr::prepend($field['fields'], $pivotSelectorField);
+            $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
             break;
         case 'MorphMany':
         case 'HasMany':
             if(isset($entry)) {
-                $field['fields'] = Arr::prepend($field['fields'], [
+                $field['subfields'] = Arr::prepend($field['subfields'], [
                     'name' => $entry->{$field['name']}()->getLocalKeyName(),
                     'type' => 'hidden',
                 ]);

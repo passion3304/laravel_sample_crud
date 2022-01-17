@@ -1,7 +1,7 @@
 @php
 $multiple = Arr::get($field, 'multiple', true);
 $sortable = Arr::get($field, 'sortable', false);
-$value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? ($multiple ? [] : '');
+$value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 
 if (!$multiple && is_array($value)) {
     $value = Arr::first($value);
