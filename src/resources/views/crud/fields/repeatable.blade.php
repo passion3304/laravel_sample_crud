@@ -8,8 +8,30 @@
   $field['init_rows'] = $field['init_rows'] ?? $field['min_rows'] ?? 0;
   $field['max_rows'] = $field['max_rows'] ?? 0;
   $field['min_rows'] =  $field['min_rows'] ?? 0;
-  $field['reorder'] = $field['reorder'] ?? true;
   $field['subfields'] = $field['subfields'] ?? $field['fields'] ?? [];
+  $field['reorder'] = $field['reorder'] ?? true;
+
+  if($field['reorder'] !== false) {
+     switch(gettype($field['reorder'])) {
+         case 'string': {
+            $field['subfields'] = Arr::prepend($field['subfields'], [
+                'name' => $field['reorder'],
+                'type' => 'hidden',
+                'attributes' => [
+                    'data-reorder-input' => true
+                ]
+            ]);
+            usort($field['value'], fn($a, $b) => $a[$field['reorder']] <=> $b[$field['reorder']]);
+         }
+         break;
+         case 'array': {
+            $field['subfields'] = Arr::prepend($field['subfields'], $field['reorder']);
+            usort($field['value'], fn($a, $b) => $a[$field['reorder']['name']] <=> $b[$field['reorder']['name']]);
+         }
+         break;
+     }
+  }
+  
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -303,6 +325,10 @@
                     // only add the row number to inputs that have name, so they are going to be submited in form
                     if($(input).attr('name')) {
                         $(input).attr('data-row-number', rowNumber);
+                    }
+
+                    if($(input).is('[data-reorder-input]')) {
+                        $(input).val(rowNumber);
                     }
                 });
                 number_of_rows++;

@@ -39,7 +39,7 @@
                     'type' => 'hidden',
                 ]);
             }
-            break;
+        break;
     }
 @endphp
 

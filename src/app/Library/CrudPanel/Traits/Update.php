@@ -117,29 +117,22 @@ trait Update
                 $pivot_fields = Arr::where($field['subfields'], function ($item) use ($field) {
                     return $field['name'] != $item['name'];
                 });
+
                 $related_models = $related_model->{$relation_method};
                 $result = [];
+
                 // for any given model, we grab the attributes that belong to our pivot table.
                 foreach ($related_models as $related_model) {
                     $item = [];
                     switch ($relation_type) {
-
                         case 'HasMany':
                         case 'MorphMany':
-                            // for any given related model, we get the value from pivot fields
-                            foreach ($pivot_fields as $pivot_field) {
-                                $item[$pivot_field['name']] = $related_model->{$pivot_field['name']};
-                            }
-                            $item[$related_model->getKeyName()] = $related_model->getKey();
-                            $result[] = $item;
+                            $result[] = $related_model->getAttributes();
                             break;
 
                         case 'BelongsToMany':
                         case 'MorphToMany':
-                            // for any given related model, we get the pivot fields.
-                            foreach ($pivot_fields as $pivot_field) {
-                                $item[$pivot_field['name']] = $related_model->pivot->{$pivot_field['name']};
-                            }
+                            $item = $related_model->pivot->getAttributes();
                             $item[$field['name']] = $related_model->getKey();
                             $result[] = $item;
                             break;

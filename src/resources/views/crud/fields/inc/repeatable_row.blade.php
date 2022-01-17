@@ -1,4 +1,3 @@
-
 @if ($hidden ?? false)
 <div class="d-none">
 @endif
