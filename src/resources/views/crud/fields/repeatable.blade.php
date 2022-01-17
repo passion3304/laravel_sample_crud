@@ -14,10 +14,18 @@
   if($field['reorder'] !== false) {
      switch(gettype($field['reorder'])) {
          case 'string': {
+            $field['subfields'] = Arr::prepend($field['subfields'], [
+                'name' => $field['reorder'],
+                'type' => 'hidden',
+                'attributes' => [
+                    'data-reorder-input' => true
+                ]
+            ]);
             usort($field['value'], fn($a, $b) => $a[$field['reorder']] <=> $b[$field['reorder']]);
          }
          break;
          case 'array': {
+            $field['subfields'] = Arr::prepend($field['subfields'], $field['reorder']);
             usort($field['value'], fn($a, $b) => $a[$field['reorder']['name']] <=> $b[$field['reorder']['name']]);
          }
          break;
