@@ -381,63 +381,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEmpty($relationFields);
     }
 
-    public function testSyncPivot()
-    {
-        $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsManyToMany);
-        $faker = Factory::create();
-        $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
-            'remember_token' => null,
-            'roles'          => [1, 2],
-        ];
-
-        $entry = User::find(1);
-        $this->crudPanel->syncPivot($entry, $inputData);
-
-        $this->assertEquals($inputData['roles'], $entry->roles->pluck('id')->toArray());
-    }
-
-    public function testSyncPivotUnknownData()
-    {
-        $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->nonRelationshipField);
-        $faker = Factory::create();
-        $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
-            'remember_token' => null,
-            'roles'          => [1, 2],
-        ];
-
-        $entry = User::find(1);
-        $this->crudPanel->syncPivot($entry, $inputData);
-
-        $this->assertEquals(1, $entry->roles->count());
-    }
-
-    public function testSyncPivotUnknownModel()
-    {
-        $this->expectException(\BadMethodCallException::class);
-
-        $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsManyToMany);
-        $faker = Factory::create();
-        $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
-            'remember_token' => null,
-            'roles'          => [1, 2],
-        ];
-
-        $entry = Article::find(1);
-        $this->crudPanel->syncPivot($entry, $inputData);
-    }
-
     public function testMorphToManySelectableRelationship()
     {
         $this->crudPanel->setModel(User::class);
