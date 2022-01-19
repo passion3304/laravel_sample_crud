@@ -156,11 +156,13 @@
                 $(container).find('select').each(function(i, el) {
                     
                     if(typeof $(el).attr('data-is-pivot-select') !== 'undefined' && $(el).attr('data-is-pivot-select')) {
-                        if(enable) {
-                            $(el).find('option[value='+pivot_selector.val()+']').prop('disabled',false);   
-                        }else{
-                            if($(el).val() !== pivot_selector.val()) {
-                                $(el).find('option[value='+pivot_selector.val()+']').prop('disabled',true);
+                        if(pivot_selector.val()) {
+                            if(enable) {
+                                $(el).find('option[value='+pivot_selector.val()+']').prop('disabled',false);   
+                            }else{
+                                if($(el).val() !== pivot_selector.val()) {
+                                    $(el).find('option[value='+pivot_selector.val()+']').prop('disabled',true);
+                                }
                             }
                         }
                     }
