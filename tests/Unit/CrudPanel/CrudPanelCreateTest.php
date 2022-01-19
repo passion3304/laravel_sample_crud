@@ -7,6 +7,7 @@ use Backpack\CRUD\Tests\Unit\Models\Comet;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
 use Backpack\CRUD\Tests\Unit\Models\Universe;
 use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\Unit\Models\Bang;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
@@ -569,6 +570,31 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             [
                 'name' => 'accountDetails.article',
             ],
+            [
+                'name' => 'accountDetails.addresses',
+                'subfields' => [
+                    [
+                        'name' => 'city',
+                    ],
+                    [
+                        'name' => 'street',
+                    ],
+                    [
+                        'name' => 'number'
+                    ]
+                ]
+            ],
+            [
+                'name' => 'accountDetails.bangs',
+            ],
+            [
+                'name' => 'accountDetails.bangsPivot',
+                'subfields' => [
+                    [
+                        'name' => 'pivot_field'
+                    ]
+                ]
+            ]
         ]);
 
         $faker = Factory::create();
@@ -583,6 +609,24 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'nickname' => 'i_have_has_one',
                 'profile_picture' => 'ohh my picture 1.jpg',
                 'article' => 1,
+                'addresses' => [
+                    [
+                        'city' => 'test',
+                        'street' => 'test',
+                        'number' => 1
+                    ],
+                    [
+                        'city' => 'test2',
+                        'street' => 'test2',
+                        'number' => 2
+                    ],
+
+                ],
+                'bangs' => [1,2],
+                'bangsPivot' => [
+                    ['bangsPivot' => 1, 'pivot_field' => 'test1'],
+                    ['bangsPivot' => 2, 'pivot_field' => 'test2'],
+                ]
             ],
         ];
 
@@ -590,6 +634,14 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->article, Article::find(1));
+        $this->assertEquals($account_details->addresses->count(), 2);
+        $this->assertEquals($account_details->addresses->first()->city, 'test');
+        $this->assertEquals($account_details->addresses->first()->street, 'test');
+        $this->assertEquals($account_details->addresses->first()->number, 1);
+        $this->assertEquals($account_details->bangs->first()->name, Bang::find(1)->name);
+        $this->assertEquals($account_details->bangsPivot->count(), 2);
+        $this->assertEquals($account_details->bangsPivot->first()->pivot->pivot_field, 'test1');
+
     }
 
     public function testMorphOneRelationship()

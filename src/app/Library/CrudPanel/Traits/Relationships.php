@@ -117,6 +117,33 @@ trait Relationships
         return $fields;
     }
 
+    /**
+     * Gets the relation fields that DON'T contain the provided relations. 
+     * 
+     * @param string|array $relations - the relations to exclude
+     * @param bool $include_nested - if the nested relations of the same relations should be excluded too.
+     */
+    protected function relationFieldsWithoutRelationType($relations, $include_nested = false)
+    {
+        if(!is_array($relations)) {
+            $relations = array($relations);
+        }
+
+        $fields = $this->getRelationFields();
+
+        foreach($relations as $relation) {
+
+            $fields = array_filter($fields, function ($field) use ($relation, $include_nested) {
+                if($include_nested) {
+                    return $field['relation_type'] !== $relation || ($field['relation_type'] === $relation && Str::contains($field['name'], '.'));
+                }
+                return $field['relation_type'] !== $relation;    
+            });
+        }
+
+        return $fields;
+    }
+
     protected function changeBelongsToNamesFromRelationshipToForeignKey($data)
     {
         $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');

@@ -28,14 +28,14 @@ trait Update
 
         $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
 
-        $this->createRelations($item, $data);
+        $relation_data = $this->getRelationDetailsFromInput($data);
 
-        // omit the n-n relationships when updating the eloquent item
-        $nn_relationships = Arr::pluck($this->getRelationFieldsWithPivot(), 'name');
+        // handle the creation of the model relations.
+        $this->createRelationsForItem($item, $relation_data);
 
-        $data = Arr::except($data, $nn_relationships);
+        $field_names_to_exclude = $this->getFieldNamesArray($this->relationFieldsWithoutRelationType('BelongsTo', true));
 
-        $updated = $item->update($data);
+        $updated = $item->update(Arr::except($data, $field_names_to_exclude));
 
         return $item;
     }
