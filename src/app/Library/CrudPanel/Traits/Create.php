@@ -29,20 +29,19 @@ trait Create
         $data = $this->decodeJsonCastedAttributes($data);
         $data = $this->compactFakeFields($data);
 
-         $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
+        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
 
-         $field_names_to_exclude = $this->getFieldNamesArray($this->relationFieldsWithoutRelationType('BelongsTo', true));
- 
-         $item = $this->model->create(Arr::except($data, $field_names_to_exclude));
- 
-         $relation_data = $this->getRelationDetailsFromInput($data);
- 
-         // handle the creation of the model relations after the main entity is created.
-         $this->createRelationsForItem($item, $relation_data);
+        $field_names_to_exclude = $this->getFieldNamesArray($this->relationFieldsWithoutRelationType('BelongsTo', true));
+
+        $item = $this->model->create(Arr::except($data, $field_names_to_exclude));
+
+        $relation_data = $this->getRelationDetailsFromInput($data);
+
+        // handle the creation of the model relations after the main entity is created.
+        $this->createRelationsForItem($item, $relation_data);
 
         return $item;
     }
-    
 
     /**
      * Get all fields needed for the ADD NEW ENTRY form.
@@ -108,7 +107,7 @@ trait Create
             $relation_type = $relationDetails['relation_type'];
 
             switch ($relation_type) {
-                case 'BelongsTo': {
+                case 'BelongsTo':
                     $modelInstance = $relationDetails['model']::find($relationDetails['values'])->first();
                     if ($modelInstance != null) {
                         $relation->associate($modelInstance)->save();
@@ -116,7 +115,7 @@ trait Create
                         $relation->dissociate()->save();
                     }
                     break;
-                }
+
                 case 'HasOne':
                 case 'MorphOne':
                         $modelInstance = $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
@@ -138,9 +137,9 @@ trait Create
                 case 'MorphToMany':
                     $values = $relationDetails['values'][$relationMethod] ?? [];
                     $values = is_string($values) ? json_decode($values, true) : $values;
-                    
+
                     $relation_data = [];
-                
+
                     foreach ($values as $value) {
                         if (! isset($value[$relationMethod])) {
                             continue;
@@ -371,7 +370,8 @@ trait Create
         return $relationDetails;
     }
 
-    protected function getFieldNamesArray($fields) {
+    protected function getFieldNamesArray($fields)
+    {
         return array_unique(
             // we check if any of the field names to be removed contains a dot, if so, we remove all fields from array with same key.
             // example: HasOne Address -> address.street, address.country, would remove whole `address` instead of both single fields
@@ -379,6 +379,7 @@ trait Create
                 if (Str::contains($field_name, '.')) {
                     return Str::before($field_name, '.');
                 }
+
                 return $field_name;
             }, Arr::pluck($fields, 'name')));
     }
