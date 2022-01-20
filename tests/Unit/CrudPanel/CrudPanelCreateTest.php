@@ -598,9 +598,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'article' => 1,
                 'addresses' => [ // HasOne is tested in other test function
                     [
-                    'city' => 'test',
-                    'street' => 'test',
-                    'number' => 1,
+                        'city' => 'test',
+                        'street' => 'test',
+                        'number' => 1,
                     ],
                     [
                         'city' => 'test2',
@@ -618,7 +618,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($account_details->addresses->count(), 2);
         $this->assertEquals($account_details->bangs->count(), 0);
         $this->assertEquals($account_details->bangsPivot->count(), 0);
-
     }
 
     public function testMorphOneRelationship()

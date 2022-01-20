@@ -88,7 +88,7 @@ trait Create
     }
 
     /**
-     * Create relations for the provided model
+     * Create relations for the provided model.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $item  The current CRUD model.
      * @param  array  $formattedRelations  The form data.
@@ -116,7 +116,7 @@ trait Create
                     }
                     break;
                 case 'HasOne':
-                case 'MorphOne': 
+                case 'MorphOne':
                         $modelInstance = $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
                     break;
                 case 'HasMany':
@@ -126,7 +126,7 @@ trait Create
                     // - a single dimensional array: [1,2,3]
                     // - an array of arrays: [[1][2][3]]
                     // if is as single dimensional array we can only attach.
-                    if ($relationValues === null || !is_multidimensional_array($relationValues)) {
+                    if ($relationValues === null || ! is_multidimensional_array($relationValues)) {
                         $this->attachManyRelation($item, $relation, $relationDetails, $relationValues);
                     } else {
                         $this->createManyEntries($item, $relation, $relationMethod, $relationDetails);
@@ -138,7 +138,7 @@ trait Create
                     $values = is_string($values) ? json_decode($values, true) : $values;
 
                     $relationValues = [];
-                    
+
                     if (is_multidimensional_array($values)) {
                         foreach ($values as $value) {
                             $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
@@ -150,7 +150,7 @@ trait Create
                     if (empty($relationValues)) {
                         $relationValues = array_values($values);
                     }
-                    
+
                     $item->{$relationMethod}()->sync($relationValues);
                     break;
             }
@@ -372,8 +372,8 @@ trait Create
      * Returns an array of names from the provided array of fields to be excluded from the request input.
      * It takes into account dot notation field names as beeing "grouped fields" in the request eg: address => [city => city1, postal_code => 123342-23]
      * So we return only `address` to exclude the whole group from the request input.
-     * 
-     * @param array $fields - the fields from where the name would be returned.
+     *
+     * @param  array  $fields  - the fields from where the name would be returned.
      * @return array
      */
     private function getFieldNamesToExcludeFromInput($fields)
