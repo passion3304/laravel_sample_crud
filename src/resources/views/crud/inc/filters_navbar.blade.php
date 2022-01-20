@@ -10,7 +10,7 @@
         <ul class="nav navbar-nav">
           <!-- THE ACTUAL FILTERS -->
     			@foreach ($crud->filters() as $filter)
-    				@include($filter->getViewWithNamespace())
+    				@includeFirst($filter->getNamespacedViewWithFallbacks())
     			@endforeach
           <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'invisible' }}"><i class="la la-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>

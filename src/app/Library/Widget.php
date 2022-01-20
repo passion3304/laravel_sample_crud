@@ -116,6 +116,37 @@ class Widget extends Fluent
         return $this;
     }
 
+    /**
+     * Get an array of full paths to the widget view, consisting of:
+     * - the path given in the widget definition
+     * - fallback view paths as configured in backpack/config/base.php.
+     *
+     * @return array
+     */
+    public function getFinalViewPath()
+    {
+        if (isset($this->viewNamespace)) {
+            $path = $this->viewNamespace.'.'.$this->type;
+
+            if (view()->exists($path)) {
+                return $path;
+            }
+        }
+
+        $type = $this->type;
+        $paths = array_map(function ($item) use ($type) {
+            return $item.'.'.$type;
+        }, config('backpack.base.component_view_namespaces.widgets'));
+
+        foreach ($paths as $path) {
+            if (view()->exists($path)) {
+                return $path;
+            }
+        }
+
+        return config('backpack.base.component_view_namespaces.widgets')[0].'.'.$this->type;
+    }
+
     // -------
     // ALIASES
     // -------
