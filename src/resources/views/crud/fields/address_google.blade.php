@@ -22,7 +22,7 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     <input type="hidden"
-           value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+           value="{{ old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '' }}"
            name="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix']))
@@ -51,13 +51,10 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
+    @loadOnce('AddressGoogleCss')
         <style>
             .ap-input-icon.ap-icon-pin {
                 right: 5px !important;
@@ -71,10 +68,12 @@
                 z-index: 1051;
             }
         </style>
+    @endLoadOnce
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+        @loadOnce('bpFieldInitAddressGoogleElement')
         <script>
 
             function bpFieldInitAddressGoogleElement(element) {
@@ -151,8 +150,8 @@
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete" async defer></script>
 
+        @endLoadOnce
     @endpush
 
-@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

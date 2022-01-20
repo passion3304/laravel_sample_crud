@@ -47,7 +47,12 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2" cellspacing="0">
+        <table
+          id="crudTable"
+          class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
+          data-has-details-row="{{ $crud->getOperationSetting('detailsRow') ?? 0 }}"
+          data-has-bulk-actions="{{ $crud->getOperationSetting('bulkActions') ?? 0 }}"
+          cellspacing="0">
             <thead>
               <tr>
               <th 
@@ -57,22 +62,26 @@
                 data-visible="true"
                 data-can-be-visible-in-table="true"
                 data-visible-in-modal="false"
-                data-visible-in-export="false"></th>
+                data-visible-in-export="false">
+
+                {{-- Bulk checkbox --}}
+                @if($crud->getOperationSetting('bulkActions'))
+                  {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
+                @endif
+              </th>
 
                 {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
                   <th
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
-                     {{--
-
-                        data-visible-in-table => if developer forced field in table with 'visibleInTable => true'
-                        data-visible => regular visibility of the field
-                        data-can-be-visible-in-table => prevents the column to be loaded into the table (export-only)
-                        data-visible-in-modal => if column apears on responsive modal
-                        data-visible-in-export => if this field is exportable
-                        data-force-export => force export even if field are hidden
-
+                    {{--
+                    data-visible-in-table => if developer forced field in table with 'visibleInTable => true'
+                    data-visible => regular visibility of the field
+                    data-can-be-visible-in-table => prevents the column to be loaded into the table (export-only)
+                    data-visible-in-modal => if column apears on responsive modal
+                    data-visible-in-export => if this field is exportable
+                    data-force-export => force export even if field are hidden
                     --}}
 
                     {{-- If it is an export field only, we are done. --}}
@@ -118,11 +127,18 @@
             </tbody>
             <tfoot>
               <tr>
-                <th></th>
+                <th>
+                  {{-- Bulk checkbox --}}
+                  @if($crud->getOperationSetting('bulkActions'))
+                    {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
+                  @endif
+                </th>
 
                 {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
-                  <th>{!! $column['label'] !!}</th>
+                  <th>
+                    {!! $column['label'] !!}
+                  </th>
                 @endforeach
 
                 @if ( $crud->buttons()->where('stack', 'line')->count() )

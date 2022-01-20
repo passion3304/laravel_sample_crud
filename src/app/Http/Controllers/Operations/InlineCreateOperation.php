@@ -55,14 +55,14 @@ trait InlineCreateOperation
         }
 
         return view(
-            'crud::fields.relationship.inline_create_modal',
+            'crud::fields.relationship.inc.inline_create_modal',
             [
                 'fields' => $this->crud->getCreateFields(),
                 'action' => 'create',
                 'crud' => $this->crud,
                 'entity' => request()->get('entity'),
                 'modalClass' => request()->get('modal_class'),
-                'parentLoadedFields' => request()->get('parent_loaded_fields'),
+                'parentLoadedAssets' => request()->get('parent_loaded_assets'),
             ]
         );
     }

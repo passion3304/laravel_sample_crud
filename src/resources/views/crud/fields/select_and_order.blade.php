@@ -1,6 +1,6 @@
 <!-- select_and_order -->
 @php
-    $values = old($field['name']) ?? $field['value'] ?? $field['default'] ?? [];
+    $values = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
     $values = (array)$values;
 @endphp
 
@@ -11,14 +11,14 @@
          data-init-function="bpFieldInitSelectAndOrderElement"
          data-all-options='@json($field['options'])'
          data-field-name="{{ $field['name'] }}">
-        <div class="col-md-12">
+        <div class="col-md-12 d-flex justify-content-between">
             <ul data-identifier="drag-destination" class="{{ $field['name'] }}_connectedSortable select_and_order_selected float-left"></ul>
             <ul data-identifier="drag-source" class="{{ $field['name'] }}_connectedSortable select_and_order_all float-right"></ul>
 
             {{-- The results will be stored here --}}
             <div data-identifier="results">
-                <select class="d-none" 
-                    name="{{ $field['name'] }}[]" 
+                <select class="d-none"
+                    name="{{ $field['name'] }}[]"
                     data-selected-options='@json($values)'
                     multiple>
                 </select>
@@ -36,14 +36,11 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
 
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
+@push('crud_fields_styles')
+    @loadOnce('select_and_order_field_style')
     <style>
         .select_and_order_all,
         .select_and_order_selected {
@@ -87,19 +84,28 @@
             border: 1px dashed #3c8dbc;
             visibility: visible!important;
         }
-        .ui-sortable-handle {
-            -ms-touch-action: none;
-            touch-action: none;
+        /* Touch device */
+        @media (hover: none) and (pointer: coarse) {
+            .select_and_order_all {
+                border: 1px solid #e6e6e6;
+            }
+            .select_and_order_all li,
+            .select_and_order_selected li {
+                width: 90%;
+            }
         }
-
     </style>
-    @endpush
+    @endLoadOnce
+@endpush
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-<script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+@loadOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+@loadOnce('packages/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js')
+
+@loadOnce('bpFieldInitSelectAndOrderElement')
 <script>
-    function bpFieldInitSelectAndOrderElement(element) {
+  function bpFieldInitSelectAndOrderElement(element) {
         var $dragSource = element.find('[data-identifier=drag-source]');
         var $dragDestination = element.find('[data-identifier=drag-destination]');
         var $hiddenSelect = element.find('[data-identifier=results] select');
@@ -170,11 +176,9 @@
             }
         }).disableSelection();
     }
-</script>
-
+    </script>
+    @endLoadOnce
 @endpush
-
-@endif
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

@@ -2,16 +2,22 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
-    $old_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
+    $old_value = old_empty_or_null($field['name'], false) ??  $field['value'] ?? $field['default'] ?? false;
+    $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entry');
+    $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
+    $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
 
     // by default set ajax query delay to 500ms
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
+    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
+    {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+    <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
     <select
         name="{{ $field['name'] }}[]"
         style="width: 100%"
@@ -22,6 +28,7 @@
         data-minimum-input-length="{{ $field['minimum_input_length'] }}"
         data-data-source="{{ $field['data_source'] }}"
         data-method="{{ $field['method'] ?? 'GET' }}"
+        data-allows-null="{{var_export($field['allows_null'])}}"
         data-field-attribute="{{ $field['attribute'] }}"
         data-connected-entity-key-name="{{ $connected_entity_key_name }}"
         data-include-all-form-fields="{{ isset($field['include_all_form_fields']) ? ($field['include_all_form_fields'] ? 'true' : 'false') : 'false' }}"
@@ -54,34 +61,27 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
+@push('crud_fields_styles')
     <!-- include select2 css-->
-    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    @endpush
+    @loadOnce('packages/select2/dist/css/select2.min.css')
+    @loadOnce('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css')
+@endpush
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
     <!-- include select2 js-->
-    <script src="{{ asset('packages/select2/dist/js/select2.full.min.js') }}"></script>
+    @loadOnce('packages/select2/dist/js/select2.full.min.js')
     @if (app()->getLocale() !== 'en')
-    <script src="{{ asset('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js') }}"></script>
+        @loadOnce('packages/select2/dist/js/i18n/' . str_replace('_', '-', app()->getLocale()) . '.js')
     @endif
-    @endpush
-
-@endif
+@endpush
 
 <!-- include field specific select2 js-->
 @push('crud_fields_scripts')
+@loadOnce('bpFieldInitSelect2FromAjaxMultipleElement')
 <script>
-
-
     function bpFieldInitSelect2FromAjaxMultipleElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
@@ -91,7 +91,7 @@
         var $fieldAttribute = element.attr('data-field-attribute');
         var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
         var $includeAllFormFields = element.attr('data-include-all-form-fields')=='false' ? false : true;
-        var $allowClear = element.attr('data-column-nullable') == 'true' ? true : false;
+        var $allowClear = element.data('allows-null');
         var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $ajaxDelay = element.attr('data-ajax-delay');
         var $isFieldInline = element.data('field-is-inline');
@@ -103,6 +103,7 @@
                 multiple: true,
                 placeholder: $placeholder,
                 minimumInputLength: $minimumInputLength,
+                allowClear: $allowClear,
                 dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body,
                 ajax: {
                     url: $dataSource,
@@ -172,6 +173,7 @@
         }
     }
 </script>
+@endLoadOnce
 @endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

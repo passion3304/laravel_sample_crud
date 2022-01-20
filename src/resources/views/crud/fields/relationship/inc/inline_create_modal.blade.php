@@ -1,12 +1,10 @@
 @php
+    $loadedAssets = json_decode($parentLoadedAssets ?? '[]', true);
 
-    $loadedFields = json_decode($parentLoadedFields);
-
-    //mark parent crud fields as loaded.
-    foreach($loadedFields as $loadedField) {
-        $crud->markFieldTypeAsLoaded($loadedField);
+    //mark parent crud assets as loaded.
+    foreach($loadedAssets as $asset) {
+        Assets::markAsLoaded($asset);
     }
-
 @endphp
 <div class="modal fade" id="inline-create-dialog" tabindex="0" role="dialog" aria-labelledby="{{$entity}}-inline-create-dialog-label" aria-hidden="true">
 <div class="{{ $modalClass }}" role="document">
@@ -31,10 +29,10 @@
         {!! csrf_field() !!}
 
         <!-- load the view from the application if it exists, otherwise load the one in the package -->
-        @if(view()->exists('vendor.backpack.crud.fields.relationship.form_content'))
-            @include('vendor.backpack.crud.fields.relationship.form_content', [ 'fields' => $fields, 'action' => $action])
+        @if(view()->exists('vendor.backpack.crud.fields.relationship.inc.form_content'))
+            @include('vendor.backpack.crud.fields.relationship.inc.form_content', [ 'fields' => $fields, 'action' => $action])
         @else
-            @include('crud::fields.relationship.form_content', [ 'fields' => $fields, 'action' => $action])
+            @include('crud::fields.relationship.inc.form_content', [ 'fields' => $fields, 'action' => $action])
         @endif
 
 

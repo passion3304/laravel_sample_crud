@@ -5,7 +5,7 @@
     $min = isset($field['min']) && (int) $field['min'] > 0 ? $field['min'] : -1;
     $item_name = strtolower(isset($field['entity_singular']) && ! empty($field['entity_singular']) ? $field['entity_singular'] : $field['label']);
 
-    $items = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    $items = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '';
 
     // make sure no matter the attribute casting
     // the $items variable contains a properly defined JSON string
@@ -94,18 +94,14 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
-        {{-- YOUR JS HERE --}}
-        <script type="text/javascript" src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-
-        <script>
-            function bpFieldInitTableElement(element) {
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
+    {{-- YOUR JS HERE --}}
+    @loadOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+    @loadOnce('bpFieldInitTableElement')
+    <script>
+          function bpFieldInitTableElement(element) {
                 var $tableWrapper = element.parent('[data-field-type=table]');
                 var $rows = (element.attr('value') != '') ? $.parseJSON(element.attr('value')) : '';
                 var $max = element.attr('data-max');
@@ -220,8 +216,9 @@
                 // on page load, make sure the input has the old values
                 updateTableFieldJson();
             }
-        </script>
-    @endpush
-@endif
+    </script>
+    @endLoadOnce
+@endpush
+
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

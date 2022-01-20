@@ -1,7 +1,7 @@
 @php
     $field['prefix'] = $field['prefix'] ?? '';
     $field['disk'] = $field['disk'] ?? null;
-    $value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+    $value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 
     if (! function_exists('getDiskUrl')) {
         function getDiskUrl($disk, $path) {
@@ -111,14 +111,11 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-        <link href="{{ asset('packages/cropperjs/dist/cropper.min.css') }}" rel="stylesheet" type="text/css" />
+        @loadOnce('packages/cropperjs/dist/cropper.min.css')
+        @loadOnce('image_field_style')
         <style>
             .image .btn-group {
                 margin-top: 10px;
@@ -161,12 +158,14 @@
                 display: block;
             }
         </style>
+        @endLoadOnce
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <script src="{{ asset('packages/cropperjs/dist/cropper.min.js') }}"></script>
-        <script src="{{ asset('packages/jquery-cropper/dist/jquery-cropper.min.js') }}"></script>
+        @loadOnce('packages/cropperjs/dist/cropper.min.js')
+        @loadOnce('packages/jquery-cropper/dist/jquery-cropper.min.js')
+        @loadOnce('bpFieldInitCropperImageElement')
         <script>
             function bpFieldInitCropperImageElement(element) {
                     // Find DOM elements under this form-group element
@@ -303,9 +302,9 @@
                     }
             }
         </script>
-
+        @endLoadOnce
 
     @endpush
-@endif
+
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

@@ -1,7 +1,7 @@
 <!-- text input -->
 <?php
 
-$value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? '';
+$value = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '';
 
 // if attribute casting is used, convert to JSON
 if (is_array($value)) {
@@ -53,15 +53,11 @@ $field['wrapper']['data-video'] = '';
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
-{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
+
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
-    {{-- @push('crud_fields_styles')
+        @loadOnce('bpVideoFieldStyle')
         {{-- YOUR CSS HERE --}}
         <style media="screen">
             .video-previewSuffix {
@@ -90,11 +86,13 @@ $field['wrapper']['data-video'] = '';
                 background-size: cover;
                 background-position: center center; }
         </style>
+        @endLoadOnce
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         {{-- YOUR JS HERE --}}
+        @loadOnce('bpFieldInitVideoElement')
         <script>
 
         var tryYouTube = function( link ){
@@ -363,8 +361,9 @@ $field['wrapper']['data-video'] = '';
             })
         });
         </script>
+        @endLoadOnce
 
     @endpush
-@endif
+
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
