@@ -17,25 +17,25 @@ trait Update
      * Update a row in the database.
      *
      * @param  int  $id  The entity's id
-     * @param  array  $data  All inputs to be updated.
+     * @param  array  $input  All inputs to be updated.
      * @return object
      */
-    public function update($id, $data)
+    public function update($id, $input)
     {
-        $data = $this->decodeJsonCastedAttributes($data);
-        $data = $this->compactFakeFields($data);
+        $input = $this->decodeJsonCastedAttributes($input);
+        $input = $this->compactFakeFields($input);
         $item = $this->model->findOrFail($id);
 
-        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
+        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
 
-        $relation_data = $this->getRelationDetailsFromInput($data);
+        $relation_input = $this->getRelationDetailsFromInput($input);
 
         // handle the creation of the model relations.
-        $this->createRelationsForItem($item, $relation_data);
+        $this->createRelationsForItem($item, $relation_input);
 
         $field_names_to_exclude = $this->getFieldNamesToExcludeFromInput($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
 
-        $updated = $item->update(Arr::except($data, $field_names_to_exclude));
+        $updated = $item->update(Arr::except($input, $field_names_to_exclude));
 
         return $item;
     }

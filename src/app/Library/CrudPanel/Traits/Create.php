@@ -21,24 +21,24 @@ trait Create
     /**
      * Insert a row in the database.
      *
-     * @param  array  $data  All input values to be inserted.
+     * @param  array  $input  All input values to be inserted.
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create($data)
+    public function create($input)
     {
-        $data = $this->decodeJsonCastedAttributes($data);
-        $data = $this->compactFakeFields($data);
+        $input = $this->decodeJsonCastedAttributes($input);
+        $input = $this->compactFakeFields($input);
 
-        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
+        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
 
         $field_names_to_exclude = $this->getFieldNamesToExcludeFromInput($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
 
-        $item = $this->model->create(Arr::except($data, $field_names_to_exclude));
+        $item = $this->model->create(Arr::except($input, $field_names_to_exclude));
 
-        $relation_data = $this->getRelationDetailsFromInput($data);
+        $relation_input = $this->getRelationDetailsFromInput($input);
 
         // handle the creation of the model relations after the main entity is created.
-        $this->createRelationsForItem($item, $relation_data);
+        $this->createRelationsForItem($item, $relation_input);
 
         return $item;
     }
