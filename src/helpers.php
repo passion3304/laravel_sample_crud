@@ -278,3 +278,20 @@ if (! function_exists('old_empty_or_null')) {
         return null;
     }
 }
+
+if (! function_exists('is_multidimensional_array')) {
+    /**
+     * If any of the items inside a given array is an array, the array is considered multidimensional. 
+     * 
+     * @param  array  $array
+     * @return bool
+     */
+    function is_multidimensional_array(array $array) {
+        foreach($array as $item) {
+            if(is_array($item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}

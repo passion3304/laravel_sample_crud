@@ -31,7 +31,7 @@ trait Create
 
         $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
 
-        $field_names_to_exclude = $this->getFieldNamesArray($this->relationFieldsWithoutRelationType('BelongsTo', true));
+        $field_names_to_exclude = $this->getFieldNamesToExcludeFromInput($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
 
         $item = $this->model->create(Arr::except($data, $field_names_to_exclude));
 
@@ -88,7 +88,7 @@ trait Create
     }
 
     /**
-     * Create any existing one to one relations for the current model from the relation data.
+     * Create relations for the provided model
      *
      * @param  \Illuminate\Database\Eloquent\Model  $item  The current CRUD model.
      * @param  array  $formattedRelations  The form data.
@@ -104,9 +104,9 @@ trait Create
                 continue;
             }
             $relation = $item->{$relationMethod}();
-            $relation_type = $relationDetails['relation_type'];
+            $relationType = $relationDetails['relation_type'];
 
-            switch ($relation_type) {
+            switch ($relationType) {
                 case 'BelongsTo':
                     $modelInstance = $relationDetails['model']::find($relationDetails['values'])->first();
                     if ($modelInstance != null) {
@@ -115,20 +115,19 @@ trait Create
                         $relation->dissociate()->save();
                     }
                     break;
-
                 case 'HasOne':
-                case 'MorphOne':
+                case 'MorphOne': 
                         $modelInstance = $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
                     break;
                 case 'HasMany':
                 case 'MorphMany':
-                    $relation_values = $relationDetails['values'][$relationMethod];
+                    $relationValues = $relationDetails['values'][$relationMethod];
                     // if relation values are null we can only attach, also we check if we sent
                     // - a single dimensional array: [1,2,3]
                     // - an array of arrays: [[1][2][3]]
                     // if is as single dimensional array we can only attach.
-                    if ($relation_values === null || count($relation_values) == count($relation_values, COUNT_RECURSIVE)) {
-                        $this->attachManyRelation($item, $relation, $relationDetails, $relation_values);
+                    if ($relationValues === null || !is_multidimensional_array($relationValues)) {
+                        $this->attachManyRelation($item, $relation, $relationDetails, $relationValues);
                     } else {
                         $this->createManyEntries($item, $relation, $relationMethod, $relationDetails);
                     }
@@ -138,22 +137,21 @@ trait Create
                     $values = $relationDetails['values'][$relationMethod] ?? [];
                     $values = is_string($values) ? json_decode($values, true) : $values;
 
-                    $relation_data = [];
-
-                    foreach ($values as $value) {
-                        if (! isset($value[$relationMethod])) {
-                            continue;
+                    $relationValues = [];
+                    
+                    if (is_multidimensional_array($values)) {
+                        foreach ($values as $value) {
+                            $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
                         }
-                        $relation_data[$value[$relationMethod]] = Arr::except($value, $relationMethod);
                     }
 
                     // if there is no relation data, and the values array is single dimensional we have
                     // an array of keys with no aditional pivot data. sync those.
-                    if (empty($relation_data) && count($values) === count($values, COUNT_RECURSIVE)) {
-                        $relation_data = array_values($values);
+                    if (empty($relationValues)) {
+                        $relationValues = array_values($values);
                     }
-
-                    $item->{$relationMethod}()->sync($relation_data);
+                    
+                    $item->{$relationMethod}()->sync($relationValues);
                     break;
             }
 
@@ -205,7 +203,7 @@ trait Create
             }
 
             // Scenario C (when it's an array inside an array, because it's been added as one item inside a repeatable field)
-            if (gettype($relationMethodValue) == 'array' && count($relationMethodValue) != count($relationMethodValue, COUNT_RECURSIVE)) {
+            if (gettype($relationMethodValue) == 'array' && is_multidimensional_array($relationMethodValue)) {
                 return $relation->updateOrCreate([], current($relationMethodValue));
             }
         }
@@ -370,7 +368,15 @@ trait Create
         return $relationDetails;
     }
 
-    protected function getFieldNamesArray($fields)
+    /**
+     * Returns an array of names from the provided array of fields to be excluded from the request input.
+     * It takes into account dot notation field names as beeing "grouped fields" in the request eg: address => [city => city1, postal_code => 123342-23]
+     * So we return only `address` to exclude the whole group from the request input.
+     * 
+     * @param array $fields - the fields from where the name would be returned.
+     * @return array
+     */
+    private function getFieldNamesToExcludeFromInput($fields)
     {
         return array_unique(
             // we check if any of the field names to be removed contains a dot, if so, we remove all fields from array with same key.

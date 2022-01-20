@@ -563,7 +563,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                         'street' => 'test2',
                         'number' => 2,
                     ],
-
                 ],
                 'bangs' => [1, 2],
                 'bangsPivot' => [
@@ -584,6 +583,42 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($account_details->bangs->first()->name, Bang::find(1)->name);
         $this->assertEquals($account_details->bangsPivot->count(), 2);
         $this->assertEquals($account_details->bangsPivot->first()->pivot->pivot_field, 'test1');
+
+        // Now test the remove process
+
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'roles'          => [1, 2],
+            'accountDetails' => [
+                'nickname' => 'i_have_has_one',
+                'profile_picture' => 'ohh my picture 1.jpg',
+                'article' => 1,
+                'addresses' => [ // HasOne is tested in other test function
+                    [
+                    'city' => 'test',
+                    'street' => 'test',
+                    'number' => 1,
+                    ],
+                    [
+                        'city' => 'test2',
+                        'street' => 'test2',
+                        'number' => 2,
+                    ],
+                ],
+                'bangs' => [],
+                'bangsPivot' => [],
+            ],
+        ];
+
+        $entry = $this->crudPanel->update($entry->id, $inputData);
+        $account_details = $entry->accountDetails()->first();
+        $this->assertEquals($account_details->addresses->count(), 2);
+        $this->assertEquals($account_details->bangs->count(), 0);
+        $this->assertEquals($account_details->bangsPivot->count(), 0);
+
     }
 
     public function testMorphOneRelationship()

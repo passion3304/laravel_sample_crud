@@ -123,7 +123,7 @@ trait Relationships
      * @param  string|array  $relations  - the relations to exclude
      * @param  bool  $include_nested  - if the nested relations of the same relations should be excluded too.
      */
-    protected function relationFieldsWithoutRelationType($relations, $include_nested = false)
+    private function getRelationFieldsWithoutRelationType($relations, $include_nested = false)
     {
         if (! is_array($relations)) {
             $relations = [$relations];

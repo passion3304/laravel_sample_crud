@@ -33,7 +33,7 @@ trait Update
         // handle the creation of the model relations.
         $this->createRelationsForItem($item, $relation_data);
 
-        $field_names_to_exclude = $this->getFieldNamesArray($this->relationFieldsWithoutRelationType('BelongsTo', true));
+        $field_names_to_exclude = $this->getFieldNamesToExcludeFromInput($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
 
         $updated = $item->update(Arr::except($data, $field_names_to_exclude));
 
