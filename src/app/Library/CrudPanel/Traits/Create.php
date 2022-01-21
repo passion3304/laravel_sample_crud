@@ -31,7 +31,7 @@ trait Create
 
         $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
 
-        $field_names_to_exclude = $this->getFieldNamesToExcludeFromInput($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
+        $field_names_to_exclude = $this->getFieldNamesBeforeFirstDot($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
 
         $item = $this->model->create(Arr::except($input, $field_names_to_exclude));
 
@@ -369,24 +369,22 @@ trait Create
     }
 
     /**
-     * Returns an array of names from the provided array of fields to be excluded from the request input.
-     * It takes into account dot notation field names as beeing "grouped fields" in the request eg: address => [city => city1, postal_code => 123342-23]
-     * So we return only `address` to exclude the whole group from the request input.
+     * Returns an array of field names, after we keep only what's before the dots.
+     * Field names that use dot notation are considered as being "grouped fields"
+     * eg: address.city, address.postal_code
+     * And for all those fields, this function will only return one field name (what is before the dot).
      *
      * @param  array  $fields  - the fields from where the name would be returned.
      * @return array
      */
-    private function getFieldNamesToExcludeFromInput($fields)
+    private function getFieldNamesBeforeFirstDot($fields)
     {
-        return array_unique(
-            // we check if any of the field names to be removed contains a dot, if so, we remove all fields from array with same key.
-            // example: HasOne Address -> address.street, address.country, would remove whole `address` instead of both single fields
-            array_map(function ($field_name) {
-                if (Str::contains($field_name, '.')) {
-                    return Str::before($field_name, '.');
-                }
+        $field_names_array = [];
 
-                return $field_name;
-            }, Arr::pluck($fields, 'name')));
+        foreach($fields as $field) {
+            $field_names_array[] = Str::before($field['name'], '.');
+        }
+
+        return array_unique($field_names_array);
     }
 }
