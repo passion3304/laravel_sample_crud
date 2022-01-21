@@ -11,7 +11,7 @@
     }
 
     if(!empty($column['value'])) {
-        $column['text'] = $column['prefix'].Illuminate\Mail\Markdown::parse($column['value']).$column['suffix'];
+        $column['text'] = $column['prefix'].Illuminate\Support\Str::markdown($column['value']).$column['suffix'];
     }
 @endphp
 
