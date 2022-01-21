@@ -15,7 +15,7 @@
     }
 
     $field['store_as_json'] = $field['store_as_json'] ?? false;
-    $field_language = isset($field['address_google_options']['language']) ? $field['address_google_options']['language'] : null;
+    $field_language = $field['language'] ?? \App::getLocale();
 
 ?>
 
