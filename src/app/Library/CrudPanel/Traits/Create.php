@@ -326,14 +326,14 @@ trait Create
     {
         $relationFields = $this->getRelationFields();
 
-        //remove fields that are not in the submitted form input
-        $relationFields = array_filter($relationFields, function ($item) use ($input) {
-            return Arr::has($input, $item['name']);
-        });
-
         // exclude the already attached belongs to relations in the main entry but include nested belongs to.
         $relationFields = Arr::where($relationFields, function ($field, $key) {
             return $field['relation_type'] !== 'BelongsTo' || ($field['relation_type'] === 'BelongsTo' && Str::contains($field['name'], '.'));
+        });
+
+        //remove fields that are not in the submitted form input
+        $relationFields = array_filter($relationFields, function ($field) use ($input) {
+            return Arr::has($input, $field['name']);    
         });
 
         $relationDetails = [];
@@ -387,4 +387,5 @@ trait Create
 
         return array_unique($field_names_array);
     }
+
 }
