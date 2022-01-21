@@ -32,7 +32,7 @@
         }
     ],
     "require": {
-        "laravel/framework": "^9.0|^8.0",
+        "laravel/framework": "^9.0|^8.26",
         "prologue/alerts": "^1.0|^0.4",
         "digitallyhappy/assets": "^2.0.1",
         "creativeorange/gravatar": "~1.0",
