@@ -381,7 +381,7 @@ trait Create
     {
         $field_names_array = [];
 
-        foreach($fields as $field) {
+        foreach ($fields as $field) {
             $field_names_array[] = Str::before($field['name'], '.');
         }
 
