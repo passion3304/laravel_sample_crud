@@ -333,7 +333,7 @@ trait Create
 
         //remove fields that are not in the submitted form input
         $relationFields = array_filter($relationFields, function ($field) use ($input) {
-            return Arr::has($input, $field['name']);    
+            return Arr::has($input, $field['name']);
         });
 
         $relationDetails = [];
@@ -387,5 +387,4 @@ trait Create
 
         return array_unique($field_names_array);
     }
-
 }

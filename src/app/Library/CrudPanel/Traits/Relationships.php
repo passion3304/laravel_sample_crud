@@ -74,7 +74,7 @@ trait Relationships
      * relations - it will NOT look through relationships of relationships.
      *
      * @param  string|array  $relation_types  Eloquent relation class or array of Eloquent relation classes. Eg: BelongsTo
-     * @param bool  $nested  Should nested fields be included
+     * @param  bool  $nested  Should nested fields be included
      * @return array The fields with corresponding relation types.
      */
     public function getFieldsWithRelationType($relation_types, $nested = false): array
@@ -84,9 +84,10 @@ trait Relationships
         return collect($this->getCleanStateFields())
             ->whereIn('relation_type', $relation_types)
             ->filter(function ($item) use ($nested) {
-                if($nested) {
+                if ($nested) {
                     return true;
                 }
+
                 return Str::contains($item['entity'], '.') ? false : true;
             })
             ->toArray();
@@ -147,18 +148,17 @@ trait Relationships
 
     /**
      * Changes the BelongsTo names in the input from request to allways
-     * have the foreign_key instead of the relation name. 
+     * have the foreign_key instead of the relation name.
      * It only changes main relations not nested.
-     * 
+     *
      * eg: user -> user_id
      */
     private function changeBelongsToNamesFromRelationshipToForeignKey($input)
     {
         $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
         foreach ($belongs_to_fields as $relation_field) {
-           
             $name_for_sub = $this->getOverwrittenNameForBelongsTo($relation_field);
-            
+
             if (Arr::has($input, $relation_field['name']) && $relation_field['name'] !== $name_for_sub) {
                 Arr::set($input, $name_for_sub, Arr::get($input, $relation_field['name']));
                 Arr::forget($input, $relation_field['name']);
@@ -240,16 +240,17 @@ trait Relationships
 
     /**
      * Return the name for the BelongTo relation making sure it always has the foreign_key instead of relationName
-     * eg: user - user_id OR address.country - address.country_id
-     * 
-     * @param array $field The field we want to get the name from
+     * eg: user - user_id OR address.country - address.country_id.
+     *
+     * @param  array  $field  The field we want to get the name from
      */
-    private function getOverwrittenNameForBelongsTo($field) {
-        
+    private function getOverwrittenNameForBelongsTo($field)
+    {
         $relation = $this->getRelationInstance($field);
-        if(Str::contains($field['name'], '.')) {
+        if (Str::contains($field['name'], '.')) {
             return Str::beforeLast($field['name'], '.').'.'.$relation->getForeignKeyName();
         }
+
         return $relation->getForeignKeyName();
-}
+    }
 }
