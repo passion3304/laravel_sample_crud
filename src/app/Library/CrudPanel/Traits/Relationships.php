@@ -248,15 +248,14 @@ trait Relationships
     {
         $relation = $this->getRelationInstance($field);
 
-        if(Str::afterLast($field['name'], '.') === $relation->getRelationName()) {
+        if (Str::afterLast($field['name'], '.') === $relation->getRelationName()) {
             if (Str::contains($field['name'], '.')) {
                 return Str::beforeLast($field['name'], '.').'.'.$relation->getForeignKeyName();
             }
+
             return $relation->getForeignKeyName();
         }
 
         return $field['name'];
-
-        
     }
 }
