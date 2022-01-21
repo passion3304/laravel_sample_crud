@@ -129,6 +129,13 @@
                         }
                     }
                 });
+                
+                element.keydown(function(e) {
+                    if ($('.pac-container').is(':visible') && e.keyCode == 13) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
 
                 // Make sure pac container is closed on modals (inline create)
                 let modal = document.querySelector('.modal-dialog');
