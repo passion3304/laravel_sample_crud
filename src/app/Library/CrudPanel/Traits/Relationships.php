@@ -30,7 +30,7 @@ trait Relationships
             return $relation;
         }
 
-        abort(500, "Did not find a matching relationship. Are you sure that ".get_class($model)." has the {$field['entity']}() relationship on it?");
+        abort(500, 'Did not find a matching relationship. Are you sure that '.get_class($model)." has the {$field['entity']}() relationship on it?");
     }
 
     /**
