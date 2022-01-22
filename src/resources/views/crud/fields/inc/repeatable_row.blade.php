@@ -21,9 +21,13 @@
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
             }
-            // all subfields are considered text fields if not otherwise specified
-            $subfield['type'] = $subfield['type'] ?? 'text';
-            $subfield['entity'] = $subfield['entity'] ?? false;
+            // if a model was defined on the repeatable field
+            // use that as the baseModel for all subfields
+            // so that guessing of subfield attributes is
+            // done starting from that model
+            if (isset($field['model'])) {
+                $subfield['baseModel'] = $field['model'];
+            }
             $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
             $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
             $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];
