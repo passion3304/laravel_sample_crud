@@ -26,7 +26,7 @@
             // so that guessing of subfield attributes is
             // done starting from that model
             if (isset($field['model'])) {
-                $subfield['baseModel'] = $field['model'];
+                $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
             }
             $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
             $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';

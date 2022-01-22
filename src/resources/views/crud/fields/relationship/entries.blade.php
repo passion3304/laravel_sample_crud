@@ -25,6 +25,7 @@
     $pivotSelectorField['minimum_input_length'] = $pivotSelectorField['minimum_input_length'] ?? 2;
     $pivotSelectorField['delay'] = $pivotSelectorField['delay'] ?? 500;
     $pivotSelectorField['placeholder'] = $pivotSelectorField['placeholder'] ?? trans('backpack::crud.select_entry');
+    $pivotSelectorField['baseModel'] = $pivotSelectorField['baseModel'] ?? get_class($crud->model);
     
     switch ($field['relation_type']) {
         case 'MorphToMany':
