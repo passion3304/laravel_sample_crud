@@ -21,22 +21,24 @@ trait Create
     /**
      * Insert a row in the database.
      *
-     * @param  array  $data  All input values to be inserted.
+     * @param  array  $input  All input values to be inserted.
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create($data)
+    public function create($input)
     {
-        $data = $this->decodeJsonCastedAttributes($data);
-        $data = $this->compactFakeFields($data);
-        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
+        $input = $this->decodeJsonCastedAttributes($input);
+        $input = $this->compactFakeFields($input);
 
-        // omit the n-n relationships when updating the eloquent item
-        $nn_relationships = Arr::pluck($this->getRelationFieldsWithPivot(), 'name');
+        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
 
-        $item = $this->model->create(Arr::except($data, $nn_relationships));
+        $field_names_to_exclude = $this->getFieldNamesBeforeFirstDot($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
 
-        // if there are any relationships available, also sync those
-        $this->createRelations($item, $data);
+        $item = $this->model->create(Arr::except($input, $field_names_to_exclude));
+
+        $relation_input = $this->getRelationDetailsFromInput($input);
+
+        // handle the creation of the model relations after the main entity is created.
+        $this->createRelationsForItem($item, $relation_input);
 
         return $item;
     }
@@ -86,76 +88,7 @@ trait Create
     }
 
     /**
-     * Create the relations for the current model.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $item  The current CRUD model.
-     * @param  array  $data  The form data.
-     */
-    public function createRelations($item, $data)
-    {
-        $this->syncPivot($item, $data);
-        $this->createOneToOneRelations($item, $data);
-    }
-
-    /**
-     * Sync the declared many-to-many associations through the pivot field.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model  The current CRUD model.
-     * @param  array  $input  The form input.
-     */
-    public function syncPivot($model, $input)
-    {
-        $fields_with_pivot = $this->getRelationFieldsWithPivot();
-
-        //remove fields that are not in the submitted form input
-        $fields_with_pivot = array_filter($fields_with_pivot, function ($item) use ($input) {
-            return Arr::has($input, $item['name']);
-        });
-
-        foreach ($fields_with_pivot as $key => $field) {
-            $values = $input[$field['name']] ?? [];
-
-            // if a JSON was passed instead of an array, turn it into an array
-            if (is_string($values)) {
-                $values = json_decode($values, true);
-            }
-
-            $relation_data = [];
-            if (isset($field['subfields'])) {
-                foreach ($values as $pivot_row) {
-                    $relation_data[$pivot_row[$field['name']]] = Arr::except($pivot_row, $field['name']);
-                }
-            }
-
-            // if there is no relation data, and the values array is single dimensional we have
-            // an array of keys with no aditional pivot data. sync those.
-            if (empty($relation_data) && count($values) == count($values, COUNT_RECURSIVE)) {
-                $relation_data = array_values($values);
-            }
-
-            $model->{$field['name']}()->sync($relation_data);
-
-            if (isset($field['morph']) && $field['morph'] && isset($input[$field['name']])) {
-                $values = $input[$field['name']];
-                $model->{$field['name']}()->sync($values);
-            }
-        }
-    }
-
-    /**
-     * Create any existing one to one relations for the current model from the form data.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $item  The current CRUD model.
-     * @param  array  $input  The form data.
-     */
-    private function createOneToOneRelations($item, $input)
-    {
-        $relationDetails = $this->getRelationDetailsFromInput($input);
-        $this->createRelationsForItem($item, $relationDetails);
-    }
-
-    /**
-     * Create any existing one to one relations for the current model from the relation data.
+     * Create relations for the provided model.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $item  The current CRUD model.
      * @param  array  $formattedRelations  The form data.
@@ -170,30 +103,58 @@ trait Create
             if (! isset($relationDetails['model'])) {
                 continue;
             }
-            $model = $relationDetails['model'];
             $relation = $item->{$relationMethod}();
+            $relationType = $relationDetails['relation_type'];
 
-            if ($relation instanceof BelongsTo) {
-                $modelInstance = $model::find($relationDetails['values'])->first();
-                if ($modelInstance != null) {
-                    $relation->associate($modelInstance)->save();
-                } else {
-                    $relation->dissociate()->save();
-                }
-            } elseif ($relation instanceof HasOne || $relation instanceof MorphOne) {
-                $modelInstance = $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
-            } elseif ($relation instanceof HasMany || $relation instanceof MorphMany) {
-                $relation_values = $relationDetails['values'][$relationMethod];
-                // if relation values are null we can only attach, also we check if we sent
-                // - a single dimensional array: [1,2,3]
-                // - an array of arrays: [[1][2][3]]
-                // if is as single dimensional array we can only attach.
-                if ($relation_values === null || count($relation_values) == count($relation_values, COUNT_RECURSIVE)) {
-                    $this->attachManyRelation($item, $relation, $relationDetails, $relation_values);
-                } else {
-                    $this->createManyEntries($item, $relation, $relationMethod, $relationDetails);
-                }
+            switch ($relationType) {
+                case 'BelongsTo':
+                    $modelInstance = $relationDetails['model']::find($relationDetails['values'])->first();
+                    if ($modelInstance != null) {
+                        $relation->associate($modelInstance)->save();
+                    } else {
+                        $relation->dissociate()->save();
+                    }
+                    break;
+                case 'HasOne':
+                case 'MorphOne':
+                        $modelInstance = $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
+                    break;
+                case 'HasMany':
+                case 'MorphMany':
+                    $relationValues = $relationDetails['values'][$relationMethod];
+                    // if relation values are null we can only attach, also we check if we sent
+                    // - a single dimensional array: [1,2,3]
+                    // - an array of arrays: [[1][2][3]]
+                    // if is as single dimensional array we can only attach.
+                    if ($relationValues === null || ! is_multidimensional_array($relationValues)) {
+                        $this->attachManyRelation($item, $relation, $relationDetails, $relationValues);
+                    } else {
+                        $this->createManyEntries($item, $relation, $relationMethod, $relationDetails);
+                    }
+                    break;
+                case 'BelongsToMany':
+                case 'MorphToMany':
+                    $values = $relationDetails['values'][$relationMethod] ?? [];
+                    $values = is_string($values) ? json_decode($values, true) : $values;
+
+                    $relationValues = [];
+
+                    if (is_multidimensional_array($values)) {
+                        foreach ($values as $value) {
+                            $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
+                        }
+                    }
+
+                    // if there is no relation data, and the values array is single dimensional we have
+                    // an array of keys with no aditional pivot data. sync those.
+                    if (empty($relationValues)) {
+                        $relationValues = array_values($values);
+                    }
+
+                    $item->{$relationMethod}()->sync($relationValues);
+                    break;
             }
+
             if (isset($relationDetails['relations'])) {
                 $this->createRelationsForItem($modelInstance, ['relations' => $relationDetails['relations']]);
             }
@@ -242,7 +203,7 @@ trait Create
             }
 
             // Scenario C (when it's an array inside an array, because it's been added as one item inside a repeatable field)
-            if (gettype($relationMethodValue) == 'array' && count($relationMethodValue) != count($relationMethodValue, COUNT_RECURSIVE)) {
+            if (gettype($relationMethodValue) == 'array' && is_multidimensional_array($relationMethodValue)) {
                 return $relation->updateOrCreate([], current($relationMethodValue));
             }
         }
@@ -363,16 +324,16 @@ trait Create
      */
     private function getRelationDetailsFromInput($input)
     {
-        $relationFields = $this->getRelationFieldsWithoutPivot();
-
-        //remove fields that are not in the submitted form input
-        $relationFields = array_filter($relationFields, function ($item) use ($input) {
-            return Arr::has($input, $item['name']);
-        });
+        $relationFields = $this->getRelationFields();
 
         // exclude the already attached belongs to relations in the main entry but include nested belongs to.
         $relationFields = Arr::where($relationFields, function ($field, $key) {
             return $field['relation_type'] !== 'BelongsTo' || ($field['relation_type'] === 'BelongsTo' && Str::contains($field['name'], '.'));
+        });
+
+        //remove fields that are not in the submitted form input
+        $relationFields = array_filter($relationFields, function ($field) use ($input) {
+            return Arr::has($input, $field['name']);
         });
 
         $relationDetails = [];
@@ -391,6 +352,7 @@ trait Create
             $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($field['name'], -1);
             $fieldDetails['entity'] = $fieldDetails['entity'] ?? $field['entity'];
             $fieldDetails['attribute'] = $fieldDetails['attribute'] ?? $field['attribute'];
+            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type'];
             $fieldDetails['values'][$attributeName] = Arr::get($input, $field['name']);
 
             if (isset($field['fallback_id'])) {
@@ -404,5 +366,25 @@ trait Create
         }
 
         return $relationDetails;
+    }
+
+    /**
+     * Returns an array of field names, after we keep only what's before the dots.
+     * Field names that use dot notation are considered as being "grouped fields"
+     * eg: address.city, address.postal_code
+     * And for all those fields, this function will only return one field name (what is before the dot).
+     *
+     * @param  array  $fields  - the fields from where the name would be returned.
+     * @return array
+     */
+    private function getFieldNamesBeforeFirstDot($fields)
+    {
+        $field_names_array = [];
+
+        foreach ($fields as $field) {
+            $field_names_array[] = Str::before($field['name'], '.');
+        }
+
+        return array_unique($field_names_array);
     }
 }

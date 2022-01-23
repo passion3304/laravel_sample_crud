@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\Article;
+use Backpack\CRUD\Tests\Unit\Models\Bang;
 use Backpack\CRUD\Tests\Unit\Models\Comet;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
 use Backpack\CRUD\Tests\Unit\Models\Universe;
@@ -380,63 +381,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEmpty($relationFields);
     }
 
-    public function testSyncPivot()
-    {
-        $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsManyToMany);
-        $faker = Factory::create();
-        $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
-            'remember_token' => null,
-            'roles'          => [1, 2],
-        ];
-
-        $entry = User::find(1);
-        $this->crudPanel->syncPivot($entry, $inputData);
-
-        $this->assertEquals($inputData['roles'], $entry->roles->pluck('id')->toArray());
-    }
-
-    public function testSyncPivotUnknownData()
-    {
-        $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->nonRelationshipField);
-        $faker = Factory::create();
-        $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
-            'remember_token' => null,
-            'roles'          => [1, 2],
-        ];
-
-        $entry = User::find(1);
-        $this->crudPanel->syncPivot($entry, $inputData);
-
-        $this->assertEquals(1, $entry->roles->count());
-    }
-
-    public function testSyncPivotUnknownModel()
-    {
-        $this->expectException(\BadMethodCallException::class);
-
-        $this->crudPanel->setModel(User::class);
-        $this->crudPanel->addFields($this->userInputFieldsManyToMany);
-        $faker = Factory::create();
-        $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
-            'remember_token' => null,
-            'roles'          => [1, 2],
-        ];
-
-        $entry = Article::find(1);
-        $this->crudPanel->syncPivot($entry, $inputData);
-    }
-
     public function testMorphToManySelectableRelationship()
     {
         $this->crudPanel->setModel(User::class);
@@ -569,6 +513,31 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             [
                 'name' => 'accountDetails.article',
             ],
+            [
+                'name' => 'accountDetails.addresses',
+                'subfields' => [
+                    [
+                        'name' => 'city',
+                    ],
+                    [
+                        'name' => 'street',
+                    ],
+                    [
+                        'name' => 'number',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'accountDetails.bangs',
+            ],
+            [
+                'name' => 'accountDetails.bangsPivot',
+                'subfields' => [
+                    [
+                        'name' => 'pivot_field',
+                    ],
+                ],
+            ],
         ]);
 
         $faker = Factory::create();
@@ -583,6 +552,23 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'nickname' => 'i_have_has_one',
                 'profile_picture' => 'ohh my picture 1.jpg',
                 'article' => 1,
+                'addresses' => [
+                    [
+                        'city' => 'test',
+                        'street' => 'test',
+                        'number' => 1,
+                    ],
+                    [
+                        'city' => 'test2',
+                        'street' => 'test2',
+                        'number' => 2,
+                    ],
+                ],
+                'bangs' => [1, 2],
+                'bangsPivot' => [
+                    ['bangsPivot' => 1, 'pivot_field' => 'test1'],
+                    ['bangsPivot' => 2, 'pivot_field' => 'test2'],
+                ],
             ],
         ];
 
@@ -590,6 +576,48 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->article, Article::find(1));
+        $this->assertEquals($account_details->addresses->count(), 2);
+        $this->assertEquals($account_details->addresses->first()->city, 'test');
+        $this->assertEquals($account_details->addresses->first()->street, 'test');
+        $this->assertEquals($account_details->addresses->first()->number, 1);
+        $this->assertEquals($account_details->bangs->first()->name, Bang::find(1)->name);
+        $this->assertEquals($account_details->bangsPivot->count(), 2);
+        $this->assertEquals($account_details->bangsPivot->first()->pivot->pivot_field, 'test1');
+
+        // Now test the remove process
+
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'roles'          => [1, 2],
+            'accountDetails' => [
+                'nickname' => 'i_have_has_one',
+                'profile_picture' => 'ohh my picture 1.jpg',
+                'article' => 1,
+                'addresses' => [ // HasOne is tested in other test function
+                    [
+                        'city' => 'test',
+                        'street' => 'test',
+                        'number' => 1,
+                    ],
+                    [
+                        'city' => 'test2',
+                        'street' => 'test2',
+                        'number' => 2,
+                    ],
+                ],
+                'bangs' => [],
+                'bangsPivot' => [],
+            ],
+        ];
+
+        $entry = $this->crudPanel->update($entry->id, $inputData);
+        $account_details = $entry->accountDetails()->first();
+        $this->assertEquals($account_details->addresses->count(), 2);
+        $this->assertEquals($account_details->bangs->count(), 0);
+        $this->assertEquals($account_details->bangsPivot->count(), 0);
     }
 
     public function testMorphOneRelationship()
