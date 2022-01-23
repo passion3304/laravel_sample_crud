@@ -17,7 +17,7 @@ trait Relationships
     {
         $entity = $this->getOnlyRelationEntity($field);
         $possible_method = Str::before($entity, '.');
-        $model = $this->model;
+        $model = isset($field['baseModel']) ? app($field['baseModel']) : $this->model;
 
         if (method_exists($model, $possible_method)) {
             $parts = explode('.', $entity);
@@ -29,6 +29,8 @@ trait Relationships
 
             return $relation;
         }
+
+        abort(500, 'Did not find a matching relationship. Are you sure that '.get_class($model)." has the {$field['entity']}() relationship on it?");
     }
 
     /**

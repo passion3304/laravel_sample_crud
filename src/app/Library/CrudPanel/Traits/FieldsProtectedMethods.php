@@ -127,6 +127,8 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasEntity($field)
     {
+        $model = isset($field['baseModel']) ? app($field['baseModel']) : $this->model;
+
         if (isset($field['entity'])) {
             return $field;
         }
@@ -140,15 +142,15 @@ trait FieldsProtectedMethods
         if (strpos($field['name'], '.') !== false) {
             $possibleMethodName = Str::of($field['name'])->before('.');
             // if it has parameters it's not a relation method.
-            $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $field['name'];
+            $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $field['name'];
 
             return $field;
         }
 
         // if there's a method on the model with this name
-        if (method_exists($this->model, $field['name'])) {
+        if (method_exists($model, $field['name'])) {
             // if it has parameters it's not a relation method.
-            $field['entity'] = $this->modelMethodHasParameters($this->model, $field['name']) ? false : $field['name'];
+            $field['entity'] = $this->modelMethodHasParameters($model, $field['name']) ? false : $field['name'];
 
             return $field;
         }
@@ -158,9 +160,9 @@ trait FieldsProtectedMethods
         if (Str::endsWith($field['name'], '_id')) {
             $possibleMethodName = Str::replaceLast('_id', '', $field['name']);
 
-            if (method_exists($this->model, $possibleMethodName)) {
+            if (method_exists($model, $possibleMethodName)) {
                 // if it has parameters it's not a relation method.
-                $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $possibleMethodName;
+                $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $possibleMethodName;
 
                 return $field;
             }
