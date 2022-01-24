@@ -156,6 +156,37 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($account_details->nickname, $account_details_nickname);
     }
 
+    public function testCreateWithOneToOneRelationshipUsingRepeatableInterface()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField([
+            'name' => 'accountDetails',
+            'fields' => [
+                [
+                    'name' => 'nickname',
+                ],
+                [
+                    'name' => 'profile_picture',
+                ],
+            ],
+        ]);
+        $faker = Factory::create();
+        $account_details_nickname = $faker->name;
+        $inputData = [
+            'name'     => $faker->name,
+            'email'    => $faker->safeEmail,
+            'password' => bcrypt($faker->password()),
+            'accountDetails' => [
+                ['nickname' => $account_details_nickname, 'profile_picture' => 'test.jpg'],
+            ],
+        ];
+        $entry = $this->crudPanel->create($inputData);
+        $account_details = $entry->accountDetails()->first();
+
+        $this->assertEquals($account_details->nickname, $account_details_nickname);
+    }
+
     public function testCreateBelongsToWithRelationName()
     {
         $this->crudPanel->setModel(Article::class);
@@ -440,7 +471,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
-        $this->crudPanel->addField(['name' => 'recommends', 'pivotFields' => [
+        $this->crudPanel->addField(['name' => 'recommends', 'subfields' => [
             [
                 'name' => 'text',
             ],
@@ -488,7 +519,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addField([
             'name' => 'superArticles',
-            'pivotFields' => [
+            'subfields' => [
                 [
                     'name' => 'notes',
                 ],
@@ -597,7 +628,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
             'name'    => 'stars',
-            'pivotFields' => [
+            'subfields' => [
                 [
                     'name' => 'title',
                 ],
@@ -647,7 +678,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
             'name'    => 'universes',
-            'pivotFields' => [
+            'subfields' => [
                 [
                     'name' => 'title',
                 ],

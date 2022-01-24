@@ -1,6 +1,6 @@
 <!-- select_and_order -->
 @php
-    $values = old($field['name']) ?? $field['value'] ?? $field['default'] ?? [];
+    $values = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
     $values = (array)$values;
 @endphp
 
@@ -11,7 +11,7 @@
          data-init-function="bpFieldInitSelectAndOrderElement"
          data-all-options='@json($field['options'])'
          data-field-name="{{ $field['name'] }}">
-        <div class="col-md-12">
+        <div class="col-md-12 d-flex justify-content-between">
             <ul data-identifier="drag-destination" class="{{ $field['name'] }}_connectedSortable select_and_order_selected float-left"></ul>
             <ul data-identifier="drag-source" class="{{ $field['name'] }}_connectedSortable select_and_order_all float-right"></ul>
 
@@ -84,9 +84,15 @@
             border: 1px dashed #3c8dbc;
             visibility: visible!important;
         }
-        .ui-sortable-handle {
-            -ms-touch-action: none;
-            touch-action: none;
+        /* Touch device */
+        @media (hover: none) and (pointer: coarse) {
+            .select_and_order_all {
+                border: 1px solid #e6e6e6;
+            }
+            .select_and_order_all li,
+            .select_and_order_selected li {
+                width: 90%;
+            }
         }
     </style>
     @endLoadOnce
@@ -95,6 +101,8 @@
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
 @loadOnce('packages/jquery-ui-dist/jquery-ui.min.js')
+@loadOnce('packages/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js')
+
 @loadOnce('bpFieldInitSelectAndOrderElement')
 <script>
   function bpFieldInitSelectAndOrderElement(element) {
