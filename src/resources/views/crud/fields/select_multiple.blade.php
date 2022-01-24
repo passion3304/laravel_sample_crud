@@ -10,7 +10,7 @@
     $field['value'] = old_empty_or_null($field['name'], collect()) ??  $field['value'] ?? $field['default'] ?? collect();
 
     if(!empty($field['value'])) {
-         $field['value'] = $options->whereIn((new $field['model'])->getKeyName(), $field['value']);
+        $field['value'] = $options->whereIn((new $field['model'])->getKeyName(), ($field['value'])->modelKeys());
     }
 @endphp
 
