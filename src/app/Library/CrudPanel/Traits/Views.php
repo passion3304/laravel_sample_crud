@@ -275,4 +275,40 @@ trait Views
     {
         return $this->getEditContentClass();
     }
+
+
+    // -------
+    // FIELDS
+    // -------
+    /**
+     * Get the first view path that exists for a certain field. If a viewNamespace is given
+     * (second parameter) look there and stop. Otherwise, look in all directories
+     * configured in backpack.crud.view_namespaces.fields
+     *
+     * @param  string           $viewPath      Path to field view (starting from /fields/..)
+     * @param  boolean|string   $viewNamespace Optional override, to use this namespace instead of the viewstack.
+     * @return string
+     */
+    public static function getFirstFieldView($viewPath, $viewNamespace = false)
+    {
+        // if a definite namespace was given, use that one
+        if ($viewNamespace) {
+            return $viewNamespace.'.'.$path;
+        }
+
+        // otherwise, loop through all the possible view namespaces
+        // until you find a view that exists
+        $paths = array_map(function ($item) use ($viewPath) {
+            return $item.'.'.$viewPath;
+        }, config('backpack.crud.view_namespaces.fields'));
+
+        foreach ($paths as $path) {
+            if (view()->exists($path)) {
+                return $path;
+            }
+        }
+
+        // if no view exists, in any of the directories above... no bueno
+        abort(500, "Cannot find '{$viewPath}' field view in any of the regular locations.");
+    }
 }
