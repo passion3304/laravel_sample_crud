@@ -302,7 +302,7 @@ if (! function_exists('backpack_pro')) {
     /**
      * Check if the backpack/pro package is installed.
      *
-     * @return boolean
+     * @return bool
      */
     function backpack_pro()
     {
