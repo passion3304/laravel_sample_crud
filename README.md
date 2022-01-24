@@ -31,8 +31,9 @@
 </p>
 
 
-Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its features:
+Quickly build an admin interface for your Eloquent models. Then customize every little detail. 
 
+Among its FREE features:
 - List operation
    - 24+ column types
    - 1-1, 1-n and n-n relationships
@@ -40,19 +41,19 @@ Quickly build an admin interface for your Eloquent models. Then customize every 
    - click column header to sort by it
    - custom buttons
    - details row
-   - bulk actions
    - easily create new column types
    - easily overwrite an existing column type
 - Create / Update operations
-   - 50+ field types
+   - 29+ field types
    - back-end validation using Laravel Form Requests
    - translatable models (multi-language)
    - have multiple fields per line
    - split fields into tabs
-- Delete / Bulk Delete operations
-- Clone / Bulk Clone operations
+- Delete operation
 - Reorder operation
 - Revisions operation (audit log)
+
+> Need more complex features? Check out [bakckpack/pro](), our closed-source paid add-on. It will add 28 more field types, 6 more column types, 6 more filter types, 1 more widget type and 5 more operations, that you can use in your Backpack admin panel.
 
 But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to overwrite a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
 
@@ -115,11 +116,9 @@ Special thanks go to:
 
 ## License
 
-Backpack is dual-license: 
-- FREE for non-commercial use
-- PAID for commercial use
-
-Please see the [License File](LICENSE.md) and [Pricing](https://backpackforlaravel.com/pricing) for more information.
+Starting with v4.2, Backpack has become open-core. Its features have been separated into two packages:
+- Backpack\CRUD is licensed under the [MIT License](LICENSE.md) (open-source free software);
+- Backpack\Pro is licensed under our [EULA](https://backpackforlaravel.com/eula) (closed-source paid add-on);
 
 <a name="versioning"></a>
 ## Versioning
