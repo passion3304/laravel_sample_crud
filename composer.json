@@ -22,11 +22,11 @@
         "content management framework"
     ],
     "homepage": "https://github.com/laravel-backpack/CRUD",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Cristian Tabacitu",
-            "email": "tabacitu@backpackforlaravel.com",
+            "email": "cristian.tabacitu@backpackforlaravel.com",
             "homepage": "https://backpackforlaravel.com",
             "role": "Creator & Maintainer"
         }
