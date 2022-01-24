@@ -297,3 +297,15 @@ if (! function_exists('is_multidimensional_array')) {
         return false;
     }
 }
+
+if (! function_exists('backpack_pro')) {
+    /**
+     * Check if the backpack/pro package is installed.
+     *
+     * @return boolean
+     */
+    function backpack_pro()
+    {
+        return \Composer\InstalledVersions::isInstalled('backpack/pro');
+    }
+}

@@ -95,7 +95,7 @@ trait ColumnsProtectedMethods
         $could_be_relation = Arr::get($column, 'entity', false) !== false;
 
         if ($could_be_relation) {
-            $column['type'] = 'relationship';
+            $column['type'] = $this->inferFieldTypeFromRelationType($column['relation_type']);
         }
 
         if (in_array($column['name'], $this->model->getDates())) {
@@ -261,6 +261,22 @@ trait ColumnsProtectedMethods
         // get it from the relation method defined in the main model
         if (isset($column['entity']) && $column['entity'] !== false && ! isset($column['model'])) {
             $column['model'] = $this->getRelationModel($column['entity']);
+        }
+
+        return $column;
+    }
+
+    /**
+     * If an entity has been defined for the column, but no relation type,
+     * determine the relation type from that relationship.
+     *
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with model.
+     */
+    protected function makeSureColumnHasRelationType($column)
+    {
+        if (isset($column['entity']) && $column['entity'] !== false) {
+            $column['relation_type'] = $column['relation_type'] ?? $this->inferRelationTypeFromRelationship($column);
         }
 
         return $column;

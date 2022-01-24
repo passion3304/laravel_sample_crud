@@ -363,9 +363,10 @@ trait Columns
         $column = $this->makeSureColumnHasKey($column);
         $column = $this->makeSureColumnHasLabel($column);
         $column = $this->makeSureColumnHasEntity($column);
+        $column = $this->makeSureColumnHasModel($column);
+        $column = $this->makeSureColumnHasRelationType($column);
         $column = $this->makeSureColumnHasType($column);
         $column = $this->makeSureColumnHasPriority($column);
-        $column = $this->makeSureColumnHasModel($column);
 
         if (isset($column['entity']) && $column['entity'] !== false) {
             $column['relation_type'] = $this->inferRelationTypeFromRelationship($column);

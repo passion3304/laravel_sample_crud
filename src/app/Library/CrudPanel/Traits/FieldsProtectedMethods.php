@@ -210,10 +210,31 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasType($field)
     {
         if (! isset($field['type'])) {
-            $field['type'] = isset($field['relation_type']) ? 'relationship' : $this->inferFieldTypeFromDbColumnType($field['name']);
+            $field['type'] = isset($field['relation_type']) ? $this->inferFieldTypeFromRelationType($field['relation_type']) : $this->inferFieldTypeFromDbColumnType($field['name']);
         }
 
         return $field;
+    }
+
+    protected function inferFieldTypeFromRelationType($relationType)
+    {
+        if (backpack_pro()) {
+            return 'relationship';
+        }
+
+        switch ($relationType) {
+            case 'BelongsTo':
+                return 'select';
+                break;
+
+            case 'BelongsToMany':
+            case 'MorphToMany':
+                return 'select_multiple';
+
+            default:
+                return 'text';
+                break;
+        }
     }
 
     /**
