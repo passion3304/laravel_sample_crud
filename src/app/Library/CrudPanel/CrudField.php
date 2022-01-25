@@ -209,13 +209,7 @@ class CrudField
      */
     private function save()
     {
-        $key = $this->attributes['name'];
-
-        if ($this->crud()->hasFieldWhere('name', $key)) {
-            $this->crud()->modifyField($key, $this->attributes);
-        } else {
-            $this->crud()->addField($this->attributes);
-        }
+        $this->crud()->addField($this->attributes);
 
         return $this;
     }
