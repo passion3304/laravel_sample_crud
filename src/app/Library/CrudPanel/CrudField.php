@@ -176,6 +176,21 @@ class CrudField
         return $this->save();
     }
 
+    /**
+     * When subfields are defined, pass them through the guessing function
+     * so that they have label, relationship attributes, etc.
+     *
+     * @param  array $subfields Subfield definition array
+     * @return self
+     */
+    public function subfields($subfields)
+    {
+        $this->attributes['subfields'] = $subfields;
+        $this->attributes = $this->crud()->makeSureSubfieldsHaveNecessaryAttributes($this->attributes);
+
+        return $this->save();
+    }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------
@@ -209,7 +224,13 @@ class CrudField
      */
     private function save()
     {
-        $this->crud()->addField($this->attributes);
+        $key = $this->attributes['name'];
+
+        if ($this->crud()->hasFieldWhere('name', $key)) {
+            $this->crud()->modifyField($key, $this->attributes);
+        } else {
+            $this->crud()->addField($this->attributes);
+        }
 
         return $this;
     }
