@@ -220,12 +220,12 @@ trait FieldsProtectedMethods
      * If a field has subfields, go through each subfield and guess
      * its attribute, filling in whatever is missing.
      *
-     * @param  array $field Field definition array.
-     * @return array        The improved definition of that field (a better 'subfields' array)
+     * @param  array  $field  Field definition array.
+     * @return array The improved definition of that field (a better 'subfields' array)
      */
     protected function makeSureSubfieldsHaveNecessaryAttributes($field)
     {
-        if (!isset($field['subfields'])) {
+        if (! isset($field['subfields'])) {
             return $field;
         }
 
