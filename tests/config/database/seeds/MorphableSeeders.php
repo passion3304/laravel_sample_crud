@@ -44,5 +44,7 @@ class MorphableSeeders extends Seeder
         ]]);
 
         DB::table('comets')->insert([['user_id' => ''], ['user_id' => '']]);
+
+        DB::table('bangs')->insert([['name' => 'bang1'], ['name' => 'bang2']]);
     }
 }

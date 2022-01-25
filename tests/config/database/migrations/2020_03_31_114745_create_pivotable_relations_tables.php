@@ -79,6 +79,24 @@ class CreatePivotableRelationsTables extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->default(0);
         });
+
+        Schema::create('bangs', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+        });
+
+        Schema::create('account_details_bang', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('account_details_id');
+            $table->bigInteger('bang_id');
+        });
+
+        Schema::create('account_details_bangs_pivot', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('account_details_id');
+            $table->bigInteger('bang_id');
+            $table->string('pivot_field');
+        });
     }
 
     public function down()
@@ -93,5 +111,8 @@ class CreatePivotableRelationsTables extends Migration
         Schema::dropIfExists('planets');
         Schema::dropIfExists('universes');
         Schema::dropIfExists('comets');
+        Schema::dropIfExists('account_details_bang');
+        Schema::dropIfExists('bangs');
+        Schema::dropIfExists('account_details_bangs_pivot');
     }
 }

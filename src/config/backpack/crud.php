@@ -452,4 +452,19 @@ return [
         // "zu" => "Zulu"
     ],
 
+    'view_namespaces' => [
+        'buttons' => [
+            'crud::buttons', // falls back to 'resources/views/vendor/backpack/crud/buttons'
+        ],
+        'columns' => [
+            'crud::columns', // falls back to 'resources/views/vendor/backpack/crud/columns'
+        ],
+        'fields' => [
+            'crud::fields', // falls back to 'resources/views/vendor/backpack/crud/fields'
+        ],
+        'filters' => [
+            'crud::filters', // falls back to 'resources/views/vendor/backpack/crud/filters'
+        ],
+    ],
+
 ];

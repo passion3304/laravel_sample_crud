@@ -1,4 +1,3 @@
-
 @if ($hidden ?? false)
 <div class="d-none">
 @endif
@@ -22,9 +21,18 @@
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
             }
-            // all subfields are considered text fields if not otherwise specified
-            $subfield['type'] = $subfield['type'] ?? 'text';
-            $subfield['entity'] = $subfield['entity'] ?? false;
+
+            if (!isset($field['model'])) {
+                // we're inside a simple 'repeatable' with no model/relationship, so
+                // we assume all subfields are supposed to be text fields
+                $subfield['type'] = $subfield['type'] ?? 'text';
+                $subfield['entity'] = $subfield['entity'] ?? false;
+            } else {
+                // we should use 'model' as the `baseModel` for all subfields, so that when
+                // we look if `category()` relationship exists on the model, we look on
+                // the model this repeatable represents, not the main CRUD model
+                $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
+            }
             $subfield = $crud->makeSureFieldHasNecessaryAttributes($subfield);
             $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
             $fieldViewPath = $fieldViewNamespace.'.'.$subfield['type'];

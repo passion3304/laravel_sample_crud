@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Speichern und neu',
     'save_action_save_and_edit'        => 'Speichern und bearbeiten',
     'save_action_save_and_back'        => 'Speichern und zurück',
+    'save_action_save_and_preview'     => 'Speichern & Vorschau',
     'save_action_changed_notification' => 'Standardverhalten nach dem Speichern wurde geändert.',
 
     // Create form
@@ -37,12 +38,16 @@ return [
     'all'                       => 'Alle ',
     'in_the_database'           => 'in der Datenbank',
     'list'                      => 'Liste',
+    'reset'                     => 'Zurücksetzen',
     'actions'                   => 'Aktionen',
     'preview'                   => 'Vorschau',
     'delete'                    => 'Löschen',
     'admin'                     => 'Admin',
     'details_row'               => 'Diese Zeile zeigt die Details und kann nach Belieben geändert werden.',
     'details_row_loading_error' => 'Beim Laden der Details ist ein Fehler aufgetreten. Bitte versuche es noch einmal.',
+    'clone'                     => 'Duplizieren',
+    'clone_success'             => '<strong>Eintrag dupliziert</strong><br>Ein neuer Eintrag wurde mit den selben Informationen erstellt.',
+    'clone_failure'             => '<strong>Duplizieren fehlgeschlagen</strong><br>Der neue Eintrag konnte nicht erstellt werden. Bitte versuche es erneut.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Soll dieser Eintrag wirklich gelöscht werden?',
