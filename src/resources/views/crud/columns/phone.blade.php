@@ -4,7 +4,7 @@
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
-    $column['limit'] = $column['limit'] ?? 40;
+    $column['limit'] = $column['limit'] ?? 32;
     $column['text'] = $column['default'] ?? '-';
 
     if($column['value'] instanceof \Closure) {
