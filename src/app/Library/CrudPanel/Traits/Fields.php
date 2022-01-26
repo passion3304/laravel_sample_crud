@@ -56,6 +56,7 @@ trait Fields
         }
 
         $field = $this->makeSureFieldHasType($field);
+        $field = $this->makeSureSubfieldsHaveNecessaryAttributes($field);
 
         return $field;
     }
