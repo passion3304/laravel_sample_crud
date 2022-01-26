@@ -223,7 +223,7 @@ trait FieldsProtectedMethods
      * @param  array  $field  Field definition array.
      * @return array The improved definition of that field (a better 'subfields' array)
      */
-    public function makeSureSubfieldsHaveNecessaryAttributes($field)
+    protected function makeSureSubfieldsHaveNecessaryAttributes($field)
     {
         if (! isset($field['subfields'])) {
             return $field;

@@ -186,7 +186,7 @@ class CrudField
     public function subfields($subfields)
     {
         $this->attributes['subfields'] = $subfields;
-        $this->attributes = $this->crud()->makeSureSubfieldsHaveNecessaryAttributes($this->attributes);
+        $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
 
         return $this->save();
     }
