@@ -206,9 +206,6 @@ trait Search
     {
         $row_items = [];
 
-        // add an empty first column to support details row and/or data table modal
-        $row_items[] = '';
-
         foreach ($this->columns() as $key => $column) {
             $row_items[] = $this->getCellView($column, $entry, $rowNumber);
         }

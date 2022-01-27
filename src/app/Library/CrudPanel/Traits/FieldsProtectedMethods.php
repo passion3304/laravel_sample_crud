@@ -238,6 +238,44 @@ trait FieldsProtectedMethods
     }
 
     /**
+     * If a field has subfields, go through each subfield and guess
+     * its attribute, filling in whatever is missing.
+     *
+     * @param  array  $field  Field definition array.
+     * @return array The improved definition of that field (a better 'subfields' array)
+     */
+    protected function makeSureSubfieldsHaveNecessaryAttributes($field)
+    {
+        if (! isset($field['subfields'])) {
+            return $field;
+        }
+
+        foreach ($field['subfields'] as $key => $subfield) {
+            // make sure the field definition is an array
+            if (is_string($subfield)) {
+                $subfield = ['name' => $subfield];
+            }
+
+            if (! isset($field['model'])) {
+                // we're inside a simple 'repeatable' with no model/relationship, so
+                // we assume all subfields are supposed to be text fields
+                $subfield['type'] = $subfield['type'] ?? 'text';
+                $subfield['entity'] = $subfield['entity'] ?? false;
+            } else {
+                // we should use 'model' as the `baseModel` for all subfields, so that when
+                // we look if `category()` relationship exists on the model, we look on
+                // the model this repeatable represents, not the main CRUD model
+                $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
+                $subfield['baseEntity'] = $subfield['baseEntity'] ?? $field['entity'];
+            }
+
+            $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
+        }
+
+        return $field;
+    }
+
+    /**
      * Enable the tabs functionality, if a field has a tab defined.
      *
      * @param  array  $field  Field definition array.

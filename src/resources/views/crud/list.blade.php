@@ -55,21 +55,6 @@
           cellspacing="0">
             <thead>
               <tr>
-              <th 
-                data-orderable="false"
-                data-priority="1"
-                data-visible-in-table="false"
-                data-visible="true"
-                data-can-be-visible-in-table="true"
-                data-visible-in-modal="false"
-                data-visible-in-export="false">
-
-                {{-- Bulk checkbox --}}
-                @if($crud->getOperationSetting('bulkActions'))
-                  {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
-                @endif
-              </th>
-
                 {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
                   <th
@@ -111,6 +96,10 @@
                        @endif
                     @endif
                   >
+                    {{-- Bulk checkbox --}}
+                    @if($loop->first && $crud->getOperationSetting('bulkActions'))
+                      {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
+                    @endif
                     {!! $column['label'] !!}
                   </th>
                 @endforeach
@@ -127,16 +116,13 @@
             </tbody>
             <tfoot>
               <tr>
-                <th>
-                  {{-- Bulk checkbox --}}
-                  @if($crud->getOperationSetting('bulkActions'))
-                    {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
-                  @endif
-                </th>
-
                 {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
                   <th>
+                    {{-- Bulk checkbox --}}
+                    @if($loop->first && $crud->getOperationSetting('bulkActions'))
+                      {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
+                    @endif
                     {!! $column['label'] !!}
                   </th>
                 @endforeach
