@@ -26,23 +26,30 @@ trait Create
      */
     public function create($input)
     {
-        $input = $this->decodeJsonCastedAttributes($input);
-        $input = $this->compactFakeFields($input);
-
-        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
-
-        $field_names_to_exclude = $this->getFieldNamesBeforeFirstDot($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
-
-        $item = $this->model->create(Arr::except($input, $field_names_to_exclude));
-
-        $relation_input = $this->getRelationDetailsFromInput($input);
-
-        // handle the creation of the model relations after the main entity is created.
-        $this->createRelationsForItem($item, $relation_input);
+        [$directInputs, $relationInputs] = $this->getParsedInputs($input);
+        $item = $this->model->create($directInputs);
+        $this->createRelationsForItem($item, $relationInputs);
 
         return $item;
     }
 
+    /**
+     * Returns the attributes with relationships stripped out from the input
+     * 
+     * @param array $input
+     * @param mixed $model
+     * 
+     * @return array
+     */
+    public function getDirectParsedInput($input, $model = false) {
+        $input = $this->decodeJsonCastedAttributes($input, $model);
+        $input = $this->compactFakeFields($input);
+        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
+        
+        $field_names_to_exclude = $this->getFieldNamesBeforeFirstDot($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
+
+        return Arr::except($input, $field_names_to_exclude);
+    }
     /**
      * Get all fields needed for the ADD NEW ENTRY form.
      *
@@ -210,6 +217,15 @@ trait Create
 
         // Scenario A or B
         return $relation->updateOrCreate([], $relationDetails['values']);
+    /**
+     * Returns the direct inputs parsed for model and relationship creation
+     * 
+     * @param array $inputs
+     * 
+     * @return array
+     */
+    private function getParsedInputs($inputs, $relationMethod = false) {
+        return [$this->getDirectParsedInput($inputs), $this->getRelationDetailsFromInput($inputs, $relationMethod)];
     }
 
     /**
