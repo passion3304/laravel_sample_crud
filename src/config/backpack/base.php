@@ -310,17 +310,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | License Code
+    | Backpack Token Username
     |--------------------------------------------------------------------------
     |
-    | If you, your employer or your client make money by using Backpack, you need
-    | to purchase a license. A license code will be provided after purchase,
-    | which you can put here or in your ENV file in staging & production.
+    | If you have access to closed-source Backpack add-ons, please provide
+    | your token username here, if you're getting yellow alerts on your
+    | admin panel's pages. Normally this is not needed, it is
+    | preferred to add this as an environment variable
+    | (most likely in your .env file).
     |
     | More info and payment form on:
     | https://www.backpackforlaravel.com
     |
     */
 
-    'license_code' => env('BACKPACK_LICENSE', false),
+    'token_username' => env('BACKPACK_TOKEN_USERNAME', false),
 ];
