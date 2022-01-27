@@ -1,19 +1,10 @@
-<?php
-
-// the field should work whether or not Laravel attribute casting is used
-
-if (isset($field['value'])) {
-	$field['value'] = json_encode($field['value']);
-}
-?>
-
 @include('crud::fields.inc.wrapper_start')
 <label>{!! $field['label'] !!}</label>
 @include('crud::fields.inc.translatable_icon')
 
 <div style="overflow: hidden">
     <input type="hidden"
-           value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+           value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? json_encode($field['value']) : (isset($field['default']) ? $field['default'] : '' )) }}"
            name="{{ $field['name'] }}">
     <input type="search"
            class="form-control"
