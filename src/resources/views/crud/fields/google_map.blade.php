@@ -2,7 +2,7 @@
 
 // the field should work whether or not Laravel attribute casting is used
 
-if (isset($field['value']) && (is_array($field['value']) || is_object($field['value']))) {
+if (isset($field['value'])) {
 	$field['value'] = json_encode($field['value']);
 }
 ?>
