@@ -310,7 +310,12 @@ trait Create
      * Handle HasMany/MorphMany relations when used as creatable entries in the crud.
      * By using repeatable field, developer can allow the creation of such entries
      * in the crud forms.
-     *
+     * 
+     * @param $entry - eg: story
+     * @param $relation - eg  story HasMany monsters
+     * @param $relationMethod - eg: monsters
+     * @param $relationDetails - eg: info about relation including submited values
+     * 
      * @return void
      */
     private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
