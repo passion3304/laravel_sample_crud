@@ -258,31 +258,44 @@ trait Create
      *
      * @return mixed
      */
-    private function attachManyRelation($item, $relation, $relationDetails, $relation_values)
+    private function attachManyRelation($item, $relation, $relationDetails, $relationValues)
     {
-        $model_instance = $relation->getRelated();
-        $relation_foreign_key = $relation->getForeignKeyName();
-        $relation_local_key = $relation->getLocalKeyName();
+        $modelInstance = $relation->getRelated();
+        $relationForeignKey = $relation->getForeignKeyName();
+        $relationLocalKey = $relation->getLocalKeyName();
 
-        if ($relation_values === null) {
+        if ($relationValues === null) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
-            $removed_entries = $model_instance->where($relation_foreign_key, $item->{$relation_local_key});
+            $removedEntries = $modelInstance->where($relationForeignKey, $item->{$relationLocalKey});
 
-            return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+            return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
         }
-        // we add the new values into the relation
-        $model_instance->whereIn($model_instance->getKeyName(), $relation_values)
-            ->update([$relation_foreign_key => $item->{$relation_local_key}]);
+        // we add the new values into the relation, if it is HasMany we only update the foreign_key,
+        // otherwise (it's a MorphMany) we need to update the morphs keys too
+        $toUpdate[$relationForeignKey] = $item->{$relationLocalKey};
+
+        if ($relationDetails['relation_type'] === 'MorphMany') {
+            $toUpdate[$relation->getQualifiedMorphType()] = $relation->getMorphClass();
+        }
+
+        $modelInstance->whereIn($modelInstance->getKeyName(), $relationValues)
+            ->update($toUpdate);
 
         // we clear up any values that were removed from model relation.
         // if developer provided a fallback id, we use it
         // if column is nullable we set it to null if developer didn't specify `force_delete => true`
         // if none of the above we delete the model from database
-        $removed_entries = $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
-                            ->where($relation_foreign_key, $item->{$relation_local_key});
+        $removedEntries = $modelInstance->whereNotIn($modelInstance->getKeyName(), $relationValues)
+                            ->where($relationForeignKey, $item->{$relationLocalKey});
 
-        return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+        // if relation is MorphMany we also match by morph type.
+        if ($relationDetails['relation_type'] === 'MorphMany') {
+            $removedEntries->where($relation->getQualifiedMorphType(), $relation->getMorphClass());
+        }
+
+        return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
+
     }
 
     private function handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key)
