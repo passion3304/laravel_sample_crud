@@ -82,11 +82,16 @@ trait Create
     /**
      * Get all fields with relation set (model key set on field).
      *
+     * @param array $fields
+     * 
      * @return array The fields with model key set.
      */
-    public function getRelationFields()
+    public function getRelationFields($fields = [])
     {
-        $fields = $this->getCleanStateFields();
+        if(empty($fields)) {
+            $fields = $this->getCleanStateFields();
+        }
+
         $relationFields = [];
 
         foreach ($fields as $field) {
