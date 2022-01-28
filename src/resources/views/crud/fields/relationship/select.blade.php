@@ -150,7 +150,7 @@
         var $isPivotSelect = element.data('is-pivot-select');
         
         const changePivotOptionState = function(pivot_selector, enable = true) {
-            let pivots_container = pivot_selector.closest('div[data-repeatable-holder='+pivot_selector.data('repeatable-input-name')+']');
+            let pivots_container = pivot_selector.closest('div[data-repeatable-holder="'+pivot_selector.data('repeatable-input-name')+'"]');
             
             $(pivots_container).children().each(function(i,container) {
                 $(container).find('select').each(function(i, el) {
@@ -158,10 +158,10 @@
                     if(typeof $(el).attr('data-is-pivot-select') !== 'undefined' && $(el).attr('data-is-pivot-select')) {
                         if(pivot_selector.val()) {
                             if(enable) {
-                                $(el).find('option[value='+pivot_selector.val()+']').prop('disabled',false);   
+                                $(el).find('option[value="'+pivot_selector.val()+'"]').prop('disabled',false);   
                             }else{
                                 if($(el).val() !== pivot_selector.val()) {
-                                    $(el).find('option[value='+pivot_selector.val()+']').prop('disabled',true);
+                                    $(el).find('option[value="'+pivot_selector.val()+'"]').prop('disabled',true);
                                 }
                             }
                         }
@@ -171,7 +171,7 @@
         };
 
         const disablePreviouslySelectedPivots = function(pivot_selector) {
-            let pivots_container = pivot_selector.closest('div[data-repeatable-holder='+pivot_selector.data('repeatable-input-name')+']');
+            let pivots_container = pivot_selector.closest('div[data-repeatable-holder="'+pivot_selector.data('repeatable-input-name')+'"]');
             let selected_values = [];
             let select_inputs = [];
             
@@ -189,7 +189,7 @@
             select_inputs.forEach(function(input) {
                 selected_values.forEach(function(value) {
                     if(value !== $(input).val()) {
-                        $(input).find('option[value='+value+']').prop('disabled',true);
+                        $(input).find('option[value="'+value+'"]').prop('disabled',true);
                     }
                 });
             });
