@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 trait FieldsProtectedMethods
 {
@@ -144,6 +145,10 @@ trait FieldsProtectedMethods
             // if it has parameters it's not a relation method.
             $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $field['name'];
 
+            if($field['entity']) {
+                $field['nestedEntity'] = $possibleMethodName;
+            }
+
             return $field;
         }
 
@@ -245,10 +250,32 @@ trait FieldsProtectedMethods
                 // we look if `category()` relationship exists on the model, we look on
                 // the model this repeatable represents, not the main CRUD model
                 $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
-                $subfield['baseEntity'] = $subfield['baseEntity'] ?? $field['entity'];
+                
+                $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
+                // chain the parent field baseEntity if it exists
+                $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity; 
             }
 
             $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
+        }
+
+        if(isset($field['relation_type'])) {
+            switch($field['relation_type']) {
+                case 'MorphToMany':
+                case 'BelongsToMany':
+                    $pivotSelectorField = static::getPivotFieldStructure($field);
+                    $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
+                    break;
+                case 'MorphMany':
+                case 'HasMany':
+                    $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
+                    $relationInstance = $this->getRelationInstance(['entity' => $entity]);
+                    $field['subfields'] = Arr::prepend($field['subfields'], [
+                        'name' => $relationInstance->getLocalKeyName(),
+                        'type' => 'hidden',
+                    ]);
+                break;
+            }
         }
 
         return $field;

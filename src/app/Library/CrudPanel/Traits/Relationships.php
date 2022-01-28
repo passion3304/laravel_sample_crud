@@ -264,4 +264,29 @@ trait Relationships
 
         return $field['name'];
     }
+    /**
+     * Returns the pivot definition for BelongsToMany/MorphToMany relation provided in $field
+     * 
+     * @param array $field
+     * 
+     * @return array
+     */
+    private static function getPivotFieldStructure($field) {
+        $pivotSelectorField['name'] = $field['name'];
+        $pivotSelectorField['type'] = 'relationship';
+        $pivotSelectorField['is_pivot_select'] = true;
+        $pivotSelectorField['multiple'] = false;
+        $pivotSelectorField['entity'] = $field['name'];
+        $pivotSelectorField['relation_type'] = $field['relation_type'];
+        $pivotSelectorField['model'] = $field['model'];
+       
+        if(isset($field['baseModel'])) {
+            $pivotSelectorField['baseModel'] = $field['baseModel'];
+        }
+        if(isset($field['baseEntity'])) {
+            $pivotSelectorField['baseEntity'] = $field['baseEntity'];
+        }
+
+        return $pivotSelectorField;
+    }
 }
