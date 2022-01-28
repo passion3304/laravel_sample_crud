@@ -220,15 +220,22 @@ trait Create
 
                 return null;
             }
-
+            
             // Scenario C (when it's an array inside an array, because it's been added as one item inside a repeatable field)
             if (gettype($relationMethodValue) == 'array' && is_multidimensional_array($relationMethodValue)) {
-                return $relation->updateOrCreate([], current($relationMethodValue));
+                $relationMethodValue = $relationMethodValue[0];          
             }
         }
+        // saving process       
+        [$directInputs, $relationInputs] = $this->getParsedInputs($relationMethodValue ?? $relationDetails['values'], $relationDetails['model'], $relationDetails['crudFields']);
+        
+        $item = $relation->updateOrCreate([], $directInputs);
+        
+        $this->createRelationsForItem($item, $relationInputs);
 
-        // Scenario A or B
-        return $relation->updateOrCreate([], $relationDetails['values']);
+        return $item;
+    }
+
     /**
      * Returns the direct inputs parsed for model and relationship creation
      * 
