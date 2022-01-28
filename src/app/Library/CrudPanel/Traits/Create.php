@@ -318,25 +318,33 @@ trait Create
      * 
      * @return void
      */
-    private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
+    private function createManyEntries($entry, $relation, $relationMethod, $relationDetails) 
     {
-        $items = $relationDetails['values'][$relationMethod];
+        $items = $relationDetails['values'][$relationMethod]; 
 
         $relation_local_key = $relation->getLocalKeyName();
 
-        $created_ids = [];
+        $relation_local_key_value = $item[$relation_local_key] ?? false;
+
+        $relatedItemsSent = [];
 
         foreach ($items as $item) {
-            if (isset($item[$relation_local_key]) && ! empty($item[$relation_local_key])) {
-                $entry->{$relationMethod}()->where($relation_local_key, $item[$relation_local_key])->update(Arr::except($item, $relation_local_key));
-            } else {
-                $created_ids[] = $entry->{$relationMethod}()->create($item)->{$relation_local_key};
-            }
+            // for each item we get the inputs to create and the relations of it.
+            [$directInputs, $relationInputs] = $this->getParsedInputs($item, $relationDetails['model'], $relationDetails['crudFields']);
+
+            // we either find the matched entry by local_key (usually `id`)
+            // and update the values from the input
+            // or create a new item from input
+            $item = $relation->firstOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
+
+            // we store the item local key do we can match them with database and check if any item was deleted 
+            $relatedItemsSent[] = $item->{$relation_local_key};
+
+            // create the item relations if any
+            $this->createRelationsForItem($item, $relationInputs);
         }
 
-        // get from $items the sent ids, and merge the ones created.
-        $relatedItemsSent = array_merge(array_filter(Arr::pluck($items, $relation_local_key)), $created_ids);
-
+        // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.
         if (! empty($relatedItemsSent)) {
             // we perform the cleanup of removed database items
             $entry->{$relationMethod}()->whereNotIn($relation_local_key, $relatedItemsSent)->delete();
