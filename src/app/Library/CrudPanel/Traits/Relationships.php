@@ -61,7 +61,8 @@ trait Relationships
 
     public function getOnlyRelationEntity($field)
     {
-        $model = $this->getRelationModel($field['entity'], -1);
+        $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
+        $model = $this->getRelationModel($entity, -1);
         $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.');
 
         if (! method_exists($model, $lastSegmentAfterDot)) {
@@ -149,24 +150,29 @@ trait Relationships
     }
 
     /**
-     * Changes the BelongsTo names in the input from request to allways
-     * have the foreign_key instead of the relation name.
-     * It only changes main relations not nested.
+     * Changes the BelongsTo names in the input from request to allways have the foreign_key instead of the relation name.
+     * When $belongs_to_fields are provided we will use those fields to replace relation names on the provided input.
      *
      * eg: user -> user_id
+     * 
+     * @param array $input
+     * @param array $belongsToFields
+     * 
+     * @return array
      */
-    private function changeBelongsToNamesFromRelationshipToForeignKey($input)
+    private function changeBelongsToNamesFromRelationshipToForeignKey($input, $belongs_to_fields)
     {
-        $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
+        if(empty($belongs_to_fields)) {
+            $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
+        }
         foreach ($belongs_to_fields as $relation_field) {
             $name_for_sub = $this->getOverwrittenNameForBelongsTo($relation_field);
-
-            if (Arr::has($input, $relation_field['name']) && $relation_field['name'] !== $name_for_sub) {
-                Arr::set($input, $name_for_sub, Arr::get($input, $relation_field['name']));
-                Arr::forget($input, $relation_field['name']);
+            $belongsToKey = Str::afterLast($relation_field['name'], '.');
+            if (Arr::has($input, $belongsToKey) && $belongsToKey !== $name_for_sub) {
+                Arr::set($input, $name_for_sub, Arr::get($input, $belongsToKey));
+                Arr::forget($input, $belongsToKey);
             }
         }
-
         return $input;
     }
 
@@ -242,19 +248,17 @@ trait Relationships
 
     /**
      * Return the name for the BelongTo relation making sure it always has the foreign_key instead of relationName
-     * eg: user - user_id OR address.country - address.country_id.
+     * eg: user - user_id
      *
      * @param  array  $field  The field we want to get the name from
+     * 
+     * @return string
      */
     private function getOverwrittenNameForBelongsTo($field)
     {
         $relation = $this->getRelationInstance($field);
 
         if (Str::afterLast($field['name'], '.') === $relation->getRelationName()) {
-            if (Str::contains($field['name'], '.')) {
-                return Str::beforeLast($field['name'], '.').'.'.$relation->getForeignKeyName();
-            }
-
             return $relation->getForeignKeyName();
         }
 
