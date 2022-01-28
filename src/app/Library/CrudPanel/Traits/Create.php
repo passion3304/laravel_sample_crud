@@ -243,8 +243,8 @@ trait Create
      * 
      * @return array
      */
-    private function getParsedInputs($inputs, $relationMethod = false) {
-        return [$this->getDirectParsedInput($inputs), $this->getRelationDetailsFromInput($inputs, $relationMethod)];
+    private function getParsedInputs($inputs, $model = false, $crudFields = []) {
+        return [$this->getDirectParsedInput($inputs, $model, $crudFields), $this->getRelationDetailsFromInput($inputs, $crudFields)];
     }
 
     /**
