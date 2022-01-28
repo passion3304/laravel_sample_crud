@@ -51,9 +51,9 @@ Quickly build an admin interface for your Eloquent models. Then customize every 
 - Reorder operation
 - Revisions operation (audit log)
 
-> Need more complex features? Purchase access to [backpack/pro](https://backpackforlaravel.com/pricing), our closed-source paid add-on. It will add **28 more fields, 6 more columns, 6 more filters, 1 more widget and 5 more operations**. Everything you need to build complex admin panels.
+> Need more complex features? Purchase access to [backpack/pro](https://backpackforlaravel.com/pricing), our closed-source paid add-on. It will add **5 more operations, 10 filters, 28 more fields, 6 more columns and 1 more widget**. We believe it's everything you need to build admin panels of _any_ complexity.
 
-But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to overwrite a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
+But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to override a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
 
 ## Screenshots
 
