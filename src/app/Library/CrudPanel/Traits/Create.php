@@ -138,17 +138,9 @@ trait Create
             $relationType = $relationDetails['relation_type'];
 
             switch ($relationType) {
-                case 'BelongsTo':
-                    $modelInstance = $relationDetails['model']::find($relationDetails['values'])->first();
-                    if ($modelInstance != null) {
-                        $relation->associate($modelInstance)->save();
-                    } else {
-                        $relation->dissociate()->save();
-                    }
-                    break;
                 case 'HasOne':
                 case 'MorphOne':
-                        $modelInstance = $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
+                        $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
                     break;
                 case 'HasMany':
                 case 'MorphMany':
@@ -184,10 +176,6 @@ trait Create
 
                     $item->{$relationMethod}()->sync($relationValues);
                     break;
-            }
-
-            if (isset($relationDetails['relations'])) {
-                $this->createRelationsForItem($modelInstance, ['relations' => $relationDetails['relations']]);
             }
         }
     }
