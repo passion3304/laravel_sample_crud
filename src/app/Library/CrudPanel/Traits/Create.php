@@ -41,9 +41,33 @@ trait Create
         $input = $this->compactFakeFields($input);
         $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
         
-        $field_names_to_exclude = $this->getFieldNamesBeforeFirstDot($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
 
+        $field_names_to_exclude = $this->getFieldsNamesToExclude($fields);
+                                
         return Arr::except($input, $field_names_to_exclude);
+    }
+
+    /**
+     * Returns the field names that should be excluded from entry saving
+     * Means: exclude all relations, except BelongsTo that were set with correct key.
+     * 
+     * @param array $fields
+     * 
+     * @return array
+     */
+    private function getFieldsNamesToExclude($fields) {
+        $fields = empty($fields) ? $this->getRelationFields() : $this->getRelationFields($fields);
+        $excludedFields = [];
+        foreach($fields as $field) {
+            if($field['relation_type'] === 'BelongsTo') {
+                $name_for_sub = $this->getOverwrittenNameForBelongsTo($field);
+                $belongsToKey = Str::afterLast($field['name'], '.');
+                if ($belongsToKey !== $name_for_sub) {
+                    $excludedFields[] = $field;
+                }
+            }
+        }
+        return array_column($excludedFields, 'name');
     }
     /**
      * Get all fields needed for the ADD NEW ENTRY form.
