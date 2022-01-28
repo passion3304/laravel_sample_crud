@@ -160,10 +160,14 @@ trait Relationships
      * 
      * @return array
      */
-    private function changeBelongsToNamesFromRelationshipToForeignKey($input, $belongs_to_fields)
+    private function changeBelongsToNamesFromRelationshipToForeignKey($input, $belongs_to_fields = [])
     {
         if(empty($belongs_to_fields)) {
             $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
+        }else{
+            $belongs_to_fields = array_filter($belongs_to_fields, function($field) {
+                return isset($field['relation_type']) && $field['relation_type'] === 'BelongsTo';
+            });
         }
         foreach ($belongs_to_fields as $relation_field) {
             $name_for_sub = $this->getOverwrittenNameForBelongsTo($relation_field);
