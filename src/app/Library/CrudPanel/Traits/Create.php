@@ -500,23 +500,4 @@ trait Create
         return $relationDetails;
     }
 
-    /**
-     * Returns an array of field names, after we keep only what's before the dots.
-     * Field names that use dot notation are considered as being "grouped fields"
-     * eg: address.city, address.postal_code
-     * And for all those fields, this function will only return one field name (what is before the dot).
-     *
-     * @param  array  $fields  - the fields from where the name would be returned.
-     * @return array
-     */
-    private function getFieldNamesBeforeFirstDot($fields)
-    {
-        $field_names_array = [];
-
-        foreach ($fields as $field) {
-            $field_names_array[] = Str::before($field['name'], '.');
-        }
-
-        return array_unique($field_names_array);
-    }
 }
