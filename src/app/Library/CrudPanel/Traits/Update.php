@@ -22,20 +22,13 @@ trait Update
      */
     public function update($id, $input)
     {
-        $input = $this->decodeJsonCastedAttributes($input);
-        $input = $this->compactFakeFields($input);
         $item = $this->model->findOrFail($id);
 
-        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
+        [$directInputs, $relationInputs] = $this->getParsedInputs($input);
 
-        $relation_input = $this->getRelationDetailsFromInput($input);
+        $updated = $item->update($directInputs);
 
-        // handle the creation of the model relations.
-        $this->createRelationsForItem($item, $relation_input);
-
-        $field_names_to_exclude = $this->getFieldNamesBeforeFirstDot($this->getRelationFieldsWithoutRelationType('BelongsTo', true));
-
-        $updated = $item->update(Arr::except($input, $field_names_to_exclude));
+        $this->createRelationsForItem($item, $relationInputs);
 
         return $item;
     }
