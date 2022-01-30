@@ -117,6 +117,25 @@ trait Create
         }
 
         return $excludedFields;
+
+    }
+
+    /**
+     * Returns the field name if the relation should be excluded otherwise false.
+     * The relation should be excluded when the belongsTo foreignKey does not match the 
+     * field name, eg: `user_id` would be keept, but `user` (relationName) would be removed
+     * 
+     * @param $array $field
+     * 
+     * @return mixed
+     */
+    private function shouldBelongsToRelationBeRemoved($field) {
+        $name_for_sub = $this->getOverwrittenNameForBelongsTo($field);
+        $belongsToKey = Str::afterLast($field['name'], '.');
+        if ($belongsToKey !== $name_for_sub) {
+            return $field['name'];
+        }
+        return false;
     }
     /**
      * Get all fields needed for the ADD NEW ENTRY form.
