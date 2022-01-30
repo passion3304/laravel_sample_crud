@@ -407,18 +407,17 @@ trait Create
 
         $relation_local_key = $relation->getLocalKeyName();
 
-        $relation_local_key_value = $item[$relation_local_key] ?? false;
-
         $relatedItemsSent = [];
 
         foreach ($items as $item) {
+            [$directInputs, $relationInputs] = $this->getParsedInputs($item, $relationDetails, $relationMethod);
             // for each item we get the inputs to create and the relations of it.
-            [$directInputs, $relationInputs] = $this->getParsedInputs($item, $relationDetails['model'], $relationDetails['crudFields']);
+            $relation_local_key_value = $item[$relation_local_key] ?? null;
 
             // we either find the matched entry by local_key (usually `id`)
             // and update the values from the input
             // or create a new item from input
-            $item = $relation->firstOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
+            $item = $relation->updateOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
 
             // we store the item local key do we can match them with database and check if any item was deleted 
             $relatedItemsSent[] = $item->{$relation_local_key};
