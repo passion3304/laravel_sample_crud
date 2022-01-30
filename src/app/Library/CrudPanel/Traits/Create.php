@@ -61,22 +61,62 @@ trait Create
      * Means: exclude all relations, except BelongsTo that were set with correct key.
      * 
      * @param array $fields
+     * @param mixed $relationMethod
      * 
      * @return array
      */
-    private function getFieldsNamesToExclude($fields) {
-        $fields = empty($fields) ? $this->getRelationFields() : $this->getRelationFields($fields);
+    private function getFieldsNamesToExclude($fields, $relationMethod) {
+        // when fields are empty we are in the main entity, we get the regular crud relation fields
+        if(empty($fields)) {
+            $fields = $this->getRelationFields();
+        }
+
         $excludedFields = [];
         foreach($fields as $field) {
-            if($field['relation_type'] === 'BelongsTo') {
-                $name_for_sub = $this->getOverwrittenNameForBelongsTo($field);
-                $belongsToKey = Str::afterLast($field['name'], '.');
-                if ($belongsToKey !== $name_for_sub) {
-                    $excludedFields[] = $field;
+            // when no method is set, we are excluding for the main entity, we want to exclude:
+            // - ALL relations except belongsTo that have the correct name.
+            if(!$relationMethod) {
+                if(isset($field['relation_type'])) {
+                    if($field['relation_type'] === 'BelongsTo') {
+                        $shouldRemove = $this->shouldBelongsToRelationBeRemoved($field);
+                        if ($shouldRemove) {
+                            $excludedFields[] = $field['name'];
+                            continue;
+                        }
+                        // if the belongsToKey match the field name substitution we don't want
+                        // to remove the field from the request.
+                        continue;
+                    }
+                }
+                $excludedFields[] = $field['name'];     
+            }else{
+                // strip the relation method from field name if exists
+                $field['name'] = Str::after($field['name'], $relationMethod.'.');
+               
+                if(isset($field['relation_type'])) {
+                    if($field['relation_type'] === 'BelongsTo') {
+                        $shouldRemove = $this->shouldBelongsToRelationBeRemoved($field);
+                        if ($shouldRemove) {
+                            $excludedFields[] = $field['name'];
+                            continue;
+                        }
+                        continue;
+                    }
+                   
+                    // we want to exlude other relations if they don't have the attribute in the relation string
+                    // eg: we want to exclude monster.address (monster hasOne in cave)
+                    // but want to keep monster.name (name is the attribute)
+                    if($this->getOnlyRelationEntity($field) === $field['entity']) {
+                        if(Str::before($field['entity'], '.') === $relationMethod) {
+                            $excludedFields[] = Str::afterLast($field['name'],'.');
+                            continue;
+                        }
+                    }
                 }
             }
         }
-        return array_column($excludedFields, 'name');
+
+        return $excludedFields;
     }
     /**
      * Get all fields needed for the ADD NEW ENTRY form.
