@@ -165,10 +165,17 @@ trait Relationships
         if(empty($belongs_to_fields)) {
             $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
         }else{
+            foreach($belongs_to_fields as $field) {
+                if(isset($field['subfields'])) {
+                    $belongs_to_fields = array_merge($field['subfields'], $belongs_to_fields);
+                }
+            }
             $belongs_to_fields = array_filter($belongs_to_fields, function($field) {
                 return isset($field['relation_type']) && $field['relation_type'] === 'BelongsTo';
             });
+            
         }
+
         foreach ($belongs_to_fields as $relation_field) {
             $name_for_sub = $this->getOverwrittenNameForBelongsTo($relation_field);
             $belongsToKey = Str::afterLast($relation_field['name'], '.');
@@ -268,6 +275,7 @@ trait Relationships
 
         return $field['name'];
     }
+
     /**
      * Returns the pivot definition for BelongsToMany/MorphToMany relation provided in $field
      * 
