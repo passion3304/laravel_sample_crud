@@ -498,11 +498,106 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals('my first article note', $entry->fresh()->superArticles->first()->pivot->notes);
     }
 
+    public function testCreateHasOneWithNestedRelationsRepeatableInterface()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField(
+            [
+                'name' => 'accountDetails',
+                'subfields' => [
+                    [
+                        'name' => 'nickname',
+                    ],
+                    [
+                        'name' => 'profile_picture',
+                    ],
+                    [
+                        'name' => 'article',
+                    ],
+                    [
+                        'name' => 'addresses',
+                        'subfields' => [
+                            [
+                                'name' => 'city',
+                            ],
+                            [
+                                'name' => 'street',
+                            ],
+                            [
+                                'name' => 'number',
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'bangs',
+                    ],
+                    [
+                        'name' => 'bangsPivot',
+                        'subfields' => [
+                            [
+                                'name' => 'pivot_field',
+                            ],
+                        ],
+                    ],
+                ]
+            ]);
+
+        $faker = Factory::create();
+
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'roles'          => [1, 2],
+            'accountDetails' => [
+                [
+                    'nickname' => 'i_have_has_one',
+                    'profile_picture' => 'ohh my picture 1.jpg',
+                    'article' => 1,
+                    'addresses' => [
+                        [
+                            'city' => 'test',
+                            'street' => 'test',
+                            'number' => 1,
+                        ],
+                        [
+                            'city' => 'test2',
+                            'street' => 'test2',
+                            'number' => 2,
+                        ],
+                    ],
+                    'bangs' => [1, 2],
+                    'bangsPivot' => [
+                        ['bangsPivot' => 1, 'pivot_field' => 'test1'],
+                        ['bangsPivot' => 2, 'pivot_field' => 'test2'],
+                    ],
+                ],
+            ]
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+        $account_details = $entry->accountDetails()->first();
+
+        $this->assertEquals($account_details->article, Article::find(1));
+        $this->assertEquals($account_details->addresses->count(), 2);
+        $this->assertEquals($account_details->addresses->first()->city, 'test');
+        $this->assertEquals($account_details->addresses->first()->street, 'test');
+        $this->assertEquals($account_details->addresses->first()->number, 1);
+        $this->assertEquals($account_details->bangs->first()->name, Bang::find(1)->name);
+        $this->assertEquals($account_details->bangsPivot->count(), 2);
+        $this->assertEquals($account_details->bangsPivot->first()->pivot->pivot_field, 'test1');
+
+        
+    }
+
     public function testCreateHasOneWithNestedRelations()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('create');
-
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addFields([
             [
                 'name' => 'accountDetails.nickname',
@@ -671,9 +766,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'remember_token' => null,
             'stars'          => [
                 [
+                    'id' => null,
                     'title' => 'this is the star 1 title',
                 ],
                 [
+                    'id' => null,
                     'title' => 'this is the star 2 title',
                 ],
             ],
