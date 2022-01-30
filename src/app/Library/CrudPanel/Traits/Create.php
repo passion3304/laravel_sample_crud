@@ -435,7 +435,7 @@ trait Create
 
     /**
      * Get a relation data array from the form data. For each relation defined in the fields
-     * through the entity attribute, set the model, parent model and attribute values.
+     * through the entity attribute, and set some relation details
      *
      * We traverse this relation array later to create the relations, for example:
      * - Current model HasOne Address
@@ -450,40 +450,74 @@ trait Create
      * will have a nested relation with country.
      *
      * @param  array  $input  The form input.
+     * @param array $crudFields - present when getting the relation details for other relations.
+     * @param mixed $relationMethod
+     * 
      * @return array The formatted relation details.
      */
-    private function getRelationDetailsFromInput($input)
+    private function getRelationDetailsFromInput($input, $crudFields = [], $relationMethod = false)
     {
-        $relationFields = $this->getRelationFields();
-
-        // exclude the already attached belongs to relations in the main entry but include nested belongs to.
-        $relationFields = Arr::where($relationFields, function ($field, $key) {
-            return $field['relation_type'] !== 'BelongsTo' || ($field['relation_type'] === 'BelongsTo' && Str::contains($field['name'], '.'));
-        });
+        // main entity
+        if(empty($crudFields)) {
+            $relationFields = $this->getRelationFields();          
+        }else{ 
+            // relations sends the fields that represent them so we can parse the input accordingly.      
+            $relationFields = $crudFields;
+           
+             foreach($crudFields as $key => $crudField) {
+                if(isset($crudField['subfields'])) {
+                    foreach($crudField['subfields'] as $crudSubField) {
+                        if(isset($crudSubField['relation_type'])) {
+                            $relationFields[] = $crudSubField;
+                        }
+                    }
+                }
+            } 
+        }
 
         //remove fields that are not in the submitted form input
         $relationFields = array_filter($relationFields, function ($field) use ($input) {
-            return Arr::has($input, $field['name']);
-        });
-
+            return Arr::has($input, $field['name']) || isset($input[$field['name']]) || Arr::has($input, Str::afterLast($field['name'], '.'));
+        });   
+       
         $relationDetails = [];
+        
         foreach ($relationFields as $field) {
-            // we split the entity into relations, eg: user.accountDetails.address
-            // (user -> HasOne accountDetails -> BelongsTo address)
-            // we specifically use only the relation entity because relations like
-            // HasOne and MorphOne use the attribute in the relation string
-            $key = implode('.relations.', explode('.', $this->getOnlyRelationEntity($field)));
+            // if relationMethod is set we strip it out of the fieldName that we use to create the relations array
+            $fieldName = $relationMethod ? Str::after($field['name'], $relationMethod.'.') : $field['name'];
+    
+            $key = Str::before($this->getOnlyRelationEntity(['entity' => $fieldName]),'.');
+
+            // if the field entity contains the attribute we want to add that attribute 
+            // in the correct relation key
+            if($this->getOnlyRelationEntity($field) !== $field['entity']) {
+                if(Str::before($field['entity'], '.') === $relationMethod) {
+                    $key = Str::before($this->getOnlyRelationEntity($field),'.');
+                }
+            }
+
             $attributeName = (string) Str::of($field['name'])->afterLast('.');
 
-            // since we can have for example 3 fields for address relation,
-            // we make sure that at least once we set the relation details
-            $fieldDetails = Arr::get($relationDetails, 'relations.'.$key, []);
+            switch($field['relation_type']) {
+                case 'BelongsTo': {
+                    // when it's a nested belongsTo relation we want to make sure 
+                    // the key used to store the values is the main relation key
+                    $key = Str::beforeLast($this->getOnlyRelationEntity($field), '.');  
+                }
+                break;
+            }
+
+            // we don't need to re-setup this relation method values, we just want the relations
+            if($key === $relationMethod) {
+                continue;
+            }
+           
+            $fieldDetails = Arr::get($relationDetails, $key, []);
+
+            $fieldDetails['values'][$attributeName] = Arr::get($input, $fieldName);
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
-            $fieldDetails['parent'] = $fieldDetails['parent'] ?? $this->getRelationModel($field['name'], -1);
-            $fieldDetails['entity'] = $fieldDetails['entity'] ?? $field['entity'];
-            $fieldDetails['attribute'] = $fieldDetails['attribute'] ?? $field['attribute'];
-            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type'];
-            $fieldDetails['values'][$attributeName] = Arr::get($input, $field['name']);
+            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type']; 
+            $fieldDetails['crudFields'][] = $field;
 
             if (isset($field['fallback_id'])) {
                 $fieldDetails['fallback_id'] = $field['fallback_id'];
@@ -492,10 +526,9 @@ trait Create
                 $fieldDetails['force_delete'] = $field['force_delete'];
             }
 
-            Arr::set($relationDetails, 'relations.'.$key, $fieldDetails);
+            Arr::set($relationDetails, $key, $fieldDetails);
         }
-
-        return $relationDetails;
+        return $relationDetails; 
     }
 
 }
