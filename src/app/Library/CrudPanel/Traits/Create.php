@@ -137,6 +137,7 @@ trait Create
         }
         return false;
     }
+
     /**
      * Get all fields needed for the ADD NEW ENTRY form.
      *
@@ -195,13 +196,12 @@ trait Create
      */
     private function createRelationsForItem($item, $formattedRelations)
     {
-        if (! isset($formattedRelations['relations'])) {
+        // no relations to create
+        if ( empty($formattedRelations)) {
             return false;
         }
-        foreach ($formattedRelations['relations'] as $relationMethod => $relationDetails) {
-            if (! isset($relationDetails['model'])) {
-                continue;
-            }
+
+        foreach ($formattedRelations as $relationMethod => $relationDetails) {
             $relation = $item->{$relationMethod}();
             $relationType = $relationDetails['relation_type'];
 
@@ -227,10 +227,10 @@ trait Create
                 case 'MorphToMany':
                     $values = $relationDetails['values'][$relationMethod] ?? [];
                     $values = is_string($values) ? json_decode($values, true) : $values;
-
+                
                     $relationValues = [];
 
-                    if (is_multidimensional_array($values)) {
+                    if (is_array($values) && is_multidimensional_array($values)) {
                         foreach ($values as $value) {
                             $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
                         }
