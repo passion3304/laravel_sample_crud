@@ -312,10 +312,9 @@ trait Create
      * @return array
      */
     private function getParsedInputs($inputs, $relationDetails = null, $relationMethod = false) {
-        $crudFields = $relationDetails['crudFields'] ?? $this->getFieldsFromInput($inputs);
+        $crudFields = $relationDetails['crudFields'] ?? [];
         $model = $relationDetails['model'] ?? false;
         return [$this->getDirectParsedInput($inputs, $model, $crudFields, $relationMethod), $this->getRelationDetailsFromInput($inputs, $crudFields, $relationMethod)];
-    }
     }
 
     /**
