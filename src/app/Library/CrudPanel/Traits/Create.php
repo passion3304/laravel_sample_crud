@@ -29,22 +29,31 @@ trait Create
     }
 
     /**
-     * Returns the attributes with relationships stripped out from the input
+     * Returns the attributes with relationships stripped out from the input.
+     * BelongsTo relations are ensured to have the correct foreign key set.
+     * ALL other relations are stripped from the input.
      * 
      * @param array $input
      * @param mixed $model
+     * @param array $fields
+     * @param mixed $relationMethod
      * 
      * @return array
      */
-    public function getDirectParsedInput($input, $model = false) {
+    public function getDirectParsedInput($input, $model = false, $fields = [], $relationMethod = false) {
+        $model = $model ? (is_string($model) ? app($model) : $model) : $this->model;
+
         $input = $this->decodeJsonCastedAttributes($input, $model);
         $input = $this->compactFakeFields($input);
-        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input);
         
+        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input, $fields);
+ 
+        $field_names_to_exclude = $this->getFieldsNamesToExclude($fields, $relationMethod);
+              
+        return Arr::where($input, function($item, $key) use ($field_names_to_exclude) {
+            return !in_array($key, $field_names_to_exclude); 
+        });
 
-        $field_names_to_exclude = $this->getFieldsNamesToExclude($fields);
-                                
-        return Arr::except($input, $field_names_to_exclude);
     }
 
     /**
