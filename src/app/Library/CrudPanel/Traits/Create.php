@@ -32,52 +32,51 @@ trait Create
      * Returns the attributes with relationships stripped out from the input.
      * BelongsTo relations are ensured to have the correct foreign key set.
      * ALL other relations are stripped from the input.
-     * 
-     * @param array $input
-     * @param mixed $model
-     * @param array $fields
-     * @param mixed $relationMethod
-     * 
+     *
+     * @param  array  $input
+     * @param  mixed  $model
+     * @param  array  $fields
+     * @param  mixed  $relationMethod
      * @return array
      */
-    public function getDirectParsedInput($input, $model = false, $fields = [], $relationMethod = false) {
+    public function getDirectParsedInput($input, $model = false, $fields = [], $relationMethod = false)
+    {
         $model = $model ? (is_string($model) ? app($model) : $model) : $this->model;
 
         $input = $this->decodeJsonCastedAttributes($input, $model);
         $input = $this->compactFakeFields($input);
-        
-        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input, $fields);
- 
-        $field_names_to_exclude = $this->getFieldsNamesToExclude($fields, $relationMethod);
-              
-        return Arr::where($input, function($item, $key) use ($field_names_to_exclude) {
-            return !in_array($key, $field_names_to_exclude); 
-        });
 
+        $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input, $fields);
+
+        $field_names_to_exclude = $this->getFieldsNamesToExclude($fields, $relationMethod);
+
+        return Arr::where($input, function ($item, $key) use ($field_names_to_exclude) {
+            return ! in_array($key, $field_names_to_exclude);
+        });
     }
 
     /**
      * Returns the field names that should be excluded from entry saving
      * Means: exclude all relations, except BelongsTo that were set with correct key.
-     * 
-     * @param array $fields
-     * @param mixed $relationMethod
-     * 
+     *
+     * @param  array  $fields
+     * @param  mixed  $relationMethod
      * @return array
      */
-    private function getFieldsNamesToExclude($fields, $relationMethod) {
+    private function getFieldsNamesToExclude($fields, $relationMethod)
+    {
         // when fields are empty we are in the main entity, we get the regular crud relation fields
-        if(empty($fields)) {
+        if (empty($fields)) {
             $fields = $this->getRelationFields();
         }
 
         $excludedFields = [];
-        foreach($fields as $field) {
+        foreach ($fields as $field) {
             // when no method is set, we are excluding for the main entity, we want to exclude:
             // - ALL relations except belongsTo that have the correct name.
-            if(!$relationMethod) {
-                if(isset($field['relation_type'])) {
-                    if($field['relation_type'] === 'BelongsTo') {
+            if (! $relationMethod) {
+                if (isset($field['relation_type'])) {
+                    if ($field['relation_type'] === 'BelongsTo') {
                         $shouldRemove = $this->shouldBelongsToRelationBeRemoved($field);
                         if ($shouldRemove) {
                             $excludedFields[] = $field['name'];
@@ -88,13 +87,13 @@ trait Create
                         continue;
                     }
                 }
-                $excludedFields[] = $field['name'];     
-            }else{
+                $excludedFields[] = $field['name'];
+            } else {
                 // strip the relation method from field name if exists
                 $field['name'] = Str::after($field['name'], $relationMethod.'.');
-               
-                if(isset($field['relation_type'])) {
-                    if($field['relation_type'] === 'BelongsTo') {
+
+                if (isset($field['relation_type'])) {
+                    if ($field['relation_type'] === 'BelongsTo') {
                         $shouldRemove = $this->shouldBelongsToRelationBeRemoved($field);
                         if ($shouldRemove) {
                             $excludedFields[] = $field['name'];
@@ -102,13 +101,13 @@ trait Create
                         }
                         continue;
                     }
-                   
+
                     // we want to exlude other relations if they don't have the attribute in the relation string
                     // eg: we want to exclude monster.address (monster hasOne in cave)
                     // but want to keep monster.name (name is the attribute)
-                    if($this->getOnlyRelationEntity($field) === $field['entity']) {
-                        if(Str::before($field['entity'], '.') === $relationMethod) {
-                            $excludedFields[] = Str::afterLast($field['name'],'.');
+                    if ($this->getOnlyRelationEntity($field) === $field['entity']) {
+                        if (Str::before($field['entity'], '.') === $relationMethod) {
+                            $excludedFields[] = Str::afterLast($field['name'], '.');
                             continue;
                         }
                     }
@@ -117,24 +116,24 @@ trait Create
         }
 
         return $excludedFields;
-
     }
 
     /**
      * Returns the field name if the relation should be excluded otherwise false.
-     * The relation should be excluded when the belongsTo foreignKey does not match the 
-     * field name, eg: `user_id` would be keept, but `user` (relationName) would be removed
-     * 
+     * The relation should be excluded when the belongsTo foreignKey does not match the
+     * field name, eg: `user_id` would be keept, but `user` (relationName) would be removed.
+     *
      * @param $array $field
-     * 
      * @return mixed
      */
-    private function shouldBelongsToRelationBeRemoved($field) {
+    private function shouldBelongsToRelationBeRemoved($field)
+    {
         $name_for_sub = $this->getOverwrittenNameForBelongsTo($field);
         $belongsToKey = Str::afterLast($field['name'], '.');
         if ($belongsToKey !== $name_for_sub) {
             return $field['name'];
         }
+
         return false;
     }
 
@@ -151,13 +150,12 @@ trait Create
     /**
      * Get all fields with relation set (model key set on field).
      *
-     * @param array $fields
-     * 
+     * @param  array  $fields
      * @return array The fields with model key set.
      */
     public function getRelationFields($fields = [])
     {
-        if(empty($fields)) {
+        if (empty($fields)) {
             $fields = $this->getCleanStateFields();
         }
 
@@ -197,7 +195,7 @@ trait Create
     private function createRelationsForItem($item, $formattedRelations)
     {
         // no relations to create
-        if ( empty($formattedRelations)) {
+        if (empty($formattedRelations)) {
             return false;
         }
 
@@ -227,7 +225,7 @@ trait Create
                 case 'MorphToMany':
                     $values = $relationDetails['values'][$relationMethod] ?? [];
                     $values = is_string($values) ? json_decode($values, true) : $values;
-                
+
                     $relationValues = [];
 
                     if (is_array($values) && is_multidimensional_array($values)) {
@@ -288,32 +286,33 @@ trait Create
 
                 return null;
             }
-            
+
             // Scenario C (when it's an array inside an array, because it's been added as one item inside a repeatable field)
             if (gettype($relationMethodValue) == 'array' && is_multidimensional_array($relationMethodValue)) {
-                $relationMethodValue = $relationMethodValue[0];          
+                $relationMethodValue = $relationMethodValue[0];
             }
         }
-        // saving process    
+        // saving process
         [$directInputs, $relationInputs] = $this->getParsedInputs($relationMethodValue ?? $relationDetails['values'], $relationDetails, $relationMethod);
-       
+
         $item = $relation->updateOrCreate([], $directInputs);
-       
+
         $this->createRelationsForItem($item, $relationInputs);
 
         return $item;
     }
 
     /**
-     * Returns the direct inputs parsed for model and relationship creation
-     * 
-     * @param array $inputs
-     * 
+     * Returns the direct inputs parsed for model and relationship creation.
+     *
+     * @param  array  $inputs
      * @return array
      */
-    private function getParsedInputs($inputs, $relationDetails = null, $relationMethod = false) {
+    private function getParsedInputs($inputs, $relationDetails = null, $relationMethod = false)
+    {
         $crudFields = $relationDetails['crudFields'] ?? [];
         $model = $relationDetails['model'] ?? false;
+
         return [$this->getDirectParsedInput($inputs, $model, $crudFields, $relationMethod), $this->getRelationDetailsFromInput($inputs, $crudFields, $relationMethod)];
     }
 
@@ -365,7 +364,6 @@ trait Create
         }
 
         return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
-
     }
 
     private function handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key)
@@ -393,17 +391,16 @@ trait Create
      * Handle HasMany/MorphMany relations when used as creatable entries in the crud.
      * By using repeatable field, developer can allow the creation of such entries
      * in the crud forms.
-     * 
+     *
      * @param $entry - eg: story
      * @param $relation - eg  story HasMany monsters
      * @param $relationMethod - eg: monsters
      * @param $relationDetails - eg: info about relation including submited values
-     * 
      * @return void
      */
-    private function createManyEntries($entry, $relation, $relationMethod, $relationDetails) 
+    private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
     {
-        $items = $relationDetails['values'][$relationMethod]; 
+        $items = $relationDetails['values'][$relationMethod];
 
         $relation_local_key = $relation->getLocalKeyName();
 
@@ -419,7 +416,7 @@ trait Create
             // or create a new item from input
             $item = $relation->updateOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
 
-            // we store the item local key do we can match them with database and check if any item was deleted 
+            // we store the item local key do we can match them with database and check if any item was deleted
             $relatedItemsSent[] = $item->{$relation_local_key};
 
             // create the item relations if any
@@ -435,7 +432,7 @@ trait Create
 
     /**
      * Get a relation data array from the form data. For each relation defined in the fields
-     * through the entity attribute, and set some relation details
+     * through the entity attribute, and set some relation details.
      *
      * We traverse this relation array later to create the relations, for example:
      * - Current model HasOne Address
@@ -450,73 +447,72 @@ trait Create
      * will have a nested relation with country.
      *
      * @param  array  $input  The form input.
-     * @param array $crudFields - present when getting the relation details for other relations.
-     * @param mixed $relationMethod
-     * 
+     * @param  array  $crudFields  - present when getting the relation details for other relations.
+     * @param  mixed  $relationMethod
      * @return array The formatted relation details.
      */
     private function getRelationDetailsFromInput($input, $crudFields = [], $relationMethod = false)
     {
         // main entity
-        if(empty($crudFields)) {
-            $relationFields = $this->getRelationFields();          
-        }else{ 
-            // relations sends the fields that represent them so we can parse the input accordingly.      
+        if (empty($crudFields)) {
+            $relationFields = $this->getRelationFields();
+        } else {
+            // relations sends the fields that represent them so we can parse the input accordingly.
             $relationFields = $crudFields;
-           
-             foreach($crudFields as $key => $crudField) {
-                if(isset($crudField['subfields'])) {
-                    foreach($crudField['subfields'] as $crudSubField) {
-                        if(isset($crudSubField['relation_type'])) {
+
+            foreach ($crudFields as $key => $crudField) {
+                if (isset($crudField['subfields'])) {
+                    foreach ($crudField['subfields'] as $crudSubField) {
+                        if (isset($crudSubField['relation_type'])) {
                             $relationFields[] = $crudSubField;
                         }
                     }
                 }
-            } 
+            }
         }
 
         //remove fields that are not in the submitted form input
         $relationFields = array_filter($relationFields, function ($field) use ($input) {
             return Arr::has($input, $field['name']) || isset($input[$field['name']]) || Arr::has($input, Str::afterLast($field['name'], '.'));
-        });   
-       
+        });
+
         $relationDetails = [];
-        
+
         foreach ($relationFields as $field) {
             // if relationMethod is set we strip it out of the fieldName that we use to create the relations array
             $fieldName = $relationMethod ? Str::after($field['name'], $relationMethod.'.') : $field['name'];
-    
-            $key = Str::before($this->getOnlyRelationEntity(['entity' => $fieldName]),'.');
 
-            // if the field entity contains the attribute we want to add that attribute 
+            $key = Str::before($this->getOnlyRelationEntity(['entity' => $fieldName]), '.');
+
+            // if the field entity contains the attribute we want to add that attribute
             // in the correct relation key
-            if($this->getOnlyRelationEntity($field) !== $field['entity']) {
-                if(Str::before($field['entity'], '.') === $relationMethod) {
-                    $key = Str::before($this->getOnlyRelationEntity($field),'.');
+            if ($this->getOnlyRelationEntity($field) !== $field['entity']) {
+                if (Str::before($field['entity'], '.') === $relationMethod) {
+                    $key = Str::before($this->getOnlyRelationEntity($field), '.');
                 }
             }
 
             $attributeName = (string) Str::of($field['name'])->afterLast('.');
 
-            switch($field['relation_type']) {
-                case 'BelongsTo': {
-                    // when it's a nested belongsTo relation we want to make sure 
+            switch ($field['relation_type']) {
+                case 'BelongsTo':
+                    // when it's a nested belongsTo relation we want to make sure
                     // the key used to store the values is the main relation key
-                    $key = Str::beforeLast($this->getOnlyRelationEntity($field), '.');  
-                }
+                    $key = Str::beforeLast($this->getOnlyRelationEntity($field), '.');
+
                 break;
             }
 
             // we don't need to re-setup this relation method values, we just want the relations
-            if($key === $relationMethod) {
+            if ($key === $relationMethod) {
                 continue;
             }
-           
+
             $fieldDetails = Arr::get($relationDetails, $key, []);
 
             $fieldDetails['values'][$attributeName] = Arr::get($input, $fieldName);
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
-            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type']; 
+            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type'];
             $fieldDetails['crudFields'][] = $field;
 
             if (isset($field['fallback_id'])) {
@@ -528,7 +524,7 @@ trait Create
 
             Arr::set($relationDetails, $key, $fieldDetails);
         }
-        return $relationDetails; 
-    }
 
+        return $relationDetails;
+    }
 }

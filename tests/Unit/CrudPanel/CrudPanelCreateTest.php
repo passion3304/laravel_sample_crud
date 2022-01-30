@@ -541,7 +541,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                             ],
                         ],
                     ],
-                ]
+                ],
             ]);
 
         $faker = Factory::create();
@@ -575,7 +575,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                         ['bangsPivot' => 2, 'pivot_field' => 'test2'],
                     ],
                 ],
-            ]
+            ],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -589,8 +589,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($account_details->bangs->first()->name, Bang::find(1)->name);
         $this->assertEquals($account_details->bangsPivot->count(), 2);
         $this->assertEquals($account_details->bangsPivot->first()->pivot->pivot_field, 'test1');
-
-        
     }
 
     public function testCreateHasOneWithNestedRelations()

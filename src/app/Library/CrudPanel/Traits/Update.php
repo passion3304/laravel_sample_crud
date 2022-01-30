@@ -90,16 +90,15 @@ trait Update
     /**
      * Returns the value of the given attribute in the relationship.
      * It takes into account nested relationships.
-     * 
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param array $field
-     * 
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  array  $field
      * @return mixed
      */
     private function getModelAttributeValueFromRelationship($model, $field)
     {
         [$related_model, $relation_method] = $this->getModelAndMethodFromEntity($model, $field);
-      
+
         if (! method_exists($related_model, $relation_method)) {
             return $related_model->{$relation_method};
         }
@@ -120,7 +119,6 @@ trait Update
                 $related_models = $related_model->{$relation_method};
                 $result = [];
 
-                
                 foreach ($related_models as $related_model) {
                     $item = [];
                     switch ($relation_type) {
@@ -140,7 +138,7 @@ trait Update
                             break;
                     }
                 }
-                
+
                 return $result;
                 break;
             case 'HasOne':
@@ -150,7 +148,7 @@ trait Update
                 }
 
                 $related_entry = $related_model->{$relation_method}->withFakes();
-               
+
                 if (! $related_entry) {
                     return;
                 }
@@ -175,10 +173,9 @@ trait Update
 
     /**
      * Returns the model and the method from the relation string starting from the provided model.
-     * 
-     * @param Illuminate\Database\Eloquent\Model $model
-     * @param array $field
-     * 
+     *
+     * @param  Illuminate\Database\Eloquent\Model  $model
+     * @param  array  $field
      * @return array
      */
     private function getModelAndMethodFromEntity($model, $field)
@@ -201,11 +198,12 @@ trait Update
 
     /**
      * Return the subfields values from the related model.
-     * 
-     * @param array $subfields
-     * @param \Illuminate\Database\Eloquent\Model $relatedModel
+     *
+     * @param  array  $subfields
+     * @param  \Illuminate\Database\Eloquent\Model  $relatedModel
      */
-    private function getSubfieldsValues($subfields, $relatedModel) {
+    private function getSubfieldsValues($subfields, $relatedModel)
+    {
         $result = [];
         foreach ($subfields as $subfield) {
             $name = is_string($subfield) ? $subfield : $subfield['name'];
@@ -214,9 +212,9 @@ trait Update
             if (! Str::contains($name, '.')) {
                 // when subfields are present, $relatedModel->{$name} returns a model instance
                 // otherwise returns the model attribute.
-                if($relatedModel->{$name}) {
+                if ($relatedModel->{$name}) {
                     if (isset($subfield['subfields'])) {
-                        $result[$name] = [$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))]; 
+                        $result[$name] = [$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))];
                     } else {
                         $result[$name] = $relatedModel->{$name};
                     }
@@ -233,6 +231,7 @@ trait Update
                 Arr::set($result, $name, (! is_string($iterator) ? $iterator->withFakes()->getAttributes() : $iterator));
             }
         }
+
         return $result;
     }
 }

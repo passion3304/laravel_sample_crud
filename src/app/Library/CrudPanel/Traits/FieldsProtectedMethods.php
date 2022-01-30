@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait FieldsProtectedMethods
 {
@@ -145,7 +145,7 @@ trait FieldsProtectedMethods
             // if it has parameters it's not a relation method.
             $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $field['name'];
 
-            if($field['entity']) {
+            if ($field['entity']) {
                 $field['nestedEntity'] = $possibleMethodName;
             }
 
@@ -250,17 +250,17 @@ trait FieldsProtectedMethods
                 // we look if `category()` relationship exists on the model, we look on
                 // the model this repeatable represents, not the main CRUD model
                 $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
-                
+
                 $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
                 // chain the parent field baseEntity if it exists
-                $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity; 
+                $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity;
             }
 
             $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
         }
 
-        if(isset($field['relation_type'])) {
-            switch($field['relation_type']) {
+        if (isset($field['relation_type'])) {
+            switch ($field['relation_type']) {
                 case 'MorphToMany':
                 case 'BelongsToMany':
                     $pivotSelectorField = static::getPivotFieldStructure($field);

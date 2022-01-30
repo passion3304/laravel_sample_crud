@@ -126,7 +126,7 @@ trait Relationships
      * Gets the relation fields that DON'T contain the provided relations.
      *
      * @param  string|array  $relations  - the relations to exclude
-     * @param  array  $fields 
+     * @param  array  $fields
      */
     private function getRelationFieldsWithoutRelationType($relations, $fields = [])
     {
@@ -134,18 +134,20 @@ trait Relationships
             $relations = [$relations];
         }
 
-        if(empty($fields)) {
+        if (empty($fields)) {
             $fields = $this->getRelationFields();
         }
 
         foreach ($relations as $relation) {
             $fields = array_filter($fields, function ($field) use ($relation) {
-                if(!isset($field['relation_type'])) {
+                if (! isset($field['relation_type'])) {
                     return false;
                 }
+
                 return $field['relation_type'] !== $relation;
             });
         }
+
         return $fields;
     }
 
@@ -154,26 +156,24 @@ trait Relationships
      * When $belongs_to_fields are provided we will use those fields to replace relation names on the provided input.
      *
      * eg: user -> user_id
-     * 
-     * @param array $input
-     * @param array $belongsToFields
-     * 
+     *
+     * @param  array  $input
+     * @param  array  $belongsToFields
      * @return array
      */
     private function changeBelongsToNamesFromRelationshipToForeignKey($input, $belongs_to_fields = [])
     {
-        if(empty($belongs_to_fields)) {
+        if (empty($belongs_to_fields)) {
             $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
-        }else{
-            foreach($belongs_to_fields as $field) {
-                if(isset($field['subfields'])) {
+        } else {
+            foreach ($belongs_to_fields as $field) {
+                if (isset($field['subfields'])) {
                     $belongs_to_fields = array_merge($field['subfields'], $belongs_to_fields);
                 }
             }
-            $belongs_to_fields = array_filter($belongs_to_fields, function($field) {
+            $belongs_to_fields = array_filter($belongs_to_fields, function ($field) {
                 return isset($field['relation_type']) && $field['relation_type'] === 'BelongsTo';
             });
-            
         }
 
         foreach ($belongs_to_fields as $relation_field) {
@@ -184,6 +184,7 @@ trait Relationships
                 Arr::forget($input, $belongsToKey);
             }
         }
+
         return $input;
     }
 
@@ -259,10 +260,9 @@ trait Relationships
 
     /**
      * Return the name for the BelongTo relation making sure it always has the foreign_key instead of relationName
-     * eg: user - user_id
+     * eg: user - user_id.
      *
      * @param  array  $field  The field we want to get the name from
-     * 
      * @return string
      */
     private function getOverwrittenNameForBelongsTo($field)
@@ -277,13 +277,13 @@ trait Relationships
     }
 
     /**
-     * Returns the pivot definition for BelongsToMany/MorphToMany relation provided in $field
-     * 
-     * @param array $field
-     * 
+     * Returns the pivot definition for BelongsToMany/MorphToMany relation provided in $field.
+     *
+     * @param  array  $field
      * @return array
      */
-    private static function getPivotFieldStructure($field) {
+    private static function getPivotFieldStructure($field)
+    {
         $pivotSelectorField['name'] = $field['name'];
         $pivotSelectorField['type'] = 'relationship';
         $pivotSelectorField['is_pivot_select'] = true;
@@ -291,11 +291,11 @@ trait Relationships
         $pivotSelectorField['entity'] = $field['name'];
         $pivotSelectorField['relation_type'] = $field['relation_type'];
         $pivotSelectorField['model'] = $field['model'];
-       
-        if(isset($field['baseModel'])) {
+
+        if (isset($field['baseModel'])) {
             $pivotSelectorField['baseModel'] = $field['baseModel'];
         }
-        if(isset($field['baseEntity'])) {
+        if (isset($field['baseEntity'])) {
             $pivotSelectorField['baseEntity'] = $field['baseEntity'];
         }
 

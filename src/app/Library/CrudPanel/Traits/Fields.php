@@ -260,10 +260,9 @@ trait Fields
      * Decode attributes that are casted as array/object/json in the model.
      * So that they are not json_encoded twice before they are stored in the db
      * (once by Backpack in front-end, once by Laravel Attribute Casting).
-     * 
-     * @param array $input
-     * @param mixed $model
-     * 
+     *
+     * @param  array  $input
+     * @param  mixed  $model
      * @return array
      */
     public function decodeJsonCastedAttributes($input, $model = false)
