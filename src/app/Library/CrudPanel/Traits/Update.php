@@ -87,6 +87,15 @@ trait Update
         }
     }
 
+    /**
+     * Returns the value of the given attribute in the relationship.
+     * It takes into account nested relationships.
+     * 
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param array $field
+     * 
+     * @return mixed
+     */
     private function getModelAttributeValueFromRelationship($model, $field)
     {
         [$related_model, $relation_method] = $this->getModelAndMethodFromEntity($model, $field);
@@ -105,32 +114,34 @@ trait Update
             case 'MorphToMany':
                 // use subfields aka. pivotFields
                 if (! isset($field['subfields'])) {
-                    return $related_model->{$relation_method}->withFakes();
+                    return $related_model->{$relation_method};
                 }
 
                 $related_models = $related_model->{$relation_method};
                 $result = [];
 
-                // for any given model, we grab the attributes that belong to our pivot table.
+                
                 foreach ($related_models as $related_model) {
                     $item = [];
                     switch ($relation_type) {
                         case 'HasMany':
                         case 'MorphMany':
-                            $result[] = $related_model->withFakes()->getAttributes();
+                            // we will get model direct attributes and merge with subfields values.
+                            $directAttributes = $related_model->withFakes()->getAttributes();
+                            $result[] = array_merge($directAttributes, $this->getSubfieldsValues($field['subfields'], $related_model));
                             break;
 
                         case 'BelongsToMany':
                         case 'MorphToMany':
+                            // for any given model, we grab the attributes that belong to our pivot table.
                             $item = $related_model->pivot->getAttributes();
                             $item[$relation_method] = $related_model->getKey();
                             $result[] = $item;
                             break;
                     }
                 }
-
+                
                 return $result;
-
                 break;
             case 'HasOne':
             case 'MorphOne':
@@ -151,35 +162,7 @@ trait Update
 
                 // when subfields exists developer used the repeatable interface to manage this relation
                 if ($field['subfields']) {
-                    $result = [];
-                    foreach ($field['subfields'] as $subfield) {
-                        $name = is_string($subfield) ? $subfield : $subfield['name'];
-                        // if the subfield name does not contain a dot we just need to check
-                        // if it has subfields and return the result accordingly.
-                        if (! Str::contains($name, '.')) {
-                            // when subfields are present, $related_entry->{$name} returns a model instance
-                            // otherwise returns the model attribute.
-                            if($related_entry->{$name}) {
-                                if (isset($subfield['subfields'])) {
-                                    $result[$name] = [$related_entry->{$name}->only(array_column($subfield['subfields'], 'name'))]; 
-                                } else {
-                                    $result[$name] = $related_entry->{$name};
-                                }
-                            }
-                        } else {
-                            // if the subfield name contains a dot, we are going to iterate through
-                            // those parts to get the last connected part and parse it for returning.
-                            // we get either a string (the attribute in model, eg: street) or a model instance (eg: AddressModel)
-                            $iterator = $related_entry;
-                            foreach (explode('.', $name) as $part) {
-                                $iterator = $iterator->$part;
-                            }
-
-                            Arr::set($result, $name, (! is_string($iterator) ? $iterator->withFakes()->getAttributes() : $iterator));
-                        }
-                    }
-
-                    return [$result];
+                    return [$this->getSubfieldsValues($field['subfields'], $related_entry)];
                 }
 
                 return $related_entry->withFakes();
@@ -190,6 +173,14 @@ trait Update
         }
     }
 
+    /**
+     * Returns the model and the method from the relation string starting from the provided model.
+     * 
+     * @param Illuminate\Database\Eloquent\Model $model
+     * @param array $field
+     * 
+     * @return array
+     */
     private function getModelAndMethodFromEntity($model, $field)
     {
         // HasOne and MorphOne relations contains the field in the relation string. We want only the relation part.
@@ -206,5 +197,42 @@ trait Update
         $relation_method = Str::afterLast($relational_entity, '.');
 
         return [$related_model, $relation_method];
+    }
+
+    /**
+     * Return the subfields values from the related model.
+     * 
+     * @param array $subfields
+     * @param \Illuminate\Database\Eloquent\Model $relatedModel
+     */
+    private function getSubfieldsValues($subfields, $relatedModel) {
+        $result = [];
+        foreach ($subfields as $subfield) {
+            $name = is_string($subfield) ? $subfield : $subfield['name'];
+            // if the subfield name does not contain a dot we just need to check
+            // if it has subfields and return the result accordingly.
+            if (! Str::contains($name, '.')) {
+                // when subfields are present, $relatedModel->{$name} returns a model instance
+                // otherwise returns the model attribute.
+                if($relatedModel->{$name}) {
+                    if (isset($subfield['subfields'])) {
+                        $result[$name] = [$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))]; 
+                    } else {
+                        $result[$name] = $relatedModel->{$name};
+                    }
+                }
+            } else {
+                // if the subfield name contains a dot, we are going to iterate through
+                // those parts to get the last connected part and parse it for returning.
+                // we get either a string (the attribute in model, eg: street) or a model instance (eg: AddressModel)
+                $iterator = $relatedModel;
+                foreach (explode('.', $name) as $part) {
+                    $iterator = $iterator->$part;
+                }
+
+                Arr::set($result, $name, (! is_string($iterator) ? $iterator->withFakes()->getAttributes() : $iterator));
+            }
+        }
+        return $result;
     }
 }
