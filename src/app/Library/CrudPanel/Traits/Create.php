@@ -294,11 +294,11 @@ trait Create
                 $relationMethodValue = $relationMethodValue[0];          
             }
         }
-        // saving process       
-        [$directInputs, $relationInputs] = $this->getParsedInputs($relationMethodValue ?? $relationDetails['values'], $relationDetails['model'], $relationDetails['crudFields']);
-        
+        // saving process    
+        [$directInputs, $relationInputs] = $this->getParsedInputs($relationMethodValue ?? $relationDetails['values'], $relationDetails, $relationMethod);
+       
         $item = $relation->updateOrCreate([], $directInputs);
-        
+       
         $this->createRelationsForItem($item, $relationInputs);
 
         return $item;
@@ -311,8 +311,11 @@ trait Create
      * 
      * @return array
      */
-    private function getParsedInputs($inputs, $model = false, $crudFields = []) {
-        return [$this->getDirectParsedInput($inputs, $model, $crudFields), $this->getRelationDetailsFromInput($inputs, $crudFields)];
+    private function getParsedInputs($inputs, $relationDetails = null, $relationMethod = false) {
+        $crudFields = $relationDetails['crudFields'] ?? $this->getFieldsFromInput($inputs);
+        $model = $relationDetails['model'] ?? false;
+        return [$this->getDirectParsedInput($inputs, $model, $crudFields, $relationMethod), $this->getRelationDetailsFromInput($inputs, $crudFields, $relationMethod)];
+    }
     }
 
     /**
