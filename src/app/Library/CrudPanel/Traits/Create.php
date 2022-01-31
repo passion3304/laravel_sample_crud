@@ -48,19 +48,18 @@ trait Create
 
         $input = $this->excludeRelationFieldsExceptBelongsTo($input, $fields, $relationMethod);
         $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input, $fields);
-        
+
         return $input;
     }
 
     /**
      * Return the input without relations except BelongsTo that we are going to properly match
      * with the relation foreign_key in a later stage of the saving process.
-     * 
+     *
      * @param  array  $fields
      * @param  mixed  $relationMethod
      * @return array
      */
-
     private function excludeRelationFieldsExceptBelongsTo($input, $fields, $relationMethod)
     {
         // when fields are empty we are in the main entity, we get the regular crud relation fields
@@ -70,18 +69,17 @@ trait Create
 
         $excludedFields = [];
         foreach ($fields as $field) {
-            
-            $nameToExclude =  $relationMethod ? Str::after($field['name'], $relationMethod.'.') : $field['name'];
+            $nameToExclude = $relationMethod ? Str::after($field['name'], $relationMethod.'.') : $field['name'];
 
             // when using dot notation if relationMethod is not set we are sure we want to exclude those relations.
             if ($this->getOnlyRelationEntity($field) !== $field['entity']) {
-                if(!$relationMethod) {
+                if (! $relationMethod) {
                     $excludedFields[] = $nameToExclude;
                 }
                 continue;
             }
 
-            if(isset($field['relation_type']) && $field['relation_type'] !== 'BelongsTo') {
+            if (isset($field['relation_type']) && $field['relation_type'] !== 'BelongsTo') {
                 $excludedFields[] = $nameToExclude;
                 continue;
             }
@@ -184,7 +182,7 @@ trait Create
 
                     if (is_array($values) && is_multidimensional_array($values)) {
                         foreach ($values as $value) {
-                            if(isset($value[$relationMethod])) {
+                            if (isset($value[$relationMethod])) {
                                 $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
                             }
                         }
@@ -478,7 +476,6 @@ trait Create
             $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type'];
             $fieldDetails['crudFields'][] = $field;
             $fieldDetails['relationEntity'] = $this->getOnlyRelationEntity($field);
-            
 
             if (isset($field['fallback_id'])) {
                 $fieldDetails['fallback_id'] = $field['fallback_id'];
@@ -489,6 +486,7 @@ trait Create
 
             Arr::set($relationDetails, $key, $fieldDetails);
         }
+
         return $relationDetails;
     }
 }

@@ -611,7 +611,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'subfields' => [
                     [
                         'name' => 'city',
-                        'entity' => 'bang'
+                        'entity' => 'bang',
                     ],
                     [
                         'name' => 'street',
