@@ -145,10 +145,6 @@ trait FieldsProtectedMethods
             // if it has parameters it's not a relation method.
             $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $field['name'];
 
-            if ($field['entity']) {
-                $field['nestedEntity'] = $possibleMethodName;
-            }
-
             return $field;
         }
 
