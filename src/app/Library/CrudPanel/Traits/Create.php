@@ -33,10 +33,10 @@ trait Create
      * BelongsTo relations are ensured to have the correct foreign key set.
      * ALL other relations are stripped from the input.
      *
-     * @param  array  $input - the input array
-     * @param  mixed  $model - the model of what we want to get the attributtes for
-     * @param  array  $fields - the fields used in this relation
-     * @param  mixed  $relationMethod - the relation method
+     * @param  array  $input  - the input array
+     * @param  mixed  $model  - the model of what we want to get the attributtes for
+     * @param  array  $fields  - the fields used in this relation
+     * @param  mixed  $relationMethod  - the relation method
      * @return array
      */
     private function getDirectInputsFromInput($input, $model = false, $fields = [], $relationMethod = false)
@@ -307,8 +307,8 @@ trait Create
      * Returns the direct inputs parsed for model and relationship creation.
      *
      * @param  array  $inputs
-     * @param null|array $relationDetails
-     * @param bool|string $relationMethod
+     * @param  null|array  $relationDetails
+     * @param  bool|string  $relationMethod
      * @return array
      */
     private function splitInputIntoDirectAndRelations($inputs, $relationDetails = null, $relationMethod = false)
@@ -491,7 +491,7 @@ trait Create
             $key = Str::before($this->getOnlyRelationEntity(['entity' => $fieldName]), '.');
 
             // if the field entity contains the attribute we want to add that attribute in the correct relation key.
-            // eg: adress.street, we want to add `street` as an attribute in `address` relation, `street` is not 
+            // eg: adress.street, we want to add `street` as an attribute in `address` relation, `street` is not
             // a relation of `address`
             if ($this->getOnlyRelationEntity($field) !== $field['entity']) {
                 if (Str::before($field['entity'], '.') === $relationMethod) {

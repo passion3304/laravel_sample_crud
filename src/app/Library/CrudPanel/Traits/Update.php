@@ -139,6 +139,7 @@ trait Update
                             break;
                     }
                 }
+
                 return $result;
                 break;
             case 'HasOne':
@@ -177,14 +178,16 @@ trait Update
      * This function checks if the provided model uses the CrudTrait.
      * If IT DOES it adds the fakes to the model attributes.
      * Otherwise just return the model back.
-     * 
-     * @param \Illuminate\Database\Eloquent\Model $model 
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model
      */
-    private function getModelWithFakes($model) {
+    private function getModelWithFakes($model)
+    {
         if (in_array(\Backpack\CRUD\app\Models\Traits\CrudTrait::class, class_uses_recursive($model))) {
             return $model->withFakes();
         }
+
         return $model;
     }
 
@@ -241,7 +244,7 @@ trait Update
             } else {
                 // if the subfield name contains a dot, we are going to iterate through
                 // those parts to get the last connected part and parse it for returning.
-                // $iterator would be either a string (the attribute in model, eg: street) 
+                // $iterator would be either a string (the attribute in model, eg: street)
                 // or a model instance (eg: AddressModel)
                 $iterator = $relatedModel;
                 foreach (explode('.', $name) as $part) {
