@@ -520,7 +520,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                         'name' => 'addresses',
                         'subfields' => [
                             [
-                                'name' => 'city',
+                                'name' => 'bang',
                             ],
                             [
                                 'name' => 'street',
@@ -559,12 +559,12 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                     'article' => 1,
                     'addresses' => [
                         [
-                            'city' => 'test',
+                            'bang' => 1,
                             'street' => 'test',
                             'number' => 1,
                         ],
                         [
-                            'city' => 'test2',
+                            'bang' => 1,
                             'street' => 'test2',
                             'number' => 2,
                         ],
@@ -583,7 +583,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertEquals($account_details->article, Article::find(1));
         $this->assertEquals($account_details->addresses->count(), 2);
-        $this->assertEquals($account_details->addresses->first()->city, 'test');
+        $this->assertEquals($account_details->addresses->first()->city, 1);
         $this->assertEquals($account_details->addresses->first()->street, 'test');
         $this->assertEquals($account_details->addresses->first()->number, 1);
         $this->assertEquals($account_details->bangs->first()->name, Bang::find(1)->name);
@@ -611,6 +611,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'subfields' => [
                     [
                         'name' => 'city',
+                        'entity' => 'bang'
                     ],
                     [
                         'name' => 'street',
@@ -647,12 +648,12 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'article' => 1,
                 'addresses' => [
                     [
-                        'city' => 'test',
+                        'city' => 1,
                         'street' => 'test',
                         'number' => 1,
                     ],
                     [
-                        'city' => 'test2',
+                        'city' => 2,
                         'street' => 'test2',
                         'number' => 2,
                     ],
@@ -670,7 +671,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertEquals($account_details->article, Article::find(1));
         $this->assertEquals($account_details->addresses->count(), 2);
-        $this->assertEquals($account_details->addresses->first()->city, 'test');
+        $this->assertEquals($account_details->addresses->first()->bang->id, 1);
         $this->assertEquals($account_details->addresses->first()->street, 'test');
         $this->assertEquals($account_details->addresses->first()->number, 1);
         $this->assertEquals($account_details->bangs->first()->name, Bang::find(1)->name);
@@ -691,12 +692,12 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'article' => 1,
                 'addresses' => [ // HasOne is tested in other test function
                     [
-                        'city' => 'test',
+                        'city' => 2,
                         'street' => 'test',
                         'number' => 1,
                     ],
                     [
-                        'city' => 'test2',
+                        'city' => 1,
                         'street' => 'test2',
                         'number' => 2,
                     ],
@@ -709,6 +710,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $entry = $this->crudPanel->update($entry->id, $inputData);
         $account_details = $entry->accountDetails()->first();
         $this->assertEquals($account_details->addresses->count(), 2);
+        $this->assertEquals($account_details->addresses->first()->bang->id, 2);
         $this->assertEquals($account_details->bangs->count(), 0);
         $this->assertEquals($account_details->bangsPivot->count(), 0);
     }

@@ -46,24 +46,22 @@ trait Create
         $input = $this->decodeJsonCastedAttributes($input, $model);
         $input = $this->compactFakeFields($input);
 
+        $input = $this->excludeRelationFieldsExceptBelongsTo($input, $fields, $relationMethod);
         $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input, $fields);
-
-        $field_names_to_exclude = $this->getFieldsNamesToExclude($fields, $relationMethod);
-
-        return Arr::where($input, function ($item, $key) use ($field_names_to_exclude) {
-            return ! in_array($key, $field_names_to_exclude);
-        });
+        
+        return $input;
     }
 
     /**
-     * Returns the field names that should be excluded from entry saving
-     * Means: exclude all relations, except BelongsTo that were set with correct key.
-     *
+     * Return the input without relations except BelongsTo that we are going to properly match
+     * with the relation foreign_key in a later stage of the saving process.
+     * 
      * @param  array  $fields
      * @param  mixed  $relationMethod
      * @return array
      */
-    private function getFieldsNamesToExclude($fields, $relationMethod)
+
+    private function excludeRelationFieldsExceptBelongsTo($input, $fields, $relationMethod)
     {
         // when fields are empty we are in the main entity, we get the regular crud relation fields
         if (empty($fields)) {
@@ -72,69 +70,26 @@ trait Create
 
         $excludedFields = [];
         foreach ($fields as $field) {
-            // when no method is set, we are excluding for the main entity, we want to exclude:
-            // - ALL relations except belongsTo that have the correct name.
-            if (! $relationMethod) {
-                if (isset($field['relation_type'])) {
-                    if ($field['relation_type'] === 'BelongsTo') {
-                        $shouldRemove = $this->shouldBelongsToRelationBeRemoved($field);
-                        if ($shouldRemove) {
-                            $excludedFields[] = $field['name'];
-                            continue;
-                        }
-                        // if the belongsToKey match the field name substitution we don't want
-                        // to remove the field from the request.
-                        continue;
-                    }
-                }
-                $excludedFields[] = $field['name'];
-            } else {
-                // strip the relation method from field name if exists
-                $field['name'] = Str::after($field['name'], $relationMethod.'.');
+            
+            $nameToExclude =  $relationMethod ? Str::after($field['name'], $relationMethod.'.') : $field['name'];
 
-                if (isset($field['relation_type'])) {
-                    if ($field['relation_type'] === 'BelongsTo') {
-                        $shouldRemove = $this->shouldBelongsToRelationBeRemoved($field);
-                        if ($shouldRemove) {
-                            $excludedFields[] = $field['name'];
-                            continue;
-                        }
-                        continue;
-                    }
-
-                    // we want to exlude other relations if they don't have the attribute in the relation string
-                    // eg: we want to exclude monster.address (monster hasOne in cave)
-                    // but want to keep monster.name (name is the attribute)
-                    if ($this->getOnlyRelationEntity($field) === $field['entity']) {
-                        if (Str::before($field['entity'], '.') === $relationMethod) {
-                            $excludedFields[] = Str::afterLast($field['name'], '.');
-                            continue;
-                        }
-                    }
+            // when using dot notation if relationMethod is not set we are sure we want to exclude those relations.
+            if ($this->getOnlyRelationEntity($field) !== $field['entity']) {
+                if(!$relationMethod) {
+                    $excludedFields[] = $nameToExclude;
                 }
+                continue;
+            }
+
+            if(isset($field['relation_type']) && $field['relation_type'] !== 'BelongsTo') {
+                $excludedFields[] = $nameToExclude;
+                continue;
             }
         }
 
-        return $excludedFields;
-    }
-
-    /**
-     * Returns the field name if the relation should be excluded otherwise false.
-     * The relation should be excluded when the belongsTo foreignKey does not match the
-     * field name, eg: `user_id` would be keept, but `user` (relationName) would be removed.
-     *
-     * @param $array $field
-     * @return mixed
-     */
-    private function shouldBelongsToRelationBeRemoved($field)
-    {
-        $name_for_sub = $this->getOverwrittenNameForBelongsTo($field);
-        $belongsToKey = Str::afterLast($field['name'], '.');
-        if ($belongsToKey !== $name_for_sub) {
-            return $field['name'];
-        }
-
-        return false;
+        return Arr::where($input, function ($item, $key) use ($excludedFields) {
+            return ! in_array($key, $excludedFields);
+        });
     }
 
     /**
@@ -531,7 +486,6 @@ trait Create
 
             Arr::set($relationDetails, $key, $fieldDetails);
         }
-
         return $relationDetails;
     }
 }
