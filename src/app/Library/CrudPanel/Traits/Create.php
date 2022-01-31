@@ -180,12 +180,13 @@ trait Create
                 case 'MorphToMany':
                     $values = $relationDetails['values'][$relationMethod] ?? [];
                     $values = is_string($values) ? json_decode($values, true) : $values;
-
                     $relationValues = [];
 
                     if (is_array($values) && is_multidimensional_array($values)) {
                         foreach ($values as $value) {
-                            $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
+                            if(isset($value[$relationMethod])) {
+                                $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
+                            }
                         }
                     }
 
@@ -236,7 +237,7 @@ trait Create
             $relationMethodValue = $relationDetails['values'][$relationMethod];
 
             // Scenario D
-            if (is_null($relationMethodValue) && $relationDetails['entity'] === $relationMethod) {
+            if (is_null($relationMethodValue) && $relationDetails['relationEntity'] === $relationMethod) {
                 $relation->delete();
 
                 return null;
@@ -476,6 +477,8 @@ trait Create
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
             $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type'];
             $fieldDetails['crudFields'][] = $field;
+            $fieldDetails['relationEntity'] = $this->getOnlyRelationEntity($field);
+            
 
             if (isset($field['fallback_id'])) {
                 $fieldDetails['fallback_id'] = $field['fallback_id'];

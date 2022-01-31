@@ -112,13 +112,13 @@ trait Update
             case 'BelongsToMany':
             case 'MorphToMany':
                 $relationModels = $relatedModel->{$relationMethod};
-                $result = [];
+                $result = collect();
 
                 foreach ($relationModels as $model) {
                     // when subfields are NOT set we don't need to get any more values
-                    // we just return the related models
+                    // we just return the plain models as we only need the ids
                     if (! isset($field['subfields'])) {
-                        $result[] = $this->getModelWithFakes($model);
+                        $result->push($model);
                         continue;
                     }
                     // when subfields are set we need to parse their values so they can be displayed
@@ -127,7 +127,7 @@ trait Update
                         case 'MorphMany':
                             // we will get model direct attributes and merge with subfields values.
                             $directAttributes = $this->getModelWithFakes($model)->getAttributes();
-                            $result[] = array_merge($directAttributes, $this->getSubfieldsValues($field['subfields'], $model));
+                            $result->push(array_merge($directAttributes, $this->getSubfieldsValues($field['subfields'], $model)));
                             break;
 
                         case 'BelongsToMany':

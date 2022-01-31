@@ -17,12 +17,11 @@
     $field['value'] = old_empty_or_null($field['name'], collect()) ??  $field['value'] ?? $field['default'] ?? collect();
 
     if(!empty($field['value'])) {
-        if ($field['value'] instanceof \Illuminate\Database\Eloquent\Collection) {
-            $field['value'] = ($field['value'])->modelKeys();
+        if (is_a($field['value'], \Illuminate\Support\Collection::class)) {
+            $field['value'] = ($field['value'])->pluck((new $field['model'])->getKeyName());
         }
         $field['value'] = $field['options']->whereIn((new $field['model'])->getKeyName(), $field['value']);
     }
-
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
