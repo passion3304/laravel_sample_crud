@@ -111,21 +111,22 @@ trait Update
             case 'HasMany':
             case 'BelongsToMany':
             case 'MorphToMany':
-                // use subfields aka. pivotFields
-                if (! isset($field['subfields'])) {
-                    return $related_model->{$relation_method};
-                }
-
                 $related_models = $related_model->{$relation_method};
                 $result = [];
 
                 foreach ($related_models as $related_model) {
-                    $item = [];
+                    // when subfields are NOT set we don't need to get any more values
+                    // we just return the related models
+                    if (! isset($field['subfields'])) {
+                        $result[] = $this->getModelWithFakes($related_model);
+                        continue;
+                    }
+                    // when subfields are set we need to parse their values so they can be displayed
                     switch ($relation_type) {
                         case 'HasMany':
                         case 'MorphMany':
                             // we will get model direct attributes and merge with subfields values.
-                            $directAttributes = $related_model->withFakes()->getAttributes();
+                            $directAttributes = $this->getModelWithFakes($related_model)->getAttributes();
                             $result[] = array_merge($directAttributes, $this->getSubfieldsValues($field['subfields'], $related_model));
                             break;
 
@@ -138,7 +139,6 @@ trait Update
                             break;
                     }
                 }
-
                 return $result;
                 break;
             case 'HasOne':
@@ -147,11 +147,13 @@ trait Update
                     return;
                 }
 
-                $related_entry = $related_model->{$relation_method}->withFakes();
+                $related_entry = $related_model->{$relation_method};
 
                 if (! $related_entry) {
                     return;
                 }
+
+                $related_entry = $this->getModelWithFakes($related_entry);
 
                 // if `entity` contains a dot here it means developer added a main HasOne/MorphOne relation with dot notation
                 if (Str::contains($field['entity'], '.')) {
@@ -163,12 +165,28 @@ trait Update
                     return [$this->getSubfieldsValues($field['subfields'], $related_entry)];
                 }
 
-                return $related_entry->withFakes();
+                return $this->getModelWithFakes($related_entry);
 
                 break;
             default:
                 return $related_model->{$relation_method};
         }
+    }
+
+    /**
+     * This function checks if the provided model uses the CrudTrait.
+     * If IT DOES it adds the fakes to the model attributes.
+     * Otherwise just return the model back.
+     * 
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * 
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    private function getModelWithFakes($model) {
+        if (in_array(\Backpack\CRUD\app\Models\Traits\CrudTrait::class, class_uses_recursive($model))) {
+            return $model->withFakes();
+        }
+        return $model;
     }
 
     /**
@@ -228,7 +246,7 @@ trait Update
                     $iterator = $iterator->$part;
                 }
 
-                Arr::set($result, $name, (! is_string($iterator) ? $iterator->withFakes()->getAttributes() : $iterator));
+                Arr::set($result, $name, (! is_string($iterator) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
             }
         }
 
