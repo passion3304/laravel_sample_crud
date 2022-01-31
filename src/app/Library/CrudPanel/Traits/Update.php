@@ -24,7 +24,7 @@ trait Update
     {
         $item = $this->model->findOrFail($id);
 
-        [$directInputs, $relationInputs] = $this->getParsedInputs($input);
+        [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
 
         $updated = $item->update($directInputs);
 

@@ -21,7 +21,7 @@ trait Create
      */
     public function create($input)
     {
-        [$directInputs, $relationInputs] = $this->getParsedInputs($input);
+        [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
         $item = $this->model->create($directInputs);
         $this->createRelationsForItem($item, $relationInputs);
 
@@ -33,13 +33,13 @@ trait Create
      * BelongsTo relations are ensured to have the correct foreign key set.
      * ALL other relations are stripped from the input.
      *
-     * @param  array  $input
-     * @param  mixed  $model
-     * @param  array  $fields
-     * @param  mixed  $relationMethod
+     * @param  array  $input - the input array
+     * @param  mixed  $model - the model of what we want to get the attributtes for
+     * @param  array  $fields - the fields used in this relation
+     * @param  mixed  $relationMethod - the relation method
      * @return array
      */
-    public function getDirectParsedInput($input, $model = false, $fields = [], $relationMethod = false)
+    private function getDirectInputsFromInput($input, $model = false, $fields = [], $relationMethod = false)
     {
         $model = $model ? (is_string($model) ? app($model) : $model) : $this->model;
 
@@ -293,7 +293,8 @@ trait Create
             }
         }
         // saving process
-        [$directInputs, $relationInputs] = $this->getParsedInputs($relationMethodValue ?? $relationDetails['values'], $relationDetails, $relationMethod);
+        $input = $relationMethodValue ?? $relationDetails['values'];
+        [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input, $relationDetails, $relationMethod);
 
         $item = $relation->updateOrCreate([], $directInputs);
 
@@ -306,14 +307,19 @@ trait Create
      * Returns the direct inputs parsed for model and relationship creation.
      *
      * @param  array  $inputs
+     * @param null|array $relationDetails
+     * @param bool|string $relationMethod
      * @return array
      */
-    private function getParsedInputs($inputs, $relationDetails = null, $relationMethod = false)
+    private function splitInputIntoDirectAndRelations($inputs, $relationDetails = null, $relationMethod = false)
     {
         $crudFields = $relationDetails['crudFields'] ?? [];
         $model = $relationDetails['model'] ?? false;
 
-        return [$this->getDirectParsedInput($inputs, $model, $crudFields, $relationMethod), $this->getRelationDetailsFromInput($inputs, $crudFields, $relationMethod)];
+        $directInputs = $this->getDirectInputsFromInput($inputs, $model, $crudFields, $relationMethod);
+        $relationInputs = $this->getRelationDetailsFromInput($inputs, $crudFields, $relationMethod);
+
+        return [$directInputs, $relationInputs];
     }
 
     /**
@@ -407,7 +413,7 @@ trait Create
         $relatedItemsSent = [];
 
         foreach ($items as $item) {
-            [$directInputs, $relationInputs] = $this->getParsedInputs($item, $relationDetails, $relationMethod);
+            [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($item, $relationDetails, $relationMethod);
             // for each item we get the inputs to create and the relations of it.
             $relation_local_key_value = $item[$relation_local_key] ?? null;
 
@@ -484,8 +490,9 @@ trait Create
 
             $key = Str::before($this->getOnlyRelationEntity(['entity' => $fieldName]), '.');
 
-            // if the field entity contains the attribute we want to add that attribute
-            // in the correct relation key
+            // if the field entity contains the attribute we want to add that attribute in the correct relation key.
+            // eg: adress.street, we want to add `street` as an attribute in `address` relation, `street` is not 
+            // a relation of `address`
             if ($this->getOnlyRelationEntity($field) !== $field['entity']) {
                 if (Str::before($field['entity'], '.') === $relationMethod) {
                     $key = Str::before($this->getOnlyRelationEntity($field), '.');
