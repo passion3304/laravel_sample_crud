@@ -250,25 +250,25 @@ trait Create
         return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
     }
 
-    private function handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key)
+    private function handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey)
     {
-        $relation_column_is_nullable = $model_instance->isColumnNullable($relation_foreign_key);
-        $force_delete = $relationDetails['force_delete'] ?? false;
-        $fallback_id = $relationDetails['fallback_id'] ?? false;
+        $relationColumnIsNullable = $modelInstance->isColumnNullable($relationForeignKey);
+        $forceDelete = $relationDetails['force_delete'] ?? false;
+        $fallbackId = $relationDetails['fallback_id'] ?? false;
 
-        if ($fallback_id) {
-            return $removed_entries->update([$relation_foreign_key => $fallback_id]);
+        if ($fallbackId) {
+            return $removedEntries->update([$relationForeignKey => $fallbackId]);
         }
 
-        if ($force_delete) {
-            return $removed_entries->delete();
+        if ($forceDelete) {
+            return $removedEntries->delete();
         }
 
-        if (! $relation_column_is_nullable && $model_instance->dbColumnHasDefault($relation_foreign_key)) {
-            return $removed_entries->update([$relation_foreign_key => $model_instance->getDbColumnDefault($relation_foreign_key)]);
+        if (! $relationColumnIsNullable && $modelInstance->dbColumnHasDefault($relationForeignKey)) {
+            return $removedEntries->update([$relationForeignKey => $modelInstance->getDbColumnDefault($relationForeignKey)]);
         }
 
-        return $removed_entries->update([$relation_foreign_key => null]);
+        return $removedEntries->update([$relationForeignKey => null]);
     }
 
     /**
