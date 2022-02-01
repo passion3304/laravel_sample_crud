@@ -253,7 +253,7 @@ trait Update
                 foreach (explode('.', $name) as $part) {
                     $iterator = $iterator->$part;
                 }
-                
+
                 Arr::set($result, $name, (! is_string($iterator) && ! is_null($iterator) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
             }
         }
