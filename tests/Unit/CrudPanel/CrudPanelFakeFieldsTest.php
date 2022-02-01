@@ -120,7 +120,7 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->fakeFieldsArray);
         $this->crudPanel->setModel(Article::class);
 
-        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'create');
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData);
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }
@@ -129,9 +129,9 @@ class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
     {
         $article = DB::table('articles')->where('id', 1)->first();
         $this->crudPanel->setModel(Article::class);
-        $this->crudPanel->addFields($this->fakeFieldsArray, 'update');
+        $this->crudPanel->addFields($this->fakeFieldsArray);
 
-        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'update', $article->id);
+        $compactedFakeFields = $this->crudPanel->compactFakeFields($this->fakeFieldsInputData);
 
         $this->assertEquals($this->expectedInputDataWithCompactedFakeFields, $compactedFakeFields);
     }

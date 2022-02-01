@@ -1,14 +1,19 @@
 <!-- select2 -->
 @php
     $current_value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
-    $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    if(!empty($current_value)) {
+        if (is_a($current_value, \Illuminate\Support\Collection::class)) {
+           $current_value = ($current_value)->pluck((new $field['model'])->getKeyName(), $field['attribute']);
+        }
+    }
+    $field['allows_null'] = $field['allows_null'] ?? $field['model']::isColumnNullable($field['name']);
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     @php
-        $related_model = $crud->getRelationModel($field['entity']);
+        $related_model = $field['model'];
         $group_by_model = (new $related_model)->{$field['group_by']}()->getRelated();
         $categories = $group_by_model::with($field['group_by_relationship_back'])->get();
 
@@ -34,7 +39,7 @@
                     <optgroup label="{{ $category->{$field['group_by_attribute']} }}">
                         @foreach ($category->{$field['group_by_relationship_back']} as $subEntry)
                             <option value="{{ $subEntry->getKey() }}"
-                                @if ($subEntry->getKey()===$current_value)
+                                @if ( ( old($field['name']) && old($field['name']) == $subEntry->getKey() ) || (isset($field['value']) && $subEntry->getKey()==$field['value']))
                                      selected
                                 @endif
                             >{{ $subEntry->{$field['attribute']} }}</option>
