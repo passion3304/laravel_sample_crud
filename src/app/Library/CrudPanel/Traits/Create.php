@@ -178,7 +178,7 @@ trait Create
             $relationMethodValue = $relationDetails['values'][$relationMethod];
 
             // Scenario D
-            if (is_null($relationMethodValue) && $relationDetails['relationEntity'] === $relationMethod) {
+            if (is_null($relationMethodValue) && $relationDetails['entity'] === $relationMethod) {
                 $relation->delete();
 
                 return null;

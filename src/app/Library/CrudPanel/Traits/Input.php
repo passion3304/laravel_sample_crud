@@ -140,7 +140,7 @@ trait Input
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
             $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type'];
             $fieldDetails['crudFields'][] = $field;
-            $fieldDetails['relationEntity'] = $this->getOnlyRelationEntity($field);
+            $fieldDetails['entity'] = $this->getOnlyRelationEntity($field);
 
             if (isset($field['fallback_id'])) {
                 $fieldDetails['fallback_id'] = $field['fallback_id'];
