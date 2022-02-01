@@ -41,7 +41,7 @@ trait Create
     /**
      * ---------------
      * PRIVATE METHODS
-     * ---------------
+     * ---------------.
      */
 
     /**
@@ -223,7 +223,6 @@ trait Create
             return ! in_array($key, $excludedFields);
         });
     }
-
 
     /**
      * Get all fields with relation set (model key set on field).
