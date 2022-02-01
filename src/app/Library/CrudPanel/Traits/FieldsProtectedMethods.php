@@ -255,6 +255,8 @@ trait FieldsProtectedMethods
             $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
         }
 
+        // when field has any of `many` relations we need to append either the pivot selector for the `ToMany` or the 
+        // local key for the `many` relations. Other relations don't need any special treatment when used as subfields.
         if (isset($field['relation_type'])) {
             switch ($field['relation_type']) {
                 case 'MorphToMany':
