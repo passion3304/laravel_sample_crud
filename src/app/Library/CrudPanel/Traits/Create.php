@@ -223,52 +223,52 @@ trait Create
      *
      * @return mixed
      */
-    private function attachManyRelation($item, $relation, $relationDetails, $relation_values)
+    private function attachManyRelation($item, $relation, $relationDetails, $relationValues)
     {
-        $model_instance = $relation->getRelated();
-        $relation_foreign_key = $relation->getForeignKeyName();
-        $relation_local_key = $relation->getLocalKeyName();
+        $modelInstance = $relation->getRelated();
+        $relationForeignKey = $relation->getForeignKeyName();
+        $relationLocalKey = $relation->getLocalKeyName();
 
-        if ($relation_values === null) {
+        if ($relationValues === null) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
-            $removed_entries = $model_instance->where($relation_foreign_key, $item->{$relation_local_key});
+            $removed_entries = $modelInstance->where($relationForeignKey, $item->{$relationLocalKey});
 
-            return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+            return $this->handleManyRelationItemRemoval($modelInstance, $removed_entries, $relationDetails, $relationForeignKey);
         }
         // we add the new values into the relation
-        $model_instance->whereIn($model_instance->getKeyName(), $relation_values)
-            ->update([$relation_foreign_key => $item->{$relation_local_key}]);
+        $modelInstance->whereIn($modelInstance->getKeyName(), $relationValues)
+            ->update([$relationForeignKey => $item->{$relationLocalKey}]);
 
         // we clear up any values that were removed from model relation.
         // if developer provided a fallback id, we use it
         // if column is nullable we set it to null if developer didn't specify `force_delete => true`
         // if none of the above we delete the model from database
-        $removed_entries = $model_instance->whereNotIn($model_instance->getKeyName(), $relation_values)
-                            ->where($relation_foreign_key, $item->{$relation_local_key});
+        $removed_entries = $modelInstance->whereNotIn($modelInstance->getKeyName(), $relationValues)
+                            ->where($relationForeignKey, $item->{$relationLocalKey});
 
-        return $this->handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key);
+        return $this->handleManyRelationItemRemoval($modelInstance, $removed_entries, $relationDetails, $relationForeignKey);
     }
 
-    private function handleManyRelationItemRemoval($model_instance, $removed_entries, $relationDetails, $relation_foreign_key)
+    private function handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey)
     {
-        $relation_column_is_nullable = $model_instance->isColumnNullable($relation_foreign_key);
-        $force_delete = $relationDetails['force_delete'] ?? false;
-        $fallback_id = $relationDetails['fallback_id'] ?? false;
+        $relationColumnIsNullable = $modelInstance->isColumnNullable($relationForeignKey);
+        $forceDelete = $relationDetails['force_delete'] ?? false;
+        $fallbackId = $relationDetails['fallback_id'] ?? false;
 
-        if ($fallback_id) {
-            return $removed_entries->update([$relation_foreign_key => $fallback_id]);
+        if ($fallbackId) {
+            return $removedEntries->update([$relationForeignKey => $fallbackId]);
         }
 
-        if ($force_delete) {
-            return $removed_entries->delete();
+        if ($forceDelete) {
+            return $removedEntries->delete();
         }
 
-        if (! $relation_column_is_nullable && $model_instance->dbColumnHasDefault($relation_foreign_key)) {
-            return $removed_entries->update([$relation_foreign_key => $model_instance->getDbColumnDefault($relation_foreign_key)]);
+        if (! $relationColumnIsNullable && $modelInstance->dbColumnHasDefault($relationForeignKey)) {
+            return $removedEntries->update([$relationForeignKey => $modelInstance->getDbColumnDefault($relationForeignKey)]);
         }
 
-        return $removed_entries->update([$relation_foreign_key => null]);
+        return $removedEntries->update([$relationForeignKey => null]);
     }
 
     /**
