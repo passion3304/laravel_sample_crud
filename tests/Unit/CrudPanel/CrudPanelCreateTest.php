@@ -590,6 +590,42 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($account_details->bangsPivot->count(), 2);
         $this->assertEquals($account_details->bangsPivot->first()->pivot->pivot_field, 'test1');
     }
+    
+    public function testCreateBelongsToFake() {
+        $belongsToField = [   // select_grouped
+            'label'                      => 'Select_grouped',
+            'type'                       => 'select_grouped', //https://github.com/Laravel-Backpack/CRUD/issues/502
+            'name'                       => 'bang_relation_field',
+            'fake'                       => true,
+            'entity'                     => 'bang',
+            'model'                      => 'Backpack\CRUD\Tests\Unit\Models\Bang',
+            'attribute'                  => 'title',
+            'group_by'                   => 'category', // the relationship to entity you want to use for grouping
+            'group_by_attribute'         => 'name', // the attribute on related model, that you want shown
+            'group_by_relationship_back' => 'articles', // relationship from related model back to this model
+            'tab'                        => 'Selects',
+            'wrapperAttributes'          => ['class' => 'form-group col-md-6'],
+        ];
+
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField($belongsToField);
+
+        $faker = Factory::create();
+
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'bang_relation_field'          => 1, 
+        ];
+        
+        $entry = $this->crudPanel->create($inputData);
+        $this->crudPanel->entry = $entry->withFakes();
+        $this->assertEquals($entry->bang_relation_field, 1);
+    }
 
     public function testCreateHasOneWithNestedRelations()
     {

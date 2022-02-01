@@ -67,7 +67,12 @@ trait Update
      */
     private function getModelAttributeValue($model, $field)
     {
-        if (isset($field['entity']) && $field['entity'] !== false) {
+        $model = $model->withFakes();
+
+        $fieldEntity = $field['entity'] ?? false;
+        $fakeField = $field['fake'] ?? false;
+
+        if ($fieldEntity && !$fakeField) {
             return $this->getModelAttributeValueFromRelationship($model, $field);
         }
 
