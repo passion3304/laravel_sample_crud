@@ -72,7 +72,7 @@ trait Update
         $fieldEntity = $field['entity'] ?? false;
         $fakeField = $field['fake'] ?? false;
 
-        if ($fieldEntity && !$fakeField) {
+        if ($fieldEntity && ! $fakeField) {
             return $this->getModelAttributeValueFromRelationship($model, $field);
         }
 

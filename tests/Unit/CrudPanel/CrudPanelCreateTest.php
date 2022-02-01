@@ -590,8 +590,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($account_details->bangsPivot->count(), 2);
         $this->assertEquals($account_details->bangsPivot->first()->pivot->pivot_field, 'test1');
     }
-    
-    public function testCreateBelongsToFake() {
+
+    public function testCreateBelongsToFake()
+    {
         $belongsToField = [   // select_grouped
             'label'                      => 'Select_grouped',
             'type'                       => 'select_grouped', //https://github.com/Laravel-Backpack/CRUD/issues/502
@@ -619,9 +620,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'email'          => $faker->safeEmail,
             'password'       => bcrypt($faker->password()),
             'remember_token' => null,
-            'bang_relation_field'          => 1, 
+            'bang_relation_field'          => 1,
         ];
-        
+
         $entry = $this->crudPanel->create($inputData);
         $this->crudPanel->entry = $entry->withFakes();
         $this->assertEquals($entry->bang_relation_field, 1);

@@ -81,7 +81,8 @@ class User extends Model
         return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Comet');
     }
 
-    public function bang() {
+    public function bang()
+    {
         return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\Bang', 'bang_relation_field');
     }
 }
