@@ -245,10 +245,8 @@ trait FieldsProtectedMethods
                 // we should use 'model' as the `baseModel` for all subfields, so that when
                 // we look if `category()` relationship exists on the model, we look on
                 // the model this repeatable represents, not the main CRUD model
-                $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
-
                 $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
-                // chain the parent field baseEntity if it exists
+                $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
                 $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity;
             }
 
