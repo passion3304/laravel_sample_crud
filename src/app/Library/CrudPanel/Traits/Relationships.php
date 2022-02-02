@@ -264,8 +264,8 @@ trait Relationships
     }
 
     /**
-     * Return the name for the BelongTo relation making sure it always has the foreign_key instead of relationName
-     * eg: user - user_id.
+     * Return the name for the BelongTo relation making sure it always has the
+     * foreign_key instead of relationName (eg. "user_id", not "user").
      *
      * @param  array  $field  The field we want to get the name from
      * @return string
