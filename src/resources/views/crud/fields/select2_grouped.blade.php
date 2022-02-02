@@ -1,11 +1,6 @@
 <!-- select2 -->
 @php
     $current_value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
-    if(!empty($current_value)) {
-        if (is_a($current_value, \Illuminate\Support\Collection::class)) {
-           $current_value = ($current_value)->pluck((new $field['model'])->getKeyName(), $field['attribute']);
-        }
-    }
     $field['allows_null'] = $field['allows_null'] ?? $field['model']::isColumnNullable($field['name']);
 @endphp
 
