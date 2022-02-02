@@ -245,16 +245,16 @@ trait FieldsProtectedMethods
                 // we should use 'model' as the `baseModel` for all subfields, so that when
                 // we look if `category()` relationship exists on the model, we look on
                 // the model this repeatable represents, not the main CRUD model
-                $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
-
                 $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
-                // chain the parent field baseEntity if it exists
+                $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
                 $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity;
             }
 
             $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
         }
 
+        // when field has any of `many` relations we need to append either the pivot selector for the `ToMany` or the
+        // local key for the `many` relations. Other relations don't need any special treatment when used as subfields.
         if (isset($field['relation_type'])) {
             switch ($field['relation_type']) {
                 case 'MorphToMany':
