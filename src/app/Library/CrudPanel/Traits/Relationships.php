@@ -295,6 +295,10 @@ trait Relationships
         $pivotSelectorField['entity'] = $field['name'];
         $pivotSelectorField['relation_type'] = $field['relation_type'];
         $pivotSelectorField['model'] = $field['model'];
+        $pivotSelectorField['minimum_input_length'] = 2;
+        $pivotSelectorField['delay'] = 500;
+        $pivotSelectorField['placeholder'] = trans('backpack::crud.select_entry');
+        $pivotSelectorField['label'] = \Str::of($field['name'])->singular()->ucfirst();
 
         if (isset($field['baseModel'])) {
             $pivotSelectorField['baseModel'] = $field['baseModel'];

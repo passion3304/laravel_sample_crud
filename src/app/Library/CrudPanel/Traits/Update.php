@@ -138,7 +138,7 @@ trait Update
                             // for any given model, we grab the attributes that belong to our pivot table.
                             $item = $model->pivot->getAttributes();
                             $item[$relationMethod] = $model->getKey();
-                            $result[] = $item;
+                            $result->push($item);
                             break;
                     }
                 }
@@ -171,6 +171,13 @@ trait Update
 
                 return $this->getModelWithFakes($model);
 
+                break;
+            case 'BelongsTo':
+                if ($relatedModel->{$relationMethod}) {
+                    return $relatedModel->{$relationMethod}->getKey();
+                }
+
+                return $relatedModel->{$relationMethod};
                 break;
             default:
                 return $relatedModel->{$relationMethod};

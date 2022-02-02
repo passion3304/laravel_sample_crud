@@ -13,19 +13,17 @@
     $field['subfields'] = $field['subfields'] ?? [];
     $field['reorder'] = $field['reorder'] ?? false;
 
-    // the allowed to override configurations of the pivot selector.
+  
     $pivotSelectorField = $field['pivotSelect'] ?? [];
+
+    // this needs to be checked here because they depend on a blade variable `$inlineCreate` that prevents the modal over modal scenario
     $inline_create = !isset($inlineCreate) && isset($pivotSelectorField['inline_create']) ? $pivotSelectorField['inline_create'] : false;
     $pivotSelectorField['ajax'] = $inline_create !== false ? true : ($pivotSelectorField['ajax'] ?? false);
     $pivotSelectorField['data_source'] = $pivotSelectorField['data_source'] ?? ($pivotSelectorField['ajax'] ? url($crud->route.'/fetch/'.$field['entity']) : 'false');
-    $pivotSelectorField['minimum_input_length'] = $pivotSelectorField['minimum_input_length'] ?? 2;
-    $pivotSelectorField['delay'] = $pivotSelectorField['delay'] ?? 500;
-    $pivotSelectorField['placeholder'] = $pivotSelectorField['placeholder'] ?? trans('backpack::crud.select_entry');
-    $pivotSelectorField['label'] = $pivotSelectorField['label'] ?? \Str::of($field['name'])->singular()->ucfirst();
 
     $field['subfields'] = array_map(function($subfield) use ($pivotSelectorField) {
         if(isset($subfield['is_pivot_select'])) {
-            $subfield = $subfield + $pivotSelectorField;
+            $subfield = array_merge($subfield, $pivotSelectorField);
         }
         return $subfield;
     },$field['subfields']);
