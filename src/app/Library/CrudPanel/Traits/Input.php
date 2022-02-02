@@ -48,7 +48,7 @@ trait Input
         $model = $model ? (is_string($model) ? app($model) : $model) : $this->model;
 
         $input = $this->decodeJsonCastedAttributes($input, $model);
-        $input = $this->compactFakeFields($input);
+        $input = $this->compactFakeFields($input, $model, $fields);
         $input = $this->excludeRelationFieldsExceptBelongsTo($input, $fields, $relationMethod);
         $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input, $fields);
 
