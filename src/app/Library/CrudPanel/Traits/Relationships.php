@@ -152,8 +152,11 @@ trait Relationships
     }
 
     /**
-     * Changes the BelongsTo names in the input from request to allways have the foreign_key instead of the relation name.
-     * When $belongs_to_fields are provided we will use those fields to replace relation names on the provided input.
+     * Changes the input names to use the foreign_key, instead of the relation name,
+     * for BelongsTo relations (eg. "user_id" instead of "user").
+     *
+     * When $fields are provided, we will use those fields to determine the correct
+     * foreign key. Otherwise, we will use the main CRUD fields.
      *
      * eg: user -> user_id
      *
@@ -161,27 +164,29 @@ trait Relationships
      * @param  array  $belongsToFields
      * @return array
      */
-    private function changeBelongsToNamesFromRelationshipToForeignKey($input, $belongs_to_fields = [])
+    private function changeBelongsToNamesFromRelationshipToForeignKey($input, $fields = [])
     {
-        if (empty($belongs_to_fields)) {
-            $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
+        if (empty($fields)) {
+            $fields = $this->getFieldsWithRelationType('BelongsTo');
         } else {
-            foreach ($belongs_to_fields as $field) {
+            foreach ($fields as $field) {
                 if (isset($field['subfields'])) {
-                    $belongs_to_fields = array_merge($field['subfields'], $belongs_to_fields);
+                    ;
+                    $fields = array_merge($field['subfields'], $fields);
                 }
             }
-            $belongs_to_fields = array_filter($belongs_to_fields, function ($field) {
+            $fields = array_filter($fields, function ($field) {
                 return isset($field['relation_type']) && $field['relation_type'] === 'BelongsTo';
             });
         }
 
-        foreach ($belongs_to_fields as $relation_field) {
-            $name_for_sub = $this->getOverwrittenNameForBelongsTo($relation_field);
-            $belongsToKey = Str::afterLast($relation_field['name'], '.');
-            if (Arr::has($input, $belongsToKey) && $belongsToKey !== $name_for_sub) {
-                Arr::set($input, $name_for_sub, Arr::get($input, $belongsToKey));
-                Arr::forget($input, $belongsToKey);
+        foreach ($fields as $field) {
+            $foreignKey = $this->getOverwrittenNameForBelongsTo($field);
+            $lastFieldNameSegment = Str::afterLast($field['name'], '.');
+
+            if (Arr::has($input, $lastFieldNameSegment) && $lastFieldNameSegment !== $foreignKey) {
+                Arr::set($input, $foreignKey, Arr::get($input, $lastFieldNameSegment));
+                Arr::forget($input, $lastFieldNameSegment);
             }
         }
 
