@@ -15,11 +15,6 @@
     $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entries');
 
     $field['value'] = old_empty_or_null($field['name'], collect()) ??  $field['value'] ?? $field['default'] ?? collect();
-
-    if(!empty($field['value'])) {
-         $field['value'] = $field['options']->whereIn((new $field['model'])->getKeyName(), $field['value']);
-    }
-
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

@@ -13,43 +13,20 @@
     $field['subfields'] = $field['subfields'] ?? [];
     $field['reorder'] = $field['reorder'] ?? false;
 
+  
     $pivotSelectorField = $field['pivotSelect'] ?? [];
+
+    // this needs to be checked here because they depend on a blade variable `$inlineCreate` that prevents the modal over modal scenario
     $inline_create = !isset($inlineCreate) && isset($pivotSelectorField['inline_create']) ? $pivotSelectorField['inline_create'] : false;
-    $pivotSelectorField['name'] = $field['name'];
-    $pivotSelectorField['type'] = 'relationship';
-    $pivotSelectorField['is_pivot_select'] = true;
-    $pivotSelectorField['multiple'] = false;
-    $pivotSelectorField['entity'] = $field['name'];
-    $pivotSelectorField['label'] = $pivotSelectorField['label'] ?? \Str::of($field['name'])->singular()->ucfirst();
-    $pivotSelectorField['relation_type'] = $field['relation_type'];
-    $pivotSelectorField['model'] = $field['model'];
     $pivotSelectorField['ajax'] = $inline_create !== false ? true : ($pivotSelectorField['ajax'] ?? false);
     $pivotSelectorField['data_source'] = $pivotSelectorField['data_source'] ?? ($pivotSelectorField['ajax'] ? url($crud->route.'/fetch/'.$field['entity']) : 'false');
-    $pivotSelectorField['minimum_input_length'] = $pivotSelectorField['minimum_input_length'] ?? 2;
-    $pivotSelectorField['delay'] = $pivotSelectorField['delay'] ?? 500;
-    $pivotSelectorField['placeholder'] = $pivotSelectorField['placeholder'] ?? trans('backpack::crud.select_entry');
-    if(isset($field['baseModel']) || isset($pivotSelectorField['baseModel'])) {
-        $pivotSelectorField['baseModel'] = $pivotSelectorField['baseModel'] ?? $field['baseModel'];
-    }
-    if(isset($field['baseEntity']) || isset($pivotSelectorField['baseEntity'])) {
-        $pivotSelectorField['baseEntity'] = $pivotSelectorField['baseEntity'] ?? $field['baseEntity'];
-    }
 
-    switch ($field['relation_type']) {
-        case 'MorphToMany':
-        case 'BelongsToMany':
-            $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
-            break;
-        case 'MorphMany':
-        case 'HasMany':
-            if(isset($entry)) {
-                $field['subfields'] = Arr::prepend($field['subfields'], [
-                    'name' => (new $field['model'])->getKeyName(),
-                    'type' => 'hidden',
-                ]);
-            }
-        break;
-    }
+    $field['subfields'] = array_map(function($subfield) use ($pivotSelectorField) {
+        if(isset($subfield['is_pivot_select'])) {
+            $subfield = array_merge($subfield, $pivotSelectorField);
+        }
+        return $subfield;
+    },$field['subfields']);
 @endphp
 
 @include('crud::fields.repeatable')

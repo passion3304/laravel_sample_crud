@@ -1,36 +1,44 @@
 {{-- REPEATABLE FIELD TYPE --}}
 
 @php
-  $field['value'] = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
-  // make sure the value is always an array, even if stored as JSON in database
-  $field['value'] = is_string($field['value']) ? json_decode($field['value'], true) : $field['value'];
+    $field['value'] = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
+    // make sure the value is always an array, even if stored as JSON in database
+    $field['value'] = is_string($field['value']) ? json_decode($field['value'], true) : $field['value'];
 
-  $field['init_rows'] = $field['init_rows'] ?? $field['min_rows'] ?? 0;
-  $field['max_rows'] = $field['max_rows'] ?? 0;
-  $field['min_rows'] =  $field['min_rows'] ?? 0;
-  $field['subfields'] = $field['subfields'] ?? $field['fields'] ?? [];
-  $field['reorder'] = $field['reorder'] ?? true;
+    if(!empty($field['value'])) {
+        // when repeatable is used to create relations the value returned from those relations
+        // would be collections, contrary to when saved as json in database and casted as array
+        if (is_a($field['value'], \Illuminate\Support\Collection::class)) {
+            $field['value'] = $field['value']->toArray();
+        }
+    }
 
-  if($field['reorder'] !== false) {
-     switch(gettype($field['reorder'])) {
-         case 'string': {
-            $field['subfields'] = Arr::prepend($field['subfields'], [
-                'name' => $field['reorder'],
-                'type' => 'hidden',
-                'attributes' => [
-                    'data-reorder-input' => true
-                ]
-            ]);
-            usort($field['value'], fn($a, $b) => $a[$field['reorder']] <=> $b[$field['reorder']]);
-         }
-         break;
-         case 'array': {
-            $field['subfields'] = Arr::prepend($field['subfields'], $field['reorder']);
-            usort($field['value'], fn($a, $b) => $a[$field['reorder']['name']] <=> $b[$field['reorder']['name']]);
-         }
-         break;
-     }
-  }
+    $field['init_rows'] = $field['init_rows'] ?? $field['min_rows'] ?? 0;
+    $field['max_rows'] = $field['max_rows'] ?? 0;
+    $field['min_rows'] =  $field['min_rows'] ?? 0;
+    $field['subfields'] = $field['subfields'] ?? $field['fields'] ?? [];
+    $field['reorder'] = $field['reorder'] ?? true;
+
+    if($field['reorder'] !== false) {
+        switch(gettype($field['reorder'])) {
+            case 'string': {
+                $field['subfields'] = Arr::prepend($field['subfields'], [
+                    'name' => $field['reorder'],
+                    'type' => 'hidden',
+                    'attributes' => [
+                        'data-reorder-input' => true
+                    ]
+                ]);
+                usort($field['value'], fn($a, $b) => $a[$field['reorder']] <=> $b[$field['reorder']]);
+            }
+            break;
+            case 'array': {
+                $field['subfields'] = Arr::prepend($field['subfields'], $field['reorder']);
+                usort($field['value'], fn($a, $b) => $a[$field['reorder']['name']] <=> $b[$field['reorder']['name']]);
+            }
+            break;
+        }
+    }
   
 @endphp
 

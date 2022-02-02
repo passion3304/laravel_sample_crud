@@ -61,7 +61,8 @@ trait Relationships
 
     public function getOnlyRelationEntity($field)
     {
-        $model = $this->getRelationModel($field['entity'], -1);
+        $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
+        $model = $this->getRelationModel($entity, -1);
         $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.');
 
         if (! method_exists($model, $lastSegmentAfterDot)) {
@@ -125,20 +126,22 @@ trait Relationships
      * Gets the relation fields that DON'T contain the provided relations.
      *
      * @param  string|array  $relations  - the relations to exclude
-     * @param  bool  $include_nested  - if the nested relations of the same relations should be excluded too.
+     * @param  array  $fields
      */
-    private function getRelationFieldsWithoutRelationType($relations, $include_nested = false)
+    private function getRelationFieldsWithoutRelationType($relations, $fields = [])
     {
         if (! is_array($relations)) {
             $relations = [$relations];
         }
 
-        $fields = $this->getRelationFields();
+        if (empty($fields)) {
+            $fields = $this->getRelationFields();
+        }
 
         foreach ($relations as $relation) {
-            $fields = array_filter($fields, function ($field) use ($relation, $include_nested) {
-                if ($include_nested) {
-                    return $field['relation_type'] !== $relation || ($field['relation_type'] === $relation && Str::contains($field['name'], '.'));
+            $fields = array_filter($fields, function ($field) use ($relation) {
+                if (! isset($field['relation_type'])) {
+                    return false;
                 }
 
                 return $field['relation_type'] !== $relation;
@@ -149,21 +152,40 @@ trait Relationships
     }
 
     /**
-     * Changes the BelongsTo names in the input from request to allways
-     * have the foreign_key instead of the relation name.
-     * It only changes main relations not nested.
+     * Changes the input names to use the foreign_key, instead of the relation name,
+     * for BelongsTo relations (eg. "user_id" instead of "user").
+     *
+     * When $fields are provided, we will use those fields to determine the correct
+     * foreign key. Otherwise, we will use the main CRUD fields.
      *
      * eg: user -> user_id
+     *
+     * @param  array  $input
+     * @param  array  $belongsToFields
+     * @return array
      */
-    private function changeBelongsToNamesFromRelationshipToForeignKey($input)
+    private function changeBelongsToNamesFromRelationshipToForeignKey($input, $fields = [])
     {
-        $belongs_to_fields = $this->getFieldsWithRelationType('BelongsTo');
-        foreach ($belongs_to_fields as $relation_field) {
-            $name_for_sub = $this->getOverwrittenNameForBelongsTo($relation_field);
+        if (empty($fields)) {
+            $fields = $this->getFieldsWithRelationType('BelongsTo');
+        } else {
+            foreach ($fields as $field) {
+                if (isset($field['subfields'])) {
+                    $fields = array_merge($field['subfields'], $fields);
+                }
+            }
+            $fields = array_filter($fields, function ($field) {
+                return isset($field['relation_type']) && $field['relation_type'] === 'BelongsTo';
+            });
+        }
 
-            if (Arr::has($input, $relation_field['name']) && $relation_field['name'] !== $name_for_sub) {
-                Arr::set($input, $name_for_sub, Arr::get($input, $relation_field['name']));
-                Arr::forget($input, $relation_field['name']);
+        foreach ($fields as $field) {
+            $foreignKey = $this->getOverwrittenNameForBelongsTo($field);
+            $lastFieldNameSegment = Str::afterLast($field['name'], '.');
+
+            if (Arr::has($input, $lastFieldNameSegment) && $lastFieldNameSegment !== $foreignKey) {
+                Arr::set($input, $foreignKey, Arr::get($input, $lastFieldNameSegment));
+                Arr::forget($input, $lastFieldNameSegment);
             }
         }
 
@@ -241,23 +263,50 @@ trait Relationships
     }
 
     /**
-     * Return the name for the BelongTo relation making sure it always has the foreign_key instead of relationName
-     * eg: user - user_id OR address.country - address.country_id.
+     * Return the name for the BelongTo relation making sure it always has the
+     * foreign_key instead of relationName (eg. "user_id", not "user").
      *
      * @param  array  $field  The field we want to get the name from
+     * @return string
      */
     private function getOverwrittenNameForBelongsTo($field)
     {
         $relation = $this->getRelationInstance($field);
 
         if (Str::afterLast($field['name'], '.') === $relation->getRelationName()) {
-            if (Str::contains($field['name'], '.')) {
-                return Str::beforeLast($field['name'], '.').'.'.$relation->getForeignKeyName();
-            }
-
             return $relation->getForeignKeyName();
         }
 
         return $field['name'];
+    }
+
+    /**
+     * Returns the pivot definition for BelongsToMany/MorphToMany relation provided in $field.
+     *
+     * @param  array  $field
+     * @return array
+     */
+    private static function getPivotFieldStructure($field)
+    {
+        $pivotSelectorField['name'] = $field['name'];
+        $pivotSelectorField['type'] = 'relationship';
+        $pivotSelectorField['is_pivot_select'] = true;
+        $pivotSelectorField['multiple'] = false;
+        $pivotSelectorField['entity'] = $field['name'];
+        $pivotSelectorField['relation_type'] = $field['relation_type'];
+        $pivotSelectorField['model'] = $field['model'];
+        $pivotSelectorField['minimum_input_length'] = 2;
+        $pivotSelectorField['delay'] = 500;
+        $pivotSelectorField['placeholder'] = trans('backpack::crud.select_entry');
+        $pivotSelectorField['label'] = \Str::of($field['name'])->singular()->ucfirst();
+
+        if (isset($field['baseModel'])) {
+            $pivotSelectorField['baseModel'] = $field['baseModel'];
+        }
+        if (isset($field['baseEntity'])) {
+            $pivotSelectorField['baseEntity'] = $field['baseEntity'];
+        }
+
+        return $pivotSelectorField;
     }
 }

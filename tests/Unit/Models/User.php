@@ -10,7 +10,7 @@ class User extends Model
     use CrudTrait;
 
     protected $table = 'users';
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'extras'];
 
     /**
      * Get the account details associated with the user.
@@ -79,5 +79,10 @@ class User extends Model
     public function comets()
     {
         return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Comet');
+    }
+
+    public function bang()
+    {
+        return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\Bang', 'bang_relation_field');
     }
 }

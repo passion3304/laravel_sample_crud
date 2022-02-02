@@ -35,7 +35,8 @@
             // TODO: if relationship has `isOneOfMany` on it, load a readonly select; this covers:
             // - has One Of Many - hasOne(Order::class)->latestOfMany()
             // - morph One Of Many - morphOne(Image::class)->latestOfMany()
-            $relationship = CRUD::getModel()->{$field['entity']}();
+            $model = isset($field['baseModel']) ? app($field['baseModel']) : CRUD::getModel();
+            $relationship = $model->{$field['entity']}();
             if ($relationship->isOneOfMany()) {
                 abort(500, "<strong>The relationship field type does not cover 'One of Many' relationships.</strong><br> Those relationship are only meant to be 'read', not 'created' or 'updated'. Please change your <code>{$field['name']}</code> field to use the 1-n relationship towards <code>{$field['model']}</code>, the one that does NOT have latestOfMany() or oldestOfMany(). See <a target='_blank' href='https://backpackforlaravel.com/docs/crud-fields#has-one-of-many-1-1-relationship-out-of-1-n-relationship'>the docs</a> for more information.");
             }

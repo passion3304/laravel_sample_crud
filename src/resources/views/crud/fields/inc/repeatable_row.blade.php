@@ -22,11 +22,16 @@
 
             if(isset($row)) {
                 if(!is_array($subfield['name'])) {
-                    // this is a fix for 4.1 repeatable names that when the field was multiple, saved the keys with `[]` in the end. Eg: `tags[]` instead of `tags`
-                    if(isset($row[$subfield['name']]) || isset($row[$subfield['name'].'[]'])) {
-                        $subfield['value'] = $row[$subfield['name']] ?? $row[$subfield['name'].'[]'];
+                    if(!Str::contains($subfield['name'], '.')) {
+                        // this is a fix for 4.1 repeatable names that when the field was multiple, saved the keys with `[]` in the end. Eg: `tags[]` instead of `tags`
+                        if(isset($row[$subfield['name']]) || isset($row[$subfield['name'].'[]'])) {
+                            $subfield['value'] = $row[$subfield['name']] ?? $row[$subfield['name'].'[]'];
+                        }
+                        $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.$subfield['name'].']';
+                    }else{
+                        $subfield['value'] = \Arr::get($row, $subfield['name']);
+                        $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.Str::replace('.', '][', $subfield['name']).']';
                     }
-                    $subfield['name'] = $field['name'].'['.$repeatable_row_key.']['.$subfield['name'].']';
                 }else{
                     foreach ($subfield['name'] as $k => $item) {
                         $subfield['name'][$k] = $field['name'].'['.$repeatable_row_key.']['.$item.']';
