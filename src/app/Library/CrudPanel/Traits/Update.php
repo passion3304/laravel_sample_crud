@@ -138,7 +138,7 @@ trait Update
                             // for any given model, we grab the attributes that belong to our pivot table.
                             $item = $model->pivot->getAttributes();
                             $item[$relationMethod] = $model->getKey();
-                            $result[] = $item;
+                            $result->push($item);
                             break;
                     }
                 }
