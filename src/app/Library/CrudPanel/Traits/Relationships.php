@@ -171,7 +171,6 @@ trait Relationships
         } else {
             foreach ($fields as $field) {
                 if (isset($field['subfields'])) {
-                    ;
                     $fields = array_merge($field['subfields'], $fields);
                 }
             }
