@@ -6,6 +6,8 @@
     $field['value'] = is_string($field['value']) ? json_decode($field['value'], true) : $field['value'];
 
     if(!empty($field['value'])) {
+        // when repeatable is used to create relations the value returned from those relations
+        // would be collections, contrary to when saved as json in database and casted as array
         if (is_a($field['value'], \Illuminate\Support\Collection::class)) {
             $field['value'] = $field['value']->toArray();
         }
