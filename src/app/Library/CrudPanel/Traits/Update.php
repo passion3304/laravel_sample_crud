@@ -173,9 +173,10 @@ trait Update
 
                 break;
             case 'BelongsTo':
-                if($relatedModel->{$relationMethod}) {
+                if ($relatedModel->{$relationMethod}) {
                     return $relatedModel->{$relationMethod}->getKey();
                 }
+
                 return $relatedModel->{$relationMethod};
                 break;
             default:
