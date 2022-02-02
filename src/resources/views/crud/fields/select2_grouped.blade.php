@@ -34,7 +34,7 @@
                     <optgroup label="{{ $category->{$field['group_by_attribute']} }}">
                         @foreach ($category->{$field['group_by_relationship_back']} as $subEntry)
                             <option value="{{ $subEntry->getKey() }}"
-                                @if ($subEntry->getKey()===$current_value)
+                                @if ( ( old($field['name']) && old($field['name']) == $subEntry->getKey() ) || (isset($field['value']) && $subEntry->getKey()==$field['value']))
                                      selected
                                 @endif
                             >{{ $subEntry->{$field['attribute']} }}</option>
