@@ -172,6 +172,12 @@ trait Update
                 return $this->getModelWithFakes($model);
 
                 break;
+            case 'BelongsTo':
+                if($relatedModel->{$relationMethod}) {
+                    return $relatedModel->{$relationMethod}->getKey();
+                }
+                return $relatedModel->{$relationMethod};
+                break;
             default:
                 return $relatedModel->{$relationMethod};
         }
