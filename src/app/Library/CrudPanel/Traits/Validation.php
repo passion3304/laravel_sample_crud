@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait Validation
@@ -179,7 +178,7 @@ trait Validation
                         $name_string = '';
 
                         foreach ($entity_array as $arr_key => $array_entity) {
-                            if($array_entity === '*') {
+                            if ($array_entity === '*') {
                                 continue;
                             }
                             $name_string .= ($arr_key === 0) ? $array_entity : '['.$array_entity.']';
@@ -192,7 +191,7 @@ trait Validation
                 }
             }
         }
-       
+
         $this->setOperationSetting('requiredFields', $requiredFields);
     }
 
@@ -210,7 +209,7 @@ trait Validation
             return false;
         }
 
-        if(Str::contains($inputKey, '.')) {
+        if (Str::contains($inputKey, '.')) {
             $entity_array = explode('.', $inputKey);
             $name_string = '';
             foreach ($entity_array as $arr_key => $array_entity) {
