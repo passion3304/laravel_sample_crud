@@ -11,15 +11,20 @@
 	    $column['value'] = json_decode($column['value'], true);
     }
 
+	// always work with arrays in the html, so if it is an object, get an array back from it.
+	if(is_object($column['value'])) {
+		$column['value'] = (array)$column['value'];
+	}
+
     // check if it is a multidimensional array, if not we turn $value into one
-    if (is_array($column['value']) && count($column['value']) === count($column['value'], COUNT_RECURSIVE)) {
+    if (is_array($column['value']) && !empty($column['value']) && !is_multidimensional_array($column['value'])) {
         $column['value'] = array($column['value']);
     }
 @endphp
 
 <span>
-    @if ($column['value'] && count($column['columns']))
-
+    @if (!empty($column['value']) && count($column['columns']))
+	
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
 
     <table class="table table-bordered table-condensed table-striped m-b-0">
@@ -35,14 +40,8 @@
 			<tr>
 				@foreach($column['columns'] as $tableColumnKey => $tableColumnLabel)
 					<td>
-						@if( is_array($tableRow) && isset($tableRow[$tableColumnKey]) )
-
+						@if(isset($tableRow[$tableColumnKey]))
                             {{ $tableRow[$tableColumnKey] }}
-
-                        @elseif( is_object($tableRow) && property_exists($tableRow, $tableColumnKey) )
-
-                            {{ $tableRow->{$tableColumnKey} }}
-
                         @endif
 					</td>
 				@endforeach
