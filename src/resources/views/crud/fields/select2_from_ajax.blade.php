@@ -2,11 +2,14 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
-    $old_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? false;
+    $old_value = old_empty_or_null($field['name'], false) ??  $field['value'] ?? $field['default'] ?? false;
     // by default set ajax query delay to 500ms
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entry');
+    $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
+    $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

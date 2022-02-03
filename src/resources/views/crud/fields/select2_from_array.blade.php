@@ -1,44 +1,33 @@
 <!-- select2 from array -->
 @php
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
+    $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
+    $field['multiple'] = $field['allows_multiple'] ?? false;
+    $field['placeholder'] = $field['placeholder'] ?? ($field['multiple'] ? trans('backpack::crud.select_entries') : trans('backpack::crud.select_entry'));
 @endphp
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
+    {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+    @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
         name="{{ $field['name'] }}@if (isset($field['allows_multiple']) && $field['allows_multiple']==true)[]@endif"
         style="width: 100%"
         data-init-function="bpFieldInitSelect2FromArrayElement"
         data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+        data-allows-null="{{var_export($field['allows_null'])}}"
+        data-placeholder="{{$field['placeholder']}}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control select2_from_array'])
-        @if (isset($field['allows_multiple']) && $field['allows_multiple']==true)multiple @endif
+        @if ($field['multiple'])multiple @endif
         >
 
-        @if ($field['allows_null'])
+        @if ($field['allows_null'] && !$field['multiple'])
             <option value="">-</option>
         @endif
 
         @if (count($field['options']))
             @foreach ($field['options'] as $key => $value)
-                @if((old(square_brackets_to_dots($field['name'])) && (
-                        $key == old(square_brackets_to_dots($field['name'])) ||
-                        (is_array(old(square_brackets_to_dots($field['name']))) &&
-                        in_array($key, old(square_brackets_to_dots($field['name'])))))) ||
-                        (null === old(square_brackets_to_dots($field['name'])) &&
-                            ((isset($field['value']) && (
-                                        $key == $field['value'] || (
-                                                is_array($field['value']) &&
-                                                in_array($key, $field['value'])
-                                                )
-                                        )) ||
-                                (!isset($field['value']) && isset($field['default']) &&
-                                ($key == $field['default'] || (
-                                                is_array($field['default']) &&
-                                                in_array($key, $field['default'])
-                                            )
-                                        )
-                                ))
-                        ))
+                @if($key == $field['value'] || (is_array($field['value']) && in_array($key, $field['value'])))
                     <option value="{{ $key }}" selected>{{ $value }}</option>
                 @else
                     <option value="{{ $key }}">{{ $value }}</option>
@@ -78,14 +67,16 @@
             if (!element.hasClass("select2-hidden-accessible"))
                 {
                     let $isFieldInline = element.data('field-is-inline');
+                    let $allowClear = element.data('allows-null');
+                    let $multiple = element.attr('multiple') ?? false;
+                    let $placeholder = element.attr('placeholder');
 
                     element.select2({
                         theme: "bootstrap",
+                        allowClear: $allowClear,
+                        multiple: $multiple,
+                        placeholder: $placeholder,
                         dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
-                    }).on('select2:unselect', function(e) {
-                        if ($(this).attr('multiple') && $(this).val().length == 0) {
-                            $(this).val(null).trigger('change');
-                        }
                     });
                 }
         }

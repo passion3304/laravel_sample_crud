@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait FieldsProtectedMethods
@@ -127,6 +128,8 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasEntity($field)
     {
+        $model = isset($field['baseModel']) ? app($field['baseModel']) : $this->model;
+
         if (isset($field['entity'])) {
             return $field;
         }
@@ -140,15 +143,15 @@ trait FieldsProtectedMethods
         if (strpos($field['name'], '.') !== false) {
             $possibleMethodName = Str::of($field['name'])->before('.');
             // if it has parameters it's not a relation method.
-            $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $field['name'];
+            $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $field['name'];
 
             return $field;
         }
 
         // if there's a method on the model with this name
-        if (method_exists($this->model, $field['name'])) {
+        if (method_exists($model, $field['name'])) {
             // if it has parameters it's not a relation method.
-            $field['entity'] = $this->modelMethodHasParameters($this->model, $field['name']) ? false : $field['name'];
+            $field['entity'] = $this->modelMethodHasParameters($model, $field['name']) ? false : $field['name'];
 
             return $field;
         }
@@ -158,9 +161,9 @@ trait FieldsProtectedMethods
         if (Str::endsWith($field['name'], '_id')) {
             $possibleMethodName = Str::replaceLast('_id', '', $field['name']);
 
-            if (method_exists($this->model, $possibleMethodName)) {
+            if (method_exists($model, $possibleMethodName)) {
                 // if it has parameters it's not a relation method.
-                $field['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $possibleMethodName;
+                $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $possibleMethodName;
 
                 return $field;
             }
@@ -174,7 +177,7 @@ trait FieldsProtectedMethods
         // if there's a model defined, but no attribute
         // guess an attribute using the identifiableAttribute functionality in CrudTrait
         if (isset($field['model']) && ! isset($field['attribute']) && method_exists($field['model'], 'identifiableAttribute')) {
-            $field['attribute'] = call_user_func([(new $field['model']), 'identifiableAttribute']);
+            $field['attribute'] = call_user_func([(new $field['model']()), 'identifiableAttribute']);
         }
 
         return $field;
@@ -208,7 +211,67 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasType($field)
     {
         if (! isset($field['type'])) {
-            $field['type'] = isset($field['relation_type']) ? $this->inferFieldTypeFromFieldRelation($field) : $this->inferFieldTypeFromDbColumnType($field['name']);
+            $field['type'] = isset($field['relation_type']) ? 'relationship' : $this->inferFieldTypeFromDbColumnType($field['name']);
+        }
+
+        return $field;
+    }
+
+    /**
+     * If a field has subfields, go through each subfield and guess
+     * its attribute, filling in whatever is missing.
+     *
+     * @param  array  $field  Field definition array.
+     * @return array The improved definition of that field (a better 'subfields' array)
+     */
+    protected function makeSureSubfieldsHaveNecessaryAttributes($field)
+    {
+        if (! isset($field['subfields'])) {
+            return $field;
+        }
+
+        foreach ($field['subfields'] as $key => $subfield) {
+            // make sure the field definition is an array
+            if (is_string($subfield)) {
+                $subfield = ['name' => $subfield];
+            }
+
+            if (! isset($field['model'])) {
+                // we're inside a simple 'repeatable' with no model/relationship, so
+                // we assume all subfields are supposed to be text fields
+                $subfield['type'] = $subfield['type'] ?? 'text';
+                $subfield['entity'] = $subfield['entity'] ?? false;
+            } else {
+                // we should use 'model' as the `baseModel` for all subfields, so that when
+                // we look if `category()` relationship exists on the model, we look on
+                // the model this repeatable represents, not the main CRUD model
+                $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
+                $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
+                $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity;
+            }
+
+            $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
+        }
+
+        // when field has any of `many` relations we need to append either the pivot selector for the `ToMany` or the
+        // local key for the `many` relations. Other relations don't need any special treatment when used as subfields.
+        if (isset($field['relation_type'])) {
+            switch ($field['relation_type']) {
+                case 'MorphToMany':
+                case 'BelongsToMany':
+                    $pivotSelectorField = static::getPivotFieldStructure($field);
+                    $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
+                    break;
+                case 'MorphMany':
+                case 'HasMany':
+                    $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
+                    $relationInstance = $this->getRelationInstance(['entity' => $entity]);
+                    $field['subfields'] = Arr::prepend($field['subfields'], [
+                        'name' => $relationInstance->getLocalKeyName(),
+                        'type' => 'hidden',
+                    ]);
+                break;
+            }
         }
 
         return $field;

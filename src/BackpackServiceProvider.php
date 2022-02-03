@@ -107,7 +107,7 @@ class BackpackServiceProvider extends ServiceProvider
         $error_views = [__DIR__.'/resources/error_views' => resource_path('views/errors')];
         $backpack_views = [__DIR__.'/resources/views' => resource_path('views/vendor/backpack')];
         $backpack_public_assets = [__DIR__.'/public' => public_path()];
-        $backpack_lang_files = [__DIR__.'/resources/lang' => resource_path('lang/vendor/backpack')];
+        $backpack_lang_files = [__DIR__.'/resources/lang' => app()->langPath().'/vendor/backpack'];
         $backpack_config_files = [__DIR__.'/config' => config_path()];
 
         // sidebar content views, which are the only views most people need to overwrite

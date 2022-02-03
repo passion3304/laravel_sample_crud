@@ -206,9 +206,6 @@ trait Search
     {
         $row_items = [];
 
-        // add an empty first column to support details row and/or data table modal
-        $row_items[] = '';
-
         foreach ($this->columns() as $key => $column) {
             $row_items[] = $this->getCellView($column, $entry, $rowNumber);
         }
@@ -220,6 +217,12 @@ trait Search
                                 ->with('entry', $entry)
                                 ->with('row_number', $rowNumber)
                                 ->render();
+        }
+
+        // add the bulk actions checkbox to the first column
+        if ($this->getOperationSetting('bulkActions')) {
+            $bulk_actions_checkbox = \View::make('crud::columns.inc.bulk_actions_checkbox', ['entry' => $entry])->render();
+            $row_items[0] = $bulk_actions_checkbox.$row_items[0];
         }
 
         // add the details_row button to the first column
@@ -262,13 +265,24 @@ trait Search
         }
 
         if (isset($column['type'])) {
-            // if the column has been overwritten return that one
-            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
-                return 'vendor.backpack.crud.columns.'.$column['type'];
+            // create a list of paths to column blade views
+            // including the configured view_namespaces
+            $columnPaths = array_map(function ($item) use ($column) {
+                return $item.'.'.$column['type'];
+            }, config('backpack.crud.view_namespaces.columns'));
+
+            // but always fall back to the stock 'text' column
+            // if a view doesn't exist
+            if (! in_array('crud::columns.text', $columnPaths)) {
+                $columnPaths[] = 'crud::columns.text';
             }
 
-            // return the column from the package
-            return 'crud::columns.'.$column['type'];
+            // return the first column blade file that exists
+            foreach ($columnPaths as $path) {
+                if (view()->exists($path)) {
+                    return $path;
+                }
+            }
         }
 
         // fallback to text column

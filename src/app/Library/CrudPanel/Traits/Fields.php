@@ -56,8 +56,28 @@ trait Fields
         }
 
         $field = $this->makeSureFieldHasType($field);
+        $field = $this->makeSureSubfieldsHaveNecessaryAttributes($field);
 
         return $field;
+    }
+
+    /**
+     * Register all Eloquent Model events that are defined on fields.
+     * Eg. saving, saved, creating, created, updating, updated.
+     *
+     * @see https://laravel.com/docs/master/eloquent#events
+     *
+     * @return void
+     */
+    public function registerFieldEvents()
+    {
+        foreach ($this->getCleanStateFields() as $key => $field) {
+            if (isset($field['events'])) {
+                foreach ($field['events'] as $event => $closure) {
+                    $this->model->{$event}($closure);
+                }
+            }
+        }
     }
 
     /**
@@ -240,11 +260,16 @@ trait Fields
      * Decode attributes that are casted as array/object/json in the model.
      * So that they are not json_encoded twice before they are stored in the db
      * (once by Backpack in front-end, once by Laravel Attribute Casting).
+     *
+     * @param  array  $input
+     * @param  mixed  $model
+     * @return array
      */
-    public function decodeJsonCastedAttributes($data)
+    public function decodeJsonCastedAttributes($input, $model = false)
     {
+        $model = $model ? $model : $this->model;
         $fields = $this->getCleanStateFields();
-        $casted_attributes = $this->model->getCastedAttributes();
+        $casted_attributes = $model->getCastedAttributes();
 
         foreach ($fields as $field) {
 
@@ -255,17 +280,17 @@ trait Fields
                 $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $casted_attributes[$field['name']];
 
-                if (in_array($fieldCasting, $jsonCastables) && isset($data[$field['name']]) && ! empty($data[$field['name']]) && ! is_array($data[$field['name']])) {
+                if (in_array($fieldCasting, $jsonCastables) && isset($input[$field['name']]) && ! empty($input[$field['name']]) && ! is_array($input[$field['name']])) {
                     try {
-                        $data[$field['name']] = json_decode($data[$field['name']]);
+                        $input[$field['name']] = json_decode($input[$field['name']]);
                     } catch (\Exception $e) {
-                        $data[$field['name']] = [];
+                        $input[$field['name']] = [];
                     }
                 }
             }
         }
 
-        return $data;
+        return $input;
     }
 
     /**

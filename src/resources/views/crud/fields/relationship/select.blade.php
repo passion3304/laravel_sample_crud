@@ -7,6 +7,9 @@
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
     // Note: isColumnNullable returns true if column is nullable in database, also true if column does not exist.
 
+    // this field can be used as a pivot select for n-n relationships
+    $field['is_pivot_select'] = $field['is_pivot_select'] ?? false;
+
     if (!isset($field['options'])) {
             $field['options'] = $connected_entity::all()->pluck($field['attribute'],$connected_entity_key_name);
         } else {
@@ -14,8 +17,8 @@
     }
 
     // make sure the $field['value'] takes the proper value
-    $current_value = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? [];
-    
+    $current_value = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
+
     if (!empty($current_value) || is_int($current_value)) {
         switch (gettype($current_value)) {
             case 'array':
@@ -32,8 +35,10 @@
                     $current_value = $current_value
                                     ->pluck($field['attribute'], $connected_entity_key_name);
                     }
-
             break;
+
+            case 'NULL':
+                $current_value = [];
 
             default:
                 $current_value = $connected_entity
@@ -51,21 +56,17 @@
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
-    <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
+    @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
         style="width:100%"
         name="{{ $field['name'].($field['multiple']?'[]':'') }}"
         data-init-function="bpFieldInitRelationshipSelectElement"
         data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
-        data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
-        data-model-local-key="{{$crud->model->getKeyName()}}"
         data-placeholder="{{ $field['placeholder'] }}"
-        data-field-attribute="{{ $field['attribute'] }}"
-        data-connected-entity-key-name="{{ $connected_entity_key_name }}"
-        data-include-all-form-fields="{{ var_export($field['include_all_form_fields']) }}"
         data-field-multiple="{{var_export($field['multiple'])}}"
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+        data-is-pivot-select={{var_export($field['is_pivot_select'])}}
 
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
 
@@ -73,6 +74,7 @@
         multiple
         @endif
         >
+
         @if ($field['allows_null'] && !$field['multiple'])
             <option value="">-</option>
         @endif
@@ -140,17 +142,58 @@
      * @return void
      */
     function bpFieldInitRelationshipSelectElement(element) {
-        var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
-        var $modelKey = element.attr('data-model-local-key');
-        var $fieldAttribute = element.attr('data-field-attribute');
-        var $connectedEntityKeyName = element.attr('data-connected-entity-key-name');
-        var $includeAllFormFields = element.attr('data-include-all-form-fields') == 'false' ? false : true;
-        var $dependencies = JSON.parse(element.attr('data-dependencies'));
         var $multiple = element.attr('data-field-multiple')  == 'false' ? false : true;
         var $allows_null = (element.attr('data-column-nullable') == 'true') ? true : false;
         var $allowClear = $allows_null;
         var $isFieldInline = element.data('field-is-inline');
+        var $isPivotSelect = element.data('is-pivot-select');
+        
+        const changePivotOptionState = function(pivot_selector, enable = true) {
+            let pivots_container = pivot_selector.closest('div[data-repeatable-holder="'+pivot_selector.data('repeatable-input-name')+'"]');
+            
+            $(pivots_container).children().each(function(i,container) {
+                $(container).find('select').each(function(i, el) {
+                    
+                    if(typeof $(el).attr('data-is-pivot-select') !== 'undefined' && $(el).attr('data-is-pivot-select')) {
+                        if(pivot_selector.val()) {
+                            if(enable) {
+                                $(el).find('option[value="'+pivot_selector.val()+'"]').prop('disabled',false);   
+                            }else{
+                                if($(el).val() !== pivot_selector.val()) {
+                                    $(el).find('option[value="'+pivot_selector.val()+'"]').prop('disabled',true);
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        };
+
+        const disablePreviouslySelectedPivots = function(pivot_selector) {
+            let pivots_container = pivot_selector.closest('div[data-repeatable-holder="'+pivot_selector.data('repeatable-input-name')+'"]');
+            let selected_values = [];
+            let select_inputs = [];
+            
+            $(pivots_container).children().each(function(i,container) {
+                $(container).find('select').each(function(i, el) {
+                    if(typeof $(el).attr('data-is-pivot-select') !== 'undefined' && $(el).attr('data-is-pivot-select')) {
+                        select_inputs.push(el);
+                        if($(el).val()) {
+                            selected_values.push($(el).val());
+                        }
+                    }
+                });
+            });
+
+            select_inputs.forEach(function(input) {
+                selected_values.forEach(function(value) {
+                    if(value !== $(input).val()) {
+                        $(input).find('option[value="'+value+'"]').prop('disabled',true);
+                    }
+                });
+            });
+        };
 
         var $select2Settings = {
                 theme: 'bootstrap',
@@ -162,7 +205,28 @@
         if (!$(element).hasClass("select2-hidden-accessible"))
         {
             $(element).select2($select2Settings);
+            disablePreviouslySelectedPivots($(element));
         }
+
+        if($isPivotSelect) {
+            $(element).on('select2:selecting', function(e) {
+                if($(this).val()) {
+                    changePivotOptionState($(this)); 
+                }
+                return true;
+            });
+
+            $(element).on('select2:select', function(e) {
+                changePivotOptionState($(this), false);
+                return true;
+            });
+
+            $(element).on('backpack_field.deleted', function(e) {
+                changePivotOptionState($(this));
+                    return true;
+                });
+        }
+
     }
 </script>
 @endpush

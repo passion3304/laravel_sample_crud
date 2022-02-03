@@ -2,7 +2,7 @@
 @php
     $column['value'] = $column['value'] ?? $rowNumber;
     $column['escaped'] = $column['escaped'] ?? true;
-    $column['limit'] = $column['limit'] ?? 40;
+    $column['limit'] = $column['limit'] ?? 32;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['text'] = $column['default'] ?? '-';

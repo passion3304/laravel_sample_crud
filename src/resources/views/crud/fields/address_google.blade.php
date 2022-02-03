@@ -15,6 +15,7 @@
     }
 
     $field['store_as_json'] = $field['store_as_json'] ?? false;
+    $field_language = $field['language'] ?? \App::getLocale();
 
 ?>
 
@@ -22,7 +23,7 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     <input type="hidden"
-           value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
+           value="{{ old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '' }}"
            name="{{ $field['name'] }}">
 
     @if(isset($field['prefix']) || isset($field['suffix']))
@@ -129,6 +130,13 @@
                         }
                     }
                 });
+                
+                element.keydown(function(e) {
+                    if ($('.pac-container').is(':visible') && e.keyCode == 13) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
 
                 // Make sure pac container is closed on modals (inline create)
                 let modal = document.querySelector('.modal-dialog');
@@ -148,7 +156,7 @@
             }
 
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete" async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete&language={{$field_language}}" async defer></script>
 
         @endLoadOnce
     @endpush

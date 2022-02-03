@@ -17,7 +17,9 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->bigInteger('bang_relation_field')->nullable();
             $table->string('password');
+            $table->text('extras')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

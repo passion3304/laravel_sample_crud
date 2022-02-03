@@ -17,25 +17,16 @@ trait Update
      * Update a row in the database.
      *
      * @param  int  $id  The entity's id
-     * @param  array  $data  All inputs to be updated.
+     * @param  array  $input  All inputs to be updated.
      * @return object
      */
-    public function update($id, $data)
+    public function update($id, $input)
     {
-        $data = $this->decodeJsonCastedAttributes($data);
-        $data = $this->compactFakeFields($data);
         $item = $this->model->findOrFail($id);
 
-        $data = $this->changeBelongsToNamesFromRelationshipToForeignKey($data);
-
-        $this->createRelations($item, $data);
-
-        // omit the n-n relationships when updating the eloquent item
-        $nn_relationships = Arr::pluck($this->getRelationFieldsWithPivot(), 'name');
-
-        $data = Arr::except($data, $nn_relationships);
-
-        $updated = $item->update($data);
+        [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
+        $updated = $item->update($directInputs);
+        $this->createRelationsForItem($item, $relationInputs);
 
         return $item;
     }
@@ -52,17 +43,7 @@ trait Update
         $entry = ($id != false) ? $this->getEntry($id) : $this->getCurrentEntry();
 
         foreach ($fields as &$field) {
-            // set the value
-            if (! isset($field['value'])) {
-                if (isset($field['subfields'])) {
-                    $field['value'] = [];
-                    foreach ($field['subfields'] as $subfield) {
-                        $field['value'][] = $entry->{$subfield['name']};
-                    }
-                } else {
-                    $field['value'] = $this->getModelAttributeValue($entry, $field);
-                }
-            }
+            $field['value'] = $field['value'] ?? $this->getModelAttributeValue($entry, $field);
         }
 
         // always have a hidden input for the entry id
@@ -86,7 +67,12 @@ trait Update
      */
     private function getModelAttributeValue($model, $field)
     {
-        if (isset($field['entity']) && $field['entity'] !== false) {
+        $model = $model->withFakes();
+
+        $fieldEntity = $field['entity'] ?? false;
+        $fakeField = $field['fake'] ?? false;
+
+        if ($fieldEntity && ! $fakeField) {
             return $this->getModelAttributeValueFromRelationship($model, $field);
         }
 
@@ -96,97 +82,189 @@ trait Update
 
         if (is_array($field['name'])) {
             $result = [];
-            foreach ($field['name'] as $key => $value) {
-                $result = $model->{$value};
+            foreach ($field['name'] as $name) {
+                $result[] = $model->{$name};
             }
 
             return $result;
         }
     }
 
+    /**
+     * Returns the value of the given attribute in the relationship.
+     * It takes into account nested relationships.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  array  $field
+     * @return mixed
+     */
     private function getModelAttributeValueFromRelationship($model, $field)
     {
-        [$related_model, $relation_method] = $this->getModelAndMethodFromEntity($model, $field);
+        [$relatedModel, $relationMethod] = $this->getModelAndMethodFromEntity($model, $field);
 
-        if (! method_exists($related_model, $relation_method)) {
-            return $related_model->{$relation_method};
+        if (! method_exists($relatedModel, $relationMethod)) {
+            return $relatedModel->{$relationMethod};
         }
 
-        $relation_type = Str::afterLast(get_class($related_model->{$relation_method}()), '\\');
+        $relation = $relatedModel->{$relationMethod}();
+        $relationType = Str::afterLast(get_class($relation), '\\');
 
-        switch ($relation_type) {
+        switch ($relationType) {
             case 'MorphMany':
             case 'HasMany':
             case 'BelongsToMany':
             case 'MorphToMany':
-                if (! isset($field['pivotFields'])) {
-                    return $related_model->{$relation_method};
-                }
-                // we want to exclude the "self pivot field" since we already have it.
-                $pivot_fields = Arr::where($field['pivotFields'], function ($item) use ($field) {
-                    return $field['name'] != $item['name'];
-                });
-                $related_models = $related_model->{$relation_method};
-                $result = [];
-                // for any given model, we grab the attributes that belong to our pivot table.
-                foreach ($related_models as $related_model) {
-                    $item = [];
-                    switch ($relation_type) {
+                $relationModels = $relatedModel->{$relationMethod};
+                $result = collect();
 
+                foreach ($relationModels as $model) {
+                    // when subfields are NOT set we don't need to get any more values
+                    // we just return the plain models as we only need the ids
+                    if (! isset($field['subfields'])) {
+                        $result->push($model);
+                        continue;
+                    }
+                    // when subfields are set we need to parse their values so they can be displayed
+                    switch ($relationType) {
                         case 'HasMany':
                         case 'MorphMany':
-                            // for any given related model, we get the value from pivot fields
-                            foreach ($pivot_fields as $pivot_field) {
-                                $item[$pivot_field['name']] = $related_model->{$pivot_field['name']};
-                            }
-                            $item[$related_model->getKeyName()] = $related_model->getKey();
-                            $result[] = $item;
+                            // we will get model direct attributes and merge with subfields values.
+                            $directAttributes = $this->getModelWithFakes($model)->getAttributes();
+                            $result->push(array_merge($directAttributes, $this->getSubfieldsValues($field['subfields'], $model)));
                             break;
 
                         case 'BelongsToMany':
                         case 'MorphToMany':
-                            // for any given related model, we get the pivot fields.
-                            foreach ($pivot_fields as $pivot_field) {
-                                $item[$pivot_field['name']] = $related_model->pivot->{$pivot_field['name']};
-                            }
-                            $item[$field['name']] = $related_model->getKey();
-                            $result[] = $item;
+                            // for any given model, we grab the attributes that belong to our pivot table.
+                            $item = $model->pivot->getAttributes();
+                            $item[$relationMethod] = $model->getKey();
+                            $result->push($item);
                             break;
                     }
                 }
 
                 return $result;
-
-            break;
+                break;
             case 'HasOne':
             case 'MorphOne':
-                if (! $related_model->{$relation_method}) {
+                if (! method_exists($relatedModel, $relationMethod)) {
                     return;
                 }
 
-                return $related_model->{$relation_method}->{Str::afterLast($field['entity'], '.')};
+                $model = $relatedModel->{$relationMethod};
 
-            break;
+                if (! $model) {
+                    return;
+                }
+
+                $model = $this->getModelWithFakes($model);
+
+                // if `entity` contains a dot here it means developer added a main HasOne/MorphOne relation with dot notation
+                if (Str::contains($field['entity'], '.')) {
+                    return $model->{Str::afterLast($field['entity'], '.')};
+                }
+
+                // when subfields exists developer used the repeatable interface to manage this relation
+                if ($field['subfields']) {
+                    return [$this->getSubfieldsValues($field['subfields'], $model)];
+                }
+
+                return $this->getModelWithFakes($model);
+
+                break;
+            case 'BelongsTo':
+                if ($relatedModel->{$relationMethod}) {
+                    return $relatedModel->{$relationMethod}->getKey();
+                }
+
+                return $relatedModel->{$relationMethod};
+                break;
             default:
-                return $related_model->{$relation_method};
+                return $relatedModel->{$relationMethod};
         }
     }
 
+    /**
+     * This function checks if the provided model uses the CrudTrait.
+     * If IT DOES it adds the fakes to the model attributes.
+     * Otherwise just return the model back.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    private function getModelWithFakes($model)
+    {
+        if (in_array(\Backpack\CRUD\app\Models\Traits\CrudTrait::class, class_uses_recursive($model))) {
+            return $model->withFakes();
+        }
+
+        return $model;
+    }
+
+    /**
+     * Returns the model and the method from the relation string starting from the provided model.
+     *
+     * @param  Illuminate\Database\Eloquent\Model  $model
+     * @param  array  $field
+     * @return array
+     */
     private function getModelAndMethodFromEntity($model, $field)
     {
         // HasOne and MorphOne relations contains the field in the relation string. We want only the relation part.
-        $relational_entity = $this->getOnlyRelationEntity($field);
+        $relationEntity = $this->getOnlyRelationEntity($field);
 
-        $relation_array = explode('.', $relational_entity);
+        $relationArray = explode('.', $relationEntity);
 
-        $related_model = array_reduce(array_splice($relation_array, 0, -1), function ($obj, $method) {
+        $relatedModel = array_reduce(array_splice($relationArray, 0, -1), function ($obj, $method) {
+            // if the string ends with `_id` we strip it out
             $method = Str::endsWith($method, '_id') ? Str::replaceLast('_id', '', $method) : $method;
 
             return $obj->{$method} ? $obj->{$method} : $obj;
         }, $model);
 
-        $relation_method = Str::afterLast($relational_entity, '.');
+        $relationMethod = Str::afterLast($relationEntity, '.');
 
-        return [$related_model, $relation_method];
+        return [$relatedModel, $relationMethod];
+    }
+
+    /**
+     * Return the subfields values from the related model.
+     *
+     * @param  array  $subfields
+     * @param  \Illuminate\Database\Eloquent\Model  $relatedModel
+     * @return array
+     */
+    private function getSubfieldsValues($subfields, $relatedModel)
+    {
+        $result = [];
+        foreach ($subfields as $subfield) {
+            $name = is_string($subfield) ? $subfield : $subfield['name'];
+            // if the subfield name does not contain a dot we just need to check
+            // if it has subfields and return the result accordingly.
+            if (! Str::contains($name, '.')) {
+                // when subfields are present, $relatedModel->{$name} returns a model instance
+                // otherwise returns the model attribute.
+                if ($relatedModel->{$name}) {
+                    if (isset($subfield['subfields'])) {
+                        $result[$name] = [$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))];
+                    } else {
+                        $result[$name] = $relatedModel->{$name};
+                    }
+                }
+            } else {
+                // if the subfield name contains a dot, we are going to iterate through
+                // those parts to get the last connected part and parse it for returning.
+                // $iterator would be either a string (the attribute in model, eg: street)
+                // or a model instance (eg: AddressModel)
+                $iterator = $relatedModel;
+                foreach (explode('.', $name) as $part) {
+                    $iterator = $iterator->$part;
+                }
+
+                Arr::set($result, $name, (! is_string($iterator) && ! is_null($iterator) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
+            }
+        }
+
+        return $result;
     }
 }
