@@ -24,7 +24,7 @@
 
 <span>
     @if (!empty($column['value']) && count($column['columns']))
-	
+
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
 
     <table class="table table-bordered table-condensed table-striped m-b-0">
@@ -40,9 +40,7 @@
 			<tr>
 				@foreach($column['columns'] as $tableColumnKey => $tableColumnLabel)
 					<td>
-						@if(isset($tableRow[$tableColumnKey]))
-                            {{ $tableRow[$tableColumnKey] }}
-                        @endif
+                        {{ $tableRow[$tableColumnKey] ?? '' }}
 					</td>
 				@endforeach
 			</tr>
