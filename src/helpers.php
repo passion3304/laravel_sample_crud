@@ -306,6 +306,10 @@ if (! function_exists('backpack_pro')) {
      */
     function backpack_pro()
     {
+        if (array_key_exists('Backpack\Pro\AddonServiceProvider', app()->getLoadedProviders())) {
+            return true;
+        }
+
         if (! \Composer\InstalledVersions::isInstalled('backpack/pro')) {
             return false;
         }
