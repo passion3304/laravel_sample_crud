@@ -18,6 +18,7 @@
     $field['min_rows'] =  $field['min_rows'] ?? 0;
     $field['subfields'] = $field['subfields'] ?? $field['fields'] ?? [];
     $field['reorder'] = $field['reorder'] ?? true;
+    $field['wrapper']['class']  = isset($field['wrapper']['class']) ? $field['wrapper']['class'].' repeatable-group' : 'form-group col-sm-12 repeatable-group';
 
     if($field['reorder'] !== false) {
         switch(gettype($field['reorder'])) {

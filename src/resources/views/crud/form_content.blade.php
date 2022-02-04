@@ -20,16 +20,6 @@
     <!-- CRUD FORM CONTENT - crud_fields_styles stack -->
     @stack('crud_fields_styles')
 
-    {{-- Temporary fix on 4.1 --}}
-    <style>
-      .form-group.required label:not(:empty):not(.form-check-label)::after {
-        content: '';
-      }
-      .form-group.required > label:not(:empty):not(.form-check-label)::after {
-        content: ' *';
-        color: #ff0000;
-      }
-    </style>
 @endsection
 
 @section('after_scripts')
@@ -142,7 +132,6 @@
       @if ($crud->inlineErrorsEnabled() && $errors->any())
 
         window.errors = {!! json_encode($errors->messages()) !!};
-        // console.error(window.errors);
 
         $.each(errors, function(property, messages){
 
@@ -154,10 +143,22 @@
                         $('[name="' + normalizedProperty + '[]"]') :
                         $('[name="' + normalizedProperty + '"]'),
                         container = field.parents('.form-group');
-
-            container.addClass('text-danger');
-            container.children('input, textarea, select').addClass('is-invalid');
-
+            
+            // iterate the inputs to add invalid classes to fields and red text to the field container.
+            container.children('input, textarea, select').each(function() {
+                let containerField = $(this);
+                // add the invalida class to the field.
+                containerField.addClass('is-invalid');
+                // get field container
+                let container = containerField.parent('.form-group');
+                
+                // if container is a repeatable group we don't want to add red text to the whole group,
+                // we only want to add it to the fields that have errors inside that repeatable.
+                if(!container.hasClass('repeatable-group')){
+                  container.addClass('text-danger');
+                }
+            });
+            
             $.each(messages, function(key, msg){
                 // highlight the input that errored
                 var row = $('<div class="invalid-feedback d-block">' + msg + '</div>');
