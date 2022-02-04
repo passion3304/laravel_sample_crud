@@ -9,6 +9,7 @@
 	// if the field is required in the FormRequest, it should have an asterisk.
 	// we add the base entity to the field name to account for nested relation fields validated with `field.*.key`
 	$fieldName = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['name'] : $field['name'];
+	$fieldName = is_array($fieldName) ? current($fieldName) : $fieldName;
 	$required = (isset($action) && $crud->isRequired($fieldName)) ? ' required' : '';
 	
 	// if the developer has intentionally set the required attribute on the field
