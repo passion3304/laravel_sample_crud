@@ -62,7 +62,6 @@ mix.copy('node_modules/bootstrap-datepicker/dist', 'src/public/packages/bootstra
 	.copy('node_modules/bootstrap-colorpicker/dist', 'src/public/packages/bootstrap-colorpicker/dist')
 	.copy('node_modules/bootstrap-iconpicker/bootstrap-iconpicker', 'src/public/packages/bootstrap-iconpicker/bootstrap-iconpicker')
 	.copy('node_modules/bootstrap-iconpicker/icon-fonts', 'src/public/packages/bootstrap-iconpicker/icon-fonts')
-	.copy('node_modules/simplemde/dist', 'src/public/packages/simplemde/dist')
 	.copy('node_modules/easymde/dist', 'src/public/packages/easymde/dist')
 	.copy('node_modules/summernote/dist', 'src/public/packages/summernote/dist')
 	.copy('node_modules/tinymce', 'src/public/packages/tinymce')

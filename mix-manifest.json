@@ -77,8 +77,6 @@
     "/src/public/packages/ckeditor/contents.css": "/src/public/packages/ckeditor/contents.css",
     "/src/public/packages/ckeditor/package.json": "/src/public/packages/ckeditor/package.json",
     "/src/public/packages/ckeditor/styles.js": "/src/public/packages/ckeditor/styles.js",
-    "/src/public/packages/simplemde/dist/simplemde.min.css": "/src/public/packages/simplemde/dist/simplemde.min.css",
-    "/src/public/packages/simplemde/dist/simplemde.min.js": "/src/public/packages/simplemde/dist/simplemde.min.js",
     "/src/public/packages/easymde/dist/easymde.min.css": "/src/public/packages/easymde/dist/easymde.min.css",
     "/src/public/packages/easymde/dist/easymde.min.js": "/src/public/packages/easymde/dist/easymde.min.js",
     "/src/public/packages/summernote/dist/summernote-0.8.20-dist.zip": "/src/public/packages/summernote/dist/summernote-0.8.20-dist.zip",
