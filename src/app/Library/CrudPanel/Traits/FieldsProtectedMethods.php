@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait FieldsProtectedMethods
@@ -265,11 +266,33 @@ trait FieldsProtectedMethods
                 // we should use 'model' as the `baseModel` for all subfields, so that when
                 // we look if `category()` relationship exists on the model, we look on
                 // the model this repeatable represents, not the main CRUD model
+                $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
                 $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
-                $subfield['baseEntity'] = $subfield['baseEntity'] ?? $field['entity'];
+                $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity;
             }
 
             $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
+        }
+
+        // when field has any of `many` relations we need to append either the pivot selector for the `ToMany` or the
+        // local key for the `many` relations. Other relations don't need any special treatment when used as subfields.
+        if (isset($field['relation_type'])) {
+            switch ($field['relation_type']) {
+                case 'MorphToMany':
+                case 'BelongsToMany':
+                    $pivotSelectorField = static::getPivotFieldStructure($field);
+                    $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
+                    break;
+                case 'MorphMany':
+                case 'HasMany':
+                    $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
+                    $relationInstance = $this->getRelationInstance(['entity' => $entity]);
+                    $field['subfields'] = Arr::prepend($field['subfields'], [
+                        'name' => $relationInstance->getLocalKeyName(),
+                        'type' => 'hidden',
+                    ]);
+                break;
+            }
         }
 
         return $field;

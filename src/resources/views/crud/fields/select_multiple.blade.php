@@ -9,12 +9,10 @@
 
     $field['value'] = old_empty_or_null($field['name'], collect()) ??  $field['value'] ?? $field['default'] ?? collect();
 
-    if(!empty($field['value'])) {
-        if ($field['value'] instanceof \Illuminate\Database\Eloquent\Collection) {
-            $field['value'] = ($field['value'])->modelKeys();
-        }
-        $field['value'] = $options->whereIn((new $field['model'])->getKeyName(), $field['value']);
+    if (is_a($field['value'], \Illuminate\Support\Collection::class)) {
+        $field['value'] = $field['value']->pluck(app($field['model'])->getKeyName())->toArray();
     }
+    
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -31,7 +29,7 @@
 
     	@if (count($options))
     		@foreach ($options as $option)
-				@if(in_array($option->getKey(), $field['value']->pluck($option->getKeyName())->toArray()))
+				@if(in_array($option->getKey(), $field['value']))
 					<option value="{{ $option->getKey() }}" selected>{{ $option->{$field['attribute']} }}</option>
 				@else
 					<option value="{{ $option->getKey() }}">{{ $option->{$field['attribute']} }}</option>

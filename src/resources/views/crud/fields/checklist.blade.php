@@ -12,11 +12,13 @@
   }
 
   // calculate the value of the hidden input
-   $field['value'] = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
-  if ($field['value'] instanceof Illuminate\Database\Eloquent\Collection) {
-    $field['value'] = $field['value']->pluck($key_attribute)->toArray();
-  } elseif (is_string($field['value'])){
-    $field['value'] = json_decode($field['value']);
+  $field['value'] = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
+  if(!empty($field['value'])) {
+      if (is_a($field['value'], \Illuminate\Support\Collection::class)) {
+          $field['value'] = ($field['value'])->pluck($key_attribute)->toArray();
+      } elseif (is_string($field['value'])){
+        $field['value'] = json_decode($field['value']);
+      }
   }
 
   // define the init-function on the wrapper
