@@ -54,7 +54,7 @@ return [
     'delete_confirmation_title'                   => 'Đã Xoá',
     'delete_confirmation_message'                 => 'Bản ghi đã được xoá thành công.',
     'delete_confirmation_not_title'               => 'KHÔNG xoá',
-    'delete_confirmation_not_message'             => "Đã xảy ra lỗi. Có thể bản ghi của bạn vẫn chưa được xoá.",
+    'delete_confirmation_not_message'             => 'Đã xảy ra lỗi. Có thể bản ghi của bạn vẫn chưa được xoá.',
     'delete_confirmation_not_deleted_title'       => 'Không Xoá',
     'delete_confirmation_not_deleted_message'     => 'Bản ghi của bạn sẽ không bị xoá.',
 
