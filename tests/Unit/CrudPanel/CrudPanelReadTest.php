@@ -276,7 +276,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testEnableDetailsRow()
     {
-        if (!backpack_pro()) {
+        if (! backpack_pro()) {
             $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
         }
 
@@ -311,7 +311,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testEnableExportButtons()
     {
-        if (!backpack_pro()) {
+        if (! backpack_pro()) {
             $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
         }
 
