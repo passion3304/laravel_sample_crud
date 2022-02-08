@@ -24,6 +24,10 @@ class CrudFilter
 
     public function __construct($options, $values, $logic, $fallbackLogic)
     {
+        if (!backpack_pro()) {
+            abort(500, 'Backpack filters are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+        }
+
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {
             $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));
