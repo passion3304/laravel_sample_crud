@@ -128,7 +128,7 @@ trait Read
      */
     public function enableDetailsRow()
     {
-        if (!backpack_pro()) {
+        if (! backpack_pro()) {
             abort(500, 'Details row is a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
         }
 
@@ -315,7 +315,7 @@ trait Read
      */
     public function enableExportButtons()
     {
-        if (!backpack_pro()) {
+        if (! backpack_pro()) {
             abort(500, 'Export buttons are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
         }
 
