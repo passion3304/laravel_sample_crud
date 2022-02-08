@@ -143,14 +143,13 @@ trait FieldsProtectedMethods
         if (strpos($field['name'], '.') !== false) {
             $possibleMethodName = Str::of($field['name'])->before('.');
             // check model method for possibility of beeing a relationship
-            $field['entity'] = $this->checkMethodPropertiesForRelationship($model, $field['name']);
+            $field['entity'] = $this->checkMethodPropertiesForRelationship($model, $possibleMethodName) ? $field['name'] : false;
 
             return $field;
         }
 
         // if there's a method on the model with this name
         if (method_exists($model, $field['name'])) {
-
             // check model method for possibility of beeing a relationship
             $field['entity'] = $this->checkMethodPropertiesForRelationship($model, $field['name']);
 
