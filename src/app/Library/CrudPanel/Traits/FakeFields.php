@@ -39,7 +39,7 @@ trait FakeFields
                 $isFakeField = $field['fake'] ?? false;
 
                 // field is represented by the subfields
-                if (isset($field['subfields']) && $field['model'] === get_class($model)) {
+                if (isset($field['subfields']) && isset($field['model']) && $field['model'] === get_class($model)) {
                     foreach ($field['subfields'] as $subfield) {
                         $subfieldName = Str::afterLast($subfield['name'], '.');
                         $isSubfieldFake = $subfield['fake'] ?? false;
