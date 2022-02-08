@@ -311,6 +311,10 @@ trait Read
      */
     public function enableExportButtons()
     {
+        if (!backpack_pro()) {
+            abort(500, 'Export buttons are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+        }
+
         $this->setOperationSetting('exportButtons', true);
     }
 
