@@ -162,6 +162,35 @@ class CrudField
         return $this->save();
     }
 
+    /**
+     * Set an event to a certain closure. Will overwrite if existing.
+     *
+     * @param  string  $event  Name of Eloquent Model event
+     * @param  \Closure  $closure  The function aka callback aka closure to run.
+     * @return CrudField
+     */
+    public function on(string $event, \Closure $closure)
+    {
+        $this->attributes['events'][$event] = $closure;
+
+        return $this->save();
+    }
+
+    /**
+     * When subfields are defined, pass them through the guessing function
+     * so that they have label, relationship attributes, etc.
+     *
+     * @param  array  $subfields  Subfield definition array
+     * @return self
+     */
+    public function subfields($subfields)
+    {
+        $this->attributes['subfields'] = $subfields;
+        $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
+
+        return $this->save();
+    }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------

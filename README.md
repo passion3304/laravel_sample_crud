@@ -16,8 +16,8 @@
     <a href="https://travis-ci.org/Laravel-Backpack/CRUD" title="Build Status"><img src="https://img.shields.io/travis/Laravel-Backpack/CRUD/master.svg?style=flat-square"></a>
     <a href="https://styleci.io/repos/53581270" title="Style CI"><img src="https://styleci.io/repos/53581270/shield"></a>
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://img.shields.io/scrutinizer/coverage/g/laravel-backpack/crud.svg?style=flat-square"></a>
-    <a href="LICENSE.md" title="Software License"><img src="https://img.shields.io/badge/License-dual-blue"></a>
-    <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
+    <a href="LICENSE.md" title="Software License"><img src="https://img.shields.io/github/license/laravel-backpack/crud?style=flat-square"></a>
+    <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen?style=flat-square" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
     <br><br>
     <a href="https://backpackforlaravel.com/">Website</a> | 
     <a href="https://backpackforlaravel.com/docs/">Documentation</a> | 
@@ -31,30 +31,29 @@
 </p>
 
 
-Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its features:
-
+Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its FREE features:
 - List operation
-   - 24+ column types
+   - 24 column types
    - 1-1, 1-n and n-n relationships
    - table view with search, pagination
    - click column header to sort by it
    - custom buttons
    - details row
-   - bulk actions
    - easily create new column types
    - easily overwrite an existing column type
 - Create / Update operations
-   - 50+ field types
+   - 29 field types
    - back-end validation using Laravel Form Requests
    - translatable models (multi-language)
    - have multiple fields per line
    - split fields into tabs
-- Delete / Bulk Delete operations
-- Clone / Bulk Clone operations
+- Delete operation
 - Reorder operation
 - Revisions operation (audit log)
 
-But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to overwrite a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
+> Need more complex features? Purchase access to [backpack/pro](https://backpackforlaravel.com/pricing), our closed-source paid add-on. It will add **5 more operations, 10 filters, 28 more fields, 6 more columns and 1 more widget**. We believe it's everything you need to build admin panels of _any_ complexity. And thousands of other Laravel developers agree.
+
+But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to override a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
 
 ## Screenshots
 
@@ -73,8 +72,11 @@ Alternatively, if you don't have 20 minutes right now, subscribe to our [drip em
 
 ## Install
 
-Installation guides:
-- [Install Backpack 4.1 on Laravel 6, 7 or 8](https://backpackforlaravel.com/docs/4.1/installation) - recommended;
+Installation guides for the current version (recommended):
+- [Install Backpack v5 on Laravel 9 or 8](https://backpackforlaravel.com/docs/5.x/installation);
+
+Installation guides for the previous versions (not recommended):
+- [Install Backpack 4.1 on Laravel 6, 7 or 8](https://backpackforlaravel.com/docs/4.1/installation) - last feature update was 1st Jan 2021;
 - [Install Backpack 4.0 on Laravel 5.8, 6 or 7](https://backpackforlaravel.com/docs/4.0/installation) - last feature update was 21st Apr 2020;
 - [Install Backpack 3.6 on Laravel 5.8 or 6.x](https://backpackforlaravel.com/docs/3.6/installation) - last feature update was 17th Sep 2019;
 - [Install Backpack 3.5 on Laravel 5.5, 5.6, 5.7](https://backpackforlaravel.com/docs/3.5/installation) - last feature update was 27th Feb 2019;
@@ -84,7 +86,7 @@ Installation guides:
 
 ## Change Log
 
-For the current release (4.1.x) please see [the Releases tab](https://github.com/Laravel-Backpack/CRUD/releases). For previous versions (Backpack <=4.0.x), please see our old [CHANGELOG](CHANGELOG.md) file.
+For v5.x and v4.x please see [the Releases tab](https://github.com/Laravel-Backpack/CRUD/releases). For previous versions (Backpack <=4.0.x), please see our old [CHANGELOG](CHANGELOG.md) file.
 
 ## Contributing Guidelines
 
@@ -114,20 +116,23 @@ Special thanks go to:
 
 ## License
 
-Backpack is dual-license: 
-- FREE for non-commercial use
-- PAID for commercial use
+Starting with v5, Backpack has become open-core. Its features have been separated into two packages:
+- Backpack\CRUD is licensed under the [MIT License](LICENSE.md) (open-source free software);
+- Backpack\Pro is licensed under our [EULA](https://backpackforlaravel.com/eula) (closed-source paid add-on);
 
-Please see the [License File](LICENSE.md) and [Pricing](https://backpackforlaravel.com/pricing) for more information.
+Backpack\CRUD is perfect if you're building a simple admin panel - it's packed with features! It's also perfect if you're building an open-source project, the permissive license allows you to do whatever you want.
+
+When your admin panel grows and your needs become more complex, you can purchase our [Backpack\PRO](https://backpackforlaravel.com/products/pro) add-on, which adds A LOT of features for complex use cases (see [list here]([Backpack\Pro](https://backpackforlaravel.com/docs/5.x/features-free-vs-paid))). Our documentation includes instructions on how to use both Backpack\CRUD and Backpack\PRO, with all the PRO features clearly labeled <span class="badge badge-pill badge-info">PRO</span>.
 
 <a name="versioning"></a>
 ## Versioning
 
-When installing Backpack, require its minor version (currently ```4.1.*```). For us, this is what ```major.minor.patch``` means:
+Starting with Backpack v5, all our packages follow [semantic versioning](https://semver.org/). Here's what `major.minor.patch` (eg. `5.0.1`) means for Backpack\CRUD:
+- `major` - breaking changes, major new features, complete rewrites; released **once a year**, in February; it adds features that were previously impossible and upgrades our dependencies; upgrading is done by following our clear and detailed upgrade guides;
+- `minor` - new features, released in backwards-compatible ways; **every few months**; update takes seconds;
+- `patch` - bug fixes & small non-breaking changes; historically **every week**; update takes seconds;
 
-- ```major``` - **PAID upgrade; MAJOR breaking changes;** historically every 2-3 years; upgrading may take even 2-3 hours; includes major new features, major changes in how the whole system works, and complete rewrites; it allows us to _considerably_ improve the product, and add features that were previously impossible;
-- ```minor``` - **FREE upgrade; MINOR breaking changes**; historically every 6-12 months; upgrading takes less than 30 minutes; it allows us to add big new features, for free;
-- ```patch``` - **FREE upgrade; NO breaking changes**; historically every week; upgrading can be done automatically with composer; includes bug fixes and non-breaking new features;
+When we release a new Backpack\CRUD version, all paid addons receive support for it the same day. And because (1) we release a new version every year and (2) when you buy a Backpack addon, you get access to not only _updates_, but also _upgrades_ (for 12mo), that means that... **any time you buy a Backpack addon, it is very likely that you're not only buying the _current_ version** (`v5` at the moment), **but also the upgrade to the _next version_** (`v6` for example).
 
 ## Hire us
 
