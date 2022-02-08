@@ -1,9 +1,9 @@
-<input type="hidden" name="http_referrer" value={{ session('referrer_url_override') ?? old('http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
+<input type="hidden" name="_http_referrer" value={{ session('referrer_url_override') ?? old('_http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled() && count($crud->getTabs()))
     @include('crud::inc.show_tabbed_fields')
-    <input type="hidden" name="current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
+    <input type="hidden" name="_current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
 @else
   <div class="card">
     <div class="card-body row">
@@ -16,29 +16,13 @@
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
 
 @section('after_styles')
-    <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css').'?v='.config('backpack.base.cachebusting_string') }}">
-    <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/form.css').'?v='.config('backpack.base.cachebusting_string') }}">
-    <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/'.$action.'.css').'?v='.config('backpack.base.cachebusting_string') }}">
 
     <!-- CRUD FORM CONTENT - crud_fields_styles stack -->
     @stack('crud_fields_styles')
 
-    {{-- Temporary fix on 4.1 --}}
-    <style>
-      .form-group.required label:not(:empty):not(.form-check-label)::after {
-        content: '';
-      }
-      .form-group.required > label:not(:empty):not(.form-check-label)::after {
-        content: ' *';
-        color: #ff0000;
-      }
-    </style>
 @endsection
 
 @section('after_scripts')
-    <script src="{{ asset('packages/backpack/crud/js/crud.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
-    <script src="{{ asset('packages/backpack/crud/js/form.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
-    <script src="{{ asset('packages/backpack/crud/js/'.$action.'.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
 
     <!-- CRUD FORM CONTENT - crud_fields_scripts stack -->
     @stack('crud_fields_scripts')
@@ -69,11 +53,30 @@
       // trigger the javascript for all fields that have their js defined in a separate method
       initializeFieldsWithJavascript('form');
 
+      // Retrieves the current form data
+      function getFormData() {
+        return new URLSearchParams(new FormData(document.querySelector("main form"))).toString();
+      }
+
+      // Prevents unloading of page if form data was changed
+      function preventUnload(event) {
+        if (initData !== getFormData()) {
+          // Cancel the event as stated by the standard.
+          event.preventDefault();
+          // Older browsers supported custom message
+          event.returnValue = '';
+        }
+      }
+
+      @if($crud->getOperationSetting('warnBeforeLeaving'))
+      const initData = getFormData();
+      window.addEventListener('beforeunload', preventUnload);
+      @endif
 
       // Save button has multiple actions: save and exit, save and edit, save and new
       var saveActions = $('#saveActions'),
       crudForm        = saveActions.parents('form'),
-      saveActionField = $('[name="save_action"]');
+      saveActionField = $('[name="_save_action"]');
 
       saveActions.on('click', '.dropdown-menu a', function(){
           var saveAction = $(this).data('value');
@@ -94,6 +97,7 @@
 
       // prevent duplicate entries on double-clicking the submit form
       crudForm.submit(function (event) {
+        window.removeEventListener('beforeunload', preventUnload);
         $("button[type=submit]").prop('disabled', true);
       });
 
@@ -128,7 +132,6 @@
       @if ($crud->inlineErrorsEnabled() && $errors->any())
 
         window.errors = {!! json_encode($errors->messages()) !!};
-        // console.error(window.errors);
 
         $.each(errors, function(property, messages){
 
@@ -140,10 +143,22 @@
                         $('[name="' + normalizedProperty + '[]"]') :
                         $('[name="' + normalizedProperty + '"]'),
                         container = field.parents('.form-group');
-
-            container.addClass('text-danger');
-            container.children('input, textarea, select').addClass('is-invalid');
-
+            
+            // iterate the inputs to add invalid classes to fields and red text to the field container.
+            container.children('input, textarea, select').each(function() {
+                let containerField = $(this);
+                // add the invalida class to the field.
+                containerField.addClass('is-invalid');
+                // get field container
+                let container = containerField.parent('.form-group');
+                
+                // if container is a repeatable group we don't want to add red text to the whole group,
+                // we only want to add it to the fields that have errors inside that repeatable.
+                if(!container.hasClass('repeatable-group')){
+                  container.addClass('text-danger');
+                }
+            });
+            
             $.each(messages, function(key, msg){
                 // highlight the input that errored
                 var row = $('<div class="invalid-feedback d-block">' + msg + '</div>');
@@ -161,11 +176,11 @@
 
       $("a[data-toggle='tab']").click(function(){
           currentTabName = $(this).attr('tab_name');
-          $("input[name='current_tab']").val(currentTabName);
+          $("input[name='_current_tab']").val(currentTabName);
       });
 
       if (window.location.hash) {
-          $("input[name='current_tab']").val(window.location.hash.substr(1));
+          $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
 
       });

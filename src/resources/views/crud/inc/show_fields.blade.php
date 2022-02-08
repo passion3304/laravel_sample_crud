@@ -1,10 +1,17 @@
 {{-- Show the inputs --}}
 @foreach ($fields as $field)
-    <!-- load the view from type and view_namespace attribute if set -->
     @php
-        $fieldsViewNamespace = $field['view_namespace'] ?? 'crud::fields';
+        // if the namespace is given, use that, no questions asked, otherwise
+        // load it from the first view_namespace that holds that field
+        if (isset($field['view_namespace'])) {
+            $fieldPaths = [$field['view_namespace'].'.'.$field['type']];
+        } else {
+            $fieldPaths = array_map(function($item) use ($field) {
+                return $item.'.'.$field['type'];
+            }, config('backpack.crud.view_namespaces.fields'));
+        }
     @endphp
 
-    @include($fieldsViewNamespace.'.'.$field['type'], ['field' => $field])
+    @includeFirst($fieldPaths, ['field' => $field])
 @endforeach
 

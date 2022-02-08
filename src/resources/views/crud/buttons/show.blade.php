@@ -15,7 +15,7 @@
 	  <ul class="dropdown-menu dropdown-menu-right">
   	    <li class="dropdown-header">{{ trans('backpack::crud.preview') }}:</li>
 	  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-		  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?locale={{ $key }}">{{ $locale }}</a>
+		  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?_locale={{ $key }}">{{ $locale }}</a>
 	  	@endforeach
 	  </ul>
 	</div>

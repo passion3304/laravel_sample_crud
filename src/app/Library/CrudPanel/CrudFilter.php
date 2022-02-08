@@ -24,6 +24,10 @@ class CrudFilter
 
     public function __construct($options, $values, $logic, $fallbackLogic)
     {
+        if (! backpack_pro()) {
+            abort(500, 'Backpack filters are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+        }
+
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {
             $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));
@@ -132,6 +136,21 @@ class CrudFilter
         return $this->viewNamespace.'.'.$this->view;
     }
 
+    /**
+     * Get an array of full paths to the filter view, including fallbacks
+     * as configured in the backpack/config/crud.php file.
+     *
+     * @return array
+     */
+    public function getNamespacedViewWithFallbacks()
+    {
+        $type = $this->type;
+
+        return array_map(function ($item) use ($type) {
+            return $item.'.'.$type;
+        }, config('backpack.crud.view_namespaces.filters'));
+    }
+
     // ---------------------
     // FLUENT SYNTAX METHODS
     // ---------------------
@@ -180,9 +199,12 @@ class CrudFilter
 
     /**
      * Remove an attribute from one field's definition array.
+     * (ununsed function).
      *
      * @param  string  $field  The name of the field.
      * @param  string  $attribute  The name of the attribute being removed.
+     *
+     * @deprecated
      */
     public function removeFilterAttribute($filter, $attribute)
     {

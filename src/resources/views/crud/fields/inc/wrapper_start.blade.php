@@ -4,10 +4,13 @@
     // each wrapper attribute can be a callback or a string
     // for those that are callbacks, run the callbacks to get the final string to use
     foreach($field['wrapper'] as $attributeKey => $value) {
-        $field['wrapper'][$attributeKey] = !is_string($value) && is_callable($value) ? $value($crud, $field, $entry ?? null) : $value ?? '';
+        $field['wrapper'][$attributeKey] = !is_string($value) && $value instanceof \Closure ? $value($crud, $field, $entry ?? null) : $value ?? '';
     }
-	// if the field is required in the FormRequest, it should have an asterisk
-	$required = (isset($action) && $crud->isRequired($field['name'], $action)) ? ' required' : '';
+	// if the field is required in the FormRequest, it should have an asterisk.
+	// we add the base entity to the field name to account for nested relation fields validated with `field.*.key`
+	$fieldName = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['name'] : $field['name'];
+	$fieldName = is_array($fieldName) ? current($fieldName) : $fieldName;
+	$required = (isset($action) && $crud->isRequired($fieldName)) ? ' required' : '';
 	
 	// if the developer has intentionally set the required attribute on the field
 	// forget whatever is in the FormRequest, do what the developer wants

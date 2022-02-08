@@ -246,3 +246,70 @@ if (! function_exists('is_countable')) {
         return is_array($obj) || $obj instanceof Countable;
     }
 }
+
+if (! function_exists('old_empty_or_null')) {
+    /**
+     * This method is an alternative to Laravel's old() helper, which mistakenly
+     * returns NULL it two cases:
+     * - if there is an old value, and it was empty or null
+     * - if there is no old value
+     * (this is because of the ConvertsEmptyStringsToNull middleware).
+     *
+     * In contrast, this method will return:
+     * - the old value, if there actually is an old value for that key;
+     * - the second parameter, if there is no old value for that key, but it was empty string or null;
+     * - null, if there is no old value at all for that key;
+     *
+     * @param  string  $key
+     * @param  array|string  $empty_value
+     * @return mixed
+     */
+    function old_empty_or_null($key, $empty_value = '')
+    {
+        $key = square_brackets_to_dots($key);
+        $old_inputs = session()->getOldInput();
+
+        // if the input name is present in the old inputs we need to return earlier and not in a coalescing chain
+        // otherwise `null` aka empty will not pass the condition and the field value would be returned.
+        if (\Arr::has($old_inputs, $key)) {
+            return \Arr::get($old_inputs, $key) ?? $empty_value;
+        }
+
+        return null;
+    }
+}
+
+if (! function_exists('is_multidimensional_array')) {
+    /**
+     * If any of the items inside a given array is an array, the array is considered multidimensional.
+     *
+     * @param  array  $array
+     * @return bool
+     */
+    function is_multidimensional_array(array $array)
+    {
+        foreach ($array as $item) {
+            if (is_array($item)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+if (! function_exists('backpack_pro')) {
+    /**
+     * Check if the backpack/pro package is installed.
+     *
+     * @return bool
+     */
+    function backpack_pro()
+    {
+        if (! \Composer\InstalledVersions::isInstalled('backpack/pro')) {
+            return false;
+        }
+
+        return \PackageVersions\Versions::getVersion('backpack/pro');
+    }
+}

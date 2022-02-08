@@ -34,4 +34,14 @@ class AccountDetails extends Model
     {
         return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\Article');
     }
+
+    public function bangs()
+    {
+        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Bang');
+    }
+
+    public function bangsPivot()
+    {
+        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Bang', 'account_details_bangs_pivot')->withPivot('pivot_field');
+    }
 }

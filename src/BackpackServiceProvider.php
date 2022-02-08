@@ -12,7 +12,7 @@ use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
 {
-    use Stats, LicenseCheck;
+    use Stats;
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
@@ -46,7 +46,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->setupRoutes($this->app->router);
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
-        $this->checkLicenseCodeExists();
         $this->sendUsageStats();
     }
 
@@ -107,7 +106,7 @@ class BackpackServiceProvider extends ServiceProvider
         $error_views = [__DIR__.'/resources/error_views' => resource_path('views/errors')];
         $backpack_views = [__DIR__.'/resources/views' => resource_path('views/vendor/backpack')];
         $backpack_public_assets = [__DIR__.'/public' => public_path()];
-        $backpack_lang_files = [__DIR__.'/resources/lang' => resource_path('lang/vendor/backpack')];
+        $backpack_lang_files = [__DIR__.'/resources/lang' => app()->langPath().'/vendor/backpack'];
         $backpack_config_files = [__DIR__.'/config' => config_path()];
 
         // sidebar content views, which are the only views most people need to overwrite
@@ -237,11 +236,29 @@ class BackpackServiceProvider extends ServiceProvider
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
     }
 
+    protected function mergeConfigFromOperationsDirectory()
+    {
+        $operationConfigs = scandir(__DIR__.'/config/backpack/operations/');
+        $operationConfigs = array_diff($operationConfigs, ['.', '..']);
+
+        if (! count($operationConfigs)) {
+            return;
+        }
+
+        foreach ($operationConfigs as $configFile) {
+            $this->mergeConfigFrom(
+                __DIR__.'/config/backpack/operations/'.$configFile,
+                'backpack.operations.'.substr($configFile, 0, strrpos($configFile, '.'))
+            );
+        }
+    }
+
     public function loadConfigs()
     {
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(__DIR__.'/config/backpack/crud.php', 'backpack.crud');
         $this->mergeConfigFrom(__DIR__.'/config/backpack/base.php', 'backpack.base');
+        $this->mergeConfigFromOperationsDirectory();
 
         // add the root disk to filesystem configuration
         app()->config['filesystems.disks.'.config('backpack.base.root_disk_name')] = [
