@@ -196,8 +196,7 @@ trait ColumnsProtectedMethods
                 // check model method for possibility of beeing a relationship
                 $column['entity'] = $this->checkMethodPropertiesForRelationship($this->model, $possibleMethodName) ? $column['name'] : false;
 
-                if($column['entity']) {
-
+                if ($column['entity']) {
                     $parts = explode('.', $column['entity']);
 
                     $attribute_in_relation = false;
@@ -219,6 +218,7 @@ trait ColumnsProtectedMethods
                         $column['attribute'] = $column['attribute'] ?? end($parts);
                     }
                 }
+
                 return $column;
             }
         }
