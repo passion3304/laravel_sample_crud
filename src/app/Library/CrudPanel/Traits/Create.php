@@ -305,7 +305,6 @@ trait Create
 
             // create the item relations if any.
             $this->createRelationsForItem($item, $relationInputs);
-
         }
 
         // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.

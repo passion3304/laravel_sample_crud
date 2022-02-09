@@ -885,7 +885,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $universes = $entry->fresh()->universes;
         $this->assertCount(2, $universes);
-        $this->assertEquals([1,2], $universes->pluck('id')->toArray());
+        $this->assertEquals([1, 2], $universes->pluck('id')->toArray());
 
         $inputData['universes'] = [
             [
@@ -895,11 +895,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $this->crudPanel->update($entry->id, $inputData);
-        
+
         $this->assertEquals($inputData['universes'][0]['title'], $entry->fresh()->universes->first()->title);
         $this->assertEquals($inputData['universes'][0]['id'], $entry->fresh()->universes->first()->id);
         $this->assertEquals(1, Universe::all()->count());
-        
+
         $inputData['universes'] = [
             [
                 'id' => null,
