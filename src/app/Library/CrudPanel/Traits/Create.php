@@ -298,13 +298,14 @@ trait Create
             // we either find the matched entry by local_key (usually `id`)
             // and update the values from the input
             // or create a new item from input
-            $item = $relation->updateOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
+            $item = $entry->{$relationMethod}()->updateOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
 
-            // we store the item local key do we can match them with database and check if any item was deleted
+            // we store the item local key so we can match them with database and check if any item was deleted
             $relatedItemsSent[] = $item->{$relation_local_key};
 
-            // create the item relations if any
+            // create the item relations if any.
             $this->createRelationsForItem($item, $relationInputs);
+
         }
 
         // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.
