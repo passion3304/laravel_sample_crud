@@ -855,6 +855,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'remember_token' => null,
             'universes'          => [
                 [
+                    'id' => null,
                     'title' => 'this is the star 1 title',
                 ],
                 [
@@ -872,16 +873,44 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $inputData['universes'] = [
             [
                 'id' => 1,
+                'title' => 'star 1 with changed title',
+            ],
+            [
+                'id' => 2,
+                'title' => 'star 2 with changed title',
+            ],
+        ];
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $universes = $entry->fresh()->universes;
+        $this->assertCount(2, $universes);
+        $this->assertEquals([1, 2], $universes->pluck('id')->toArray());
+
+        $inputData['universes'] = [
+            [
+                'id' => 1,
                 'title' => 'only one star with changed title',
             ],
         ];
 
         $this->crudPanel->update($entry->id, $inputData);
 
-        $this->assertCount(1, $entry->fresh()->universes);
-
         $this->assertEquals($inputData['universes'][0]['title'], $entry->fresh()->universes->first()->title);
         $this->assertEquals($inputData['universes'][0]['id'], $entry->fresh()->universes->first()->id);
+        $this->assertEquals(1, Universe::all()->count());
+
+        $inputData['universes'] = [
+            [
+                'id' => null,
+                'title' => 'new star 3',
+            ],
+        ];
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertEquals($inputData['universes'][0]['title'], $entry->fresh()->universes->first()->title);
+        $this->assertEquals(3, $entry->fresh()->universes->first()->id);
         $this->assertEquals(1, Universe::all()->count());
     }
 
