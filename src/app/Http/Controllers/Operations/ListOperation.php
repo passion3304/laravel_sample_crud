@@ -102,7 +102,7 @@ trait ListOperation
                 $column = $this->crud->findColumnById($column_number);
                 if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
                     // apply the current orderBy rules
-                    if (in_array($column['name'], $this->crud->model->translatable) and DB::getSchemaBuilder()->getColumnType($this->crud->model->getTable(), $column['name'])=='json'){
+                    if (in_array($column['name'], $this->crud->model->translatable) and DB::getSchemaBuilder()->getColumnType($this->crud->model->getTable(), $column['name']) == 'json'){
                         $this->crud->orderByWithPrefix($column['name'].'->'.\App::currentLocale(), $column_direction);
                     } else {
                         $this->crud->orderByWithPrefix($column['name'], $column_direction);
