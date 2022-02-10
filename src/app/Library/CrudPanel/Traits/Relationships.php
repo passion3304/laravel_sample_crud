@@ -309,4 +309,48 @@ trait Relationships
 
         return $pivotSelectorField;
     }
+
+    /**
+     * Checks the properties of the provided method to better verify if it could be a relation.
+     * Case the method is not public, is not a relation.
+     * Case the return type is Attribute, or extends Attribute is not a relation method.
+     * If the return type extends the Relation class is for sure a relation
+     * Otherwise we just assume it's a relation.
+     *
+     * DEV NOTE: In future versions we will return `false` when no return type is set and make the return type mandatory for relationships.
+     *           This function should be refactored to only check if $returnType is a subclass of Illuminate\Database\Eloquent\Relations\Relation.
+     *
+     * @param $model
+     * @param $method
+     * @return bool|string
+     */
+    private function modelMethodIsRelationship($model, $method)
+    {
+        $methodReflection = new \ReflectionMethod($model, $method);
+
+        // relationship methods function does not have parameters
+        if ($methodReflection->getNumberOfParameters() > 0) {
+            return false;
+        }
+
+        // relationships are always public methods.
+        if (! $methodReflection->isPublic()) {
+            return false;
+        }
+
+        $returnType = $methodReflection->getReturnType();
+
+        if ($returnType) {
+            $returnType = $returnType->getName();
+            if (is_a((new $returnType), 'Illuminate\Database\Eloquent\Casts\Attribute')) {
+                return false;
+            }
+
+            if (is_a((new $returnType), 'Illuminate\Database\Eloquent\Relations\Relation')) {
+                return $method;
+            }
+        }
+
+        return $method;
+    }
 }
