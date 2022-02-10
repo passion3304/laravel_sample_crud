@@ -3,10 +3,12 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
-use Orchestra\Database\ConsoleServiceProvider;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
 {
+    use RefreshDatabase;
+
     /**
      * @var CrudPanel
      */
@@ -26,19 +28,19 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
         // call migrations specific to our tests
         $this->loadMigrationsFrom([
             '--database' => 'testing',
-            '--realpath' => realpath(__DIR__.'/../../config/database/migrations'),
+            '--path' => realpath(__DIR__.'/../../config/database/migrations'),
         ]);
 
-        $this->artisan('db:seed', ['--class' => 'UsersRolesTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'UsersTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'ArticlesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersRolesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\ArticlesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\MorphableSeeders']);
     }
 
     /**
      * Define environment setup.
      *
-     * @param \Illuminate\Foundation\Application $app
-     *
+     * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
     protected function getEnvironmentSetUp($app)
@@ -47,24 +49,10 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
     }
 
     /**
-     * Get package providers.
-     *
-     * @param \Illuminate\Foundation\Application $app
-     *
-     * @return array
-     */
-    protected function getPackageProviders($app)
-    {
-        return [
-            ConsoleServiceProvider::class,
-        ];
-    }
-
-    /**
      * Assert that the attributes of a model entry are equal to the expected array of attributes.
      *
-     * @param array                               $expected attributes
-     * @param \Illuminate\Database\Eloquent\Model $actual   model
+     * @param  array  $expected  attributes
+     * @param  \Illuminate\Database\Eloquent\Model  $actual  model
      */
     protected function assertEntryEquals($expected, $actual)
     {

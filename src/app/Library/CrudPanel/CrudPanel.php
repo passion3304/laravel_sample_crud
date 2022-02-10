@@ -15,10 +15,12 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Input;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Read;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
@@ -27,13 +29,16 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Update;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Views;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\ViewsAndRestoresRevisions;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Arr;
 
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, ViewsAndRestoresRevisions, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings;
+    use Create, Read, Search, Update, Delete, Input, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships;
     // allow developers to add their own closures to this object
     use Macroable;
 
@@ -51,6 +56,8 @@ class CrudPanel
 
     public $entry;
 
+    protected $request;
+
     // The following methods are used in CrudController or your EntityCrudController to manipulate the variables above.
 
     public function __construct()
@@ -65,14 +72,21 @@ class CrudPanel
     /**
      * Set the request instance for this CRUD.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      */
     public function setRequest($request = null)
     {
-        if (! $request) {
-            $request = \Request::instance();
-        }
-        $this->request = $request;
+        $this->request = $request ?? \Request::instance();
+    }
+
+    /**
+     * [getRequest description].
+     *
+     * @return [type] [description]
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     // ------------------------------------------------------
@@ -83,7 +97,7 @@ class CrudPanel
      * This function binds the CRUD to its corresponding Model (which extends Eloquent).
      * All Create-Read-Update-Delete operations are done using that Eloquent Collection.
      *
-     * @param string $model_namespace Full model namespace. Ex: App\Models\Article
+     * @param  string  $model_namespace  Full model namespace. Ex: App\Models\Article
      *
      * @throws \Exception in case the model does not exist
      */
@@ -125,6 +139,10 @@ class CrudPanel
     /**
      * Check if the database connection driver is using mongodb.
      *
+     * DEPRECATION NOTICE: This method is no longer used and will be removed in future versions of Backpack
+     *
+     * @deprecated
+     *
      * @return bool
      */
     private function driverIsMongoDb()
@@ -133,10 +151,32 @@ class CrudPanel
     }
 
     /**
+     * Check if the database connection is any sql driver.
+     *
+     * @return bool
+     */
+    private function driverIsSql()
+    {
+        $driver = $this->getSchema()->getConnection()->getConfig('driver');
+
+        return in_array($driver, $this->getSqlDriverList());
+    }
+
+    /**
+     * Get SQL driver list.
+     *
+     * @return array
+     */
+    public function getSqlDriverList()
+    {
+        return ['mysql', 'sqlsrv', 'sqlite', 'pgsql'];
+    }
+
+    /**
      * Set the route for this CRUD.
      * Ex: admin/article.
      *
-     * @param string $route Route name.
+     * @param  string  $route  Route name.
      */
     public function setRoute($route)
     {
@@ -147,8 +187,8 @@ class CrudPanel
      * Set the route for this CRUD using the route name.
      * Ex: admin.article.
      *
-     * @param string $route      Route name.
-     * @param array  $parameters Parameters.
+     * @param  string  $route  Route name.
+     * @param  array  $parameters  Parameters.
      *
      * @throws \Exception
      */
@@ -161,7 +201,6 @@ class CrudPanel
         }
 
         $this->route = route($complete_route, $parameters);
-        $this->initButtons();
     }
 
     /**
@@ -183,8 +222,8 @@ class CrudPanel
      * Set the entity name in singular and plural.
      * Used all over the CRUD interface (header, add button, reorder button, breadcrumbs).
      *
-     * @param string $singular Entity name, in singular. Ex: article
-     * @param string $plural   Entity name, in plural. Ex: articles
+     * @param  string  $singular  Entity name, in singular. Ex: article
+     * @param  string  $plural  Entity name, in plural. Ex: articles
      */
     public function setEntityNameStrings($singular, $plural)
     {
@@ -205,7 +244,7 @@ class CrudPanel
      */
     public function getAction()
     {
-        return $this->request->route()->getAction();
+        return $this->getRequest()->route()->getAction();
     }
 
     /**
@@ -216,7 +255,7 @@ class CrudPanel
      */
     public function getActionName()
     {
-        return $this->request->route()->getActionName();
+        return $this->getRequest()->route()->getActionName();
     }
 
     /**
@@ -227,15 +266,14 @@ class CrudPanel
      */
     public function getActionMethod()
     {
-        return $this->request->route()->getActionMethod();
+        return $this->getRequest()->route()->getActionMethod();
     }
 
     /**
      * Check if the controller method being called
      * matches a given string.
      *
-     * @param string $methodName Name of the method (ex: index, create, update)
-     *
+     * @param  string  $methodName  Name of the method (ex: index, create, update)
      * @return bool Whether the condition is met or not.
      */
     public function actionIs($methodName)
@@ -250,14 +288,13 @@ class CrudPanel
     /**
      * Return the first element in an array that has the given 'type' attribute.
      *
-     * @param string $type
-     * @param array  $array
-     *
+     * @param  string  $type
+     * @param  array  $array
      * @return array
      */
     public function getFirstOfItsTypeInArray($type, $array)
     {
-        return array_first($array, function ($item) use ($type) {
+        return Arr::first($array, function ($item) use ($type) {
             return $item['type'] == $type;
         });
     }
@@ -294,12 +331,11 @@ class CrudPanel
      *          App/Models/Address defined by a company() method on the user model and an address() method on the
      *          company model, the 'App/Models/Address' string will be returned.
      *
-     * @param string                              $relationString Relation string. A dot notation can be used to chain multiple relations.
-     * @param int                                 $length         Optionally specify the number of relations to omit from the start of the relation string. If
-     *                                                            the provided length is negative, then that many relations will be omitted from the end of the relation
-     *                                                            string.
-     * @param \Illuminate\Database\Eloquent\Model $model          Optionally specify a different model than the one in the crud object.
-     *
+     * @param  string  $relationString  Relation string. A dot notation can be used to chain multiple relations.
+     * @param  int  $length  Optionally specify the number of relations to omit from the start of the relation string. If
+     *                       the provided length is negative, then that many relations will be omitted from the end of the relation
+     *                       string.
+     * @param  \Illuminate\Database\Eloquent\Model  $model  Optionally specify a different model than the one in the crud object.
      * @return string Relation model name.
      */
     public function getRelationModel($relationString, $length = null, $model = null)
@@ -315,7 +351,13 @@ class CrudPanel
         }
 
         $result = array_reduce(array_splice($relationArray, 0, $length), function ($obj, $method) {
-            return $obj->$method()->getRelated();
+            try {
+                $result = $obj->$method();
+
+                return $result->getRelated();
+            } catch (Exception $e) {
+                return $obj;
+            }
         }, $model);
 
         return get_class($result);
@@ -325,23 +367,47 @@ class CrudPanel
      * Get the given attribute from a model or models resulting from the specified relation string (eg: the list of streets from
      * the many addresses of the company of a given user).
      *
-     * @param \Illuminate\Database\Eloquent\Model $model          Model (eg: user).
-     * @param string                              $relationString Model relation. Can be a string representing the name of a relation method in the given
-     *                                                            Model or one from a different Model through multiple relations. A dot notation can be used to specify
-     *                                                            multiple relations (eg: user.company.address).
-     * @param string                              $attribute      The attribute from the relation model (eg: the street attribute from the address model).
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model  Model (eg: user).
+     * @param  string  $relationString  Model relation. Can be a string representing the name of a relation method in the given
+     *                                  Model or one from a different Model through multiple relations. A dot notation can be used to specify
+     *                                  multiple relations (eg: user.company.address).
+     * @param  string  $attribute  The attribute from the relation model (eg: the street attribute from the address model).
      * @return array An array containing a list of attributes from the resulting model.
      */
-    public function getModelAttributeFromRelation($model, $relationString, $attribute)
+    public function getRelatedEntriesAttributes($model, $relationString, $attribute)
     {
-        $endModels = $this->getRelationModelInstances($model, $relationString);
+        $endModels = $this->getRelatedEntries($model, $relationString);
         $attributes = [];
-        foreach ($endModels as $model) {
-            if (is_array($model) && isset($model[$attribute])) {
-                $attributes[] = $model[$attribute];
-            } elseif ($model->{$attribute}) {
-                $attributes[] = $model->{$attribute};
+        foreach ($endModels as $model => $entries) {
+            $model_instance = new $model();
+            $modelKey = $model_instance->getKeyName();
+
+            if (is_array($entries)) {
+                //if attribute does not exist in main array we have more than one entry OR the attribute
+                //is an acessor that is not in $appends property of model.
+                if (! isset($entries[$attribute])) {
+                    //we first check if we don't have the attribute because it's an acessor that is not in appends.
+                    if ($model_instance->hasGetMutator($attribute) && isset($entries[$modelKey])) {
+                        $entry_in_database = $model_instance->find($entries[$modelKey]);
+                        $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
+                    } else {
+                        //we have multiple entries
+                        //for each entry we check if $attribute exists in array or try to check if it's an acessor.
+                        foreach ($entries as $entry) {
+                            if (isset($entry[$attribute])) {
+                                $attributes[$entry[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry[$attribute]);
+                            } else {
+                                if ($model_instance->hasGetMutator($attribute)) {
+                                    $entry_in_database = $model_instance->find($entry[$modelKey]);
+                                    $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    //if we have the attribute we just return it, does not matter if it is direct attribute or an acessor added in $appends.
+                    $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
+                }
             }
         }
 
@@ -349,36 +415,75 @@ class CrudPanel
     }
 
     /**
+     * Parse translatable attributes from a model or models resulting from the specified relation string.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model  Model (eg: user).
+     * @param  string  $attribute  The attribute from the relation model (eg: the street attribute from the address model).
+     * @param  string  $value  Attribute value translatable or not
+     * @return string A string containing the translated attributed based on app()->getLocale()
+     */
+    public function parseTranslatableAttributes($model, $attribute, $value)
+    {
+        if (! method_exists($model, 'isTranslatableAttribute')) {
+            return $value;
+        }
+
+        if (! $model->isTranslatableAttribute($attribute)) {
+            return $value;
+        }
+
+        if (! is_array($value)) {
+            $decodedAttribute = json_decode($value, true);
+        } else {
+            $decodedAttribute = $value;
+        }
+
+        if (is_array($decodedAttribute) && ! empty($decodedAttribute)) {
+            if (isset($decodedAttribute[app()->getLocale()])) {
+                return $decodedAttribute[app()->getLocale()];
+            } else {
+                return Arr::first($decodedAttribute);
+            }
+        }
+
+        return $value;
+    }
+
+    /**
      * Traverse the tree of relations for the given model, defined by the given relation string, and return the ending
      * associated model instance or instances.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model          The CRUD model.
-     * @param string                              $relationString Relation string. A dot notation can be used to chain multiple relations.
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model  The CRUD model.
+     * @param  string  $relationString  Relation string. A dot notation can be used to chain multiple relations.
      * @return array An array of the associated model instances defined by the relation string.
      */
-    private function getRelationModelInstances($model, $relationString)
+    private function getRelatedEntries($model, $relationString)
     {
-        $relationArray = explode('.', $relationString);
-        $firstRelationName = array_first($relationArray);
+        $relationArray = explode('.', $this->getOnlyRelationEntity(['entity' => $relationString]));
+        $firstRelationName = Arr::first($relationArray);
         $relation = $model->{$firstRelationName};
 
         $results = [];
-        if (! empty($relation)) {
+        if (! is_null($relation)) {
             if ($relation instanceof Collection) {
-                $currentResults = $relation->toArray();
+                $currentResults = $relation->all();
+            } elseif (is_array($relation)) {
+                $currentResults = $relation;
+            } elseif ($relation instanceof Model) {
+                $currentResults = [$relation];
             } else {
-                $currentResults[] = $relation;
+                $currentResults = [];
             }
 
             array_shift($relationArray);
 
             if (! empty($relationArray)) {
                 foreach ($currentResults as $currentResult) {
-                    $results = array_merge($results, $this->getRelationModelInstances($currentResult, implode('.', $relationArray)));
+                    $results = array_merge_recursive($results, $this->getRelatedEntries($currentResult, implode('.', $relationArray)));
                 }
             } else {
-                $results = $currentResults;
+                $relatedClass = get_class($model->{$firstRelationName}()->getRelated());
+                $results[$relatedClass] = $currentResults;
             }
         }
 

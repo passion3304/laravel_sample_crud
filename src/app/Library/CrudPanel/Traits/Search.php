@@ -16,8 +16,7 @@ trait Search
     /**
      * Add conditions to the CRUD query for a particular search term.
      *
-     * @param string $searchTerm Whatever string the user types in the search bar.
-     *
+     * @param  string  $searchTerm  Whatever string the user types in the search bar.
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function applySearchTerm($searchTerm)
@@ -66,7 +65,7 @@ trait Search
                 case 'email':
                 case 'text':
                 case 'textarea':
-                    $query->orWhere($column['name'], 'like', '%'.$searchTerm.'%');
+                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), 'like', '%'.$searchTerm.'%');
                     break;
 
                 case 'date':
@@ -77,13 +76,13 @@ trait Search
                         break;
                     }
 
-                    $query->orWhereDate($column['name'], Carbon::parse($searchTerm));
+                    $query->orWhereDate($this->getColumnWithTableNamePrefixed($query, $column['name']), Carbon::parse($searchTerm));
                     break;
 
                 case 'select':
                 case 'select_multiple':
                     $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                        $q->where($column['attribute'], 'like', '%'.$searchTerm.'%');
+                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), 'like', '%'.$searchTerm.'%');
                     });
                     break;
 
@@ -101,7 +100,7 @@ trait Search
     /**
      * Tell the list view to NOT show a reponsive DataTable.
      *
-     * @param bool $value
+     * @param  bool  $value
      */
     public function setResponsiveTable($value = true)
     {
@@ -145,7 +144,7 @@ trait Search
     /**
      * Tell the list view to NOT store datatable information in local storage.
      *
-     * @param bool $value
+     * @param  bool  $value
      */
     public function setPersistentTable($value = true)
     {
@@ -199,9 +198,8 @@ trait Search
     /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
      *
-     * @param \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
-     * @param bool|int                            $rowNumber The number shown to the user as row number (index);
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $entry  A db entry of the current entity;
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index);
      * @return array Array of HTML cell contents.
      */
     public function getRowViews($entry, $rowNumber = false)
@@ -221,9 +219,15 @@ trait Search
                                 ->render();
         }
 
+        // add the bulk actions checkbox to the first column
+        if ($this->getOperationSetting('bulkActions')) {
+            $bulk_actions_checkbox = \View::make('crud::columns.inc.bulk_actions_checkbox', ['entry' => $entry])->render();
+            $row_items[0] = $bulk_actions_checkbox.$row_items[0];
+        }
+
         // add the details_row button to the first column
         if ($this->getOperationSetting('detailsRow')) {
-            $details_row_button = \View::make('crud::columns.details_row_button')
+            $details_row_button = \View::make('crud::columns.inc.details_row_button')
                                            ->with('crud', $this)
                                            ->with('entry', $entry)
                                            ->with('row_number', $rowNumber)
@@ -237,10 +241,9 @@ trait Search
     /**
      * Get the HTML of a cell, using the column types.
      *
-     * @param array                               $column
-     * @param \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
-     * @param bool|int                            $rowNumber The number shown to the user as row number (index);
-     *
+     * @param  array  $column
+     * @param  \Illuminate\Database\Eloquent\Model  $entry  A db entry of the current entity;
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index);
      * @return string
      */
     public function getCellView($column, $entry, $rowNumber = false)
@@ -251,8 +254,7 @@ trait Search
     /**
      * Get the name of the view to load for the cell.
      *
-     * @param array $column
-     *
+     * @param  array  $column
      * @return string
      */
     private function getCellViewName($column)
@@ -263,13 +265,24 @@ trait Search
         }
 
         if (isset($column['type'])) {
-            // if the column has been overwritten return that one
-            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
-                return 'vendor.backpack.crud.columns.'.$column['type'];
+            // create a list of paths to column blade views
+            // including the configured view_namespaces
+            $columnPaths = array_map(function ($item) use ($column) {
+                return $item.'.'.$column['type'];
+            }, config('backpack.crud.view_namespaces.columns'));
+
+            // but always fall back to the stock 'text' column
+            // if a view doesn't exist
+            if (! in_array('crud::columns.text', $columnPaths)) {
+                $columnPaths[] = 'crud::columns.text';
             }
 
-            // return the column from the package
-            return 'crud::columns.'.$column['type'];
+            // return the first column blade file that exists
+            foreach ($columnPaths as $path) {
+                if (view()->exists($path)) {
+                    return $path;
+                }
+            }
         }
 
         // fallback to text column
@@ -279,11 +292,10 @@ trait Search
     /**
      * Render the given view.
      *
-     * @param string   $view
-     * @param array    $column
-     * @param object   $entry
-     * @param bool|int $rowNumber The number shown to the user as row number (index)
-     *
+     * @param  string  $view
+     * @param  array  $column
+     * @param  object  $entry
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index)
      * @return string
      */
     private function renderCellView($view, $column, $entry, $rowNumber = false)
@@ -303,11 +315,10 @@ trait Search
     /**
      * Created the array to be fed to the data table.
      *
-     * @param array    $entries      Eloquent results.
-     * @param int      $totalRows
-     * @param int      $filteredRows
-     * @param bool|int $startIndex
-     *
+     * @param  array  $entries  Eloquent results.
+     * @param  int  $totalRows
+     * @param  int  $filteredRows
+     * @param  bool|int  $startIndex
      * @return array
      */
     public function getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex = false)
@@ -319,10 +330,22 @@ trait Search
         }
 
         return [
-            'draw'            => (isset($this->request['draw']) ? (int) $this->request['draw'] : 0),
+            'draw'            => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
             'recordsTotal'    => $totalRows,
             'recordsFiltered' => $filteredRows,
             'data'            => $rows,
         ];
+    }
+
+    /**
+     * Return the column attribute (column in database) prefixed with table to use in search.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $column
+     * @return string
+     */
+    public function getColumnWithTableNamePrefixed($query, $column)
+    {
+        return $query->getModel()->getTable().'.'.$column;
     }
 }

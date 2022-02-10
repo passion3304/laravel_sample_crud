@@ -1,19 +1,35 @@
 {{-- checkbox with loose false/null/0 checking --}}
 @php
-$checkValue = data_get($entry, $column['name']);
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
+    $column['escaped'] = $column['escaped'] ?? true;
+    $column['prefix'] = $column['prefix'] ?? '';
+    $column['suffix'] = $column['suffix'] ?? '';
 
-$checkedIcon = data_get($column, 'icons.checked', 'fa-check-circle');
-$uncheckedIcon = data_get($column, 'icons.unchecked', 'fa-circle');
+    if($column['value'] instanceof \Closure) {
+        $column['value'] = $column['value']($entry);
+    }
 
-$exportCheckedText = data_get($column, 'labels.checked', trans('backpack::crud.yes'));
-$exportUncheckedText = data_get($column, 'labels.unchecked', trans('backpack::crud.no'));
+    $column['icon'] = $column['value'] != false
+        ? ($column['icons']['checked'] ?? 'la-check-circle')
+        : ($column['icons']['unchecked'] ?? 'la-circle');
 
-$icon = $checkValue == false ? $uncheckedIcon : $checkedIcon;
-$text = $checkValue == false ? $exportUncheckedText : $exportCheckedText;
+    $column['text'] = $column['value'] != false
+        ? ($column['labels']['checked'] ?? trans('backpack::crud.yes'))
+        : ($column['labels']['unchecked'] ?? trans('backpack::crud.no'));
+
+    $column['text'] = $column['prefix'].$column['text'].$column['suffix'];
 @endphp
 
 <span>
-    <i class="fa {{ $icon }}"></i>
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+    <i class="la {{ $column['icon'] }}"></i>
+    @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 </span>
 
-<span class="sr-only">{{ $text }}</span>
+<span class="sr-only">
+    @if($column['escaped'])
+        {{ $column['text'] }}
+    @else
+        {!! $column['text'] !!}
+    @endif
+</span>

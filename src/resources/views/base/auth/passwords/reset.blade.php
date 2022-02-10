@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-5">
-            <h3 class="text-center m-b-20">{{ trans('backpack::base.reset_password') }}</h3>
+        <div class="col-12 col-md-9 col-lg-6">
+            <h3 class="text-center mb-4">{{ trans('backpack::base.reset_password') }}</h3>
             <div class="nav-steps-wrapper">
                 <ul class="nav nav-tabs">
                       <li class="nav-item"><a class="nav-link disabled text-muted"><strong>{{ trans('backpack::base.step') }} 1.</strong> {{ trans('backpack::base.confirm_email') }}</a></li>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <div>
                                 <button type="submit" class="btn btn-block btn-primary">
                                     {{ trans('backpack::base.change_password') }}

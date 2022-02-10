@@ -29,18 +29,6 @@ return [
     'edit'                 => 'Modifier',
     'save'                 => 'Enregistrer',
 
-    // Revisions
-    'revisions'             => 'Historique',
-    'no_revisions'          => 'Pas d’historique',
-    'created_this'          => 'a créé',
-    'changed_the'           => 'a modifié',
-    'restore_this_value'    => 'Restaurer cette valeur',
-    'from'                  => 'De',
-    'to'                    => 'À',
-    'undo'                  => 'Annuler',
-    'revision_restored'     => 'Valeur restaurée',
-    'guest_user'            => 'Utilisateur invité',
-
     // Translatable models
     'edit_translations' => 'EDITER LES TRADUCTIONS',
     'language'          => 'Langue',
@@ -71,14 +59,14 @@ return [
     // DataTables translation
     'emptyTable'     => 'Aucune donnée à afficher.',
     'info'           => 'Affichage des éléments _START_ à _END_ sur _TOTAL_',
-    'infoEmpty'      => 'Affichage des éléments 0 à 0 sur 0',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(filtré à partir de _MAX_ éléments au total)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ enregistrements par page',
     'loadingRecords' => 'Chargement...',
     'processing'     => 'Traitement...',
-    'search'         => 'Recherche : ',
+    'search'         => 'Recherche',
     'zeroRecords'    => 'Aucun enregistrement correspondant trouvé',
     'paginate'       => [
         'first'    => 'Premier',
@@ -124,6 +112,16 @@ return [
     'filters'        => 'Filtres',
     'toggle_filters' => 'Activer les filtres',
     'remove_filters' => 'Retirer les filtres',
+
+    //filters language strings
+    'today' => 'Aujourd\'hui',
+    'yesterday' => 'Hier',
+    'last_7_days' => '7 derniers jours',
+    'last_30_days' => '30 derniers jours',
+    'this_month' => 'Ce mois-ci',
+    'last_month' => 'Le mois dernier',
+    'custom_range' => 'Durée personnalisé',
+    'weekLabel' => 'S',
 
     // Fields
     'browse_uploads'            => 'Parcourir les fichier chargés',

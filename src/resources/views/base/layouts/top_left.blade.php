@@ -17,21 +17,21 @@
 
     <main class="main pt-2">
 
+       @yield('before_breadcrumbs_widgets')
+
        @includeWhen(isset($breadcrumbs), backpack_view('inc.breadcrumbs'))
+
+       @yield('after_breadcrumbs_widgets')
 
        @yield('header')
 
         <div class="container-fluid animated fadeIn">
-          
-          @if (isset($widgets['before_content']))
-            @include(backpack_view('inc.widgets'), [ 'widgets' => $widgets['before_content'] ])
-          @endif
-          
+
+          @yield('before_content_widgets')
+
           @yield('content')
           
-          @if (isset($widgets['after_content']))
-            @include(backpack_view('inc.widgets'), [ 'widgets' => $widgets['after_content'] ])
-          @endif
+          @yield('after_content_widgets')
 
         </div>
 

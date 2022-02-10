@@ -1,26 +1,34 @@
-<div id="saveActions" class="form-group">
+@if(isset($saveAction['active']) && !is_null($saveAction['active']['value']))
+    <div id="saveActions" class="form-group">
 
-    <input type="hidden" name="save_action" value="{{ $saveAction['active']['value'] }}">
-
-    <div class="btn-group" role="group">
+        <input type="hidden" name="_save_action" value="{{ $saveAction['active']['value'] }}">
+        @if(!empty($saveAction['options']))
+            <div class="btn-group" role="group">
+        @endif
 
         <button type="submit" class="btn btn-success">
-            <span class="fa fa-save" role="presentation" aria-hidden="true"></span> &nbsp;
+            <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
             <span data-value="{{ $saveAction['active']['value'] }}">{{ $saveAction['active']['label'] }}</span>
         </button>
 
         <div class="btn-group" role="group">
-            <button id="bpSaveButtonsGroup" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
-            <div class="dropdown-menu" aria-labelledby="bpSaveButtonsGroup">
+            @if(!empty($saveAction['options']))
+                <button id="bpSaveButtonsGroup" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
+                <div class="dropdown-menu" aria-labelledby="bpSaveButtonsGroup">
                 @foreach( $saveAction['options'] as $value => $label)
-                <a class="dropdown-item" href="#" data-value="{{ $value }}">{{ $label }}</a>
+                    <a class="dropdown-item" href="#" data-value="{{ $value }}">{{ $label }}</a>
                 @endforeach
-            </div>
-          </div>
+            @endif
+           </div>
+        @endif
+
+        @if(!$crud->hasOperationSetting('showCancelButton') || $crud->getOperationSetting('showCancelButton') == true)
+            <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-default"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
+        @endif
 
     </div>
+@endif
 
-    <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-default"><span class="fa fa-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
 </div>
 
 @push('after_scripts')

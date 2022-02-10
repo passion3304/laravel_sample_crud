@@ -2,8 +2,11 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\app\Library\CrudPanel\Traits\CrudButton;
+use Backpack\CRUD\app\Library\CrudPanel\CrudButton;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Buttons
+ */
 class CrudPanelButtonsTest extends BaseCrudPanelTest
 {
     private $defaultButtonNames = [];
@@ -19,11 +22,11 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
         $this->crudPanel->setOperation('list');
 
-        $this->topViewButton = new CrudButton('top', 'topViewButton', 'view', 'crud::buttons.show');
-        $this->lineViewButton = new CrudButton('line', 'lineViewButton', 'view', 'crud::buttons.update');
-        $this->bottomViewButton = new CrudButton('bottom', 'bottomViewButton', 'view', 'crud::buttons.revisions');
+        $this->topViewButton = new CrudButton('topViewButton', 'top', 'view', 'crud::buttons.show');
+        $this->lineViewButton = new CrudButton('lineViewButton', 'line', 'view', 'crud::buttons.update');
+        $this->bottomViewButton = new CrudButton('bottomViewButton', 'bottom', 'view', 'crud::buttons.revisions');
 
-        $this->topModelFunctionButton = new CrudButton('top', 'topModelFunctionButton', 'someModelFunctionName', 'crud::buttons.show');
+        $this->topModelFunctionButton = new CrudButton('topModelFunctionButton', 'top', 'someModelFunctionName', 'crud::buttons.show');
     }
 
     public function testDefaultButtons()
@@ -86,6 +89,8 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
 
     public function testAddButtonsWithSameNameWithoutReplacing()
     {
+        $this->markTestIncomplete('This no longer makes sense in Backpack 4.1. Button names are unique now.');
+
         $expectedButton = $this->topViewButton;
 
         $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content, false, false);
@@ -243,6 +248,17 @@ class CrudPanelButtonsTest extends BaseCrudPanelTest
         $this->crudPanel->removeAllButtonsFromStack('someStackName');
 
         $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons()));
+    }
+
+    public function testOrderButtons()
+    {
+        $this->crudPanel->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
+        $this->crudPanel->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
+        $this->crudPanel->addButton('line', 'test', 'view', 'crud::buttons.test', 'end');
+
+        $this->crudPanel->orderButtons('line', ['show', 'test']);
+
+        $this->assertEquals(['show', 'test', 'update'], $this->crudPanel->buttons()->pluck('name')->toArray());
     }
 
     private function getButtonByName($name)

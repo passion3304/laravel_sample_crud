@@ -1,14 +1,15 @@
 <!-- enum -->
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
     @php
         $entity_model = $crud->model;
         $possible_values = $entity_model::getPossibleEnumValues($field['name']);
+        $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
     @endphp
     <select
         name="{{ $field['name'] }}"
-        @include('crud::inc.field_attributes')
+        @include('crud::fields.inc.attributes')
         >
 
         @if ($entity_model::isColumnNullable($field['name']))
@@ -18,7 +19,7 @@
             @if (count($possible_values))
                 @foreach ($possible_values as $possible_value)
                     <option value="{{ $possible_value }}"
-                        @if (( old(square_brackets_to_dots($field['name'])) &&  old(square_brackets_to_dots($field['name'])) == $possible_value) || (isset($field['value']) && $field['value']==$possible_value))
+                        @if ($field['value']==$possible_value)
                             selected
                         @endif
                     >{{ $possible_value }}</option>
@@ -30,4 +31,4 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')

@@ -1,18 +1,13 @@
 @php
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-init-function'])){
-        $field['wrapperAttributes']['data-init-function'] = 'bpFieldInitUploadMultipleElement';
-    }
-
-    if (!isset($field['wrapperAttributes']) || !isset($field['wrapperAttributes']['data-field-name'])) {
-        $field['wrapperAttributes']['data-field-name'] = $field['name'];
-    }
-
+    $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
+    $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitUploadMultipleElement';
+    $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
 @endphp
 
 <!-- upload multiple input -->
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+    @include('crud::fields.inc.translatable_icon')
 
 	{{-- Show the file name and a "Clear" button on EDIT form. --}}
 	@if (isset($field['value']))
@@ -32,7 +27,7 @@
 		        @else
 		            <a target="_blank" href="{{ isset($field['disk'])?asset(\Storage::disk($field['disk'])->url($file_path)):asset($file_path) }}">{{ $file_path }}</a>
 		        @endif
-		    	<a href="#" class="btn btn-light btn-sm float-right file-clear-button" title="Clear file" data-filename="{{ $file_path }}"><i class="fa fa-remove"></i></a>
+		    	<a href="#" class="btn btn-light btn-sm float-right file-clear-button" title="Clear file" data-filename="{{ $file_path }}"><i class="la la-remove"></i></a>
 		    	<div class="clearfix"></div>
 	    	</div>
     	@endforeach
@@ -45,8 +40,7 @@
 		<input
 	        type="file"
 	        name="{{ $field['name'] }}[]"
-	        value="@if (old(square_brackets_to_dots($field['name']))) old(square_brackets_to_dots($field['name'])) @elseif (isset($field['default'])) $field['default'] @endif"
-	        @include('crud::inc.field_attributes', ['default_class' =>  isset($field['value']) && $field['value']!=null?'file_input backstrap-file-input':'file_input backstrap-file-input'])
+	        @include('crud::fields.inc.attributes', ['default_class' =>  isset($field['value']) && $field['value']!=null?'file_input backstrap-file-input':'file_input backstrap-file-input'])
 	        multiple
 	    >
         <label class="backstrap-file-label" for="customFile"></label>
@@ -56,18 +50,13 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
-{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
 
     @push('crud_fields_scripts')
-        <!-- no scripts -->
+    	@loadOnce('bpFieldInitUploadMultipleElement')
         <script>
         	function bpFieldInitUploadMultipleElement(element) {
         		var fieldName = element.attr('data-field-name');
@@ -91,9 +80,9 @@
 		        fileInput.change(function() {
 	                inputLabel.html("Files selected. After save, they will show up above.");
 		        	// remove the hidden input, so that the setXAttribute method is no longer triggered
-		        	$(this).next("input[type=hidden]").remove();
+					$(this).next("input[type=hidden]:not([name='clear_"+fieldName+"[]'])").remove();
 		        });
         	}
         </script>
+        @endLoadOnce
     @endpush
-@endif

@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Save and new item',
     'save_action_save_and_edit'        => 'Save and edit this item',
     'save_action_save_and_back'        => 'Save and back',
+    'save_action_save_and_preview'     => 'Save and preview',
     'save_action_changed_notification' => 'Default behaviour after saving has been changed.',
 
     // Create form
@@ -29,18 +30,6 @@ return [
     'edit'                 => 'Edit',
     'save'                 => 'Save',
 
-    // Revisions
-    'revisions'            => 'Revisions',
-    'no_revisions'         => 'No revisions found',
-    'created_this'         => 'created this',
-    'changed_the'          => 'changed the',
-    'restore_this_value'   => 'Restore this value',
-    'from'                 => 'from',
-    'to'                   => 'to',
-    'undo'                 => 'Undo',
-    'revision_restored'    => 'Revision successfully restored',
-    'guest_user'           => 'Guest User',
-
     // Translatable models
     'edit_translations' => 'Translation',
     'language'          => 'Language',
@@ -49,15 +38,16 @@ return [
     'all'                       => 'All ',
     'in_the_database'           => 'in the database',
     'list'                      => 'List',
+    'reset'                     => 'Reset',
     'actions'                   => 'Actions',
     'preview'                   => 'Preview',
     'delete'                    => 'Delete',
     'admin'                     => 'Admin',
     'details_row'               => 'This is the details row. Modify as you please.',
     'details_row_loading_error' => 'There was an error loading the details. Please retry.',
-    'clone' => 'Clone',
-    'clone_success' => '<strong>Entry cloned</strong><br>A new entry has been added, with the same information as this one.',
-    'clone_failure' => '<strong>Cloning failed</strong><br>The new entry could not be created. Please try again.',
+    'clone'                     => 'Clone',
+    'clone_success'             => '<strong>Entry cloned</strong><br>A new entry has been added, with the same information as this one.',
+    'clone_failure'             => '<strong>Cloning failed</strong><br>The new entry could not be created. Please try again.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Are you sure you want to delete this item?',
@@ -72,12 +62,19 @@ return [
     'bulk_no_entries_selected_title'   => 'No entries selected',
     'bulk_no_entries_selected_message' => 'Please select one or more items to perform a bulk action on them.',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'   => 'Are you sure you want to delete these :number entries?',
     'bulk_delete_sucess_title'   => 'Entries deleted',
     'bulk_delete_sucess_message' => ' items have been deleted',
     'bulk_delete_error_title'    => 'Delete failed',
     'bulk_delete_error_message'  => 'One or more items could not be deleted',
+
+    // Bulk clone
+    'bulk_clone_are_you_sure'   => 'Are you sure you want to clone these :number entries?',
+    'bulk_clone_sucess_title'   => 'Entries cloned',
+    'bulk_clone_sucess_message' => ' items have been cloned.',
+    'bulk_clone_error_title'    => 'Cloning failed',
+    'bulk_clone_error_message'  => 'One or more entries could not be created. Please try again.',
 
     // Ajax errors
     'ajax_error_title' => 'Error',
@@ -86,15 +83,15 @@ return [
     // DataTables translation
     'emptyTable'     => 'No data available in table',
     'info'           => 'Showing _START_ to _END_ of _TOTAL_ entries',
-    'infoEmpty'      => 'Showing 0 to 0 of 0 entries',
+    'infoEmpty'      => 'No entries',
     'infoFiltered'   => '(filtered from _MAX_ total entries)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
-    'lengthMenu'     => '_MENU_ records per page',
+    'lengthMenu'     => '_MENU_ entries per page',
     'loadingRecords' => 'Loading...',
     'processing'     => 'Processing...',
-    'search'         => 'Search: ',
-    'zeroRecords'    => 'No matching records found',
+    'search'         => 'Search',
+    'zeroRecords'    => 'No matching entries found',
     'paginate'       => [
         'first'    => 'First',
         'last'     => 'Last',
@@ -139,6 +136,17 @@ return [
     'filters'        => 'Filters',
     'toggle_filters' => 'Toggle filters',
     'remove_filters' => 'Remove filters',
+    'apply' => 'Apply',
+
+    //filters language strings
+    'today' => 'Today',
+    'yesterday' => 'Yesterday',
+    'last_7_days' => 'Last 7 Days',
+    'last_30_days' => 'Last 30 Days',
+    'this_month' => 'This Month',
+    'last_month' => 'Last Month',
+    'custom_range' => 'Custom Range',
+    'weekLabel' => 'W',
 
     // Fields
     'browse_uploads'            => 'Browse uploads',
@@ -152,6 +160,9 @@ return [
     'internal_link_placeholder' => 'Internal slug. Ex: \'admin/page\' (no quotes) for \':url\'',
     'external_link'             => 'External link',
     'choose_file'               => 'Choose file',
+    'new_item'                  => 'New Item',
+    'select_entry'              => 'Select an entry',
+    'select_entries'            => 'Select entries',
 
     //Table field
     'table_cant_add'    => 'Cannot add new :entity',
@@ -159,4 +170,11 @@ return [
 
     // File manager
     'file_manager' => 'File Manager',
+
+    // InlineCreateOperation
+    'related_entry_created_success' => 'Related entry has been created and selected.',
+    'related_entry_created_error' => 'Could not create related entry.',
+
+    // returned when no translations found in select inputs
+    'empty_translations' => '(empty)',
 ];

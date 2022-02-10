@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Backpack\CRUD\app\Library\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -49,7 +49,7 @@ class LoginController extends Controller
 
         // Redirect here after logout.
         $this->redirectAfterLogout = property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout
-            : backpack_url();
+            : backpack_url('login');
     }
 
     /**
@@ -63,18 +63,13 @@ class LoginController extends Controller
     }
 
     /**
-     * Log the user out and redirect him to specific location.
+     * The user has logged out of the application.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
      */
-    public function logout(Request $request)
+    protected function loggedOut(Request $request)
     {
-        // Do the default logout procedure
-        $this->guard()->logout();
-
-        // And redirect to custom location
         return redirect($this->redirectAfterLogout);
     }
 
@@ -86,22 +81,5 @@ class LoginController extends Controller
     protected function guard()
     {
         return backpack_auth();
-    }
-
-    // -------------------------------------------------------
-    // Laravel overwrites for loading backpack views
-    // -------------------------------------------------------
-
-    /**
-     * Show the application login form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showLoginForm()
-    {
-        $this->data['title'] = trans('backpack::base.login'); // set the page title
-        $this->data['username'] = $this->username();
-
-        return view(backpack_view('auth.login'), $this->data);
     }
 }

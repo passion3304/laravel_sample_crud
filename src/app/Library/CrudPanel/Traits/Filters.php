@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudFilter;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait Filters
@@ -11,7 +13,7 @@ trait Filters
      */
     public function filtersEnabled()
     {
-        return $this->filters() && $this->filters() != [];
+        return $this->filters() && $this->filters()->isNotEmpty();
     }
 
     /**
@@ -19,13 +21,13 @@ trait Filters
      */
     public function filtersDisabled()
     {
-        return $this->filters() == [] || $this->filters() == null;
+        return $this->filters()->isEmpty();
     }
 
     public function enableFilters()
     {
         if ($this->filtersDisabled()) {
-            $this->setOperationSetting('filters', new FiltersCollection());
+            $this->setOperationSetting('filters', new Collection());
         }
     }
 
@@ -36,25 +38,36 @@ trait Filters
 
     public function clearFilters()
     {
-        $this->setOperationSetting('filters', new FiltersCollection());
+        $this->setOperationSetting('filters', new Collection());
     }
 
     /**
      * Add a filter to the CRUD table view.
      *
-     * @param array               $options       Name, type, label, etc.
-     * @param bool|array|\Closure $values        The HTML for the filter.
-     * @param bool|\Closure       $filterLogic   Query modification (filtering) logic when filter is active.
-     * @param bool|\Closure       $fallbackLogic Query modification (filtering) logic when filter is not active.
+     * @param  array  $options  Name, type, label, etc.
+     * @param  bool|array|\Closure  $values  The HTML for the filter.
+     * @param  bool|\Closure  $filterLogic  Query modification (filtering) logic when filter is active.
+     * @param  bool|\Closure  $fallbackLogic  Query modification (filtering) logic when filter is not active.
      */
     public function addFilter($options, $values = false, $filterLogic = false, $fallbackLogic = false)
     {
-        // if a closure was passed as "values"
-        if (is_callable($values)) {
-            // get its results
-            $values = $values();
-        }
+        $filter = $this->addFilterToCollection($options, $values, $filterLogic, $fallbackLogic);
 
+        // apply the filter logic
+        $this->applyFilter($filter);
+    }
+
+    /**
+     * Add a filter to the CrudPanel object using the Settings API.
+     * The filter will NOT get applied.
+     *
+     * @param  array  $options  Name, type, label, etc.
+     * @param  bool|array|\Closure  $values  The HTML for the filter.
+     * @param  bool|\Closure  $filterLogic  Query modification (filtering) logic when filter is active.
+     * @param  bool|\Closure  $fallbackLogic  Query modification (filtering) logic when filter is not active.
+     */
+    protected function addFilterToCollection($options, $values = false, $filterLogic = false, $fallbackLogic = false)
+    {
         // enable the filters functionality
         $this->enableFilters();
 
@@ -62,6 +75,7 @@ trait Filters
         if (! isset($options['name'])) {
             abort(500, 'All your filters need names.');
         }
+
         if ($this->filters()->contains('name', $options['name'])) {
             abort(500, "Sorry, you can't have two filters with the same name.");
         }
@@ -70,90 +84,45 @@ trait Filters
         $filter = new CrudFilter($options, $values, $filterLogic, $fallbackLogic);
         $this->setOperationSetting('filters', $this->filters()->push($filter));
 
-        // apply the filter logic
-        $this->applyFilter($filter);
+        return $filter;
+    }
+
+    /**
+     * Add a filter by specifying the entire CrudFilter object.
+     * The filter logic does NOT get applied.
+     *
+     * @param  CrudFilter  $object
+     */
+    public function addCrudFilter($object)
+    {
+        return $this->addFilterToCollection((array) $object, $object->values, $object->logic, $object->fallbackLogic);
     }
 
     /**
      * Apply the filter.
      *
-     * @param CrudFilter              $filter
-     * @param ParameterBag|array|null $input
+     * @param  CrudFilter  $filter
+     * @param  ParameterBag|array|null  $input
      */
     public function applyFilter(CrudFilter $filter, $input = null)
     {
-        if (\is_array($input)) {
-            $input = new ParameterBag($input);
-        }
-
-        $input = $input ?? new ParameterBag($this->request->all());
-
-        if ($input->has($filter->options['name'])) {
-            // if a closure was passed as "filterLogic"
-            if (is_callable($filter->logic)) {
-                // apply it
-                ($filter->logic)($input->get($filter->options['name']));
-            } else {
-                $this->addDefaultFilterLogic($filter->name, $filter->logic, $input->all());
-            }
-        } else {
-            //if the filter is not active, but fallback logic was supplied
-            if (is_callable($filter->fallbackLogic)) {
-                // apply the fallback logic
-                ($filter->fallbackLogic)();
-            }
-        }
+        $filter->apply($input);
     }
 
     /**
-     * @param string $name
-     * @param string $operator
-     * @param array  $input
+     * Apply all unapplied filters in the filter collection.
+     * This is called by the ListOperation just in case developers forgot to call apply()
+     * at the end of their filter declarations.
+     *
+     * @return void
      */
-    public function addDefaultFilterLogic($name, $operator, $input = null)
+    public function applyUnappliedFilters()
     {
-        $input = $input ?? $this->request->all();
-
-        // if this filter is active (the URL has it as a GET parameter)
-        switch ($operator) {
-            // if no operator was passed, just use the equals operator
-            case false:
-                $this->addClause('where', $name, $input[$name]);
-                break;
-
-            case 'scope':
-                $this->addClause($operator);
-                break;
-
-            // TODO:
-            // whereBetween
-            // whereNotBetween
-            // whereIn
-            // whereNotIn
-            // whereNull
-            // whereNotNull
-            // whereDate
-            // whereMonth
-            // whereDay
-            // whereYear
-            // whereColumn
-            // like
-
-            // sql comparison operators
-            case '=':
-            case '<=>':
-            case '<>':
-            case '!=':
-            case '>':
-            case '>=':
-            case '<':
-            case '<=':
-                $this->addClause('where', $name, $operator, $input[$name]);
-                break;
-
-            default:
-                abort(500, 'Unknown filter operator.');
-                break;
+        $unappliedFilters = $this->filters()->where('applied', false);
+        if ($unappliedFilters->count()) {
+            $unappliedFilters->each(function ($filter) {
+                $filter->apply();
+            });
         }
     }
 
@@ -162,12 +131,11 @@ trait Filters
      */
     public function filters()
     {
-        return $this->getOperationSetting('filters');
+        return $this->getOperationSetting('filters') ?? collect();
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return null|CrudFilter
      */
     public function getFilter($name)
@@ -178,8 +146,7 @@ trait Filters
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return bool
      */
     public function hasActiveFilter($name)
@@ -192,9 +159,8 @@ trait Filters
     /**
      * Modify the attributes of a filter.
      *
-     * @param string $name          The filter name.
-     * @param array  $modifications An array of changes to be made.
-     *
+     * @param  string  $name  The filter name.
+     * @param  array  $modifications  An array of changes to be made.
      * @return CrudFilter The filter that has suffered modifications, for daisychaining methods.
      */
     public function modifyFilter($name, $modifications)
@@ -214,93 +180,157 @@ trait Filters
         return $filter;
     }
 
+    public function replaceFilter($name, $newFilter)
+    {
+        $newFilters = $this->filters()->map(function ($filter, $key) use ($name, $newFilter) {
+            if ($filter->name != $name) {
+                return $filter;
+            }
+
+            return $newFilter;
+        });
+
+        $this->setOperationSetting('filters', $newFilters);
+    }
+
     public function removeFilter($name)
     {
-        $strippedFiltersCollection = $this->filters()->reject(function ($filter) use ($name) {
+        $strippedCollection = $this->filters()->reject(function ($filter) use ($name) {
             return $filter->name == $name;
         });
 
-        $this->setOperationSetting('filters', $strippedFiltersCollection);
+        $this->setOperationSetting('filters', $strippedCollection);
     }
 
     public function removeAllFilters()
     {
-        $this->setOperationSetting('filters', new FiltersCollection());
-    }
-}
-
-class FiltersCollection extends \Illuminate\Support\Collection
-{
-    // public function removeFilter($name)
-    // {
-    // }
-
-    // public function count()
-    // {
-    //     dd($this);
-    // }
-}
-
-class CrudFilter
-{
-    public $name; // the name of the filtered variable (db column name)
-    public $type = 'select'; // the name of the filter view that will be loaded
-    public $label;
-    public $placeholder;
-    public $values;
-    public $options;
-    public $logic;
-    public $fallbackLogic;
-    public $currentValue;
-    public $view;
-    public $viewNamespace = 'crud::filters';
-
-    public function __construct($options, $values, $logic, $fallbackLogic)
-    {
-        $this->checkOptionsIntegrity($options);
-
-        $this->name = $options['name'];
-        $this->type = $options['type'];
-        $this->label = $options['label'];
-        $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
-        $this->view = $this->viewNamespace.'.'.$this->type;
-        $this->placeholder = $options['placeholder'] ?? '';
-
-        $this->values = $values;
-        $this->options = $options;
-        $this->logic = $logic;
-        $this->fallbackLogic = $fallbackLogic;
-
-        if (\Request::has($this->name)) {
-            $this->currentValue = \Request::input($this->name);
-        }
+        $this->setOperationSetting('filters', new Collection());
     }
 
-    public function checkOptionsIntegrity($options)
+    /**
+     * Move the most recently added filter after the given target filter.
+     *
+     * @param  string|array  $destination  The target filter name or array.
+     */
+    public function afterFilter($destination)
     {
-        if (! isset($options['name'])) {
-            abort(500, 'Please make sure all your filters have names.');
+        $target = $this->filters()->last()->name;
+
+        $this->moveFilter($target->name, 'after', $destination);
+    }
+
+    /**
+     * Move the most recently added filter before the given target filter.
+     *
+     * @param  string|array  $destination  The target filter name or array.
+     */
+    public function beforeFilter($destination)
+    {
+        $target = $this->filters()->last()->name;
+
+        $this->moveFilter($target, 'before', $destination);
+    }
+
+    /**
+     * Move this filter to be first in the columns list.
+     *
+     * @return bool|null
+     */
+    public function makeFirstFilter()
+    {
+        if (! $this->filters()) {
+            return false;
         }
-        if (! isset($options['type'])) {
-            abort(500, 'Please make sure all your filters have types.');
-        }
-        if (! \View::exists('crud::filters.'.$options['type'])) {
-            abort(500, 'No filter view named "'.$options['type'].'.blade.php" was found.');
-        }
-        if (! isset($options['label'])) {
-            abort(500, 'Please make sure all your filters have labels.');
+
+        $firstFilter = $this->filters()->first();
+        $this->beforeFilter($firstFilter);
+    }
+
+    public function getFilterKey($filterName)
+    {
+        foreach ($this->filters() as $key => $value) {
+            if ($value->name == $filterName) {
+                return $key;
+            }
         }
     }
 
     /**
-     * @return bool
+     * Move the most recently added filter before or after the given target filter. Default is before.
+     *
+     * @param  string|array  $target  The target filter name or array.
+     * @param  string|array  $destination  The destination filter name or array.
+     * @param  bool  $before  If true, the filter will be moved before the target filter, otherwise it will be moved after it.
      */
-    public function isActive()
+    public function moveFilter($target, $where, $destination)
     {
-        if (\Request::has($this->name)) {
-            return true;
+        $targetFilter = $this->firstFilterWhere('name', $target);
+        $destinationFilter = $this->firstFilterWhere('name', $destination);
+        $destinationKey = $this->getFilterKey($destination);
+        $newDestinationKey = ($where == 'before' ? $destinationKey : $destinationKey + 1);
+        $newFilters = $this->filters()->filter(function ($value, $key) use ($target) {
+            return $value->name != $target;
+        });
+
+        if (! $targetFilter) {
+            return;
         }
 
-        return false;
+        if (! $destinationFilter) {
+            return;
+        }
+
+        $firstSlice = $newFilters->slice(0, $newDestinationKey);
+        $lastSlice = $newFilters->slice($newDestinationKey, null);
+
+        $newFilters = $firstSlice->push($targetFilter);
+        $lastSlice->each(function ($item, $key) use ($newFilters) {
+            $newFilters->push($item);
+        });
+
+        $this->setOperationSetting('filters', $newFilters);
+    }
+
+    /**
+     * Check if a filter exists, by any given attribute.
+     *
+     * @param  string  $attribute  Attribute name on that filter definition array.
+     * @param  string  $value  Value of that attribute on that filter definition array.
+     * @return bool
+     */
+    public function hasFilterWhere($attribute, $value)
+    {
+        return $this->filters()->contains($attribute, $value);
+    }
+
+    /**
+     * Get the first filter where a given attribute has the given value.
+     *
+     * @param  string  $attribute  Attribute name on that filter definition array.
+     * @param  string  $value  Value of that attribute on that filter definition array.
+     * @return bool
+     */
+    public function firstFilterWhere($attribute, $value)
+    {
+        return $this->filters()->firstWhere($attribute, $value);
+    }
+
+    /**
+     * Create and return a CrudFilter object for that attribute.
+     *
+     * Enables developers to use a fluent syntax to declare their filters,
+     * in addition to the existing options:
+     * - CRUD::addFilter(['name' => 'price', 'type' => 'range'], false, function($value) {});
+     * - CRUD::filter('price')->type('range')->whenActive(function($value) {});
+     *
+     * And if the developer uses the CrudField object as Field in their CrudController:
+     * - Filter::name('price')->type('range')->whenActive(function($value) {});
+     *
+     * @param  string  $name  The name of the column in the db, or model attribute.
+     * @return CrudField
+     */
+    public function filter($name)
+    {
+        return new CrudFilter(compact('name'), null, null, null);
     }
 }

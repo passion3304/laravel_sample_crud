@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'                => 'Salvează și adaugă o nouă intrare',
     'save_action_save_and_edit'               => 'Salvează și editează intrarea',
     'save_action_save_and_back'               => 'Salvează și mergi la listă',
+    'save_action_save_and_preview'            => 'Salvează și previzualizează',
     'save_action_changed_notification'        => 'A fost salvată preferința redirecționării după salvare.',
 
     // Create form
@@ -28,18 +29,6 @@ return [
     // Edit form
     'edit'                                    => 'Editează',
     'save'                                    => 'Salvează',
-
-    // Revisions
-    'revisions'                               => 'Revizii',
-    'no_revisions'                            => 'Nici o revizie',
-    'created_this'                            => 'a generat înregistrarea',
-    'changed_the'                             => 'a schimbat câmpul',
-    'restore_this_value'                      => 'restabilește valoare',
-    'from'                                    => 'valoare veche',
-    'to'                                      => 'valoare nouă',
-    'undo'                                    => 'Restabilește valoare anterioară',
-    'revision_restored'                       => 'Revizie restaurată cu succes',
-    'guest_user'                              => 'Vizitator',
 
     // Translatable models
     'edit_translations'                       => 'EDITEAZĂ TRADUCERILE',
@@ -70,14 +59,14 @@ return [
     // DataTables translation
     'emptyTable'                              => 'Nu există intrări în baza de date',
     'info'                                    => 'Sunt afișate intrările _START_-_END_ din _TOTAL_',
-    'infoEmpty'                               => 'Sunt afișate toate intrarile. Adică niciuna.',
+    'infoEmpty'                               => '',
     'infoFiltered'                            => '(filtrate din totalul de _MAX_ )',
-    'infoPostFix'                             => '',
+    'infoPostFix'                             => '.',
     'thousands'                               => ',',
     'lengthMenu'                              => '_MENU_ pe pagină',
     'loadingRecords'                          => 'Se încarcă...',
     'processing'                              => 'Se procesează...',
-    'search'                                  => 'Caută: ',
+    'search'                                  => 'Caută',
     'zeroRecords'                             => 'Nu au fost găsite intrări care să se potrivească',
     'paginate'                                => [
         'first'             => 'Prima pagină',

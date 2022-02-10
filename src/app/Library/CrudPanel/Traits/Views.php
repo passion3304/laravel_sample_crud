@@ -11,8 +11,7 @@ trait Views
     /**
      * Sets the create template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setCreateView($view)
@@ -33,7 +32,7 @@ trait Views
     /**
      * Sets the create content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setCreateContentClass(string $class)
     {
@@ -57,8 +56,7 @@ trait Views
     /**
      * Sets the list template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setListView($view)
@@ -79,7 +77,7 @@ trait Views
     /**
      * Sets the list content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setListContentClass(string $class)
     {
@@ -99,8 +97,7 @@ trait Views
     /**
      * Sets the details row template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setDetailsRowView($view)
@@ -121,8 +118,7 @@ trait Views
     /**
      * Sets the show template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setShowView($view)
@@ -143,7 +139,7 @@ trait Views
     /**
      * Sets the edit content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setShowContentClass(string $class)
     {
@@ -167,8 +163,7 @@ trait Views
     /**
      * Sets the edit template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setEditView($view)
@@ -189,7 +184,7 @@ trait Views
     /**
      * Sets the edit content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setEditContentClass(string $class)
     {
@@ -209,8 +204,7 @@ trait Views
     /**
      * Sets the reorder template.
      *
-     * @param string $view name of the template file
-     *
+     * @param  string  $view  name of the template file
      * @return string $view name of the template file
      */
     public function setReorderView($view)
@@ -231,7 +225,7 @@ trait Views
     /**
      * Sets the reorder content class.
      *
-     * @param string $class content class
+     * @param  string  $class  content class
      */
     public function setReorderContentClass(string $class)
     {
@@ -246,70 +240,6 @@ trait Views
     public function getReorderContentClass()
     {
         return $this->get('reorder.contentClass') ?? config('backpack.crud.operations.reorder.contentClass', 'col-md-8 col-md-offset-2');
-    }
-
-    /**
-     * Sets the revision template.
-     *
-     * @param string $view name of the template file
-     *
-     * @return string $view name of the template file
-     */
-    public function setRevisionsView($view)
-    {
-        return $this->set('revisions.view', $view);
-    }
-
-    /**
-     * Sets the revision template.
-     *
-     * @param string $view name of the template file
-     *
-     * @return string $view name of the template file
-     */
-    public function setRevisionsTimelineView($view)
-    {
-        return $this->set('revisions.timelineView', $view);
-    }
-
-    /**
-     * Gets the revisions template.
-     *
-     * @return string name of the template file
-     */
-    public function getRevisionsView()
-    {
-        return $this->get('revisions.view') ?? 'crud::revisions';
-    }
-
-    /**
-     * Gets the revisions template.
-     *
-     * @return string name of the template file
-     */
-    public function getRevisionsTimelineView()
-    {
-        return $this->get('revisions.timelineView') ?? 'crud::inc.revision_timeline';
-    }
-
-    /**
-     * Sets the revisions timeline content class.
-     *
-     * @param string revisions timeline content class
-     */
-    public function setRevisionsTimelineContentClass(string $class)
-    {
-        $this->set('revisions.timelineContentClass', $class);
-    }
-
-    /**
-     * Gets the revisions timeline content class.
-     *
-     * @return string content class for revisions timeline view
-     */
-    public function getRevisionsTimelineContentClass()
-    {
-        return $this->get('revisions.timelineContentClass') ?? config('backpack.crud.operations.revisions.timelineContentClass', 'col-md-12');
     }
 
     // -------
@@ -344,5 +274,40 @@ trait Views
     public function getUpdateContentClass()
     {
         return $this->getEditContentClass();
+    }
+
+    // -------
+    // FIELDS
+    // -------
+    /**
+     * Get the first view path that exists for a certain field. If a viewNamespace is given
+     * (second parameter) look there and stop. Otherwise, look in all directories
+     * configured in backpack.crud.view_namespaces.fields.
+     *
+     * @param  string  $viewPath  Path to field view (starting from /fields/..)
+     * @param  bool|string  $viewNamespace  Optional override, to use this namespace instead of the viewstack.
+     * @return string
+     */
+    public static function getFirstFieldView($viewPath, $viewNamespace = false)
+    {
+        // if a definite namespace was given, use that one
+        if ($viewNamespace) {
+            return $viewNamespace.'.'.$path;
+        }
+
+        // otherwise, loop through all the possible view namespaces
+        // until you find a view that exists
+        $paths = array_map(function ($item) use ($viewPath) {
+            return $item.'.'.$viewPath;
+        }, config('backpack.crud.view_namespaces.fields'));
+
+        foreach ($paths as $path) {
+            if (view()->exists($path)) {
+                return $path;
+            }
+        }
+
+        // if no view exists, in any of the directories above... no bueno
+        abort(500, "Cannot find '{$viewPath}' field view in any of the regular locations.");
     }
 }

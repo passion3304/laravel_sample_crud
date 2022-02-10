@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Exception;
+
 /**
  * Properties and methods used by the List operation.
  */
@@ -22,7 +24,7 @@ trait Read
 
         return  // use the entity name to get the current entry
                 // this makes sure the ID is corrent even for nested resources
-                $this->request->input($this->entity_name) ??
+                $this->getRequest()->input($this->entity_name) ??
                 // otherwise use the next to last parameter
                 array_values($params)[count($params) - 1] ??
                 // otherwise return false
@@ -38,7 +40,7 @@ trait Read
     {
         $id = $this->getCurrentEntryId();
 
-        if (! $id) {
+        if ($id === false) {
             return false;
         }
 
@@ -49,7 +51,6 @@ trait Read
      * Find and retrieve an entry in the database or fail.
      *
      * @param int The id of the row in the db to fetch.
-     *
      * @return \Illuminate\Database\Eloquent\Model The row in the db.
      */
     public function getEntry($id)
@@ -66,7 +67,6 @@ trait Read
      * Find and retrieve an entry in the database or fail.
      *
      * @param int The id of the row in the db to fetch.
-     *
      * @return \Illuminate\Database\Eloquent\Model The row in the db.
      */
     public function getEntryWithoutFakes($id)
@@ -82,8 +82,22 @@ trait Read
     {
         $relationships = $this->getColumnsRelationships();
 
-        if (count($relationships)) {
-            $this->with($relationships);
+        foreach ($relationships as $relation) {
+            if (strpos($relation, '.') !== false) {
+                $parts = explode('.', $relation);
+                $model = $this->model;
+
+                // Iterate over each relation part to find the valid relations without attributes
+                // We should eager load the relation but not the attribute
+                foreach ($parts as $i => $part) {
+                    try {
+                        $model = $model->$part()->getRelated();
+                    } catch (Exception $e) {
+                        $relation = join('.', array_slice($parts, 0, $i));
+                    }
+                }
+            }
+            $this->with($relation);
         }
     }
 
@@ -114,6 +128,10 @@ trait Read
      */
     public function enableDetailsRow()
     {
+        if (! backpack_pro()) {
+            abort(500, 'Details row is a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+        }
+
         $this->setOperationSetting('detailsRow', true);
     }
 
@@ -133,37 +151,7 @@ trait Read
      */
     public function enableBulkActions()
     {
-        if ($this->getOperationSetting('bulkActions') == true) {
-            return;
-        }
-
         $this->setOperationSetting('bulkActions', true);
-
-        $this->addColumn([
-            'type'            => 'checkbox',
-            'name'            => 'bulk_actions',
-            'label'           => ' <input type="checkbox" class="crud_bulk_actions_main_checkbox" style="width: 16px; height: 16px;" />',
-            'priority'        => 1,
-            'searchLogic'     => false,
-            'orderable'       => false,
-            'visibleInTable'  => true,
-            'visibleInModal'  => false,
-            'visibleInExport' => false,
-            'visibleInShow'   => false,
-        ])->makeFirstColumn();
-
-        $this->addColumn([
-            'type'            => 'custom_html',
-            'name'            => 'blank_first_column',
-            'label'           => ' ',
-            'priority'        => 1,
-            'searchLogic'     => false,
-            'orderable'       => false,
-            'visibleInTabel'  => true,
-            'visibleInModal'  => false,
-            'visibleInExport' => false,
-            'visibleInShow'   => false,
-        ])->makeFirstColumn();
     }
 
     /**
@@ -174,7 +162,6 @@ trait Read
         $this->setOperationSetting('bulkActions', false);
 
         $this->removeColumn('bulk_actions');
-        $this->removeColumn('blank_first_column');
     }
 
     /**
@@ -182,6 +169,8 @@ trait Read
      */
     public function setDefaultPageLength($value)
     {
+        $this->abortIfInvalidPageLength($value);
+
         $this->setOperationSetting('defaultPageLength', $value);
     }
 
@@ -201,29 +190,85 @@ trait Read
      */
     public function addCustomPageLengthToPageLengthMenu()
     {
-        // If the default Page Length isn't in the menu's values, Add it the beginnin and resort all to show a croissant list.
-        // assume both arrays are the same length.
-        if (! in_array($this->getDefaultPageLength(), $this->getOperationSetting('pageLengthMenu')[0])) {
-            // Loop through 2 arrays of prop. pageLengthMenu
-            foreach ($this->getOperationSetting('pageLengthMenu') as $key => &$page_length_choices) {
-                // This is a condition that should be always true.
-                if (is_array($page_length_choices)) {
-                    array_unshift($page_length_choices, $this->getDefaultPageLength());
+        $values = $this->getOperationSetting('pageLengthMenu')[0];
+        $labels = $this->getOperationSetting('pageLengthMenu')[1];
+
+        if (array_search($this->getDefaultPageLength(), $values) === false) {
+            for ($i = 0; $i < count($values); $i++) {
+                if ($values[$i] > $this->getDefaultPageLength() || $values[$i] === -1) {
+                    array_splice($values, $i, 0, $this->getDefaultPageLength());
+                    array_splice($labels, $i, 0, $this->getDefaultPageLength());
+                    break;
+                }
+                if ($i === count($values) - 1) {
+                    $values[] = $this->getDefaultPageLength();
+                    $labels[] = $this->getDefaultPageLength();
+                    break;
                 }
             }
         }
+
+        $this->setOperationSetting('pageLengthMenu', [$values, $labels]);
     }
 
     /**
      * Specify array of available page lengths on the list view.
      *
-     * @param array $menu 1d array of page length values,
-     *                    or 2d array (first array: page length values, second array: page length labels)
-     *                    More at: https://datatables.net/reference/option/lengthMenu
+     * @param  array|int  $menu
+     *
+     * https://backpackforlaravel.com/docs/4.1/crud-cheat-sheet#page-length
      */
     public function setPageLengthMenu($menu)
     {
+        if (is_array($menu)) {
+            // start checking $menu integrity
+            if (count($menu) !== count($menu, COUNT_RECURSIVE)) {
+                // developer defined as setPageLengthMenu([[50, 100, 300]]) or setPageLengthMenu([[50, 100, 300],['f','h','t']])
+                // we will apply the same labels as the values to the menu if developer didn't
+                $this->abortIfInvalidPageLength($menu[0]);
+
+                if (! isset($menu[1]) || ! is_array($menu[1])) {
+                    $menu[1] = $menu[0];
+                }
+            } else {
+                // developer defined setPageLengthMenu([10 => 'f', 100 => 'h', 300 => 't']) OR setPageLengthMenu([50, 100, 300])
+                $menu = $this->buildPageLengthMenuFromArray($menu);
+            }
+        } else {
+            // developer added only a single value setPageLengthMenu(10)
+            $this->abortIfInvalidPageLength($menu);
+
+            $menu = [[$menu], [$menu]];
+        }
+
         $this->setOperationSetting('pageLengthMenu', $menu);
+    }
+
+    /**
+     * Builds the menu from the given array. It works out with two different types of arrays:
+     *  [1, 2, 3] AND [1 => 'one', 2 => 'two', 3 => 'three'].
+     *
+     * @param  array  $menu
+     * @return array
+     */
+    private function buildPageLengthMenuFromArray($menu)
+    {
+        // check if the values of the array are strings, in case developer defined:
+        // setPageLengthMenu([0 => 'f', 100 => 'h', 300 => 't'])
+        if (count(array_filter(array_values($menu), 'is_string')) > 0) {
+            $values = array_keys($menu);
+            $labels = array_values($menu);
+
+            $this->abortIfInvalidPageLength($values);
+
+            return [$values, $labels];
+        } else {
+            // developer defined length as setPageLengthMenu([50, 100, 300])
+            // we will use the same values as labels
+            $this->abortIfInvalidPageLength($menu);
+
+            return [$menu, $menu];
+        }
     }
 
     /**
@@ -241,10 +286,22 @@ trait Read
             }
             $this->setOperationSetting('pageLengthMenu', $aux);
         }
-
         $this->addCustomPageLengthToPageLengthMenu();
 
         return $this->getOperationSetting('pageLengthMenu');
+    }
+
+    /**
+     * Checks if the provided PageLength segment is valid.
+     *
+     * @param  array|int  $value
+     * @return void
+     */
+    private function abortIfInvalidPageLength($value)
+    {
+        if ($value === 0 || (is_array($value) && in_array(0, $value))) {
+            abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
+        }
     }
 
     /*
@@ -258,6 +315,10 @@ trait Read
      */
     public function enableExportButtons()
     {
+        if (! backpack_pro()) {
+            abort(500, 'Export buttons are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+        }
+
         $this->setOperationSetting('exportButtons', true);
     }
 

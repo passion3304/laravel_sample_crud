@@ -4,6 +4,9 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Config;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Views
+ */
 class CrudPanelViewsTest extends BaseCrudPanelTest
 {
     private $customView = 'path/to/custom/view';
@@ -229,50 +232,5 @@ class CrudPanelViewsTest extends BaseCrudPanelTest
         Config::set('backpack.crud.operations.reorder.contentClass', $this->customContentClass);
 
         $this->assertEquals(Config::get('backpack.crud.operations.reorder.contentClass'), $this->crudPanel->getReorderContentClass());
-    }
-
-    // REVISIONS
-
-    public function testSetRevisionsView()
-    {
-        $this->crudPanel->setRevisionsView($this->customView);
-        $this->assertEquals($this->customView, $this->crudPanel->get('revisions.view'));
-    }
-
-    public function testGetRevisionsView()
-    {
-        $this->crudPanel->setRevisionsView($this->customView);
-        $this->assertEquals($this->customView, $this->crudPanel->getRevisionsView());
-    }
-
-    public function testSetRevisionsTimelineView()
-    {
-        $this->crudPanel->setRevisionsTimelineView($this->customView);
-        $this->assertEquals($this->customView, $this->crudPanel->get('revisions.timelineView'));
-    }
-
-    public function testGetRevisionsTimelineView()
-    {
-        $this->crudPanel->setRevisionsTimelineView($this->customView);
-        $this->assertEquals($this->customView, $this->crudPanel->getRevisionsTimelineView());
-    }
-
-    public function testSetRevisionsTimelineContentClass()
-    {
-        $this->crudPanel->setRevisionsTimelineContentClass($this->customContentClass);
-        $this->assertEquals($this->customContentClass, $this->crudPanel->get('revisions.timelineContentClass'));
-    }
-
-    public function testGetRevisionsTimelineContentClass()
-    {
-        $this->crudPanel->setRevisionsTimelineContentClass($this->customContentClass);
-        $this->assertEquals($this->customContentClass, $this->crudPanel->getRevisionsTimelineContentClass());
-    }
-
-    public function testGetRevisionsTimelineContentClassFromConfig()
-    {
-        Config::set('backpack.crud.operations.revisions.timelineContent', $this->customContentClass);
-
-        $this->assertEquals(Config::get('backpack.crud.operations.revisions.timelineContent'), $this->crudPanel->getRevisionsTimelineContentClass());
     }
 }

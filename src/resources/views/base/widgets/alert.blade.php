@@ -1,3 +1,5 @@
+@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_start')
+
 <div class="{{ $widget['class'] ?? 'alert alert-primary' }}" role="alert">
 
 	@if (isset($widget['close_button']) && $widget['close_button'])	
@@ -13,3 +15,5 @@
 	@endif
 
 </div>
+
+@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')

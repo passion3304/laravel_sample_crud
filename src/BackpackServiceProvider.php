@@ -2,13 +2,17 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
 {
-    use Stats, LicenseCheck;
+    use Stats;
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
@@ -16,9 +20,9 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
-        \Backpack\CRUD\app\Console\Commands\PublishBackpackUserModel::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
         \Backpack\CRUD\app\Console\Commands\PublishView::class,
+        \Backpack\CRUD\app\Console\Commands\RequireDevTools::class,
     ];
 
     // Indicates if loading of the provider is deferred.
@@ -42,7 +46,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->setupRoutes($this->app->router);
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
-        $this->checkLicenseCodeExists();
         $this->sendUsageStats();
     }
 
@@ -55,7 +58,12 @@ class BackpackServiceProvider extends ServiceProvider
     {
         // Bind the CrudPanel object to Laravel's service container
         $this->app->singleton('crud', function ($app) {
-            return new \Backpack\CRUD\app\Library\CrudPanel\CrudPanel($app);
+            return new CrudPanel($app);
+        });
+
+        // Bind the widgets collection object to Laravel's service container
+        $this->app->singleton('widgets', function ($app) {
+            return new Collection();
         });
 
         // load a macro for Route,
@@ -69,21 +77,6 @@ class BackpackServiceProvider extends ServiceProvider
 
         // register the artisan commands
         $this->commands($this->commands);
-
-        // register the services that are only used for development
-        // if ($this->app->environment() == 'local') {
-        //     if (class_exists('Laracasts\Generators\GeneratorsServiceProvider')) {
-        //         $this->app->register('Laracasts\Generators\GeneratorsServiceProvider');
-        //     }
-        //     if (class_exists('Backpack\Generators\GeneratorsServiceProvider')) {
-        //         $this->app->register('Backpack\Generators\GeneratorsServiceProvider');
-        //     }
-        // }
-
-        // map the elfinder prefix
-        if (! \Config::get('elfinder.route.prefix')) {
-            \Config::set('elfinder.route.prefix', \Config::get('backpack.base.route_prefix').'/elfinder');
-        }
     }
 
     public function registerMiddlewareGroup(Router $router)
@@ -100,6 +93,12 @@ class BackpackServiceProvider extends ServiceProvider
         foreach ($middleware_class as $middleware_class) {
             $router->pushMiddlewareToGroup($middleware_key, $middleware_class);
         }
+
+        // register internal backpack middleware for throttling the password recovery functionality
+        // but only if functionality is enabled by developer in config
+        if (config('backpack.base.setup_password_recovery_routes')) {
+            $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
+        }
     }
 
     public function publishFiles()
@@ -107,14 +106,10 @@ class BackpackServiceProvider extends ServiceProvider
         $error_views = [__DIR__.'/resources/error_views' => resource_path('views/errors')];
         $backpack_views = [__DIR__.'/resources/views' => resource_path('views/vendor/backpack')];
         $backpack_public_assets = [__DIR__.'/public' => public_path()];
-        $backpack_lang_files = [__DIR__.'/resources/lang' => resource_path('lang/vendor/backpack')];
+        $backpack_lang_files = [__DIR__.'/resources/lang' => app()->langPath().'/vendor/backpack'];
         $backpack_config_files = [__DIR__.'/config' => config_path()];
-        $elfinder_files = [
-            __DIR__.'/config/elfinder.php'      => config_path('elfinder.php'),
-            __DIR__.'/resources/views-elfinder' => resource_path('views/vendor/elfinder'),
-        ];
 
-        // sidebar_content view, which is the only view most people need to overwrite
+        // sidebar content views, which are the only views most people need to overwrite
         $backpack_menu_contents_view = [
             __DIR__.'/resources/views/base/inc/sidebar_content.blade.php'      => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php'),
             __DIR__.'/resources/views/base/inc/topbar_left_content.blade.php'  => resource_path('views/vendor/backpack/base/inc/topbar_left_content.blade.php'),
@@ -128,15 +123,14 @@ class BackpackServiceProvider extends ServiceProvider
 
         // establish the minimum amount of files that need to be published, for Backpack to work; there are the files that will be published by the install command
         $minimum = array_merge(
-            $error_views,
             // $backpack_views,
-            $backpack_public_assets,
             // $backpack_lang_files,
+            $error_views,
+            $backpack_public_assets,
             $backpack_config_files,
             $backpack_menu_contents_view,
             $backpack_custom_routes_file,
-            $gravatar_assets,
-            $elfinder_files
+            $gravatar_assets
         );
 
         // register all possible publish commands and assign tags to each
@@ -148,15 +142,13 @@ class BackpackServiceProvider extends ServiceProvider
         $this->publishes($backpack_public_assets, 'public');
         $this->publishes($backpack_custom_routes_file, 'custom_routes');
         $this->publishes($gravatar_assets, 'gravatar');
-        $this->publishes($elfinder_files, 'elfinder');
         $this->publishes($minimum, 'minimum');
     }
 
     /**
      * Define the routes for the application.
      *
-     * @param \Illuminate\Routing\Router $router
-     *
+     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
     public function setupRoutes(Router $router)
@@ -175,8 +167,7 @@ class BackpackServiceProvider extends ServiceProvider
     /**
      * Load custom routes file.
      *
-     * @param \Illuminate\Routing\Router $router
-     *
+     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
     public function setupCustomRoutes(Router $router)
@@ -222,7 +213,7 @@ class BackpackServiceProvider extends ServiceProvider
                 $groupNamespace = '';
             }
             $namespacedController = $groupNamespace.$controller;
-            $controllerInstance = new $namespacedController();
+            $controllerInstance = App::make($namespacedController);
 
             return $controllerInstance->setupRoutes($name, $routeName, $controller);
         });
@@ -245,11 +236,29 @@ class BackpackServiceProvider extends ServiceProvider
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
     }
 
+    protected function mergeConfigFromOperationsDirectory()
+    {
+        $operationConfigs = scandir(__DIR__.'/config/backpack/operations/');
+        $operationConfigs = array_diff($operationConfigs, ['.', '..']);
+
+        if (! count($operationConfigs)) {
+            return;
+        }
+
+        foreach ($operationConfigs as $configFile) {
+            $this->mergeConfigFrom(
+                __DIR__.'/config/backpack/operations/'.$configFile,
+                'backpack.operations.'.substr($configFile, 0, strrpos($configFile, '.'))
+            );
+        }
+    }
+
     public function loadConfigs()
     {
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(__DIR__.'/config/backpack/crud.php', 'backpack.crud');
         $this->mergeConfigFrom(__DIR__.'/config/backpack/base.php', 'backpack.base');
+        $this->mergeConfigFromOperationsDirectory();
 
         // add the root disk to filesystem configuration
         app()->config['filesystems.disks.'.config('backpack.base.root_disk_name')] = [
@@ -283,7 +292,8 @@ class BackpackServiceProvider extends ServiceProvider
             'backpack' => [
                 'provider'  => 'backpack',
                 'table'     => 'password_resets',
-                'expire'    => 60,
+                'expire'   => 60,
+                'throttle' => config('backpack.base.password_recovery_throttle_notifications'),
             ],
         ];
 
@@ -303,5 +313,15 @@ class BackpackServiceProvider extends ServiceProvider
     public function loadHelpers()
     {
         require_once __DIR__.'/helpers.php';
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['crud', 'widgets'];
     }
 }

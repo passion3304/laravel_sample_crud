@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-filters mb-0 pb-0 pt-0">
       <!-- Brand and toggle get grouped for better mobile display -->
-      <a class="nav-item d-none d-lg-block"><span class="fa fa-filter"></span></a>
+      <a class="nav-item d-none d-lg-block"><span class="la la-filter"></span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bp-filters-navbar" aria-controls="bp-filters-navbar" aria-expanded="false" aria-label="{{ trans('backpack::crud.toggle_filters') }}">
-        <span class="fa fa-filter"></span> {{ trans('backpack::crud.filters') }}
+        <span class="la la-filter"></span> {{ trans('backpack::crud.filters') }}
       </button>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -10,15 +10,15 @@
         <ul class="nav navbar-nav">
           <!-- THE ACTUAL FILTERS -->
     			@foreach ($crud->filters() as $filter)
-    				@include($filter->view)
+    				@includeFirst($filter->getNamespacedViewWithFallbacks())
     			@endforeach
-          <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'invisible' }}"><i class="fa fa-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
+          <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'invisible' }}"><i class="la la-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
   </nav>
 
 @push('crud_list_scripts')
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.2/URI.min.js" type="text/javascript"></script>
+	<script src="{{ asset('packages/URI.js/URI.min.js') }}" type="text/javascript"></script>
     <script>
       function addOrUpdateUriParameter(uri, parameter, value) {
             var new_url = normalizeAmpersand(uri);
@@ -35,15 +35,37 @@
               new_url.removeQuery(parameter);
             }
 
-            if (value != '') {
+            if (value !== '' && value != null) {
               new_url = new_url.addQuery(parameter, value);
             }
 
-            $('#remove_filters_button').removeClass('invisible');
+            $('#remove_filters_button').toggleClass('invisible', !new_url.query());
 
         return new_url.toString();
 
       }
+
+      function updateDatatablesOnFilterChange(filterName, filterValue, update_url = false) {
+        // behaviour for ajax table
+        var current_url = crud.table.ajax.url();
+        var new_url = addOrUpdateUriParameter(current_url, filterName, filterValue);
+
+        new_url = normalizeAmpersand(new_url);
+
+        // add filter to URL
+        crud.updateUrl(new_url);
+        crud.table.ajax.url(new_url);
+
+        // when we are clearing ALL filters, we would not update the table url here, because this is done PER filter
+        // and we have a function that will do this update for us after all filters had been cleared.
+        if(update_url) {
+          // replace the datatables ajax url with new_url and reload it
+          crud.table.ajax.url(new_url).load();
+        }
+
+        return new_url;
+      }
+
 
       function normalizeAmpersand(string) {
         return string.replace(/&amp;/g, "&").replace(/amp%3B/g, "");

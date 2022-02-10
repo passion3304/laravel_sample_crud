@@ -1,99 +1,71 @@
-TinyMCE - JavaScript Library for Rich Text Editing
-===================================================
+# TinyMCE
 
-Building TinyMCE
------------------
-Install [Node.js](https://nodejs.org/en/) on your system.
-Clone this repository on your system
-```
-$ git clone https://github.com/tinymce/tinymce.git
-```
-Open a console and go to the project directory.
-```
-$ cd tinymce/
-```
-Install `grunt` command line tool globally.
-```
-$ npm i -g grunt-cli
-```
-Install all package dependencies.
-```
-$ npm install
-```
-Now, build TinyMCE by using `grunt`.
-```
-$ grunt
-```
+The world's #1 open source rich text editor.
 
+Used and trusted by millions of developers, TinyMCE is the world’s most customizable, scalable, and flexible rich text editor. We’ve helped launch the likes of Atlassian, Medium, Evernote (and lots more that we can’t tell you), by empowering them to create exceptional content and experiences for their users.
 
-Build tasks
-------------
-`grunt`
-Lints, compiles, minifies and creates release packages for TinyMCE. This will produce the production ready packages.
+With more than 350M+ downloads every year, we’re also one of the most trusted enterprise-grade open source HTML editors on the internet. There’s currently more than 100M+ products worldwide, powered by Tiny. As a high powered WYSIWYG editor, TinyMCE is built to scale, designed to innovate, and thrives on delivering results to difficult edge-cases.
 
-`grunt start`
-Starts a webpack-dev-server that compiles the core, themes, plugins and all demos. Go to `localhost:3000` for a list of links to all the demo pages.
+You can access a [full featured demo of TinyMCE](https://www.tiny.cloud/docs/demo/full-featured/) in the docs on the TinyMCE website.
 
-`grunt dev`
-Runs tsc, webpack and less. This will only produce the bare essentials for a development build and is a lot faster.
+<p align="center">
+  <img alt="Screenshot of the TinyMCE Editor" src="https://www.tiny.cloud/storage/github-readme-images/tinymce-editor.png"\>
+</p>
 
-`grunt test`
-Runs all tests on PhantomJS.
+## Get started with TinyMCE
 
-`grunt bedrock-manual`
-Runs all tests manually in a browser.
+Getting started with the TinyMCE rich text editor is easy, and for simple configurations can be done in less than 5 minutes.
 
-`grunt bedrock-auto:<browser>`
-Runs all tests through selenium browsers supported are chrome, firefox, ie, MicrosoftEdge, chrome-headless and phantomjs.
+[TinyMCE Cloud Deployment Quick Start Guide](https://www.tiny.cloud/docs/quick-start/)
 
-`grunt webpack:core`
-Builds the demo js files for the core part of tinymce this is required to get the core demos working.
+[TinyMCE Self-hosted Deployment Guide](https://www.tiny.cloud/docs/general-configuration-guide/advanced-install/)
 
-`grunt webpack:plugins`
-Builds the demo js files for the plugins part of tinymce this is required to get the plugins demos working.
+TinyMCE provides a range of configuration options that allow you to integrate it into your application. Start customizing with a [basic setup](https://www.tiny.cloud/docs/general-configuration-guide/basic-setup/).
 
-`grunt webpack:themes`
-Builds the demo js files for the themes part of tinymce this is required to get the themes demos working.
+Configure it for one of three modes of editing:
 
-`grunt webpack:<name>-plugin`
-Builds the demo js files for the specific plugin.
+- [TinyMCE classic editing mode](https://www.tiny.cloud/docs/general-configuration-guide/use-tinymce-classic/).
+- [TinyMCE inline editing mode](https://www.tiny.cloud/docs/general-configuration-guide/use-tinymce-inline/).
+- [TinyMCE distraction-free editing mode](https://www.tiny.cloud/docs/general-configuration-guide/use-tinymce-distraction-free/).
 
-`grunt webpack:<name>-theme`
-Builds the demo js files for the specific theme.
+## Features
 
-`grunt --help`
-Displays the various build tasks.
+### Integration
 
-Bundle themes and plugins into a single file
----------------------------------------------
-`grunt bundle --themes=modern --plugins=table,paste`
+TinyMCE is easily integrated into your projects with the help of components such as:
 
-Minifies the core, adds the modern theme and adds the table and paste plugin into tinymce.min.js.
+- [tinymce-react](https://github.com/tinymce/tinymce-react)
+- [tinymce-vue](https://github.com/tinymce/tinymce-vue)
+- [tinymce-angular](https://github.com/tinymce/tinymce-angular)
 
-Contributing to the TinyMCE project
-------------------------------------
-TinyMCE is an open source software project and we encourage developers to contribute patches and code to be included in the main package of TinyMCE.
+With over 29 integrations, and 400+ APIs, see the TinyMCE docs for a full list of editor [integrations](https://www.tiny.cloud/docs/integrations/).
 
-__Basic Rules__
+### Customization
 
-* Contributed code will be licensed under the LGPL license but not limited to LGPL
-* Copyright notices will be changed to Ephox Corporation, contributors will get credit for their work
-* All third party code will be reviewed, tested and possibly modified before being released
-* All contributors will have to have signed the Contributor License Agreement
+It is easy to [configure the UI](https://www.tiny.cloud/docs/general-configuration-guide/customize-ui/) of your rich text editor to match the design of your site, product or application. Due to its flexibility, you can [configure the editor](https://www.tiny.cloud/docs/general-configuration-guide/basic-setup/) with as much or as little functionality as you like, depending on your requirements.
 
-These basic rules ensures that the contributed code remains open source and under the LGPL license.
+With [50+ powerful plugins available](https://www.tiny.cloud/apps/), and content editable as the basis of TinyMCE, adding additional functionality is as simple as including a single line of code.
 
-__How to Contribute to the Code__
+Realizing the full power of most plugins requires only a few lines more.
 
-The TinyMCE source code is [hosted on Github](https://github.com/tinymce/tinymce). Through Github you can submit pull requests and log new bugs and feature requests.
+### Extensibility
 
-When you submit a pull request, you will get a notice about signing the __Contributors License Agreement (CLA)__.
-You should have a __valid email address on your GitHub account__, and you will be sent a key to verify your identity and digitally sign the agreement.
+Sometimes your editor requirements can be quite unique, and you need the freedom and flexibility to innovate. Thanks to TinyMCE being open source, you can view the source code and develop your own extensions for custom functionality to meet your own requirements.
 
-After you signed your pull request will automatically be ready for review & merge.
+The TinyMCE [API](https://www.tiny.cloud/docs/api/) is exposed to make it easier for you to write custom functionality that fits within the existing framework of TinyMCE [UI components](https://www.tiny.cloud/docs/ui-components/).
 
-__How to Contribute to the Docs__
+### Extended Features and Support
 
-Docs are hosted on Github in the [tinymce-docs](https://github.com/tinymce/tinymce-docs) repo.
+For the professional software teams that require more in-depth efficiency, compliance or collaborative features built to enterprise-grade standards, please [get in touch with our team](https://www.tiny.cloud/contact/).
 
-[How to contribute](https://www.tinymce.com/docs/advanced/contributing-docs/) to the docs, including a style guide, can be found on the TinyMCE website.
+Tiny also offers dedicated SLAs and support for professional development teams.
+
+## Compiling and contributing
+
+In 2019 the decision was made to transition our codebase to a monorepo. For information on compiling and contributing, see: [contribution guidelines](https://github.com/tinymce/tinymce/blob/master/CONTRIBUTING.md).
+
+As an open source product, we encourage and support the active development of our software.
+
+## Want more information?
+
+Visit the [TinyMCE website](https://tiny.cloud/) and check out the [TinyMCE documentation](https://www.tiny.cloud/docs/).

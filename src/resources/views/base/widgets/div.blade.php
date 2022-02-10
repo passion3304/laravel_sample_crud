@@ -1,3 +1,5 @@
+@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_start')
+
 <div 
 	@if (count($widget) > 2)
 	    @foreach ($widget as $attribute => $value)
@@ -13,3 +15,5 @@
 	@endif
 
 </div>
+
+@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')

@@ -17,6 +17,11 @@ class Address extends Model
      */
     public function accountDetails()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\AccountDetails');
+        return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\AccountDetails', 'account_details_id');
+    }
+
+    public function bang()
+    {
+        return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\Bang', 'city');
     }
 }

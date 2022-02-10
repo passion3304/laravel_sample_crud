@@ -7,6 +7,9 @@ use Faker\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Update
+ */
 class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 {
     private $userInputFields = [
@@ -77,7 +80,7 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
             'password' => bcrypt($faker->password()),
         ];
 
-        $unknownId = DB::getPdo()->lastInsertId() + 1;
+        $unknownId = DB::getPdo()->lastInsertId() + 2;
         $this->crudPanel->update($unknownId, $inputData);
     }
 
@@ -106,7 +109,7 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFields);
 
-        $unknownId = DB::getPdo()->lastInsertId() + 1;
+        $unknownId = DB::getPdo()->lastInsertId() + 2;
         $this->crudPanel->getUpdateFields($unknownId);
     }
 

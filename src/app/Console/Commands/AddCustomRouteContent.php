@@ -3,9 +3,8 @@
 namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class AddCustomRouteContent extends Command
 {
@@ -51,6 +50,12 @@ class AddCustomRouteContent extends Command
 
             // insert the given code before the file's last line
             $file_lines = file($old_file_path, FILE_IGNORE_NEW_LINES);
+
+            // if the code already exists in the file, abort
+            if ($this->getLastLineNumberThatContains($code, $file_lines)) {
+                return $this->comment('Route already existed.');
+            }
+
             $end_line_number = $this->customRoutesFileEndLine($file_lines);
             $file_lines[$end_line_number + 1] = $file_lines[$end_line_number];
             $file_lines[$end_line_number] = '    '.$code;
@@ -62,22 +67,7 @@ class AddCustomRouteContent extends Command
                 $this->error('Could not write to file: '.$path);
             }
         } else {
-            $command = 'php artisan vendor:publish --provider="Backpack\Base\BaseServiceProvider" --tag=custom_routes';
-
-            $process = new Process($command, null, null, null, 300, null);
-
-            $process->run(function ($type, $buffer) {
-                if (Process::ERR === $type) {
-                    $this->line($buffer);
-                } else {
-                    $this->line($buffer);
-                }
-            });
-
-            // executes after the command finishes
-            if (! $process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
+            Artisan::call('vendor:publish', ['--provider' => 'Backpack\CRUD\BackpackServiceProvider', '--tag' => 'custom_routes']);
 
             $this->handle();
         }
@@ -104,5 +94,25 @@ class AddCustomRouteContent extends Command
 
             return $end_line_number;
         }
+    }
+
+    /**
+     * Parse the given file stream and return the line number where a string is found.
+     *
+     * @param  string  $needle  The string that's being searched for.
+     * @param  array  $haystack  The file where the search is being performed.
+     * @return bool|int The last line number where the string was found. Or false.
+     */
+    private function getLastLineNumberThatContains($needle, $haystack)
+    {
+        $matchingLines = array_filter($haystack, function ($k) use ($needle) {
+            return strpos($k, $needle) !== false;
+        });
+
+        if ($matchingLines) {
+            return array_key_last($matchingLines);
+        }
+
+        return false;
     }
 }

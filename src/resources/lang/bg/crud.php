@@ -35,17 +35,6 @@ return [
     'edit'                 => 'Поправи',
     'save'                 => 'Запиши',
 
-    // Revisions
-    'revisions'             => 'Версии',
-    'no_revisions'          => 'Не бяха открити версии',
-    'created_this'          => 'създаде това',
-    'changed_the'           => 'смени',
-    'restore_this_value'    => 'Възстанови от ?',
-    'from'                  => 'от',
-    'to'                    => 'до',
-    'undo'                  => 'отмени',
-    'revision_restored'     => 'Версията беше върната успешно.',
-
     // CRUD table view
     'all'                       => 'Всички ',
     'in_the_database'           => 'В базите данни',
@@ -69,14 +58,14 @@ return [
     // DataTables translation
     'emptyTable'     => 'Няма намерени резултати',
     'info'           => 'Показване на резултати от _START_ до _END_ от общо _TOTAL_',
-    'infoEmpty'      => 'Показване на резултати от 0 до 0 от общо 0',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(филтрирани от общо _MAX_ резултата))',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ records per page',
     'loadingRecords' => 'Зареждам...',
     'processing'     => 'Обработка на резултатите...',
-    'search'         => 'Търсене: ',
+    'search'         => 'Търсене',
     'zeroRecords'    => 'Няма намерени резултати',
     'paginate'       => [
         'first'    => 'Първа',

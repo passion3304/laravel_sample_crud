@@ -10,11 +10,11 @@ newIssueWelcomeComment: >
   Just a heads-up: **Here at Backpack we use Github Issues only for tracking bugs**. Talk about new features is also acceptable. This helps _a lot_ in keeping our focus on improving Backpack. **If you issue is not a bug/feature, please help us out by closing the issue yourself and posting in the appropriate medium (see below)**. If you're not sure where it fits, it's ok, a community member will probably reply to help you with that.
 
 
-  Backpack communication mediums:
+  Backpack communication channels:
    - Bug Reports, Feature Requests - Github Issues (here);
    - Quick help (_How do I do X_) - [Gitter Chatroom](https://gitter.im/BackpackForLaravel/Lobby);
    - Long questions (_I have done X and Y and it won't do Z wtf_) - [Stackoverflow](https://stackoverflow.com/questions/tagged/backpack-for-laravel), using the ```backpack-for-laravel``` tag;
-
+   - Showing off something you've made, asking for opinion on Backpack/Laravel matters - [Reddit](https://www.reddit.com/r/BackpackForLaravel/);
 
   Please keep in mind Backpack offers no official / paid support. Whatever help you receive here, on Gitter, Slack or Stackoverflow is thanks to our awesome _awesome_ community members, who give up some of their time to help their peers. If you want to join our community, just start pitching in. We take pride in being a welcoming bunch.
 
@@ -135,6 +135,7 @@ requestInfoOn:
 # keys must be GitHub usernames
 requestInfoUserstoExclude:
   - tabacitu
+  - pxpm
 
 # ---------------------------------------------------------------------------------------------
 #

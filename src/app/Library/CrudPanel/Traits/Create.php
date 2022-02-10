@@ -2,8 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
 
 trait Create
 {
@@ -16,21 +15,14 @@ trait Create
     /**
      * Insert a row in the database.
      *
-     * @param array $data All input values to be inserted.
-     *
+     * @param  array  $input  All input values to be inserted.
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create($data)
+    public function create($input)
     {
-        $data = $this->decodeJsonCastedAttributes($data);
-        $data = $this->compactFakeFields($data);
-
-        // omit the n-n relationships when updating the eloquent item
-        $nn_relationships = array_pluck($this->getRelationFieldsWithPivot(), 'name');
-        $item = $this->model->create(array_except($data, $nn_relationships));
-
-        // if there are any relationships available, also sync those
-        $this->createRelations($item, $data);
+        [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
+        $item = $this->model->create($directInputs);
+        $this->createRelationsForItem($item, $relationInputs);
 
         return $item;
     }
@@ -48,23 +40,34 @@ trait Create
     /**
      * Get all fields with relation set (model key set on field).
      *
+     * @param  array  $fields
      * @return array The fields with model key set.
      */
-    public function getRelationFields()
+    public function getRelationFields($fields = [])
     {
-        $fields = $this->fields();
+        if (empty($fields)) {
+            $fields = $this->getCleanStateFields();
+        }
+
         $relationFields = [];
 
         foreach ($fields as $field) {
-            if (isset($field['model'])) {
+            if (isset($field['model']) && $field['model'] !== false) {
                 array_push($relationFields, $field);
             }
 
-            if (isset($field['subfields']) &&
+            // if a field has an array name AND subfields
+            // then take those fields into account (check if they have relationships);
+            // this is done in particular for the checklist_dependency field,
+            // but other fields could use it too, in the future;
+            if (is_array($field['name']) &&
+                isset($field['subfields']) &&
                 is_array($field['subfields']) &&
                 count($field['subfields'])) {
                 foreach ($field['subfields'] as $subfield) {
-                    array_push($relationFields, $subfield);
+                    if (isset($subfield['model']) && $subfield['model'] !== false) {
+                        array_push($relationFields, $subfield);
+                    }
                 }
             }
         }
@@ -73,158 +76,241 @@ trait Create
     }
 
     /**
-     * Get all fields with n-n relation set (pivot table is true).
-     *
-     * @return array The fields with n-n relationships.
+     * ---------------
+     * PRIVATE METHODS
+     * ---------------.
      */
-    public function getRelationFieldsWithPivot()
-    {
-        $all_relation_fields = $this->getRelationFields();
-
-        return array_where($all_relation_fields, function ($value, $key) {
-            return isset($value['pivot']) && $value['pivot'];
-        });
-    }
 
     /**
-     * Create the relations for the current model.
+     * Create relations for the provided model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
-     * @param array                               $data The form data.
-     */
-    public function createRelations($item, $data)
-    {
-        $this->syncPivot($item, $data);
-        $this->createOneToOneRelations($item, $data);
-    }
-
-    /**
-     * Sync the declared many-to-many associations through the pivot field.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $model The current CRUD model.
-     * @param array                               $data  The form data.
-     */
-    public function syncPivot($model, $data)
-    {
-        $fields_with_relationships = $this->getRelationFields();
-
-        foreach ($fields_with_relationships as $key => $field) {
-            if (isset($field['pivot']) && $field['pivot']) {
-                $values = isset($data[$field['name']]) ? $data[$field['name']] : [];
-
-                $relation_data = [];
-                foreach ($values as $pivot_id) {
-                    $pivot_data = [];
-
-                    if (isset($field['pivotFields'])) {
-                        foreach ($field['pivotFields'] as $pivot_field_name) {
-                            $pivot_data[$pivot_field_name] = $data[$pivot_field_name][$pivot_id];
-                        }
-                    }
-                    $relation_data[$pivot_id] = $pivot_data;
-                }
-
-                $model->{$field['name']}()->sync($relation_data);
-            }
-
-            if (isset($field['morph']) && $field['morph'] && isset($data[$field['name']])) {
-                $values = $data[$field['name']];
-                $model->{$field['name']}()->sync($values);
-            }
-        }
-    }
-
-    /**
-     * Create any existing one to one relations for the current model from the form data.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
-     * @param array                               $data The form data.
-     */
-    private function createOneToOneRelations($item, $data)
-    {
-        $relationData = $this->getRelationDataFromFormData($data);
-        $this->createRelationsForItem($item, $relationData);
-    }
-
-    /**
-     * Create any existing one to one relations for the current model from the relation data.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $item          The current CRUD model.
-     * @param array                               $formattedData The form data.
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $item  The current CRUD model.
+     * @param  array  $formattedRelations  The form data.
      * @return bool|null
      */
-    private function createRelationsForItem($item, $formattedData)
+    private function createRelationsForItem($item, $formattedRelations)
     {
-        if (! isset($formattedData['relations'])) {
+        // no relations to create
+        if (empty($formattedRelations)) {
             return false;
         }
 
-        foreach ($formattedData['relations'] as $relationMethod => $relationData) {
-            $model = $relationData['model'];
+        foreach ($formattedRelations as $relationMethod => $relationDetails) {
             $relation = $item->{$relationMethod}();
+            $relationType = $relationDetails['relation_type'];
 
-            if ($relation instanceof BelongsTo) {
-                $modelInstance = $model::find($relationData['values'])->first();
-                if ($modelInstance != null) {
-                    $relation->associate($modelInstance)->save();
-                } else {
-                    $relation->dissociate()->save();
-                }
-            } elseif ($relation instanceof HasOne) {
-                if ($item->{$relationMethod} != null) {
-                    $item->{$relationMethod}->update($relationData['values']);
-                    $modelInstance = $item->{$relationMethod};
-                } else {
-                    $modelInstance = new $model($relationData['values']);
-                    $relation->save($modelInstance);
-                }
-            } else {
-                $modelInstance = new $model($relationData['values']);
-                $relation->save($modelInstance);
-            }
+            switch ($relationType) {
+                case 'HasOne':
+                case 'MorphOne':
+                        $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
+                    break;
+                case 'HasMany':
+                case 'MorphMany':
+                    $relationValues = $relationDetails['values'][$relationMethod];
+                    // if relation values are null we can only attach, also we check if we sent
+                    // - a single dimensional array: [1,2,3]
+                    // - an array of arrays: [[1][2][3]]
+                    // if is as single dimensional array we can only attach.
+                    if ($relationValues === null || ! is_multidimensional_array($relationValues)) {
+                        $this->attachManyRelation($item, $relation, $relationDetails, $relationValues);
+                    } else {
+                        $this->createManyEntries($item, $relation, $relationMethod, $relationDetails);
+                    }
+                    break;
+                case 'BelongsToMany':
+                case 'MorphToMany':
+                    $values = $relationDetails['values'][$relationMethod] ?? [];
+                    $values = is_string($values) ? json_decode($values, true) : $values;
+                    $relationValues = [];
 
-            if (isset($relationData['relations'])) {
-                $this->createRelationsForItem($modelInstance, ['relations' => $relationData['relations']]);
+                    if (is_array($values) && is_multidimensional_array($values)) {
+                        foreach ($values as $value) {
+                            if (isset($value[$relationMethod])) {
+                                $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
+                            }
+                        }
+                    }
+
+                    // if there is no relation data, and the values array is single dimensional we have
+                    // an array of keys with no aditional pivot data. sync those.
+                    if (empty($relationValues)) {
+                        $relationValues = array_values($values);
+                    }
+
+                    $item->{$relationMethod}()->sync($relationValues);
+                    break;
             }
         }
     }
 
     /**
-     * Get a relation data array from the form data.
-     * For each relation defined in the fields through the entity attribute, set the model, the parent model and the
-     * attribute values. For relations defined with the "dot" notations, this will be used to calculate the depth in the
-     * final array (@see \Illuminate\Support\Arr::set() for more).
+     * Save the attributes of a given HasOne or MorphOne relationship on the
+     * related entry, create or delete it, depending on what was sent in the form.
      *
-     * @param array $data The form data.
+     * For HasOne and MorphOne relationships, the dev might want to a few different things:
+     * (A) save an attribute on the related entry (eg. passport.number)
+     * (B) set an attribute on the related entry to NULL (eg. slug.slug)
+     * (C) save an entire related entry (eg. passport)
+     * (D) delete the entire related entry (eg. passport)
      *
-     * @return array The formatted relation data.
+     * @param  \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Eloquent\Relations\MorphOne  $relation
+     * @param  string  $relationMethod  The name of the relationship method on the main Model.
+     * @param  array  $relationDetails  Details about that relationship. For example:
+     *                                  [
+     *                                  'model' => 'App\Models\Passport',
+     *                                  'parent' => 'App\Models\Pet',
+     *                                  'entity' => 'passport',
+     *                                  'attribute' => 'passport',
+     *                                  'values' => **THE TRICKY BIT**,
+     *                                  ]
+     * @return Model|null
      */
-    private function getRelationDataFromFormData($data)
+    private function createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails)
     {
-        $relationFields = $this->getRelationFields();
+        // Let's see which scenario we're treating, depending on the contents of $relationDetails:
+        //      - (A) ['number' => 1315, 'name' => 'Something'] (if passed using a text/number/etc field)
+        //      - (B) ['slug' => null] (if the 'slug' attribute on the 'slug' related entry needs to be cleared)
+        //      - (C) ['passport' => [['number' => 1314, 'name' => 'Something']]] (if passed using a repeatable field)
+        //      - (D) ['passport' => null] (if deleted from the repeatable field)
 
-        $relationData = [];
-        foreach ($relationFields as $relationField) {
-            $attributeKey = $relationField['name'];
-            if (array_key_exists($attributeKey, $data) && empty($relationField['pivot'])) {
-                $key = implode('.relations.', explode('.', $relationField['entity']));
-                $fieldData = array_get($relationData, 'relations.'.$key, []);
+        // Scenario C or D
+        if (array_key_exists($relationMethod, $relationDetails['values'])) {
+            $relationMethodValue = $relationDetails['values'][$relationMethod];
 
-                if (! array_key_exists('model', $fieldData)) {
-                    $fieldData['model'] = $relationField['model'];
-                }
+            // Scenario D
+            if (is_null($relationMethodValue) && $relationDetails['entity'] === $relationMethod) {
+                $relation->delete();
 
-                if (! array_key_exists('parent', $fieldData)) {
-                    $fieldData['parent'] = $this->getRelationModel($relationField['entity'], -1);
-                }
+                return null;
+            }
 
-                $fieldData['values'][$attributeKey] = $data[$attributeKey];
-
-                array_set($relationData, 'relations.'.$key, $fieldData);
+            // Scenario C (when it's an array inside an array, because it's been added as one item inside a repeatable field)
+            if (gettype($relationMethodValue) == 'array' && is_multidimensional_array($relationMethodValue)) {
+                $relationMethodValue = $relationMethodValue[0];
             }
         }
+        // saving process
+        $input = $relationMethodValue ?? $relationDetails['values'];
+        [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input, $relationDetails, $relationMethod);
 
-        return $relationData;
+        $item = $relation->updateOrCreate([], $directInputs);
+
+        $this->createRelationsForItem($item, $relationInputs);
+
+        return $item;
+    }
+
+    /**
+     * When using the HasMany/MorphMany relations as selectable elements we use this function to "mimic-sync" in those relations.
+     * Since HasMany/MorphMany does not have the `sync` method, we manually re-create it.
+     * Here we add the entries that developer added and remove the ones that are not in the list.
+     * This removal process happens with the following rules:
+     * - by default Backpack will behave like a `sync` from M-M relations: it deletes previous entries and add only the current ones.
+     * - `force_delete` is configurable in the field, it's `true` by default. When false, if connecting column is nullable instead of deleting the row we set the column to null.
+     * - `fallback_id` could be provided. In this case instead of deleting we set the connecting key to whatever developer gives us.
+     *
+     * @return mixed
+     */
+    private function attachManyRelation($item, $relation, $relationDetails, $relationValues)
+    {
+        $modelInstance = $relation->getRelated();
+        $relationForeignKey = $relation->getForeignKeyName();
+        $relationLocalKey = $relation->getLocalKeyName();
+
+        if ($relationValues === null) {
+            // the developer cleared the selection
+            // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
+            $removedEntries = $modelInstance->where($relationForeignKey, $item->{$relationLocalKey});
+
+            return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
+        }
+        // we add the new values into the relation, if it is HasMany we only update the foreign_key,
+        // otherwise (it's a MorphMany) we need to update the morphs keys too
+        $toUpdate[$relationForeignKey] = $item->{$relationLocalKey};
+
+        if ($relationDetails['relation_type'] === 'MorphMany') {
+            $toUpdate[$relation->getQualifiedMorphType()] = $relation->getMorphClass();
+        }
+
+        $modelInstance->whereIn($modelInstance->getKeyName(), $relationValues)
+            ->update($toUpdate);
+
+        // we clear up any values that were removed from model relation.
+        // if developer provided a fallback id, we use it
+        // if column is nullable we set it to null if developer didn't specify `force_delete => true`
+        // if none of the above we delete the model from database
+        $removedEntries = $modelInstance->whereNotIn($modelInstance->getKeyName(), $relationValues)
+                            ->where($relationForeignKey, $item->{$relationLocalKey});
+
+        // if relation is MorphMany we also match by morph type.
+        if ($relationDetails['relation_type'] === 'MorphMany') {
+            $removedEntries->where($relation->getQualifiedMorphType(), $relation->getMorphClass());
+        }
+
+        return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
+    }
+
+    private function handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey)
+    {
+        $relationColumnIsNullable = $modelInstance->isColumnNullable($relationForeignKey);
+        $forceDelete = $relationDetails['force_delete'] ?? false;
+        $fallbackId = $relationDetails['fallback_id'] ?? false;
+
+        if ($fallbackId) {
+            return $removedEntries->update([$relationForeignKey => $fallbackId]);
+        }
+
+        if ($forceDelete) {
+            return $removedEntries->delete();
+        }
+
+        if (! $relationColumnIsNullable && $modelInstance->dbColumnHasDefault($relationForeignKey)) {
+            return $removedEntries->update([$relationForeignKey => $modelInstance->getDbColumnDefault($relationForeignKey)]);
+        }
+
+        return $removedEntries->update([$relationForeignKey => null]);
+    }
+
+    /**
+     * Handle HasMany/MorphMany relations when used as creatable entries in the crud.
+     * By using repeatable field, developer can allow the creation of such entries
+     * in the crud forms.
+     *
+     * @param $entry - eg: story
+     * @param $relation - eg  story HasMany monsters
+     * @param $relationMethod - eg: monsters
+     * @param $relationDetails - eg: info about relation including submited values
+     * @return void
+     */
+    private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)
+    {
+        $items = $relationDetails['values'][$relationMethod];
+
+        $relation_local_key = $relation->getLocalKeyName();
+
+        $relatedItemsSent = [];
+
+        foreach ($items as $item) {
+            [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($item, $relationDetails, $relationMethod);
+            // for each item we get the inputs to create and the relations of it.
+            $relation_local_key_value = $item[$relation_local_key] ?? null;
+
+            // we either find the matched entry by local_key (usually `id`)
+            // and update the values from the input
+            // or create a new item from input
+            $item = $entry->{$relationMethod}()->updateOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
+
+            // we store the item local key so we can match them with database and check if any item was deleted
+            $relatedItemsSent[] = $item->{$relation_local_key};
+
+            // create the item relations if any.
+            $this->createRelationsForItem($item, $relationInputs);
+        }
+
+        // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.
+        if (! empty($relatedItemsSent)) {
+            // we perform the cleanup of removed database items
+            $entry->{$relationMethod}()->whereNotIn($relation_local_key, $relatedItemsSent)->delete();
+        }
     }
 }

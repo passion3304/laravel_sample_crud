@@ -1,11 +1,13 @@
 @if (!empty($widgets))
-	@foreach ($widgets as $widget)
+	@foreach ($widgets as $currentWidget)
 
-		@if (isset($widget['viewNamespace']))
-			@include($widgetsViewNamespace.'.'.$widget['type'], ['widget' => $widget])
-		@else
-			@include(backpack_view('widgets.'.$widget['type']), ['widget' => $widget])
+		@if (is_array($currentWidget))
+			@php
+				$currentWidget = \Backpack\CRUD\app\Library\Widget::add($currentWidget);
+			@endphp
 		@endif
+
+		@include($currentWidget->getFinalViewPath(), ['widget' => $currentWidget->toArray()])
 
 	@endforeach
 @endif

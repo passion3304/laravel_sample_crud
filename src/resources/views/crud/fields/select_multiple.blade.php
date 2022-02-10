@@ -5,26 +5,31 @@
     } else {
         $options = call_user_func($field['options'], $field['model']::query());
     }
+    $field['allows_null'] = $field['allows_null'] ?? true;
+
+    $field['value'] = old_empty_or_null($field['name'], collect()) ??  $field['value'] ?? $field['default'] ?? collect();
+
+    if (is_a($field['value'], \Illuminate\Support\Collection::class)) {
+        $field['value'] = $field['value']->pluck(app($field['model'])->getKeyName())->toArray();
+    }
+    
 @endphp
 
-<div @include('crud::inc.field_wrapper_attributes') >
+@include('crud::fields.inc.wrapper_start')
 
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
-
+    @include('crud::fields.inc.translatable_icon')
+    {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
+    <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
     <select
     	class="form-control"
         name="{{ $field['name'] }}[]"
-        @include('crud::inc.field_attributes')
+        @include('crud::fields.inc.attributes')
     	multiple>
-
-		@if (!isset($field['allows_null']) || $field['allows_null'])
-			<option value="">-</option>
-		@endif
 
     	@if (count($options))
     		@foreach ($options as $option)
-				@if( (old(square_brackets_to_dots($field["name"])) && in_array($option->getKey(), old(square_brackets_to_dots($field["name"])))) || (is_null(old(square_brackets_to_dots($field["name"]))) && isset($field['value']) && in_array($option->getKey(), $field['value']->pluck($option->getKeyName(), $option->getKeyName())->toArray())))
+				@if(in_array($option->getKey(), $field['value']))
 					<option value="{{ $option->getKey() }}" selected>{{ $option->{$field['attribute']} }}</option>
 				@else
 					<option value="{{ $option->getKey() }}">{{ $option->{$field['attribute']} }}</option>
@@ -38,4 +43,5 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-</div>
+
+@include('crud::fields.inc.wrapper_end')

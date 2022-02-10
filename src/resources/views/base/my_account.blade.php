@@ -1,4 +1,4 @@
-@extends('backpack::layouts.top_left')
+@extends(backpack_view('blank'))
 
 @section('after_styles')
     <style media="screen">
@@ -49,7 +49,7 @@
 
         {{-- UPDATE INFO FORM --}}
         <div class="col-lg-8">
-            <form class="form" action="{{ route('backpack.account.info') }}" method="post">
+            <form class="form" action="{{ route('backpack.account.info.store') }}" method="post">
 
                 {!! csrf_field() !!}
 
@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> {{ trans('backpack::base.save') }}</button>
+                        <button type="submit" class="btn btn-success"><i class="la la-save"></i> {{ trans('backpack::base.save') }}</button>
                         <a href="{{ backpack_url() }}" class="btn">{{ trans('backpack::base.cancel') }}</a>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                     </div>
 
                     <div class="card-footer">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> {{ trans('backpack::base.change_password') }}</button>
+                            <button type="submit" class="btn btn-success"><i class="la la-save"></i> {{ trans('backpack::base.change_password') }}</button>
                             <a href="{{ backpack_url() }}" class="btn">{{ trans('backpack::base.cancel') }}</a>
                     </div>
 

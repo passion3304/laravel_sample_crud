@@ -10,6 +10,15 @@ filter:
         - 'resources/*'
         - 'vendor/*'
         - 'views/*'
+build:
+build:
+    environment:
+        php: 8.0.2
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
 tools:
     php_analyzer: true
     php_mess_detector: true
@@ -24,7 +33,8 @@ tools:
         excluded_dirs:
             - vendor
             - tests
-    external_code_coverage: true
+    external_code_coverage:
+        timeout: 600
 checks:
     php:
         code_rating: true
@@ -57,14 +67,14 @@ checks:
         too_many_arguments: true
         symfony_request_injection: true
         switch_fallthrough_commented: true
-        spacing_of_function_arguments: true
-        spacing_around_non_conditional_operators: true
-        spacing_around_conditional_operators: true
+        # spacing_of_function_arguments: true
+        # spacing_around_non_conditional_operators: true
+        # spacing_around_conditional_operators: true
         space_after_cast: true
         single_namespace_per_use: true
         simplify_boolean_return: true
-        scope_indentation:
-            spaces_per_level: '4'
+        # scope_indentation:
+        #     spaces_per_level: '4'
         return_doc_comments: true
         require_scope_for_properties: true
         require_scope_for_methods: true
@@ -147,7 +157,7 @@ checks:
         blank_line_after_namespace_declaration: true
         avoid_usage_of_logical_operators: true
         avoid_unnecessary_concatenation: true
-        avoid_tab_indentation: true
+        # avoid_tab_indentation: trues
         avoid_superglobals: true
         avoid_perl_style_comments: true
         avoid_multiple_statements_on_same_line: true

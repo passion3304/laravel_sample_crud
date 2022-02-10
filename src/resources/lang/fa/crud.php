@@ -29,18 +29,6 @@ return [
     'edit'                 => 'ویرایش',
     'save'                 => 'ذخیره',
 
-    // Revisions
-    'revisions'            => 'نسخه‌ها',
-    'no_revisions'         => 'هیچ نسخه‌ای یافت نشد',
-    'created_this'         => 'این را ایجاد کرده',
-    'changed_the'          => 'تغییر',
-    'restore_this_value'   => 'این مقدار را بازیابی کنید',
-    'from'                 => 'از',
-    'to'                   => 'به',
-    'undo'                 => 'خنثی کردن',
-    'revision_restored'    => 'نسخه با موفقیت بازیابی شد.',
-    'guest_user'           => 'کاربر مهمان',
-
     // Translatable models
     'edit_translations' => 'ترجمه',
     'language'          => 'زبان',
@@ -85,12 +73,12 @@ return [
     'info'           => 'نمایش  _START_ تا _END_ از _TOTAL_ مورد',
     'infoEmpty'      => 'نمایش ۰ تا ۰ از ۰ مورد',
     'infoFiltered'   => '(فیلتر شده از _MAX_ مورد)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => '،',
     'lengthMenu'     => '_MENU_ رکورد در صفحه',
     'loadingRecords' => 'درحال بارگذاری...',
     'processing'     => 'درحال پردازش...',
-    'search'         => 'جستجو: ',
+    'search'         => 'جستجو',
     'zeroRecords'    => 'مورد مطابقت داده شده یافت نشد',
     'paginate'       => [
         'first'    => 'اولین',

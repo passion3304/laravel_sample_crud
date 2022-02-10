@@ -17,7 +17,8 @@ return [
     'save_action_save_and_new'         => 'Guardar e adicionar item',
     'save_action_save_and_edit'        => 'Guardar e editar este item',
     'save_action_save_and_back'        => 'Guardar e voltar',
-    'save_action_changed_notification' => 'Comportamento predefinido depois de gravar.',
+    'save_action_save_and_preview'     => 'Guardar e visualizar',
+    'save_action_changed_notification' => 'O comportamento padrão depois de gravar foi alterado.',
 
     // Create form
     'add'                 => 'Adicionar',
@@ -29,32 +30,24 @@ return [
     'edit'                 => 'Editar',
     'save'                 => 'Gravar',
 
-    // Revisions
-    'revisions'            => 'Revisões',
-    'no_revisions'         => 'Não foram encontradas revisões',
-    'created_this'         => 'criou este',
-    'changed_the'          => 'alterou este',
-    'restore_this_value'   => 'Restaurou este valor',
-    'from'                 => 'de',
-    'to'                   => 'para',
-    'undo'                 => 'Desfazer',
-    'revision_restored'    => 'Revisão restaurada com sucesso',
-    'guest_user'           => 'Convidado',
-
     // Translatable models
-    'edit_translations' => 'EDITAR TRADUÇÕES',
+    'edit_translations' => 'Tradução',
     'language'          => 'Idioma',
 
     // CRUD table view
     'all'                       => 'Todos ',
     'in_the_database'           => 'na base de dados',
     'list'                      => 'Lista',
+    'reset'                     => 'Repor',
     'actions'                   => 'Acções',
     'preview'                   => 'Visualizar',
     'delete'                    => 'Apagar',
     'admin'                     => 'Administrar',
     'details_row'               => 'Isto é a linha de detalhes. Modifique conforme quiser.',
     'details_row_loading_error' => 'Houve um erro ao carregar os detalhes. Por favor tente novamente.',
+    'clone'                     => 'Clonar',
+    'clone_success'             => '<strong>Item clonado</strong><br>Um novo item foi adicionado com as mesmas informações que este.',
+    'clone_failure'             => '<strong>A clonagem falhou</strong><br>O novo item não pode ser criado. Por favor tente novamente.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Tem a certeza que quer apagar este item?',
@@ -63,18 +56,25 @@ return [
     'delete_confirmation_not_title'               => 'Não apagado',
     'delete_confirmation_not_message'             => 'Ocorreu um erro. O item pode não ter sido apagado.',
     'delete_confirmation_not_deleted_title'       => 'Não apagado',
-    'delete_confirmation_not_deleted_message'     => 'Está tudo bem! O item não foi apagado.',
+    'delete_confirmation_not_deleted_message'     => 'O item não foi apagado.',
 
     // Bulk actions
     'bulk_no_entries_selected_title'   => 'Nenhum item seleccionado',
-    'bulk_no_entries_selected_message' => 'Por favor seleccione um ou mais itens para realizar uma acção em massa aos mesmos.',
+    'bulk_no_entries_selected_message' => 'Por favor seleccione um ou mais itens para realizar uma acção em massa.',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'   => 'Tem a certeza que quer apagar estes :number itens?',
     'bulk_delete_sucess_title'   => 'Itens apagados',
     'bulk_delete_sucess_message' => ' itens foram apagados',
     'bulk_delete_error_title'    => 'Ocorreu um erro ao apagar o item',
     'bulk_delete_error_message'  => 'Um ou mais itens não puderam ser apagados',
+
+    // Bulk clone
+    'bulk_clone_are_you_sure'   => 'Tem a certeza que quer clonar estes :number itens?',
+    'bulk_clone_sucess_title'   => 'Itens clonados',
+    'bulk_clone_sucess_message' => ' itens foram clonados.',
+    'bulk_clone_error_title'    => 'Ocorreu um erro ao clonar o item',
+    'bulk_clone_error_message'  => 'Um ou mais itens não puderam ser criados. Por favor tente novamente.',
 
     // Ajax errors
     'ajax_error_title' => 'Erro',
@@ -83,14 +83,14 @@ return [
     // DataTables translation
     'emptyTable'     => 'Sem dados disponíveis na tabela',
     'info'           => 'A mostrar _START_ a _END_ de _TOTAL_ itens',
-    'infoEmpty'      => 'A mostrar 0 de 0 itens',
+    'infoEmpty'      => 'Sem itens',
     'infoFiltered'   => '(filtrado de um total de _MAX_ itens)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => ',',
     'lengthMenu'     => '_MENU_ itens por página',
     'loadingRecords' => 'A carregar...',
     'processing'     => 'A processar...',
-    'search'         => 'Procurar: ',
+    'search'         => 'Procurar',
     'zeroRecords'    => 'Nenhum item encontrado',
     'paginate'       => [
         'first'    => 'Primeiro',
@@ -136,6 +136,17 @@ return [
     'filters'        => 'Filtros',
     'toggle_filters' => 'Alternar filtros',
     'remove_filters' => 'Remover filtros',
+    'apply' => 'Aplicar',
+
+    //filters language strings
+    'today' => 'Hoje',
+    'yesterday' => 'Ontem',
+    'last_7_days' => 'Últimos 7 dias',
+    'last_30_days' => 'Últimos 30 dias',
+    'this_month' => 'Este mês',
+    'last_month' => 'Mês passado',
+    'custom_range' => 'Intervalo personalizado',
+    'weekLabel' => 'S',
 
     // Fields
     'browse_uploads'            => 'Procurar uploads',
@@ -149,6 +160,9 @@ return [
     'internal_link_placeholder' => 'Slug interno. Ex: \'admin/page\' (sem aspas) para \':url\'',
     'external_link'             => 'Link externo',
     'choose_file'               => 'Escolher ficheiro',
+    'new_item'                  => 'Novo item',
+    'select_entry'              => 'Selecione um item',
+    'select_entries'            => 'Selecionar itens',
 
     //Table field
     'table_cant_add'    => 'Não foi possível adicionar novo :entity',
@@ -156,4 +170,8 @@ return [
 
     // File manager
     'file_manager' => 'Gestor de ficheiros',
+
+    // InlineCreateOperation
+    'related_entry_created_success' => 'O item relacionado foi criado e selecionado.',
+    'related_entry_created_error' => 'Não foi possível criar o item relacionado.',
 ];

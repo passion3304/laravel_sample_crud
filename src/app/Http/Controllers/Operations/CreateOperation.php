@@ -9,21 +9,15 @@ trait CreateOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param string $segment    Name of the current entity (singular). Used as first URL segment.
-     * @param string $routeName  Prefix of the route name.
-     * @param string $controller Name of the current CrudController.
+     * @param  string  $segment  Name of the current entity (singular). Used as first URL segment.
+     * @param  string  $routeName  Prefix of the route name.
+     * @param  string  $controller  Name of the current CrudController.
      */
     protected function setupCreateRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/create', [
             'as'        => $routeName.'.create',
             'uses'      => $controller.'@create',
-            'operation' => 'create',
-        ]);
-
-        Route::put($segment.'/create', [
-            'as'        => $routeName.'.store',
-            'uses'      => $controller.'@store',
             'operation' => 'create',
         ]);
 
@@ -43,6 +37,7 @@ trait CreateOperation
 
         $this->crud->operation('create', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
+            $this->crud->setupDefaultSaveActions();
         });
 
         $this->crud->operation('list', function () {
@@ -53,7 +48,7 @@ trait CreateOperation
     /**
      * Show the form for creating inserting a new row.
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -80,8 +75,11 @@ trait CreateOperation
         // execute the FormRequest authorization and validation, if one is required
         $request = $this->crud->validateRequest();
 
+        // register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
+
         // insert item in the db
-        $item = $this->crud->create($this->crud->getStrippedSaveRequest());
+        $item = $this->crud->create($this->crud->getStrippedSaveRequest($request));
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message

@@ -17,44 +17,37 @@ return [
     'save_action_save_and_new'         => 'Salva ed aggiungi un nuovo elemento',
     'save_action_save_and_edit'        => 'Salva e modifica questo elemento',
     'save_action_save_and_back'        => 'Salva e torna indietro',
+    'save_action_save_and_preview'     => 'Salva e vai all\'anteprima',
     'save_action_changed_notification' => 'Azione predefinita cambiata',
 
     // Create form
     'add'                 => 'Aggiungi',
-    'back_to_all'         => 'Torna a tutti i ',
+    'back_to_all'         => 'Torna alla lista di ',
     'cancel'              => 'Annulla',
-    'add_a_new'           => 'Aggiungi un nuovo ',
+    'add_a_new'           => 'Aggiungi nuovo/a ',
 
     // Edit form
     'edit'                 => 'Modifica',
     'save'                 => 'Salva',
 
-    // Revisions
-    'revisions'            => 'Revisioni',
-    'no_revisions'         => 'Nessuna revisione trovata',
-    'created_this'         => 'ha creato questo',
-    'changed_the'          => 'ha cambiato il',
-    'restore_this_value'   => 'ripristinare questo valore',
-    'from'                 => 'da',
-    'to'                   => 'a',
-    'undo'                 => 'Annulla',
-    'revision_restored'    => 'Revisione ripristinata con successo',
-    'guest_user'           => 'Un Ospite',
-
     // Translatable models
-    'edit_translations' => 'MODIFICA TRADUZIONI',
+    'edit_translations' => 'Modifica traduzioni',
     'language'          => 'Lingua',
 
     // CRUD table view
     'all'                       => 'Tutti i ',
     'in_the_database'           => 'nel database',
     'list'                      => 'Lista',
+    'reset'                     => 'Reimposta',
     'actions'                   => 'Azioni',
     'preview'                   => 'Anteprima',
     'delete'                    => 'Elimina',
     'admin'                     => 'Amministrazione',
     'details_row'               => 'Questa è la riga dei dettagli. Modificala a tuo piacimento.',
     'details_row_loading_error' => "C'è stato un errore caricando i dettagli. Riprova.",
+    'clone' => 'Duplica',
+    'clone_success' => '<strong>Elemento duplicato</strong><br>Un nuovo elemento è stato creato con le stesse informazioni di questo.',
+    'clone_failure' => '<strong>Duplicazione fallita</strong><br>Il nuovo elemento non può essere creato. Per favore, riprova.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Sei sicuro di eliminare questo elemento?',
@@ -67,29 +60,37 @@ return [
 
     // Bulk actions
     'bulk_no_entries_selected_title'   => 'Nessun record selezionato',
-    'bulk_no_entries_selected_message' => 'Seleziona uno o più record su cui effetturare l\'operaione.',
+    'bulk_no_entries_selected_message' => 'Seleziona uno o più record su cui effettuare l\'operazione.',
 
-    // Bulk confirmation
+    // Bulk delete
     'bulk_delete_are_you_sure'   => 'Sei sicuro di voler eliminare :number record?',
     'bulk_delete_sucess_title'   => 'Record eliminati',
     'bulk_delete_sucess_message' => ' record sono stati eliminati',
     'bulk_delete_error_title'    => 'Record non eliminati',
     'bulk_delete_error_message'  => 'Non è stato possibile eliminare uno o più record',
 
+    // Bulk clone
+    'bulk_clone_are_you_sure'   => 'Sei sicuro di voler clonare :number record?',
+    'bulk_clone_sucess_title'   => 'Record clonati',
+    'bulk_clone_sucess_message' => ' record sono stati clonati.',
+    'bulk_clone_error_title'    => 'Record non clonati',
+    'bulk_clone_error_message'  => 'Non è stato possibile clonare uno o più record. Per favore, riprova.',
+
+    // Ajax errors
     'ajax_error_title' => 'Errore',
     'ajax_error_text'  => 'Errore durante il caricamento della pagina. Per favore ricarica la pagina.',
 
     // DataTables translation
     'emptyTable'     => 'Nessun record da visualizzare',
     'info'           => 'Visualizzando da _START_ a _END_ record di _TOTAL_',
-    'infoEmpty'      => 'Visualizzando da 0 a 0 record di 0',
+    'infoEmpty'      => 'Non vi sono elementi',
     'infoFiltered'   => '(filtrati da _MAX_ record totali)',
-    'infoPostFix'    => '',
-    'thousands'      => ',',
+    'infoPostFix'    => ',',
+    'thousands'      => '.',
     'lengthMenu'     => '_MENU_ record per pagina',
     'loadingRecords' => 'Caricamento...',
     'processing'     => 'Elaborazione...',
-    'search'         => 'Cerca: ',
+    'search'         => 'Cerca',
     'zeroRecords'    => 'Nessun record corrispondente',
     'paginate'       => [
         'first'    => 'Primo',
@@ -135,6 +136,17 @@ return [
     'filters'        => 'Filtri',
     'toggle_filters' => 'Attiva/disattiva filtri',
     'remove_filters' => 'Rimuovi filtri',
+    'apply' => 'Applica',
+
+    //filters language strings
+    'today' => 'Oggi',
+    'yesterday' => 'Domani',
+    'last_7_days' => 'Ultimi 7 giorni',
+    'last_30_days' => 'Ultimi 30 giorni',
+    'this_month' => 'Questo mese',
+    'last_month' => 'Mese precedente',
+    'custom_range' => 'Intervallo di date',
+    'weekLabel' => 'W',
 
     // Fields
     'browse_uploads'            => 'Sfoglia file caricati',
@@ -148,6 +160,9 @@ return [
     'internal_link_placeholder' => 'Slug interno. Es: \'admin/page\' (no quotes) for \':url\'',
     'external_link'             => 'Link Esterno',
     'choose_file'               => 'Scegli file',
+    'new_item'                  => 'Nuovo elemento',
+    'select_entry'              => 'Seleziona un elemento',
+    'select_entries'            => 'Select degli elementi',
 
     //Table field
     'table_cant_add'    => 'Impossibile aggiungere una nuova :entity',
@@ -155,4 +170,8 @@ return [
 
     // File manager
     'file_manager' => 'File Manager',
+
+    // InlineCreateOperation
+    'related_entry_created_success' => 'L\'elemento correlato è stato creato e selezionato.',
+    'related_entry_created_error' => 'Non è possibile creare elementi correlati.',
 ];

@@ -17,6 +17,7 @@ return [
     'save_action_save_and_new'         => 'Speichern und neu',
     'save_action_save_and_edit'        => 'Speichern und bearbeiten',
     'save_action_save_and_back'        => 'Speichern und zurück',
+    'save_action_save_and_preview'     => 'Speichern & Vorschau',
     'save_action_changed_notification' => 'Standardverhalten nach dem Speichern wurde geändert.',
 
     // Create form
@@ -29,18 +30,6 @@ return [
     'edit'                 => 'Bearbeiten',
     'save'                 => 'Speichern',
 
-    // Revisions
-    'revisions'             => 'Revisionen',
-    'no_revisions'          => 'Keine Revisionen gefunden',
-    'created_this'          => 'hat das erstellt',
-    'changed_the'           => 'hat das geändert: ',
-    'restore_this_value'    => 'Wiederherstellen',
-    'from'                  => 'von',
-    'to'                    => 'nach',
-    'undo'                  => 'Rückgängig',
-    'revision_restored'     => 'Revision erfolgreich wiederhergestellt',
-    'guest_user'            => 'Gast',
-
     // Translatable models
     'edit_translations'    => 'ÜBERSETZUNG BEARBEITEN',
     'language'             => 'Sprache',
@@ -49,12 +38,16 @@ return [
     'all'                       => 'Alle ',
     'in_the_database'           => 'in der Datenbank',
     'list'                      => 'Liste',
+    'reset'                     => 'Zurücksetzen',
     'actions'                   => 'Aktionen',
     'preview'                   => 'Vorschau',
     'delete'                    => 'Löschen',
     'admin'                     => 'Admin',
     'details_row'               => 'Diese Zeile zeigt die Details und kann nach Belieben geändert werden.',
     'details_row_loading_error' => 'Beim Laden der Details ist ein Fehler aufgetreten. Bitte versuche es noch einmal.',
+    'clone'                     => 'Duplizieren',
+    'clone_success'             => '<strong>Eintrag dupliziert</strong><br>Ein neuer Eintrag wurde mit den selben Informationen erstellt.',
+    'clone_failure'             => '<strong>Duplizieren fehlgeschlagen</strong><br>Der neue Eintrag konnte nicht erstellt werden. Bitte versuche es erneut.',
 
     // Confirmation messages and bubbles
     'delete_confirm'                              => 'Soll dieser Eintrag wirklich gelöscht werden?',
@@ -68,14 +61,14 @@ return [
     // DataTables translation
     'emptyTable'     => 'Keine Einträge vorhanden',
     'info'           => 'Zeigt _START_ bis _END_ von _TOTAL_ Einträgen',
-    'infoEmpty'      => 'Zeigt 0 von 0 aus insgesamt 0 Einträgen',
+    'infoEmpty'      => '',
     'infoFiltered'   => '(gefiltert von insgesamt _MAX_ Einträgen)',
-    'infoPostFix'    => '',
+    'infoPostFix'    => '.',
     'thousands'      => '.',
     'lengthMenu'     => '_MENU_ Einträge pro Seite',
     'loadingRecords' => 'Laden...',
     'processing'     => 'Verarbeiten...',
-    'search'         => 'Suchen: ',
+    'search'         => 'Suchen',
     'zeroRecords'    => 'Keine passenden Einträge gefunden',
     'paginate'       => [
         'first'    => 'Erste',
