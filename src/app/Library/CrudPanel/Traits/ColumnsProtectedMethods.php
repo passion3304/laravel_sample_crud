@@ -193,8 +193,8 @@ trait ColumnsProtectedMethods
             // if the first part of the string exists as method in the model
             if (method_exists($this->model, $possibleMethodName)) {
 
-                // check model method for possibility of beeing a relationship
-                $column['entity'] = $this->checkMethodPropertiesForRelationship($this->model, $possibleMethodName) ? $column['name'] : false;
+                // check model method for possibility of being a relationship
+                $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName) ? $column['name'] : false;
 
                 if ($column['entity']) {
                     $parts = explode('.', $column['entity']);
@@ -226,8 +226,8 @@ trait ColumnsProtectedMethods
         // if there's a method on the model with this name
         if (method_exists($this->model, $column['name'])) {
 
-             // check model method for possibility of beeing a relationship
-            $column['entity'] = $this->checkMethodPropertiesForRelationship($this->model, $column['name']);
+             // check model method for possibility of being a relationship
+            $column['entity'] = $this->modelMethodIsRelationship($this->model, $column['name']);
 
             return $column;
         }
@@ -238,8 +238,8 @@ trait ColumnsProtectedMethods
             $possibleMethodName = Str::replaceLast('_id', '', $column['name']);
 
             if (method_exists($this->model, $possibleMethodName)) {
-                // check model method for possibility of beeing a relationship
-                $column['entity'] = $this->checkMethodPropertiesForRelationship($this->model, $possibleMethodName);
+                // check model method for possibility of being a relationship
+                $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName);
 
                 return $column;
             }

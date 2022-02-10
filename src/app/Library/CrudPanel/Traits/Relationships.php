@@ -324,7 +324,7 @@ trait Relationships
      * @param $method
      * @return bool|string
      */
-    private function checkMethodPropertiesForRelationship($model, $method)
+    private function modelMethodIsRelationship($model, $method)
     {
         $methodReflection = new \ReflectionMethod($model, $method);
 
