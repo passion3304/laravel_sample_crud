@@ -342,11 +342,11 @@ trait Relationships
 
         if ($returnType) {
             $returnType = $returnType->getName();
-            if (is_a((new $returnType), 'Illuminate\Database\Eloquent\Casts\Attribute')) {
+            if (is_a($returnType, 'Illuminate\Database\Eloquent\Casts\Attribute', true)) {
                 return false;
             }
 
-            if (is_a((new $returnType), 'Illuminate\Database\Eloquent\Relations\Relation')) {
+            if (is_a($returnType, 'Illuminate\Database\Eloquent\Relations\Relation', true)) {
                 return $method;
             }
         }
