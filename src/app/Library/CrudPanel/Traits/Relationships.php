@@ -346,10 +346,10 @@ trait Relationships
             // this check is to make sure we don't autoload the class when checking strings instead of objects.
             // the third parameter of is_a() allow us to check strings, but it also autoloads the class
             // in case it does not exists. The classes we want to check against EXIST.
-            if(!class_exists($returnType, false)) {
+            if (! class_exists($returnType, false)) {
                 return false;
             }
-            // the above check 
+            // the above check
             if (is_a($returnType, 'Illuminate\Database\Eloquent\Casts\Attribute', true)) {
                 return false;
             }
