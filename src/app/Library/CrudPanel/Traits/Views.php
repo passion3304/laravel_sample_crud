@@ -292,7 +292,7 @@ trait Views
     {
         // if a definite namespace was given, use that one
         if ($viewNamespace) {
-            return $viewNamespace.'.'.$path;
+            return $viewNamespace.'.'.$viewPath;
         }
 
         // otherwise, loop through all the possible view namespaces
