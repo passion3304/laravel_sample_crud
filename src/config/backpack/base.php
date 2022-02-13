@@ -268,9 +268,13 @@ return [
     // What kind of avatar will you like to show to the user?
     // Default: gravatar (automatically use the gravatar for their email)
     // Other options:
-    // - placehold (generic image with their first letter)
+    // - null (generic image with their first letter)
     // - example_method_name (specify the method on the User model that returns the URL)
     'avatar_type' => 'gravatar',
+
+    // Gravatar fallback options are 'identicon', 'monsterid', 'wavatar', 'retro', 'robohash', 'blank'
+    // 'blank' will keep the generic image with the user first letter
+    'gravatar_fallback' => 'blank',
 
     /*
     |--------------------------------------------------------------------------
