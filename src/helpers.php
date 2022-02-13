@@ -232,7 +232,7 @@ if (! function_exists('square_brackets_to_dots')) {
     }
 }
 
-if (!function_exists('old_empty_or_null')) {
+if (! function_exists('old_empty_or_null')) {
     /**
      * This method is an alternative to Laravel's old() helper, which mistakenly
      * returns NULL it two cases:
