@@ -63,18 +63,18 @@
         .tab-pane .form-group h3:first-child {
             margin-top: 0;
         }
-    </style>
-@endpush
 
-@push('crud_fields_scripts')
-    <script>
-        // when select2 is multiple and it's not on the first displayed tab the placeholder would
-        // not display correctly because the element was not "visible" on the page (hidden by tab)
-        // thus getting `0px` width. This makes sure that the placeholder element is always 100% width
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-            $('.select2-search .select2-search--inline').css('width', '100%');
-            $('.select2-search__field').css('width', '100%');
-        })
-    </script>
+        /*  
+            when select2 is multiple and it's not on the first displayed tab the placeholder would
+            not display correctly because the element was not "visible" on the page (hidden by tab)
+            thus getting `0px` width. This makes sure that the placeholder element is always 100% width
+            by preventing the select2 inline style (0px) from applying using !important
+        */
+        .select2-container, 
+        .select2-container li:only-child,
+        .select2-container input:placeholder-shown {
+            width: 100% !important;
+        }
+    </style>
 @endpush
 
