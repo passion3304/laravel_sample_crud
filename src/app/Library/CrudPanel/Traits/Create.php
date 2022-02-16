@@ -264,11 +264,15 @@ trait Create
             return $removedEntries->delete();
         }
 
-        if (! $relationColumnIsNullable && $modelInstance->dbColumnHasDefault($relationForeignKey)) {
-            return $removedEntries->update([$relationForeignKey => $modelInstance->getDbColumnDefault($relationForeignKey)]);
-        }
+        $dbColumnDefault = $modelInstance->getDbColumnDefault($relationForeignKey);
 
-        return $removedEntries->update([$relationForeignKey => null]);
+        if ($relationColumnIsNullable) {
+            return $removedEntries->update([$relationForeignKey => $dbColumnDefault]);
+        }else{
+            return !is_null($dbColumnDefault) ?
+                $removedEntries->update([$relationForeignKey => $dbColumnDefault]) :
+                $removedEntries->delete(); 
+        }   
     }
 
     /**

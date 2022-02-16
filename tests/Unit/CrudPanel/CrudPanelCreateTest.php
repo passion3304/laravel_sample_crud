@@ -8,6 +8,7 @@ use Backpack\CRUD\Tests\Unit\Models\Comet;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
 use Backpack\CRUD\Tests\Unit\Models\Universe;
 use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
@@ -912,6 +913,14 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($inputData['universes'][0]['title'], $entry->fresh()->universes->first()->title);
         $this->assertEquals(3, $entry->fresh()->universes->first()->id);
         $this->assertEquals(1, Universe::all()->count());
+
+        $inputData['universes'] = null;
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertEquals(0, count($entry->fresh()->universes));
+        $this->assertEquals(0, Universe::all()->count());
+
     }
 
     public function testHasManySelectableRelationshipWithoutForceDelete()
@@ -1081,5 +1090,38 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $comets = Comet::all();
         $this->assertCount(2, $comets);
         $this->assertEquals(0, $comets->first()->user_id);
+    }
+
+    public function testHasManySelectableRelationshipNonNullable()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'    => 'planetsNonNullable',
+            'force_delete' => false,
+            'fallback_id' => false,
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'planetsNonNullable'          => [1, 2],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(2, $entry->planetsNonNullable);
+
+        $inputData['planetsNonNullable'] = null;
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertCount(0, $entry->fresh()->planetsNonNullable);
+
+        $planets = PlanetNonNullable::all();
+        $this->assertCount(0, $planets);
     }
 }
