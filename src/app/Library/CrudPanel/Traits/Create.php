@@ -268,11 +268,11 @@ trait Create
 
         if ($relationColumnIsNullable) {
             return $removedEntries->update([$relationForeignKey => $dbColumnDefault]);
-        }else{
-            return !is_null($dbColumnDefault) ?
+        } else {
+            return ! is_null($dbColumnDefault) ?
                 $removedEntries->update([$relationForeignKey => $dbColumnDefault]) :
-                $removedEntries->delete(); 
-        }   
+                $removedEntries->delete();
+        }
     }
 
     /**

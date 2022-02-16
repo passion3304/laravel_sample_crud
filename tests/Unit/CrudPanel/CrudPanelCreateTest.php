@@ -6,9 +6,9 @@ use Backpack\CRUD\Tests\Unit\Models\Article;
 use Backpack\CRUD\Tests\Unit\Models\Bang;
 use Backpack\CRUD\Tests\Unit\Models\Comet;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
+use Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable;
 use Backpack\CRUD\Tests\Unit\Models\Universe;
 use Backpack\CRUD\Tests\Unit\Models\User;
-use Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
@@ -920,7 +920,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertEquals(0, count($entry->fresh()->universes));
         $this->assertEquals(0, Universe::all()->count());
-
     }
 
     public function testHasManySelectableRelationshipWithoutForceDelete()
