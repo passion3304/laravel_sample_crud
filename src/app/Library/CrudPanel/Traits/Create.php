@@ -266,12 +266,10 @@ trait Create
 
         $dbColumnDefault = $modelInstance->getDbColumnDefault($relationForeignKey);
 
-        if ($relationColumnIsNullable) {
+        if ($relationColumnIsNullable || $dbColumnDefault !== null) {
             return $removedEntries->update([$relationForeignKey => $dbColumnDefault]);
         } else {
-            return ! is_null($dbColumnDefault) ?
-                $removedEntries->update([$relationForeignKey => $dbColumnDefault]) :
-                $removedEntries->delete();
+            return $removedEntries->delete();
         }
     }
 
