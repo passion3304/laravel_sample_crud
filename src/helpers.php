@@ -46,40 +46,40 @@ if (! function_exists('backpack_form_input')) {
             $repeatableRowKey = null;
 
             // regular fields don't need any aditional parsing
-            if(strpos($row['name'], '[') === false) {
+            if (strpos($row['name'], '[') === false) {
                 $result[$row['name']] = $row['value'];
                 continue;
             }
 
             // dot notation fields
-            if(substr_count($row['name'], '[') === 1) { 
+            if (substr_count($row['name'], '[') === 1) {
                 // start in the first occurence since it's HasOne/MorphOne with dot notation (address[street] in request) to get the input name (address)
-                $inputNameStart = strpos($row['name'], '[') +1;
+                $inputNameStart = strpos($row['name'], '[') + 1;
                 $inputNameEnd = strpos($row['name'], ']', $inputNameStart);
-                $inputNameLength = $inputNameEnd - $inputNameStart; 
-                $inputName = substr($row['name'], $inputNameStart, $inputNameLength);  
-            }else{
+                $inputNameLength = $inputNameEnd - $inputNameStart;
+                $inputName = substr($row['name'], $inputNameStart, $inputNameLength);
+            } else {
                 // repeatable fields, we need to get the input name and the row number
                 // start on the second occurence since it's a repeatable and we want to bypass the row number (repeatableName[rowNumber][inputName])
-                $inputNameStart = strpos($row['name'], '[', strpos($row['name'], '[')+1)+1;
+                $inputNameStart = strpos($row['name'], '[', strpos($row['name'], '[') + 1) + 1;
                 $inputNameEnd = strpos($row['name'], ']', $inputNameStart);
                 $inputNameLength = $inputNameEnd - $inputNameStart;
                 $inputName = substr($row['name'], $inputNameStart, $inputNameLength);
 
                 // get the array key (aka repeatable row) from field name
-                $startKey = strpos($row['name'], '[') +1;
-                $endKey =  strpos($row['name'], ']', $startKey);
+                $startKey = strpos($row['name'], '[') + 1;
+                $endKey = strpos($row['name'], ']', $startKey);
                 $lengthKey = $endKey - $startKey;
                 $repeatableRowKey = substr($row['name'], $startKey, $lengthKey);
             }
 
             $parentInputName = substr($row['name'], 0, strpos($row['name'], '['));
-            
-            if(isset($repeatableRowKey)) {
+
+            if (isset($repeatableRowKey)) {
                 $result[$parentInputName][$repeatableRowKey][$inputName] = $row['value'];
                 continue;
             }
-            
+
             $result[$parentInputName][$inputName] = $row['value'];
         }
 
