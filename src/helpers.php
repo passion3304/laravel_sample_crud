@@ -55,17 +55,11 @@ if (! function_exists('backpack_form_input')) {
             if (substr_count($row['name'], '[') === 1) {
                 // start in the first occurence since it's HasOne/MorphOne with dot notation (address[street] in request) to get the input name (address)
                 $inputNameStart = strpos($row['name'], '[') + 1;
-                $inputNameEnd = strpos($row['name'], ']', $inputNameStart);
-                $inputNameLength = $inputNameEnd - $inputNameStart;
-                $inputName = substr($row['name'], $inputNameStart, $inputNameLength);
             } else {
                 // repeatable fields, we need to get the input name and the row number
                 // start on the second occurence since it's a repeatable and we want to bypass the row number (repeatableName[rowNumber][inputName])
                 $inputNameStart = strpos($row['name'], '[', strpos($row['name'], '[') + 1) + 1;
-                $inputNameEnd = strpos($row['name'], ']', $inputNameStart);
-                $inputNameLength = $inputNameEnd - $inputNameStart;
-                $inputName = substr($row['name'], $inputNameStart, $inputNameLength);
-
+                
                 // get the array key (aka repeatable row) from field name
                 $startKey = strpos($row['name'], '[') + 1;
                 $endKey = strpos($row['name'], ']', $startKey);
@@ -73,6 +67,9 @@ if (! function_exists('backpack_form_input')) {
                 $repeatableRowKey = substr($row['name'], $startKey, $lengthKey);
             }
 
+            $inputNameEnd = strpos($row['name'], ']', $inputNameStart);
+            $inputNameLength = $inputNameEnd - $inputNameStart;
+            $inputName = substr($row['name'], $inputNameStart, $inputNameLength);
             $parentInputName = substr($row['name'], 0, strpos($row['name'], '['));
 
             if (isset($repeatableRowKey)) {
@@ -82,7 +79,6 @@ if (! function_exists('backpack_form_input')) {
 
             $result[$parentInputName][$inputName] = $row['value'];
         }
-
         return $result;
     }
 }
