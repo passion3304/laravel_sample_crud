@@ -59,7 +59,7 @@ if (! function_exists('backpack_form_input')) {
                 // repeatable fields, we need to get the input name and the row number
                 // start on the second occurence since it's a repeatable and we want to bypass the row number (repeatableName[rowNumber][inputName])
                 $inputNameStart = strpos($row['name'], '[', strpos($row['name'], '[') + 1) + 1;
-                
+
                 // get the array key (aka repeatable row) from field name
                 $startKey = strpos($row['name'], '[') + 1;
                 $endKey = strpos($row['name'], ']', $startKey);
@@ -79,6 +79,7 @@ if (! function_exists('backpack_form_input')) {
 
             $result[$parentInputName][$inputName] = $row['value'];
         }
+
         return $result;
     }
 }
