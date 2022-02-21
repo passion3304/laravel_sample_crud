@@ -262,7 +262,7 @@ trait Create
         }
 
         // developer set force_delete => true, so we don't care if it's nullable or not,
-        // we just follow developers will. 
+        // we just follow developers will.
         if ($forceDelete) {
             return $removedEntries->delete();
         }
@@ -272,7 +272,7 @@ trait Create
 
         // if column is not nullable in database, and there is no column default (null),
         // we will delete the entry from the database, otherwise it will throw and ugly DB error.
-        if (!$relationColumnIsNullable && $dbColumnDefault === null) {
+        if (! $relationColumnIsNullable && $dbColumnDefault === null) {
             return $removedEntries->delete();
         }
 
