@@ -256,21 +256,28 @@ trait Create
         $forceDelete = $relationDetails['force_delete'] ?? false;
         $fallbackId = $relationDetails['fallback_id'] ?? false;
 
+        // developer provided a fallback_id he knows what he's doing, just use it.
         if ($fallbackId) {
             return $removedEntries->update([$relationForeignKey => $fallbackId]);
         }
 
+        // developer set force_delete => true, so we don't care if it's nullable or not,
+        // we just follow developers will. 
         if ($forceDelete) {
             return $removedEntries->delete();
         }
 
+        // get the default that could be set at database level.
         $dbColumnDefault = $modelInstance->getDbColumnDefault($relationForeignKey);
 
-        if ($relationColumnIsNullable || $dbColumnDefault !== null) {
-            return $removedEntries->update([$relationForeignKey => $dbColumnDefault]);
-        } else {
+        // if column is not nullable in database, and there is no column default (null),
+        // we will delete the entry from the database, otherwise it will throw and ugly DB error.
+        if (!$relationColumnIsNullable && $dbColumnDefault === null) {
             return $removedEntries->delete();
         }
+
+        // if column is nullable we just set it to the column default (null when it does exist, or the default value when it does).
+        return $removedEntries->update([$relationForeignKey => $dbColumnDefault]);
     }
 
     /**
