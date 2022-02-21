@@ -75,6 +75,12 @@ class CreatePivotableRelationsTables extends Migration
             $table->string('title')->nullable();
         });
 
+        Schema::create('planets_non_nullable', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('user_id');
+            $table->string('title')->nullable();
+        });
+
         Schema::create('comets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->default(0);
