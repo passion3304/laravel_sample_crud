@@ -262,7 +262,7 @@ trait Create
         }
 
         // developer set force_delete => true, so we don't care if it's nullable or not,
-        // we just follow developers will.
+        // we just follow developer's will
         if ($forceDelete) {
             return $removedEntries->delete();
         }
