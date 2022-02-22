@@ -191,8 +191,7 @@ trait Validation
                 }
             }
         }
-
-        $this->setOperationSetting('requiredFields', $requiredFields);
+        $this->setOperationSetting('requiredFields', array_unique(array_merge($this->getOperationSetting('requiredFields') ?? [], $requiredFields)));
     }
 
     /**

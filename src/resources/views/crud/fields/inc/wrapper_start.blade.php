@@ -6,15 +6,18 @@
     foreach($field['wrapper'] as $attributeKey => $value) {
         $field['wrapper'][$attributeKey] = !is_string($value) && $value instanceof \Closure ? $value($crud, $field, $entry ?? null) : $value ?? '';
     }
-	// if the field is required in the FormRequest, it should have an asterisk.
-	// we add the base entity to the field name to account for nested relation fields validated with `field.*.key`
-	$fieldName = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['name'] : $field['name'];
-	$fieldName = is_array($fieldName) ? current($fieldName) : $fieldName;
-	$required = (isset($action) && $crud->isRequired($fieldName)) ? ' required' : '';
+	// if the field is required in any of the crud validatiors (FormRequest, Controller or Field validation) 
+	// we add an astherisc for it. Case it's a subfield, that check is done upstream in repeatable_row. 
+	// the reason for that is that here the field name is already the repeatable name: parent[row][fieldName]
+	if(!isset($field['parentFieldName'])) {
+		$fieldName = is_array($field['name']) ? current($field['name']) : $field['name'];
+		$required = (isset($action) && $crud->isRequired($fieldName)) ? ' required' : '';
+	}
 	
 	// if the developer has intentionally set the required attribute on the field
 	// forget whatever is in the FormRequest, do what the developer wants
-	$required = isset($field['showAsterisk']) ? ($field['showAsterisk'] ? ' required' : '') : $required;
+	// subfields also get here with `showAsterisk` already set.
+	$required = isset($field['showAsterisk']) ? ($field['showAsterisk'] ? ' required' : '') : ($required ?? '');
 	
 	$field['wrapper']['class'] = $field['wrapper']['class'] ?? "form-group col-sm-12";
 	$field['wrapper']['class'] = $field['wrapper']['class'].$required;
