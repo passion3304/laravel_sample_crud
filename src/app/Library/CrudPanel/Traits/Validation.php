@@ -14,8 +14,8 @@ trait Validation
     public function setValidationFromArray(array $rules, array $messages = [])
     {
         $this->setRequiredFields($rules);
-        $this->setOperationSetting('validationRules', $rules);
-        $this->setOperationSetting('validationMessages', $messages);
+        $this->setOperationSetting('validationRules', array_merge($this->getOperationSetting('validationRules') ?? [], $rules));
+        $this->setOperationSetting('validationMessages', array_merge($this->getOperationSetting('validationMessages') ?? [], $messages));
     }
 
     /**
@@ -28,29 +28,81 @@ trait Validation
 
         // construct the validation rules array
         // (eg. ['name' => 'required|min:2'])
-        $rules = collect($fields)
-                    ->filter(function ($value, $key) {
-                        // only keep fields where 'validationRules' attribute is defined
-                        return array_key_exists('validationRules', $value);
-                    })->map(function ($item, $key) {
-                        // only keep the rules, not the entire field definition
-                        return $item['validationRules'];
-                    })->toArray();
-
+        $rules = $this->getRulesFromFieldsAndSubfields($fields);
+        
         // construct the validation messages array
         // (eg. ['title.required' => 'You gotta write smth man.'])
-        $messages = [];
-        collect($fields)
-                    ->filter(function ($value, $key) {
-                        // only keep fields where 'validationMessages' attribute is defined
-                        return array_key_exists('validationMessages', $value);
-                    })->each(function ($item, $key) use (&$messages) {
-                        foreach ($item['validationMessages'] as $rule => $message) {
-                            $messages[$key.'.'.$rule] = $message;
-                        }
-                    });
+        $messages = $this->getMessagesFromFieldsAndSubfields($fields);
 
         $this->setValidationFromArray($rules, $messages);
+
+    }
+    /**
+     * Return the rules for the fields and subfields in the current crud panel.
+     * 
+     * @param array $fields
+     * 
+     * @return array
+     */
+    private function getRulesFromFieldsAndSubfields($fields) {
+        $rules = collect($fields)
+            ->filter(function ($value, $key) {
+                // only keep fields where 'validationRules' OR there are subfields
+                return array_key_exists('validationRules', $value) || array_key_exists('subfields', $value);
+            })->map(function ($item, $key) {
+                $validationRules = [];
+                // only keep the rules, not the entire field definition
+                if(isset($item['validationRules'])) {
+                    $validationRules[$key] = $item['validationRules'];
+                }
+                if(array_key_exists('subfields', $item)) {
+                    $subfieldsWithValidation = array_filter($item['subfields'], function($subfield) {
+                        return array_key_exists('validationRules', $subfield);
+                    });
+
+                    foreach($subfieldsWithValidation as $subfield) {
+                        $validationRules[$item['name'].'.*.'.$subfield['name']] = $subfield['validationRules'];
+                    }
+                }
+                return $validationRules;
+            })->toArray();
+
+            return array_merge(...array_values($rules));
+    }
+
+    /**
+     * Return the messages for the fields and subfields in the current crud panel.
+     * 
+     * @param array $fields
+     * 
+     * @return array
+     */
+    private function getMessagesFromFieldsAndSubfields($fields) {
+        $messages = [];
+        collect($fields)
+            ->filter(function ($value, $key) {
+                // only keep fields where 'validationMessages' OR there are subfields
+                return array_key_exists('validationMessages', $value) || array_key_exists('subfields', $value);
+            })->each(function ($item, $key) use (&$messages) {
+                if(isset($item['validationMessages'])) {
+                    foreach ($item['validationMessages'] as $rule => $message) {
+                        $messages[$key.'.'.$rule] = $message;
+                    }
+                }
+
+                if(array_key_exists('subfields', $item)) {
+                    $subfieldsWithValidationMessages = array_filter($item['subfields'], function($subfield) {
+                        return array_key_exists('validationRules', $subfield);
+                    });
+
+                    foreach($subfieldsWithValidationMessages as $subfield) {
+                        foreach ($subfield['validationMessages'] as $rule => $message) {
+                            $messages[$item['name'].'.*.'.$subfield['name'].'.'.$rule] = $message;
+                        }
+                    }
+                }                
+            })->toArray();
+        return $messages;
     }
 
     /**
@@ -123,7 +175,11 @@ trait Validation
     }
 
     /**
-     * Run the authorization and validation the currently set FormRequest.
+     * Run the authorization and validation for the current crud panel.
+     * That authorization is gathered from 3 places:
+     * - the FormRequest when provided.
+     * - the rules added in the controller.
+     * - the rules defined in the fields itself.
      *
      * @return \Illuminate\Http\Request
      */
@@ -131,22 +187,46 @@ trait Validation
     {
         $formRequest = $this->getFormRequest();
 
-        if ($formRequest) {
-            // authorize and validate the formRequest
-            // this is done automatically by Laravel's FormRequestServiceProvider
-            // because form requests implement ValidatesWhenResolved
-            $request = app($formRequest);
-        } else {
-            $request = $this->getRequest();
-
-            if ($this->hasOperationSetting('validationRules')) {
-                $rules = $this->getOperationSetting('validationRules');
-                $messages = $this->getOperationSetting('validationMessages') ?? [];
-                $request->validate($rules, $messages);
+        $_rules = $this->getOperationSetting('validationRules') ?? [];
+        $_messages = $this->getOperationSetting('validationMessages') ?? [];
+        
+        if($formRequest) {
+            // when there is no validation in the fields, just validate the form request.
+            if (empty($_rules)) {
+                return app($formRequest);
             }
+            
+            // create an alias of the provided FormRequest so we can create a new class that extends it.
+            // we can't use $variables to extend classes. 
+            class_alias(get_class(new $formRequest), 'DeveloperProvidedRequest');
+            
+            // create a new anonymous class that will extend the provided developer FormRequest
+            // in this class we will merge the FormRequest rules() and messages() with the ones provided by developer in fields.
+            $extendedRequest = new class($_rules, $_messages) extends \DeveloperProvidedRequest {
+                private $_rules;
+                private $_messages;
+
+                public function __construct($_rules, $_messages) {
+                    parent::__construct();
+                    $this->_rules = $_rules;
+                    $this->_messages = $_messages;
+                }
+                public function rules()
+                {
+                    return array_merge(parent::rules(), $this->_rules);
+                }
+
+                public function messages()
+                {
+                    return array_merge(parent::messages(), $this->_messages);
+                }
+            };
+            
+            // validate the complete request with FormRequest + controller validation + field validation (our anonymous class)
+            return app(get_class($extendedRequest), ['_rules' => $_rules, '_messages' => $_messages]);
         }
 
-        return $request;
+        return $this->getRequest()->validate($_rules, $_messages);
     }
 
     /**
@@ -217,7 +297,52 @@ trait Validation
             }
             $inputKey = $name_string;
         }
-
         return in_array($inputKey, $this->getOperationSetting('requiredFields'));
+    }
+
+    /**
+     * Add the validation setup by developer in field `validationRules` to the crud validation.
+     * 
+     * @param array $field - the field we want to get the validation from.
+     * @param bool|string $parent - the parent name when setting up validation for subfields.
+     */
+    private function setupFieldValidation($field, $parent = false) {
+        [$rules, $messages] = $this->getValidationRulesAndMessagesFromField($field, $parent);
+
+        if(!empty($rules)) {
+            $this->setValidation($rules, $messages);
+        }
+        
+        return;
+    }
+
+    /**
+     * Return the array of rules and messages with the validation key accordingly set
+     * to match the field or the subfield accordingly.
+     * 
+     * @param array $field - the field we want to get the rules and messages from.
+     * @param bool|string $parent - the parent name when setting up validation for subfields.
+     */
+    private function getValidationRulesAndMessagesFromField($field, $parent = false) {
+        $fieldValidationName = $field['name'];
+        $rules = [];
+        $messages = [];
+
+        if($parent) {
+            $fieldValidationName = $parent.'.*.'.$field['name'];
+        }
+
+        if(isset($field['validationRules'])) {
+            $rules[$fieldValidationName] = $field['validationRules'];
+        }
+        if(isset($field['validationMessages'])) {
+            foreach($field['validationMessages'] as $validator => $message) {
+                $fieldValidationName = $fieldValidationName.'.'.$validator;
+                $messages[$fieldValidationName] = $message;
+            }
+            
+        }
+
+        return [$rules, $messages];
     }
 }

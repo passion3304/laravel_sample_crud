@@ -257,6 +257,8 @@ trait FieldsProtectedMethods
                 $subfield = ['name' => $subfield];
             }
 
+            $subfield['parentFieldName'] = $field['name'];
+
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
                 // we assume all subfields are supposed to be text fields
@@ -281,6 +283,7 @@ trait FieldsProtectedMethods
                 case 'MorphToMany':
                 case 'BelongsToMany':
                     $pivotSelectorField = static::getPivotFieldStructure($field);
+                    $this->setupFieldValidation($pivotSelectorField, $field['name']);
                     $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
                     break;
                 case 'MorphMany':
