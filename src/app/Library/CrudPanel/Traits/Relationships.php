@@ -299,7 +299,7 @@ trait Relationships
         $pivotSelectorField['delay'] = 500;
         $pivotSelectorField['placeholder'] = trans('backpack::crud.select_entry');
         $pivotSelectorField['label'] = \Str::of($field['name'])->singular()->ucfirst();
-        $pivotSelectorField['validationRules'] = 'required';  
+        $pivotSelectorField['validationRules'] = 'required';
         $pivotSelectorField['validationMessages'] = [
             'required' => 'The pivot field is required.',
         ];
