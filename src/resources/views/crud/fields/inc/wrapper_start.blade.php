@@ -6,7 +6,7 @@
     foreach($field['wrapper'] as $attributeKey => $value) {
         $field['wrapper'][$attributeKey] = !is_string($value) && $value instanceof \Closure ? $value($crud, $field, $entry ?? null) : $value ?? '';
     }
-	// if the field is required in any of the crud validatiors (FormRequest, Controller or Field validation) 
+	// if the field is required in any of the crud validators (FormRequest, controller validation or field validation) 
 	// we add an astherisc for it. Case it's a subfield, that check is done upstream in repeatable_row. 
 	// the reason for that is that here the field name is already the repeatable name: parent[row][fieldName]
 	if(!isset($field['parentFieldName'])) {
