@@ -194,7 +194,7 @@ trait Validation
 
         // merge any previous required fields with current ones
         $requiredFields = array_merge($this->getOperationSetting('requiredFields') ?? [], $requiredFields);
-        
+
         // since this COULD BE called twice (to support the previous syntax where developers needed to call `setValidation` after the field definition)
         // and to make this change non-breaking, we are going to return an unique array. There is NO WARM returning repeated names, but there is also
         // no sense in doing it, so array_unique() it is.
