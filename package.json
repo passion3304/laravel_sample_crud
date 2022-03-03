@@ -31,7 +31,7 @@
         "bootstrap-iconpicker": "^1.8.2",
         "ckeditor4": "^4.17.2",
         "cropperjs": "^1.5.12",
-        "datatables.net": "^1.11.4",
+        "datatables.net": "^1.11.5",
         "datatables.net-bs4": "^1.11.5",
         "datatables.net-fixedheader": "^3.2.2",
         "datatables.net-fixedheader-bs4": "^3.2.1",
