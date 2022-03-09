@@ -75,18 +75,18 @@ trait HasUploadFields
      */
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {
-        // when no id is set yet on model, we are sure the previous model files were empty 
-        // as the model is not saved in database. For example in the `saving` model event. 
-        if (!$this->id) {
+        // when no id is set yet on model, we are sure the previous model files were empty
+        // as the model is not saved in database. For example in the `saving` model event.
+        if (! $this->id) {
             $attribute_value = [];
-        }else{
-            if(! is_array($this->{$attribute_name})) {
+        } else {
+            if (! is_array($this->{$attribute_name})) {
                 $attribute_value = json_decode($this->{$attribute_name}, true) ?? [];
             } else {
-                $attribute_value = $this->{$attribute_name}; 
+                $attribute_value = $this->{$attribute_name};
             }
         }
-        
+
         $files_to_clear = request()->get('clear_'.$attribute_name);
 
         // if a file has been marked for removal,
