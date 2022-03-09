@@ -56,7 +56,7 @@ trait Read
     public function getEntry($id)
     {
         if (! $this->entry) {
-            $this->entry = $this->model->findOrFail($id);
+            $this->entry = $this->query->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
 
@@ -71,7 +71,7 @@ trait Read
      */
     public function getEntryWithoutFakes($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->query->findOrFail($id);
     }
 
     /**
