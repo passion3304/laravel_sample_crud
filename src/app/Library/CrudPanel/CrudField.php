@@ -32,7 +32,7 @@ class CrudField
 
     public function __construct($name)
     {
-        if (empty($field)) {
+        if(empty($name)) {
             abort(500, 'Field name can\'t be empty.');
         }
 
