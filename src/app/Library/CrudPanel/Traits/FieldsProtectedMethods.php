@@ -107,7 +107,7 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasName($field)
     {
-        if(empty($field)) {
+        if (empty($field)) {
             abort(500, 'Field name can\'t be empty');
         }
 
@@ -256,8 +256,7 @@ trait FieldsProtectedMethods
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
-
-            if(empty($field)) {
+            if (empty($field)) {
                 abort(500, 'Field name can\'t be empty');
             }
 
