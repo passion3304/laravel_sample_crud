@@ -32,6 +32,10 @@ class CrudField
 
     public function __construct($name)
     {
+        if(empty($field)) {
+            abort(500, 'Field name can\'t be empty.');
+        }
+
         $field = $this->crud()->firstFieldWhere('name', $name);
 
         // if field exists

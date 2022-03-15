@@ -107,6 +107,10 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasName($field)
     {
+        if(empty($field)) {
+            abort(500, 'Field name can\'t be empty');
+        }
+
         if (is_string($field)) {
             return ['name' => $field];
         }
@@ -252,6 +256,11 @@ trait FieldsProtectedMethods
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
+
+            if(empty($field)) {
+                abort(500, 'Field name can\'t be empty');
+            }
+
             // make sure the field definition is an array
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
