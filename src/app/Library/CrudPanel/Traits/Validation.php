@@ -28,11 +28,11 @@ trait Validation
 
         // construct the validation rules array
         // (eg. ['name' => 'required|min:2'])
-        $rules = $this->getRulesFromFieldsAndSubfields($fields);
+        $rules = $this->getValidationRulesFromFieldsAndSubfields($fields);
 
         // construct the validation messages array
         // (eg. ['title.required' => 'You gotta write smth man.'])
-        $messages = $this->getMessagesFromFieldsAndSubfields($fields);
+        $messages = $this->getValidationMessagesFromFieldsAndSubfields($fields);
 
         $this->setValidationFromArray($rules, $messages);
     }
@@ -43,7 +43,7 @@ trait Validation
      * @param  array  $fields
      * @return array
      */
-    private function getRulesFromFieldsAndSubfields($fields)
+    private function getValidationRulesFromFieldsAndSubfields($fields)
     {
         $rules = collect($fields)
             ->filter(function ($value, $key) {
@@ -78,7 +78,7 @@ trait Validation
      * @param  array  $fields
      * @return array
      */
-    private function getMessagesFromFieldsAndSubfields($fields)
+    private function getValidationMessagesFromFieldsAndSubfields($fields)
     {
         $messages = [];
         collect($fields)
