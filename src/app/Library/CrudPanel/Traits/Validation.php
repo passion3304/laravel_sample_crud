@@ -55,6 +55,7 @@ trait Validation
                 if (isset($item['validationRules'])) {
                     $validationRules[$key] = $item['validationRules'];
                 }
+                // add validation rules for subfields
                 if (array_key_exists('subfields', $item)) {
                     $subfieldsWithValidation = array_filter($item['subfields'], function ($subfield) {
                         return array_key_exists('validationRules', $subfield);
@@ -90,7 +91,7 @@ trait Validation
                         $messages[$key.'.'.$rule] = $message;
                     }
                 }
-
+                // add messages from subfields
                 if (array_key_exists('subfields', $item)) {
                     $subfieldsWithValidationMessages = array_filter($item['subfields'], function ($subfield) {
                         return array_key_exists('validationRules', $subfield);
@@ -319,7 +320,6 @@ trait Validation
         if (! empty($rules)) {
             $this->setValidation($rules, $messages);
         }
-
     }
 
     /**
