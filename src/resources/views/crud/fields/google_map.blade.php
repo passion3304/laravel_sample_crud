@@ -59,7 +59,7 @@
             var list = document.getElementsByTagName('script');
             var i = list.length, flag = false;
             while (i--) {
-                if (list[i].src === 'https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete') {
+                if (list[i].src === 'https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google-places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete') {
                     flag = true;
                     break;
                 }
