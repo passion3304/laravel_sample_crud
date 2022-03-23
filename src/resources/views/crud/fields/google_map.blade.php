@@ -85,7 +85,9 @@
                         var latlng = new google.maps.LatLng(existingData.lat, existingData.lng)
                         var isDefault = false;
                     } else {
-                        var latlng = new google.maps.LatLng(29.97917348330557, 31.134265757949812)
+                        var lat = @json(config('services.google-places.default-map-center.lat', 29.97917))
+                        var lng = @json(config('services.google-places.default-map-center.lng', 31.13426))
+                        var latlng = new google.maps.LatLng(lat, lng)
                         var isDefault = true;
                     }
                     const map = new google.maps.Map(document.getElementById("map_"+$addressConfig.field), {
