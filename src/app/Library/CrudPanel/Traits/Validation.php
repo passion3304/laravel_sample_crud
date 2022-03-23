@@ -235,7 +235,7 @@ trait Validation
             return app(get_class($extendedRequest), ['_rules' => $_rules, '_messages' => $_messages]);
         }
 
-        return $this->getRequest()->validate($_rules, $_messages);
+        return !empty($rules) ? $this->getRequest()->validate($rules, $messages) : $this->getRequest();
     }
 
     /**
