@@ -193,31 +193,31 @@ trait Validation
     {
         $formRequest = $this->getFormRequest();
 
-        $_rules = $this->getOperationSetting('validationRules') ?? [];
-        $_messages = $this->getOperationSetting('validationMessages') ?? [];
+        $rules = $this->getOperationSetting('validationRules') ?? [];
+        $messages = $this->getOperationSetting('validationMessages') ?? [];
 
         if ($formRequest) {
             // when there is no validation in the fields, just validate the form request.
-            if (empty($_rules)) {
+            if (empty($rules)) {
                 return app($formRequest);
             }
 
             // create an alias of the provided FormRequest so we can create a new class that extends it.
             // we can't use $variables to extend classes.
-            class_alias(get_class(new $formRequest), 'DeveloperProvidedRequest');
+            class_alias(get_class(new $formRequest), 'DeveloperProvidedFormRequest');
 
             // create a new anonymous class that will extend the provided developer FormRequest
             // in this class we will merge the FormRequest rules() and messages() with the ones provided by developer in fields.
-            $extendedRequest = new class($_rules, $_messages) extends \DeveloperProvidedRequest
+            $extendedRequest = new class($rules, $messages) extends \DeveloperProvidedFormRequest
             {
                 private $_rules;
                 private $_messages;
 
-                public function __construct($_rules, $_messages)
+                public function __construct($rules, $messages)
                 {
                     parent::__construct();
-                    $this->_rules = $_rules;
-                    $this->_messages = $_messages;
+                    $this->_rules = $rules;
+                    $this->_messages = $messages;
                 }
 
                 public function rules()
@@ -232,7 +232,7 @@ trait Validation
             };
 
             // validate the complete request with FormRequest + controller validation + field validation (our anonymous class)
-            return app(get_class($extendedRequest), ['_rules' => $_rules, '_messages' => $_messages]);
+            return app(get_class($extendedRequest), ['rules' => $rules, 'messages' => $messages]);
         }
 
         return !empty($rules) ? $this->getRequest()->validate($rules, $messages) : $this->getRequest();
