@@ -235,7 +235,7 @@ trait Validation
             return app(get_class($extendedRequest), ['rules' => $rules, 'messages' => $messages]);
         }
 
-        return !empty($rules) ? $this->getRequest()->validate($rules, $messages) : $this->getRequest();
+        return ! empty($rules) ? $this->getRequest()->validate($rules, $messages) : $this->getRequest();
     }
 
     /**
@@ -303,14 +303,13 @@ trait Validation
     }
 
     /**
-     * Return the dot.notation.string as bracket[notation][string]
-     *  
-     * @param string $string field name or input name
-     * 
-     * @return string 
-     * 
+     * Return the dot.notation.string as bracket[notation][string].
+     *
+     * @param  string  $string  field name or input name
+     * @return string
      */
-    private function getStringFromDotNotationToBrackets(string $string) {
+    private function getStringFromDotNotationToBrackets(string $string)
+    {
         $stringParts = explode('.', $string);
         $result = '';
 
@@ -320,6 +319,7 @@ trait Validation
             }
             $result .= ($key === 0) ? $part : '['.$part.']';
         }
+
         return $result;
     }
 
