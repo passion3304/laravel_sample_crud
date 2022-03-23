@@ -261,19 +261,8 @@ trait Validation
                     (is_string($rule) && strpos($rule, 'required') !== false && strpos($rule, 'required_') === false) ||
                     (is_array($rule) && array_search('required', $rule) !== false && array_search('required_', $rule) === false)
                 ) {
-                    if (strpos($key, '.') !== false) {
-                        // Convert dot to array notation
-                        $entity_array = explode('.', $key);
-                        $name_string = '';
-
-                        foreach ($entity_array as $arr_key => $array_entity) {
-                            if ($array_entity === '*') {
-                                continue;
-                            }
-                            $name_string .= ($arr_key === 0) ? $array_entity : '['.$array_entity.']';
-                        }
-
-                        $key = $name_string;
+                    if (Str::contains($key, '.')) {
+                        $key = $this->getStringFromDotNotationToBrackets($key);
                     }
 
                     $requiredFields[] = $key;
@@ -307,15 +296,31 @@ trait Validation
         }
 
         if (Str::contains($inputKey, '.')) {
-            $entity_array = explode('.', $inputKey);
-            $name_string = '';
-            foreach ($entity_array as $arr_key => $array_entity) {
-                $name_string .= ($arr_key === 0) ? $array_entity : '['.$array_entity.']';
-            }
-            $inputKey = $name_string;
+            $inputKey = $this->getStringFromDotNotationToBrackets($inputKey);
         }
 
         return in_array($inputKey, $this->getOperationSetting('requiredFields'));
+    }
+
+    /**
+     * Return the dot.notation.string as bracket[notation][string]
+     *  
+     * @param string $string field name or input name
+     * 
+     * @return string 
+     * 
+     */
+    private function getStringFromDotNotationToBrackets(string $string) {
+        $stringParts = explode('.', $string);
+        $result = '';
+
+        foreach ($stringParts as $key => $part) {
+            if ($part === '*') {
+                continue;
+            }
+            $result .= ($key === 0) ? $part : '['.$part.']';
+        }
+        return $result;
     }
 
     /**
