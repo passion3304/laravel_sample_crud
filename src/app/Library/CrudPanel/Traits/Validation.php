@@ -148,6 +148,7 @@ trait Validation
         $this->setOperationSetting('formRequest', false);
         $this->setOperationSetting('validationRules', []);
         $this->setOperationSetting('validationMessages', []);
+        $this->setOperationSetting('requiredFields', []);
     }
 
     /**
