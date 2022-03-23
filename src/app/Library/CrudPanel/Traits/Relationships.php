@@ -301,7 +301,7 @@ trait Relationships
         $pivotSelectorField['label'] = \Str::of($field['name'])->singular()->ucfirst();
         $pivotSelectorField['validationRules'] = 'required';
         $pivotSelectorField['validationMessages'] = [
-            'required' => 'The pivot field is required.',
+            'required' => trans('backpack::crud.pivot_selector_required_validation_message'),
         ];
 
         if (isset($field['baseModel'])) {
