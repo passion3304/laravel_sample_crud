@@ -246,7 +246,7 @@ trait Validation
      */
     public function setRequiredFields($classOrRulesArray)
     {
-        $requiredFields = [];
+        $requiredFields = $this->getOperationSetting('requiredFields') ?? [];
 
         if (is_array($classOrRulesArray)) {
             $rules = $classOrRulesArray;
