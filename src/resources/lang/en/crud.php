@@ -179,5 +179,5 @@ return [
     'empty_translations' => '(empty)',
 
     // The pivot selector required validation message
-    'pivot_selector_required_validation_message' => 'The pivot field is required.'
+    'pivot_selector_required_validation_message' => 'The pivot field is required.',
 ];
