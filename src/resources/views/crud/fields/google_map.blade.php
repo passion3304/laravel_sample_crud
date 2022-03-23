@@ -68,7 +68,7 @@
             // if we didn't already find it on the page, add it
             if (!flag) {
                 var tag = document.createElement('script');
-                tag.src = 'https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete';
+                tag.src = 'https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google-places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete';
                 document.getElementsByTagName('body')[0].appendChild(tag);
             }
         </script>
