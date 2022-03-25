@@ -148,7 +148,7 @@ class CrudFilter
         $namespaces = config('backpack.crud.view_namespaces.filters');
 
         if ($this->viewNamespace != 'crud::filters') {
-            $namespaces[] = $this->viewNamespace;
+            $namespaces = array_merge([$this->viewNamespace], $namespaces);
         }
 
         return array_map(function ($item) use ($type) {
