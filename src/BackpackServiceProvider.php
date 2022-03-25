@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -43,6 +44,7 @@ class BackpackServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
+        $this->registerMacros();
         $this->setupRoutes($this->app->router);
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
@@ -99,6 +101,33 @@ class BackpackServiceProvider extends ServiceProvider
         if (config('backpack.base.setup_password_recovery_routes')) {
             $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
         }
+    }
+
+    public function registerMacros() {
+        /**
+         * This macro adds the ability to convert a dot.notation into a [braket][notation] with some special 
+         * options that helps us in our usecases.
+         * 
+         * - $ignore, usefull when you want to convert a laravel validator rule for nested items and you
+         *   would like to ignore the `*` element from the string.
+         *  
+         * - $keyFirst, when true will use the first part of the string as key and only bracket the remaining elements.
+         *   eg: `address.street`
+         *      - when true: `address[street]`
+         *      - when false: `[address][street]`
+         */
+        Str::macro('dotsToSquareBrackets', function ($string, $ignore = [], $keyFirst = false) {
+            $stringParts = explode('.', $string);
+            $result = '';
+
+            foreach ($stringParts as $key => $part) {
+                if (in_array($part, $ignore)) {
+                    continue;
+                }
+                $result .= ($key === 0 && $keyFirst) ? $part : '['.$part.']';
+            }
+            return $result;
+        });
     }
 
     public function publishFiles()

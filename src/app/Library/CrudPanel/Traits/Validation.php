@@ -262,7 +262,7 @@ trait Validation
                     (is_array($rule) && array_search('required', $rule) !== false && array_search('required_', $rule) === false)
                 ) {
                     if (Str::contains($key, '.')) {
-                        $key = $this->getStringFromDotNotationToBrackets($key);
+                        $key = Str::dotsToSquareBrackets($key, ['*'], true);
                     }
 
                     $requiredFields[] = $key;
@@ -296,31 +296,10 @@ trait Validation
         }
 
         if (Str::contains($inputKey, '.')) {
-            $inputKey = $this->getStringFromDotNotationToBrackets($inputKey);
+            $inputKey = Str::dotsToSquareBrackets($inputKey, ['*'], true);
         }
 
         return in_array($inputKey, $this->getOperationSetting('requiredFields'));
-    }
-
-    /**
-     * Return the dot.notation.string as bracket[notation][string].
-     *
-     * @param  string  $string  field name or input name
-     * @return string
-     */
-    private function getStringFromDotNotationToBrackets(string $string)
-    {
-        $stringParts = explode('.', $string);
-        $result = '';
-
-        foreach ($stringParts as $key => $part) {
-            if ($part === '*') {
-                continue;
-            }
-            $result .= ($key === 0) ? $part : '['.$part.']';
-        }
-
-        return $result;
     }
 
     /**
