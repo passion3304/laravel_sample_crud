@@ -103,14 +103,15 @@ class BackpackServiceProvider extends ServiceProvider
         }
     }
 
-    public function registerMacros() {
+    public function registerMacros()
+    {
         /**
-         * This macro adds the ability to convert a dot.notation into a [braket][notation] with some special 
+         * This macro adds the ability to convert a dot.notation into a [braket][notation] with some special
          * options that helps us in our usecases.
-         * 
+         *
          * - $ignore, usefull when you want to convert a laravel validator rule for nested items and you
          *   would like to ignore the `*` element from the string.
-         *  
+         *
          * - $keyFirst, when true will use the first part of the string as key and only bracket the remaining elements.
          *   eg: `address.street`
          *      - when true: `address[street]`
@@ -126,6 +127,7 @@ class BackpackServiceProvider extends ServiceProvider
                 }
                 $result .= ($key === 0 && $keyFirst) ? $part : '['.$part.']';
             }
+
             return $result;
         });
     }
