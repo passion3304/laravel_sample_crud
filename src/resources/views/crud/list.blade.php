@@ -50,6 +50,7 @@
         <table
           id="crudTable"
           class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
+          data-responsive="{{ $crud->getOperationSetting('responsive') ?? 0 }}"
           data-has-details-row="{{ $crud->getOperationSetting('detailsRow') ?? 0 }}"
           data-has-bulk-actions="{{ $crud->getOperationSetting('bulkActions') ?? 0 }}"
           cellspacing="0">

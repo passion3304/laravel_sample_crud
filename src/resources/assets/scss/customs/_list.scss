@@ -135,9 +135,15 @@
     tr td:first-child {
       display: flex;
       align-items: center;
-      padding-top: 1rem !important;
-      padding-bottom: 1rem !important;
       padding-left: 0.6rem !important;
+    }
+    
+    &[data-responsive="1"] {
+      tr th:first-child,
+      tr td:first-child {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+      }
     }
 
     &[data-has-bulk-actions="0"] .details-control,
