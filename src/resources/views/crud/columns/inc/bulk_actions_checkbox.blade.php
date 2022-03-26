@@ -49,10 +49,6 @@
                 enableOrDisableBulkButtons();
             });
         }
-
-        // activate checkbox if the page reloaded and the item is remembered as selected
-        // make it so that the function above is run after each DataTable draw event
-        crud.addFunctionToDataTablesDrawEventQueue('addOrRemoveCrudCheckedItem');
     }
 
     if (typeof markCheckboxAsCheckedIfPreviouslySelected !== 'function') {
@@ -61,10 +57,6 @@
                 .querySelectorAll('input.crud_bulk_actions_line_checkbox[data-primary-key-value]')
                 .forEach(elem => elem.checked = crud.checkedItems?.length && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) > -1);
         }
-
-        // activate checkbox if the page reloaded and the item is remembered as selected
-        // make it so that the function above is run after each DataTable draw event
-        crud.addFunctionToDataTablesDrawEventQueue('markCheckboxAsCheckedIfPreviouslySelected');
     }
 
     if (typeof addBulkActionMainCheckboxesFunctionality !== 'function') {
@@ -90,19 +82,18 @@
             // Stop propagation of href on the first column
             document.querySelectorAll('table td.dtr-control a').forEach(link => link.onclick = e => e.stopPropagation());
         }
-
-        // run this function on DataTable draw event
-        crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
     }
 
     if (typeof enableOrDisableBulkButtons !== 'function') {
         function enableOrDisableBulkButtons() {
             document.querySelectorAll('.bulk-button').forEach(btn => btn.classList.toggle('disabled', !crud.checkedItems?.length));
         }
-
-        // run this function on DataTable draw event
-        crud.addFunctionToDataTablesDrawEventQueue('enableOrDisableBulkButtons');
     }
+
+    crud.addFunctionToDataTablesDrawEventQueue('addOrRemoveCrudCheckedItem');
+    crud.addFunctionToDataTablesDrawEventQueue('markCheckboxAsCheckedIfPreviouslySelected');
+    crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
+    crud.addFunctionToDataTablesDrawEventQueue('enableOrDisableBulkButtons');
     </script>
     @endLoadOnce
 @endif
