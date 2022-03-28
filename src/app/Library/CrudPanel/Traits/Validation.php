@@ -262,7 +262,7 @@ trait Validation
                     (is_array($rule) && array_search('required', $rule) !== false && array_search('required_', $rule) === false)
                 ) {
                     if (Str::contains($key, '.')) {
-                        $key = Str::dotsToSquareBrackets($key, ['*'], true);
+                        $key = Str::dotsToSquareBrackets($key, ['*']);
                     }
 
                     $requiredFields[] = $key;
@@ -296,7 +296,7 @@ trait Validation
         }
 
         if (Str::contains($inputKey, '.')) {
-            $inputKey = Str::dotsToSquareBrackets($inputKey, ['*'], true);
+            $inputKey = Str::dotsToSquareBrackets($inputKey, ['*']);
         }
 
         return in_array($inputKey, $this->getOperationSetting('requiredFields'));
