@@ -40,7 +40,7 @@ class CrudFilter
             $this->key = Str::camel($options['name']);
             $this->type = $options['type'] ?? $this->type;
             $this->label = $options['label'] ?? $this->crud()->makeLabel($this->name);
-            $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
+            $this->viewNamespace = $options['viewNamespace'] ?? $options['view_namespace'] ?? $this->viewNamespace;
             $this->view = $this->type;
             $this->placeholder = $options['placeholder'] ?? '';
 
