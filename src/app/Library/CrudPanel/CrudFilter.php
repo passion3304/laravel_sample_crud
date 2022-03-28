@@ -145,10 +145,15 @@ class CrudFilter
     public function getNamespacedViewWithFallbacks()
     {
         $type = $this->type;
+        $namespaces = config('backpack.crud.view_namespaces.filters');
+
+        if ($this->viewNamespace != 'crud::filters') {
+            $namespaces = array_merge([$this->viewNamespace], $namespaces);
+        }
 
         return array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, config('backpack.crud.view_namespaces.filters'));
+        }, $namespaces);
     }
 
     // ---------------------
