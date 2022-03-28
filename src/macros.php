@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
-
-
 
 /**
  * This macro adds the ability to convert a dot.notation string into a [braket][notation] with some special
@@ -29,5 +29,45 @@ if (! Str::hasMacro('dotsToSquareBrackets')) {
         }
 
         return $result;
+    });
+}
+
+/**
+ * The route macro allows developers to generate the routes for a CrudController,
+ * for all operations, using a simple syntax: Route::crud().
+ *
+ * It will go to the given CrudController and get the setupRoutes() method on it.
+ */
+if (! Route::hasMacro('crud')) {
+    Route::macro('crud', function ($name, $controller) {
+        // put together the route name prefix,
+        // as passed to the Route::group() statements
+        $routeName = '';
+        if ($this->hasGroupStack()) {
+            foreach ($this->getGroupStack() as $key => $groupStack) {
+                if (isset($groupStack['name'])) {
+                    if (is_array($groupStack['name'])) {
+                        $routeName = implode('', $groupStack['name']);
+                    } else {
+                        $routeName = $groupStack['name'];
+                    }
+                }
+            }
+        }
+        // add the name of the current entity to the route name prefix
+        // the result will be the current route name (not ending in dot)
+        $routeName .= $name;
+
+        // get an instance of the controller
+        if ($this->hasGroupStack()) {
+            $groupStack = $this->getGroupStack();
+            $groupNamespace = $groupStack && isset(end($groupStack)['namespace']) ? end($groupStack)['namespace'].'\\' : '';
+        } else {
+            $groupNamespace = '';
+        }
+        $namespacedController = $groupNamespace.$controller;
+        $controllerInstance = App::make($namespacedController);
+
+        return $controllerInstance->setupRoutes($name, $routeName, $controller);
     });
 }
