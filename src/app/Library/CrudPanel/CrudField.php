@@ -221,11 +221,12 @@ class CrudField
     {
         $this->attributes['validationMessages'] = $messages;
 
+        // append the field name to the rule name of validationMessages array.
+        // eg: ['required => 'This field is required'] 
+        // will be transformed into: ['field_name.required' => 'This field is required]
         $this->crud()->setValidationFromArray([], array_merge(...array_map(function ($rule, $message) {
             return [$this->attributes['name'].'.'.$rule => $message];
-        }, array_keys($messages), $messages)
-                                                )
-                                            );
+        }, array_keys($messages), $messages)));
 
         return $this;
     }
