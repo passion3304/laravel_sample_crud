@@ -38,7 +38,7 @@ class BackpackServiceProvider extends ServiceProvider
     public function boot(\Illuminate\Routing\Router $router)
     {
         // load the macros
-        include_once(__DIR__.'/macros.php');
+        include_once __DIR__.'/macros.php';
 
         $this->loadViewsWithFallbacks();
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 
 /**
