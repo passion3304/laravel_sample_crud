@@ -3,8 +3,6 @@
 namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class Fix extends Command
 {
@@ -39,8 +37,9 @@ class Fix extends Command
         $this->line('Checking error views...');
 
         // check if the `resources/views/errors` directory exists
-        if (!is_dir($errorsDirectory)) {
+        if (! is_dir($errorsDirectory)) {
             $this->info('Your error views are not vulnerable. Nothing to do here.');
+
             return;
         }
 
@@ -51,8 +50,9 @@ class Fix extends Command
         });
 
         // check if there are actually views inside the directory
-        if (!count($views)) {
+        if (! count($views)) {
             $this->info('Your error views are not vulnerable. Nothing to do here.');
+
             return;
         }
 
