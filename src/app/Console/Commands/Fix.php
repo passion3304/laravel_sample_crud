@@ -76,7 +76,7 @@ class Fix extends Command
 
             if ($new_contents != $contents) {
                 file_put_contents($errorsDirectory.'/'.$view, $new_contents);
-                $this->info($view.' has been fixed.');
+                $this->warn($view.' has been fixed.');
                 continue;
             }
 
