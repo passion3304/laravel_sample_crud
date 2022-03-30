@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Console\Commands;
 
+use Artisan;
 use Illuminate\Console\Command;
 
 class Fix extends Command
@@ -28,6 +29,15 @@ class Fix extends Command
     public function handle()
     {
         $this->fixErrorViews();
+
+        if ($this->confirm('[SUGGESTION] Would you like to publish updated JS & CSS dependencies to public/packages?', false)) {
+            Artisan::call('vendor:publish', [
+                '--provider' => 'Backpack\CRUD\BackpackServiceProvider',
+                '--tag' => 'assets',
+                '--force' => 'true',
+            ]);
+            $this->info('Published latest CSS and JS assets to your public/packages directory.');
+        }
     }
 
     private function fixErrorViews()
