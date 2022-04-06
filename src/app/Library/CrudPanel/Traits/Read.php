@@ -55,8 +55,10 @@ trait Read
      */
     public function getEntry($id)
     {
+        // build the model query from the main crud query
+        $this->model = $this->model->setQuery($this->query->getQuery())->getModel();
         if (! $this->entry) {
-            $this->entry = $this->query->findOrFail($id);
+            $this->entry = $this->model->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
 
@@ -71,7 +73,9 @@ trait Read
      */
     public function getEntryWithoutFakes($id)
     {
-        return $this->query->findOrFail($id);
+        // build the model query from the main crud query
+        $this->model = $this->model->setQuery($this->query->getQuery())->getModel();
+        return $this->model->findOrFail($id);
     }
 
     /**
