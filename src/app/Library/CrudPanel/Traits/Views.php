@@ -308,6 +308,6 @@ trait Views
         }
 
         // if no view exists, in any of the directories above... no bueno
-        abort(500, "Cannot find '{$viewPath}' field view in any of the regular locations.");
+        abort(500, 'Cannot find '.$viewPath.' field view. Was it a typo? Trying to use a <a href="https://backpackforlaravel.com/products/pro-for-unlimited-projects" target="_blank">PRO field?</a>');
     }
 }
