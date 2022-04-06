@@ -75,6 +75,7 @@ trait Read
     {
         // build the model query from the main crud query
         $this->model = $this->model->setQuery($this->query->getQuery())->getModel();
+
         return $this->model->findOrFail($id);
     }
 
