@@ -308,6 +308,6 @@ trait Views
         }
 
         // if no view exists, in any of the directories above... no bueno
-        abort(500, 'Cannot find the field view: '.$viewPath.'. Please check for typos. Alternatively, maybe you're trying to use a <a href="https://backpackforlaravel.com/products/pro-for-unlimited-projects" target="_blank">PRO field</a>?');
+        abort(500, 'Cannot find the field view: '.$viewPath.'. Please check for typos. Alternatively, maybe you are trying to use a <a href="https://backpackforlaravel.com/products/pro-for-unlimited-projects" target="_blank">PRO field</a>?');
     }
 }
