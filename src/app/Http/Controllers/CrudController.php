@@ -33,7 +33,6 @@ class CrudController extends Controller
         // It's done inside a middleware closure in order to have
         // the complete request inside the CrudPanel object.
         $this->middleware(function ($request, $next) {
-            
             $this->crud = app()->make('crud');
 
             $this->crud->setRequest($request);
@@ -123,31 +122,31 @@ class CrudController extends Controller
 
     /**
      * This function calls the initialize functions from the Operations traits.
-     * 
+     *
      * Aims to simulate the `bootTraitName` functionality that Laravel provides for Models
      * allowing the Operation traits to have an "initialization" function.
-     * 
+     *
      * We look for traits that follow the `Operations` naming convention ending with `Operation`.
      * In the found traits we will look for a method with the signature: `initializeTraitName`
-     * 
+     *
      * @return void
-     * 
      */
-    private function initializeOperationTraits() {
+    private function initializeOperationTraits()
+    {
         $traits = get_declared_traits() ?? [];
 
-        foreach($traits as $trait) {
+        foreach ($traits as $trait) {
             $traitName = Str::afterLast($trait, '\\');
 
-            if (!Str::endsWith($traitName, 'Operation')) {
+            if (! Str::endsWith($traitName, 'Operation')) {
                 continue;
             }
 
             $method = 'initialize'.$traitName;
 
-            if(method_exists($this, $method)) {
+            if (method_exists($this, $method)) {
                 $this->{$method}();
             }
-        } 
+        }
     }
 }
