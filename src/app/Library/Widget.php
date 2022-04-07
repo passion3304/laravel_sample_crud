@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library;
 
+use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Illuminate\Support\Fluent;
 
 /**
@@ -144,7 +145,10 @@ class Widget extends Fluent
             }
         }
         // if no view exists, in any of the directories above... no bueno
-        abort(500, 'Cannot find the view for «'.$this->type.'» widget type. Please check for typos. Alternatively, maybe you are trying to use a <a href="https://backpackforlaravel.com/products/pro-for-unlimited-projects" target="_blank">PRO widget</a>?');
+        if(!backpack_pro()) {
+            throw new BackpackProRequiredException('Cannot find the view for «'.$this->type.'» widget type. Please check for typos. Alternatively, maybe you are trying to use a <a href="https://backpackforlaravel.com/products/pro-for-unlimited-projects" target="_blank">PRO widget</a>?', 1);
+        }
+        abort(500, 'Cannot find the view for «'.$this->type.'» widget type. Please check for typos.');
         
     }
 

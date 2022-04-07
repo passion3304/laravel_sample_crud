@@ -11,8 +11,14 @@ class BackpackProRequiredException extends \Exception
      * @return \Illuminate\Http\Response
      */
     public function render($request)
-    {
-        $this->message = $this->message.' is a Backpack PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.';
+    {   
+        // 0, by default, pass only what is a feature we construct the rest of the message
+        // 1 use the provided message in full 
+        switch($this->getCode()) {
+            case 0:
+                $this->message = $this->message.' is a Backpack PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.';
+                break;
+        }
         return response(view('errors.500', ['exception' => $this]), 500);
     }
 }
