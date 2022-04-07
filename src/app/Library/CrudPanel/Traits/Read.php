@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Exception;
 
 /**
@@ -129,7 +130,7 @@ trait Read
     public function enableDetailsRow()
     {
         if (! backpack_pro()) {
-            abort(500, 'Details row is a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+            throw new BackpackProRequiredException('Details row');
         }
 
         $this->setOperationSetting('detailsRow', true);
@@ -316,7 +317,7 @@ trait Read
     public function enableExportButtons()
     {
         if (! backpack_pro()) {
-            abort(500, 'Export buttons are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+            throw new BackpackProRequiredException('Export buttons');
         }
 
         $this->setOperationSetting('exportButtons', true);

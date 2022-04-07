@@ -143,8 +143,9 @@ class Widget extends Fluent
                 return $path;
             }
         }
-
-        return config('backpack.base.component_view_namespaces.widgets')[0].'.'.$this->type;
+        // if no view exists, in any of the directories above... no bueno
+        abort(500, 'Cannot find the view for «'.$this->type.'» widget type. Please check for typos. Alternatively, maybe you are trying to use a <a href="https://backpackforlaravel.com/products/pro-for-unlimited-projects" target="_blank">PRO widget</a>?');
+        
     }
 
     // -------

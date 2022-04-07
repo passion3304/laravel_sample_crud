@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -25,7 +26,7 @@ class CrudFilter
     public function __construct($options, $values, $logic, $fallbackLogic)
     {
         if (! backpack_pro()) {
-            abort(500, 'Backpack filters are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+            throw new BackpackProRequiredException('Filter');
         }
 
         // if filter exists
