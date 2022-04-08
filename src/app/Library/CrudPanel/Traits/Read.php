@@ -65,10 +65,11 @@ trait Read
 
     /**
      * Return a Model builder instance with the current crud query applied.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function getModelWithCrudQuery() {
+    private function getModelWithCrudQuery()
+    {
         return $this->model->setQuery($this->query->getQuery());
     }
 
