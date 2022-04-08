@@ -36,9 +36,7 @@ class CrudController extends Controller
             $this->crud = app()->make('crud');
 
             $this->crud->setRequest($request);
-
-            $this->initializeOperationTraits();
-
+            
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
@@ -117,36 +115,6 @@ class CrudController extends Controller
          */
         if (method_exists($this, $setupClassName)) {
             $this->{$setupClassName}();
-        }
-    }
-
-    /**
-     * This function calls the initialize functions from the Operations traits.
-     *
-     * Aims to simulate the `bootTraitName` functionality that Laravel provides for Models
-     * allowing the Operation traits to have an "initialization" function.
-     *
-     * We look for traits that follow the `Operations` naming convention ending with `Operation`.
-     * In the found traits we will look for a method with the signature: `initializeTraitName`
-     *
-     * @return void
-     */
-    private function initializeOperationTraits()
-    {
-        $traits = get_declared_traits() ?? [];
-
-        foreach ($traits as $trait) {
-            $traitName = Str::afterLast($trait, '\\');
-
-            if (! Str::endsWith($traitName, 'Operation')) {
-                continue;
-            }
-
-            $method = 'initialize'.$traitName;
-
-            if (method_exists($this, $method)) {
-                $this->{$method}();
-            }
         }
     }
 }
