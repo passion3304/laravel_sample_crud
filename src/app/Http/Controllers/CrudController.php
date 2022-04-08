@@ -36,7 +36,7 @@ class CrudController extends Controller
             $this->crud = app()->make('crud');
 
             $this->crud->setRequest($request);
-            
+
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
