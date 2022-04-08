@@ -4,19 +4,17 @@ namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 
-$loadFakeTrait = false;
-if (! trait_exists(\Backpack\Pro\Http\Controllers\Operations\CloneOperation::class)) {
-    $loadFakeTrait = true;
+if (! backpack_pro()) {
     trait ProCloneOperation
     {
-        public function initializeProCloneOperation()
+        public function setupCloneOperationDefaults()
         {
             throw new BackpackProRequiredException('CloneOperation');
         }
     }
 }
 
-if ($loadFakeTrait) {
+if (! backpack_pro()) {
     trait CloneOperation
     {
         use ProCloneOperation;

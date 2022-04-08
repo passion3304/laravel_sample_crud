@@ -4,19 +4,17 @@ namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 
-$loadFakeTrait = false;
-if (! trait_exists(\Backpack\Pro\Http\Controllers\Operations\FetchOperation::class)) {
-    $loadFakeTrait = true;
+if (! backpack_pro()) {
     trait ProFetchOperation
     {
-        public function initializeProFetchOperation()
+        public function setupFetchOperationDefaults()
         {
             throw new BackpackProRequiredException('FetchOperation');
         }
     }
 }
 
-if ($loadFakeTrait) {
+if (! backpack_pro()) {
     trait FetchOperation
     {
         use ProFetchOperation;

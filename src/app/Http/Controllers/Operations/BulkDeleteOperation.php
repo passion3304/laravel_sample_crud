@@ -4,19 +4,17 @@ namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 
-$loadFakeTrait = false;
-if (! trait_exists(\Backpack\Pro\Http\Controllers\Operations\BulkDeleteOperation::class)) {
-    $loadFakeTrait = true;
+if (! backpack_pro()) {
     trait ProBulkDeleteOperation
     {
-        public function initializeProBulkDeleteOperation()
+        public function setupBulkDeleteOperationDefaults()
         {
             throw new BackpackProRequiredException('BulkDeleteOperation');
         }
     }
 }
 
-if ($loadFakeTrait) {
+if (! backpack_pro()) {
     trait BulkDeleteOperation
     {
         use ProBulkDeleteOperation;

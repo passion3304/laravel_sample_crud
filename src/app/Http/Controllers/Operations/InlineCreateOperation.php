@@ -4,19 +4,17 @@ namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 
-$loadFakeTrait = false;
-if (! trait_exists(\Backpack\Pro\Http\Controllers\Operations\InlineCreateOperation::class)) {
-    $loadFakeTrait = true;
+if (! backpack_pro()) {
     trait ProInlineCreateOperation
     {
-        public function initializeProInlineCreateOperation()
+        public function setupInlineCreateOperationDefaults()
         {
             throw new BackpackProRequiredException('InlineCreateOperation');
         }
     }
 }
 
-if ($loadFakeTrait) {
+if (! backpack_pro()) {
     trait InlineCreateOperation
     {
         use ProInlineCreateOperation;
