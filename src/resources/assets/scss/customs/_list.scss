@@ -90,7 +90,7 @@
     }
 
     &[data-has-bulk-actions="1"] {
-      .has-hidden-columns {
+      &.has-hidden-columns {
         thead tr th:first-child,
         tfoot tr th:first-child {
           padding-left: 1.35rem !important;
@@ -135,9 +135,9 @@
     tr td:first-child {
       display: flex;
       align-items: center;
-      padding-left: 0.6rem !important;
       padding-top: 1rem !important;
       padding-bottom: 1rem !important;
+      padding-left: 0.6rem !important;
     }
     
     &[data-responsive="0"] {
