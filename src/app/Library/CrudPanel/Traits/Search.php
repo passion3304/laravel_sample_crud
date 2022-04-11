@@ -61,13 +61,13 @@ trait Search
 
         // sensible fallback search logic, if none was explicitly given
         if ($column['tableColumn']) {
-            $seachOperator = config('backpack.operations.list.searchOperator', 'like');
+            $searchOperator = config('backpack.operations.list.searchOperator', 'like');
 
             switch ($columnType) {
                 case 'email':
                 case 'text':
                 case 'textarea':
-                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), $seachOperator, '%'.$searchTerm.'%');
+                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), $searchOperator, '%'.$searchTerm.'%');
                     break;
 
                 case 'date':
@@ -83,8 +83,8 @@ trait Search
 
                 case 'select':
                 case 'select_multiple':
-                    $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm, $seachOperator) {
-                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), $seachOperator, '%'.$searchTerm.'%');
+                    $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm, $searchOperator) {
+                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), $searchOperator, '%'.$searchTerm.'%');
                     });
                     break;
 
