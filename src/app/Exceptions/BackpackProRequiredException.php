@@ -16,7 +16,7 @@ class BackpackProRequiredException extends \Exception
         // 1 use the provided message in full
         switch ($this->getCode()) {
             case 0:
-                $this->message = $this->message.' is a Backpack PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.';
+                $this->message = $this->message.' is a Backpack PRO feature. Please purchase and install the Backpack\PRO addon from backpackforlaravel.com';
                 break;
         }
 
