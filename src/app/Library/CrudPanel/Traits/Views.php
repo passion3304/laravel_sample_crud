@@ -311,7 +311,7 @@ trait Views
 
         // if no view exists, in any of the directories above... no bueno
         if (! backpack_pro()) {
-            throw new BackpackProRequiredException('Cannot find the field view: '.$viewPath.'. Please check for typos.' . (backpack_pro() ? '' : ' If you are trying to use a PRO field, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
+            throw new BackpackProRequiredException('Cannot find the field view: '.$viewPath.'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO field, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
         }
         abort(500, "Cannot find '{$viewPath}' field view in any of the regular locations.");
     }
