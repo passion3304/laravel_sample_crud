@@ -68,7 +68,7 @@ trait Read
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function getModelWithCrudQuery()
+    public function getModelWithCrudPanelQuery()
     {
         return $this->model->setQuery($this->query->getQuery());
     }
