@@ -41,7 +41,7 @@ trait FakeFields
                 // field is represented by the subfields
                 if (isset($field['subfields']) && isset($field['model']) && $field['model'] === get_class($model)) {
                     foreach ($field['subfields'] as $subfield) {
-                        foreach((array)$subfield['name'] as $subfieldName) {
+                        foreach ((array) $subfield['name'] as $subfieldName) {
                             $subfieldName = Str::afterLast($subfieldName, '.');
                             $isSubfieldFake = $subfield['fake'] ?? false;
                             $subFakeFieldKey = isset($subfield['store_in']) ? $subfield['store_in'] : 'extras';
