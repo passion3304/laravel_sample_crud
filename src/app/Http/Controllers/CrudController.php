@@ -34,6 +34,7 @@ class CrudController extends Controller
         // the complete request inside the CrudPanel object.
         $this->middleware(function ($request, $next) {
             $this->crud = app()->make('crud');
+
             $this->crud->setRequest($request);
 
             $this->setupDefaults();
