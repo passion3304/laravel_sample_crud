@@ -56,7 +56,7 @@ trait Read
     public function getEntry($id)
     {
         if (! $this->entry) {
-            $this->entry = $this->getModelWithCrudQuery()->findOrFail($id);
+            $this->entry = $this->getModelWithCrudPanelQuery()->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
 
@@ -81,7 +81,7 @@ trait Read
      */
     public function getEntryWithoutFakes($id)
     {
-        return $this->getModelWithCrudQuery()->findOrFail($id);
+        return $this->getModelWithCrudPanelQuery()->findOrFail($id);
     }
 
     /**
