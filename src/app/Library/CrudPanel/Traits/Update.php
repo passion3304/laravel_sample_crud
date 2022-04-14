@@ -241,7 +241,7 @@ trait Update
             $name = is_string($subfield) ? $subfield : $subfield['name'];
             // if the subfield name does not contain a dot we just need to check
             // if it has subfields and return the result accordingly.
-            foreach((array)$subfield['name'] as $name) {
+            foreach ((array) $subfield['name'] as $name) {
                 if (! Str::contains($name, '.')) {
                     // when subfields are present, $relatedModel->{$name} returns a model instance
                     // otherwise returns the model attribute.
