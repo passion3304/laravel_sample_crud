@@ -1124,7 +1124,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertCount(0, $planets);
     }
 
-    public function testCreateHasManyRelationWithArrayedNameSubfields() {
+    public function testCreateHasManyRelationWithArrayedNameSubfields()
+    {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
@@ -1135,8 +1136,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 ],
                 [
                     'name' => ['start_date', 'end_date'],
-                    'type' => 'date_range'
-                ]
+                    'type' => 'date_range',
+                ],
             ],
         ], 'both');
 
@@ -1151,12 +1152,12 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                     'id' => null,
                     'title' => 'this is the star 1 title',
                     'start_date' => '2021-02-26',
-                    'end_date' => '2091-01-26'
+                    'end_date' => '2091-01-26',
                 ],
                 [
                     'title' => 'this is the star 2 title',
                     'end_date' => '2021-02-26',
-                    'start_date' => '2091-01-26'
+                    'start_date' => '2091-01-26',
                 ],
             ],
         ];
@@ -1171,7 +1172,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($inputData['universes'][1]['start_date'], $entry->universes()->find(2)->start_date);
     }
 
-    public function testCreateHasOneRelationWithArrayedNameSubfields() {
+    public function testCreateHasOneRelationWithArrayedNameSubfields()
+    {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('create');
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
@@ -1183,7 +1185,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                         'name' => 'nickname',
                     ],
                     [
-                        'name' => ['start_date', 'end_date']
+                        'name' => ['start_date', 'end_date'],
                     ],
                     [
                         'name' => 'profile_picture',
@@ -1204,9 +1206,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                     'nickname' => 'i_have_has_one',
                     'profile_picture' => 'ohh my picture 1.jpg',
                     'start_date' => '2021-02-26',
-                    'end_date' => '2091-01-26'
+                    'end_date' => '2091-01-26',
                 ],
-            ]
+            ],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1227,8 +1229,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                     'name' => 'notes',
                 ],
                 [
-                    'name' => ['start_date', 'end_date']
-                ]
+                    'name' => ['start_date', 'end_date'],
+                ],
             ],
         ]);
 
@@ -1251,7 +1253,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                     'superArticles' => $article->id,
                     'notes' => 'my first article note',
                     'start_date' => '2021-02-26',
-                    'end_date' => '2091-01-26'
+                    'end_date' => '2091-01-26',
                 ],
             ],
         ];
