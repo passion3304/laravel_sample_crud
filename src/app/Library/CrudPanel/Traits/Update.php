@@ -241,27 +241,29 @@ trait Update
             $name = is_string($subfield) ? $subfield : $subfield['name'];
             // if the subfield name does not contain a dot we just need to check
             // if it has subfields and return the result accordingly.
-            if (! Str::contains($name, '.')) {
-                // when subfields are present, $relatedModel->{$name} returns a model instance
-                // otherwise returns the model attribute.
-                if ($relatedModel->{$name}) {
-                    if (isset($subfield['subfields'])) {
-                        $result[$name] = [$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))];
-                    } else {
-                        $result[$name] = $relatedModel->{$name};
+            foreach((array)$subfield['name'] as $name) {
+                if (! Str::contains($name, '.')) {
+                    // when subfields are present, $relatedModel->{$name} returns a model instance
+                    // otherwise returns the model attribute.
+                    if ($relatedModel->{$name}) {
+                        if (isset($subfield['subfields'])) {
+                            $result[$name] = [$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))];
+                        } else {
+                            $result[$name] = $relatedModel->{$name};
+                        }
                     }
-                }
-            } else {
-                // if the subfield name contains a dot, we are going to iterate through
-                // those parts to get the last connected part and parse it for returning.
-                // $iterator would be either a string (the attribute in model, eg: street)
-                // or a model instance (eg: AddressModel)
-                $iterator = $relatedModel;
-                foreach (explode('.', $name) as $part) {
-                    $iterator = $iterator->$part;
-                }
+                } else {
+                    // if the subfield name contains a dot, we are going to iterate through
+                    // those parts to get the last connected part and parse it for returning.
+                    // $iterator would be either a string (the attribute in model, eg: street)
+                    // or a model instance (eg: AddressModel)
+                    $iterator = $relatedModel;
+                    foreach (explode('.', $name) as $part) {
+                        $iterator = $iterator->$part;
+                    }
 
-                Arr::set($result, $name, (! is_string($iterator) && ! is_null($iterator) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
+                    Arr::set($result, $name, (! is_string($iterator) && ! is_null($iterator) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
+                }
             }
         }
 

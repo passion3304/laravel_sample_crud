@@ -41,15 +41,17 @@ trait FakeFields
                 // field is represented by the subfields
                 if (isset($field['subfields']) && isset($field['model']) && $field['model'] === get_class($model)) {
                     foreach ($field['subfields'] as $subfield) {
-                        $subfieldName = Str::afterLast($subfield['name'], '.');
-                        $isSubfieldFake = $subfield['fake'] ?? false;
-                        $subFakeFieldKey = isset($subfield['store_in']) ? $subfield['store_in'] : 'extras';
+                        foreach((array)$subfield['name'] as $subfieldName) {
+                            $subfieldName = Str::afterLast($subfieldName, '.');
+                            $isSubfieldFake = $subfield['fake'] ?? false;
+                            $subFakeFieldKey = isset($subfield['store_in']) ? $subfield['store_in'] : 'extras';
 
-                        if (array_key_exists($subfieldName, $requestInput) && $isSubfieldFake) {
-                            $this->addCompactedField($requestInput, $subfieldName, $subFakeFieldKey);
+                            if (array_key_exists($subfieldName, $requestInput) && $isSubfieldFake) {
+                                $this->addCompactedField($requestInput, $subfieldName, $subFakeFieldKey);
 
-                            if (! in_array($subFakeFieldKey, $compactedFakeFields)) {
-                                $compactedFakeFields[] = $subFakeFieldKey;
+                                if (! in_array($subFakeFieldKey, $compactedFakeFields)) {
+                                    $compactedFakeFields[] = $subFakeFieldKey;
+                                }
                             }
                         }
                     }
