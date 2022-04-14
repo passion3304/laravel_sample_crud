@@ -19,6 +19,8 @@ class CreateAccountDetailsTable extends Migration
             $table->string('nickname');
             $table->string('profile_picture');
             $table->bigInteger('article_id')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')
