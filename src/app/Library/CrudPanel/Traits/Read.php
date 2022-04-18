@@ -57,11 +57,21 @@ trait Read
     public function getEntry($id)
     {
         if (! $this->entry) {
-            $this->entry = $this->query->findOrFail($id);
+            $this->entry = $this->getModelWithCrudPanelQuery()->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
 
         return $this->entry;
+    }
+
+    /**
+     * Return a Model builder instance with the current crud query applied.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getModelWithCrudPanelQuery()
+    {
+        return $this->model->setQuery($this->query->getQuery());
     }
 
     /**
@@ -72,7 +82,7 @@ trait Read
      */
     public function getEntryWithoutFakes($id)
     {
-        return $this->query->findOrFail($id);
+        return $this->getModelWithCrudPanelQuery()->findOrFail($id);
     }
 
     /**
