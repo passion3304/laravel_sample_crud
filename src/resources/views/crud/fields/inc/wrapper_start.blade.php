@@ -23,7 +23,7 @@
 	$field['wrapper']['class'] = $field['wrapper']['class'].$required;
 	$field['wrapper']['element'] = $field['wrapper']['element'] ?? 'div';
 	$field['wrapper']['bp-field-wrapper'] = 'true';
-	$field['wrapper']['bp-field-name'] = $field['name'];
+	$field['wrapper']['bp-field-name'] = square_brackets_to_dots($field['name']);
 	$field['wrapper']['bp-field-type'] = $field['type'];
 @endphp
 

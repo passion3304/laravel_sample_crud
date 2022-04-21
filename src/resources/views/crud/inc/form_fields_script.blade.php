@@ -9,12 +9,12 @@
     class CrudField {
         constructor(fieldName) {
             this.name = fieldName;
-            this.wrapper = $("[bp-field-name="+ this.name +"]");
-            this.input = $("[bp-field-main-input][name="+ this.name +"]");
+            this.wrapper = $('[bp-field-name="'+ this.name +'"]');
+            this.input = this.wrapper.find("[bp-field-main-input");
             // if no bp-field-main-input has been declared in the field itself,
             // assume it's the first input in that wrapper, whatever it is
             if (this.input.length == 0) {
-                this.input = $("[bp-field-name="+ this.name +"] input, [bp-field-name="+ this.name +"] textarea, [bp-field-name="+ this.name +"] select").first();
+                this.input = $('[bp-field-name="'+ this.name +'"] input, [bp-field-name="'+ this.name +'"] textarea, [bp-field-name="'+ this.name +'"] select').first();
             }
             this.value = this.input.val();
         }
