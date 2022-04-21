@@ -63,7 +63,7 @@ class User extends Model
 
     public function superArticles()
     {
-        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Article', 'articles_user')->withPivot('notes');
+        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Article', 'articles_user')->withPivot(['notes', 'start_date', 'end_date']);
     }
 
     public function universes()
