@@ -21,7 +21,7 @@
 
         change(closure) {
             this.input.change(function(event) {
-                var fieldWrapper = $(this).parent('[bp-field-wrapper=true]');
+                var fieldWrapper = $(this).closest('[bp-field-wrapper=true]');
                 var fieldName = fieldWrapper.attr('bp-field-name');
                 var fieldType = fieldWrapper.attr('bp-field-type');
                 var fieldValue = $(this).val();
