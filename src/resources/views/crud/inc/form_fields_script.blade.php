@@ -28,7 +28,7 @@
 
                 // console.log('Changed field ' + fieldName + ' (type '+ fieldType + '), value is now ' + fieldValue);
                 closure(event, fieldValue, fieldName, fieldType);
-            });
+            }).change();
 
             return this;
         }
