@@ -49,11 +49,13 @@
 
         enable(e) {
             this.input.removeAttr('disabled');
+            this.input.trigger('backpack_field.enabled');
             return this;
         }
 
         disable(e) {
             this.input.attr('disabled', 'disabled');
+            this.input.trigger('backpack_field.disabled');
             return this;
         }
 

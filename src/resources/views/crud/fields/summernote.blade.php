@@ -54,6 +54,15 @@
                     element.trigger('change');
                 }
             }
+
+            element.on('backpack_field.disabled', function(e) {
+                element.summernote('disable');
+            });
+
+            element.on('backpack_field.enabled', function(e) {
+                element.summernote('enable');
+            });
+            
             summernoteOptions['callbacks'] = summernotCallbacks;
             
             element.summernote(summernoteOptions); 
