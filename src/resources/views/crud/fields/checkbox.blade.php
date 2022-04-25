@@ -5,7 +5,6 @@
 @endphp
 @include('crud::fields.inc.wrapper_start')
     @include('crud::fields.inc.translatable_icon')
-    <div class="checkbox">
         <input type="hidden" name="{{ $field['name'] }}" value="{{ $field['value'] }}">
     	  <input type="checkbox"
           data-init-function="bpFieldInitCheckbox"
@@ -20,13 +19,12 @@
         	  @endforeach
           @endif
           >
-    	<label class="form-check-label font-weight-normal">{!! $field['label'] !!}</label>
+    	<label style="margin-bottom:0px;" class="font-weight-normal">{!! $field['label'] !!}</label>
 
         {{-- HINT --}}
         @if (isset($field['hint']))
             <p class="help-block">{!! $field['hint'] !!}</p>
         @endif
-    </div>
 @include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
@@ -55,6 +53,13 @@
                 } else {
                   element.prop('checked', false);
                 }
+
+                hidden_element.on('backpack_field.disabled', function(e) {
+                  element.prop('disabled', true);
+                });
+                hidden_element.on('backpack_field.enabled', function(e) {
+                  element.removeAttr('disabled');
+                });
 
                 // when the checkbox is clicked
                 // set the correct value on the hidden input
