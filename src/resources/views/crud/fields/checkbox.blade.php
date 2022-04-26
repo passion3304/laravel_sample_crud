@@ -19,7 +19,7 @@
         	  @endforeach
           @endif
           >
-    	<label style="margin-bottom:0px;" class="font-weight-normal">{!! $field['label'] !!}</label>
+    	<label class="font-weight-normal mb-0">{!! $field['label'] !!}</label>
 
         {{-- HINT --}}
         @if (isset($field['hint']))
