@@ -70,7 +70,6 @@
         }
 
         check(e) {
-            console.log(this.wrapper.find('input[type=checkbox]'));
             this.wrapper.find('input[type=checkbox]').prop('checked', true).trigger('change');
             return this;
         }
