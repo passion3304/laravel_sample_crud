@@ -55,11 +55,11 @@
                 }
             }
 
-            element.on('backpack_field.disabled', function(e) {
+            element.on('backpack:field.disable', function(e) {
                 element.summernote('disable');
             });
 
-            element.on('backpack_field.enabled', function(e) {
+            element.on('backpack:field.enable', function(e) {
                 element.summernote('enable');
             });
             

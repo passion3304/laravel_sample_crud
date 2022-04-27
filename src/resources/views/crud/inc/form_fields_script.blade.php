@@ -39,33 +39,37 @@
 
         hide(e) {
             this.wrapper.hide();
+            this.input.trigger('backpack:field.hide');
             return this;
         }
 
         show(e) {
             this.wrapper.show();
+            this.input.trigger('backpack:field.show');
             return this;
         }
 
         enable(e) {
             this.input.removeAttr('disabled');
-            this.input.trigger('backpack_field.enabled');
+            this.input.trigger('backpack:field.enable');
             return this;
         }
 
         disable(e) {
             this.input.attr('disabled', 'disabled');
-            this.input.trigger('backpack_field.disabled');
+            this.input.trigger('backpack:field.disable');
             return this;
         }
 
         require(e) {
             this.wrapper.removeClass('required').addClass('required');
+            this.input.trigger('backpack:field.require');
             return this;
         }
 
         unrequire(e) {
             this.wrapper.removeClass('required');
+            this.input.trigger('backpack:field.unrequire');
             return this;
         }
 

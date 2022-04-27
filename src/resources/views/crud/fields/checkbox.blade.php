@@ -54,10 +54,10 @@
                   element.prop('checked', false);
                 }
 
-                hidden_element.on('backpack_field.disabled', function(e) {
+                hidden_element.on('backpack:field.disable', function(e) {
                   element.prop('disabled', true);
                 });
-                hidden_element.on('backpack_field.enabled', function(e) {
+                hidden_element.on('backpack:field.enable', function(e) {
                   element.removeAttr('disabled');
                 });
 
