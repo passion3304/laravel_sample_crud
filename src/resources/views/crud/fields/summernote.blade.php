@@ -51,7 +51,7 @@
 
             let summernotCallbacks = { 
                 onChange: function(contents, $editable) {
-                    element.trigger('change');
+                    element.val(contents).trigger('change');
                 }
             }
 
