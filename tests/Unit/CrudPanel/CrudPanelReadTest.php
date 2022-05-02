@@ -57,21 +57,25 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
             'name'  => 'content',
             'label' => 'The Content',
             'type'  => 'text',
+            'entity' => false,
         ],
         'metas' => [
             'name'  => 'metas',
             'label' => 'Metas',
             'type'  => 'text',
+            'entity' => false,
         ],
         'tags' => [
             'name'  => 'tags',
             'label' => 'Tags',
             'type'  => 'text',
+            'entity' => false,
         ],
         'extras' => [
             'name'  => 'extras',
             'label' => 'Extras',
             'type'  => 'text',
+            'entity' => false,
         ],
     ];
 
@@ -81,24 +85,28 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
             'label' => 'The Content',
             'type'  => 'text',
             'value' => 'Some Content',
+            'entity' => false,
         ],
         'metas' => [
             'name'  => 'metas',
             'label' => 'Metas',
             'type'  => 'text',
             'value' => '{"meta_title":"Meta Title Value","meta_description":"Meta Description Value"}',
+            'entity' => false,
         ],
         'tags' => [
             'name'  => 'tags',
             'label' => 'Tags',
             'type'  => 'text',
             'value' => '{"tags":["tag1","tag2","tag3"]}',
+            'entity' => false,
         ],
         'extras' => [
             'name'  => 'extras',
             'label' => 'Extras',
             'type'  => 'text',
             'value' => '{"extra_details":["detail1","detail2","detail3"]}',
+            'entity' => false,
         ],
         'id' => [
             'name'  => 'id',
