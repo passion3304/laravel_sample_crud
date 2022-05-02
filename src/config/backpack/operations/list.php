@@ -52,4 +52,9 @@ return [
     // thus clearing any searching, filtering or pagination that has been
     // remembered and persisted using persistentTable
     'resetButton' => true,
+
+    // The query operator that is used to search on the table.
+    // If you are using PostgreSQL you might want to change
+    // to `ilike` for case-insensitive search
+    'searchOperator' => 'like',
 ];

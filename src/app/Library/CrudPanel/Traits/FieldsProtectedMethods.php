@@ -138,6 +138,9 @@ trait FieldsProtectedMethods
             return $field;
         }
 
+        // by default, entity is false if we cannot link it with guessing functions to a relation
+        $field['entity'] = false;
+
         // if the name is an array it's definitely not a relationship
         if (is_array($field['name'])) {
             return $field;
