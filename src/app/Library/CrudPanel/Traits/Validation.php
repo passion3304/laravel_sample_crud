@@ -326,21 +326,22 @@ trait Validation
      */
     private function getValidationRulesAndMessagesFromField($field, $parent = false)
     {
-        $fieldValidationName = $field['name'];
         $rules = [];
         $messages = [];
 
-        if ($parent) {
-            $fieldValidationName = $parent.'.*.'.$field['name'];
-        }
+        foreach((array)$field['name'] as $fieldName) {
+            if ($parent) {
+                $fieldName = $parent.'.*.'.$fieldName;
+            }
 
-        if (isset($field['validationRules'])) {
-            $rules[$fieldValidationName] = $field['validationRules'];
-        }
-        if (isset($field['validationMessages'])) {
-            foreach ($field['validationMessages'] as $validator => $message) {
-                $fieldValidationName = $fieldValidationName.'.'.$validator;
-                $messages[$fieldValidationName] = $message;
+            if (isset($field['validationRules'])) {
+                $rules[$fieldName] = $field['validationRules'];
+            }
+            if (isset($field['validationMessages'])) {
+                foreach ($field['validationMessages'] as $validator => $message) {
+                    $fieldValidationName = $fieldName.'.'.$validator;
+                    $messages[$fieldValidationName] = $message;
+                }
             }
         }
 
