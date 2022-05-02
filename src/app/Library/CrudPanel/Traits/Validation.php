@@ -329,7 +329,7 @@ trait Validation
         $rules = [];
         $messages = [];
 
-        foreach((array)$field['name'] as $fieldName) {
+        foreach ((array) $field['name'] as $fieldName) {
             if ($parent) {
                 $fieldName = $parent.'.*.'.$fieldName;
             }
