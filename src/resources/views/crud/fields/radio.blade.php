@@ -64,13 +64,13 @@
                 $(this).siblings('label').attr('for', id+index);
             });
 
-            hiddenInput.on('backpack_field.disabled', function(e) {
+            hiddenInput.on('backpack:field.disable', function(e) {
                 element.find('.form-check input[type=radio]').each(function(index, item) {
                     $(this).prop('disabled', true);
                 });
             });
 
-            hiddenInput.on('backpack_field.enabled', function(e) {
+            hiddenInput.on('backpack:field.enable', function(e) {
                 element.find('.form-check input[type=radio]').each(function(index, item) {
                     $(this).removeAttr('disabled');
                 });
