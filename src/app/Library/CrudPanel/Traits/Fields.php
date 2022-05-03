@@ -58,6 +58,8 @@ trait Fields
         $field = $this->makeSureFieldHasType($field);
         $field = $this->makeSureSubfieldsHaveNecessaryAttributes($field);
 
+        $this->setupFieldValidation($field, $field['parentFieldName'] ?? false);
+
         return $field;
     }
 
