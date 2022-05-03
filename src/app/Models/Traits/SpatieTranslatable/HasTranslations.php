@@ -187,7 +187,6 @@ trait HasTranslations
             case 'findMany':
             case 'findBySlug':
             case 'findBySlugOrFail':
-            case 'hydrate':
                 $translation_locale = \Request::input('_locale', \App::getLocale());
 
                 if ($translation_locale) {
