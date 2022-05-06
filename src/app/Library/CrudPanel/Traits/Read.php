@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Exception;
 
 /**
@@ -56,11 +57,21 @@ trait Read
     public function getEntry($id)
     {
         if (! $this->entry) {
-            $this->entry = $this->query->findOrFail($id);
+            $this->entry = $this->getModelWithCrudPanelQuery()->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
 
         return $this->entry;
+    }
+
+    /**
+     * Return a Model builder instance with the current crud query applied.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getModelWithCrudPanelQuery()
+    {
+        return $this->model->setQuery($this->query->getQuery());
     }
 
     /**
@@ -71,7 +82,7 @@ trait Read
      */
     public function getEntryWithoutFakes($id)
     {
-        return $this->query->findOrFail($id);
+        return $this->getModelWithCrudPanelQuery()->findOrFail($id);
     }
 
     /**
@@ -129,7 +140,7 @@ trait Read
     public function enableDetailsRow()
     {
         if (! backpack_pro()) {
-            abort(500, 'Details row is a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+            throw new BackpackProRequiredException('Details row');
         }
 
         $this->setOperationSetting('detailsRow', true);
@@ -316,7 +327,7 @@ trait Read
     public function enableExportButtons()
     {
         if (! backpack_pro()) {
-            abort(500, 'Export buttons are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+            throw new BackpackProRequiredException('Export buttons');
         }
 
         $this->setOperationSetting('exportButtons', true);

@@ -107,6 +107,10 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasName($field)
     {
+        if (empty($field)) {
+            abort(500, 'Field name can\'t be empty');
+        }
+
         if (is_string($field)) {
             return ['name' => $field];
         }
@@ -133,6 +137,9 @@ trait FieldsProtectedMethods
         if (isset($field['entity'])) {
             return $field;
         }
+
+        // by default, entity is false if we cannot link it with guessing functions to a relation
+        $field['entity'] = false;
 
         // if the name is an array it's definitely not a relationship
         if (is_array($field['name'])) {
@@ -252,10 +259,16 @@ trait FieldsProtectedMethods
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
+            if (empty($field)) {
+                abort(500, 'Field name can\'t be empty');
+            }
+
             // make sure the field definition is an array
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
             }
+
+            $subfield['parentFieldName'] = $field['name'];
 
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
@@ -281,6 +294,7 @@ trait FieldsProtectedMethods
                 case 'MorphToMany':
                 case 'BelongsToMany':
                     $pivotSelectorField = static::getPivotFieldStructure($field);
+                    $this->setupFieldValidation($pivotSelectorField, $field['name']);
                     $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
                     break;
                 case 'MorphMany':

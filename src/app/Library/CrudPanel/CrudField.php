@@ -25,6 +25,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  * @method self wrapper(array $value)
  * @method self fake(bool $value)
  * @method self store_in(string $value)
+ * @method self validationRules(string $value)
+ * @method self validationMessages(array $value)
  */
 class CrudField
 {
@@ -32,6 +34,10 @@ class CrudField
 
     public function __construct($name)
     {
+        if (empty($name)) {
+            abort(500, 'Field name can\'t be empty.');
+        }
+
         $field = $this->crud()->firstFieldWhere('name', $name);
 
         // if field exists
@@ -189,6 +195,40 @@ class CrudField
         $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
 
         return $this->save();
+    }
+
+    /**
+     * Save the validation rules on the CrudPanel per field basis.
+     *
+     * @param  string  $rules  the field rules: required|min:1|max:5
+     * @return self
+     */
+    public function validationRules(string $rules)
+    {
+        $this->attributes['validationRules'] = $rules;
+        $this->crud()->setValidationFromArray([$this->attributes['name'] => $rules]);
+
+        return $this;
+    }
+
+    /**
+     * Save the validation messages on the CrudPanel per field basis.
+     *
+     * @param  array  $messages  the messages for field rules: [required => please input something, min => the minimum allowed is 1]
+     * @return self
+     */
+    public function validationMessages(array $messages)
+    {
+        $this->attributes['validationMessages'] = $messages;
+
+        // append the field name to the rule name of validationMessages array.
+        // eg: ['required => 'This field is required']
+        // will be transformed into: ['field_name.required' => 'This field is required]
+        $this->crud()->setValidationFromArray([], array_merge(...array_map(function ($rule, $message) {
+            return [$this->attributes['name'].'.'.$rule => $message];
+        }, array_keys($messages), $messages)));
+
+        return $this;
     }
 
     // ---------------

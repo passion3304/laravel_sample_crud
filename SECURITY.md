@@ -6,12 +6,13 @@ Updates are provided according to table below.
 
 | Version | Security Updates   |  Feature Updates   |  Bug Fixes         |
 | ------- | ------------------ | ------------------ | ------------------ |
-| 4.1.x   | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 5.x     | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 4.1.x   | :white_check_mark: | :x:                | :x:                |
 | 4.0.x   | :white_check_mark: | :x:                | :x:                |
-| 3.6.x   | :white_check_mark: | :x:                | :x:                |
+| 3.6.x   | :x:                | :x:                | :x:                |
 | 3.5.x   | :x:                | :x:                | :x:                |
 | 3.4.x   | :x:                | :x:                | :x:                |
-| < 4.0   | :x:                | :x:                | :x:                |
+| < 3.4   | :x:                | :x:                | :x:                |
 
 ## Reporting a Vulnerability
 

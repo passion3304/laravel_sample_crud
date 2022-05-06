@@ -299,6 +299,10 @@ trait Relationships
         $pivotSelectorField['delay'] = 500;
         $pivotSelectorField['placeholder'] = trans('backpack::crud.select_entry');
         $pivotSelectorField['label'] = \Str::of($field['name'])->singular()->ucfirst();
+        $pivotSelectorField['validationRules'] = 'required';
+        $pivotSelectorField['validationMessages'] = [
+            'required' => trans('backpack::crud.pivot_selector_required_validation_message'),
+        ];
 
         if (isset($field['baseModel'])) {
             $pivotSelectorField['baseModel'] = $field['baseModel'];
