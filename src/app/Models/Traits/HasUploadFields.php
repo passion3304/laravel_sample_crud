@@ -49,10 +49,9 @@ trait HasUploadFields
         if (request()->hasFile($attribute_name) && request()->file($attribute_name)->isValid()) {
             // 1. Generate a new file name
             $file = request()->file($attribute_name);
-            if($destination_filename){
+            if ($destination_filename) {
                 $new_file_name = $destination_filename.'.'.$file->getClientOriginalExtension();
-            }
-            else {
+            } else {
                 $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
             }
 
