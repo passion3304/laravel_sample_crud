@@ -76,13 +76,12 @@ trait HasUploadFields
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {
         $originalModelValue = $this->getOriginal()[$attribute_name] ?? [];
-        
+
         if (! is_array($originalModelValue)) {
             $attribute_value = json_decode($originalModelValue, true) ?? [];
         } else {
             $attribute_value = $originalModelValue;
         }
-        
 
         $files_to_clear = request()->get('clear_'.$attribute_name);
 
