@@ -268,7 +268,7 @@ trait FieldsProtectedMethods
                 $subfield = ['name' => $subfield];
             }
 
-            $subfield['parentFieldName'] = $field['name'];
+            $subfield['parentFieldName'] = is_array($field['name']) ? false : $field['name'];
 
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
