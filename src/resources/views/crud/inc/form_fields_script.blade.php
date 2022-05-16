@@ -13,22 +13,23 @@
             this.input = this.wrapper.closest("[bp-field-main-input");
             // if no bp-field-main-input has been declared in the field itself,
             // assume it's the first input in that wrapper, whatever it is
-            if (this.input.length == 0) {
+            if (this.input.length === 0) {
                 this.input = $('[bp-field-name="'+ this.name +'"] input, [bp-field-name="'+ this.name +'"] textarea, [bp-field-name="'+ this.name +'"] select').first();
             }
-            this.value = this.input.val();
         }
 
         change(closure) {
-            this.input.change(function(event) {
-                var fieldWrapper = $(this).closest('[bp-field-wrapper=true]');
-                var fieldName = fieldWrapper.attr('bp-field-name');
-                var fieldType = fieldWrapper.attr('bp-field-type');
-                var fieldValue = $(this).val();
+            const fieldChanged = event => {
+                const wrapper = this.input.closest('[bp-field-wrapper=true]');
+                const name = wrapper.attr('bp-field-name');
+                const type = wrapper.attr('bp-field-type');
+                const value = this.input.val();
 
-                // console.log('Changed field ' + fieldName + ' (type '+ fieldType + '), value is now ' + fieldValue);
-                closure(event, fieldValue, fieldName, fieldType);
-            }).change();
+                closure(event, value, name, type);
+            };
+
+            $(this.input).change(fieldChanged);
+            fieldChanged();
 
             return this;
         }
@@ -37,50 +38,46 @@
             this.change(closure);
         }
 
-        hide(e) {
-            this.wrapper.hide();
-            this.input.trigger('backpack:field.hide');
+        show(value = true) {
+            this.wrapper.toggleClass('d-none', !value);
+
+            this.input.trigger(`backpack:field.${value ? 'show' : 'hide'}`);
             return this;
         }
 
-        show(e) {
-            this.wrapper.show();
-            this.input.trigger('backpack:field.show');
+        hide() {
+            return this.show(false);
+        }
+
+        enable(value = true) {
+            this.input.attr('disabled', !value && 'disabled');
+
+            this.input.trigger(`backpack:field.${value ? 'enable' : 'disable'}`);
             return this;
         }
 
-        enable(e) {
-            this.input.removeAttr('disabled');
-            this.input.trigger('backpack:field.enable');
+        disable() {
+            return this.enable(false);
+        }
+
+        require(value = true) {
+            this.wrapper.toggleClass('required', value);
+
+            this.input.trigger(`backpack:field.${value ? 'require' : 'unrequire'}`);
             return this;
         }
 
-        disable(e) {
-            this.input.attr('disabled', 'disabled');
-            this.input.trigger('backpack:field.disable');
+        unrequire() {
+            return this.require(false);
+        }
+
+        check(value = true) {
+            this.wrapper.find('input[type=checkbox]').prop('checked', value).trigger('change');
             return this;
         }
 
-        require(e) {
-            this.wrapper.removeClass('required').addClass('required');
-            this.input.trigger('backpack:field.require');
-            return this;
-        }
-
-        unrequire(e) {
-            this.wrapper.removeClass('required');
-            this.input.trigger('backpack:field.unrequire');
-            return this;
-        }
-
-        check(e) {
-            this.wrapper.find('input[type=checkbox]').prop('checked', true).trigger('change');
-            return this;
-        }
-
-        uncheck(e) {
-            this.wrapper.find('input[type=checkbox]').prop('checked', false).trigger('change');
-            return this;
+        uncheck() {
+            return this.check(false);
         }
     }
 
@@ -88,13 +85,12 @@
      * Window functions that help the developer easily select one or more fields.
      */
     window.crud = {
-        field: function(fieldName) {
-            return new CrudField(fieldName);
-        },
-        fields: function(fieldNamesArray) {
-            return fieldNamesArray.map(function(fieldName) {
-                return new CrudField(fieldName);
-            });
-        }
-    }
+        ...window.crud,
+
+        // Create a field from a given name
+        field: name => new CrudField(name),
+
+        // Create all fields from a given name list
+        fields: names => names.map(window.crud.field),
+    };
 </script>
