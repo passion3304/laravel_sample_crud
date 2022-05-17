@@ -40,7 +40,6 @@
 
         show(value = true) {
             this.wrapper.toggleClass('d-none', !value);
-
             this.input.trigger(`backpack:field.${value ? 'show' : 'hide'}`);
             return this;
         }
@@ -51,7 +50,6 @@
 
         enable(value = true) {
             this.input.attr('disabled', !value && 'disabled');
-
             this.input.trigger(`backpack:field.${value ? 'enable' : 'disable'}`);
             return this;
         }
@@ -62,7 +60,6 @@
 
         require(value = true) {
             this.wrapper.toggleClass('required', value);
-
             this.input.trigger(`backpack:field.${value ? 'require' : 'unrequire'}`);
             return this;
         }
