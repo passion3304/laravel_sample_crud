@@ -9,13 +9,24 @@
     class CrudField {
         constructor(fieldName) {
             this.name = fieldName;
-            this.wrapper = $('[bp-field-name="'+ this.name +'"]');
-            this.input = this.wrapper.closest("[bp-field-main-input");
-            // if no bp-field-main-input has been declared in the field itself,
-            // assume it's the first input in that wrapper, whatever it is
+            this.wrapper = $('[bp-field-name*="'+ this.name +'"][bp-field-wrapper]');
+           
+            // search input in ancestors
+            this.input = this.wrapper.closest("[bp-field-main-input]");
+            // search input in children
             if (this.input.length == 0) {
-                this.input = $('[bp-field-name="'+ this.name +'"] input, [bp-field-name="'+ this.name +'"] textarea, [bp-field-name="'+ this.name +'"] select').first();
+                this.input = this.wrapper.find("[bp-field-main-input]");
             }
+            // if no bp-field-main-input has been declared in the field itself, try to find an input with that name inside wraper
+            if (this.input.length == 0) {
+                this.input = this.wrapper.find('input[bp-field-name="'+ this.name +'"], textarea[bp-field-name="'+ this.name +'"], select[bp-field-name="'+ this.name +'"]').first();
+            }
+
+            // if nothing works, use the first input found in field wrapper.
+            if(this.input.length == 0) {
+                this.input = this.wrapper.find('input, textarea, select').first();
+            }
+     
             this.value = this.input.val();
         }
 
