@@ -156,7 +156,7 @@ trait Update
                 if (! $model) {
                     return;
                 }
-                
+
                 $model = $this->getModelWithFakes($model);
 
                 // if `entity` contains a dot here it means developer added a main HasOne/MorphOne relation with dot notation
@@ -258,15 +258,16 @@ trait Update
                     // $iterator would be either a string (the attribute in model, eg: street)
                     // or a model instance (eg: AddressModel)
                     $iterator = $relatedModel;
-     
+
                     foreach (explode('.', $name) as $part) {
                         $iterator = $iterator->$part;
                     }
-   
-                    Arr::set($result, $name, ( is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
+
+                    Arr::set($result, $name, (is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
                 }
             }
         }
+
         return $result;
     }
 }
