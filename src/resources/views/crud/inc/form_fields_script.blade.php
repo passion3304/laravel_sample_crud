@@ -9,13 +9,25 @@
     class CrudField {
         constructor(fieldName) {
             this.name = fieldName;
-            this.wrapper = $('[bp-field-name="'+ this.name +'"]');
-            this.input = this.wrapper.closest("[bp-field-main-input");
+            this.wrapper = $(`[bp-field-name="${this.name}"]`);
+            this.input = this.wrapper.closest('[bp-field-main-input]').first();
+
             // if no bp-field-main-input has been declared in the field itself,
             // assume it's the first input in that wrapper, whatever it is
             if (this.input.length === 0) {
-                this.input = $('[bp-field-name="'+ this.name +'"] input, [bp-field-name="'+ this.name +'"] textarea, [bp-field-name="'+ this.name +'"] select').first();
+                this.input = this.wrapper.find('input, textarea, select').first();
             }
+        }
+
+        get value() {
+            let value = this.input.val();
+
+            // Parse the value if it's a number
+            if (value.length && !isNaN(value)) {
+                value = Number(value);
+            }
+
+            return value;
         }
 
         change(closure) {
