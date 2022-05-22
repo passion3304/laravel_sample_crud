@@ -40,6 +40,7 @@
                 closure(event, value, name, type);
             };
 
+            this.input[0]?.addEventListener('input', fieldChanged, false);
             $(this.input).change(fieldChanged);
             fieldChanged();
 
