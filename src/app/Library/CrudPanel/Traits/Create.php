@@ -52,7 +52,7 @@ trait Create
         $relationFields = [];
 
         foreach ($fields as $field) {
-            if (isset($field['model']) && $field['model'] !== false) {
+            if (isset($field['model']) && $field['model'] !== false && $field['entity'] !== false) {
                 array_push($relationFields, $field);
             }
 

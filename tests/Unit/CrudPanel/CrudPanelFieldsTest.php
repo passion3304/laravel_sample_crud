@@ -21,6 +21,7 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
             'name'  => 'field1',
             'label' => 'Field1',
             'type'  => 'text',
+            'entity' => false,
         ],
     ];
 
@@ -56,11 +57,13 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
             'name'  => 'field1',
             'label' => 'Field1',
             'type'  => 'text',
+            'entity' => false,
         ],
         'field2' => [
             'name'  => 'field2',
             'label' => 'Field2',
             'type'  => 'text',
+            'entity' => false,
         ],
     ];
 
@@ -84,16 +87,19 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
             'name'  => 'field1',
             'label' => 'Field1',
             'type'  => 'text',
+            'entity' => false,
         ],
         'field2' => [
             'name'  => 'field2',
             'label' => 'Field2',
             'type'  => 'text',
+            'entity' => false,
         ],
         'field3' => [
             'name'  => 'field3',
             'label' => 'Field3',
             'type'  => 'text',
+            'entity' => false,
         ],
     ];
 
@@ -153,61 +159,73 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
             'name'  => 'field1',
             'label' => 'Field1',
             'type'  => 'text',
+            'entity' => false,
         ],
         'field2' => [
             'name'  => 'field2',
             'type'  => 'address',
             'label' => 'Field2',
+            'entity' => false,
         ],
         'field3' => [
             'name'  => 'field3',
             'type'  => 'address',
             'label' => 'Field3',
+            'entity' => false,
         ],
         'field4' => [
             'name'  => 'field4',
             'type'  => 'checkbox',
             'label' => 'Field4',
+            'entity' => false,
         ],
         'field5' => [
             'name'  => 'field5',
             'type'  => 'date',
             'label' => 'Field5',
+            'entity' => false,
         ],
         'field6' => [
             'name'  => 'field6',
             'type'  => 'email',
             'label' => 'Field6',
+            'entity' => false,
         ],
         'field7' => [
             'name'  => 'field7',
             'type'  => 'hidden',
             'label' => 'Field7',
+            'entity' => false,
         ],
         'field8' => [
             'name'  => 'field8',
             'type'  => 'password',
             'label' => 'Field8',
+            'entity' => false,
         ],
         'field9' => [
             'name'  => 'field9',
             'type'  => 'select2',
             'label' => 'Field9',
+            'entity' => false,
         ],
         'field10' => [
             'name'  => 'field10',
             'type'  => 'select2_multiple',
             'label' => 'Field10',
+            'entity' => false,
         ],
         'field11' => [
             'name'  => 'field11',
             'type'  => 'table',
             'label' => 'Field11',
+            'entity' => false,
         ],
         'field12' => [
             'name'  => 'field12',
             'type'  => 'url',
             'label' => 'Field12',
+            'entity' => false,
         ],
     ];
 
