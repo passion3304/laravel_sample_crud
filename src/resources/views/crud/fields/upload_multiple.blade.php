@@ -163,7 +163,13 @@
 
 		        fileInput.change(function() {
 	                inputLabel.html("Files selected. After save, they will show up above.");
-					element.find('input').first().val($(this).val()).trigger('change')
+					let selectedFiles = [];
+
+					Array.from($(this)[0].files).forEach(file => {
+						selectedFiles.push({name: file.name, type: file.type})
+					});
+
+					element.find('input').first().val(JSON.stringify(selectedFiles)).trigger('change');
 		        	// remove the hidden input, so that the setXAttribute method is no longer triggered
 					$(this).next("input[type=hidden]:not([name='clear_"+fieldName+"[]'])").remove();
 		        });
@@ -173,7 +179,7 @@
 					element.children('.existing-file').find('.file-preview').each(function(i, el) {
 
 						let $deleteButton = $(el).find('a.file-clear-button');
-						
+
 						if(deleteButton.length > 0) {
 							$deleteButton.on('click.prevent', function(e) {
 								e.stopImmediatePropagation();
