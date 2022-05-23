@@ -172,12 +172,14 @@
               
               let $deleteButton = element.children('.existing-file').children('a.file_clear_button');
               
-              $deleteButton.on('click.prevent', function(e) {
-                  e.stopImmediatePropagation();
-                  return false;
-                });
-                // make the event we just registered, the first to be triggered
-                $._data($deleteButton.get(0), "events").click.reverse();
+              if($deleteButton.length > 0) {
+                $deleteButton.on('click.prevent', function(e) {
+                    e.stopImmediatePropagation();
+                    return false;
+                  });
+                  // make the event we just registered, the first to be triggered
+                  $._data($deleteButton.get(0), "events").click.reverse();
+              }
           });
 
           element.on('backpack:field.enable', function(e) {
