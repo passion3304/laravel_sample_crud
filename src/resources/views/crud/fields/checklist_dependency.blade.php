@@ -79,7 +79,7 @@
       <div class="row">
 
           <div class="hidden_fields_primary" data-name = "{{ $primary_dependency['name'] }}">
-          <input type="hidden" name="{{$primary_dependency['name']}}" value="" />
+          <input type="hidden" bp-field-name="{{$primary_dependency['name']}}" name="{{$primary_dependency['name']}}" value="" />
           @if(isset($field['value']))
               @if($old_primary_dependency)
                   @foreach($old_primary_dependency as $item )
@@ -130,7 +130,7 @@
 
       <div class="row">
           <div class="hidden_fields_secondary" data-name="{{ $secondary_dependency['name'] }}">
-            <input type="hidden" name="{{$secondary_dependency['name']}}" value="" />
+            <input type="hidden" bp-field-name="{{$secondary_dependency['name']}}" name="{{$secondary_dependency['name']}}" value="" />
             @if(isset($field['value']))
               @if($old_secondary_dependency)
                 @foreach($old_secondary_dependency as $item )
@@ -210,17 +210,44 @@
             let inputToAdd = $('<input type="hidden" class="primary_hidden" name="'+nameInput+'[]" value="'+idCurrent+'">');
 
             field.find('.hidden_fields_primary').append(inputToAdd);
+            field.find('.hidden_fields_primary').find('input').first().val(idCurrent).trigger('change');
+            field.find('.hidden_fields_primary').find('input').first().val()
 
             $.each(dependencyJson[idCurrent], function(key, value){
               //check and disable secondies checkbox
               field.find('input.secondary_list[value="'+value+'"]').prop( "checked", true );
               field.find('input.secondary_list[value="'+value+'"]').prop( "disabled", true );
+              field.find('input.secondary_list[value="'+value+'"]').attr('forced-select', 'true');
               //remove hidden fields with secondary dependency if was set
               var hidden = field.find('input.secondary_hidden[value="'+value+'"]');
               if(hidden)
                 hidden.remove();
             });
           };
+          
+          thisField.find('div.hidden_fields_primary').children('input').first().on('backpack:field.disable', function(e) {
+              let input = $(e.target);
+              input.parent().parent().find('input[type=checkbox]').attr('disabled', 'disabled');
+              input.siblings('input').attr('disabled','disabled');
+          });
+
+          thisField.find('div.hidden_fields_primary').children('input').first().on('backpack:field.enable', function(e) {
+              let input = $(e.target);
+              input.parent().parent().find('input[type=checkbox]').not('[forced-select]').removeAttr('disabled');
+              input.siblings('input').removeAttr('disabled');
+          });
+
+          thisField.find('div.hidden_fields_secondary').children('input').first().on('backpack:field.disable', function(e) {
+              let input = $(e.target);
+              input.parent().parent().find('input[type=checkbox]').attr('disabled', 'disabled');
+              input.siblings('input').attr('disabled','disabled');
+          });
+
+          thisField.find('div.hidden_fields_secondary').children('input').first().on('backpack:field.enable', function(e) {
+              let input = $(e.target);
+              input.parent().parent().find('input[type=checkbox]').not('[forced-select]').removeAttr('disabled');
+              input.siblings('input').removeAttr('disabled');
+          });
 
           thisField.find('.primary_list').each(function() {
             var checkbox = $(this);
@@ -257,6 +284,7 @@
                   if(ok){
                     thisField.find('input.secondary_list[value="'+secondaryItem+'"]').prop('checked', false);
                     thisField.find('input.secondary_list[value="'+secondaryItem+'"]').prop('disabled', false);
+                    thisField.find('input.secondary_list[value="'+secondaryItem+'"]').removeAttr('forced-select');
                   }
                 });
 

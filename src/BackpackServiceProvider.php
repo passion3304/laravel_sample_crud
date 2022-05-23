@@ -6,8 +6,6 @@ use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
@@ -57,6 +55,9 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // load the macros
+        include_once __DIR__.'/macros.php';
+
         // Bind the CrudPanel object to Laravel's service container
         $this->app->singleton('crud', function ($app) {
             return new CrudPanel($app);
@@ -66,12 +67,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->app->singleton('widgets', function ($app) {
             return new Collection();
         });
-
-        // load a macro for Route,
-        // helps developers load all routes for a CRUD resource in one line
-        if (! Route::hasMacro('crud')) {
-            $this->addRouteMacro();
-        }
 
         // register the helper functions
         $this->loadHelpers();
@@ -177,47 +172,6 @@ class BackpackServiceProvider extends ServiceProvider
         if (file_exists(base_path().$this->customRoutesFilePath)) {
             $this->loadRoutesFrom(base_path().$this->customRoutesFilePath);
         }
-    }
-
-    /**
-     * The route macro allows developers to generate the routes for a CrudController,
-     * for all operations, using a simple syntax: Route::crud().
-     *
-     * It will go to the given CrudController and get the setupRoutes() method on it.
-     */
-    private function addRouteMacro()
-    {
-        Route::macro('crud', function ($name, $controller) {
-            // put together the route name prefix,
-            // as passed to the Route::group() statements
-            $routeName = '';
-            if ($this->hasGroupStack()) {
-                foreach ($this->getGroupStack() as $key => $groupStack) {
-                    if (isset($groupStack['name'])) {
-                        if (is_array($groupStack['name'])) {
-                            $routeName = implode('', $groupStack['name']);
-                        } else {
-                            $routeName = $groupStack['name'];
-                        }
-                    }
-                }
-            }
-            // add the name of the current entity to the route name prefix
-            // the result will be the current route name (not ending in dot)
-            $routeName .= $name;
-
-            // get an instance of the controller
-            if ($this->hasGroupStack()) {
-                $groupStack = $this->getGroupStack();
-                $groupNamespace = $groupStack && isset(end($groupStack)['namespace']) ? end($groupStack)['namespace'].'\\' : '';
-            } else {
-                $groupNamespace = '';
-            }
-            $namespacedController = $groupNamespace.$controller;
-            $controllerInstance = App::make($namespacedController);
-
-            return $controllerInstance->setupRoutes($name, $routeName, $controller);
-        });
     }
 
     public function loadViewsWithFallbacks()

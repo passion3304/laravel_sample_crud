@@ -456,6 +456,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'binaryCol' => [
             'name'       => 'binaryCol',
@@ -466,6 +467,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'booleanCol' => [
             'name' => 'booleanCol',
@@ -476,6 +478,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values' => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'charCol' => [
             'name'       => 'charCol',
@@ -486,6 +489,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'dateCol' => [
             'name'       => 'dateCol',
@@ -496,6 +500,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'dateTimeCol' => [
             'name'       => 'dateTimeCol',
@@ -506,6 +511,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'dateTimeTzCol' => [
             'name'       => 'dateTimeTzCol',
@@ -516,6 +522,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'decimalCol' => [
             'name'       => 'decimalCol',
@@ -526,6 +533,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'doubleCol' => [
             'name'       => 'doubleCol',
@@ -536,6 +544,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'enumCol' => [
             'name'       => 'enumCol',
@@ -546,6 +555,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'floatCol' => [
             'name'       => 'floatCol',
@@ -556,6 +566,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'integerCol' => [
             'name'       => 'integerCol',
@@ -566,6 +577,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'ipAddressCol' => [
             'name'       => 'ipAddressCol',
@@ -576,6 +588,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'jsonCol' => [
             'name'       => 'jsonCol',
@@ -586,6 +599,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'jsonbCol' => [
             'name'       => 'jsonbCol',
@@ -596,6 +610,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'longTextCol' => [
             'name'       => 'longTextCol',
@@ -606,6 +621,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'macAddressCol' => [
             'name'       => 'macAddressCol',
@@ -616,6 +632,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'mediumIntegerCol' => [
             'name'       => 'mediumIntegerCol',
@@ -626,6 +643,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'mediumTextCol' => [
             'name'       => 'mediumTextCol',
@@ -636,6 +654,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'smallIntegerCol' => [
             'name'       => 'smallIntegerCol',
@@ -646,6 +665,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'stringCol' => [
             'name'       => 'stringCol',
@@ -656,6 +676,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'textCol' => [
             'name'       => 'textCol',
@@ -666,6 +687,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'timeCol' => [
             'name'       => 'timeCol',
@@ -676,6 +698,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'timeTzCol' => [
             'name'       => 'timeTzCol',
@@ -686,6 +709,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'tinyIntegerCol' => [
             'name'       => 'tinyIntegerCol',
@@ -696,6 +720,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'timestampCol' => [
             'name'       => 'timestampCol',
@@ -706,6 +731,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'timestampTzCol' => [
             'name'       => 'timestampTzCol',
@@ -716,6 +742,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
         'uuidCol' => [
             'name'       => 'uuidCol',
@@ -726,6 +753,7 @@ class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
             'values'     => [],
             'attributes' => [],
             'autoset'    => true,
+            'entity' => false,
         ],
     ];
 

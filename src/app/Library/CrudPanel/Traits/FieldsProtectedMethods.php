@@ -138,6 +138,9 @@ trait FieldsProtectedMethods
             return $field;
         }
 
+        // by default, entity is false if we cannot link it with guessing functions to a relation
+        $field['entity'] = false;
+
         // if the name is an array it's definitely not a relationship
         if (is_array($field['name'])) {
             return $field;
@@ -265,6 +268,8 @@ trait FieldsProtectedMethods
                 $subfield = ['name' => $subfield];
             }
 
+            $subfield['parentFieldName'] = is_array($field['name']) ? false : $field['name'];
+
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
                 // we assume all subfields are supposed to be text fields
@@ -289,6 +294,7 @@ trait FieldsProtectedMethods
                 case 'MorphToMany':
                 case 'BelongsToMany':
                     $pivotSelectorField = static::getPivotFieldStructure($field);
+                    $this->setupFieldValidation($pivotSelectorField, $field['name']);
                     $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
                     break;
                 case 'MorphMany':
