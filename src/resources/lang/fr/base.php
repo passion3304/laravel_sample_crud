@@ -66,5 +66,4 @@ return [
     'confirm_new_password' => 'Confirmation du mot de passe',
     'throttled'            => 'Vous avez déjà demandé une réinitialisation de mot de passe récemment. Merci de consulter vos emails. Si vous ne recevez pas notre email, veuillez réessayer plus tard.',
     'throttled_request'    => 'Vous avez dépassé la limite d’essais. S’il vous plait attendez quelques minutes et réessayez.',
-    
 ];
