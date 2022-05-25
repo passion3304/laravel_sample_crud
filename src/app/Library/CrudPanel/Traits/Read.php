@@ -83,6 +83,7 @@ trait Read
                 $this->entry->setLocale($locale);
             }
         }
+
         return $this->entry;
     }
 
