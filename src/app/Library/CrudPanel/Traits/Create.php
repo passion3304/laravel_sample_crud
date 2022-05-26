@@ -298,7 +298,7 @@ trait Create
         $relatedModelLocalKey = $relation->getRelated()->getKeyName();
 
         $relatedItemsSent = [];
-        
+
         foreach ($items as $item) {
             [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($item, $relationDetails, $relationMethod);
             // for each item we get the inputs to create and the relations of it.
@@ -306,9 +306,9 @@ trait Create
 
             // we either find the matched entry by local_key (usually `id`)
             // and update the values from the input
-            // or create a new item from input      
+            // or create a new item from input
             $item = $entry->{$relationMethod}()->updateOrCreate([$relatedModelLocalKey => $relatedModelLocalKeyValue], $directInputs);
- 
+
             // we store the item local key so we can match them with database and check if any item was deleted
             $relatedItemsSent[] = $item->{$relatedModelLocalKey};
 
