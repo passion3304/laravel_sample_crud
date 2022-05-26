@@ -29,6 +29,11 @@
             if(this.input.length === 0) {
                 this.input = this.wrapper.find('input, textarea, select').first();
             }
+
+            // Validate that the field has been found
+            if(this.wrapper.length === 0 || this.input.length === 0) {
+                console.error(`CrudField "${this.name}" was not found.`);
+            }
         }
 
         get value() {
