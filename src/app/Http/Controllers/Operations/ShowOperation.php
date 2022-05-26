@@ -79,7 +79,7 @@ trait ShowOperation
         if ($this->crud->get('show.softDeletes') && in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($this->crud->model))) {
             $this->data['entry'] = $this->crud->getModel()->withTrashed()->findOrFail($id);
         } else {
-            $this->data['entry'] = $this->crud->getEntry($id);
+            $this->data['entry'] = $this->crud->getEntryWithLocale($id);
         }
 
         $this->data['crud'] = $this->crud;
