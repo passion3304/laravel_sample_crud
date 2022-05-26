@@ -302,7 +302,7 @@ trait FieldsProtectedMethods
                     $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
                     $relationInstance = $this->getRelationInstance(['entity' => $entity]);
                     $field['subfields'] = Arr::prepend($field['subfields'], [
-                        'name' => $relationInstance->getLocalKeyName(),
+                        'name' => $relationInstance->getRelated()->getKeyName(),
                         'type' => 'hidden',
                     ]);
                 break;
