@@ -51,6 +51,15 @@
                 closure(event, value, name, type);
             };
 
+            if(this.isSubfield) {
+                window.crud.subfieldsCallbacks =  window.crud.subfieldsCallbacks ?? new Array();
+                window.crud.subfieldsCallbacks[this.subfieldHolder] = window.crud.subfieldsCallbacks[this.subfieldHolder] ?? new Array();
+                if(!window.crud.subfieldsCallbacks[this.subfieldHolder].some( callbacks => callbacks['fieldName'] === this.name )) {
+                    window.crud.subfieldsCallbacks[this.subfieldHolder].push({fieldName:  this.name, closure: closure, field: this});
+                }
+                return this;
+            }
+
             this.input[0]?.addEventListener('input', fieldChanged, false);
             $(this.input).change(fieldChanged);
             fieldChanged();
@@ -99,6 +108,23 @@
 
         uncheck() {
             return this.check(false);
+        }
+
+        subfield(name, rowNumber = false) {
+            let subfield = new CrudField(name);
+            if(!rowNumber) {
+                subfield.isSubfield = true;
+                subfield.subfieldHolder = this.name;
+            }else{
+                subfield.wrapper = $('[data-repeatable-identifier="'+this.name+'"][data-row-number="'+rowNumber+'"]');
+                subfield.input = subfield.wrapper.closest('[data-repeatable-input-name$="'+name+'"][bp-field-main-input]');
+                // if no bp-field-main-input has been declared in the field itself,
+                // assume it's the first input in that wrapper, whatever it is
+                if (subfield.input.length == 0) {
+                    subfield.input = subfield.wrapper.find('input[data-repeatable-input-name$="'+name+'"], textarea[data-repeatable-input-name$="'+name+'"], select[data-repeatable-input-name$="'+name+'"]').first();
+                }
+            }
+            return subfield;
         }
     }
 
