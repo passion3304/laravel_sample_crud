@@ -134,6 +134,7 @@ return [
         'previous' => 'السابق',
     ],
     'export' => [
+        'export'            => 'تصدير',
         'copy'              => 'نسخ',
         'excel'             => 'Excel',
         'csv'               => 'CSV',
