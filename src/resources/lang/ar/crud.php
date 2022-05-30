@@ -10,6 +10,7 @@
     | you want to customize your views to better match your application.
     |
     | Author: https://github.com/allam2002
+    | Updating: https://github.com/EGYWEB-Mohamed
     |
     */
 
@@ -59,7 +60,7 @@ return [
     'clone_success' => '<strong>تم إستنساخ العنصر</strong><br>تم إضافة عنصر جديد بنفس معلومات هذا العنصر.',
     'clone_failure' => '<strong>حدث خطأ</strong><br>لم يتم استنساخ العنصر. الرجاء اعادة المحاولة.',
     'loadingRecords'                          => 'جار التحميل...',
-    'infoPostFix'                             => 'جميع السجلات',
+    'infoPostFix'                             => ' جميع السجلات',
     'details_row_loading_error'               => 'حدث خطأ أثناء تحميل التفاصيل. الرجاء اعادة المحاولة.',
     'delete_confirmation_not_message'         => 'حدث خطأ. ربما لم يتم حذف العنصر.',
     'guest_user'                              => 'حساب زائر',
@@ -93,6 +94,35 @@ return [
     'yes'                                     => 'نعم',
     'delete_confirm'                          => 'هل أنت متأكد أنك تريد حذف هذا العنصر؟',
     'please_fix'                              => 'يرجى تصحيح الأخطاء التالية:',
+
+    // CRUD filters navbar view
+    'apply' => 'تطبيق',
+
+    //filters language strings
+    'today' => 'اليوم',
+    'yesterday' => 'أمس',
+    'last_7_days' => 'أخر 7 أيام',
+    'last_30_days' => 'أخر 30 يوم',
+    'this_month' => 'هذا الشهر',
+    'last_month' => 'الشهر الماضي',
+    'custom_range' => 'مخصص',
+    'weekLabel' => 'أسبوع',
+
+    // InlineCreateOperation
+    'related_entry_created_success' => 'المدخلات المدخلة تم انشائها و اختيارها.',
+    'related_entry_created_error' => 'لا يمكن أنشاء مدخل مرتبط.',
+
+    // returned when no translations found in select inputs
+    'empty_translations' => '(فارغ)',
+
+    // Fields
+    'select_all'                => 'أختر الكل',
+    'select_files'              => 'أختر ملفات',
+    'select_file'               => 'أختر ملف',
+    'new_item'                  => 'عنصر جديد',
+    'select_entry'              => 'اختر مدخل',
+    'select_entries'            => 'اختر مدخلات',
+
     'aria'                                    => [
         'sortAscending'  => ': تفعيل لفرز العمود تصاعدي',
         'sortDescending' => ': تفعيل لفرز العمود تنازلي',
