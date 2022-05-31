@@ -15,6 +15,11 @@
     */
 
 return [
+
+
+
+
+
     'infoFiltered'                            => '(تمت التصفية من إجمالي _MAX_ صف)',
     'thousands'                               => ',',
     'admin'                                   => 'المشرف',
@@ -78,6 +83,7 @@ return [
     'changed_the'                             => 'غيرت',
     'in_the_database'                         => 'في قاعدة البيانات',
     'list'                                    => 'قائمة',
+    'reset'                     => 'تهيئة',
     'all'                                     => 'كل',
     'no'                                      => 'لا',
     'emptyTable'                              => 'لا تتوفر بيانات في الجدول',
