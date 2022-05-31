@@ -15,11 +15,6 @@
     */
 
 return [
-
-
-
-
-
     'infoFiltered'                            => '(تمت التصفية من إجمالي _MAX_ صف)',
     'thousands'                               => ',',
     'admin'                                   => 'المشرف',
