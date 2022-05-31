@@ -295,22 +295,22 @@ trait Create
     {
         $items = $relationDetails['values'][$relationMethod];
 
-        $relation_local_key = $relation->getLocalKeyName();
+        $relatedModelLocalKey = $relation->getRelated()->getKeyName();
 
         $relatedItemsSent = [];
 
         foreach ($items as $item) {
             [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($item, $relationDetails, $relationMethod);
             // for each item we get the inputs to create and the relations of it.
-            $relation_local_key_value = $item[$relation_local_key] ?? null;
+            $relatedModelLocalKeyValue = $item[$relatedModelLocalKey] ?? null;
 
             // we either find the matched entry by local_key (usually `id`)
             // and update the values from the input
             // or create a new item from input
-            $item = $entry->{$relationMethod}()->updateOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
+            $item = $entry->{$relationMethod}()->updateOrCreate([$relatedModelLocalKey => $relatedModelLocalKeyValue], $directInputs);
 
             // we store the item local key so we can match them with database and check if any item was deleted
-            $relatedItemsSent[] = $item->{$relation_local_key};
+            $relatedItemsSent[] = $item->{$relatedModelLocalKey};
 
             // create the item relations if any.
             $this->createRelationsForItem($item, $relationInputs);
@@ -319,7 +319,7 @@ trait Create
         // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.
         if (! empty($relatedItemsSent)) {
             // we perform the cleanup of removed database items
-            $entry->{$relationMethod}()->whereNotIn($relation_local_key, $relatedItemsSent)->delete();
+            $entry->{$relationMethod}()->whereNotIn($relatedModelLocalKey, $relatedItemsSent)->delete();
         }
     }
 }
