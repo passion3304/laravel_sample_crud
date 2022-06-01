@@ -174,7 +174,7 @@ return [
     // InlineCreateOperation
     'related_entry_created_success' => 'L\'elemento correlato è stato creato e selezionato.',
     'related_entry_created_error' => 'Non è possibile creare elementi correlati.',
-    
+
     // returned when no translations found in select inputs
     'empty_translations' => '(nessuna voce)',
 
