@@ -116,7 +116,7 @@
                 subfield.isSubfield = true;
                 subfield.subfieldHolder = this.name;
             }else{
-                subfield.wrapper = $('[data-repeatable-identifier="'+this.name+'"][data-row-number="'+rowNumber+'"]');
+                subfield.wrapper = $('[data-repeatable-identifier="'+this.name+'"][data-row-number="'+rowNumber+'"]').find('[bp-field-wrapper][bp-field-name$="'+name+'"]');
                 subfield.input = subfield.wrapper.closest('[data-repeatable-input-name$="'+name+'"][bp-field-main-input]');
                 // if no bp-field-main-input has been declared in the field itself,
                 // assume it's the first input in that wrapper, whatever it is
