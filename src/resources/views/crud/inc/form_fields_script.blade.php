@@ -9,7 +9,7 @@
     class CrudField {
         constructor(fieldName) {
             this.name = fieldName;
-            this.wrapper = $(`[bp-field-name*="${this.name}"][bp-field-wrapper]`);
+            this.wrapper = $(`[bp-field-name*="${this.name}"][bp-field-wrapper]`).first();
            
             // search input in ancestors
             this.input = this.wrapper.closest('[bp-field-main-input]');
@@ -42,11 +42,11 @@
         }
 
         change(closure) {
-            const fieldChanged = event => {
+            const fieldChanged = (event, values) => {
                 const wrapper = this.input.closest('[bp-field-wrapper=true]');
                 const name = wrapper.attr('bp-field-name');
                 const type = wrapper.attr('bp-field-type');
-                const value = this.input.val();
+                const value = typeof values === 'undefined' ? this.input.val() : values;
 
                 closure(event, value, name, type);
             };
@@ -117,7 +117,7 @@
                 subfield.subfieldHolder = this.name;
             }else{
                 subfield.wrapper = $('[data-repeatable-identifier="'+this.name+'"][data-row-number="'+rowNumber+'"]').find('[bp-field-wrapper][bp-field-name$="'+name+'"]');
-                subfield.input = subfield.wrapper.closest('[data-repeatable-input-name$="'+name+'"][bp-field-main-input]');
+                subfield.input = subfield.wrapper.find('[data-repeatable-input-name$="'+name+'"][bp-field-main-input]');
                 // if no bp-field-main-input has been declared in the field itself,
                 // assume it's the first input in that wrapper, whatever it is
                 if (subfield.input.length == 0) {
