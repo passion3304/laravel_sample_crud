@@ -15,7 +15,7 @@
             this.$input = this.mainInput;
 
             // Validate that the field has been found
-            if(this.wrapper.length === 0 || this.input.length === 0) {
+            if(this.wrapper.length === 0 || !this.input) {
                 console.error(`CrudField "${this.name}" was not found.`);
             }
         }
@@ -68,7 +68,7 @@
                 return this;
             }
 
-            this.$input[0]?.addEventListener('input', fieldChanged, false);
+            this.input?.addEventListener('input', fieldChanged, false);
             this.$input.change(fieldChanged);
             fieldChanged();
 
@@ -85,8 +85,8 @@
             return this;
         }
 
-        hide() {
-            return this.show(false);
+        hide(value = true) {
+            return this.show(!value);
         }
 
         enable(value = true) {
@@ -95,8 +95,8 @@
             return this;
         }
 
-        disable() {
-            return this.enable(false);
+        disable(value = true) {
+            return this.enable(!value);
         }
 
         require(value = true) {
@@ -105,8 +105,8 @@
             return this;
         }
 
-        unrequire() {
-            return this.require(false);
+        unrequire(value = true) {
+            return this.require(!value);
         }
 
         check(value = true) {
@@ -114,8 +114,8 @@
             return this;
         }
 
-        uncheck() {
-            return this.check(false);
+        uncheck(value = true) {
+            return this.check(!value);
         }
 
         subfield(name, rowNumber = false) {
@@ -124,12 +124,12 @@
                 subfield.isSubfield = true;
                 subfield.subfieldHolder = this.name;
             }else{
-                subfield.wrapper = $('[data-repeatable-identifier="'+this.name+'"][data-row-number="'+rowNumber+'"]');
-                subfield.input = subfield.wrapper.closest('[data-repeatable-input-name$="'+name+'"][bp-field-main-input]');
+                subfield.wrapper = $(`[data-repeatable-identifier="${this.name}"][data-row-number="'+rowNumber+'"]`);
+                subfield.input = subfield.wrapper.closest(`[data-repeatable-input-name$="${name}"][bp-field-main-input]`);
                 // if no bp-field-main-input has been declared in the field itself,
                 // assume it's the first input in that wrapper, whatever it is
                 if (subfield.input.length == 0) {
-                    subfield.input = subfield.wrapper.find('input[data-repeatable-input-name$="'+name+'"], textarea[data-repeatable-input-name$="'+name+'"], select[data-repeatable-input-name$="'+name+'"]').first();
+                    subfield.input = subfield.wrapper.find(`input[data-repeatable-input-name$="${name}"], textarea[data-repeatable-input-name$="${name}"], select[data-repeatable-input-name$="${name}"]`).first();
                 }
             }
             return subfield;
