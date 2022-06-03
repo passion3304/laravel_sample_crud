@@ -9,14 +9,19 @@
     class CrudField {
         constructor(name) {
             this.name = name;
-            this.wrapper = $(`[bp-field-name*="${name}"][bp-field-wrapper]`);
+            this.wrapper = $(`[bp-field-name*="${name}"][bp-field-wrapper]`).first();
+
+            if (this.wrapper.length === 0) {
+                console.error(`CrudField error! Could not select WRAPPER for "${this.name}"`);
+            }
+
             this.type = this.wrapper.attr('bp-field-type');
             this.input = this.mainInput[0];
             this.$input = this.mainInput;
 
             // Validate that the field has been found
-            if(this.wrapper.length === 0 || !this.input) {
-                console.error(`CrudField "${this.name}" was not found.`);
+            if(!this.input || this.input.length === 0) {
+                console.error(`CrudField error! Could not select INPUT for "${this.name}"`);
             }
         }
 
@@ -57,7 +62,7 @@
 
         change(closure) {
             const bindedClosure = closure.bind(this);
-            const fieldChanged = event => bindedClosure(this, event);
+            const fieldChanged = (event, values) => bindedClosure(this, event, values);
 
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks =  window.crud.subfieldsCallbacks ?? new Array();
@@ -124,12 +129,12 @@
                 subfield.isSubfield = true;
                 subfield.subfieldHolder = this.name;
             }else{
-                subfield.wrapper = $(`[data-repeatable-identifier="${this.name}"][data-row-number="'+rowNumber+'"]`);
-                subfield.input = subfield.wrapper.closest(`[data-repeatable-input-name$="${name}"][bp-field-main-input]`);
+                subfield.wrapper = $('[data-repeatable-identifier="'+this.name+'"][data-row-number="'+rowNumber+'"]').find('[bp-field-wrapper][bp-field-name$="'+name+'"]');
+                subfield.input = subfield.wrapper.find('[data-repeatable-input-name$="'+name+'"][bp-field-main-input]');
                 // if no bp-field-main-input has been declared in the field itself,
                 // assume it's the first input in that wrapper, whatever it is
                 if (subfield.input.length == 0) {
-                    subfield.input = subfield.wrapper.find(`input[data-repeatable-input-name$="${name}"], textarea[data-repeatable-input-name$="${name}"], select[data-repeatable-input-name$="${name}"]`).first();
+                    subfield.input = subfield.wrapper.find('input[data-repeatable-input-name$="'+name+'"], textarea[data-repeatable-input-name$="'+name+'"], select[data-repeatable-input-name$="'+name+'"]').first();
                 }
             }
             return subfield;
