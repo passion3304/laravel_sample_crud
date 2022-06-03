@@ -11,24 +11,8 @@
             this.name = name;
             this.wrapper = $(`[bp-field-name*="${name}"][bp-field-wrapper]`);
             this.type = this.wrapper.attr('bp-field-type');
-           
-            // search input in ancestors
-            this.input = this.wrapper.closest('[bp-field-main-input]');
-
-            // search input in children
-            if (this.input.length === 0) {
-                this.input = this.wrapper.find('[bp-field-main-input]');
-            }
-
-            // if no bp-field-main-input has been declared in the field itself, try to find an input with that name inside wraper
-            if (this.input.length === 0) {
-                this.input = this.wrapper.find(`input[bp-field-name="${this.name}"], textarea[bp-field-name="${this.name}"], select[bp-field-name="${this.name}"]`).first();
-            }
-
-            // if nothing works, use the first input found in field wrapper.
-            if(this.input.length === 0) {
-                this.input = this.wrapper.find('input, textarea, select').first();
-            }
+            this.input = this.mainInput[0];
+            this.$input = this.mainInput;
 
             // Validate that the field has been found
             if(this.wrapper.length === 0 || this.input.length === 0) {
@@ -37,7 +21,7 @@
         }
 
         get value() {
-            let value = this.input.val();
+            let value = this.input.value;
 
             // Parse the value if it's a number
             if (value.length && !isNaN(value)) {
@@ -45,6 +29,30 @@
             }
 
             return value;
+        }
+
+        get mainInput() {
+            let input;
+
+            // search input in ancestors
+            input = this.wrapper.closest('[bp-field-main-input]');
+
+            // search input in children
+            if (input.length === 0) {
+                input = this.wrapper.find('[bp-field-main-input]');
+            }
+
+            // if no bp-field-main-input has been declared in the field itself, try to find an input with that name inside wraper
+            if (input.length === 0) {
+                input = this.wrapper.find(`input[bp-field-name="${this.name}"], textarea[bp-field-name="${this.name}"], select[bp-field-name="${this.name}"]`).first();
+            }
+
+            // if nothing works, use the first input found in field wrapper.
+            if(input.length === 0) {
+                input = this.wrapper.find('input, textarea, select').first();
+            }
+
+            return input;
         }
 
         change(closure) {
@@ -60,8 +68,8 @@
                 return this;
             }
 
-            this.input[0]?.addEventListener('input', fieldChanged, false);
-            $(this.input).change(fieldChanged);
+            this.$input[0]?.addEventListener('input', fieldChanged, false);
+            this.$input.change(fieldChanged);
             fieldChanged();
 
             return this;
@@ -73,7 +81,7 @@
 
         show(value = true) {
             this.wrapper.toggleClass('d-none', !value);
-            this.input.trigger(`backpack:field.${value ? 'show' : 'hide'}`);
+            this.$input.trigger(`backpack:field.${value ? 'show' : 'hide'}`);
             return this;
         }
 
@@ -82,8 +90,8 @@
         }
 
         enable(value = true) {
-            this.input.attr('disabled', !value && 'disabled');
-            this.input.trigger(`backpack:field.${value ? 'enable' : 'disable'}`);
+            this.$input.attr('disabled', !value && 'disabled');
+            this.$input.trigger(`backpack:field.${value ? 'enable' : 'disable'}`);
             return this;
         }
 
@@ -93,7 +101,7 @@
 
         require(value = true) {
             this.wrapper.toggleClass('required', value);
-            this.input.trigger(`backpack:field.${value ? 'require' : 'unrequire'}`);
+            this.$input.trigger(`backpack:field.${value ? 'require' : 'unrequire'}`);
             return this;
         }
 
