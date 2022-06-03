@@ -11,7 +11,8 @@
             this.name = name;
             this.wrapper = $(`[bp-field-name*="${name}"][bp-field-wrapper]`);
             this.type = this.wrapper.attr('bp-field-type');
-            this.input = this.mainInput;
+            this.input = this.mainInput[0];
+            this.$input = this.mainInput;
 
             // Validate that the field has been found
             if(this.wrapper.length === 0 || this.input.length === 0) {
@@ -20,7 +21,7 @@
         }
 
         get value() {
-            let value = this.input.val();
+            let value = this.input.value;
 
             // Parse the value if it's a number
             if (value.length && !isNaN(value)) {
@@ -67,8 +68,8 @@
                 return this;
             }
 
-            this.input[0]?.addEventListener('input', fieldChanged, false);
-            $(this.input).change(fieldChanged);
+            this.$input[0]?.addEventListener('input', fieldChanged, false);
+            this.$input.change(fieldChanged);
             fieldChanged();
 
             return this;
@@ -80,7 +81,7 @@
 
         show(value = true) {
             this.wrapper.toggleClass('d-none', !value);
-            this.input.trigger(`backpack:field.${value ? 'show' : 'hide'}`);
+            this.$input.trigger(`backpack:field.${value ? 'show' : 'hide'}`);
             return this;
         }
 
@@ -89,8 +90,8 @@
         }
 
         enable(value = true) {
-            this.input.attr('disabled', !value && 'disabled');
-            this.input.trigger(`backpack:field.${value ? 'enable' : 'disable'}`);
+            this.$input.attr('disabled', !value && 'disabled');
+            this.$input.trigger(`backpack:field.${value ? 'enable' : 'disable'}`);
             return this;
         }
 
@@ -100,7 +101,7 @@
 
         require(value = true) {
             this.wrapper.toggleClass('required', value);
-            this.input.trigger(`backpack:field.${value ? 'require' : 'unrequire'}`);
+            this.$input.trigger(`backpack:field.${value ? 'require' : 'unrequire'}`);
             return this;
         }
 
