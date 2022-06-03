@@ -11,24 +11,7 @@
             this.name = name;
             this.wrapper = $(`[bp-field-name*="${name}"][bp-field-wrapper]`);
             this.type = this.wrapper.attr('bp-field-type');
-           
-            // search input in ancestors
-            this.input = this.wrapper.closest('[bp-field-main-input]');
-
-            // search input in children
-            if (this.input.length === 0) {
-                this.input = this.wrapper.find('[bp-field-main-input]');
-            }
-
-            // if no bp-field-main-input has been declared in the field itself, try to find an input with that name inside wraper
-            if (this.input.length === 0) {
-                this.input = this.wrapper.find(`input[bp-field-name="${this.name}"], textarea[bp-field-name="${this.name}"], select[bp-field-name="${this.name}"]`).first();
-            }
-
-            // if nothing works, use the first input found in field wrapper.
-            if(this.input.length === 0) {
-                this.input = this.wrapper.find('input, textarea, select').first();
-            }
+            this.input = this.mainInput;
 
             // Validate that the field has been found
             if(this.wrapper.length === 0 || this.input.length === 0) {
@@ -45,6 +28,30 @@
             }
 
             return value;
+        }
+
+        get mainInput() {
+            let input;
+
+            // search input in ancestors
+            input = this.wrapper.closest('[bp-field-main-input]');
+
+            // search input in children
+            if (input.length === 0) {
+                input = this.wrapper.find('[bp-field-main-input]');
+            }
+
+            // if no bp-field-main-input has been declared in the field itself, try to find an input with that name inside wraper
+            if (input.length === 0) {
+                input = this.wrapper.find(`input[bp-field-name="${this.name}"], textarea[bp-field-name="${this.name}"], select[bp-field-name="${this.name}"]`).first();
+            }
+
+            // if nothing works, use the first input found in field wrapper.
+            if(input.length === 0) {
+                input = this.wrapper.find('input, textarea, select').first();
+            }
+
+            return input;
         }
 
         change(closure) {
