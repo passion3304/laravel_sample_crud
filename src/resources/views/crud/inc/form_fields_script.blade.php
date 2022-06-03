@@ -7,9 +7,10 @@
      * too, by exposing the main components (name, wrapper, input).
      */
     class CrudField {
-        constructor(fieldName) {
-            this.name = fieldName;
-            this.wrapper = $(`[bp-field-name*="${this.name}"][bp-field-wrapper]`);
+        constructor(name) {
+            this.name = name;
+            this.wrapper = $(`[bp-field-name*="${name}"][bp-field-wrapper]`);
+            this.type = this.wrapper.attr('bp-field-type');
            
             // search input in ancestors
             this.input = this.wrapper.closest('[bp-field-main-input]');
@@ -28,6 +29,11 @@
             if(this.input.length === 0) {
                 this.input = this.wrapper.find('input, textarea, select').first();
             }
+
+            // Validate that the field has been found
+            if(this.wrapper.length === 0 || this.input.length === 0) {
+                console.error(`CrudField "${this.name}" was not found.`);
+            }
         }
 
         get value() {
@@ -42,14 +48,8 @@
         }
 
         change(closure) {
-            const fieldChanged = event => {
-                const wrapper = this.input.closest('[bp-field-wrapper=true]');
-                const name = wrapper.attr('bp-field-name');
-                const type = wrapper.attr('bp-field-type');
-                const value = this.input.val();
-
-                closure(event, value, name, type);
-            };
+            const bindedClosure = closure.bind(this);
+            const fieldChanged = event => bindedClosure(this, event);
 
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks =  window.crud.subfieldsCallbacks ?? new Array();
