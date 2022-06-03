@@ -16,11 +16,11 @@
             }
 
             this.type = this.wrapper.attr('bp-field-type');
-            this.input = this.mainInput[0];
             this.$input = this.mainInput;
+            this.input = this.$input[0];
 
             // Validate that the field has been found
-            if(!this.input || this.input.length === 0) {
+            if(!this.input) {
                 console.error(`CrudField error! Could not select INPUT for "${this.name}"`);
             }
         }
@@ -65,10 +65,10 @@
             const fieldChanged = (event, values) => bindedClosure(this, event, values);
 
             if(this.isSubfield) {
-                window.crud.subfieldsCallbacks =  window.crud.subfieldsCallbacks ?? new Array();
-                window.crud.subfieldsCallbacks[this.subfieldHolder] = window.crud.subfieldsCallbacks[this.subfieldHolder] ?? new Array();
+                window.crud.subfieldsCallbacks = window.crud.subfieldsCallbacks ?? [];
+                window.crud.subfieldsCallbacks[this.subfieldHolder] = window.crud.subfieldsCallbacks[this.subfieldHolder] ?? [];
                 if(!window.crud.subfieldsCallbacks[this.subfieldHolder].some( callbacks => callbacks['fieldName'] === this.name )) {
-                    window.crud.subfieldsCallbacks[this.subfieldHolder].push({fieldName:  this.name, closure: closure, field: this});
+                    window.crud.subfieldsCallbacks[this.subfieldHolder].push({fieldName: this.name, closure: closure, field: this});
                 }
                 return this;
             }
@@ -129,12 +129,12 @@
                 subfield.isSubfield = true;
                 subfield.subfieldHolder = this.name;
             }else{
-                subfield.wrapper = $('[data-repeatable-identifier="'+this.name+'"][data-row-number="'+rowNumber+'"]').find('[bp-field-wrapper][bp-field-name$="'+name+'"]');
-                subfield.input = subfield.wrapper.find('[data-repeatable-input-name$="'+name+'"][bp-field-main-input]');
+                subfield.wrapper = $(`[data-repeatable-identifier="${this.name}"][data-row-number="${rowNumber}"]').find('[bp-field-wrapper][bp-field-name$="${name}"]`);
+                subfield.input = subfield.wrapper.find(`[data-repeatable-input-name$="${name}"][bp-field-main-input]`);
                 // if no bp-field-main-input has been declared in the field itself,
                 // assume it's the first input in that wrapper, whatever it is
                 if (subfield.input.length == 0) {
-                    subfield.input = subfield.wrapper.find('input[data-repeatable-input-name$="'+name+'"], textarea[data-repeatable-input-name$="'+name+'"], select[data-repeatable-input-name$="'+name+'"]').first();
+                    subfield.input = subfield.wrapper.find(`input[data-repeatable-input-name$="${name}"], textarea[data-repeatable-input-name$="${name}"], select[data-repeatable-input-name$="${name}"]`).first();
                 }
             }
             return subfield;
