@@ -26,14 +26,7 @@
         }
 
         get value() {
-            let value = this.input.value;
-
-            // Parse the value if it's a number
-            if (value.length && !isNaN(value)) {
-                value = Number(value);
-            }
-
-            return value;
+            return this.input.value;
         }
 
         get mainInput() {
