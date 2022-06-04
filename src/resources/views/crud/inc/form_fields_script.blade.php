@@ -129,13 +129,16 @@
                 subfield.isSubfield = true;
                 subfield.subfieldHolder = this.name;
             }else{
-                subfield.wrapper = $(`[data-repeatable-identifier="${this.name}"][data-row-number="${rowNumber}"]').find('[bp-field-wrapper][bp-field-name$="${name}"]`);
-                subfield.input = subfield.wrapper.find(`[data-repeatable-input-name$="${name}"][bp-field-main-input]`);
+                subfield.rowNumber = rowNumber;
+                subfield.wrapper = $(`[data-repeatable-identifier="${this.name}"][data-row-number="${rowNumber}"]`).find(`[bp-field-wrapper][bp-field-name$="${name}"]`);
+                subfield.$input = subfield.wrapper.find(`[data-repeatable-input-name$="${name}"][bp-field-main-input]`);
                 // if no bp-field-main-input has been declared in the field itself,
                 // assume it's the first input in that wrapper, whatever it is
-                if (subfield.input.length == 0) {
-                    subfield.input = subfield.wrapper.find(`input[data-repeatable-input-name$="${name}"], textarea[data-repeatable-input-name$="${name}"], select[data-repeatable-input-name$="${name}"]`).first();
+                if (subfield.$input.length == 0) {
+                    subfield.$input = subfield.wrapper.find(`input[data-repeatable-input-name$="${name}"], textarea[data-repeatable-input-name$="${name}"], select[data-repeatable-input-name$="${name}"]`).first();
                 }
+
+                subfield.input = subfield.$input[0];
             }
             return subfield;
         }
