@@ -81,7 +81,7 @@
         }
 
         onChange(closure) {
-            this.change(closure);
+            return this.change(closure);
         }
 
         show(value = true) {
