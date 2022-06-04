@@ -75,13 +75,16 @@
 
             this.input?.addEventListener('input', fieldChanged, false);
             this.$input.change(fieldChanged);
-            fieldChanged();
 
             return this;
         }
 
         onChange(closure) {
             return this.change(closure);
+        }
+
+        triggerChange() {
+            this.$input.trigger(`change`);
         }
 
         show(value = true) {
