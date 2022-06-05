@@ -60,7 +60,7 @@
             return input;
         }
 
-        change(closure) {
+        onChange(closure) {
             const bindedClosure = closure.bind(this);
             const fieldChanged = (event, values) => bindedClosure(this, event, values);
 
@@ -79,11 +79,7 @@
             return this;
         }
 
-        onChange(closure) {
-            return this.change(closure);
-        }
-
-        triggerChange() {
+        change() {
             this.$input.trigger(`change`);
         }
 
