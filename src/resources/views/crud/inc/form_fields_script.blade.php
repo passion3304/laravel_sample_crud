@@ -73,6 +73,15 @@
         }
 
         change() {
+            if(this.isSubfield) {
+                if(typeof window.crud.subfieldsCallbacks[this.subfieldHolder].length !== 'undefined') {
+                    window.crud.subfieldsCallbacks[this.subfieldHolder].forEach(item => {
+                        item.triggerChange = true;
+                    });
+                }
+                return this;
+            }
+            
             this.$input.trigger(`change`);
         }
 
