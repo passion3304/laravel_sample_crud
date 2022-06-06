@@ -26,7 +26,7 @@
         }
 
         get value() {
-            return this.input.value;
+            return this.$input.val();
         }
 
         get mainInput() {
