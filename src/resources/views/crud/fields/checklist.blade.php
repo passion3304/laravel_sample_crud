@@ -86,9 +86,18 @@
                     }
                   });
 
-                  hidden_input.val(JSON.stringify(newValue));
+                  hidden_input.val(JSON.stringify(newValue)).trigger('change');
 
                 });
+
+                hidden_input.on('backpack:field.disable', function(e) {
+                      checkboxes.attr('disabled', 'disabled');
+                  });
+
+                hidden_input.on('backpack:field.enable', function(e) {
+                    checkboxes.removeAttr('disabled');
+                });
+
             }
         </script>
         @endLoadOnce
