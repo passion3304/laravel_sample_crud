@@ -66,12 +66,11 @@
                 return this;
             }
 
-            if(typeof this.input !== 'undefined') {
-                if(['text', 'textarea'].includes(this.input.getAttribute('type'))) {
-                    this.input?.addEventListener('input', fieldChanged, false);
-                }
-                this.$input.change(fieldChanged);
+            if(['text', 'textarea'].includes(this.input.getAttribute('type'))) {
+                this.input?.addEventListener('input', fieldChanged, false);
             }
+            this.$input.change(fieldChanged);
+
             return this;
         }
 
