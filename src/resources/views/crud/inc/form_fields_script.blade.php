@@ -9,7 +9,11 @@
     class CrudField {
         constructor(name) {
             this.name = name;
-            this.wrapper = $(`[bp-field-name*="${name}"][bp-field-wrapper]`).first();
+            this.wrapper = $(`[bp-field-name="${name}"][bp-field-wrapper]`).first();
+
+            if (this.wrapper.length === 0) {
+                this.wrapper = $(`[bp-field-name$="${name}"][bp-field-wrapper]`).first();
+            }
 
             if (this.wrapper.length === 0) {
                 console.error(`CrudField error! Could not select WRAPPER for "${this.name}"`);
