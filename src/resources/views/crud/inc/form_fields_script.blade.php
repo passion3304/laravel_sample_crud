@@ -66,7 +66,7 @@
                 return this;
             }
 
-            if(['text', 'textarea'].includes(this.input.getAttribute('type'))) {
+            if(['INPUT', 'TEXTAREA'].includes(this.input.nodeName)) {
                 this.input?.addEventListener('input', fieldChanged, false);
             }
             this.$input.change(fieldChanged);
