@@ -9,52 +9,64 @@
     class CrudField {
         constructor(name) {
             this.name = name;
-            this.wrapper = $(`[bp-field-name="${name}"][bp-field-wrapper]`).first();
+            this.$input = $('input[name="'+this.name+'"], textarea[name="'+this.name+'"], select[name="'+this.name+'"],select[name="'+this.name+'[]"]').first();
+            
+            // get the wraper from the field input or find it in page.
+            this.wrapper = this.inputWrapper;
 
-            if (this.wrapper.length === 0) {
-                this.wrapper = $(`[bp-field-name$="${name}"][bp-field-wrapper]`).first();
-            }
+            // we still need to check if the input was overriden by setting up `bp-field-main-input` on some other element.
+            this.$input = this.mainInput;
 
+            // Validate that the wrapper has been found
             if (this.wrapper.length === 0) {
                 console.error(`CrudField error! Could not select WRAPPER for "${this.name}"`);
             }
 
-            this.type = this.wrapper.attr('bp-field-type');
-            this.$input = this.mainInput;
-            this.input = this.$input[0];
-
             // Validate that the field has been found
-            if(!this.input) {
+            if(this.$input.length === 0) {
                 console.error(`CrudField error! Could not select INPUT for "${this.name}"`);
             }
+
+            this.input = this.$input[0];
+            this.type = this.wrapper.attr('bp-field-type');
+
+            return this;
+
+        }
+
+        get mainInput() {
+            let input = this.wrapper.find('[bp-field-main-input]').first();
+            // if a main input has been specified by developer, use it.
+            if(input.length !== 0) {
+                return input;
+            }
+            // if we don't have any input here, we will try to find it using other selectors or bail out using the first input on the wrapper.
+            if(this.$input.length === 0) {
+                // if no main input has been specified try searching for the field with the corresponding name.
+                input = this.wrapper.find('input[bp-field-name="'+this.name+'"], textarea[bp-field-name="'+this.name+'"], select[bp-field-name="'+this.name+'"], select[bp-field-name="'+this.name+'[]"]').first();
+                
+                // if not input found yet, resort to the first input on the wrapper.
+                if(input.length === 0) {
+                    input = this.wrapper.find('input, textarea, select').first();
+                }
+
+                return input;
+            }
+
+            return this.$input;
+            
         }
 
         get value() {
             return this.$input.val();
         }
 
-        get mainInput() {
-            let input;
-
-            // search input in ancestors
-            input = this.wrapper.closest('[bp-field-main-input]');
-
-            // search input in children
-            if (input.length === 0) {
-                input = this.wrapper.find('[bp-field-main-input]');
+        get inputWrapper() {
+            let wrapper = this.$input.closest('[bp-field-wrapper]');
+            if(wrapper.length === 0) {
+                wrapper = $(`[bp-field-name="${this.name}"][bp-field-wrapper]`).first();
             }
-
-            // if no bp-field-main-input has been declared in the field itself, try to find an input with that name inside wraper
-            if (input.length === 0) {
-                input = this.wrapper.find(`input[bp-field-name="${this.name}"], textarea[bp-field-name="${this.name}"], select[bp-field-name="${this.name}"]`).first();
-            }
-
-            // if nothing works, use the first input found in field wrapper.
-            if(input.length === 0) {
-                input = this.wrapper.find('input, textarea, select').first();
-            }
-
-            return input;
+            return wrapper;
         }
 
         onChange(closure) {
@@ -65,7 +77,7 @@
                 window.crud.subfieldsCallbacks = window.crud.subfieldsCallbacks ?? [];
                 window.crud.subfieldsCallbacks[this.subfieldHolder] = window.crud.subfieldsCallbacks[this.subfieldHolder] ?? [];
                 if(!window.crud.subfieldsCallbacks[this.subfieldHolder].some( callbacks => callbacks['fieldName'] === this.name )) {
-                    window.crud.subfieldsCallbacks[this.subfieldHolder].push({fieldName: this.name, closure: closure, field: this});
+                    window.crud.subfieldsCallbacks[this.subfieldHolder].push({closure: closure, field: this});
                 }
                 return this;
             }
@@ -131,7 +143,8 @@
         }
 
         subfield(name, rowNumber = false) {
-            let subfield = new CrudField(name);
+            let subfield = new CrudField(this.name);
+            subfield.name = name;
             if(!rowNumber) {
                 subfield.isSubfield = true;
                 subfield.subfieldHolder = this.name;
