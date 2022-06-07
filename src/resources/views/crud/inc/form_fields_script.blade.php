@@ -9,12 +9,14 @@
     class CrudField {
         constructor(name) {
             this.name = name;
-            this.$input = $('input[name="'+this.name+'"], textarea[name="'+this.name+'"], select[name="'+this.name+'"],select[name="'+this.name+'[]"]').first();
-            
-            // get the wraper from the field input or find it in page.
+
+            // get the input/textarea/select that has that field name
+            this.$input = $('input[name="'+this.name+'"], textarea[name="'+this.name+'"], select[name="'+this.name+'"], select[name="'+this.name+'[]"]').first();
+
+            // get the field wraper
             this.wrapper = this.inputWrapper;
 
-            // we still need to check if the input was overriden by setting up `bp-field-main-input` on some other element.
+            // in case `bp-field-main-input` is specified on a field input, use that one as input
             this.$input = this.mainInput;
 
             // Validate that the wrapper has been found
@@ -36,17 +38,19 @@
 
         get mainInput() {
             let input = this.wrapper.find('[bp-field-main-input]').first();
-            // if a main input has been specified by developer, use it.
-            if(input.length !== 0) {
+
+            // if a bp-field-main-input has been specified by developer, that's it, use that one
+            if (input.length !== 0) {
                 return input;
             }
-            // if we don't have any input here, we will try to find it using other selectors or bail out using the first input on the wrapper.
-            if(this.$input.length === 0) {
-                // if no main input has been specified try searching for the field with the corresponding name.
+
+            // otherwise, try to find the input using other selectors
+            if (this.$input.length === 0) {
+                // try searching for the field with the corresponding bp-field-name
                 input = this.wrapper.find('input[bp-field-name="'+this.name+'"], textarea[bp-field-name="'+this.name+'"], select[bp-field-name="'+this.name+'"], select[bp-field-name="'+this.name+'[]"]').first();
-                
-                // if not input found yet, resort to the first input on the wrapper.
-                if(input.length === 0) {
+
+                // if not input found yet, just get the first input in that wrapper
+                if (input.length === 0) {
                     input = this.wrapper.find('input, textarea, select').first();
                 }
 
@@ -54,7 +58,7 @@
             }
 
             return this.$input;
-            
+
         }
 
         get value() {
@@ -63,7 +67,7 @@
 
         get inputWrapper() {
             let wrapper = this.$input.closest('[bp-field-wrapper]');
-            if(wrapper.length === 0) {
+            if (wrapper.length === 0) {
                 wrapper = $(`[bp-field-name="${this.name}"][bp-field-wrapper]`).first();
             }
             return wrapper;
@@ -99,7 +103,7 @@
                 }
                 return this;
             }
-            
+
             this.$input.trigger(`change`);
         }
 
