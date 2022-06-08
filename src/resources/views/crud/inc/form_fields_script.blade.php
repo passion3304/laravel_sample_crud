@@ -86,7 +86,7 @@
                 return this;
             }
 
-            if(['INPUT', 'TEXTAREA'].includes(this.input.nodeName)) {
+            if(['INPUT', 'TEXTAREA'].includes(this.input?.nodeName)) {
                 this.input?.addEventListener('input', fieldChanged, false);
             }
             this.$input.change(fieldChanged);
