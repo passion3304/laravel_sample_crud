@@ -1,6 +1,6 @@
 <br>
 <p align="center">
-    <a href="https://backpackforlaravel.com" title="Backpack Logo"><img src="https://backpackforlaravel.com/presentation/img/backpack/logos/backpack_logo_color.png" style="max-width: 600px"></a>
+    <a href="https://backpackforlaravel.com" title="Backpack Logo"><img src="https://backpackforlaravel.com/presentation/img/backpack/logos/backpack_logo_color.png?v=2" style="max-width: 600px"></a>
 <p>
 
 <p align="center">
