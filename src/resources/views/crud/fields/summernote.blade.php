@@ -55,11 +55,11 @@
                 }
             }
 
-            element.on('backpack:field.disable', function(e) {
+            element.on('CrudField:disable', function(e) {
                 element.summernote('disable');
             });
 
-            element.on('backpack:field.enable', function(e) {
+            element.on('CrudField:enable', function(e) {
                 element.summernote('enable');
             });
             

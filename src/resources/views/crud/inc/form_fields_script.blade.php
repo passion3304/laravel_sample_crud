@@ -109,7 +109,7 @@
 
         show(value = true) {
             this.wrapper.toggleClass('d-none', !value);
-            this.$input.trigger(`backpack:field.${value ? 'show' : 'hide'}`);
+            this.$input.trigger(`CrudField:${value ? 'show' : 'hide'}`);
             return this;
         }
 
@@ -119,7 +119,7 @@
 
         enable(value = true) {
             this.$input.attr('disabled', !value && 'disabled');
-            this.$input.trigger(`backpack:field.${value ? 'enable' : 'disable'}`);
+            this.$input.trigger(`CrudField:${value ? 'enable' : 'disable'}`);
             return this;
         }
 
@@ -129,7 +129,7 @@
 
         require(value = true) {
             this.wrapper.toggleClass('required', value);
-            this.$input.trigger(`backpack:field.${value ? 'require' : 'unrequire'}`);
+            this.$input.trigger(`CrudField:${value ? 'require' : 'unrequire'}`);
             return this;
         }
 

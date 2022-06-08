@@ -90,11 +90,11 @@
 
                 });
 
-                hidden_input.on('backpack:field.disable', function(e) {
+                hidden_input.on('CrudField:disable', function(e) {
                       checkboxes.attr('disabled', 'disabled');
                   });
 
-                hidden_input.on('backpack:field.enable', function(e) {
+                hidden_input.on('CrudField:enable', function(e) {
                     checkboxes.removeAttr('disabled');
                 });
 

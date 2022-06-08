@@ -174,7 +174,7 @@
 					$(this).next("input[type=hidden]:not([name='clear_"+fieldName+"[]'])").remove();
 		        });
 
-				element.find('input').on('backpack:field.disable', function(e) {
+				element.find('input').on('CrudField:disable', function(e) {
 					element.children('.backstrap-file').find('input').prop('disabled', 'disabled');
 					element.children('.existing-file').find('.file-preview').each(function(i, el) {
 
@@ -191,7 +191,7 @@
 					});
 				});
 
-				element.on('backpack:field.enable', function(e) {
+				element.on('CrudField:enable', function(e) {
 					element.children('.backstrap-file').find('input').removeAttr('disabled');
 					element.children('.existing-file').find('.file-preview').each(function(i, el) {
 						$(el).find('a.file-clear-button').unbind('click.prevent');
