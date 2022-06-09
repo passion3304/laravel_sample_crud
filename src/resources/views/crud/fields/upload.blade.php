@@ -167,7 +167,7 @@
                 $(this).next("input[type=hidden]").remove();
             });
 
-            element.on('backpack:field.disable', function(e) {
+            element.on('CrudField:disable', function(e) {
               element.children('.backstrap-file').find('input').prop('disabled', 'disabled');
               
               let $deleteButton = element.children('.existing-file').children('a.file_clear_button');
@@ -182,7 +182,7 @@
               }
           });
 
-          element.on('backpack:field.enable', function(e) {
+          element.on('CrudField:enable', function(e) {
             element.children('.backstrap-file').find('input').removeAttr('disabled');
             element.children('.existing-file').children('a.file_clear_button').unbind('click.prevent');
           });
