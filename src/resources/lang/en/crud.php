@@ -174,6 +174,7 @@ return [
     // InlineCreateOperation
     'related_entry_created_success' => 'Related entry has been created and selected.',
     'related_entry_created_error' => 'Could not create related entry.',
+    'inline_saving' => 'Saving...',
 
     // returned when no translations found in select inputs
     'empty_translations' => '(empty)',
