@@ -11,7 +11,7 @@
             this.name = name;
 
             // get the input/textarea/select that has that field name
-            this.$input = $('input[name="'+this.name+'"], textarea[name="'+this.name+'"], select[name="'+this.name+'"], select[name="'+this.name+'[]"]').first();
+            this.$input = $(`input[name="${this.name}"], textarea[name="${this.name}"], select[name="${this.name}"], select[name="${this.name}[]"]`).first();
 
             // get the field wraper
             this.wrapper = this.inputWrapper;
@@ -47,7 +47,7 @@
             // otherwise, try to find the input using other selectors
             if (this.$input.length === 0) {
                 // try searching for the field with the corresponding bp-field-name
-                input = this.wrapper.find('input[bp-field-name="'+this.name+'"], textarea[bp-field-name="'+this.name+'"], select[bp-field-name="'+this.name+'"], select[bp-field-name="'+this.name+'[]"]').first();
+                input = this.wrapper.find(`input[bp-field-name="${this.name}"], textarea[bp-field-name="${this.name}"], select[bp-field-name="${this.name}"], select[bp-field-name="${this.name}[]"]`).first();
 
                 // if not input found yet, just get the first input in that wrapper
                 if (input.length === 0) {
@@ -78,10 +78,9 @@
             const fieldChanged = (event, values) => bindedClosure(this, event, values);
 
             if(this.isSubfield) {
-                window.crud.subfieldsCallbacks = window.crud.subfieldsCallbacks ?? [];
-                window.crud.subfieldsCallbacks[this.subfieldHolder] = window.crud.subfieldsCallbacks[this.subfieldHolder] ?? [];
-                if(!window.crud.subfieldsCallbacks[this.subfieldHolder].some( callbacks => callbacks['fieldName'] === this.name )) {
-                    window.crud.subfieldsCallbacks[this.subfieldHolder].push({closure: closure, field: this});
+                window.crud.subfieldsCallbacks[this.parent.name] ??= [];
+                if(!window.crud.subfieldsCallbacks[this.parent.name].some( callbacks => callbacks['fieldName'] === this.name )) {
+                    window.crud.subfieldsCallbacks[this.parent.name].push({closure, field: this});
                 }
                 return this;
             }
@@ -96,8 +95,8 @@
 
         change() {
             if(this.isSubfield) {
-                if(typeof window.crud.subfieldsCallbacks[this.subfieldHolder].length !== 'undefined') {
-                    window.crud.subfieldsCallbacks[this.subfieldHolder].forEach(item => {
+                if(typeof window.crud.subfieldsCallbacks[this.parent.name].length !== 'undefined') {
+                    window.crud.subfieldsCallbacks[this.parent.name].forEach(item => {
                         item.triggerChange = true;
                     });
                 }
@@ -149,10 +148,11 @@
         subfield(name, rowNumber = false) {
             let subfield = new CrudField(this.name);
             subfield.name = name;
+
             if(!rowNumber) {
                 subfield.isSubfield = true;
-                subfield.subfieldHolder = this.name;
-            }else{
+                subfield.parent = this;
+            } else {
                 subfield.rowNumber = rowNumber;
                 subfield.wrapper = $(`[data-repeatable-identifier="${this.name}"][data-row-number="${rowNumber}"]`).find(`[bp-field-wrapper][bp-field-name$="${name}"]`);
                 subfield.$input = subfield.wrapper.find(`[data-repeatable-input-name$="${name}"][bp-field-main-input]`);
@@ -173,6 +173,9 @@
      */
     window.crud = {
         ...window.crud,
+
+        // Subfields callbacks holder
+        subfieldsCallbacks: [],
 
         // Create a field from a given name
         field: name => new CrudField(name),
