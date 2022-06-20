@@ -329,6 +329,10 @@ trait Search
         return 'crud::columns.text';
     }
 
+    public function getCellViewHtml($column, $entry) {
+        return $this->renderCellView($this->getCellViewName($column), $column, $entry);
+    }
+
     /**
      * Render the given view.
      *
