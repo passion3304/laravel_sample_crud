@@ -99,8 +99,6 @@ trait ListOperation
         return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
     }
 
-    
-
     /**
      * Used with AJAX in the list view (datatables) to show extra information about that row that didn't fit in the table.
      * It defaults to showing some dummy text.
