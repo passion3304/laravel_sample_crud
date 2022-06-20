@@ -95,6 +95,9 @@ trait Search
         }
     }
 
+    /**
+     * Apply the datatables order to the crud query. 
+     */
     public function applyDatatableOrder() {
         if (request()->input('order')) {
             // clear any past orderBy rules
@@ -329,6 +332,13 @@ trait Search
         return 'crud::columns.text';
     }
 
+    /**
+     * Return the column view HTML
+     *
+     * @param  array  $column
+     * @param  object  $entry
+     * @return string
+     */
     public function getCellViewHtml($column, $entry) {
         return $this->renderCellView($this->getCellViewName($column), $column, $entry);
     }
