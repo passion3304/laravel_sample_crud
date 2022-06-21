@@ -239,15 +239,16 @@ trait Validation
     }
 
     /**
-     * Checks if the current crud request is valid against the provided rules
-     * 
-     * @param array $rules
-     * @param array $messages
-     * 
+     * Checks if the current crud request is valid against the provided rules.
+     *
+     * @param  array  $rules
+     * @param  array  $messages
      * @return \Illuminate\Http\Request
      */
-    private function checkRequestValidity($rules, $messages) {
+    private function checkRequestValidity($rules, $messages)
+    {
         $this->getRequest()->validate($rules, $messages);
+
         return $this->getRequest();
     }
 
