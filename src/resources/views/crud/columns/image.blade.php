@@ -19,10 +19,14 @@
     if (preg_match('/^data\:image\//', $column['value'])) { // base64_image
       $href = $src = $column['value'];
     } elseif (isset($column['disk'])) { // image from a different disk (like s3 bucket)
-      $href = $src = Storage::disk($column['disk'])->url($column['prefix'].$column['value']);
-    } elseif (isset($column['disk']) && !empty($column['private_s3_bucket']))  {
-        $href = $src = Storage::disk($column['disk'])
-            ->temporaryUrl($column['prefix'].$column['value'], now()->addMinute());
+    
+      if (!empty($column['private_s3_bucket'])) {
+          $href = $src = Storage::disk($column['disk'])
+              ->temporaryUrl($column['prefix'].$column['value'], now()->addMinute());
+      } else {
+          $href = $src = Storage::disk($column['disk'])->url($column['prefix'].$column['value']);
+      }
+      
     } else { // plain-old image, from a local disk
       $href = $src = asset($column['prefix'] . $column['value']);
     }
