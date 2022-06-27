@@ -79,9 +79,7 @@
 
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks[this.parent.name] ??= [];
-                if(!window.crud.subfieldsCallbacks[this.parent.name].some( callbacks => callbacks['fieldName'] === this.name )) {
-                    window.crud.subfieldsCallbacks[this.parent.name].push({closure, field: this});
-                }
+                window.crud.subfieldsCallbacks[this.parent.name].push({ closure, field: this });
                 return this;
             }
 
