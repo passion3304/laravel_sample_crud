@@ -22,7 +22,7 @@ trait Query
      *     $query->activePosts();
      * });
      *
-     * @param  callable  $function
+     * @param  callable|string  $function
      * @return mixed
      */
     public function addClause($function)
