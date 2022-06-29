@@ -118,6 +118,7 @@ trait Update
                 $result = collect();
 
                 foreach ($relationModels as $model) {
+                    $model = $this->setupRelatedModelLocale($model);
                     // when subfields are NOT set we don't need to get any more values
                     // we just return the plain models as we only need the ids
                     if (! isset($field['subfields'])) {
@@ -157,6 +158,7 @@ trait Update
                     return;
                 }
 
+                $model = $this->setupRelatedModelLocale($model);
                 $model = $this->getModelWithFakes($model);
 
                 // if `entity` contains a dot here it means developer added a main HasOne/MorphOne relation with dot notation
@@ -182,6 +184,24 @@ trait Update
             default:
                 return $relatedModel->{$relationMethod};
         }
+    }
+
+    /**
+     * Set the locale on the related models.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    private function setupRelatedModelLocale($model)
+    {
+        if ($model->translationEnabled()) {
+            $locale = request('_locale', \App::getLocale());
+            if (in_array($locale, array_keys($model->getAvailableLocales()))) {
+                $model->setLocale($locale);
+            }
+        }
+
+        return $model;
     }
 
     /**
