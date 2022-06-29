@@ -268,7 +268,7 @@ trait FieldsProtectedMethods
                 $subfield = ['name' => $subfield];
             }
 
-            $subfield['parentFieldName'] = $field['name'];
+            $subfield['parentFieldName'] = is_array($field['name']) ? false : $field['name'];
 
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
@@ -302,7 +302,7 @@ trait FieldsProtectedMethods
                     $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
                     $relationInstance = $this->getRelationInstance(['entity' => $entity]);
                     $field['subfields'] = Arr::prepend($field['subfields'], [
-                        'name' => $relationInstance->getLocalKeyName(),
+                        'name' => $relationInstance->getRelated()->getKeyName(),
                         'type' => 'hidden',
                     ]);
                 break;

@@ -137,7 +137,7 @@ trait Update
                         case 'BelongsToMany':
                         case 'MorphToMany':
                             // for any given model, we grab the attributes that belong to our pivot table.
-                            $item = $model->pivot->getAttributes();
+                            $item = $model->{$relation->getPivotAccessor()}->getAttributes();
                             $item[$relationMethod] = $model->getKey();
                             $result->push($item);
                             break;
@@ -273,11 +273,12 @@ trait Update
                     // $iterator would be either a string (the attribute in model, eg: street)
                     // or a model instance (eg: AddressModel)
                     $iterator = $relatedModel;
+
                     foreach (explode('.', $name) as $part) {
                         $iterator = $iterator->$part;
                     }
 
-                    Arr::set($result, $name, (! is_string($iterator) && ! is_null($iterator) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
+                    Arr::set($result, $name, (is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
                 }
             }
         }

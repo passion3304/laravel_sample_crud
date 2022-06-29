@@ -18,10 +18,10 @@
 
 @include('crud::fields.inc.wrapper_start')
 
-    <div>
-        <label>{!! $field['label'] !!}</label>
+
+        <label class="d-block">{!! $field['label'] !!}</label>
         @include('crud::fields.inc.translatable_icon')
-    </div>
+
 
     <input type="hidden" value="{{ $optionValue }}" name="{{$field['name']}}" />
 
@@ -62,6 +62,18 @@
             element.find('.form-check input[type=radio]').each(function(index, item) {
                 $(this).attr('id', id+index);
                 $(this).siblings('label').attr('for', id+index);
+            });
+
+            hiddenInput.on('CrudField:disable', function(e) {
+                element.find('.form-check input[type=radio]').each(function(index, item) {
+                    $(this).prop('disabled', true);
+                });
+            });
+
+            hiddenInput.on('CrudField:enable', function(e) {
+                element.find('.form-check input[type=radio]').each(function(index, item) {
+                    $(this).removeAttr('disabled');
+                });
             });
 
             // when one radio input is selected
