@@ -60,9 +60,9 @@ trait Fields
     }
 
     /**
-     * When field is a relationship, Backpack will try to guess some basic attributes from the relation
-     * 
-     * @param array $field
+     * When field is a relationship, Backpack will try to guess some basic attributes from the relation.
+     *
+     * @param  array  $field
      * @return array
      */
     public function makeSureFieldHasRelationshipAttributes($field)
