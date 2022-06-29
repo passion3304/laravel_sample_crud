@@ -186,16 +186,20 @@ trait Update
         }
     }
 
+    /**
+     * Set the locale on the related models 
+     * 
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     private function setupRelatedModelLocale($model)
     {
         if ($model->translationEnabled()) {
             $locale = request('_locale', \App::getLocale());
             if (in_array($locale, array_keys($model->getAvailableLocales()))) {
                 $model->setLocale($locale);
-                $model->useFallbackLocale = request('_use_fallback') ? true : false;
             }
         }
-
         return $model;
     }
 
