@@ -79,9 +79,7 @@
 
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks[this.parent.name] ??= [];
-                if(!window.crud.subfieldsCallbacks[this.parent.name].some( callbacks => callbacks['fieldName'] === this.name )) {
-                    window.crud.subfieldsCallbacks[this.parent.name].push({closure, field: this});
-                }
+                window.crud.subfieldsCallbacks[this.parent.name].push({ closure, field: this });
                 return this;
             }
 
@@ -95,15 +93,12 @@
 
         change() {
             if(this.isSubfield) {
-                if(typeof window.crud.subfieldsCallbacks[this.parent.name].length !== 'undefined') {
-                    window.crud.subfieldsCallbacks[this.parent.name].forEach(item => {
-                        item.triggerChange = true;
-                    });
-                }
-                return this;
+                window.crud.subfieldsCallbacks[this.parent.name]?.forEach(callback => callback.triggerChange = true);
+            } else {
+                this.$input.trigger(`change`);
             }
 
-            this.$input.trigger(`change`);
+            return this;
         }
 
         show(value = true) {
