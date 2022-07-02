@@ -1,7 +1,8 @@
 {{-- switch field --}}
 @php
     $field['value'] = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '0';
-    $field['options'] = $field['options'] ?? false;
+    $field['onLabel'] = $field['onLabel'] ?? '';
+    $field['offLabel'] = $field['offLabel'] ?? '';
     $field['color'] = $field['color'] ?? 'primary';
 @endphp
 
@@ -25,8 +26,8 @@
                 class="switch-input" />
             <span
                 class="switch-slider"
-                data-checked="{{ $field['options'][0] ?? '' }}"
-                data-unchecked="{{ $field['options'][1] ?? '' }}">
+                data-checked="{{ $field['onLabel'] ?? '' }}"
+                data-unchecked="{{ $field['offLabel'] ?? '' }}">
             </span>
         </label>
 
