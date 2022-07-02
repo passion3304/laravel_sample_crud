@@ -151,6 +151,7 @@
 
             if(!rowNumber) {
                 subfield.isSubfield = true;
+                subfield.subfieldHolder = this.name; // deprecated
                 subfield.parent = this;
             } else {
                 subfield.rowNumber = rowNumber;
