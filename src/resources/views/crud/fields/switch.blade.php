@@ -14,7 +14,7 @@
 
     <div class="d-inline-flex">
         {{-- Switch --}}
-        <label class="switch switch-sm switch-label switch-pill switch-{{ $field['color'] }}" style="margin-bottom: 0;">
+        <label class="switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-color: {{ $field['color'] }};">
             <input
                 type="hidden"
                 name="{{ $field['name'] }}"
@@ -82,17 +82,15 @@
     @endLoadOnce
 @endpush
 
-@if(\Str::startsWith($field['color'], '#'))
 @push('crud_fields_styles')
     @loadOnce('bpFieldInitSwitchStyle')
     <style>
-        .switch .switch-input:checked+.switch-slider {
-            background-color: {{ $field['color'] }};
+        .switch-input:checked+.switch-slider {
+            background-color: var(--bg-color);
         }
     </style>
     @endLoadOnce
 @endpush
-@endif
 
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}
