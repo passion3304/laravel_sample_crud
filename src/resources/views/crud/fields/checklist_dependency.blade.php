@@ -207,12 +207,12 @@
             let idCurrent = el.data('id');
             //add hidden field with this value
             let nameInput = field.find('.hidden_fields_primary').data('name');
-            let inputToAdd = $('<input type="hidden" class="primary_hidden" name="'+nameInput+'[]" value="'+idCurrent+'">');
+            if(field.find('input.primary_hidden[value="'+idCurrent+'"]').length === 0) {
+              let inputToAdd = $('<input type="hidden" class="primary_hidden" name="'+nameInput+'[]" value="'+idCurrent+'">');
 
-            field.find('.hidden_fields_primary').append(inputToAdd);
-            field.find('.hidden_fields_primary').find('input').first().val(idCurrent).trigger('change');
-            field.find('.hidden_fields_primary').find('input').first().val()
-
+              field.find('.hidden_fields_primary').append(inputToAdd);
+              field.find('.hidden_fields_primary').find('input.primary_hidden[value="'+idCurrent+'"]').trigger('change');
+            }
             $.each(dependencyJson[idCurrent], function(key, value){
               //check and disable secondies checkbox
               field.find('input.secondary_list[value="'+value+'"]').prop( "checked", true );
