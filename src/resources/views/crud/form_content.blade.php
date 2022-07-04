@@ -48,6 +48,58 @@
       });
     }
 
+    /**
+     * Auto-discover first focusable input
+     * @param {jQuery} form
+     * @return {jQuery}
+     */
+    function getFirstFocusableField(form) {
+        return form.find('input, select, textarea, button')
+            .not('.close')
+            .not('[readonly]')
+            .filter(':visible:first');
+    }
+
+    /**
+     *
+     * @param {jQuery} firstField
+     */
+    function triggerFocusOnFirstInputField(firstField) {
+        if (firstField.hasClass('select2_field')) {
+            return handleFocusOnSelect2Field(firstField);
+        }
+
+        firstField.trigger('focus');
+    }
+
+    /**
+     * 1- Make sure no other select2 input is open in other field to focus on the right one
+     * 2- Check until select2 is initialized
+     * 3- Open select2
+     *
+     * @param {jQuery} firstField
+     */
+    function handleFocusOnSelect2Field(firstField){
+        $('.select2-search__field').remove();
+
+        const checkSelect2 = setTimeout(function () {
+            if (firstField.hasClass('select2-hidden-accessible')) {
+                firstField.select2('open');
+                clearInterval(checkSelect2);
+            }
+        }, 150);
+    }
+
+    /*
+    * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
+    * see: https://github.com/select2/select2/issues/5993
+    * see: https://github.com/jquery/jquery/issues/4382
+    *
+    */
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+    });
+
     jQuery('document').ready(function($){
 
       // trigger the javascript for all fields that have their js defined in a separate method
@@ -113,15 +165,15 @@
           @php
             $focusFieldName = isset($focusField['value']) && is_iterable($focusField['value']) ? $focusField['name'] . '[]' : $focusField['name'];
           @endphp
-          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
+            const focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
         @else
-          var focusField = getFirstFocusableField($('form'));
+            const focusField = getFirstFocusableField($('form'));
         @endif
 
-        fieldOffset = focusField.offset().top,
-        scrollTolerance = $(window).height() / 2;
+        const fieldOffset = focusField.offset().top;
+        const scrollTolerance = $(window).height() / 2;
 
-        triggerFocusOnInputField(focusField);
+        triggerFocusOnFirstInputField(focusField);
 
         if( fieldOffset > scrollTolerance ){
             $('html, body').animate({scrollTop: (fieldOffset - 30)});
@@ -182,64 +234,6 @@
       if (window.location.hash) {
           $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
-
-        /**
-         * Auto-discover first focusable input
-         * @param {jQuery} form
-         * @return {jQuery}
-         */
-          function getFirstFocusableField(form) {
-              return form.find('input, select, textarea, button')
-                  .not('.close')
-                  .not('[readonly]')
-                  .filter(':visible:first');
-          }
-
-        /**
-         *
-         * @param {jQuery} firstField
-         */
-        function triggerFocusOnInputField(firstField) {
-            const bpFieldType = firstField.parent().attr('bp-field-type');
-            const select2FieldTypes = ['select2_from_ajax', 'select2_from_array', 'select2', 'select2_grouped', 'select2_multiple', 'select2_from_ajax_multiple'];
-
-            // Handle select2 fields
-            if (select2FieldTypes.includes(bpFieldType)) {
-                return handleSelect2Field(firstField);
-            }
-
-            firstField.focus();
-        }
-
-        /**
-         *
-         * @param {jQuery} firstField
-         */
-        function handleSelect2Field(firstField){
-            // 1- Make sure no other select2 input is open in other field to focus on the right one
-            $('.select2-search__field').remove();
-
-            // 2- Check until select2 is initialized
-            const checkSelect2 = setTimeout(function () {
-                if (firstField.hasClass('select2-hidden-accessible')) {
-                    // 3- Open select2
-                    firstField.select2('open');
-                    // 4- Stop function
-                    clearInterval(checkSelect2);
-                }
-            }, 100);
-        }
-
-        /*
-        * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
-        * see: https://github.com/select2/select2/issues/5993
-        * see: https://github.com/jquery/jquery/issues/4382
-        *
-        */
-        $(document).on('select2:open', () => {
-            document.querySelector('.select2-search__field').focus();
-        });
-
       });
     </script>
 @endsection
