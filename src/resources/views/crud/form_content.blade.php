@@ -113,15 +113,15 @@
           @php
             $focusFieldName = isset($focusField['value']) && is_iterable($focusField['value']) ? $focusField['name'] . '[]' : $focusField['name'];
           @endphp
-          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0),
+          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
         @else
-          var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
+          var focusField = getFirstFocusableField($('form'));
         @endif
 
         fieldOffset = focusField.offset().top,
         scrollTolerance = $(window).height() / 2;
 
-        focusField.trigger('focus');
+        triggerFocusOnInputField(focusField);
 
         if( fieldOffset > scrollTolerance ){
             $('html, body').animate({scrollTop: (fieldOffset - 30)});
@@ -143,7 +143,7 @@
                         $('[name="' + normalizedProperty + '[]"]') :
                         $('[name="' + normalizedProperty + '"]'),
                         container = field.parents('.form-group');
-            
+
             // iterate the inputs to add invalid classes to fields and red text to the field container.
             container.children('input, textarea, select').each(function() {
                 let containerField = $(this);
@@ -151,14 +151,14 @@
                 containerField.addClass('is-invalid');
                 // get field container
                 let container = containerField.parent('.form-group');
-                
+
                 // if container is a repeatable group we don't want to add red text to the whole group,
                 // we only want to add it to the fields that have errors inside that repeatable.
                 if(!container.hasClass('repeatable-group')){
                   container.addClass('text-danger');
                 }
             });
-            
+
             $.each(messages, function(key, msg){
                 // highlight the input that errored
                 var row = $('<div class="invalid-feedback d-block">' + msg + '</div>');
@@ -182,6 +182,63 @@
       if (window.location.hash) {
           $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
+
+        /**
+         * Auto-discover first focusable input
+         * @param {jQuery} form
+         * @return {jQuery}
+         */
+          function getFirstFocusableField(form) {
+              return form.find('input, select, textarea, button')
+                  .not('.close')
+                  .not('[readonly]')
+                  .filter(':visible:first');
+          }
+
+        /**
+         *
+         * @param {jQuery} firstField
+         */
+        function triggerFocusOnInputField(firstField) {
+            const bpFieldType = firstField.parent().attr('bp-field-type');
+            const select2FieldTypes = ['select2_from_ajax', 'select2_from_array', 'select2', 'select2_grouped', 'select2_multiple', 'select2_from_ajax_multiple'];
+
+            // Handle select2 fields
+            if (select2FieldTypes.includes(bpFieldType)) {
+                return handleSelect2Field(firstField);
+            }
+
+            firstField.focus();
+        }
+
+        /**
+         *
+         * @param {jQuery} firstField
+         */
+        function handleSelect2Field(firstField){
+            // 1- Make sure no other select2 input is open in other field to focus on the right one
+            $('.select2-search__field').remove();
+
+            // 2- Check until select2 is initialized
+            const checkSelect2 = setTimeout(function () {
+                if (firstField.hasClass('select2-hidden-accessible')) {
+                    // 3- Open select2
+                    firstField.select2('open');
+                    // 4- Stop function
+                    clearInterval(checkSelect2);
+                }
+            }, 100);
+        }
+
+        /*
+        * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
+        * see: https://github.com/select2/select2/issues/5993
+        * see: https://github.com/jquery/jquery/issues/4382
+        *
+        */
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
 
       });
     </script>
