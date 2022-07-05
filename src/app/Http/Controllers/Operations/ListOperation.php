@@ -71,10 +71,14 @@ trait ListOperation
     {
         $this->crud->hasAccessOrFail('list');
 
+        $showEntryCount = $this->crud->getOperationSetting('showEntryCount');
+
+        $totalRows = $showEntryCount ? $this->crud->model->count() : 0;
+
         $this->crud->applyUnappliedFilters();
 
-        $totalRows = $this->crud->model->count();
-        $filteredRows = $this->crud->query->toBase()->getCountForPagination();
+        $filteredRows = $showEntryCount ? $this->crud->query->toBase()->getCountForPagination() : 0;
+
         $startIndex = request()->input('start') ?: 0;
         // if a search term was present
         if (request()->input('search') && request()->input('search')['value']) {
