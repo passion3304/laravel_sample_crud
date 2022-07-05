@@ -59,5 +59,5 @@ return [
     'searchOperator' => 'like',
 
     // Displays the `Showing X of XX entries (filtered  from X entries)`
-    'showEntryCount' => true
+    'showEntryCount' => true,
 ];
