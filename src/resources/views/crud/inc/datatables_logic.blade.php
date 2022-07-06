@@ -248,7 +248,10 @@
           searching: @json($crud->getOperationSetting('searchableTable') ?? true),
           ajax: {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
-              "type": "POST"
+              "type": "POST",
+              "data": {
+                "unfilteredQueryCount": "{{$crud->getOperationSetting('unfilteredQueryCount') ?? false}}"
+            },
           },
           dom:
             "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
@@ -257,7 +260,6 @@
       }
   }
   </script>
-
   @include('crud::inc.export_buttons')
 
   <script type="text/javascript">

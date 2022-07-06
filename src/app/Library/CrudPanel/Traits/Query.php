@@ -148,4 +148,68 @@ trait Query
 
         return $this->query->orderBy($column_name, $column_direction);
     }
+
+    /**
+     * navigates the current crud query where clauses to get he columns that should be selected
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return array
+     */
+    public function getQueryColumnsFromWheres($query) {
+        $wheresColumns = [];
+        foreach($query->wheres as $where) {
+            switch($where['type'])  {
+                case 'Basic': {
+                    $wheresColumns[] = $where['column'];
+                }
+                break;
+                case 'Nested': {
+                    $wheres = $where['query']->wheres;
+                    foreach($wheres as $subWhere) {
+                        if($subWhere['type'] === 'Basic') {
+                            $wheresColumns[] = $subWhere['column'];
+                        }
+                        if($subWhere['type'] === 'Exists') {
+                            foreach($subWhere['query']->wheres as $existSubWhere) {
+                                if($existSubWhere['type'] === 'Column') {
+                                    $wheresColumns[] = $existSubWhere['first'];
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+                case 'Column': {
+                    $wheresColumns[] = $where['first'];
+                }
+                break;
+                case 'Exists': {
+                    $wheres = $where['query']->wheres;
+                    foreach($wheres as $subWhere) {
+                        if($subWhere['type'] === 'Column') {
+                            $wheresColumns[] = $subWhere['first'];
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        return $wheresColumns;
+    }
+
+    /**
+     * count of available entries from the current crud query
+     * 
+     * @return int
+     */
+    public function getQueryCount() {
+        $crudQuery = $this->query->toBase()->clone();
+        $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
+        // remove table prefix from select columns and add the model key in case it doesn't exist.
+        $crudQueryColumns = array_map(function($item) { return \Str::afterLast($item,'.'); }, array_merge($crudQueryColumns, [$this->model->getKeyName()]));
+        $crudQueryColumns = array_unique($crudQueryColumns);
+
+        return $crudQuery->newQuery()->select('id')->selectRaw("count('".$this->model->getKeyName()."') as total_rows")->fromSub($crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset'])->select($crudQueryColumns), 'monsters')->get()->first()->total_rows;
+    }
 }

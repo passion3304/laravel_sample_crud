@@ -72,20 +72,18 @@ trait ListOperation
         $this->crud->hasAccessOrFail('list');
 
         $showEntryCount = $this->crud->getOperationSetting('showEntryCount');
-
-        $totalRows = $showEntryCount ? $this->crud->model->count() : 0;
+        
+        $this->crud->setOperationSetting('unfilteredQueryCount', request('unfilteredQueryCount') ?? $this->crud->getOperationSetting('unfilteredQueryCount'));
+        
+        $totalRows = !$showEntryCount ? 0 : $this->crud->getOperationSetting('unfilteredQueryCount') ?? $this->crud->getQueryCount();
 
         $this->crud->applyUnappliedFilters();
-
-        $filteredRows = $showEntryCount ? $this->crud->query->toBase()->getCountForPagination() : 0;
 
         $startIndex = request()->input('start') ?: 0;
         // if a search term was present
         if (request()->input('search') && request()->input('search')['value']) {
             // filter the results accordingly
             $this->crud->applySearchTerm(request()->input('search')['value']);
-            // recalculate the number of filtered rows
-            $filteredRows = $this->crud->count();
         }
         // start the results according to the datatables pagination
         if (request()->input('start')) {
@@ -132,6 +130,8 @@ trait ListOperation
             $this->crud->orderByWithPrefix($this->crud->model->getKeyName(), 'DESC');
         }
 
+        $filteredRows = !$showEntryCount ? 0 : $this->crud->getQueryCount();
+        
         $entries = $this->crud->getEntries();
 
         return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
