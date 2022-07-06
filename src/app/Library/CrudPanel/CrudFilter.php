@@ -102,8 +102,8 @@ class CrudFilter
     public function apply($input = null)
     {
         // before applying filters, store the base query count
-        $this->crud()->setOperationSetting('unfilteredQueryCount', !$this->crud()->getOperationSetting('showEntryCount') ? 0 : (request('unfilteredQueryCount') ?? $this->crud()->getOperationSetting('unfilteredQueryCount') ?? $this->crud()->getQueryCount()));
-        
+        $this->crud()->setOperationSetting('unfilteredQueryCount', ! $this->crud()->getOperationSetting('showEntryCount') ? 0 : (request('unfilteredQueryCount') ?? $this->crud()->getOperationSetting('unfilteredQueryCount') ?? $this->crud()->getQueryCount()));
+
         // mark the field as already applied
         $this->applied(true);
 

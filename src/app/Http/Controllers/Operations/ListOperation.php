@@ -72,10 +72,10 @@ trait ListOperation
         $this->crud->hasAccessOrFail('list');
 
         $showEntryCount = $this->crud->getOperationSetting('showEntryCount');
-        
+
         $this->crud->setOperationSetting('unfilteredQueryCount', request('unfilteredQueryCount') ?? $this->crud->getOperationSetting('unfilteredQueryCount'));
-        
-        $totalRows = !$showEntryCount ? 0 : $this->crud->getOperationSetting('unfilteredQueryCount') ?? $this->crud->getQueryCount();
+
+        $totalRows = ! $showEntryCount ? 0 : $this->crud->getOperationSetting('unfilteredQueryCount') ?? $this->crud->getQueryCount();
 
         $this->crud->applyUnappliedFilters();
 
@@ -130,8 +130,8 @@ trait ListOperation
             $this->crud->orderByWithPrefix($this->crud->model->getKeyName(), 'DESC');
         }
 
-        $filteredRows = !$showEntryCount ? 0 : $this->crud->getQueryCount();
-        
+        $filteredRows = ! $showEntryCount ? 0 : $this->crud->getQueryCount();
+
         $entries = $this->crud->getEntries();
 
         return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
