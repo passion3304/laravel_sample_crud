@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
+
 use Illuminate\Support\Str;
 
 trait Query
@@ -151,26 +152,27 @@ trait Query
     }
 
     /**
-     * return the nested query columns
-     * 
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * return the nested query columns.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return array
      */
-    public function getNestedQueryColumns($query) {
+    public function getNestedQueryColumns($query)
+    {
         return $this->getQueryColumnsFromWheres($query, true);
     }
 
     /**
      * we want to select the minimum possible columns respecting the clauses in the query, so that the count is accurate.
      * for that to happen we will traverse the query `wheres` (Basic, Exists, Nested or Column) to get the correct
-     * column that we need to select in the main model for that "sub query" to work. 
-     * 
+     * column that we need to select in the main model for that "sub query" to work.
+     *
      * For example a base query of: `SELECT * FROM table WHERE (someColumn, smtValue)`, we would return only the `someColumn`
-     * with the objective of replacing the `*` for the specific columns needed, avoiding the selection of 
+     * with the objective of replacing the `*` for the specific columns needed, avoiding the selection of
      * columns that would not have impact in the counting process.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool  $nested used to prevent multiple level nesting as we only need the first level columns  
+     * @param  bool  $nested  used to prevent multiple level nesting as we only need the first level columns
      * @return array
      */
     public function getQueryColumnsFromWheres($query, $nested = false)
@@ -183,10 +185,10 @@ trait Query
                     $wheresColumns[] = $where['column'];
 
                 break;
-                // when it's a nested query we will get the columns that link  
+                // when it's a nested query we will get the columns that link
                 // to the main table from the nested query wheres.
                 case 'Nested':
-                    $wheresColumns = $nested ?: array_merge($wheresColumns, $this->getNestedQueryColumns($where['query']));  
+                    $wheresColumns = $nested ?: array_merge($wheresColumns, $this->getNestedQueryColumns($where['query']));
                 break;
                 // when Column get the "first" key that represent the base table column to link with
                 case 'Column':
@@ -205,6 +207,7 @@ trait Query
                 break;
             }
         }
+
         return $wheresColumns;
     }
 
@@ -240,7 +243,7 @@ trait Query
         $outterQuery = $outterQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
 
         // add the subquery from where the "outter query" will count the results.
-        // this subquery is the "main crud query" without some properties: 
+        // this subquery is the "main crud query" without some properties:
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
