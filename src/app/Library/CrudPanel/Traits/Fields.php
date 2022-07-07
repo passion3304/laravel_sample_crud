@@ -483,6 +483,7 @@ trait Fields
         // eg. \App\Http\Requests\BackpackStrippedRequest
         if (class_exists($setting)) {
             $setting = new $setting();
+
             return $setting($request);
         }
 
