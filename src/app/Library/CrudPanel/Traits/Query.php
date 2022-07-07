@@ -208,12 +208,34 @@ trait Query
     {
         $crudQuery = $this->query->toBase()->clone();
         $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
-        // remove table prefix from select columns and add the model key in case it doesn't exist.
+
+        // merge the model key in the columns array
+        $crudQueryColumns = array_merge($crudQueryColumns, [$this->model->getKeyName()]);
+
+        // remove table prefix from select columns
         $crudQueryColumns = array_map(function ($item) {
             return \Str::afterLast($item, '.');
-        }, array_merge($crudQueryColumns, [$this->model->getKeyName()]));
+        }, $crudQueryColumns);
+
+        // remove possible column name duplicates (when using the column name in combination with table.column name `where('table.column', smt')->where('column', 'smt').
         $crudQueryColumns = array_unique($crudQueryColumns);
 
-        return $crudQuery->newQuery()->select($this->model->getKeyName())->selectRaw("count('".$this->model->getKeyName()."') as total_rows")->fromSub($crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset'])->select($crudQueryColumns), $this->model->getTableWithPrefix())->get()->first()->total_rows;
+        // create an "outter" query, the one that is responsible to do the count of the "crud query".
+        $outterQuery = $crudQuery->newQuery();
+
+        // in this outter query we will select only one column to be counted.
+        $outterQuery = $outterQuery->select($this->model->getKeyName());
+
+        // add the count query in the "outter" query.
+        $outterQuery = $outterQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
+
+        // add the subquery from where the "outter query" will count the results.
+        // this subquery is the "main crud query" without some properties: 
+        // - columns : we manually select the "minimum" columns possible from database.
+        // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
+        $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
+        $outterQuery = $outterQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
+
+        return $outterQuery->get()->first()->total_rows;
     }
 }
