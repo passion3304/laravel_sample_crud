@@ -73,9 +73,11 @@ trait ListOperation
 
         $showEntryCount = $this->crud->getOperationSetting('showEntryCount');
 
-        $this->crud->setOperationSetting('unfilteredQueryCount', request('unfilteredQueryCount') ?? $this->crud->getOperationSetting('unfilteredQueryCount'));
+        $unfilteredQueryCount = request('unfilteredQueryCount') ?? $this->crud->getOperationSetting('unfilteredQueryCount');
 
-        $totalRows = ! $showEntryCount ? 0 : $this->crud->getOperationSetting('unfilteredQueryCount') ?? $this->crud->getQueryCount();
+        $totalRows = ! $showEntryCount ? 0 : $unfilteredQueryCount ?? $this->crud->getQueryCount();
+
+        $this->crud->setOperationSetting('unfilteredQueryCount', $totalRows);
 
         $this->crud->applyUnappliedFilters();
 
