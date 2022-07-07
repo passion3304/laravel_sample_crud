@@ -214,6 +214,6 @@ trait Query
         }, array_merge($crudQueryColumns, [$this->model->getKeyName()]));
         $crudQueryColumns = array_unique($crudQueryColumns);
 
-        return $crudQuery->newQuery()->select('id')->selectRaw("count('".$this->model->getKeyName()."') as total_rows")->fromSub($crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset'])->select($crudQueryColumns), 'monsters')->get()->first()->total_rows;
+        return $crudQuery->newQuery()->select($this->model->getKeyName())->selectRaw("count('".$this->model->getKeyName()."') as total_rows")->fromSub($crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset'])->select($crudQueryColumns), $this->model->getTableWithPrefix())->get()->first()->total_rows;
     }
 }
