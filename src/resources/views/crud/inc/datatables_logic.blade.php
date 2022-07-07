@@ -125,9 +125,7 @@
         localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
       },
       dataTableConfiguration: {
-        @if (!$crud->getOperationSetting('showEntryCount')) 
-        bInfo: false,
-        @endif
+        bInfo: {{ var_export($crud->getOperationSetting('showEntryCount') ?? true) }},
         @if ($crud->getResponsiveTable())
         responsive: {
             details: {

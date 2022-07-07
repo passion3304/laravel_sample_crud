@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
+use Illuminate\Support\Str;
 
 trait Query
 {
@@ -150,40 +151,49 @@ trait Query
     }
 
     /**
-     * navigates the current crud query where clauses to get he columns that should be selected.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * return the nested query columns
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @return array
      */
-    public function getQueryColumnsFromWheres($query)
+    public function getNestedQueryColumns($query) {
+        return $this->getQueryColumnsFromWheres($query, true);
+    }
+
+    /**
+     * we want to select the minimum possible columns respecting the clauses in the query, so that the count is accurate.
+     * for that to happen we will traverse the query `wheres` (Basic, Exists, Nested or Column) to get the correct
+     * column that we need to select in the main model for that "sub query" to work. 
+     * 
+     * For example a base query of: `SELECT * FROM table WHERE (someColumn, smtValue)`, we would return only the `someColumn`
+     * with the objective of replacing the `*` for the specific columns needed, avoiding the selection of 
+     * columns that would not have impact in the counting process.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  bool  $nested used to prevent multiple level nesting as we only need the first level columns  
+     * @return array
+     */
+    public function getQueryColumnsFromWheres($query, $nested = false)
     {
         $wheresColumns = [];
         foreach ($query->wheres as $where) {
             switch ($where['type']) {
+                // case it's a basic where, we just want to select that column.
                 case 'Basic':
                     $wheresColumns[] = $where['column'];
 
                 break;
+                // when it's a nested query we will get the columns that link  
+                // to the main table from the nested query wheres.
                 case 'Nested':
-                    $wheres = $where['query']->wheres;
-                    foreach ($wheres as $subWhere) {
-                        if ($subWhere['type'] === 'Basic') {
-                            $wheresColumns[] = $subWhere['column'];
-                        }
-                        if ($subWhere['type'] === 'Exists') {
-                            foreach ($subWhere['query']->wheres as $existSubWhere) {
-                                if ($existSubWhere['type'] === 'Column') {
-                                    $wheresColumns[] = $existSubWhere['first'];
-                                }
-                            }
-                        }
-                    }
-
+                    $wheresColumns = $nested ?: array_merge($wheresColumns, $this->getNestedQueryColumns($where['query']));  
                 break;
+                // when Column get the "first" key that represent the base table column to link with
                 case 'Column':
                     $wheresColumns[] = $where['first'];
 
                 break;
+                // in case of Exists, we will find in the subquery the query type Column where it links to the main table
                 case 'Exists':
                     $wheres = $where['query']->wheres;
                     foreach ($wheres as $subWhere) {
@@ -195,7 +205,6 @@ trait Query
                 break;
             }
         }
-
         return $wheresColumns;
     }
 
@@ -214,10 +223,11 @@ trait Query
 
         // remove table prefix from select columns
         $crudQueryColumns = array_map(function ($item) {
-            return \Str::afterLast($item, '.');
+            return Str::afterLast($item, '.');
         }, $crudQueryColumns);
 
-        // remove possible column name duplicates (when using the column name in combination with table.column name `where('table.column', smt')->where('column', 'smt').
+        // remove possible column name duplicates (when using the column name in combination with table.column name in some other constrain
+        // for example `where('table.column', smt') and in other place where('column', 'smt').
         $crudQueryColumns = array_unique($crudQueryColumns);
 
         // create an "outter" query, the one that is responsible to do the count of the "crud query".
