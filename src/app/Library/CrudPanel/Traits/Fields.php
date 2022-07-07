@@ -479,6 +479,14 @@ trait Fields
     {
         $setting = $this->getOperationSetting('strippedRequest');
 
+        // if an invokable class was passed
+        // eg. \App\Http\Requests\BackpackStrippedRequest
+        if (class_exists($setting)) {
+            $setting = new $setting();
+            return $setting($request);
+        }
+
+        // if a closure was passed
         if (is_callable($setting)) {
             return $setting($request);
         }
