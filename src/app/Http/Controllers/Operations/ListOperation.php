@@ -135,7 +135,7 @@ trait ListOperation
         }
 
         // after applying filters and search, we re-do the calculations of the entries
-        $filteredRows = ! $showEntryCount ? 0 : $this->crud->getQueryCount();
+        $filteredRows = $showEntryCount ? $this->crud->getQueryCount() : 0;
 
         $entries = $this->crud->getEntries();
 

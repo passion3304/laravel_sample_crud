@@ -152,18 +152,18 @@ trait Query
     }
 
     /**
-     * return the nested query columns.
+     * Return the nested query columns.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return array
      */
-    public function getNestedQueryColumns($query)
+    private function getNestedQueryColumns($query)
     {
         return $this->getQueryColumnsFromWheres($query, true);
     }
 
     /**
-     * we want to select the minimum possible columns respecting the clauses in the query, so that the count is accurate.
+     * We want to select the minimum possible columns respecting the clauses in the query, so that the count is accurate.
      * for that to happen we will traverse the query `wheres` (Basic, Exists, Nested or Column) to get the correct
      * column that we need to select in the main model for that "sub query" to work.
      *
@@ -175,7 +175,7 @@ trait Query
      * @param  bool  $nested  used to prevent multiple level nesting as we only need the first level columns
      * @return array
      */
-    public function getQueryColumnsFromWheres($query, $nested = false)
+    private function getQueryColumnsFromWheres($query, $nested = false)
     {
         $wheresColumns = [];
         foreach ($query->wheres as $where) {
@@ -212,7 +212,7 @@ trait Query
     }
 
     /**
-     * count of available entries from the current crud query.
+     * Do a separate query to get the total number of entries, in an optimized way.
      *
      * @return int
      */

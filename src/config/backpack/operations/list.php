@@ -58,6 +58,6 @@ return [
     // to `ilike` for case-insensitive search
     'searchOperator' => 'like',
 
-    // Displays the `Showing X of XX entries (filtered  from X entries)`
+    // Display the `Showing X of XX entries (filtered  from X entries)`
     'showEntryCount' => true,
 ];
