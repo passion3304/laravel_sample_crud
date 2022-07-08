@@ -484,7 +484,7 @@ trait Fields
         if (class_exists($setting)) {
             $setting = new $setting();
 
-            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting) . ' is not invokable.');
+            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting).' is not invokable.');
         }
 
         // if a closure was passed
