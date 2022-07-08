@@ -212,12 +212,37 @@ trait Query
     }
 
     /**
+     * Return the unfiltered query count first from the request, then operation setting or count it in query.
+     * This represents the crud panel query without any filters or search applied.
+     * 
+     * @return int
+     */
+    public function getUnfilteredQueryCount() {
+        return  $this->getRequest()->input('unfilteredQueryCount') ?? 
+                $this->getOperationSetting('unfilteredQueryCount') ?? 
+                $this->getCurrentQueryCount();
+    }
+
+    /**
+     * Return the current query count.
+     * 
+     * @return int
+     */
+    public function getCurrentQueryCount() {
+        return $this->getQueryCount();
+    }
+
+    /**
      * Do a separate query to get the total number of entries, in an optimized way.
      *
      * @return int
      */
-    public function getQueryCount()
+    private function getQueryCount()
     {
+        if (! $this->getOperationSetting('showEntryCount')) {
+            return 0;
+        }
+
         $crudQuery = $this->query->toBase()->clone();
         $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
 

@@ -71,15 +71,8 @@ trait ListOperation
     {
         $this->crud->hasAccessOrFail('list');
 
-        // should the `Showing 1 of 10 ... ` be displayed ? When it's not displayed we wouldn't do the counting calculations.
-        $showEntryCount = $this->crud->getOperationSetting('showEntryCount');
-
         // how many total entries there is applying the controller/model constrains, before any filtering or search
-        $unfilteredQueryCount = request('unfilteredQueryCount') ?? $this->crud->getOperationSetting('unfilteredQueryCount');
-
-        $totalRows = ! $showEntryCount ? 0 : $unfilteredQueryCount ?? $this->crud->getQueryCount();
-
-        $this->crud->setOperationSetting('unfilteredQueryCount', $totalRows);
+        $this->crud->setOperationSetting('unfilteredQueryCount', $this->crud->getUnfilteredQueryCount());
 
         $this->crud->applyUnappliedFilters();
 
@@ -135,11 +128,11 @@ trait ListOperation
         }
 
         // after applying filters and search, we re-do the calculations of the entries
-        $filteredRows = $showEntryCount ? $this->crud->getQueryCount() : 0;
+        $filteredRows = $this->crud->getCurrentQueryCount();
 
         $entries = $this->crud->getEntries();
 
-        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
+        return $this->crud->getEntriesAsJsonForDatatables($entries, $this->crud->getOperationSetting('unfilteredQueryCount'), $filteredRows, $startIndex);
     }
 
     /**
