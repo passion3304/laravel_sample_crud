@@ -127,8 +127,8 @@ trait ListOperation
             $this->crud->orderByWithPrefix($this->crud->model->getKeyName(), 'DESC');
         }
 
-        // after applying filters and search, we re-do the calculations of the entries
-        $filteredRows = $this->crud->getCurrentQueryCount();
+        // after applying filters and search, we re-do the calculations of the entries count
+        $filteredRows = $this->getOperationSetting('showEntryCount') ? $this->crud->getCurrentQueryCount() : 0;
 
         $entries = $this->crud->getEntries();
 

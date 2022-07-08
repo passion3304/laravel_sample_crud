@@ -219,6 +219,9 @@ trait Query
      */
     public function getUnfilteredQueryCount()
     {
+        if (! $this->getOperationSetting('showEntryCount')) {
+            return 0;
+        }
         return  $this->getRequest()->input('unfilteredQueryCount') ??
                 $this->getOperationSetting('unfilteredQueryCount') ??
                 $this->getCurrentQueryCount();
@@ -241,10 +244,6 @@ trait Query
      */
     private function getQueryCount()
     {
-        if (! $this->getOperationSetting('showEntryCount')) {
-            return 0;
-        }
-
         $crudQuery = $this->query->toBase()->clone();
         $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
 
