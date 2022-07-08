@@ -222,6 +222,7 @@ trait Query
         if (! $this->getOperationSetting('showEntryCount')) {
             return 0;
         }
+
         return  $this->getRequest()->input('unfilteredQueryCount') ??
                 $this->getOperationSetting('unfilteredQueryCount') ??
                 $this->getCurrentQueryCount();
