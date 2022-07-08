@@ -374,7 +374,7 @@ trait Columns
 
         // if there's a model defined, but no attribute
         // guess an attribute using the identifiableAttribute functionality in CrudTrait
-        if (isset($column['model']) && !isset($column['attribute']) && method_exists($column['model'], 'identifiableAttribute')) {
+        if (isset($column['model']) && ! isset($column['attribute']) && method_exists($column['model'], 'identifiableAttribute')) {
             $column['attribute'] = call_user_func([(new $column['model']()), 'identifiableAttribute']);
         }
 
