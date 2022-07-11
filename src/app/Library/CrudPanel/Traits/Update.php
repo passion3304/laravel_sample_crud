@@ -194,7 +194,7 @@ trait Update
      */
     private function setupRelatedModelLocale($model)
     {
-        if ($model->translationEnabled()) {
+        if (method_exists($model, 'translationEnabled') && $model->translationEnabled()) {
             $locale = request('_locale', \App::getLocale());
             if (in_array($locale, array_keys($model->getAvailableLocales()))) {
                 $model->setLocale($locale);
