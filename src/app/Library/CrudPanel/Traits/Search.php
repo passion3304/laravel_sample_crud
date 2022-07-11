@@ -340,7 +340,7 @@ trait Search
      * @param  object  $entry
      * @return string
      */
-    public function getCellViewHtml($column, $entry)
+    public function getTableCellHtml($column, $entry)
     {
         return $this->renderCellView($this->getCellViewName($column), $column, $entry);
     }
