@@ -54,7 +54,6 @@ But professionals don't love Backpack just because it's feature-packed. They als
     <a href="https://backpackforlaravel.com/pricing">Pricing</a> &nbsp; • &nbsp; 
     <a href="https://backpackforlaravel.com/need-freelancer-or-development-team">Services</a> &nbsp; • &nbsp; 
     <a href="https://stackoverflow.com/questions/tagged/backpack-for-laravel">Stack Overflow</a> &nbsp; • &nbsp; 
-    <a href="https://www.reddit.com/r/BackpackForLaravel/">Reddit</a> &nbsp; • &nbsp; 
     <a href="https://backpackforlaravel.com/articles">Blog</a> &nbsp; • &nbsp; 
     <a href="https://backpackforlaravel.com/newsletter">Newsletter</a>
 </p>
