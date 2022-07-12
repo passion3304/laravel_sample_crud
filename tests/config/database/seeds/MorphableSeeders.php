@@ -43,6 +43,14 @@ class MorphableSeeders extends Seeder
             'title' => $faker->title,
         ]]);
 
+        DB::table('planets_non_nullable')->insert([[
+            'title' => $faker->title,
+            'user_id' => '',
+        ], [
+            'title' => $faker->title,
+            'user_id' => '',
+        ]]);
+
         DB::table('comets')->insert([['user_id' => ''], ['user_id' => '']]);
 
         DB::table('bangs')->insert([['name' => 'bang1'], ['name' => 'bang2']]);

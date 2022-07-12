@@ -11,7 +11,7 @@
     <select
         name="{{ $field['name'] }}@if ($field['multiple'])[]@endif"
         @include('crud::fields.inc.attributes')
-        @if ($field['multiple'])multiple @endif
+        @if ($field['multiple'])multiple bp-field-main-input @endif
         >
 
         @if ($field['allows_null'] && !$field['multiple'])

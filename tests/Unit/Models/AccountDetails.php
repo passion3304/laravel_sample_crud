@@ -10,7 +10,7 @@ class AccountDetails extends Model
     use CrudTrait;
 
     protected $table = 'account_details';
-    protected $fillable = ['user_id', 'nickname', 'profile_picture', 'article_id'];
+    protected $fillable = ['user_id', 'nickname', 'profile_picture', 'article_id', 'start_date', 'end_date'];
 
     /**
      * Get the user for the account details.

@@ -13,6 +13,7 @@
         name="{{ $field['name'] }}"
         data-init-function="bpFieldInitSummernoteElement"
         data-options="{{ json_encode($field['options']) }}"
+        bp-field-main-input
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control summernote'])
         >{{ old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
@@ -46,7 +47,25 @@
     @loadOnce('bpFieldInitSummernoteElement')
     <script>
         function bpFieldInitSummernoteElement(element) {
-            element.summernote(element.data('options'));
+             var summernoteOptions = element.data('options');
+
+            let summernotCallbacks = { 
+                onChange: function(contents, $editable) {
+                    element.val(contents).trigger('change');
+                }
+            }
+
+            element.on('CrudField:disable', function(e) {
+                element.summernote('disable');
+            });
+
+            element.on('CrudField:enable', function(e) {
+                element.summernote('enable');
+            });
+            
+            summernoteOptions['callbacks'] = summernotCallbacks;
+            
+            element.summernote(summernoteOptions); 
         }
     </script>
     @endLoadOnce
