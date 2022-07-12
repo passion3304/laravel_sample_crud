@@ -7,7 +7,7 @@
 </p>
 
 
-<h3 align="center">Quickly build an admin interface for your Eloquent models, then customize every little detail.</h3>
+<h3 align="center">Quickly build an admin panel for your Eloquent models, then customize every little detail.</h3>
 
 
 <p align="center">
