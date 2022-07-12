@@ -372,6 +372,12 @@ trait Columns
             $column['relation_type'] = $this->inferRelationTypeFromRelationship($column);
         }
 
+        // if there's a model defined, but no attribute
+        // guess an attribute using the identifiableAttribute functionality in CrudTrait
+        if (isset($column['model']) && ! isset($column['attribute']) && method_exists($column['model'], 'identifiableAttribute')) {
+            $column['attribute'] = (new $column['model'])->identifiableAttribute();
+        }
+
         // check if the column exists in the database (as a db column)
         $column_exists_in_db = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
 
