@@ -28,7 +28,7 @@
 </p>
 
 
-Among its FREE features:
+Among the FREE features of each admin interface:
 - List operation
    - 24 column types
    - 1-1, 1-n and n-n relationships
