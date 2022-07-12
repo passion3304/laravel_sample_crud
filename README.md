@@ -1,7 +1,14 @@
-<br>
 <p align="center">
-    <a href="https://backpackforlaravel.com" title="Backpack Logo"><img src="https://backpackforlaravel.com/presentation/img/backpack/logos/backpack_logo_color.png?v=2" style="max-width: 600px"></a>
-<p>
+    <br>
+    <br>
+    <a href="https://backpackforlaravel.com" title="Backpack Logo"><img src="https://camo.githubusercontent.com/50eeab913baf60d3e0dbc8bd4a7b35e1d18456fad04e353a75a4a444948b1a95/68747470733a2f2f6261636b7061636b666f726c61726176656c2e636f6d2f70726573656e746174696f6e2f696d672f6261636b7061636b2f6c6f676f732f6261636b7061636b5f6c6f676f5f636f6c6f722e706e673f763d32"></a>
+    <br>
+    <br>
+</p>
+
+
+<h3 align="center">Quickly build an admin interface for your Eloquent models, then customize every little detail.</h3>
+
 
 <p align="center">
     <br>
@@ -21,7 +28,7 @@
 </p>
 
 
-Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its FREE features:
+Among its FREE features:
 - List operation
    - 24 column types
    - 1-1, 1-n and n-n relationships
