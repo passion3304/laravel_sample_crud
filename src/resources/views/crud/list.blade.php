@@ -61,6 +61,7 @@
                   <th
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
+                    data-column-name="{{ $column['name'] }}"
                     {{--
                     data-visible-in-table => if developer forced field in table with 'visibleInTable => true'
                     data-visible => regular visibility of the field
