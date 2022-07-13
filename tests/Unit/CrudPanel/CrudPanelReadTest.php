@@ -319,10 +319,6 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     public function testEnableExportButtons()
     {
-        if (! backpack_pro()) {
-            $this->expectException(\Backpack\CRUD\app\Exceptions\BackpackProRequiredException::class);
-        }
-
         $this->crudPanel->enableExportButtons();
         $this->assertTrue($this->crudPanel->exportButtons());
     }
