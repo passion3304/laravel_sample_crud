@@ -67,6 +67,11 @@ return [
         // 'css/app.css' => '',
     ],
 
+    // CSS files that are loaded in all pages, using Laravel's @vite() helper
+    'vite_styles' => [ // resource file_path
+        // 'resources/css/app.css' => '',
+    ],
+
     // ------
     // HEADER
     // ------
@@ -139,8 +144,13 @@ return [
     ],
 
     // JS files that are loaded in all pages, using Laravel's mix() helper
-    'mix_scripts' => [// file_path => manifest_directory_path
+    'mix_scripts' => [ // file_path => manifest_directory_path
         // 'js/app.js' => '',
+    ],
+
+    // JS files that are loaded in all pages, using Laravel's @vite() helper
+    'vite_scripts' => [ // resource file_path
+        // 'resources/js/app.js',
     ],
 
     // -------------
