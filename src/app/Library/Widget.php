@@ -133,11 +133,10 @@ class Widget extends Fluent
                 return $path;
             }
         }
-
         $type = $this->type;
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, config('backpack.base.component_view_namespaces.widgets'));
+        }, array_merge(config('backpack.base.component_view_namespaces.widgets'), $this->crud()->get('viewNamespaces')['widgets'] ?? []));
 
         foreach ($paths as $path) {
             if (view()->exists($path)) {
@@ -146,7 +145,7 @@ class Widget extends Fluent
         }
         // if no view exists, in any of the directories above... no bueno
         if (! backpack_pro()) {
-            throw new BackpackProRequiredException('Cannot find the widget view: '.$viewPath.'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
+            throw new BackpackProRequiredException('Cannot find the widget view in the defined view namespaces. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
         }
         abort(500, 'Cannot find the view for «'.$this->type.'» widget type. Please check for typos.');
     }
@@ -256,6 +255,12 @@ class Widget extends Fluent
 
         return $this;
     }
+
+    public function crud()
+    {
+        return app('crud');
+    }
+
 
     /**
      * Dump and die. Duumps the current object to the screen,

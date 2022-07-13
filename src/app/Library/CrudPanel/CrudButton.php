@@ -273,10 +273,9 @@ class CrudButton
     private function getViewPathsWithFallbacks()
     {
         $type = $this->name;
-
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, config('backpack.crud.view_namespaces.buttons'));
+        }, array_merge(config('backpack.crud.view_namespaces.buttons'), $this->crud()->get('viewNamespaces')['buttons'] ?? []));
 
         return array_merge([$this->content], $paths);
     }
