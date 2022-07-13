@@ -261,7 +261,6 @@ class Widget extends Fluent
         return app('crud');
     }
 
-
     /**
      * Dump and die. Duumps the current object to the screen,
      * so that the developer can see its contents, then stops
