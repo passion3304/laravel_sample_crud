@@ -106,7 +106,7 @@ trait Search
             foreach ((array) request()->input('order') as $order) {
                 $column_number = (int) $order['column'];
                 $column_direction = (strtolower((string) $order['dir']) == 'asc' ? 'ASC' : 'DESC');
-                $column = $this->crud->findColumnById($column_number);
+                $column = $this->findColumnById($column_number);
                 if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
                     // apply the current orderBy rules
                     $this->orderByWithPrefix($column['name'], $column_direction);
@@ -313,7 +313,7 @@ trait Search
             // including the configured view_namespaces
             $columnPaths = array_map(function ($item) use ($column) {
                 return $item.'.'.$column['type'];
-            }, config('backpack.crud.view_namespaces.columns'));
+            }, array_merge(config('backpack.crud.view_namespaces.columns'), $this->get('viewNamespaces')['columns'] ?? []));
 
             // but always fall back to the stock 'text' column
             // if a view doesn't exist
