@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Library;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
-use Backpack\CRUD\app\Library\Traits\HasViewNamespaces;
 use Illuminate\Support\Fluent;
 
 /**
@@ -15,7 +14,6 @@ class Widget extends Fluent
 
     public function __construct($attributes)
     {
-        
         $this->attributes = $attributes;
 
         $this->save();
