@@ -22,14 +22,14 @@ trait HasViewNamespaces
      * with the ones stored for the given domain.
      *
      * @param  string  $domain  (eg. fields, filters, buttons)
-     * @param  null|string  $configNamespace
+     * @param  null|string  $viewNamespacesFromConfigKey
      * @return array
      */
-    public function getAllViewNamespacesFor(string $domain, string $configNamespace = null)
+    public function getAllViewNamespacesFor(string $domain, string $viewNamespacesFromConfigKey = null)
     {
-        $configNamespace ??= $this->getConfigNamespaceFor($domain);
+        $viewNamespacesFromConfig = $this->getViewNamespacesFromConfigFor($domain, $viewNamespacesFromConfigKey);
 
-        return array_unique(array_merge(config($configNamespace) ?? [], $this->getViewNamespacesFor($domain)));
+        return array_unique(array_merge($viewNamespacesFromConfig, $this->getViewNamespacesFor($domain)));
     }
 
     /**
@@ -65,10 +65,11 @@ trait HasViewNamespaces
      * Return the config view_namespace key for the given domain.
      *
      * @param  string  $domain
-     * @return string
+     * @param  null|string  $customConfigKey
+     * @return array
      */
-    private function getConfigNamespaceFor(string $domain)
+    private function getViewNamespacesFromConfigFor(string $domain, null|string $customConfigKey)
     {
-        return 'backpack.crud.view_namespaces.'.$domain;
+        return config($customConfigKey ?? 'backpack.crud.view_namespaces.'.$domain) ?? [];
     }
 }
