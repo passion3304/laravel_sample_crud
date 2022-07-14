@@ -7,9 +7,9 @@ trait HasViewNamespaces
     private $viewNamespaces = [];
 
     /**
-     * Return the namespaces stored for the given domain. 
+     * Return the namespaces stored for the given domain.
      *
-     * @param  string  $domain (eg. fields, filters, buttons)
+     * @param  string  $domain  (eg. fields, filters, buttons)
      * @return array
      */
     private function getViewNamespacesFor(string $domain)
@@ -21,7 +21,7 @@ trait HasViewNamespaces
      * Return the resulting array after merging the base namespaces
      * with the ones stored for the given domain.
      *
-     * @param  string  $domain (eg. fields, filters, buttons)
+     * @param  string  $domain  (eg. fields, filters, buttons)
      * @param  null|string  $configNamespace
      * @return array
      */
@@ -35,7 +35,7 @@ trait HasViewNamespaces
     /**
      * Adds multiple namespaces to a given domain.
      *
-     * @param  string  $domain (eg. fields, filters, buttons)
+     * @param  string  $domain  (eg. fields, filters, buttons)
      * @param  array  $viewNamespaces
      * @return void
      */
@@ -49,7 +49,7 @@ trait HasViewNamespaces
     /**
      * Add a new view namespace for a given domain.
      *
-     * @param  string  $domain (eg. fields, filters, buttons)
+     * @param  string  $domain  (eg. fields, filters, buttons)
      * @param  string  $viewNamespace
      * @return void
      */
