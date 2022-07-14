@@ -313,7 +313,7 @@ trait Search
             // including the configured view_namespaces
             $columnPaths = array_map(function ($item) use ($column) {
                 return $item.'.'.$column['type'];
-            }, array_merge(config('backpack.crud.view_namespaces.columns'), $this->get('viewNamespaces')['columns'] ?? []));
+            }, $this->getViewNamespacesFor('columns'));
 
             // but always fall back to the stock 'text' column
             // if a view doesn't exist
