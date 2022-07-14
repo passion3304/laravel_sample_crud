@@ -7,27 +7,16 @@ trait HasViewNamespaces
     private $viewNamespaces = [];
 
     /**
-     * Return the namespaces stored for the given domain.
-     *
-     * @param  string  $domain  (eg. fields, filters, buttons)
-     * @return array
-     */
-    private function getViewNamespacesFor(string $domain)
-    {
-        return $this->viewNamespaces[$domain] ?? [];
-    }
-
-    /**
      * Return all the view namespaces including the ones stored in the laravel config files.
      *
      * @param  string  $domain  (eg. fields, filters, buttons)
      * @return array
      */
-    public function getAllViewNamespacesFor(string $domain)
+    public function getViewNamespacesFor(string $domain)
     {
         $viewNamespacesFromConfig = $this->getViewNamespacesFromConfigFor($domain);
 
-        return array_unique(array_merge($viewNamespacesFromConfig, $this->getViewNamespacesFor($domain)));
+        return array_unique(array_merge($viewNamespacesFromConfig, $this->viewNamespaces[$domain] ?? []));
     }
 
     /**
@@ -81,6 +70,6 @@ trait HasViewNamespaces
     {
         $viewNamespacesFromConfig = $this->getViewNamespacesFromConfigFor($domain, $viewNamespacesFromConfigKey);
 
-        return array_unique(array_merge($viewNamespacesFromConfig, $this->getAllViewNamespacesFor($domain)));
+        return array_unique(array_merge($viewNamespacesFromConfig, $this->getViewNamespacesFor($domain)));
     }
 }
