@@ -42,7 +42,7 @@ trait HasViewNamespaces
      */
     public function addViewNamespaceFor(string $domain, string $viewNamespace)
     {
-        $this->viewNamespaces[$domain][] = $viewNamespace;  
+        $this->viewNamespaces[$domain][] = $viewNamespace;
     }
 
     /**
