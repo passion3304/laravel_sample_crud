@@ -61,7 +61,7 @@
                         		// including the configured view_namespaces
                         		$columnPaths = array_map(function($item) use ($column) {
                         			return $item.'.'.$column['type'];
-                        		}, $crud->getAllViewNamespacesFor('columns'));
+                        		}, $crud->getViewNamespacesFor('columns'));
 
                         		// but always fall back to the stock 'text' column
                         		// if a view doesn't exist
