@@ -231,7 +231,7 @@ trait Buttons
     }
 
     /**
-     * Get button key from its name
+     * Get button key from its name.
      *
      * @param  string  $buttonName  Button name.
      * @return string
