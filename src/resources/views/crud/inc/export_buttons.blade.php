@@ -106,8 +106,6 @@
         @endif
     ];
 
-    
-
     // move the datatable buttons in the top-right corner and make them smaller
     function moveExportButtonsToTopRight() {
       crud.table.buttons().each(function(button) {
