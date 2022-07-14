@@ -8,7 +8,6 @@
   <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js" type="text/javascript"></script>
   <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js" type="text/javascript"></script>
   <script>
-    
     window.crud.dataTableConfiguration.buttons = [
         @if($crud->get('list.showExportButton'))
         {
