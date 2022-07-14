@@ -15,9 +15,8 @@ trait Buttons
      * Order the CRUD buttons. If certain button names are missing from the given order array
      * they will be pushed to the end of the button collection.
      *
-     *
      * @param  string  $stack  Stack where the buttons belongs. Options: top, line, bottom.
-     * @param  array  $order  Ordered name of the buttons. ['update', 'delete', 'show']
+     * @param  array  $order  Ordered names of the buttons. ['update', 'delete', 'show']
      */
     public function orderButtons(string $stack, array $order)
     {
@@ -174,6 +173,7 @@ trait Buttons
      * Move the most recently added button before or after the given target button. Default is before.
      *
      * @param  string|array  $target  The target button name or array.
+     * @param  string|array  $where  Move 'before' or 'after' the target.
      * @param  string|array  $destination  The destination button name or array.
      * @param  bool  $before  If true, the button will be moved before the target button, otherwise it will be moved after it.
      */
@@ -207,10 +207,10 @@ trait Buttons
     }
 
     /**
-     * Check if a filter exists, by any given attribute.
+     * Check if a button exists, by any given attribute.
      *
-     * @param  string  $attribute  Attribute name on that filter definition array.
-     * @param  string  $value  Value of that attribute on that filter definition array.
+     * @param  string  $attribute  Attribute name on that button definition array.
+     * @param  string  $value  Value of that attribute on that button definition array.
      * @return bool
      */
     public function hasButtonWhere($attribute, $value)
@@ -219,10 +219,10 @@ trait Buttons
     }
 
     /**
-     * Get the first filter where a given attribute has the given value.
+     * Get the first button where a given attribute has the given value.
      *
-     * @param  string  $attribute  Attribute name on that filter definition array.
-     * @param  string  $value  Value of that attribute on that filter definition array.
+     * @param  string  $attribute  Attribute name on that button definition array.
+     * @param  string  $value  Value of that attribute on that button definition array.
      * @return bool
      */
     public function firstButtonWhere($attribute, $value)
@@ -230,12 +230,18 @@ trait Buttons
         return $this->buttons()->firstWhere($attribute, $value);
     }
 
-    public function getButtonKey($buttonName)
+    /**
+     * Get button key from its name
+     *
+     * @param  string  $buttonName  Button name.
+     * @return string
+     */
+    public function getButtonKey($name)
     {
         $array = $this->buttons()->toArray();
 
         foreach ($array as $key => $value) {
-            if ($value->name == $buttonName) {
+            if ($value->name == $name) {
                 return $key;
             }
         }
