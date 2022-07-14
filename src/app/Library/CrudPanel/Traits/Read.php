@@ -349,6 +349,10 @@ trait Read
      */
     public function enableExportButtons()
     {
+        if (! backpack_pro()) {
+            throw new BackpackProRequiredException('Export buttons');
+        }
+        
         $this->setOperationSetting('exportButtons', true);
         $this->setOperationSetting('showTableColumnPicker', true);
         $this->setOperationSetting('showExportButton', true);
