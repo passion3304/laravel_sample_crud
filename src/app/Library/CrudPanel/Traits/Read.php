@@ -354,6 +354,8 @@ trait Read
         }
 
         $this->setOperationSetting('exportButtons', true);
+        $this->setOperationSetting('showTableColumnPicker', true);
+        $this->setOperationSetting('showExportButton', true);
     }
 
     /**
