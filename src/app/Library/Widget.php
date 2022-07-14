@@ -145,7 +145,7 @@ class Widget extends Fluent
         }
         // if no view exists, in any of the directories above... no bueno
         if (! backpack_pro()) {
-            throw new BackpackProRequiredException('Cannot find the widget view in the defined view namespaces. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
+            throw new BackpackProRequiredException('Cannot find the widget view: '.$this->type.'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
         }
         abort(500, 'Cannot find the view for «'.$this->type.'» widget type. Please check for typos.');
     }
