@@ -18,16 +18,14 @@ trait HasViewNamespaces
     }
 
     /**
-     * Return the resulting array after merging the base namespaces
-     * with the ones stored for the given domain.
+     * Return all the view namespaces including the ones stored in the laravel config files.
      *
      * @param  string  $domain  (eg. fields, filters, buttons)
-     * @param  mixed  $viewNamespacesFromConfigKey
      * @return array
      */
-    public function getAllViewNamespacesFor(string $domain, mixed $viewNamespacesFromConfigKey = null)
+    public function getAllViewNamespacesFor(string $domain)
     {
-        $viewNamespacesFromConfig = $this->getViewNamespacesFromConfigFor($domain, $viewNamespacesFromConfigKey);
+        $viewNamespacesFromConfig = $this->getViewNamespacesFromConfigFor($domain);
 
         return array_unique(array_merge($viewNamespacesFromConfig, $this->getViewNamespacesFor($domain)));
     }
@@ -42,7 +40,7 @@ trait HasViewNamespaces
     public function addViewNamespacesFor(string $domain, array $viewNamespaces)
     {
         foreach ((array) $viewNamespaces as $viewNamespace) {
-            $this->addViewNamespace($domain, $viewNamespace);
+            $this->addViewNamespaceFor($domain, $viewNamespace);
         }
     }
 
@@ -62,14 +60,30 @@ trait HasViewNamespaces
     }
 
     /**
-     * Return the config view_namespace key for the given domain.
+     * Return the array of view namespaces for backpack components from the Laravel config files.
+     * It uses the default `backpack.crud.view_namespaces` key or a custom provided key.
      *
      * @param  string  $domain
      * @param  mixed  $customConfigKey
      * @return array
      */
-    private function getViewNamespacesFromConfigFor(string $domain, mixed $customConfigKey)
+    private function getViewNamespacesFromConfigFor(string $domain, mixed $customConfigKey = null)
     {
         return config($customConfigKey ?? 'backpack.crud.view_namespaces.'.$domain) ?? [];
+    }
+
+    /**
+     * Return all the view namespaces using a developer provided config key.
+     * Allow developer to use view namespaces from other config keys.
+     *
+     * @param  string  $domain  (eg. fields, filters, buttons)
+     * @param  string  $viewNamespacesFromConfigKey
+     * @return array
+     */
+    public function getViewNamespacesWithFallbackFor(string $domain, string $viewNamespacesFromConfigKey)
+    {
+        $viewNamespacesFromConfig = $this->getViewNamespacesFromConfigFor($domain, $viewNamespacesFromConfigKey);
+
+        return array_unique(array_merge($viewNamespacesFromConfig, $this->getAllViewNamespacesFor($domain)));
     }
 }
