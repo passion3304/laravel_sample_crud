@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\CRUD\app\Library\Traits\HasViewNamespaces;
 use Illuminate\Support\Fluent;
 
 /**
@@ -14,6 +15,7 @@ class Widget extends Fluent
 
     public function __construct($attributes)
     {
+        
         $this->attributes = $attributes;
 
         $this->save();
@@ -136,7 +138,7 @@ class Widget extends Fluent
         $type = $this->type;
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, array_merge(config('backpack.base.component_view_namespaces.widgets'), $this->crud()->get('viewNamespaces')['widgets'] ?? []));
+        }, app('crud')->getAllViewNamespacesFor('widgets', 'backpack.base.component_view_namespaces.widgets'));
 
         foreach ($paths as $path) {
             if (view()->exists($path)) {
@@ -254,11 +256,6 @@ class Widget extends Fluent
         dump($this);
 
         return $this;
-    }
-
-    public function crud()
-    {
-        return app('crud');
     }
 
     /**

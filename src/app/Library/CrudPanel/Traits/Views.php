@@ -300,7 +300,7 @@ trait Views
         // until you find a view that exists
         $paths = array_map(function ($item) use ($viewPath) {
             return $item.'.'.$viewPath;
-        }, array_merge(config('backpack.crud.view_namespaces.fields'), $this->get('viewNamespaces')['fields'] ?? []));
+        }, $this->getAllViewNamespacesFor('fields'));
 
         foreach ($paths as $path) {
             if (view()->exists($path)) {
