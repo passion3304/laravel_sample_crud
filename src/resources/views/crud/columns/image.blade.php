@@ -20,9 +20,9 @@
       $href = $src = $column['value'];
     } elseif (isset($column['disk'])) { // image from a different disk (like s3 bucket)
     
-      if (!empty($column['private_s3_bucket'])) {
+      if (!empty($column['temporary'])) {
           $href = $src = Storage::disk($column['disk'])
-              ->temporaryUrl($column['prefix'].$column['value'], now()->addMinute());
+              ->temporaryUrl($column['prefix'].$column['value'], now()->addMinutes((int) $column['temporary']));
       } else {
           $href = $src = Storage::disk($column['disk'])->url($column['prefix'].$column['value']);
       }
