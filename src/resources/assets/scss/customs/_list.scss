@@ -24,7 +24,8 @@
     margin-right: 0.4rem;
   }
 
-  #crudTable {
+  #crudTable,
+  table.dataTable {
     margin-top: 0 !important;
 
     &.dtr-inline.collapsed > tbody > tr > .dtr-control:before {
@@ -90,7 +91,7 @@
     }
 
     &[data-has-bulk-actions="1"] {
-      .has-hidden-columns {
+      &.has-hidden-columns {
         thead tr th:first-child,
         tfoot tr th:first-child {
           padding-left: 1.35rem !important;
@@ -108,6 +109,23 @@
           tfoot tr th:first-child {
             padding-left: 2.6rem !important;
           }
+        }
+      }
+    }
+
+    &[data-has-bulk-actions="0"] {
+      &[data-has-details-row="1"],
+      &.has-hidden-columns {
+        thead tr th:first-child,
+        tfoot tr th:first-child {
+          padding-left: 1.8rem !important;
+        }
+      }
+
+      &[data-has-details-row="1"].has-hidden-columns {
+        thead tr th:first-child,
+        tfoot tr th:first-child {
+          padding-left: 3rem !important;
         }
       }
     }
@@ -145,9 +163,19 @@
         margin-right: 0.4rem !important;
     }
 
+    &[data-responsive-table="0"] thead tr th,
     tr td.dataTables_empty,
     tr.dt-hasChild + tr td {
       display: table-cell;
+    }
+  }
+
+  .dataTables_scrollBody {
+    #crudTable[data-responsive-table="0"] {
+      tr th:first-child {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
     }
   }
 

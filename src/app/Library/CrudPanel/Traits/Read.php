@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Exception;
 
 /**
@@ -56,11 +57,44 @@ trait Read
     public function getEntry($id)
     {
         if (! $this->entry) {
-            $this->entry = $this->model->findOrFail($id);
+            $this->entry = $this->getModelWithCrudPanelQuery()->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
 
         return $this->entry;
+    }
+
+    /**
+     * Find and retrieve an entry in the database or fail.
+     * When found, make sure we set the Locale on it.
+     *
+     * @param int The id of the row in the db to fetch.
+     * @return \Illuminate\Database\Eloquent\Model The row in the db.
+     */
+    public function getEntryWithLocale($id)
+    {
+        if (! $this->entry) {
+            $this->entry = $this->getEntry($id);
+        }
+
+        if ($this->entry->translationEnabled()) {
+            $locale = request('_locale', \App::getLocale());
+            if (in_array($locale, array_keys($this->entry->getAvailableLocales()))) {
+                $this->entry->setLocale($locale);
+            }
+        }
+
+        return $this->entry;
+    }
+
+    /**
+     * Return a Model builder instance with the current crud query applied.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getModelWithCrudPanelQuery()
+    {
+        return $this->model->setQuery($this->query->getQuery());
     }
 
     /**
@@ -71,7 +105,7 @@ trait Read
      */
     public function getEntryWithoutFakes($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->getModelWithCrudPanelQuery()->findOrFail($id);
     }
 
     /**
@@ -129,7 +163,7 @@ trait Read
     public function enableDetailsRow()
     {
         if (! backpack_pro()) {
-            abort(500, 'Details row is a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+            throw new BackpackProRequiredException('Details row');
         }
 
         $this->setOperationSetting('detailsRow', true);
@@ -316,10 +350,12 @@ trait Read
     public function enableExportButtons()
     {
         if (! backpack_pro()) {
-            abort(500, 'Export buttons are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+            throw new BackpackProRequiredException('Export buttons');
         }
 
         $this->setOperationSetting('exportButtons', true);
+        $this->setOperationSetting('showTableColumnPicker', true);
+        $this->setOperationSetting('showExportButton', true);
     }
 
     /**

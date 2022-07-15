@@ -18,7 +18,7 @@ class Universe extends Model
     protected $table = 'universes';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'start_date', 'end_date'];
     // protected $hidden = [];
     // protected $dates = [];
 

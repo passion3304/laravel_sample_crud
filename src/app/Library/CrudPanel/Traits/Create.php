@@ -52,7 +52,7 @@ trait Create
         $relationFields = [];
 
         foreach ($fields as $field) {
-            if (isset($field['model']) && $field['model'] !== false) {
+            if (isset($field['model']) && $field['model'] !== false && $field['entity'] !== false) {
                 array_push($relationFields, $field);
             }
 
@@ -256,19 +256,28 @@ trait Create
         $forceDelete = $relationDetails['force_delete'] ?? false;
         $fallbackId = $relationDetails['fallback_id'] ?? false;
 
+        // developer provided a fallback_id he knows what he's doing, just use it.
         if ($fallbackId) {
             return $removedEntries->update([$relationForeignKey => $fallbackId]);
         }
 
+        // developer set force_delete => true, so we don't care if it's nullable or not,
+        // we just follow developer's will
         if ($forceDelete) {
             return $removedEntries->delete();
         }
 
-        if (! $relationColumnIsNullable && $modelInstance->dbColumnHasDefault($relationForeignKey)) {
-            return $removedEntries->update([$relationForeignKey => $modelInstance->getDbColumnDefault($relationForeignKey)]);
+        // get the default that could be set at database level.
+        $dbColumnDefault = $modelInstance->getDbColumnDefault($relationForeignKey);
+
+        // if column is not nullable in database, and there is no column default (null),
+        // we will delete the entry from the database, otherwise it will throw and ugly DB error.
+        if (! $relationColumnIsNullable && $dbColumnDefault === null) {
+            return $removedEntries->delete();
         }
 
-        return $removedEntries->update([$relationForeignKey => null]);
+        // if column is nullable we just set it to the column default (null when it does exist, or the default value when it does).
+        return $removedEntries->update([$relationForeignKey => $dbColumnDefault]);
     }
 
     /**
@@ -286,31 +295,31 @@ trait Create
     {
         $items = $relationDetails['values'][$relationMethod];
 
-        $relation_local_key = $relation->getLocalKeyName();
+        $relatedModelLocalKey = $relation->getRelated()->getKeyName();
 
         $relatedItemsSent = [];
 
         foreach ($items as $item) {
             [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($item, $relationDetails, $relationMethod);
             // for each item we get the inputs to create and the relations of it.
-            $relation_local_key_value = $item[$relation_local_key] ?? null;
+            $relatedModelLocalKeyValue = $item[$relatedModelLocalKey] ?? null;
 
             // we either find the matched entry by local_key (usually `id`)
             // and update the values from the input
             // or create a new item from input
-            $item = $relation->updateOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
+            $item = $entry->{$relationMethod}()->updateOrCreate([$relatedModelLocalKey => $relatedModelLocalKeyValue], $directInputs);
 
-            // we store the item local key do we can match them with database and check if any item was deleted
-            $relatedItemsSent[] = $item->{$relation_local_key};
+            // we store the item local key so we can match them with database and check if any item was deleted
+            $relatedItemsSent[] = $item->{$relatedModelLocalKey};
 
-            // create the item relations if any
+            // create the item relations if any.
             $this->createRelationsForItem($item, $relationInputs);
         }
 
         // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.
         if (! empty($relatedItemsSent)) {
             // we perform the cleanup of removed database items
-            $entry->{$relationMethod}()->whereNotIn($relation_local_key, $relatedItemsSent)->delete();
+            $entry->{$relationMethod}()->whereNotIn($relatedModelLocalKey, $relatedItemsSent)->delete();
         }
     }
 }

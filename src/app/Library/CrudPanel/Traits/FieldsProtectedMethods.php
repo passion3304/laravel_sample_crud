@@ -107,6 +107,10 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasName($field)
     {
+        if (empty($field)) {
+            abort(500, 'Field name can\'t be empty');
+        }
+
         if (is_string($field)) {
             return ['name' => $field];
         }
@@ -134,6 +138,9 @@ trait FieldsProtectedMethods
             return $field;
         }
 
+        // by default, entity is false if we cannot link it with guessing functions to a relation
+        $field['entity'] = false;
+
         // if the name is an array it's definitely not a relationship
         if (is_array($field['name'])) {
             return $field;
@@ -142,16 +149,16 @@ trait FieldsProtectedMethods
         //if the name is dot notation we are sure it's a relationship
         if (strpos($field['name'], '.') !== false) {
             $possibleMethodName = Str::of($field['name'])->before('.');
-            // if it has parameters it's not a relation method.
-            $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $field['name'];
+            // check model method for possibility of being a relationship
+            $field['entity'] = $this->modelMethodIsRelationship($model, $possibleMethodName) ? $field['name'] : false;
 
             return $field;
         }
 
         // if there's a method on the model with this name
         if (method_exists($model, $field['name'])) {
-            // if it has parameters it's not a relation method.
-            $field['entity'] = $this->modelMethodHasParameters($model, $field['name']) ? false : $field['name'];
+            // check model method for possibility of being a relationship
+            $field['entity'] = $this->modelMethodIsRelationship($model, $field['name']);
 
             return $field;
         }
@@ -162,8 +169,8 @@ trait FieldsProtectedMethods
             $possibleMethodName = Str::replaceLast('_id', '', $field['name']);
 
             if (method_exists($model, $possibleMethodName)) {
-                // if it has parameters it's not a relation method.
-                $field['entity'] = $this->modelMethodHasParameters($model, $possibleMethodName) ? false : $possibleMethodName;
+                // check model method for possibility of being a relationship
+                $field['entity'] = $this->modelMethodIsRelationship($model, $possibleMethodName);
 
                 return $field;
             }
@@ -252,10 +259,16 @@ trait FieldsProtectedMethods
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
+            if (empty($field)) {
+                abort(500, 'Field name can\'t be empty');
+            }
+
             // make sure the field definition is an array
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
             }
+
+            $subfield['parentFieldName'] = is_array($field['name']) ? false : $field['name'];
 
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
@@ -281,6 +294,7 @@ trait FieldsProtectedMethods
                 case 'MorphToMany':
                 case 'BelongsToMany':
                     $pivotSelectorField = static::getPivotFieldStructure($field);
+                    $this->setupFieldValidation($pivotSelectorField, $field['name']);
                     $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
                     break;
                 case 'MorphMany':
@@ -288,7 +302,7 @@ trait FieldsProtectedMethods
                     $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
                     $relationInstance = $this->getRelationInstance(['entity' => $entity]);
                     $field['subfields'] = Arr::prepend($field['subfields'], [
-                        'name' => $relationInstance->getLocalKeyName(),
+                        'name' => $relationInstance->getRelated()->getKeyName(),
                         'type' => 'hidden',
                     ]);
                 break;

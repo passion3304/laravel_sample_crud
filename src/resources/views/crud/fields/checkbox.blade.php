@@ -5,7 +5,6 @@
 @endphp
 @include('crud::fields.inc.wrapper_start')
     @include('crud::fields.inc.translatable_icon')
-    <div class="checkbox">
         <input type="hidden" name="{{ $field['name'] }}" value="{{ $field['value'] }}">
     	  <input type="checkbox"
           data-init-function="bpFieldInitCheckbox"
@@ -20,13 +19,12 @@
         	  @endforeach
           @endif
           >
-    	<label class="form-check-label font-weight-normal">{!! $field['label'] !!}</label>
+    	<label class="font-weight-normal mb-0">{!! $field['label'] !!}</label>
 
         {{-- HINT --}}
         @if (isset($field['hint']))
             <p class="help-block">{!! $field['hint'] !!}</p>
         @endif
-    </div>
 @include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
@@ -42,7 +40,7 @@
                 var id = 'checkbox_'+Math.floor(Math.random() * 1000000);
 
                 // make sure the value is a boolean (so it will pass validation)
-                if (hidden_element.val() === '') hidden_element.val(0);
+                if (hidden_element.val() === '') hidden_element.val(0).trigger('change');
 
                 // set unique IDs so that labels are correlated with inputs
                 element.attr('id', id);
@@ -56,13 +54,20 @@
                   element.prop('checked', false);
                 }
 
+                hidden_element.on('CrudField:disable', function(e) {
+                  element.prop('disabled', true);
+                });
+                hidden_element.on('CrudField:enable', function(e) {
+                  element.removeAttr('disabled');
+                });
+
                 // when the checkbox is clicked
                 // set the correct value on the hidden input
                 element.change(function() {
                   if (element.is(":checked")) {
-                    hidden_element.val(1);
+                    hidden_element.val(1).trigger('change');
                   } else {
-                    hidden_element.val(0);
+                    hidden_element.val(0).trigger('change');
                   }
                 })
             }

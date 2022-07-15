@@ -1,11 +1,14 @@
-<br>
 <p align="center">
-    <a href="https://backpackforlaravel.com" title="Backpack Logo"><img src="https://backpackforlaravel.com/presentation/img/backpack/logos/backpack_logo_color.png" style="max-width: 600px"></a>
-<p>
-
-<p align="center">
-    <a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://backpackforlaravel.com/presentation/img/backpack/backpack_hero_screenshots.png"></a>
+    <br>
+    <br>
+    <a href="https://backpackforlaravel.com" title="Backpack Logo"><img src="https://camo.githubusercontent.com/50eeab913baf60d3e0dbc8bd4a7b35e1d18456fad04e353a75a4a444948b1a95/68747470733a2f2f6261636b7061636b666f726c61726176656c2e636f6d2f70726573656e746174696f6e2f696d672f6261636b7061636b2f6c6f676f732f6261636b7061636b5f6c6f676f5f636f6c6f722e706e673f763d32"></a>
+    <br>
+    <br>
 </p>
+
+
+<h3 align="center">Quickly build an admin panel for your Eloquent models, then customize every little detail.</h3>
+
 
 <p align="center">
     <br>
@@ -18,20 +21,14 @@
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://img.shields.io/scrutinizer/coverage/g/laravel-backpack/crud.svg?style=flat-square"></a>
     <a href="LICENSE.md" title="Software License"><img src="https://img.shields.io/github/license/laravel-backpack/crud?style=flat-square"></a>
     <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen?style=flat-square" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
-    <br><br>
-    <a href="https://backpackforlaravel.com/">Website</a> | 
-    <a href="https://backpackforlaravel.com/docs/">Documentation</a> | 
-    <a href="https://backpackforlaravel.com/addons">Add-ons</a> | 
-    <a href="https://backpackforlaravel.com/pricing">Pricing</a> |
-    <a href="https://backpackforlaravel.com/need-freelancer-or-development-team">Services</a> | 
-    <a href="https://stackoverflow.com/questions/tagged/backpack-for-laravel">Stack Overflow</a> | 
-    <a href="https://www.reddit.com/r/BackpackForLaravel/">Reddit</a> | 
-    <a href="https://backpackforlaravel.com/articles">Blog</a> | 
-    <a href="https://backpackforlaravel.com/newsletter">Newsletter</a>
+</p>
+
+<p align="center">
+    <a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif"></a>
 </p>
 
 
-Quickly build an admin interface for your Eloquent models. Then customize every little detail. Among its FREE features:
+Among the FREE features of each admin interface:
 - List operation
    - 24 column types
    - 1-1, 1-n and n-n relationships
@@ -55,11 +52,22 @@ Quickly build an admin interface for your Eloquent models. Then customize every 
 
 But professionals don't love Backpack just because it's feature-packed. They also love it because it's ridiculously easy to override a functionality. Generally, you just need to create a function with the right name or create a blade file with the right name. Yes, it can be _that_ easy. See why thousands of Laravel professionals have been using Backpack, every day, since 2016.
 
-## Screenshots
+## Links
 
-![https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif](https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif)
+<p align="left">
+    <a href="https://backpackforlaravel.com/">Website</a> &nbsp; • &nbsp; 
+    <a href="https://backpackforlaravel.com/docs/">Documentation</a> &nbsp; • &nbsp;  
+    <a href="https://backpackforlaravel.com/addons">Add-ons</a> &nbsp; • &nbsp; 
+    <a href="https://backpackforlaravel.com/pricing">Pricing</a> &nbsp; • &nbsp; 
+    <a href="https://backpackforlaravel.com/need-freelancer-or-development-team">Services</a> &nbsp; • &nbsp; 
+    <a href="https://stackoverflow.com/questions/tagged/backpack-for-laravel">Stack Overflow</a> &nbsp; • &nbsp; 
+    <a href="https://backpackforlaravel.com/articles">Blog</a> &nbsp; • &nbsp; 
+    <a href="https://backpackforlaravel.com/newsletter">Newsletter</a>
+</p>
 
-The GIF above should give you with a good idea about what Backpack will help you build. But you can also see it in action in our [live demo](https://demo.backpackforlaravel.com/admin), to get a deeper understanding of how Backpack admin panels look & feel and the amount of features it provides.
+## Demo
+
+Please see [demo.backpackforlaravel.com](https://demo.backpackforlaravel.com/admin).
 
 ## Getting started
 

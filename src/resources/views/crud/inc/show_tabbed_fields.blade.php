@@ -7,23 +7,6 @@
     }
 @endphp
 
-@push('crud_fields_styles')
-    <style>
-        .nav-tabs-custom {
-            box-shadow: none;
-        }
-        .nav-tabs-custom > .nav-tabs.nav-stacked > li {
-            margin-right: 0;
-        }
-
-        .tab-pane .form-group h1:first-child,
-        .tab-pane .form-group h2:first-child,
-        .tab-pane .form-group h3:first-child {
-            margin-top: 0;
-        }
-    </style>
-@endpush
-
 @if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
 <div class="card">
     <div class="card-body row">
@@ -65,4 +48,33 @@
         </div>
     </div>
 </div>
+
+@push('crud_fields_styles')
+    <style>
+        .nav-tabs-custom {
+            box-shadow: none;
+        }
+        .nav-tabs-custom > .nav-tabs.nav-stacked > li {
+            margin-right: 0;
+        }
+
+        .tab-pane .form-group h1:first-child,
+        .tab-pane .form-group h2:first-child,
+        .tab-pane .form-group h3:first-child {
+            margin-top: 0;
+        }
+
+        /*  
+            when select2 is multiple and it's not on the first displayed tab the placeholder would
+            not display correctly because the element was not "visible" on the page (hidden by tab)
+            thus getting `0px` width. This makes sure that the placeholder element is always 100% width
+            by preventing the select2 inline style (0px) from applying using !important
+        */
+        .select2-container, 
+        .select2-container li:only-child,
+        .select2-container input:placeholder-shown {
+            width: 100% !important;
+        }
+    </style>
+@endpush
 

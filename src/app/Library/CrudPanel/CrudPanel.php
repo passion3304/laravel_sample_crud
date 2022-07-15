@@ -14,6 +14,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\HasViewNamespaces;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Input;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
@@ -38,7 +39,7 @@ use Illuminate\Support\Arr;
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Input, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships;
+    use Create, Read, Search, Update, Delete, Input, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships, HasViewNamespaces;
     // allow developers to add their own closures to this object
     use Macroable;
 
@@ -488,23 +489,5 @@ class CrudPanel
         }
 
         return $results;
-    }
-
-    /**
-     * Check if the method in the given model has any parameters.
-     *
-     * @param  object  $model
-     * @param  string  $method
-     * @return bool
-     */
-    private function modelMethodHasParameters($model, $method)
-    {
-        $reflectClassMethod = new \ReflectionMethod(get_class($model), $method);
-
-        if ($reflectClassMethod->getNumberOfParameters() > 0) {
-            return true;
-        }
-
-        return false;
     }
 }

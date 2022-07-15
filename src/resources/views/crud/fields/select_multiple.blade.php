@@ -25,6 +25,7 @@
     	class="form-control"
         name="{{ $field['name'] }}[]"
         @include('crud::fields.inc.attributes')
+        bp-field-main-input
     	multiple>
 
     	@if (count($options))
