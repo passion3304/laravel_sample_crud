@@ -119,7 +119,7 @@ trait Create
                     break;
                 case 'BelongsToMany':
                 case 'MorphToMany':
-                    $values = $relationDetails['values'][$relationMethod] ?? [];
+                    $values = (isset($relationDetails['values'][$relationMethod]) && !empty($relationDetails['values'][$relationMethod])) ? $relationDetails['values'][$relationMethod] : [];
                     $values = is_string($values) ? json_decode($values, true) : $values;
                     $relationValues = [];
 
