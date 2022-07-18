@@ -205,7 +205,7 @@ trait Validation
             $formRequest = (new $formRequest)->createFrom($this->getRequest());
             $extendedRules = $this->mergeRules($formRequest, $rules);
             $extendedMessages = array_merge($messages, $formRequest->messages());
-           
+
             // validate the complete request with FormRequest + controller validation + field validation (our anonymous class)
             return $formRequest->validate($extendedRules, $extendedMessages);
         }
@@ -216,17 +216,18 @@ trait Validation
     /**
      * Return an array containing the request rules and the field/controller rules merged.
      * The rules in request will take precedence over the ones in controller/fields.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param array $rules
-     * 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $rules
      * @return array
      */
-    private function mergeRules($request, $rules) {
+    private function mergeRules($request, $rules)
+    {
         $extendedRules = [];
-        foreach($request->rules() as $ruleKey => $rule) {
+        foreach ($request->rules() as $ruleKey => $rule) {
             $extendedRules[$ruleKey] = array_key_exists($ruleKey, $rules) ? $rule.'|'.$rules[$ruleKey] : $rule;
         }
+
         return array_merge($rules, $extendedRules);
     }
 
