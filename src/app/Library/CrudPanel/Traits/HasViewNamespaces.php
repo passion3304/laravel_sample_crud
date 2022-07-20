@@ -53,7 +53,7 @@ trait HasViewNamespaces
      * @param  mixed  $customConfigKey
      * @return array
      */
-    private function getViewNamespacesFromConfigFor(string $domain, mixed $customConfigKey = null)
+    private function getViewNamespacesFromConfigFor(string $domain, $customConfigKey = null)
     {
         return config($customConfigKey ?? 'backpack.crud.view_namespaces.'.$domain) ?? [];
     }
