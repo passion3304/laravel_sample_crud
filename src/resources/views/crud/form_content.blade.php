@@ -56,7 +56,7 @@
     function getFirstFocusableField(form) {
         return form.find('input, select, textarea, button')
             .not('.close')
-            .not('[readonly]')
+            .not('[disabled]')
             .filter(':visible:first');
     }
 
@@ -65,7 +65,7 @@
      * @param {jQuery} firstField
      */
     function triggerFocusOnFirstInputField(firstField) {
-        if (firstField.hasClass('select2_field')) {
+        if (firstField.hasClass('select2-hidden-accessible')) {
             return handleFocusOnSelect2Field(firstField);
         }
 
@@ -81,13 +81,7 @@
      */
     function handleFocusOnSelect2Field(firstField){
         $('.select2-search__field').remove();
-
-        const checkSelect2 = setTimeout(function () {
-            if (firstField.hasClass('select2-hidden-accessible')) {
-                firstField.select2('open');
-                clearInterval(checkSelect2);
-            }
-        }, 150);
+        firstField.select2('open');
     }
 
     /*
@@ -161,13 +155,15 @@
           });
         @endphp
 
+        let focusField;
+
         @if ($focusField)
           @php
             $focusFieldName = isset($focusField['value']) && is_iterable($focusField['value']) ? $focusField['name'] . '[]' : $focusField['name'];
           @endphp
-            const focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
+            focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
         @else
-            const focusField = getFirstFocusableField($('form'));
+            focusField = getFirstFocusableField($('form'));
         @endif
 
         const fieldOffset = focusField.offset().top;
