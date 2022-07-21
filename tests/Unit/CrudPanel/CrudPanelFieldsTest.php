@@ -4,6 +4,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Arr;
 use Backpack\CRUD\Tests\Unit\Models\User;
+use Illuminate\Http\Request;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Fields
@@ -597,5 +598,45 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField('articles_id');
         $field = $this->crudPanel->fields()['articles_id'];
         $this->assertEquals($field['relation_type'], 'HasMany');
+    }
+
+    public function testGetStrippedSaveRequestWithClosure()
+    {
+        $this->crudPanel->setOperationSetting(
+            'strippedRequest',
+            static function (Request $request) {
+                return $request->toArray();
+            },
+            'update'
+        );
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->setModel(User::class);
+        $request = request()->create('/users/1/edit', 'POST', ['name' => 'john']);
+        $result = $this->crudPanel->getStrippedSaveRequest($request);
+        $this->assertIsArray($result);
+        $this->assertSame(['name' => 'john'], $result);
+    }
+
+    public function testGetStrippedSaveRequestWithClass()
+    {
+        $this->crudPanel->setOperationSetting(
+            'strippedRequest',
+            Invokable::class,
+            'update'
+        );
+        $this->crudPanel->setOperation('update');
+        $this->crudPanel->setModel(User::class);
+        $request = request()->create('/users/1/edit', 'POST', ['name' => 'john']);
+        $result = $this->crudPanel->getStrippedSaveRequest($request);
+        $this->assertIsArray($result);
+        $this->assertSame(['invokable' => 'invokable'], $result);
+    }
+}
+
+class Invokable
+{
+    public function __invoke(): array
+    {
+        return ['invokable' => 'invokable'];
     }
 }
