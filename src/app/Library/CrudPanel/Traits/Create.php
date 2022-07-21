@@ -316,10 +316,10 @@ trait Create
             $this->createRelationsForItem($item, $relationInputs);
         }
 
-        // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.
+        // use the collection of sent ids to match against database ids, delete the ones not found in the submitted ids.
         if (! empty($relatedItemsSent)) {
             // we perform the cleanup of removed database items
-            $entry->{$relationMethod}()->whereNotIn($relatedModelLocalKey, $relatedItemsSent)->delete();
+            $entry->{$relationMethod}()->whereNotIn($relatedModelLocalKey, $relatedItemsSent)->lazy()->each->delete();
         }
     }
 }
