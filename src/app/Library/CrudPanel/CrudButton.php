@@ -1,7 +1,6 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelViewNamespaces;
 
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.

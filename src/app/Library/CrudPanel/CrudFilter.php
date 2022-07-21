@@ -6,7 +6,6 @@ use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelViewNamespaces;
 
 class CrudFilter
 {
