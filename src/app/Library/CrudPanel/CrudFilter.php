@@ -6,6 +6,7 @@ use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelViewNamespaces;
 
 class CrudFilter
 {
@@ -30,8 +31,8 @@ class CrudFilter
         }
 
         // if filter exists
-        if ($this->crud()->hasFilterWhere('name', $options['name'])) {
-            $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));
+        if (app('crud')->hasFilterWhere('name', $options['name'])) {
+            $properties = get_object_vars(app('crud')->firstFilterWhere('name', $options['name']));
             foreach ($properties as $property => $value) {
                 $this->{$property} = $value;
             }
@@ -40,7 +41,7 @@ class CrudFilter
             $this->name = $options['name'];
             $this->key = Str::camel($options['name']);
             $this->type = $options['type'] ?? $this->type;
-            $this->label = $options['label'] ?? $this->crud()->makeLabel($this->name);
+            $this->label = $options['label'] ?? app('crud')->makeLabel($this->name);
             $this->viewNamespace = $options['viewNamespace'] ?? $options['view_namespace'] ?? $this->viewNamespace;
             $this->view = $this->type;
             $this->placeholder = $options['placeholder'] ?? '';
@@ -108,7 +109,7 @@ class CrudFilter
             $input = new ParameterBag($input);
         }
 
-        $input = $input ?? new ParameterBag($this->crud()->getRequest()->all());
+        $input = $input ?? new ParameterBag(app('crud')->getRequest()->all());
 
         if (! $input->has($this->name)) {
             // if fallback logic was supplied and is a closure
@@ -145,16 +146,22 @@ class CrudFilter
      */
     public function getNamespacedViewWithFallbacks()
     {
+       
         $type = $this->type;
-        $namespaces = $this->crud()->getViewNamespacesFor('filters');
-
+        $namespaces = CrudPanelViewNamespaces::getViewNamespacesFor('filters');
+        
         if ($this->viewNamespace != 'crud::filters') {
             $namespaces = array_merge([$this->viewNamespace], $namespaces);
         }
 
-        return array_map(function ($item) use ($type) {
+        $views = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
         }, $namespaces);
+
+        if(empty($views)) {
+            dd(app('crud'));
+        }
+        return $views;
     }
 
     // ---------------------
@@ -179,7 +186,7 @@ class CrudFilter
      */
     public function remove()
     {
-        $this->crud()->removeFilter($this->name);
+        app('crud')->removeFilter($this->name);
     }
 
     /**
@@ -198,7 +205,7 @@ class CrudFilter
             unset($this->options[$attribute]);
         }
 
-        $this->crud()->replaceFilter($this->name, $this);
+        app('crud')->replaceFilter($this->name, $this);
 
         return $this;
     }
@@ -229,7 +236,7 @@ class CrudFilter
      */
     public function after($destination)
     {
-        $this->crud()->moveFilter($this->name, 'after', $destination);
+        app('crud')->moveFilter($this->name, 'after', $destination);
 
         return $this;
     }
@@ -242,7 +249,7 @@ class CrudFilter
      */
     public function before($destination)
     {
-        $this->crud()->moveFilter($this->name, 'before', $destination);
+        app('crud')->moveFilter($this->name, 'before', $destination);
 
         return $this;
     }
@@ -254,7 +261,7 @@ class CrudFilter
      */
     public function makeFirst()
     {
-        $this->crud()->moveFilter($this->name, 'before', $this->crud()->filters()->first()->name);
+        app('crud')->moveFilter($this->name, 'before', app('crud')->filters()->first()->name);
 
         return $this;
     }
@@ -266,8 +273,8 @@ class CrudFilter
      */
     public function makeLast()
     {
-        $this->crud()->removeFilter($this->name);
-        $this->crud()->addCrudFilter($this);
+        app('crud')->removeFilter($this->name);
+        app('crud')->addCrudFilter($this);
 
         return $this;
     }
@@ -482,10 +489,10 @@ class CrudFilter
     {
         $key = $this->name;
 
-        if ($this->crud()->hasFilterWhere('name', $key)) {
-            $this->crud()->modifyFilter($key, (array) $this);
+        if (app('crud')->hasFilterWhere('name', $key)) {
+            app('crud')->modifyFilter($key, (array) $this);
         } else {
-            $this->crud()->addCrudFilter($this);
+            app('crud')->addCrudFilter($this);
         }
 
         return $this;
@@ -498,17 +505,17 @@ class CrudFilter
      */
     private function applyDefaultLogic($name, $operator, $input = null)
     {
-        $input = $input ?? $this->crud()->getRequest()->all();
+        $input = $input ?? app('crud')->getRequest()->all();
 
         // if this filter is active (the URL has it as a GET parameter)
         switch ($operator) {
             // if no operator was passed, just use the equals operator
             case false:
-                $this->crud()->addClause('where', $name, $input[$name]);
+                app('crud')->addClause('where', $name, $input[$name]);
                 break;
 
             case 'scope':
-                $this->crud()->addClause($operator);
+                app('crud')->addClause($operator);
                 break;
 
             // TODO:
@@ -534,7 +541,7 @@ class CrudFilter
             case '>=':
             case '<':
             case '<=':
-                $this->crud()->addClause('where', $name, $operator, $input[$name]);
+                app('crud')->addClause('where', $name, $operator, $input[$name]);
                 break;
 
             default:
