@@ -479,17 +479,17 @@ trait Fields
     {
         $setting = $this->getOperationSetting('strippedRequest');
 
-        // if an invokable class was passed
-        // eg. \App\Http\Requests\BackpackStrippedRequest
-        if (class_exists($setting)) {
-            $setting = new $setting();
-
-            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting).' is not invokable.');
-        }
-
         // if a closure was passed
         if (is_callable($setting)) {
             return $setting($request);
+        }
+
+        // if an invokable class was passed
+        // eg. \App\Http\Requests\BackpackStrippedRequest
+        if (is_string($setting) && class_exists($setting)) {
+            $setting = new $setting();
+
+            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting).' is not invokable.');
         }
 
         return $request->only($this->getAllFieldNames());
