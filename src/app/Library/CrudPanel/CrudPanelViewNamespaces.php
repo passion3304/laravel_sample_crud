@@ -42,17 +42,18 @@ class CrudPanelViewNamespaces
      */
     public static function addViewNamespaceFor(string $domain, string $viewNamespace)
     {
-        if(!in_array($viewNamespace, self::getViewNamespacesForDomain($domain))) {
+        if (! in_array($viewNamespace, self::getViewNamespacesForDomain($domain))) {
             self::$viewNamespaces[$domain][] = $viewNamespace;
         }
     }
 
     /**
-     * Return the namespaces stored for a given domain
-     * 
-     * @param string $domain
+     * Return the namespaces stored for a given domain.
+     *
+     * @param  string  $domain
      */
-    private static function getViewNamespacesForDomain(string $domain) {
+    private static function getViewNamespacesForDomain(string $domain)
+    {
         return self::$viewNamespaces[$domain] ?? [];
     }
 
