@@ -6,7 +6,6 @@ use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelViewNamespaces;
 
 class CrudFilter
 {
@@ -146,10 +145,9 @@ class CrudFilter
      */
     public function getNamespacedViewWithFallbacks()
     {
-       
         $type = $this->type;
         $namespaces = CrudPanelViewNamespaces::getViewNamespacesFor('filters');
-        
+
         if ($this->viewNamespace != 'crud::filters') {
             $namespaces = array_merge([$this->viewNamespace], $namespaces);
         }
@@ -158,9 +156,10 @@ class CrudFilter
             return $item.'.'.$type;
         }, $namespaces);
 
-        if(empty($views)) {
+        if (empty($views)) {
             dd(app('crud'));
         }
+
         return $views;
     }
 
