@@ -4,7 +4,7 @@ namespace Backpack\CRUD;
 
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelViewNamespaces;
+use Backpack\CRUD\app\Library\CrudPanel\ViewNamespaces;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -65,7 +65,7 @@ class BackpackServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('CrudPanelViewNamespaces', function ($app) {
-            return new CrudPanelViewNamespaces();
+            return new ViewNamespaces();
         });
 
         // Bind the widgets collection object to Laravel's service container

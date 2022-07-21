@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-class CrudPanelViewNamespaces
+class ViewNamespaces
 {
     private static $viewNamespaces = [];
 

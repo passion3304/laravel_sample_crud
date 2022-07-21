@@ -275,7 +275,7 @@ class CrudButton
         $type = $this->name;
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, CrudPanelViewNamespaces::getViewNamespacesFor('buttons'));
+        }, ViewNamespaces::getViewNamespacesFor('buttons'));
 
         return array_merge([$this->content], $paths);
     }

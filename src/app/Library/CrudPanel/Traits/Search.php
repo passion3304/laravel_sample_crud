@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelViewNamespaces;
+use Backpack\CRUD\app\Library\CrudPanel\ViewNamespaces;
 use Carbon\Carbon;
 use Validator;
 
@@ -314,7 +314,7 @@ trait Search
             // including the configured view_namespaces
             $columnPaths = array_map(function ($item) use ($column) {
                 return $item.'.'.$column['type'];
-            }, CrudPanelViewNamespaces::getViewNamespacesFor('columns'));
+            }, ViewNamespaces::getViewNamespacesFor('columns'));
 
             // but always fall back to the stock 'text' column
             // if a view doesn't exist
