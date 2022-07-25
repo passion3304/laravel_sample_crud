@@ -3,7 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
-use Backpack\CRUD\app\Library\CrudPanel\ViewNamespaces;
+use Backpack\CRUD\ViewNamespaces;
 
 trait Views
 {
@@ -301,7 +301,7 @@ trait Views
         // until you find a view that exists
         $paths = array_map(function ($item) use ($viewPath) {
             return $item.'.'.$viewPath;
-        }, ViewNamespaces::getViewNamespacesFor('fields'));
+        }, ViewNamespaces::getFor('fields'));
 
         foreach ($paths as $path) {
             if (view()->exists($path)) {

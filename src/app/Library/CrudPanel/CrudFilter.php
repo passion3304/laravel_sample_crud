@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\Crud\ViewNamespaces;
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Closure;
 use Illuminate\Support\Str;
@@ -145,7 +146,7 @@ class CrudFilter
     public function getNamespacedViewWithFallbacks()
     {
         $type = $this->type;
-        $namespaces = ViewNamespaces::getViewNamespacesFor('filters');
+        $namespaces = ViewNamespaces::getFor('filters');
 
         if ($this->viewNamespace != 'crud::filters') {
             $namespaces = array_merge([$this->viewNamespace], $namespaces);

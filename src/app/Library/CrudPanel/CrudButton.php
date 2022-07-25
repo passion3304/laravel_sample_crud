@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
+use Backpack\Crud\ViewNamespaces;
 
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.
@@ -275,7 +276,7 @@ class CrudButton
         $type = $this->name;
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, ViewNamespaces::getViewNamespacesFor('buttons'));
+        }, ViewNamespaces::getFor('buttons'));
 
         return array_merge([$this->content], $paths);
     }
