@@ -207,7 +207,7 @@ trait Validation
             $extendedMessages = array_merge($messages, $formRequest->messages());
 
             // validate the complete request with FormRequest + controller validation + field validation (our anonymous class)
-            return $formRequest->validate($extendedRules, $extendedMessages);
+            return $this->checkRequestValidity($extendedRules, $extendedMessages, $formRequest);
         }
 
         return ! empty($rules) ? $this->checkRequestValidity($rules, $messages) : $this->getRequest();
@@ -224,25 +224,46 @@ trait Validation
     private function mergeRules($request, $rules)
     {
         $extendedRules = [];
-        foreach ($request->rules() as $ruleKey => $rule) {
-            $extendedRules[$ruleKey] = array_key_exists($ruleKey, $rules) ? $rule.'|'.$rules[$ruleKey] : $rule;
+        $requestRules = $this->getRequestRulesAsArray($request);
+        $rules = array_map(function($ruleDefinition) {
+            return is_array($ruleDefinition) ? $ruleDefinition : explode('|', $ruleDefinition);
+        },$rules);
+        
+        foreach ($requestRules as $ruleKey => $rule) {
+            $extendedRules[$ruleKey] = array_key_exists($ruleKey, $rules) ? array_merge($rule, $rules[$ruleKey]) : $rule;
+            unset($rules[$ruleKey]);
         }
-
         return array_merge($rules, $extendedRules);
     }
 
     /**
-     * Checks if the current crud request is valid against the provided rules.
+     * Return the request rules as an array of rules if developer provided a rule string configuration
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    private function getRequestRulesAsArray($request) 
+    {
+        $requestRules = [];
+        foreach($request->rules() as $ruleKey => $rule) {
+            $requestRules[$ruleKey] = is_array($rule) ? $rule : explode('|', $rule);
+        }
+        return $requestRules;
+    }
+
+    /**
+     * Checks if the request is valid against the rules.
      *
      * @param  array  $rules
      * @param  array  $messages
+     * @param  \Illuminate\Http\Request|null  $request
      * @return \Illuminate\Http\Request
      */
-    private function checkRequestValidity($rules, $messages)
+    private function checkRequestValidity($rules, $messages, $request = null)
     {
-        $this->getRequest()->validate($rules, $messages);
+        $request = $request ?? $this->getRequest();
+        $request->validate($rules, $messages);
 
-        return $this->getRequest();
+        return $request;
     }
 
     /**
