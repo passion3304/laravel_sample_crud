@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
+
 use Backpack\Crud\ViewNamespaces;
 
 /**

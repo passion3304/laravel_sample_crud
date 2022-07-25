@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Backpack\Crud\ViewNamespaces;
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\Crud\ViewNamespaces;
 use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
