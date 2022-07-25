@@ -225,28 +225,31 @@ trait Validation
     {
         $extendedRules = [];
         $requestRules = $this->getRequestRulesAsArray($request);
-        $rules = array_map(function($ruleDefinition) {
+        $rules = array_map(function ($ruleDefinition) {
             return is_array($ruleDefinition) ? $ruleDefinition : explode('|', $ruleDefinition);
-        },$rules);
-        
+        }, $rules);
+
         foreach ($requestRules as $ruleKey => $rule) {
             $extendedRules[$ruleKey] = array_key_exists($ruleKey, $rules) ? array_merge($rule, $rules[$ruleKey]) : $rule;
             unset($rules[$ruleKey]);
         }
+
         return array_merge($rules, $extendedRules);
     }
 
     /**
-     * Return the request rules as an array of rules if developer provided a rule string configuration
+     * Return the request rules as an array of rules if developer provided a rule string configuration.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    private function getRequestRulesAsArray($request) 
+    private function getRequestRulesAsArray($request)
     {
         $requestRules = [];
-        foreach($request->rules() as $ruleKey => $rule) {
+        foreach ($request->rules() as $ruleKey => $rule) {
             $requestRules[$ruleKey] = is_array($rule) ? $rule : explode('|', $rule);
         }
+
         return $requestRules;
     }
 
