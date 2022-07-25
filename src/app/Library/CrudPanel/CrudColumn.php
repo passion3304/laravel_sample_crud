@@ -78,16 +78,17 @@ class CrudColumn
         if (! isset($this->attributes['name'])) {
             abort(500, 'Column name must be defined before changing the key.');
         }
-        
+
         $columns = $this->crud()->columns();
         $searchKey = $this->attributes['key'];
-        
-        if(isset($columns[$searchKey])) {
-                unset($columns[$searchKey]);
-                $column['key'] = $key;
+
+        if (isset($columns[$searchKey])) {
+            unset($columns[$searchKey]);
+            $column['key'] = $key;
         }
         $this->attributes = $column;
         $this->setOperationSetting('columns', array_merge($columns, [$key => $column]));
+
         return $this;
     }
 
