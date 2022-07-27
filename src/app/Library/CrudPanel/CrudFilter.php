@@ -149,7 +149,7 @@ class CrudFilter
     public function getNamespacedViewWithFallbacks()
     {
         $type = $this->type;
-        $namespaces = config('backpack.crud.view_namespaces.filters');
+        $namespaces = $this->crud()->getViewNamespacesFor('filters');
 
         if ($this->viewNamespace != 'crud::filters') {
             $namespaces = array_merge([$this->viewNamespace], $namespaces);

@@ -264,7 +264,7 @@ trait Create
         // developer set force_delete => true, so we don't care if it's nullable or not,
         // we just follow developer's will
         if ($forceDelete) {
-            return $removedEntries->delete();
+            return $removedEntries->lazy()->each->delete();
         }
 
         // get the default that could be set at database level.
@@ -273,7 +273,7 @@ trait Create
         // if column is not nullable in database, and there is no column default (null),
         // we will delete the entry from the database, otherwise it will throw and ugly DB error.
         if (! $relationColumnIsNullable && $dbColumnDefault === null) {
-            return $removedEntries->delete();
+            return $removedEntries->lazy()->each->delete();
         }
 
         // if column is nullable we just set it to the column default (null when it does exist, or the default value when it does).
@@ -316,10 +316,10 @@ trait Create
             $this->createRelationsForItem($item, $relationInputs);
         }
 
-        // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.
+        // use the collection of sent ids to match against database ids, delete the ones not found in the submitted ids.
         if (! empty($relatedItemsSent)) {
             // we perform the cleanup of removed database items
-            $entry->{$relationMethod}()->whereNotIn($relatedModelLocalKey, $relatedItemsSent)->delete();
+            $entry->{$relationMethod}()->whereNotIn($relatedModelLocalKey, $relatedItemsSent)->lazy()->each->delete();
         }
     }
 }
