@@ -990,6 +990,126 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertCount(2, $planets);
     }
 
+    public function testHasManyWithRelationScoped()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'          => 'incomes',
+            'subfields'   => [
+                [
+                    'name' => 'label',
+                    'type' => 'text',
+                ],
+                [
+                    'name' => 'type',
+                    'type' => 'hidden',
+                    'value' => 'income',
+                ],
+                [
+                    'name' => 'amount',
+                    'type' => 'number',
+                ],
+            ],
+        ], 'both');
+        $this->crudPanel->addField([
+            'name'          => 'expenses',
+            'subfields'   => [
+                [
+                    'name' => 'label',
+                    'type' => 'text',
+                ],
+                [
+                    'name' => 'type',
+                    'type' => 'hidden',
+                    'value' => 'expense',
+                ],
+                [
+                    'name' => 'amount',
+                    'type' => 'number',
+                ],
+            ],
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'incomes' => [
+                [
+                    'label' => $faker->name,
+                    'amount' => 33,
+                    'type' => 'income'
+                ],
+                [
+                    'label' => $faker->name,
+                    'amount' => 22,
+                    'type' => 'income'
+                ]
+            ],
+            'expenses' => [
+                [
+                    'label' => $faker->name,
+                    'amount' => 44,
+                    'type' => 'expense'
+                ],
+                [
+                    'label' => $faker->name,
+                    'amount' => 10,
+                    'type' => 'expense'
+                ]
+            ],
+        ];
+        $entry = $this->crudPanel->create($inputData);
+        
+        $firstExpense = $entry->expenses->first();
+        $firstIncome = $entry->incomes->first();
+        $this->assertCount(2, $entry->expenses);
+        $this->assertCount(2, $entry->incomes);
+        $this->assertEquals(44, $entry->expenses->first()->amount);
+        $this->assertEquals(33, $entry->incomes->first()->amount);
+
+        $inputData['incomes'] = [
+            [
+                'id' => 2,
+                'label' => $faker->name,
+                'amount' => 222,
+                'type' => 'income'
+            ],
+        ];
+        $inputData['expenses'] = [
+            [
+                'id' => 3,
+                'label' => $faker->name,
+                'amount' => 44,
+                'type' => 'expense'
+            ],
+            [
+                'id' => 4,
+                'label' => $faker->name,
+                'amount' => 10,
+                'type' => 'expense'
+            ]
+        ];
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $freshIncomes = $entry->fresh()->incomes;
+        $freshExpenses = $entry->fresh()->expenses;
+        $this->assertCount(2, $freshExpenses);
+        $this->assertCount(1, $freshIncomes);
+        $this->assertEquals(2, $freshIncomes->first()->id);
+        
+        $inputData['expenses'] = [];
+        $this->crudPanel->update($entry->id, $inputData);
+        
+        $freshIncomes = $entry->fresh()->incomes;
+        $freshExpenses = $entry->fresh()->expenses;
+        $this->assertCount(0, $freshExpenses);
+        $this->assertCount(1, $freshIncomes);
+    }
+
     public function testHasManySelectableRelationshipWithFallbackId()
     {
         $this->crudPanel->setModel(User::class);
