@@ -179,7 +179,7 @@ trait Query
     {
         // if there is a raw where we are better not touching the columns, otherwise we
         // would need to parse the raw sql wheres and that can get messy very quick.
-        if(in_array('raw',array_column($query->wheres, 'type'))) {
+        if (in_array('raw', array_column($query->wheres, 'type'))) {
             return $query->columns;
         }
 
@@ -285,15 +285,16 @@ trait Query
     /**
      * Adds the model key into the selection columns array.
      * When using `*` as column selector it's assumed the model key would be selected.
-     * 
+     *
      * @param  array  $columns
-     * @return  array
+     * @return array
      */
-    private function addModelKeyToColumnsArray(array $columns) 
+    private function addModelKeyToColumnsArray(array $columns)
     {
-        if(!in_array($this->model->getKeyName(), $columns) && !in_array('*', $columns)) {
+        if (! in_array($this->model->getKeyName(), $columns) && ! in_array('*', $columns)) {
             return array_merge($columns, [$this->model->getKeyName()]);
         }
+
         return $columns;
     }
 }
