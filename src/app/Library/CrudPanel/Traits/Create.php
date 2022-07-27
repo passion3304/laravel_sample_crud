@@ -217,7 +217,7 @@ trait Create
         $relationForeignKey = $relation->getForeignKeyName();
         $relationLocalKey = $relation->getLocalKeyName();
 
-        if ($relationValues === null) {
+        if (empty($relationValues)) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
             $removedEntries = $relation;
