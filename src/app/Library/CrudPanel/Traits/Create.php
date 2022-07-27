@@ -220,7 +220,7 @@ trait Create
         if ($relationValues === null) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
-            $removedEntries = $modelInstance->where($relationForeignKey, $item->{$relationLocalKey});
+            $removedEntries = $relation;
 
             return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
         }
