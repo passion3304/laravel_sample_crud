@@ -254,8 +254,8 @@ trait Query
         $crudQuery = $this->query->toBase()->clone();
         $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
 
-        // merge the model key in the columns array
-        $crudQueryColumns = array_merge($crudQueryColumns, [$this->model->getKeyName()]);
+        // merge the model key in the columns array if needed
+        $crudQueryColumns = $this->addModelKeyToColumnsArray($crudQueryColumns);
 
         // remove table prefix from select columns
         $crudQueryColumns = array_map(function ($item) {
@@ -283,5 +283,20 @@ trait Query
         $outterQuery = $outterQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
 
         return $outterQuery->get()->first()->total_rows;
+    }
+
+    /**
+     * Adds the model key into the selection columns array.
+     * When using `*` as column selector it's assumed the model key would be selected.
+     * 
+     * @param  array  $columns
+     * @return  array
+     */
+    private function addModelKeyToColumnsArray(array $columns) 
+    {
+        if(!in_array($this->model->getKeyName(), $columns) && !in_array('*', $columns)) {
+            return array_merge($columns, [$this->model->getKeyName()]);
+        }
+        return $columns;
     }
 }
