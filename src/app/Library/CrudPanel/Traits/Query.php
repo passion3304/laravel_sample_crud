@@ -279,7 +279,7 @@ trait Query
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
         $outterQuery = $outterQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
 
-        return $outterQuery->get()->first()->total_rows;
+        return $outterQuery->cursor()->first()->total_rows;
     }
 
     /**
