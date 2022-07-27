@@ -1041,29 +1041,29 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 [
                     'label' => $faker->name,
                     'amount' => 33,
-                    'type' => 'income'
+                    'type' => 'income',
                 ],
                 [
                     'label' => $faker->name,
                     'amount' => 22,
-                    'type' => 'income'
-                ]
+                    'type' => 'income',
+                ],
             ],
             'expenses' => [
                 [
                     'label' => $faker->name,
                     'amount' => 44,
-                    'type' => 'expense'
+                    'type' => 'expense',
                 ],
                 [
                     'label' => $faker->name,
                     'amount' => 10,
-                    'type' => 'expense'
-                ]
+                    'type' => 'expense',
+                ],
             ],
         ];
         $entry = $this->crudPanel->create($inputData);
-        
+
         $firstExpense = $entry->expenses->first();
         $firstIncome = $entry->incomes->first();
         $this->assertCount(2, $entry->expenses);
@@ -1076,7 +1076,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'id' => 2,
                 'label' => $faker->name,
                 'amount' => 222,
-                'type' => 'income'
+                'type' => 'income',
             ],
         ];
         $inputData['expenses'] = [
@@ -1084,14 +1084,14 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                 'id' => 3,
                 'label' => $faker->name,
                 'amount' => 44,
-                'type' => 'expense'
+                'type' => 'expense',
             ],
             [
                 'id' => 4,
                 'label' => $faker->name,
                 'amount' => 10,
-                'type' => 'expense'
-            ]
+                'type' => 'expense',
+            ],
         ];
         $this->crudPanel->update($entry->id, $inputData);
 
@@ -1100,10 +1100,10 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertCount(2, $freshExpenses);
         $this->assertCount(1, $freshIncomes);
         $this->assertEquals(2, $freshIncomes->first()->id);
-        
+
         $inputData['expenses'] = [];
         $this->crudPanel->update($entry->id, $inputData);
-        
+
         $freshIncomes = $entry->fresh()->incomes;
         $freshExpenses = $entry->fresh()->expenses;
         $this->assertCount(0, $freshExpenses);
