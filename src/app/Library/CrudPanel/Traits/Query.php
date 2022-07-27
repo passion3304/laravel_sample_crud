@@ -177,6 +177,12 @@ trait Query
      */
     private function getQueryColumnsFromWheres($query, $nested = false)
     {
+        // if there is a raw where we are better not touching the columns, otherwise we
+        // would need to parse the raw sql wheres and that can get messy very quick.
+        if(in_array('raw',array_column($query->wheres, 'type'))) {
+            return $query->columns;
+        }
+
         $wheresColumns = [];
         foreach ($query->wheres as $where) {
             switch ($where['type']) {
