@@ -220,9 +220,7 @@ trait Create
         if (empty($relationValues)) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
-            $removedEntries = $relation;
-
-            return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
+            return $this->handleManyRelationItemRemoval($modelInstance, $relation, $relationDetails, $relationForeignKey);
         }
         // we add the new values into the relation, if it is HasMany we only update the foreign_key,
         // otherwise (it's a MorphMany) we need to update the morphs keys too
