@@ -189,7 +189,6 @@ trait Query
                 // case it's a basic where, we just want to select that column.
                 case 'Basic':
                     $wheresColumns[] = $where['column'];
-
                 break;
                 // when it's a nested query we will get the columns that link
                 // to the main table from the nested query wheres.
@@ -199,7 +198,6 @@ trait Query
                 // when Column get the "first" key that represent the base table column to link with
                 case 'Column':
                     $wheresColumns[] = $where['first'];
-
                 break;
                 // in case of Exists, we will find in the subquery the query type Column where it links to the main table
                 case 'Exists':
@@ -209,7 +207,6 @@ trait Query
                             $wheresColumns[] = $subWhere['first'];
                         }
                     }
-
                 break;
             }
         }
