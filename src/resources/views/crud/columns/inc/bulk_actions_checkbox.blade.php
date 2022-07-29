@@ -53,9 +53,17 @@
 
     if (typeof markCheckboxAsCheckedIfPreviouslySelected !== 'function') {
         function markCheckboxAsCheckedIfPreviouslySelected() {
+            let checkedItems = [];
             document
                 .querySelectorAll('input.crud_bulk_actions_line_checkbox[data-primary-key-value]')
-                .forEach(elem => elem.checked = crud.checkedItems?.length && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) > -1);
+                .forEach(function(elem) {
+                    let checked = crud.checkedItems?.length && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) > -1;
+                    elem.checked = checked;
+                    if(checked) {
+                        checkedItems.push(elem.dataset.primaryKeyValue);
+                    }
+                });
+            crud.checkedItems = checkedItems;
         }
     }
 
