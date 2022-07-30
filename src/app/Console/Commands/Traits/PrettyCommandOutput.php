@@ -12,9 +12,10 @@ trait PrettyCommandOutput
     /**
      * Run a SSH command.
      *
-     * @param  string  $command  The SSH command that needs to be run
-     * @param  bool  $beforeNotice  Information for the user before the command is run
-     * @param  bool  $afterNotice  Information for the user after the command is run
+     * @param string $command      The SSH command that needs to be run
+     * @param bool   $beforeNotice Information for the user before the command is run
+     * @param bool   $afterNotice  Information for the user after the command is run
+     *
      * @return mixed Command-line output
      */
     public function executeProcess($command, $beforeNotice = false, $afterNotice = false)
@@ -34,7 +35,7 @@ trait PrettyCommandOutput
         });
 
         // executes after the command finishes
-        if (! $process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 
@@ -50,10 +51,11 @@ trait PrettyCommandOutput
     /**
      * Run an artisan command.
      *
-     * @param  string  $command  The artisan command to be run.
-     * @param  array  $arguments  Key-value array of arguments to the artisan command.
-     * @param  bool  $beforeNotice  Information for the user before the command is run
-     * @param  bool  $afterNotice  Information for the user after the command is run
+     * @param string $command      the artisan command to be run
+     * @param array  $arguments    key-value array of arguments to the artisan command
+     * @param bool   $beforeNotice Information for the user before the command is run
+     * @param bool   $afterNotice  Information for the user after the command is run
+     *
      * @return mixed Command-line output
      */
     public function executeArtisanProcess($command, $arguments = [], $beforeNotice = false, $afterNotice = false)
@@ -80,8 +82,8 @@ trait PrettyCommandOutput
     /**
      * Write text to the screen for the user to see.
      *
-     * @param  string  $type  line, info, comment, question, error
-     * @param  string  $content
+     * @param string $type    line, info, comment, question, error
+     * @param string $content
      */
     public function echo($type, $content)
     {
@@ -98,25 +100,136 @@ trait PrettyCommandOutput
     /**
      * Write a title inside a box.
      *
-     * @param  string  $content
+     * @param string $header
      */
-    public function box($content)
+    public function box($header, $color = 'green')
     {
-        for ($i = 0, $line = ''; $i < strlen($content); ++$i, $line .= '─');
+        $line = str_repeat('─', strlen($header));
 
-        $this->line('');
-        $this->info("┌───{$line}───┐");
-        $this->info("│   $content   │");
-        $this->info("└───{$line}───┘");
+        $this->newLine();
+        $this->line("<fg=$color>┌───{$line}───┐</>");
+        $this->line("<fg=$color>│   $header   │</>");
+        $this->line("<fg=$color>└───{$line}───┘</>");
     }
 
     /**
-     * Write a title inside a box.
+     * List choice element.
      *
-     * @param  string  $content
+     * @return void
      */
-    public function note($content)
+    public function listChoice(string $question, array $options, string $default = 'no', string $hint = null)
     {
-        $this->line("│ $content");
+        foreach ($options as $key => $option) {
+            $value = $key + 1;
+            $this->progressBlock("<fg=yellow>$value</> {$option->name}");
+            $this->closeProgressBlock($option->status, $option->statusColor ?? '');
+            foreach ($option->description ?? [] as $line) {
+                $this->line("    <fg=gray>{$line}</>");
+            }
+            $this->newLine();
+        }
+
+        return $this->ask(" $question", $default);
+    }
+
+    /**
+     * Default info block element.
+     *
+     * @return void
+     */
+    public function infoBlock(string $text, string $title = 'info', string $background = 'blue', string $foreground = 'white')
+    {
+        $this->newLine();
+        $this->line(sprintf("  <fg=$foreground;bg=$background> %s </> $text", strtoupper($title)));
+        $this->newLine();
+    }
+
+    /**
+     * Default error block element
+     * Shortcute to info block with error message.
+     *
+     * @return void
+     */
+    public function errorBlock(string $text)
+    {
+        $this->infoBlock($text, 'ERROR', 'red');
+    }
+
+    /**
+     * Note element, usually used after an info block
+     * Prints an indented text with a lighter color.
+     *
+     * @return void
+     */
+    public function note(string $text, string $color = 'gray')
+    {
+        $this->line("  │ $text", "fg=$color");
+    }
+
+    /**
+     * Progress element generates a pending in progress line block.
+     *
+     * @return void
+     */
+    public function progressBlock(string $text, string $progress = 'running', string $color = 'blue')
+    {
+        $defaultSize = 128;
+
+        exec('mode con', $output);
+        $output = preg_match("/Columns:\s+(\d+)/", join('', $output), $result);
+        $lineWidth = min($result[10] ?? $defaultSize, $defaultSize);
+
+        $this->output->write(sprintf(
+            "  $text <fg=gray>%s</> <fg=$color>%s</>",
+            str_repeat('.', $lineWidth - 5 - strlen(strip_tags($text.$progress))),
+            strtoupper($progress)
+        ));
+    }
+
+    /**
+     * Closes a progress block after it has been started.
+     *
+     * @return void
+     */
+    public function closeProgressBlock(string $text = 'done', string $color = 'green')
+    {
+        $this->deleteChars(20);
+
+        $this->output->write(sprintf(
+            "<fg=gray>%s</> <fg=$color>%s</>",
+            str_repeat('.', 19 - strlen($text)),
+            strtoupper($text),
+        ));
+        $this->newLine();
+    }
+
+    /**
+     * Closes a progress block with an error.
+     *
+     * @return void
+     */
+    public function errorProgressBlock(string $text = 'error')
+    {
+        $this->closeProgressBlock($text, 'red');
+    }
+
+    /**
+     * Deletes one or multiple lines.
+     *
+     * @return void
+     */
+    public function deleteLines(int $amount = 1)
+    {
+        $this->output->write(str_repeat("\033[A\33[2K\r", $amount));
+    }
+
+    /**
+     * Deletes one or multiple chars.
+     *
+     * @return void
+     */
+    public function deleteChars(int $amount = 1)
+    {
+        $this->output->write(str_repeat(chr(8), $amount));
     }
 }

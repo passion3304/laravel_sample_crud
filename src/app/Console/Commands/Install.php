@@ -2,7 +2,11 @@
 
 namespace Backpack\CRUD\app\Console\Commands;
 
+use Backpack\CRUD\BackpackServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Install extends Command
 {
@@ -27,44 +31,183 @@ class Install extends Command
     protected $description = 'Install Backpack requirements on dev, publish files and create uploads directory.';
 
     /**
+     * Addons variable.
+     *
+     * @var array
+     */
+    protected $addons = [
+        Addons\RequirePro::class,
+        Addons\RequireDevTools::class,
+        Addons\RequireEditableColumns::class,
+    ];
+
+    /**
      * Execute the console command.
      *
      * @return mixed Command-line output
      */
     public function handle()
     {
-        $this->progressBar = $this->output->createProgressBar(5);
-        $this->progressBar->minSecondsBetweenRedraws(0);
-        $this->progressBar->maxSecondsBetweenRedraws(120);
-        $this->progressBar->setRedrawFrequency(1);
+        $this->infoBlock('Backpack installation started.');
 
-        $this->progressBar->start();
-
-        $this->info(' Backpack installation started. Please wait...');
-        $this->progressBar->advance();
-
-        $this->line(' Publishing configs, views, js and css files');
+        // Publish files
+        $this->progressBlock('Publishing configs, views, js and css files');
         $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Backpack\CRUD\BackpackServiceProvider',
+            '--provider' => BackpackServiceProvider::class,
             '--tag' => 'minimum',
         ]);
+        $this->closeProgressBlock();
 
-        $this->line(" Creating users table (using Laravel's default migration)");
+        // Create users table
+        $this->progressBlock('Creating users table');
         $this->executeArtisanProcess('migrate', $this->option('no-interaction') ? ['--no-interaction' => true] : []);
+        $this->closeProgressBlock();
 
-        $this->line(" Creating App\Http\Middleware\CheckIfAdmin.php");
+        // Create CheckIfAdmin middleware
+        $this->progressBlock('Creating CheckIfAdmin middleware');
         $this->executeArtisanProcess('backpack:publish-middleware');
+        $this->closeProgressBlock();
 
-        $this->progressBar->finish();
-        $this->info(' Backpack installation finished.');
+        // Install Backpack Generators
+        $this->progressBlock('Installing Backpack Generators');
+        // $process = new Process(['composer', 'require', '--dev', 'backpack/generators']);
+        // $process->setTimeout(300);
+        // $process->run();
+        $this->closeProgressBlock();
 
-        // DevTools
-        $this->box('Did you know about Backpack DevTools?');
-        $this->note('DevTools adds a dead-simple web interface to easily generate Models, Migrations, Seeders, Factories, CRUDs, etc.');
-        $this->note('But it\'s a paid tool. For more info, payment and access, please visit https://backpackforlaravel.com/products/devtools');
+        // Create admins
+        $this->createAdminUsers();
 
-        if ($this->confirm('Would you like to install Backpack DevTools?', false)) {
-            $this->call('backpack:require:devtools');
+        // Addons
+        $this->installAddons();
+
+        // Done
+        $url = Str::of(config('app.url'))->finish('/')->append('admin/');
+        $this->infoBlock('Backpack installation complete.', 'done');
+        $this->note("Head to <fg=blue>$url</> to view your new admin panel");
+        $this->note('You may need to run `php artisan serve` to serve your project.');
+        $this->newLine();
+    }
+
+    private function createAdminUsers()
+    {
+        $userModel = config('backpack.base.user_model_fqn');
+        $permissionTable = config('permission.table_names.model_has_roles');
+
+        // Count current admins
+        $currentAdmins = DB::table($permissionTable)->where([
+            'role_id' => 1,
+            'model_type' => $userModel,
+        ])->count();
+
+        $this->newLine();
+        $this->infoBlock('Create an admin to access your admin panel');
+        $this->note('By adding an admin you\'ll be able to quickly jump in your admin panel.');
+        $this->note('Currently there '.trans_choice("{0} are <fg=blue>no admins</>|{1} is <fg=blue>1 admin</>|[2,*] are <fg=blue>$currentAdmins admins</>", $currentAdmins).' in the database');
+
+        $total = 0;
+        while ($this->confirm(' Add '.($total ? 'another' : 'an').' admin user?')) {
+            $name = $this->ask(' Name');
+            $mail = $this->ask(" {$name}'s email");
+            $pass = $this->secret(" {$name}'s password");
+
+            try {
+                (new $userModel())->insert([
+                    'name' => $name,
+                    'email' => $mail,
+                    'password' => bcrypt($pass),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+                // Admin Role
+                DB::table($permissionTable)->insert([
+                    'role_id' => 1,
+                    'model_type' => $userModel,
+                    'model_id' => DB::getPdo()->lastInsertId(),
+                ]);
+
+                $this->deleteLines(12);
+                $this->progressBlock('Adding admin user');
+                $this->closeProgressBlock();
+                $this->note($name);
+                $this->note($mail);
+
+                ++$total;
+            } catch (\Throwable$e) {
+                $this->errorBlock($e->getMessage());
+            }
+        }
+
+        $this->deleteLines(1);
+    }
+
+    private function isEveryAddonInstalled()
+    {
+        return collect($this->addons)->every(function ($addon) { return file_exists($addon->path); });
+    }
+
+    private function updateAddonsStatus()
+    {
+        $this->addons = $this->addons->each(function (&$addon) {
+            $isInstalled = file_exists($addon->path);
+            $addon->status = $isInstalled ? 'installed' : 'not installed';
+            $addon->statusColor = $isInstalled ? 'green' : 'yellow';
+        });
+    }
+
+    private function installAddons()
+    {
+        // map the addons status
+
+        $this->addons = collect($this->addons)
+            ->map(function ($class) { return (object) $class::$addon; });
+
+        $this->updateAddonsStatus();
+
+        // if all addons are installed do nothing
+        if ($this->isEveryAddonInstalled()) {
+            return;
+        }
+
+        $this->newLine();
+        $this->infoBlock('Backpack addons');
+        $this->note('We believe these addons are everything you need to build admin panels of any complexity.');
+        $this->note('However, addons are paid, for more info, payment and access please visit https://backpackforlaravel.com/addons');
+        $this->newLine();
+
+        // Calculate the printed line count
+        $printedLines = $this->addons
+            ->map(function ($e) { return count($e->description); })
+            ->reduce(function ($sum, $item) { return $sum + $item + 2; }, 0);
+
+        $total = 0;
+        while (!$this->isEveryAddonInstalled()) {
+            $input = (int) $this->listChoice('Would you like to install any Backpack Addon? <fg=gray>(enter option number)</>', $this->addons->toArray());
+
+            if ($input < 1 || $input > $this->addons->count()) {
+                break;
+            }
+
+            // Clear list
+            $this->deleteLines($printedLines + 4 + ($total ? 2 : 0));
+
+            try {
+                $addon = $this->addons[$input - 1];
+
+                // Install addon
+                $this->call($addon->command);
+
+                // refresh list
+                $this->updateAddonsStatus();
+
+                ++$total;
+            } catch (\Throwable $e) {
+                $this->errorBlock($e->getMessage());
+            }
+
+            $this->line('  ──────────', 'fg=gray');
+            $this->newLine();
         }
     }
 }
