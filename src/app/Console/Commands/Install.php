@@ -5,7 +5,6 @@ namespace Backpack\CRUD\app\Console\Commands;
 use Backpack\CRUD\BackpackServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Install extends Command
@@ -75,8 +74,8 @@ class Install extends Command
         // $process->run();
         $this->closeProgressBlock();
 
-        // Create admins
-        $this->createAdminUsers();
+        // Create users
+        $this->createUsers();
 
         // Addons
         $this->installAddons();
@@ -89,21 +88,17 @@ class Install extends Command
         $this->newLine();
     }
 
-    private function createAdminUsers()
+    private function createUsers()
     {
-        $userModel = config('backpack.base.user_model_fqn');
-        $permissionTable = config('permission.table_names.model_has_roles');
+        $userModel = new (config('backpack.base.user_model_fqn', 'App\Models\User'))();
 
-        // Count current admins
-        $currentAdmins = DB::table($permissionTable)->where([
-            'role_id' => 1,
-            'model_type' => $userModel,
-        ])->count();
+        // Count current users
+        $currentUsers = $userModel->count();
 
         $this->newLine();
-        $this->infoBlock('Create an admin to access your admin panel');
-        $this->note('By adding an admin you\'ll be able to quickly jump in your admin panel.');
-        $this->note('Currently there '.trans_choice("{0} are <fg=blue>no admins</>|{1} is <fg=blue>1 admin</>|[2,*] are <fg=blue>$currentAdmins admins</>", $currentAdmins).' in the database');
+        $this->infoBlock('Create a user to access your admin panel');
+        $this->note('By adding an user you\'ll be able to quickly jump in your admin panel.');
+        $this->note('Currently there '.trans_choice("{0} are <fg=blue>no users</>|{1} is <fg=blue>1 user</>|[2,*] are <fg=blue>$currentUsers users</>", $currentUsers).' in the database');
 
         $total = 0;
         while ($this->confirm(' Add '.($total ? 'another' : 'an').' admin user?')) {
@@ -112,19 +107,12 @@ class Install extends Command
             $pass = $this->secret(" {$name}'s password");
 
             try {
-                (new $userModel())->insert([
+                $userModel->insert([
                     'name' => $name,
                     'email' => $mail,
                     'password' => bcrypt($pass),
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
-                ]);
-
-                // Admin Role
-                DB::table($permissionTable)->insert([
-                    'role_id' => 1,
-                    'model_type' => $userModel,
-                    'model_id' => DB::getPdo()->lastInsertId(),
                 ]);
 
                 $this->deleteLines(12);

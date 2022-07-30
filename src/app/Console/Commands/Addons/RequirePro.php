@@ -34,7 +34,7 @@ class RequirePro extends Command
         'description' => [
             'Adds 50+ features',
         ],
-        'path' => 'vendor/backpack/pro--',
+        'path' => 'vendor/backpack/pro',
         'command' => 'backpack:require:pro',
     ];
 
@@ -93,6 +93,6 @@ class RequirePro extends Command
 
     public function isInstalled()
     {
-        return file_exists('vendor/backpack/pro/composer.json');
+        return file_exists(self::$addon['path'].'/composer.json');
     }
 }

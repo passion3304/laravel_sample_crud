@@ -67,7 +67,7 @@ class RequireDevTools extends Command
 
         // Require package
         try {
-            $this->composerRequire('backpack/composerRequire', ['--dev', '--with-all-dependencies']);
+            $this->composerRequire('backpack/devtools', ['--dev', '--with-all-dependencies']);
         } catch (\Throwable $e) {
             $this->errorProgressBlock();
             $this->line('  '.$e->getMessage(), 'fg=red');
@@ -96,5 +96,10 @@ class RequireDevTools extends Command
         }
 
         $this->call(\Backpack\DevTools\Console\Commands\InstallDevTools::class);
+    }
+
+    public function isInstalled()
+    {
+        return file_exists(self::$addon['path'].'/composer.json');
     }
 }

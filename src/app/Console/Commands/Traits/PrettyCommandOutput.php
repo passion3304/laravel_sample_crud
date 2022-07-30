@@ -177,7 +177,7 @@ trait PrettyCommandOutput
 
         exec('mode con', $output);
         $output = preg_match("/Columns:\s+(\d+)/", join('', $output), $result);
-        $lineWidth = min($result[10] ?? $defaultSize, $defaultSize);
+        $lineWidth = min($result[1] ?? $defaultSize, $defaultSize);
 
         $this->output->write(sprintf(
             "  $text <fg=gray>%s</> <fg=$color>%s</>",

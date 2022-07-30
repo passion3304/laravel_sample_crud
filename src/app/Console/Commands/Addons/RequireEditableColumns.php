@@ -93,6 +93,6 @@ class RequireEditableColumns extends Command
 
     public function isInstalled()
     {
-        return file_exists('vendor/backpack/editable-columns/composer.json');
+        return file_exists(self::$addon['path'].'/composer.json');
     }
 }
