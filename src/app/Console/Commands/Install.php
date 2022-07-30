@@ -90,7 +90,8 @@ class Install extends Command
 
     private function createUsers()
     {
-        $userModel = new (config('backpack.base.user_model_fqn', 'App\Models\User'))();
+        $userClass = config('backpack.base.user_model_fqn', 'App\Models\User');
+        $userModel = new $userClass();
 
         // Count current users
         $currentUsers = $userModel->count();
