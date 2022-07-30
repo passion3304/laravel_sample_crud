@@ -121,7 +121,7 @@ class Install extends Command
                 $this->note($name);
                 $this->note($mail);
 
-                ++$total;
+                $total++;
             } catch (\Throwable$e) {
                 $this->errorBlock($e->getMessage());
             }
@@ -132,7 +132,9 @@ class Install extends Command
 
     private function isEveryAddonInstalled()
     {
-        return collect($this->addons)->every(function ($addon) { return file_exists($addon->path); });
+        return collect($this->addons)->every(function ($addon) {
+            return file_exists($addon->path);
+        });
     }
 
     private function updateAddonsStatus()
@@ -149,7 +151,9 @@ class Install extends Command
         // map the addons status
 
         $this->addons = collect($this->addons)
-            ->map(function ($class) { return (object) $class::$addon; });
+            ->map(function ($class) {
+                return (object) $class::$addon;
+            });
 
         $this->updateAddonsStatus();
 
@@ -166,11 +170,15 @@ class Install extends Command
 
         // Calculate the printed line count
         $printedLines = $this->addons
-            ->map(function ($e) { return count($e->description); })
-            ->reduce(function ($sum, $item) { return $sum + $item + 2; }, 0);
+            ->map(function ($e) {
+                return count($e->description);
+            })
+            ->reduce(function ($sum, $item) {
+                return $sum + $item + 2;
+            }, 0);
 
         $total = 0;
-        while (!$this->isEveryAddonInstalled()) {
+        while (! $this->isEveryAddonInstalled()) {
             $input = (int) $this->listChoice('Would you like to install any Backpack Addon? <fg=gray>(enter option number)</>', $this->addons->toArray());
 
             if ($input < 1 || $input > $this->addons->count()) {
@@ -189,7 +197,7 @@ class Install extends Command
                 // refresh list
                 $this->updateAddonsStatus();
 
-                ++$total;
+                $total++;
             } catch (\Throwable $e) {
                 $this->errorBlock($e->getMessage());
             }
