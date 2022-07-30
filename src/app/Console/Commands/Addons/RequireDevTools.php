@@ -77,7 +77,7 @@ class RequireDevTools extends Command
         }
 
         // Display general error in case it failed
-        if (!$this->isInstalled()) {
+        if (! $this->isInstalled()) {
             $this->errorProgressBlock();
             $this->note('For further information please check the log file.');
             $this->note('You can also follow the manual installation process documented in https://backpackforlaravel.com/addons/');
@@ -91,7 +91,7 @@ class RequireDevTools extends Command
         $this->newLine();
 
         // manually include the command in the run-time
-        if (!class_exists(\Backpack\DevTools\Console\Commands\InstallDevTools::class)) {
+        if (! class_exists(\Backpack\DevTools\Console\Commands\InstallDevTools::class)) {
             include base_path('vendor/backpack/devtools/src/Console/Commands/InstallDevTools.php');
         }
 

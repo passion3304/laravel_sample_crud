@@ -85,7 +85,7 @@ trait AddonsHelper
         });
 
         // Create an auth.json file
-        if (!$details) {
+        if (! $details) {
             $this->progressBlock('Creating auth.json file with your authentication token');
             $this->newLine();
 
@@ -111,7 +111,7 @@ trait AddonsHelper
 
                     if (File::exists('auth.json')) {
                         $currentFile = json_decode(File::get('auth.json'), true);
-                        if (!($currentFile['http-basic']['backpackforlaravel.com'] ?? false)) {
+                        if (! ($currentFile['http-basic']['backpackforlaravel.com'] ?? false)) {
                             $authFile = array_merge_recursive($authFile, $currentFile);
                         }
                     }

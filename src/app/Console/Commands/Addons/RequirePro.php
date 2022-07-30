@@ -77,7 +77,7 @@ class RequirePro extends Command
         }
 
         // Display general error in case it failed
-        if (!$this->isInstalled()) {
+        if (! $this->isInstalled()) {
             $this->errorProgressBlock();
             $this->note('For further information please check the log file.');
             $this->note('You can also follow the manual installation process documented in https://backpackforlaravel.com/addons/');
