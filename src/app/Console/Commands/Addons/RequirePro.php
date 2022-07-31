@@ -32,7 +32,7 @@ class RequirePro extends Command
     public static $addon = [
         'name' => 'Backpack Pro',
         'description' => [
-            'Adds 50+ features',
+            'Adds 5 operations, 10 filters, 28 fields, 6 columns, charts',
         ],
         'path' => 'vendor/backpack/pro',
         'command' => 'backpack:require:pro',
