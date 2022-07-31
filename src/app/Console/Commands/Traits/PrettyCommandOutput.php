@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Console\Commands\Traits;
 
 use Artisan;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Terminal;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -171,15 +172,13 @@ trait PrettyCommandOutput
      */
     public function progressBlock(string $text, string $progress = 'running', string $color = 'blue')
     {
-        $defaultSize = 128;
-
-        exec('mode con', $output);
-        $output = preg_match("/Columns:\s+(\d+)/", join('', $output), $result);
-        $lineWidth = min($result[1] ?? $defaultSize, $defaultSize);
+        $this->maxWidth = $this->maxWidth ?? 128;
+        $this->terminal = $this->terminal ?? new Terminal();
+        $width = min($this->terminal->getWidth(), $this->maxWidth);
 
         $this->output->write(sprintf(
             "  $text <fg=gray>%s</> <fg=$color>%s</>",
-            str_repeat('.', $lineWidth - 5 - strlen(strip_tags($text.$progress))),
+            str_repeat('.', $width - 5 - strlen(strip_tags($text.$progress))),
             strtoupper($progress)
         ));
     }
