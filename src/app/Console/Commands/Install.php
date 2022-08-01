@@ -49,7 +49,7 @@ class Install extends Command
      */
     public function handle()
     {
-        $this->infoBlock('Backpack installation started.');
+        $this->infoBlock('Installing Backpack CRUD:');
 
         // Publish files
         $this->progressBlock('Publishing configs, views, js and css files');
@@ -85,7 +85,7 @@ class Install extends Command
         // Done
         $url = Str::of(config('app.url'))->finish('/')->append('admin/');
         $this->infoBlock('Backpack installation complete.', 'done');
-        $this->note("Head to <fg=blue>$url</> to access your new admin panel.");
+        $this->note("Go to <fg=blue>$url</> to access your new admin panel.");
         $this->note('You may need to run `php artisan serve` to serve your Laravel project.');
         $this->newLine();
     }
@@ -99,7 +99,7 @@ class Install extends Command
         $currentUsers = $userModel->count();
 
         $this->newLine();
-        $this->infoBlock('Create a user');
+        $this->infoBlock('Creating an admin:');
         $this->note('Quickly jump in your admin panel, using the email & password you choose here.');
         $this->note('Currently there '.trans_choice("{0} are <fg=blue>no users</>|{1} is <fg=blue>1 user</>|[2,*] are <fg=blue>$currentUsers users</>", $currentUsers).' in the database.');
 
@@ -166,9 +166,9 @@ class Install extends Command
         }
 
         $this->newLine();
-        $this->infoBlock('Backpack addons');
-        $this->note('We believe these addons are everything you need to build admin panels of any complexity.');
-        $this->note('However, addons are paid, for more info, payment and access please visit https://backpackforlaravel.com/addons.');
+        $this->infoBlock('Installing premium Backpack add-ons:');
+        $this->note('Add tons of features and functionality to your admin panel, using our paid add-ons.');
+        $this->note('For more information, payment and access please visit https://backpackforlaravel.com/pricing');
         $this->newLine();
 
         // Calculate the printed line count
@@ -182,7 +182,7 @@ class Install extends Command
 
         $total = 0;
         while (! $this->isEveryAddonInstalled()) {
-            $input = (int) $this->listChoice('Would you like to install any Backpack Addon? <fg=gray>(enter option number)</>', $this->addons->toArray());
+            $input = (int) $this->listChoice('Would you like to install a premium Backpack add-on? <fg=gray>(enter option number)</>', $this->addons->toArray());
 
             if ($input < 1 || $input > $this->addons->count()) {
                 break;
