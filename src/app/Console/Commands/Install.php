@@ -83,8 +83,8 @@ class Install extends Command
         // Done
         $url = Str::of(config('app.url'))->finish('/')->append('admin/');
         $this->infoBlock('Backpack installation complete.', 'done');
-        $this->note("Head to <fg=blue>$url</> to view your new admin panel");
-        $this->note('You may need to run `php artisan serve` to serve your project.');
+        $this->note("Head to <fg=blue>$url</> to access your new admin panel.");
+        $this->note('You may need to run `php artisan serve` to serve your Laravel project.');
         $this->newLine();
     }
 
@@ -97,9 +97,9 @@ class Install extends Command
         $currentUsers = $userModel->count();
 
         $this->newLine();
-        $this->infoBlock('Create a user to access your admin panel');
-        $this->note('By adding an user you\'ll be able to quickly jump in your admin panel.');
-        $this->note('Currently there '.trans_choice("{0} are <fg=blue>no users</>|{1} is <fg=blue>1 user</>|[2,*] are <fg=blue>$currentUsers users</>", $currentUsers).' in the database');
+        $this->infoBlock('Create a user');
+        $this->note('Quickly jump in your admin panel, using the email & password you choose here.');
+        $this->note('Currently there '.trans_choice("{0} are <fg=blue>no users</>|{1} is <fg=blue>1 user</>|[2,*] are <fg=blue>$currentUsers users</>", $currentUsers).' in the database.');
 
         $total = 0;
         while ($this->confirm(' Add '.($total ? 'another' : 'an').' admin user?')) {
