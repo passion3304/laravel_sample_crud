@@ -109,13 +109,13 @@ trait AddonsHelper
             if ($type === Process::ERR) {
                 // Fallback
                 $authFile = [
-                        'http-basic' => [
-                            'backpackforlaravel.com' => [
-                                'username' => $username,
-                                'password' => $password,
-                            ],
+                    'http-basic' => [
+                        'backpackforlaravel.com' => [
+                            'username' => $username,
+                            'password' => $password,
                         ],
-                    ];
+                    ],
+                ];
 
                 if (File::exists('auth.json')) {
                     $currentFile = json_decode(File::get('auth.json'), true);
