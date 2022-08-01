@@ -39,7 +39,7 @@ trait PrettyCommandOutput
             throw new ProcessFailedException($process);
         }
 
-        if ($this->progressBar) {
+        if ($this->progressBar ?? null) {
             $this->progressBar->advance();
         }
 
@@ -69,7 +69,7 @@ trait PrettyCommandOutput
             throw new ProcessFailedException($e);
         }
 
-        if ($this->progressBar) {
+        if ($this->progressBar ?? null) {
             $this->progressBar->advance();
         }
 
@@ -139,6 +139,16 @@ trait PrettyCommandOutput
     public function infoBlock(string $text, string $title = 'info', string $background = 'blue', string $foreground = 'white')
     {
         $this->newLine();
+
+        // low verbose level (-v) will display a note instead of info block
+        if ($this->output->isVerbose()) {
+            if ($title !== 'info') {
+                $text = "$text <fg=gray>[<fg=$background>$title</>]</>";
+            }
+
+            return $this->line("  $text");
+        }
+
         $this->line(sprintf("  <fg=$foreground;bg=$background> %s </> $text", strtoupper($title)));
         $this->newLine();
     }

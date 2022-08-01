@@ -30,13 +30,15 @@ trait AddonsHelper
 
         // validate if backpack repo exists
         if (collect($details)->pluck('url')->contains($backpackRepo)) {
+            $this->note('Backpack repository entry is present in composer.json.');
+
             return;
         }
 
         // Create repositories
         $this->progressBlock('Creating repositories entry in composer.json');
 
-        $process = new Process(['composera', 'config', 'repositories.backpack', 'composer', $backpackRepo]);
+        $process = new Process(['composer', 'config', 'repositories.backpack', 'composer', $backpackRepo]);
         $process->run(function ($type, $buffer) use ($backpackRepo) {
             if ($type === Process::ERR) {
                 // Fallback
@@ -84,23 +86,29 @@ trait AddonsHelper
             }
         });
 
+        // Token exists
+        if ($details) {
+            $this->note('Backpack authentication token is present.');
+
+            return;
+        }
+
         // Create an auth.json file
-        if (! $details) {
-            $this->progressBlock('Creating auth.json file with your authentication token');
-            $this->newLine();
+        $this->progressBlock('Creating auth.json file with your authentication token');
+        $this->newLine();
 
-            $this->note('(Find your access token details on https://backpackforlaravel.com/user/tokens)');
-            $username = $this->ask('Access token username');
-            $password = $this->ask('Access token password');
+        $this->note('(Find your access token details on https://backpackforlaravel.com/user/tokens)');
+        $username = $this->ask('Access token username');
+        $password = $this->ask('Access token password');
 
-            $this->deleteLines(9);
-            $this->progressBlock('Creating auth.json file with your authentication token');
+        $this->deleteLines(9);
+        $this->progressBlock('Creating auth.json file with your authentication token');
 
-            $process = new Process(['composer', 'config', 'http-basic.backpackforlaravel.com', $username, $password]);
-            $process->run(function ($type, $buffer) use ($username, $password) {
-                if ($type === Process::ERR) {
-                    // Fallback
-                    $authFile = [
+        $process = new Process(['composer', 'config', 'http-basic.backpackforlaravel.com', $username, $password]);
+        $process->run(function ($type, $buffer) use ($username, $password) {
+            if ($type === Process::ERR) {
+                // Fallback
+                $authFile = [
                         'http-basic' => [
                             'backpackforlaravel.com' => [
                                 'username' => $username,
@@ -109,19 +117,18 @@ trait AddonsHelper
                         ],
                     ];
 
-                    if (File::exists('auth.json')) {
-                        $currentFile = json_decode(File::get('auth.json'), true);
-                        if (! ($currentFile['http-basic']['backpackforlaravel.com'] ?? false)) {
-                            $authFile = array_merge_recursive($authFile, $currentFile);
-                        }
+                if (File::exists('auth.json')) {
+                    $currentFile = json_decode(File::get('auth.json'), true);
+                    if (! ($currentFile['http-basic']['backpackforlaravel.com'] ?? false)) {
+                        $authFile = array_merge_recursive($authFile, $currentFile);
                     }
-
-                    File::put('auth.json', json_encode($authFile, JSON_PRETTY_PRINT));
                 }
-            });
 
-            $this->closeProgressBlock();
-        }
+                File::put('auth.json', json_encode($authFile, JSON_PRETTY_PRINT));
+            }
+        });
+
+        $this->closeProgressBlock();
     }
 
     /**

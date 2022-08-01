@@ -6,6 +6,8 @@ use Backpack\CRUD\BackpackServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class Install extends Command
 {
@@ -69,9 +71,9 @@ class Install extends Command
 
         // Install Backpack Generators
         $this->progressBlock('Installing Backpack Generators');
-        // $process = new Process(['composer', 'require', '--dev', 'backpack/generators']);
-        // $process->setTimeout(300);
-        // $process->run();
+        $process = new Process(['composer', 'require', '--dev', 'backpack/generators']);
+        $process->setTimeout(300);
+        $process->run();
         $this->closeProgressBlock();
 
         // Create users
@@ -149,13 +151,13 @@ class Install extends Command
 
     private function installAddons()
     {
-        // map the addons status
-
+        // map the addons
         $this->addons = collect($this->addons)
             ->map(function ($class) {
                 return (object) $class::$addon;
             });
 
+        // set addons current status (installed / not installed)
         $this->updateAddonsStatus();
 
         // if all addons are installed do nothing
@@ -166,7 +168,7 @@ class Install extends Command
         $this->newLine();
         $this->infoBlock('Backpack addons');
         $this->note('We believe these addons are everything you need to build admin panels of any complexity.');
-        $this->note('However, addons are paid, for more info, payment and access please visit https://backpackforlaravel.com/addons');
+        $this->note('However, addons are paid, for more info, payment and access please visit https://backpackforlaravel.com/addons.');
         $this->newLine();
 
         // Calculate the printed line count
@@ -192,8 +194,11 @@ class Install extends Command
             try {
                 $addon = $this->addons[$input - 1];
 
-                // Install addon
+                // Install addon (low verbose level)
+                $currentVerbosity = $this->output->getVerbosity();
+                $this->output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
                 $this->call($addon->command);
+                $this->output->setVerbosity($currentVerbosity);
 
                 // refresh list
                 $this->updateAddonsStatus();

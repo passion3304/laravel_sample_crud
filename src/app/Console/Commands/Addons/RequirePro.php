@@ -45,8 +45,17 @@ class RequirePro extends Command
      */
     public function handle()
     {
+        // Check if it is installed
+        if ($this->isInstalled()) {
+            $this->closeProgressBlock();
+            $this->line('  It was already installed.', 'fg=gray');
+            $this->newLine();
+
+            return;
+        }
+
         $this->newLine();
-        $this->infoBlock($this->description);
+        $this->infoBlock('Connecting to the Backpack add-on repository');
 
         // Check if repositories exists
         $this->composerRepositories();
@@ -54,16 +63,8 @@ class RequirePro extends Command
         // Check for authentication
         $this->checkForAuthentication();
 
+        $this->newLine();
         $this->progressBlock($this->description);
-
-        // Check if it is installed
-        if ($this->isInstalled()) {
-            $this->closeProgressBlock();
-            $this->line('  It was already installed', 'fg=gray');
-            $this->newLine();
-
-            return;
-        }
 
         // Require package
         try {
