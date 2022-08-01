@@ -160,9 +160,9 @@ trait PrettyCommandOutput
      *
      * @return void
      */
-    public function note(string $text, string $color = 'gray')
+    public function note(string $text, string $color = 'gray', string $barColor = 'gray')
     {
-        $this->line("  │ $text", "fg=$color");
+        $this->line("  <fg=$barColor>│</> $text", "fg=$color");
     }
 
     /**
