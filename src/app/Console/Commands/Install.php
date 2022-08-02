@@ -110,13 +110,21 @@ class Install extends Command
             $pass = $this->secret(" {$name}'s password");
 
             try {
-                $userModel->insert([
+                $user = collect([
                     'name' => $name,
                     'email' => $mail,
                     'password' => bcrypt($pass),
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ]);
+
+                // Merge timestamps
+                if ($userModel->timestamps) {
+                    $user = $user->merge([
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ]);
+                }
+
+                $userModel->insert($user->toArray());
 
                 $this->deleteLines(12);
                 $this->progressBlock('Adding admin user');
