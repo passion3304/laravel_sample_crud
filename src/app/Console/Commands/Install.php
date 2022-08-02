@@ -49,7 +49,7 @@ class Install extends Command
      */
     public function handle()
     {
-        $this->infoBlock('Installing Backpack CRUD:');
+        $this->infoBlock('Installing Backpack CRUD:', 'Step 1');
 
         // Publish files
         $this->progressBlock('Publishing configs, views, js and css files');
@@ -99,7 +99,7 @@ class Install extends Command
         $currentUsers = $userModel->count();
 
         $this->newLine();
-        $this->infoBlock('Creating an admin:');
+        $this->infoBlock('Creating an admin:', 'Step 2');
         $this->note('Quickly jump in your admin panel, using the email & password you choose here.');
         $this->note('Currently there '.trans_choice("{0} are <fg=blue>no users</>|{1} is <fg=blue>1 user</>|[2,*] are <fg=blue>$currentUsers users</>", $currentUsers).' in the database.');
 
@@ -130,7 +130,13 @@ class Install extends Command
             }
         }
 
-        $this->deleteLines(1);
+        $this->deleteLines(3);
+
+        if (!$total) {
+            $this->deleteLines();
+            $this->note('Skipping creating an admin user.');
+            $this->newLine();
+        }
     }
 
     private function isEveryAddonInstalled()
@@ -165,8 +171,7 @@ class Install extends Command
             return;
         }
 
-        $this->newLine();
-        $this->infoBlock('Installing premium Backpack add-ons:');
+        $this->infoBlock('Installing premium Backpack add-ons:', 'Step 3');
         $this->note('Add tons of features and functionality to your admin panel, using our paid add-ons.');
         $this->note('For more information, payment and access please visit https://backpackforlaravel.com/pricing');
         $this->newLine();
@@ -185,6 +190,7 @@ class Install extends Command
             $input = (int) $this->listChoice('Would you like to install a premium Backpack add-on? <fg=gray>(enter option number)</>', $this->addons->toArray());
 
             if ($input < 1 || $input > $this->addons->count()) {
+                $this->deleteLines(3);
                 break;
             }
 
