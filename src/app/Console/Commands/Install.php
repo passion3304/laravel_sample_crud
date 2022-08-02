@@ -86,7 +86,7 @@ class Install extends Command
         $url = Str::of(config('app.url'))->finish('/')->append('admin/');
         $this->infoBlock('Backpack installation complete.', 'done');
         $this->note("Go to <fg=blue>$url</> to access your new admin panel.");
-        $this->note('You may need to run `php artisan serve` to serve your Laravel project.');
+        $this->note('You may need to run <fg=blue>php artisan serve</> to serve your Laravel project.');
         $this->newLine();
     }
 
