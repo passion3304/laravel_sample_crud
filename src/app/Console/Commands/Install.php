@@ -132,7 +132,7 @@ class Install extends Command
 
         $this->deleteLines(3);
 
-        if (!$total) {
+        if (! $total) {
             $this->deleteLines();
             $this->note('Skipping creating an admin user.');
             $this->newLine();
