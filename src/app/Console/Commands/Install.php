@@ -96,13 +96,10 @@ class Install extends Command
         $userClass = config('backpack.base.user_model_fqn', 'App\Models\User');
         $userModel = new $userClass();
 
-        // Count current users
-        $currentUsers = $userModel->count();
-
         $this->newLine();
         $this->infoBlock('Creating an admin:', 'Step 2');
         $this->note('Quickly jump in your admin panel, using the email & password you choose here.');
-        $this->note('Currently there '.trans_choice("{0} are <fg=blue>no users</>|{1} is <fg=blue>1 user</>|[2,*] are <fg=blue>$currentUsers users</>", $currentUsers).' in the database.');
+        $this->note(sprintf('Using <fg=blue>%s</> table, defined in the <fg=blue>%s</> model.', $userModel->getTable(), $userClass));
 
         $total = 0;
         while ($this->confirm(' Add '.($total ? 'another' : 'an').' admin user?')) {
