@@ -83,7 +83,7 @@ class CrudPanel
     /**
      * Get the request instance for this CRUD.
      *
-     * @return  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Request
      */
     public function getRequest()
     {
