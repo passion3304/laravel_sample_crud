@@ -56,6 +56,18 @@ trait Fields
 
         $this->setupFieldValidation($field, $field['parentFieldName'] ?? false);
 
+        if (isset($field['relation_type']) && $field['relation_type'] === 'MorphTo') {
+            [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($field['name']);
+            if (! $this->hasFieldWhere('name', $morphTypeFieldName) || ! $this->hasFieldWhere('name', $morphIdFieldName)) {
+                // create the morph fields in the crud panel
+                $this->createMorphToRelationFields($field, $morphTypeFieldName, $morphIdFieldName);            
+                foreach($field['morphOptions'] ?? [] as $morphOption) {
+                    [$key, $label, $options] = $this->getMorphOptionStructured($morphOption);
+                    $this->addMorphOption($field['name'], $key, $label, $options);
+                }
+            }
+        }
+
         return $field;
     }
 

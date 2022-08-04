@@ -263,6 +263,34 @@ trait Relationships
     }
 
     /**
+     * This function created the MorphTo relation fields in the CrudPanel.
+     * 
+     * @param  array  $field
+     * @return void
+     */
+    private function createMorphToRelationFields(array $field, $morphTypeFieldName, $morphIdFieldName)
+    {
+        $morphTypeField = static::getMorphTypeFieldStructure($field['name'], $morphTypeFieldName);
+        $morphIdField = static::getMorphIdFieldStructure($field['name'], $morphIdFieldName, $morphTypeFieldName);
+        $morphIdField['morphMap'] = $morphTypeField['morphMap'] = (new $this->model)->{$field['name']}()->morphMap();
+        $this->addField($morphTypeField);
+        $this->addField($morphIdField);
+    }
+
+    /**
+     * return the relation field names for a morphTo field.
+     *
+     * @param  string  $relationName  the morphto relation name
+     * @return array
+     */
+    public function getMorphToFieldNames(string $relationName)
+    {
+        $relation = (new $this->model)->{$relationName}();
+
+        return [$relation->getMorphType(), $relation->getForeignKeyName()];
+    }
+
+    /**
      * Return the name for the BelongTo relation making sure it always has the
      * foreign_key instead of relationName (eg. "user_id", not "user").
      *
@@ -357,5 +385,126 @@ trait Relationships
         }
 
         return $method;
+    }
+
+    /**
+     * This function is responsible for setting up the morph fields structure.
+     * Developer can define the morph structure as follows:
+     *  'morphOptions => [
+     *       ['nameOnAMorphMap', 'label', [options]],
+     *       ['App\Models\Model'], // display the name of the model
+     *       ['App\Models\Model', 'label', ['data_source' => backpack_url('smt')]
+     *  ]
+     * OR
+     * ->addMorphOption('App\Models\Model', 'label', ['data_source' => backpack_url('smt')])
+     *
+     * @param  string  $fieldName
+     * @param string $key
+     * @param  string|null  $label
+     * @param  array  $options
+     * @return void
+     */
+    public function addMorphOption(string $fieldName, string $key, $label, array $options)
+    {
+        [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($fieldName);
+
+        if (! $this->hasFieldWhere('name', $morphTypeFieldName) || ! $this->hasFieldWhere('name', $morphIdFieldName)) {
+            throw new \Exception('Trying to add morphOptions to a non morph field. Check if field and relation name matches.');
+        }
+
+        $morphTypeField = $this->field($morphTypeFieldName)->getAttributes();
+        $morphIdField = $this->field($morphIdFieldName)->getAttributes();
+
+        $morphMap = $morphTypeField['morphMap'];
+
+        if(array_key_exists($key, $morphTypeField['options'] ?? [])) {
+            throw new \Exception('Duplicate entry for «'.$key.'» in addMorphOption().');
+        }
+        
+        if (is_a($key, 'Illuminate\Database\Eloquent\Model', true)) {
+            if (in_array($key, $morphMap)) {
+                $key = $morphMap[array_search($key, $morphMap)];
+
+                if(array_key_exists($key, $morphTypeField['options'])) {
+                    throw new \Exception('Duplicate entry for «'.$key.'» in morphOptions');
+                }
+
+                $morphTypeField['options'][$key] = $label ?? Str::afterLast($key, '\\');
+            } else {
+                $morphTypeField['options'][$key] = $label ?? Str::afterLast($key, '\\');
+            }
+        } else {
+            if (! array_key_exists($key, $morphMap)) {
+                throw new \Exception('Unknown morph type «'.$key.'», either the class doesnt exists, or the name was not found in the morphMap'); 
+            }
+
+            if(array_key_exists($key, $morphTypeField['options'])) {
+                throw new \Exception('Duplicate entry for «'.$key.'» in morphOptions');
+            }
+
+            $morphTypeField['options'][$key] = $label ?? ucfirst($key);
+        }
+
+        $morphIdField['morphOptions'][$key] = $options;
+
+        $this->modifyField($morphTypeFieldName, $morphTypeField);
+        $this->modifyField($morphIdFieldName, $morphIdField);
+    }
+
+    /**
+     * Returns the morphable_id field structure for morphTo relations.
+     *
+     * @param  string  $relationName
+     * @param  string  $morphIdFieldName
+     * @return array
+     */
+    private static function getMorphidFieldStructure($relationName, $morphIdFieldName, $morphTypeFieldName)
+    {
+        return [
+            'name' => $morphIdFieldName,
+            'type' => 'relationship.morphTo_select',
+            'entity' => false,
+            'placeholder' => 'Select the '.$relationName,
+            'allows_null' => true,
+            'allow_multiple' => false,
+            'showAsterisk' => false,
+            'renderOnPage' => false,
+            'morphTypeFieldName' => $morphTypeFieldName,
+            'attributes' => [
+                'data-morph-select' => $relationName.'-morph-select',
+            ],
+        ];
+    }
+
+    /**
+     * Returns the morphable_type field structure for morphTo relations.
+     *
+     * @param  string  $relationName
+     * @param  string  $morphTypeFieldName
+     * @return array
+     */
+    private static function getMorphTypeFieldStructure($relationName, $morphTypeFieldName)
+    {
+        return [
+            'name' => $morphTypeFieldName,
+            'type' => 'relationship.morphTo_type_select',
+            'placeholder' => 'Select the '.$relationName,
+            'renderOnPage' => false,
+            'showAsterisk' => false,
+            'attributes' => [
+                $relationName.'-morph-select' => true,
+            ],
+        ];
+    }
+
+    /**
+     * return the array with defaults for a morphOption structure
+     * 
+     * @param array $morphOption
+     * @return array
+     */
+    private function getMorphOptionStructured(array $morphOption) 
+    {
+        return [$morphOption[0] ?? null, $morphOption[1] ?? null, $morphOption[2] ?? []];
     }
 }
