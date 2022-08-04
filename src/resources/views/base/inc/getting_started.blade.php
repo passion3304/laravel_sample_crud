@@ -7,7 +7,7 @@
     <div id="accordion" role="tablist">
       <div class="card mb-1">
         <div class="card-header bg-light" id="headingOne" role="tab">
-          <h5 class="mb-0"><a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed text-dark"><span class="badge badge-warning mr-2 mt-n2">1</span>Create your first CRUD <small class="float-right mt-2">1 min</small></a></h5>
+          <h5 class="mb-0"><a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed text-dark"><span class="badge badge-warning mr-2 mt-n2">1</span>Create your first CRUD <small class="float-right mt-2">1-5 min</small></a></h5>
         </div>
         <div class="collapse" id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
           <div class="card-body">
