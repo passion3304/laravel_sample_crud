@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Illuminate\Support\Str;
-
 /**
  * Adds fluent syntax to Backpack CRUD Fields.
  *
@@ -254,23 +252,24 @@ class CrudField
 
     /**
      * Allow developer to add morphOptions into a morphTo field eg:
-     * ->addMorphOption(App\User::class, 'User', ['placelholder' => 'select a dummy user'])
-     * 
-     * @param string $key
-     * @param string|null $label
-     * @param array $options
-     * @throws \Exception
-     * 
+     * ->addMorphOption(App\User::class, 'User', ['placelholder' => 'select a dummy user']).
+     *
+     * @param  string  $key
+     * @param  string|null  $label
+     * @param  array  $options
      * @return self
+     *
+     * @throws \Exception
      */
     public function addMorphOption(string $key, $label = null, array $options = [])
-    {   
+    {
         $this->crud()->addMorphOption($this->attributes['name'], $key, $label, $options);
 
         return $this;
     }
 
-    public function getAttributes() {
+    public function getAttributes()
+    {
         return $this->attributes;
     }
     // ---------------

@@ -264,7 +264,7 @@ trait Relationships
 
     /**
      * This function created the MorphTo relation fields in the CrudPanel.
-     * 
+     *
      * @param  array  $field
      * @return void
      */
@@ -396,10 +396,10 @@ trait Relationships
      *       ['App\Models\Model', 'label', ['data_source' => backpack_url('smt')]
      *  ]
      * OR
-     * ->addMorphOption('App\Models\Model', 'label', ['data_source' => backpack_url('smt')])
+     * ->addMorphOption('App\Models\Model', 'label', ['data_source' => backpack_url('smt')]).
      *
      * @param  string  $fieldName
-     * @param string $key
+     * @param  string  $key
      * @param  string|null  $label
      * @param  array  $options
      * @return void
@@ -417,15 +417,15 @@ trait Relationships
 
         $morphMap = $morphTypeField['morphMap'];
 
-        if(array_key_exists($key, $morphTypeField['options'] ?? [])) {
+        if (array_key_exists($key, $morphTypeField['options'] ?? [])) {
             throw new \Exception('Duplicate entry for «'.$key.'» in addMorphOption().');
         }
-        
+
         if (is_a($key, 'Illuminate\Database\Eloquent\Model', true)) {
             if (in_array($key, $morphMap)) {
                 $key = $morphMap[array_search($key, $morphMap)];
 
-                if(array_key_exists($key, $morphTypeField['options'])) {
+                if (array_key_exists($key, $morphTypeField['options'])) {
                     throw new \Exception('Duplicate entry for «'.$key.'» in morphOptions');
                 }
 
@@ -435,10 +435,10 @@ trait Relationships
             }
         } else {
             if (! array_key_exists($key, $morphMap)) {
-                throw new \Exception('Unknown morph type «'.$key.'», either the class doesnt exists, or the name was not found in the morphMap'); 
+                throw new \Exception('Unknown morph type «'.$key.'», either the class doesnt exists, or the name was not found in the morphMap');
             }
 
-            if(array_key_exists($key, $morphTypeField['options'])) {
+            if (array_key_exists($key, $morphTypeField['options'])) {
                 throw new \Exception('Duplicate entry for «'.$key.'» in morphOptions');
             }
 
@@ -498,12 +498,12 @@ trait Relationships
     }
 
     /**
-     * return the array with defaults for a morphOption structure
-     * 
-     * @param array $morphOption
+     * return the array with defaults for a morphOption structure.
+     *
+     * @param  array  $morphOption
      * @return array
      */
-    private function getMorphOptionStructured(array $morphOption) 
+    private function getMorphOptionStructured(array $morphOption)
     {
         return [$morphOption[0] ?? null, $morphOption[1] ?? null, $morphOption[2] ?? []];
     }

@@ -60,8 +60,8 @@ trait Fields
             [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($field['name']);
             if (! $this->hasFieldWhere('name', $morphTypeFieldName) || ! $this->hasFieldWhere('name', $morphIdFieldName)) {
                 // create the morph fields in the crud panel
-                $this->createMorphToRelationFields($field, $morphTypeFieldName, $morphIdFieldName);            
-                foreach($field['morphOptions'] ?? [] as $morphOption) {
+                $this->createMorphToRelationFields($field, $morphTypeFieldName, $morphIdFieldName);
+                foreach ($field['morphOptions'] ?? [] as $morphOption) {
                     [$key, $label, $options] = $this->getMorphOptionStructured($morphOption);
                     $this->addMorphOption($field['name'], $key, $label, $options);
                 }
