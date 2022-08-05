@@ -273,8 +273,8 @@ trait Relationships
         $morphTypeField = static::getMorphTypeFieldStructure($field['name'], $morphTypeFieldName);
         $morphIdField = static::getMorphIdFieldStructure($field['name'], $morphIdFieldName, $morphTypeFieldName);
         $morphIdField['morphMap'] = $morphTypeField['morphMap'] = (new $this->model)->{$field['name']}()->morphMap();
-        $this->addField($morphTypeField);
-        $this->addField($morphIdField);
+        $field['subfields'] = [$morphTypeField, $morphIdField];
+        return $field;
     }
 
     /**
@@ -404,16 +404,17 @@ trait Relationships
      * @param  array  $options
      * @return void
      */
-    public function addMorphOption(string $fieldName, string $key, $label, array $options)
+    public function addMorphOption(string $fieldName, string $key, $label = null, array $options)
     {
         [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($fieldName);
 
-        if (! $this->hasFieldWhere('name', $morphTypeFieldName) || ! $this->hasFieldWhere('name', $morphIdFieldName)) {
+        if (! in_array($morphTypeFieldName, array_column($this->field($fieldName)->getAttributes()['subfields'], 'name')) || 
+            ! in_array($morphIdFieldName, array_column($this->field($fieldName)->getAttributes()['subfields'], 'name'))) {
             throw new \Exception('Trying to add morphOptions to a non morph field. Check if field and relation name matches.');
         }
 
-        $morphTypeField = $this->field($morphTypeFieldName)->getAttributes();
-        $morphIdField = $this->field($morphIdFieldName)->getAttributes();
+        [$morphTypeField, $morphIdField] = $this->field($fieldName)->getAttributes()['subfields'];
+        //$morphIdField = $this->field($morphIdFieldName)->getAttributes();
 
         $morphMap = $morphTypeField['morphMap'];
 
@@ -446,9 +447,8 @@ trait Relationships
         }
 
         $morphIdField['morphOptions'][$key] = $options;
-
-        $this->modifyField($morphTypeFieldName, $morphTypeField);
-        $this->modifyField($morphIdFieldName, $morphIdField);
+        $field['subfields'] = [$morphTypeField, $morphIdField];
+        $this->modifyField($fieldName, $field);
     }
 
     /**
