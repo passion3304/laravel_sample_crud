@@ -15,7 +15,7 @@
             <p>
               <code class="text-primary bg-light p-1 rounded">php artisan backpack:crud user</code>
             </p>
-            <p>Go ahead, run it. You'll notice it has:</p>
+            <p>Go ahead, run it in your terminal. You'll notice it has:</p>
             <ul>
               <li>added an item to the sidebar, in <code class="text-primary bg-light p-1 rounded">resources/views/vendor/backpack/base/inc/sidebar_content.blade.php</code></li>
               <li>added a route, inside <code class="text-primary bg-light p-1 rounded">routes/backpack/custom.php</code></li>
@@ -28,12 +28,15 @@
 
             <div class="collapse" id="customizeUsersCRUD">
               <p><strong>1. Let's remove the "password" column</strong> - no point in showing it. To do that, go to <code class="text-primary bg-light p-1 rounded">UserCrudController::setupListOperation()</code> and remove the line saying <code class="text-primary bg-light p-1 rounded">CRUD::column('password');</code>. Easy-peasy, right?</p>
-              <p><strong>2. On Create & Update, let's add validation to forms</strong>. There are <a href="https://backpackforlaravel.com/docs/5.x/crud-operation-create#validation" target="_blank">multiple ways to add validation</a>, but for this simple example, let's just use <a href="https://backpackforlaravel.com/docs/5.x/crud-operation-create#validating-fields-using-field-attributes" target="_blank">field attribute validation</a>:</p>
+              <p><strong>2. On Create & Update, let's add validation to forms</strong>. There are <a href="https://backpackforlaravel.com/docs/5.x/crud-operation-create#validation" target="_blank">multiple ways to add validation (A, B, C)</a>. Let's change the standard <a href="https://backpackforlaravel.com/docs/5.x/crud-operation-create#validating-fields-using-formrequests" target="_blank">validation using FormRequests</a> (A), to a simpler validation using <a href="https://backpackforlaravel.com/docs/5.x/crud-operation-create#validating-fields-using-field-attributes" target="_blank">field attributes</a> (C):</p>
               <ul>
-                <li>inside <code class="text-primary bg-light p-1 rounded">UserCrudController</code>, let's remove <code class="text-primary bg-light p-1 rounded">use App\Http\Requests\UserRequest;</code> from the top;</li>
-                <li>inside <code class="text-primary bg-light p-1 rounded">UserCrudController</code>, let's remove <code class="text-primary bg-light p-1 rounded">CRUD::setValidation(UserRequest::class);</code> from <code class="text-primary bg-light p-1 rounded">setupCreateOperation()</code>;</li>
-                <li>let's delete the <code class="text-primary bg-light p-1 rounded">App\Http\Requests\UserRequest;</code> file;</li>
-                <li>now we're left with zero validation inside <code class="text-primary bg-light p-1 rounded">UserCrudController</code>;</li>
+                <li>to remove the current validation:<br>
+                  <ul>
+                    <li>inside <code class="text-primary bg-light p-1 rounded">UserCrudController</code>, remove <code class="text-primary bg-light p-1 rounded">use App\Http\Requests\UserRequest;</code> from the top;</li>
+                    <li>inside <code class="text-primary bg-light p-1 rounded">UserCrudController</code>, remove <code class="text-primary bg-light p-1 rounded">CRUD::setValidation(UserRequest::class);</code> from <code class="text-primary bg-light p-1 rounded">setupCreateOperation()</code>;</li>
+                    <li>delete the <code class="text-primary bg-light p-1 rounded">App\Http\Requests\UserRequest;</code> file;</li>
+                  </ul>
+                </li>
                 <li>a quick way to add validation is to go to <code class="text-primary bg-light p-1 rounded">setupCreateOperation()</code> and specify validation rules directly on the fields:
                 <p>
                   <pre class="text-primary bg-light p-1 rounded">
@@ -44,7 +47,7 @@
                 </p>
                 </li>
               </ul>
-              <p><strong>3. On Create, let's hash the password.</strong> Ok so... now that we have basic validation, if we create a new User, it'll work. But if you look in the database... you'll notice the password is stored in plain text. We don't want that - we want it hashed. There are multiple ways to achieve this - inside the Model, the Request or the CrudController. Let's use Model Events inside UserCrudController. Here's how our <code class="text-primary bg-light p-1 rounded">setupCreateOperation()</code> would look, with the validation above rules and us tapping into the <code class="text-primary bg-light p-1 rounded">creating</code> event, to hash the password:</p>
+              <p><strong>3. On Create, let's hash the password.</strong> Currently, if we create a new User, it'll work. But if you look in the database... you'll notice the password is stored in plain text. We don't want that - we want it hashed. There are <a href="https://backpackforlaravel.com/docs/5.x/crud-operation-create#use-events-in-your-setup-method" target="_blank">multiple ways to achieve this too</a>. Let's use Model Events inside <code class="text-primary bg-light p-1 rounded">setupCreateOperation()</code>. Here's how our method could look, when we also tap into the <code class="text-primary bg-light p-1 rounded">creating</code> event, to hash the password:</p>
               <p>
                 <pre class="text-primary bg-light p-1 rounded">
       protected function setupCreateOperation()
@@ -59,7 +62,7 @@
       }
                 </pre>
               </p>
-              <p><strong>4. On Update, let's not require the password</strong>. It should only be needed if an admin wants to change it, right? That means the validation rules will be different for "password". But it'll also be different for "email" (on Update we need to pass the ID to the unique rule in Laravel). Since 2/3 rules are different, let's just delete what was inside <code class="text-primary bg-light p-1 rounded">setupUpdateOperation()</code> and code it from scratch:</p>
+              <p><strong>4. On Update, let's not require the password</strong>. It should only be needed if an admin wants to change it, right? That means the validation rules will be different for "password". But then again... the rules will also be different for "email", right? On Update, we need to pass the ID to the unique rule in Laravel. Since 2/3 rules are different, let's just delete what was inside <code class="text-primary bg-light p-1 rounded">setupUpdateOperation()</code> and code it from scratch:</p>
               <p>
                 <pre class="text-primary bg-light p-1 rounded">
       protected function setupUpdateOperation()
@@ -78,7 +81,9 @@
       }
                 </pre>
               </p>
-              <p>That's it. You have a working Users CRUD. Plus, you've already learned some not-so-easy-to-do things, like using Model events inside CrudController and using field-validation instead of form-request-validation. Of course, this only scratches the surface of what Backpack can do. So we heavily recommend you move on to the next step, and learn the basics.</p>
+              <p>
+                That's it. You have a working Users CRUD. Plus, you've already learned some advanced techniques, like <a href="https://backpackforlaravel.com/docs/5.x/crud-operation-create#use-events-in-your-setup-method" target="_blank">using Model events inside CrudController</a> and <a href="https://backpackforlaravel.com/docs/5.x/crud-operation-create#b-validating-fields-using-a-rules-array" target="_blank">using field-attribute-validation instead of form-request-validation</a>. Of course, this only scratches the surface of what Backpack can do. To really understand how it works, and how you can best use Backpack's features, <strong>we heavily recommend you move on to the next step, and learn the basics.</strong>
+              </p>
             </div>
           </div>
         </div>
