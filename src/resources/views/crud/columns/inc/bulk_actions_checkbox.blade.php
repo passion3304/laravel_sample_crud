@@ -30,12 +30,12 @@
                     if (crud.lastCheckedItem && e.shiftKey) {
                         let getNodeindex = elm => [...elm.parentNode.children].indexOf(elm);
                         let first = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${crud.lastCheckedItem}"]`).closest('tr');
-                        let end = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${primaryKeyValue}"]`).closest('tr');
+                        let last = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${primaryKeyValue}"]`).closest('tr');
                         let firstIndex = getNodeindex(first);
-                        let endIndex = getNodeindex(end)
+                        let lastIndex = getNodeindex(last)
                         
-                        while(first !== end) {
-                            first = firstIndex < endIndex ? first.nextElementSibling : first.previousElementSibling;
+                        while(first !== last) {
+                            first = firstIndex < lastIndex ? first.nextElementSibling : first.previousElementSibling;
                             first.querySelector('input.crud_bulk_actions_line_checkbox:not(:checked)')?.click();
                         }
                     }
