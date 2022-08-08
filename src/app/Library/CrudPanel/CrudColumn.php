@@ -81,11 +81,13 @@ class CrudColumn
 
         $columns = $this->crud()->columns();
         $searchKey = $this->attributes['key'];
+        $column = $this->attributes;
 
         if (isset($columns[$searchKey])) {
             unset($columns[$searchKey]);
             $column['key'] = $key;
         }
+        
         $this->attributes = $column;
         $this->setOperationSetting('columns', array_merge($columns, [$key => $column]));
 
