@@ -6,7 +6,7 @@ on:
     # branches to consider in the event; optional, defaults to all
     branches:
       - 4.1
-      - v5
+      - main
 
 jobs:
   update_release_draft:

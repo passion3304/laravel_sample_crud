@@ -121,6 +121,11 @@ trait Create
                 case 'MorphToMany':
                     $values = $relationDetails['values'][$relationMethod] ?? [];
                     $values = is_string($values) ? json_decode($values, true) : $values;
+
+                    // disabling ConvertEmptyStringsToNull middleware may return null from json_decode() if an empty string is used.
+                    // we need to make sure no null value can go foward so we reassure that values is not null after json_decode()
+                    $values = $values ?? [];
+
                     $relationValues = [];
 
                     if (is_array($values) && is_multidimensional_array($values)) {
