@@ -49,7 +49,7 @@ class AddSidebarContent extends Command
         $this->progressBlock("Adding sidebar entry to $path");
 
         // Validate file exists
-        if (!$disk->exists($path)) {
+        if (! $disk->exists($path)) {
             $this->errorProgressBlock();
             $this->note('The sidebar_content file does not exist. Make sure Backpack is properly installed.', 'red');
 
@@ -66,7 +66,7 @@ class AddSidebarContent extends Command
             return;
         }
 
-        if (!$disk->put($path, $contents.PHP_EOL.$code)) {
+        if (! $disk->put($path, $contents.PHP_EOL.$code)) {
             $this->errorProgressBlock();
             $this->note('Could not write to sidebar_content file.', 'red');
 
