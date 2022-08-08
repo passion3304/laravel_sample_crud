@@ -41,7 +41,7 @@ return [
     // ---------
 
     // Show "Getting Started with Backpack" info block?
-    'show_getting_started' => (app()->env == 'local'),
+    'show_getting_started' => env('APP_ENV') == 'local',
 
     // ------
     // STYLES
