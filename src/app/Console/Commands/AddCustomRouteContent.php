@@ -50,7 +50,7 @@ class AddCustomRouteContent extends Command
         $this->progressBlock("Adding route to $path");
 
         // Validate file exists
-        if (!$disk->exists($path)) {
+        if (! $disk->exists($path)) {
             Artisan::call('vendor:publish', ['--provider' => \Backpack\CRUD\BackpackServiceProvider::class, '--tag' => 'custom_routes']);
             $this->handle();
 
@@ -73,7 +73,7 @@ class AddCustomRouteContent extends Command
         $file_lines[$end_line_number] = '    '.$code;
         $new_file_content = implode(PHP_EOL, $file_lines);
 
-        if (!$disk->put($path, $new_file_content)) {
+        if (! $disk->put($path, $new_file_content)) {
             $this->errorProgressBlock();
             $this->note('Could not write to file.', 'red');
 
