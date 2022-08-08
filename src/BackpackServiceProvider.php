@@ -20,7 +20,9 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
         \Backpack\CRUD\app\Console\Commands\PublishView::class,
-        \Backpack\CRUD\app\Console\Commands\RequireDevTools::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequireDevTools::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequireEditableColumns::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequirePro::class,
         \Backpack\CRUD\app\Console\Commands\Fix::class,
     ];
 
