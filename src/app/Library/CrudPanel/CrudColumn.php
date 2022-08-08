@@ -87,7 +87,7 @@ class CrudColumn
             unset($columns[$searchKey]);
             $column['key'] = $key;
         }
-        
+
         $this->attributes = $column;
         $this->setOperationSetting('columns', array_merge($columns, [$key => $column]));
 
