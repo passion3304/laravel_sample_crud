@@ -61,7 +61,7 @@ class AddSidebarContent extends Command
 
         // Validate the entry already exists
         if ($this->getLastLineNumberThatContains($code, $file_lines)) {
-            $this->closeProgressBlock('Not needed', 'yellow');
+            $this->closeProgressBlock('Already existed', 'yellow');
 
             return;
         }
