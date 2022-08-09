@@ -29,6 +29,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  * @method self validationMessages(array $value)
  * @method self entity(string $value)
  * @method self addMorphOption(string $key, string $label, array $options)
+ * @method self morphTypeField(array $value)
+ * @method self morphIdField(array $value)
  */
 class CrudField
 {
@@ -264,6 +266,31 @@ class CrudField
     public function addMorphOption(string $key, $label = null, array $options = [])
     {
         $this->crud()->addMorphOption($this->attributes['name'], $key, $label, $options);
+
+        return $this;
+    }
+
+    /**
+     * Allow developer to configure the morph type field.
+     *
+     * @param  array  $configs
+     * @return self
+     *
+     * @throws \Exception
+     */
+    public function morphTypeField(array $configs)
+    {
+        $morphField = $this->crud()->field($this->attributes['name'])->getAttributes();
+        if(empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
+            throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
+        }
+        [$morphTypeField, $morphIdField] = $morphField['subfields'];
+
+        $morphTypeField = array_merge_recursive($morphTypeField, $configs);
+
+        $morphField['subfields'] = [$morphTypeField, $morphIdField];
+
+        $this->crud()->modifyField($this->attributes['name'], $morphField);
 
         return $this;
     }

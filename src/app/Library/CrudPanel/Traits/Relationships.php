@@ -414,7 +414,6 @@ trait Relationships
         }
 
         [$morphTypeField, $morphIdField] = $this->field($fieldName)->getAttributes()['subfields'];
-        //$morphIdField = $this->field($morphIdFieldName)->getAttributes();
 
         $morphMap = $morphTypeField['morphMap'];
 
