@@ -326,6 +326,24 @@
           }
       });
 
+
+      $('#crudTable').on( 'page.dt', function ( e, settings, len ) {
+            let checkedElements = localStorage.getItem('selected_rows') ?? [];
+
+            if(typeof checkedItems === 'string') {
+                checkedItems = JSON.parse(checkedItems);
+            }
+
+            document
+                .querySelectorAll('input.crud_bulk_actions_line_checkbox[data-primary-key-value]')
+                .forEach(function(elem) {
+                    if(elem.checked) {
+                        checkedElements.push(elem.dataset.primaryKeyValue);
+                    }
+                });
+            localStorage.setItem('selected_rows', JSON.stringify(checkedElements));
+        });
+
       // on DataTable draw event run all functions in the queue
       // (eg. delete and details_row buttons add functions to this queue)
       $('#crudTable').on( 'draw.dt',   function () {

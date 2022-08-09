@@ -20,7 +20,7 @@
                 let primaryKeyValue = checkbox.dataset.primaryKeyValue;
 
                 crud.checkedItems ??= [];
-
+                
                 if (checked) {
                     // add item to crud.checkedItems variable
                     crud.checkedItems.push(primaryKeyValue);
@@ -53,7 +53,10 @@
 
     if (typeof markCheckboxAsCheckedIfPreviouslySelected !== 'function') {
         function markCheckboxAsCheckedIfPreviouslySelected() {
-            let checkedItems = [];
+            let checkedItems = localStorage.getItem('selected_rows') ?? [];
+            if(typeof checkedItems === 'string') {
+                checkedItems = JSON.parse(checkedItems);
+            }
             document
                 .querySelectorAll('input.crud_bulk_actions_line_checkbox[data-primary-key-value]')
                 .forEach(function(elem) {
@@ -64,6 +67,7 @@
                     }
                 });
             crud.checkedItems = checkedItems;
+            localStorage.removeItem('selected_rows');
         }
     }
 
