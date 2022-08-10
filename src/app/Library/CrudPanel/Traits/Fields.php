@@ -63,7 +63,7 @@ trait Fields
                 $field = $this->createMorphToRelationFields($field, $morphTypeFieldName, $morphIdFieldName);
                 foreach ($field['morphOptions'] ?? [] as $morphOption) {
                     [$key, $label, $options] = $this->getMorphOptionStructured($morphOption);
-                    $this->addMorphOption($field['name'], $key, $label, $options);
+                    $field = $this->addMorphOption($field, $key, $label, $options);
                 }
             }
         }

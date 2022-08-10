@@ -193,6 +193,26 @@ trait Relationships
     }
 
     /**
+     * MorphTo inputs (_type and _id) are used as subfields to represent the relation.
+     * Here we add them to the direct input as we don't need to process any further.
+     * 
+     * @param  array  $input
+     * @param  array  $fields
+     * @return array
+     */
+    private function addMorphToInputsFromRelationship($input)
+    {
+        $fields = $this->getFieldsWithRelationType('MorphTo');
+
+        foreach ($fields as $field) {
+            [$morphTypeField, $morphIdField] = $field['subfields'];
+            Arr::set($input, $morphTypeField['name'], Arr::get($input, $field['name'].'.'.$morphTypeField['name']));
+            Arr::set($input, $morphIdField['name'], Arr::get($input, $field['name'].'.'.$morphIdField['name']));
+        }
+        return $input;
+    }
+
+    /**
      * Based on relation type returns if relation allows multiple entities.
      *
      * @param  string  $relation_type
@@ -398,22 +418,26 @@ trait Relationships
      * OR
      * ->addMorphOption('App\Models\Model', 'label', ['data_source' => backpack_url('smt')]).
      *
-     * @param  string  $fieldName
+     * @param  string|array  $fieldName
      * @param  string  $key
      * @param  string|null  $label
      * @param  array  $options
-     * @return void
+     * @return void|array
      */
-    public function addMorphOption(string $fieldName, string $key, $label = null, array $options)
+    public function addMorphOption($fieldName, string $key, $label = null, array $options)
     {
+        $morphField = is_array($fieldName) ?  $fieldName : $this->fields()[$fieldName];
+        
+        $fieldName = $morphField['name'];
+
         [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($fieldName);
 
-        if (! in_array($morphTypeFieldName, array_column($this->field($fieldName)->getAttributes()['subfields'], 'name')) || 
-            ! in_array($morphIdFieldName, array_column($this->field($fieldName)->getAttributes()['subfields'], 'name'))) {
+        if (! in_array($morphTypeFieldName, array_column($morphField['subfields'], 'name')) || 
+            ! in_array($morphIdFieldName, array_column($morphField['subfields'], 'name'))) {
             throw new \Exception('Trying to add morphOptions to a non morph field. Check if field and relation name matches.');
         }
 
-        [$morphTypeField, $morphIdField] = $this->field($fieldName)->getAttributes()['subfields'];
+        [$morphTypeField, $morphIdField] = $morphField['subfields'];
 
         $morphMap = $morphTypeField['morphMap'];
 
@@ -428,11 +452,8 @@ trait Relationships
                 if (array_key_exists($key, $morphTypeField['options'])) {
                     throw new \Exception('Duplicate entry for «'.$key.'» in morphOptions');
                 }
-
-                $morphTypeField['options'][$key] = $label ?? Str::afterLast($key, '\\');
-            } else {
-                $morphTypeField['options'][$key] = $label ?? Str::afterLast($key, '\\');
             }
+            $morphTypeField['options'][$key] = $label ?? Str::afterLast($key, '\\');
         } else {
             if (! array_key_exists($key, $morphMap)) {
                 throw new \Exception('Unknown morph type «'.$key.'», either the class doesnt exists, or the name was not found in the morphMap');
@@ -446,8 +467,17 @@ trait Relationships
         }
 
         $morphIdField['morphOptions'][$key] = $options;
-        $field['subfields'] = [$morphTypeField, $morphIdField];
-        $this->modifyField($fieldName, $field);
+
+        $morphTypeField = isset($morphField['morphTypeField']) ? array_merge($morphTypeField, $morphField['morphTypeField']) : $morphTypeField;
+        $morphIdField = isset($morphField['morphIdField']) ? array_merge($morphIdField, $morphField['morphIdField']) : $morphIdField;
+
+        $morphField['subfields'] = [$morphTypeField, $morphIdField];
+
+        if($this->fields()[$fieldName] ?? false) {
+            $this->modifyField($fieldName, $morphField);
+        }else{
+            return $morphField;
+        }
     }
 
     /**
@@ -466,8 +496,6 @@ trait Relationships
             'placeholder' => 'Select the '.$relationName,
             'allows_null' => true,
             'allow_multiple' => false,
-            'showAsterisk' => false,
-            'renderOnPage' => false,
             'morphTypeFieldName' => $morphTypeFieldName,
             'attributes' => [
                 'data-morph-select' => $relationName.'-morph-select',
@@ -488,8 +516,6 @@ trait Relationships
             'name' => $morphTypeFieldName,
             'type' => 'relationship.morphTo_type_select',
             'placeholder' => 'Select the '.$relationName,
-            'renderOnPage' => false,
-            'showAsterisk' => false,
             'attributes' => [
                 $relationName.'-morph-select' => true,
             ],

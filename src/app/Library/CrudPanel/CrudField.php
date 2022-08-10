@@ -280,13 +280,41 @@ class CrudField
      */
     public function morphTypeField(array $configs)
     {
-        $morphField = $this->crud()->field($this->attributes['name'])->getAttributes();
+        $morphField = $this->crud()->fields()[$this->attributes['name']];
+
         if(empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
             throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
         }
         [$morphTypeField, $morphIdField] = $morphField['subfields'];
 
         $morphTypeField = array_merge_recursive($morphTypeField, $configs);
+
+        $morphField['subfields'] = [$morphTypeField, $morphIdField];
+
+        $this->crud()->modifyField($this->attributes['name'], $morphField);
+
+        return $this;
+    }
+
+    /**
+     * Allow developer to configure the morph type id selector
+     *
+     * @param  array  $configs
+     * @return self
+     *
+     * @throws \Exception
+     */
+    public function morphIdField(array $configs)
+    {
+        $morphField = $this->crud()->fields()[$this->attributes['name']];
+        
+        if(empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
+            throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
+        }
+
+        [$morphTypeField, $morphIdField] = $morphField['subfields'];
+
+        $morphIdField = array_merge_recursive($morphIdField, $configs);
 
         $morphField['subfields'] = [$morphTypeField, $morphIdField];
 
