@@ -36,6 +36,13 @@ return [
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
 
+    // ---------
+    // DASHBOARD
+    // ---------
+
+    // Show "Getting Started with Backpack" info block?
+    'show_getting_started' => env('APP_ENV') == 'local',
+
     // ------
     // STYLES
     // ------
