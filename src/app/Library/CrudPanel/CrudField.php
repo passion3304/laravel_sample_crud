@@ -282,7 +282,7 @@ class CrudField
     {
         $morphField = $this->crud()->fields()[$this->attributes['name']];
 
-        if(empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
+        if (empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
             throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
         }
         [$morphTypeField, $morphIdField] = $morphField['subfields'];
@@ -297,7 +297,7 @@ class CrudField
     }
 
     /**
-     * Allow developer to configure the morph type id selector
+     * Allow developer to configure the morph type id selector.
      *
      * @param  array  $configs
      * @return self
@@ -307,8 +307,8 @@ class CrudField
     public function morphIdField(array $configs)
     {
         $morphField = $this->crud()->fields()[$this->attributes['name']];
-        
-        if(empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
+
+        if (empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
             throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
         }
 

@@ -195,7 +195,7 @@ trait Relationships
     /**
      * MorphTo inputs (_type and _id) are used as subfields to represent the relation.
      * Here we add them to the direct input as we don't need to process any further.
-     * 
+     *
      * @param  array  $input
      * @param  array  $fields
      * @return array
@@ -209,6 +209,7 @@ trait Relationships
             Arr::set($input, $morphTypeField['name'], Arr::get($input, $field['name'].'.'.$morphTypeField['name']));
             Arr::set($input, $morphIdField['name'], Arr::get($input, $field['name'].'.'.$morphIdField['name']));
         }
+
         return $input;
     }
 
@@ -294,6 +295,7 @@ trait Relationships
         $morphIdField = static::getMorphIdFieldStructure($field['name'], $morphIdFieldName, $morphTypeFieldName);
         $morphIdField['morphMap'] = $morphTypeField['morphMap'] = (new $this->model)->{$field['name']}()->morphMap();
         $field['subfields'] = [$morphTypeField, $morphIdField];
+
         return $field;
     }
 
@@ -426,13 +428,13 @@ trait Relationships
      */
     public function addMorphOption($fieldName, string $key, $label = null, array $options)
     {
-        $morphField = is_array($fieldName) ?  $fieldName : $this->fields()[$fieldName];
-        
+        $morphField = is_array($fieldName) ? $fieldName : $this->fields()[$fieldName];
+
         $fieldName = $morphField['name'];
 
         [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($fieldName);
 
-        if (! in_array($morphTypeFieldName, array_column($morphField['subfields'], 'name')) || 
+        if (! in_array($morphTypeFieldName, array_column($morphField['subfields'], 'name')) ||
             ! in_array($morphIdFieldName, array_column($morphField['subfields'], 'name'))) {
             throw new \Exception('Trying to add morphOptions to a non morph field. Check if field and relation name matches.');
         }
@@ -473,9 +475,9 @@ trait Relationships
 
         $morphField['subfields'] = [$morphTypeField, $morphIdField];
 
-        if($this->fields()[$fieldName] ?? false) {
+        if ($this->fields()[$fieldName] ?? false) {
             $this->modifyField($fieldName, $morphField);
-        }else{
+        } else {
             return $morphField;
         }
     }
