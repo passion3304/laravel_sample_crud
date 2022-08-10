@@ -317,31 +317,18 @@
             localStorage.setItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength', len);
         });
 
-      // make sure AJAX requests include XSRF token
-      $.ajaxPrefilter(function(options, originalOptions, xhr) {
-          var token = $('meta[name="csrf_token"]').attr('content');
+        // make sure AJAX requests include XSRF token
+        $.ajaxPrefilter(function(options, originalOptions, xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
 
-          if (token) {
-                return xhr.setRequestHeader('X-XSRF-TOKEN', token);
-          }
-      });
-
-
-      $('#crudTable').on( 'page.dt', function ( e, settings, len ) {
-            let checkedElements = localStorage.getItem('selected_rows') ?? [];
-
-            if(typeof checkedItems === 'string') {
-                checkedItems = JSON.parse(checkedItems);
+            if (token) {
+                    return xhr.setRequestHeader('X-XSRF-TOKEN', token);
             }
+        });
 
-            document
-                .querySelectorAll('input.crud_bulk_actions_line_checkbox[data-primary-key-value]')
-                .forEach(function(elem) {
-                    if(elem.checked) {
-                        checkedElements.push(elem.dataset.primaryKeyValue);
-                    }
-                });
-            localStorage.setItem('selected_rows', JSON.stringify(checkedElements));
+
+        $('#crudTable').on( 'page.dt', function () {
+            localStorage.setItem('page_changed', true);
         });
 
       // on DataTable draw event run all functions in the queue

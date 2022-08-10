@@ -53,21 +53,34 @@
 
     if (typeof markCheckboxAsCheckedIfPreviouslySelected !== 'function') {
         function markCheckboxAsCheckedIfPreviouslySelected() {
-            let checkedItems = localStorage.getItem('selected_rows') ?? [];
-            if(typeof checkedItems === 'string') {
-                checkedItems = JSON.parse(checkedItems);
+            let checkedItems = crud.checkedItems ?? [];
+            let pageChanged = localStorage.getItem('page_changed') ?? false;
+            let tableUrl = crud.table.ajax.url();
+            let hasFilterApplied = false;
+
+            if (tableUrl.indexOf('?') > -1) {
+                if(tableUrl.substring(tableUrl.indexOf('?') + 1).length > 0) {
+                    hasFilterApplied = true;
+                }
+            }
+
+            // if it was not a page change, we check if datatables have any search, or the url have any parameters.
+            // if you have filtered entries, and then remove the filters we are sure the entries are in the table.
+            // we don't remove them in that case.
+            if(! pageChanged && (crud.table.search().length !== 0 || hasFilterApplied)) {
+                crud.checkedItems = [];
             }
             document
                 .querySelectorAll('input.crud_bulk_actions_line_checkbox[data-primary-key-value]')
                 .forEach(function(elem) {
-                    let checked = crud.checkedItems?.length && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) > -1;
+                    let checked = checkedItems.length && checkedItems.indexOf(elem.dataset.primaryKeyValue) > -1;
                     elem.checked = checked;
-                    if(checked) {
-                        checkedItems.push(elem.dataset.primaryKeyValue);
+                    if(checked && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) === -1) {
+                        crud.checkedItems.push(elem.dataset.primaryKeyValue);
                     }
                 });
-            crud.checkedItems = checkedItems;
-            localStorage.removeItem('selected_rows');
+            
+            localStorage.removeItem('page_changed');
         }
     }
 
