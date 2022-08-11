@@ -4,7 +4,7 @@
   $field['wrapper']['class'] = $field['wrapper']['class'] ?? "hidden";
 @endphp
 
-<!-- hidden input -->
+{{-- hidden input --}}
 @include('crud::fields.inc.wrapper_start')
   <input
   	type="hidden"

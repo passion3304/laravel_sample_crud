@@ -1,4 +1,4 @@
-<!-- dependencyJson -->
+{{-- dependencyJson --}}
 @php
   $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
   $field['wrapper']['class'] = $field['wrapper']['class'] ?? 'form-group col-sm-12';
@@ -173,7 +173,7 @@
               </div>
           @endforeach
       </div>
-    </div><!-- /.container -->
+    </div>{{-- /.container --}}
 
 
     {{-- HINT --}}
@@ -195,7 +195,7 @@
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-  <!-- include checklist_dependency js-->
+  {{-- include checklist_dependency js --}}
   @loadOnce('bpFieldInitChecklistDependencyElement')
     <script>
       function bpFieldInitChecklistDependencyElement(element) {

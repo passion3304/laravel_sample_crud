@@ -17,14 +17,14 @@
 
 @section('after_styles')
 
-    <!-- CRUD FORM CONTENT - crud_fields_styles stack -->
+    {{-- CRUD FORM CONTENT - crud_fields_styles stack --}}
     @stack('crud_fields_styles')
 
 @endsection
 
 @section('after_scripts')
 
-    <!-- CRUD FORM CONTENT - crud_fields_scripts stack -->
+    {{-- CRUD FORM CONTENT - crud_fields_scripts stack --}}
     @stack('crud_fields_scripts')
 
     <script>

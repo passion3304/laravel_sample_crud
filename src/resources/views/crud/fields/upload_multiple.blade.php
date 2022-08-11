@@ -4,7 +4,7 @@
     $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
 @endphp
 
-<!-- upload multiple input -->
+{{-- upload multiple input --}}
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')

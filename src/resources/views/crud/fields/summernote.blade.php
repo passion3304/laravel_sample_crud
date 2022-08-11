@@ -1,4 +1,4 @@
-<!-- summernote editor -->
+{{-- summernote editor --}}
 @php
     // make sure that the options array is defined
     // and at the very least, dialogsInBody is true;
@@ -30,7 +30,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
-    <!-- include summernote css-->
+    {{-- include summernote css --}}
     @loadOnce('packages/summernote/dist/summernote-bs4.css')
     @loadOnce('summernoteCss')
     <style type="text/css">
@@ -42,7 +42,7 @@
 @endpush
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-    <!-- include summernote js-->
+    {{-- include summernote js --}}
     @loadOnce('packages/summernote/dist/summernote-bs4.min.js')
     @loadOnce('bpFieldInitSummernoteElement')
     <script>
