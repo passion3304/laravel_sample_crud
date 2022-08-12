@@ -67,7 +67,7 @@
             // if it was not a page change, we check if datatables have any search, or the url have any parameters.
             // if you have filtered entries, and then remove the filters we are sure the entries are in the table.
             // we don't remove them in that case.
-            if(! pageChanged && (crud.table.search().length !== 0 || hasFilterApplied)) {
+            if (! pageChanged && (crud.table.search().length !== 0 || hasFilterApplied)) {
                 crud.checkedItems = [];
             }
             document
@@ -75,7 +75,7 @@
                 .forEach(function(elem) {
                     let checked = checkedItems.length && checkedItems.indexOf(elem.dataset.primaryKeyValue) > -1;
                     elem.checked = checked;
-                    if(checked && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) === -1) {
+                    if (checked && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) === -1) {
                         crud.checkedItems.push(elem.dataset.primaryKeyValue);
                     }
                 });
