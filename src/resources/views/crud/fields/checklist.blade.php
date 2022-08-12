@@ -1,4 +1,4 @@
-<!-- checklist -->
+{{-- checklist --}}
 @php
   $key_attribute = (new $field['model'])->getKeyName();
   $field['attribute'] = $field['attribute'] ?? (new $field['model'])->identifiableAttribute();

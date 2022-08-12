@@ -1,4 +1,4 @@
-<!-- html5 datetime input -->
+{{-- html5 datetime input --}}
 
 @php
 // if the column has been cast to Carbon or Date (using attribute casting)

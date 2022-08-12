@@ -1,4 +1,4 @@
-<!-- textarea -->
+{{-- textarea --}}
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
