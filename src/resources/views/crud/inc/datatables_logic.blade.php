@@ -115,14 +115,28 @@
         { fn = fn[ arr[i] ]; }
         fn.apply(window, args);
       },
-      updateUrl : function (new_url) {
-        url_start = "{{ url($crud->route) }}";
-        url_end = new_url.replace(url_start, '');
-        url_end = url_end.replace('/search', '');
-        new_url = url_start + url_end;
-
-        window.history.pushState({}, '', new_url);
-        localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
+      updateUrl : function (url) {
+        let urlStart = "{{ url($crud->route) }}";
+        let urlEnd = url.replace(urlStart, '');
+        urlEnd = urlEnd.replace('/search', '');
+        let newUrl = urlStart + urlEnd;
+        let tmpUrl = newUrl.split("?")[0],
+        params_arr = [],
+        queryString = (newUrl.indexOf("?") !== -1) ? newUrl.split("?")[1] : false;
+        
+        // exclude the persistent-table parameter from url
+        if (queryString !== false) {
+            params_arr = queryString.split("&");
+            for (let i = params_arr.length - 1; i >= 0; i--) {
+                let param = params_arr[i].split("=")[0];
+                if (param === 'persistent-table') {
+                    params_arr.splice(i, 1);
+                }
+            }
+            newUrl = params_arr.length ? tmpUrl + "?" + params_arr.join("&") : tmpUrl;
+        }
+        window.history.pushState({}, '', newUrl);
+        localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', newUrl);
       },
       dataTableConfiguration: {
 
@@ -262,6 +276,8 @@
     jQuery(document).ready(function($) {
 
       window.crud.table = $("#crudTable").DataTable(window.crud.dataTableConfiguration);
+
+      window.crud.updateUrl(location.href);
 
       // move search bar
       $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
