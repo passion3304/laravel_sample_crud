@@ -28,11 +28,14 @@
                     // if shift has been pressed, also select all elements
                     // between the last checked item and this one
                     if (crud.lastCheckedItem && e.shiftKey) {
+                        let getNodeindex = elm => [...elm.parentNode.children].indexOf(elm);
                         let first = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${crud.lastCheckedItem}"]`).closest('tr');
-                        let end = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${primaryKeyValue}"]`).closest('tr');
-
-                        while(first !== end) {
-                            first = first.nextElementSibling;
+                        let last = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${primaryKeyValue}"]`).closest('tr');
+                        let firstIndex = getNodeindex(first);
+                        let lastIndex = getNodeindex(last)
+                        
+                        while(first !== last) {
+                            first = firstIndex < lastIndex ? first.nextElementSibling : first.previousElementSibling;
                             first.querySelector('input.crud_bulk_actions_line_checkbox:not(:checked)')?.click();
                         }
                     }
