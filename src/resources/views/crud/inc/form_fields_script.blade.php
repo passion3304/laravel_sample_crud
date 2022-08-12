@@ -80,6 +80,7 @@
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks[this.parent.name] ??= [];
                 window.crud.subfieldsCallbacks[this.parent.name].push({ closure, field: this });
+                this.wrapper.trigger('CrudField:callbacksUpdated');
                 return this;
             }
 
@@ -95,7 +96,7 @@
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks[this.parent.name]?.forEach(callback => callback.triggerChange = true);
             } else {
-                this.$input.trigger(`change`);
+                this.$input.trigger('change');
             }
 
             return this;
