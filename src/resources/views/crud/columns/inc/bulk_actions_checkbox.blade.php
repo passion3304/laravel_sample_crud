@@ -59,7 +59,7 @@
             let hasFilterApplied = false;
 
             if (tableUrl.indexOf('?') > -1) {
-                if(tableUrl.substring(tableUrl.indexOf('?') + 1).length > 0) {
+                if (tableUrl.substring(tableUrl.indexOf('?') + 1).length > 0) {
                     hasFilterApplied = true;
                 }
             }
