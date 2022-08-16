@@ -1,4 +1,4 @@
-<!-- password -->
+{{-- password --}}
 
 @php
     // autocomplete off, if not otherwise specified

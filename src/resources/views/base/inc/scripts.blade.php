@@ -12,7 +12,7 @@
 
 @include('backpack::inc.alerts')
 
-<!-- page script -->
+{{-- page script --}}
 <script type="text/javascript">
     // To make Pace works on Ajax calls
     $(document).ajaxStart(function() { Pace.restart(); });

@@ -17,14 +17,14 @@
 
 @section('after_styles')
 
-    <!-- CRUD FORM CONTENT - crud_fields_styles stack -->
+    {{-- CRUD FORM CONTENT - crud_fields_styles stack --}}
     @stack('crud_fields_styles')
 
 @endsection
 
 @section('after_scripts')
 
-    <!-- CRUD FORM CONTENT - crud_fields_scripts stack -->
+    {{-- CRUD FORM CONTENT - crud_fields_scripts stack --}}
     @stack('crud_fields_scripts')
 
     <script>
@@ -47,6 +47,52 @@
         }
       });
     }
+
+    /**
+     * Auto-discover first focusable input
+     * @param {jQuery} form
+     * @return {jQuery}
+     */
+    function getFirstFocusableField(form) {
+        return form.find('input, select, textarea, button')
+            .not('.close')
+            .not('[disabled]')
+            .filter(':visible:first');
+    }
+
+    /**
+     *
+     * @param {jQuery} firstField
+     */
+    function triggerFocusOnFirstInputField(firstField) {
+        if (firstField.hasClass('select2-hidden-accessible')) {
+            return handleFocusOnSelect2Field(firstField);
+        }
+
+        firstField.trigger('focus');
+    }
+
+    /**
+     * 1- Make sure no other select2 input is open in other field to focus on the right one
+     * 2- Check until select2 is initialized
+     * 3- Open select2
+     *
+     * @param {jQuery} firstField
+     */
+    function handleFocusOnSelect2Field(firstField){
+        $('.select2-search__field').remove();
+        firstField.select2('open');
+    }
+
+    /*
+    * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
+    * see: https://github.com/select2/select2/issues/5993
+    * see: https://github.com/jquery/jquery/issues/4382
+    *
+    */
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+    });
 
     jQuery('document').ready(function($){
 
@@ -109,19 +155,21 @@
           });
         @endphp
 
+        let focusField;
+
         @if ($focusField)
           @php
             $focusFieldName = isset($focusField['value']) && is_iterable($focusField['value']) ? $focusField['name'] . '[]' : $focusField['name'];
           @endphp
-          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0),
+            focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
         @else
-          var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
+            focusField = getFirstFocusableField($('form'));
         @endif
 
-        fieldOffset = focusField.offset().top,
-        scrollTolerance = $(window).height() / 2;
+        const fieldOffset = focusField.offset().top;
+        const scrollTolerance = $(window).height() / 2;
 
-        focusField.trigger('focus');
+        triggerFocusOnFirstInputField(focusField);
 
         if( fieldOffset > scrollTolerance ){
             $('html, body').animate({scrollTop: (fieldOffset - 30)});
@@ -157,7 +205,7 @@
                   container.addClass('text-danger');
                 }
             });
-            
+
             $.each(messages, function(key, msg){
                 // highlight the input that errored
                 var row = $('<div class="invalid-feedback d-block">' + msg + '</div>');
@@ -186,7 +234,6 @@
       if (window.location.hash) {
           $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
-
       });
     </script>
 
