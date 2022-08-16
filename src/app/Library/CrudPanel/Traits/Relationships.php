@@ -522,7 +522,7 @@ trait Relationships
             'attributes' => [
                 $relationName.'-morph-select' => true,
             ],
-            'wrapper' => ['class' => 'form-group col-md-3']
+            'wrapper' => ['class' => 'form-group col-md-3'],
         ];
     }
 
