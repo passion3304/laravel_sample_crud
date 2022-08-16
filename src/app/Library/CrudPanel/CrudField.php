@@ -287,7 +287,7 @@ class CrudField
         }
         [$morphTypeField, $morphIdField] = $morphField['subfields'];
 
-        $morphTypeField = array_merge_recursive($morphTypeField, $configs);
+        $morphTypeField = array_merge($morphTypeField, $configs);
 
         $morphField['subfields'] = [$morphTypeField, $morphIdField];
 
@@ -314,7 +314,7 @@ class CrudField
 
         [$morphTypeField, $morphIdField] = $morphField['subfields'];
 
-        $morphIdField = array_merge_recursive($morphIdField, $configs);
+        $morphIdField = array_merge($morphIdField, $configs);
 
         $morphField['subfields'] = [$morphTypeField, $morphIdField];
 
