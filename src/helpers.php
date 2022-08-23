@@ -112,8 +112,6 @@ if (! function_exists('backpack_avatar_url')) {
             case 'gravatar':
                 if (backpack_users_have_email() && ! empty($user->email)) {
                     return Gravatar::fallback(config('backpack.base.gravatar_fallback'))->get($user->email);
-                } else {
-                    return $user->placehold;
                 }
                 break;
             default:
