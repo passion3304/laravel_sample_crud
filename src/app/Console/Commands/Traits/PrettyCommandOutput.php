@@ -185,10 +185,11 @@ trait PrettyCommandOutput
         $this->maxWidth = $this->maxWidth ?? 128;
         $this->terminal = $this->terminal ?? new Terminal();
         $width = min($this->terminal->getWidth(), $this->maxWidth);
+        $dotLength = $width - 5 - strlen(strip_tags($text.$progress));
 
         $this->output->write(sprintf(
             "  $text <fg=gray>%s</> <fg=$color>%s</>",
-            str_repeat('.', $width - 5 - strlen(strip_tags($text.$progress))),
+            str_repeat('.', ($dotLength < 0) ? 1 : $dotLength),
             strtoupper($progress)
         ));
     }
