@@ -189,7 +189,7 @@ trait PrettyCommandOutput
 
         $this->output->write(sprintf(
             "  $text <fg=gray>%s</> <fg=$color>%s</>",
-            str_repeat('.', ($dotLength < 0) ? 1 : $dotLength),
+            str_repeat('.', ($dotLength < 1) ? 1 : $dotLength),
             strtoupper($progress)
         ));
     }
