@@ -81,18 +81,8 @@
      */
     function handleFocusOnSelect2Field(firstField){
         $('.select2-search__field').remove();
-        firstField.select2('open');
+        firstField.select2('focus');
     }
-
-    /*
-    * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
-    * see: https://github.com/select2/select2/issues/5993
-    * see: https://github.com/jquery/jquery/issues/4382
-    *
-    */
-    $(document).on('select2:open', () => {
-        document.querySelector('.select2-search__field').focus();
-    });
 
     jQuery('document').ready(function($){
 
