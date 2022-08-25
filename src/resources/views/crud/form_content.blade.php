@@ -90,7 +90,7 @@
     *
     */
     $(document).on('select2:open', () => {
-        setTimeout(() => document.querySelector('.select2-container--open .select2-search__field').focus(), 200);
+        setTimeout(() => document.querySelector('.select2-container--open .select2-search__field').focus(), 100);
     });
 
     jQuery('document').ready(function($){
