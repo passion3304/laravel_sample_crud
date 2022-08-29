@@ -495,7 +495,7 @@ trait Relationships
             'name' => $morphIdFieldName,
             'type' => 'relationship.morphTo_select',
             'entity' => false,
-            'placeholder' => 'Select the '.$relationName,
+            'placeholder' => 'Select an entry',
             'allows_null' => true,
             'allow_multiple' => false,
             'morphTypeFieldName' => $morphTypeFieldName,
@@ -518,7 +518,7 @@ trait Relationships
         return [
             'name' => $morphTypeFieldName,
             'type' => 'relationship.morphTo_type_select',
-            'placeholder' => 'Select the '.$relationName,
+            'placeholder' => 'Select an entry',
             'attributes' => [
                 $relationName.'-morph-select' => true,
             ],
