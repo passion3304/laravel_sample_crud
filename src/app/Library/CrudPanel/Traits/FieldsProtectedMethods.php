@@ -186,6 +186,7 @@ trait FieldsProtectedMethods
             // instead we get the defined attribute by the user.
             if ($this->isAttributeInRelationString($field['entity'])) {
                 $field['attribute'] = $field['attribute'] ?? Str::afterLast($field['entity'], '.');
+
                 return $field;
             }
         }

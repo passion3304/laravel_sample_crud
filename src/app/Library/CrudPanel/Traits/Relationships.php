@@ -362,8 +362,8 @@ trait Relationships
     /**
      * Check if it's possible that attribute is in the relation string when
      * the last part of the string is not a method on the chained relations.
-     * 
-     * @param string $relationString
+     *
+     * @param  string  $relationString
      * @return bool
      */
     private function isAttributeInRelationString($relationString)
@@ -383,7 +383,7 @@ trait Relationships
                 return true;
             }
         }
+
         return false;
-        
     }
 }
