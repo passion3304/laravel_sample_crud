@@ -65,7 +65,7 @@ class BackpackServiceProvider extends ServiceProvider
             return new CrudPanel();
         });
 
-        $this->app->singleton('CrudPanelViewNamespaces', function ($app) {
+        $this->app->singleton('BackpackViewNamespaces', function ($app) {
             return new ViewNamespaces();
         });
 
@@ -283,6 +283,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets', 'CrudPanelViewNamespaces'];
+        return ['crud', 'widgets', 'BackpackViewNamespaces'];
     }
 }
