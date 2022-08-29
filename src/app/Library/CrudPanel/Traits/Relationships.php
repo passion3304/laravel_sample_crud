@@ -358,4 +358,32 @@ trait Relationships
 
         return $method;
     }
+
+    /**
+     * Check if it's possible that attribute is in the relation string when
+     * the last part of the string is not a method on the chained relations.
+     * 
+     * @param string $relationString
+     * @return bool
+     */
+    private function isAttributeInRelationString($relationString)
+    {
+        $parts = explode('.', $relationString);
+
+        $model = $this->model;
+
+        // here we are going to iterate through all relation parts to check
+        // if the attribute is present in the relation string.
+        foreach ($parts as $i => $part) {
+            try {
+                $model = $model->$part()->getRelated();
+            } catch (\Exception $e) {
+                // return true if the last part of a relation string is not a method on the model
+                // so it's probably the attribute that we should show
+                return true;
+            }
+        }
+        return false;
+        
+    }
 }
