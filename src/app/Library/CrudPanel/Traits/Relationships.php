@@ -298,7 +298,7 @@ trait Relationships
         $pivotSelectorField['minimum_input_length'] = 2;
         $pivotSelectorField['delay'] = 500;
         $pivotSelectorField['placeholder'] = trans('backpack::crud.select_entry');
-        $pivotSelectorField['label'] = \Str::of($field['name'])->singular()->ucfirst();
+        $pivotSelectorField['label'] = Str::of($field['name'])->singular()->ucfirst();
         $pivotSelectorField['validationRules'] = 'required';
         $pivotSelectorField['validationMessages'] = [
             'required' => trans('backpack::crud.pivot_selector_required_validation_message'),

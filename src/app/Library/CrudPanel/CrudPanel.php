@@ -14,7 +14,6 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Fields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Filters;
-use Backpack\CRUD\app\Library\CrudPanel\Traits\HasViewNamespaces;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Input;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
@@ -39,7 +38,7 @@ use Illuminate\Support\Arr;
 class CrudPanel
 {
     // load all the default CrudPanel features
-    use Create, Read, Search, Update, Delete, Input, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships, HasViewNamespaces;
+    use Create, Read, Search, Update, Delete, Input, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships;
     // allow developers to add their own closures to this object
     use Macroable;
 
@@ -81,9 +80,9 @@ class CrudPanel
     }
 
     /**
-     * [getRequest description].
+     * Get the request instance for this CRUD.
      *
-     * @return [type] [description]
+     * @return \Illuminate\Http\Request
      */
     public function getRequest()
     {

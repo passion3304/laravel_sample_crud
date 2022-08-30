@@ -2,10 +2,12 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Str;
 
 trait Query
 {
+    /** @var Builder */
     public $query;
 
     // ----------------
@@ -18,7 +20,7 @@ trait Query
      * Examples:
      * $this->crud->addClause('active');
      * $this->crud->addClause('type', 'car');
-     * $this->crud->addClause('where', 'name', '==', 'car');
+     * $this->crud->addClause('where', 'name', '=', 'car');
      * $this->crud->addClause('whereName', 'car');
      * $this->crud->addClause('whereHas', 'posts', function($query) {
      *     $query->activePosts();

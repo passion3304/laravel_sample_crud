@@ -115,14 +115,28 @@
         { fn = fn[ arr[i] ]; }
         fn.apply(window, args);
       },
-      updateUrl : function (new_url) {
-        url_start = "{{ url($crud->route) }}";
-        url_end = new_url.replace(url_start, '');
-        url_end = url_end.replace('/search', '');
-        new_url = url_start + url_end;
-
-        window.history.pushState({}, '', new_url);
-        localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
+      updateUrl : function (url) {
+        let urlStart = "{{ url($crud->route) }}";
+        let urlEnd = url.replace(urlStart, '');
+        urlEnd = urlEnd.replace('/search', '');
+        let newUrl = urlStart + urlEnd;
+        let tmpUrl = newUrl.split("?")[0],
+        params_arr = [],
+        queryString = (newUrl.indexOf("?") !== -1) ? newUrl.split("?")[1] : false;
+        
+        // exclude the persistent-table parameter from url
+        if (queryString !== false) {
+            params_arr = queryString.split("&");
+            for (let i = params_arr.length - 1; i >= 0; i--) {
+                let param = params_arr[i].split("=")[0];
+                if (param === 'persistent-table') {
+                    params_arr.splice(i, 1);
+                }
+            }
+            newUrl = params_arr.length ? tmpUrl + "?" + params_arr.join("&") : tmpUrl;
+        }
+        window.history.pushState({}, '', newUrl);
+        localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', newUrl);
       },
       dataTableConfiguration: {
         bInfo: {{ var_export($crud->getOperationSetting('showEntryCount') ?? true) }},
@@ -265,6 +279,8 @@
 
       window.crud.table = $("#crudTable").DataTable(window.crud.dataTableConfiguration);
 
+      window.crud.updateUrl(location.href);
+
       // move search bar
       $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
       $("#crudTable_filter input").removeClass('form-control-sm');
@@ -319,14 +335,19 @@
             localStorage.setItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength', len);
         });
 
-      // make sure AJAX requests include XSRF token
-      $.ajaxPrefilter(function(options, originalOptions, xhr) {
-          var token = $('meta[name="csrf_token"]').attr('content');
+        // make sure AJAX requests include XSRF token
+        $.ajaxPrefilter(function(options, originalOptions, xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
 
-          if (token) {
+            if (token) {
                 return xhr.setRequestHeader('X-XSRF-TOKEN', token);
-          }
-      });
+            }
+        });
+
+
+        $('#crudTable').on( 'page.dt', function () {
+            localStorage.setItem('page_changed', true);
+        });
 
       // on DataTable draw event run all functions in the queue
       // (eg. delete and details_row buttons add functions to this queue)

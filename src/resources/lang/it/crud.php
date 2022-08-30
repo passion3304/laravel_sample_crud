@@ -85,7 +85,7 @@ return [
     'info'           => 'Visualizzando da _START_ a _END_ record di _TOTAL_',
     'infoEmpty'      => 'Non vi sono elementi',
     'infoFiltered'   => '(filtrati da _MAX_ record totali)',
-    'infoPostFix'    => ',',
+    'infoPostFix'    => '.',
     'thousands'      => '.',
     'lengthMenu'     => '_MENU_ record per pagina',
     'loadingRecords' => 'Caricamento...',
