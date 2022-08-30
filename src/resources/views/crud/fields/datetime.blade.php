@@ -12,7 +12,7 @@ $timestamp = strtotime(old_empty_or_null($field['name'], '') ??  $field['value']
 $value = $timestamp ? date('Y-m-d\TH:i:s', $timestamp) : '';
 @endphp
 
-@include('crud::fields.inc.wrapper_start')
+@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
     <input
@@ -26,4 +26,4 @@ $value = $timestamp ? date('Y-m-d\TH:i:s', $timestamp) : '';
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-@include('crud::fields.inc.wrapper_end')
+@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_end')

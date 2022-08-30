@@ -16,7 +16,7 @@
     $field['wrapper']['data-init-function'] = $field['wrapper']['data-init-function'] ?? 'bpFieldInitRadioElement';
 @endphp
 
-@include('crud::fields.inc.wrapper_start')
+@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_start')
 
 
         <label class="d-block">{!! $field['label'] !!}</label>
@@ -47,7 +47,7 @@
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
 
-@include('crud::fields.inc.wrapper_end')
+@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_end')
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')

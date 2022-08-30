@@ -1,6 +1,6 @@
 {{-- text input --}}
 
-@include('crud::fields.inc.wrapper_start')
+@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
 
@@ -19,4 +19,4 @@
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
-@include('crud::fields.inc.wrapper_end')
+@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_end')

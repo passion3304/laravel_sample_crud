@@ -7,7 +7,7 @@
 @endphp
 
 {{-- Wrapper --}}
-@include('crud::fields.inc.wrapper_start')
+@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_start')
 
     {{-- Translatable icon --}}
     @include('crud::fields.inc.translatable_icon')
@@ -42,7 +42,7 @@
     @isset($field['hint'])
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endisset
-@include('crud::fields.inc.wrapper_end')
+@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
