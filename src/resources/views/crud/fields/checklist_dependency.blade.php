@@ -7,7 +7,7 @@
   $field['wrapper']['data-init-function'] = $field['wrapper']['init-function'] ?? 'bpFieldInitChecklistDependencyElement';
 @endphp
 
-@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_start')
+@include('crud::fields.inc.wrapper_start')
 
     <label>{!! $field['label'] !!}</label>
     <?php
@@ -181,7 +181,7 @@
         <p class="help-block">{!! $field['hint'] !!}</p>
     @endif
 
-@includeWhen(!isset($field['wrapper']) || $field['wrapper'] !== false, 'crud::fields.inc.wrapper_end')
+@include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
