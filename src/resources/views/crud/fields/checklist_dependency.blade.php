@@ -111,7 +111,7 @@
                           @endforeach
                           value="{{ $connected_entity_entry->id }}"
 
-                          @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || $old_primary_dependency && in_array($connected_entity_entry->id, $old_primary_dependency)))
+                          @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || $old_primary_dependency && in_array($connected_entity_entry->id, $old_primary_dependency))
                           checked = "checked"
                           @endif >
                           {{ $connected_entity_entry->{$primary_dependency['attribute']} }}
@@ -162,7 +162,7 @@
                           @endforeach
                            value="{{ $connected_entity_entry->id }}"
 
-                          @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->pluck('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || $old_secondary_dependency && in_array($connected_entity_entry->id, $old_secondary_dependency))))
+                          @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->pluck('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || $old_secondary_dependency && in_array($connected_entity_entry->id, $old_secondary_dependency)))
                                checked = "checked"
                                @if(isset( $secondary_ids[$connected_entity_entry->id]))
                                 disabled = disabled
