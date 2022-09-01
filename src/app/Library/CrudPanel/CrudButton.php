@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Backpack\Crud\ViewNamespaces;
+use Backpack\CRUD\ViewNamespaces;
 
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.
