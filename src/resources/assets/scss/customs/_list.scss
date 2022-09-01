@@ -54,6 +54,7 @@
       outline: none;
       vertical-align: middle;
       line-height: 1em;
+      // box-shadow: none;
     }
 
     thead > tr {
@@ -147,14 +148,15 @@
     &:not(.has-hidden-columns) {
       tr td:first-child {
         padding-top: 1.25rem !important;
+        padding-bottom: 1.25rem !important;
       }
     }
     tr th:first-child,
     tr td:first-child {
       display: flex;
       align-items: center;
-      padding-top: 1rem !important;
-      padding-bottom: 1rem !important;
+      padding-top: 1.1rem !important;
+      padding-bottom: 1.1rem !important;
       padding-left: 0.6rem !important;
     }
 
@@ -324,6 +326,15 @@
   & > li:first-child > span {
     border-radius: 5px;
   }
+}
+
+table.dataTable.table-striped>tbody>tr:nth-of-type(2n+1):hover {
+  background-color: rgba(124,105,239,.1);
+}
+
+table.dataTable.table-striped>tbody>tr.odd>*,
+table.dataTable.table-hover>tbody>tr:hover>* {
+  box-shadow: none!important;
 }
 
 // Removes the horizontal scroll (if the width allows it)
