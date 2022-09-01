@@ -17,6 +17,10 @@
       left: calc(50% - 16px);
       position: absolute;
     }
+
+    & > div {
+      display: none !important;
+    }
   }
 
   .dataTables_length select {
