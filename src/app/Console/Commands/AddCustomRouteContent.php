@@ -47,7 +47,7 @@ class AddCustomRouteContent extends Command
         $disk = Storage::disk($disk_name);
         $code = $this->argument('code');
 
-        $this->progressBlock("Adding route to $path");
+        $this->progressBlock("Adding route to <fg=blue>$path</>");
 
         // Validate file exists
         if (! $disk->exists($path)) {

@@ -46,7 +46,7 @@ class AddSidebarContent extends Command
         $disk = Storage::disk($disk_name);
         $code = $this->argument('code');
 
-        $this->progressBlock("Adding sidebar entry to $path");
+        $this->progressBlock("Adding sidebar entry to <fg=blue>$path</>");
 
         // Validate file exists
         if (! $disk->exists($path)) {
