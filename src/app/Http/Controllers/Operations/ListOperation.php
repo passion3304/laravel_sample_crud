@@ -100,7 +100,7 @@ trait ListOperation
         $entries = $this->crud->getEntries();
 
         // if show entry count is disabled we use the "simplePagination" technique to move between pages.
-        if(! $this->crud->getOperationSetting('showEntryCount')) {
+        if (! $this->crud->getOperationSetting('showEntryCount')) {
             $this->crud->setOperationSetting('unfilteredQueryCount', $length);
             $filteredRows = $entries->count() < $length ? 0 : $length + $startIndex + 1;
         }
