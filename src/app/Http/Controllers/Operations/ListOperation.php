@@ -76,19 +76,20 @@ trait ListOperation
 
         $this->crud->applyUnappliedFilters();
 
-        $startIndex = request()->input('start') ?: 0;
+        $startIndex = (int) request()->input('start');
+        $length = (int) request()->input('length');
         // if a search term was present
         if (request()->input('search') && request()->input('search')['value']) {
             // filter the results accordingly
             $this->crud->applySearchTerm(request()->input('search')['value']);
         }
         // start the results according to the datatables pagination
-        if (request()->input('start')) {
-            $this->crud->skip((int) request()->input('start'));
+        if ($startIndex) {
+            $this->crud->skip($startIndex);
         }
         // limit the number of results according to the datatables pagination
-        if (request()->input('length')) {
-            $this->crud->take((int) request()->input('length'));
+        if ($length) {
+            $this->crud->take($length);
         }
         // overwrite any order set in the setup() method with the datatables order
         $this->crud->applyDatatableOrder();
@@ -97,6 +98,12 @@ trait ListOperation
         $filteredRows = $this->crud->getOperationSetting('showEntryCount') ? $this->crud->getCurrentQueryCount() : 0;
 
         $entries = $this->crud->getEntries();
+
+        // if show entry count is disabled we use the "simplePagination" technique to move between pages.
+        if(! $this->crud->getOperationSetting('showEntryCount')) {
+            $this->crud->setOperationSetting('unfilteredQueryCount', $length);
+            $filteredRows = $entries->count() < $length ? 0 : $length + $startIndex + 1;
+        }
 
         return $this->crud->getEntriesAsJsonForDatatables($entries, $this->crud->getOperationSetting('unfilteredQueryCount'), $filteredRows, $startIndex);
     }

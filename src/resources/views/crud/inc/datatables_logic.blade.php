@@ -257,6 +257,9 @@
           },
           processing: true,
           serverSide: true,
+          @if($crud->getOperationSetting('showEntryCount') === false)
+            pagingType: "simple",
+          @endif
           searching: @json($crud->getOperationSetting('searchableTable') ?? true),
           ajax: {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
