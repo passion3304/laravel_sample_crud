@@ -123,7 +123,7 @@
         let tmpUrl = newUrl.split("?")[0],
         params_arr = [],
         queryString = (newUrl.indexOf("?") !== -1) ? newUrl.split("?")[1] : false;
-        
+
         // exclude the persistent-table parameter from url
         if (queryString !== false) {
             params_arr = queryString.split("&");
