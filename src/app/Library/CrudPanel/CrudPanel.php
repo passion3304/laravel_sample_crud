@@ -180,7 +180,9 @@ class CrudPanel
      */
     public function setRoute($route)
     {
-        $this->route = $route;
+        $this->route = Str::of($route)->whenStartsWith('/', function ($string) {
+            return Str::after('/', $string);
+        });
     }
 
     /**
