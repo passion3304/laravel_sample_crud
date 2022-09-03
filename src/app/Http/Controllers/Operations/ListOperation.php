@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 trait ListOperation
