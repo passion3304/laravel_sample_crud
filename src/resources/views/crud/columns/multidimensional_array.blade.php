@@ -1,4 +1,4 @@
-{{-- enumerate the values in an array  --}}
+{{-- enumerate the values in an array --}}
 @php
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $list = [];

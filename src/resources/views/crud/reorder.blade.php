@@ -80,7 +80,7 @@ function tree_element($entry, $key, $all_entries, $crud)
             ?>
             </ol>
 
-        </div><!-- /.card -->
+        </div>{{-- /.card --}}
 
         <button id="toArray" class="btn btn-success" data-style="zoom-in"><i class="la la-save"></i> {{ trans('backpack::crud.save') }}</button>
     </div>

@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\CRUD\ViewNamespaces;
 use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -25,9 +27,8 @@ class CrudFilter
     public function __construct($options, $values, $logic, $fallbackLogic)
     {
         if (! backpack_pro()) {
-            abort(500, 'Backpack filters are a PRO feature. Please purchase and install <a href="https://backpackforlaravel.com/pricing">Backpack\PRO</a>.');
+            throw new BackpackProRequiredException('Filter');
         }
-
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {
             $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));
@@ -40,7 +41,7 @@ class CrudFilter
             $this->key = Str::camel($options['name']);
             $this->type = $options['type'] ?? $this->type;
             $this->label = $options['label'] ?? $this->crud()->makeLabel($this->name);
-            $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
+            $this->viewNamespace = $options['viewNamespace'] ?? $options['view_namespace'] ?? $this->viewNamespace;
             $this->view = $this->type;
             $this->placeholder = $options['placeholder'] ?? '';
 
@@ -145,10 +146,15 @@ class CrudFilter
     public function getNamespacedViewWithFallbacks()
     {
         $type = $this->type;
+        $namespaces = ViewNamespaces::getFor('filters');
+
+        if ($this->viewNamespace != 'crud::filters') {
+            $namespaces = array_merge([$this->viewNamespace], $namespaces);
+        }
 
         return array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, config('backpack.crud.view_namespaces.filters'));
+        }, $namespaces);
     }
 
     // ---------------------

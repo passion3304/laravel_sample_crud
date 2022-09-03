@@ -36,6 +36,13 @@ return [
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
 
+    // ---------
+    // DASHBOARD
+    // ---------
+
+    // Show "Getting Started with Backpack" info block?
+    'show_getting_started' => env('APP_ENV') == 'local',
+
     // ------
     // STYLES
     // ------
@@ -65,6 +72,12 @@ return [
     // CSS files that are loaded in all pages, using Laravel's mix() helper
     'mix_styles' => [ // file_path => manifest_directory_path
         // 'css/app.css' => '',
+    ],
+
+    // CSS files that are loaded in all pages, using Laravel's @vite() helper
+    // Please note that support for Vite was added in Laravel 9.19. Earlier versions are not able to use this feature.
+    'vite_styles' => [ // resource file_path
+        // 'resources/css/app.css' => '',
     ],
 
     // ------
@@ -127,7 +140,7 @@ return [
         // 'https://code.jquery.com/jquery-3.4.1.min.js',
         // 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
         // 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js',
-        // 'https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js',
+        // 'https://unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js',
         // 'https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
         // 'https://unpkg.com/sweetalert/dist/sweetalert.min.js',
         // 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js'
@@ -139,8 +152,13 @@ return [
     ],
 
     // JS files that are loaded in all pages, using Laravel's mix() helper
-    'mix_scripts' => [// file_path => manifest_directory_path
+    'mix_scripts' => [ // file_path => manifest_directory_path
         // 'js/app.js' => '',
+    ],
+
+    // JS files that are loaded in all pages, using Laravel's @vite() helper
+    'vite_scripts' => [ // resource file_path
+        // 'resources/js/app.js',
     ],
 
     // -------------
@@ -268,9 +286,13 @@ return [
     // What kind of avatar will you like to show to the user?
     // Default: gravatar (automatically use the gravatar for their email)
     // Other options:
-    // - placehold (generic image with their first letter)
+    // - null (generic image with their first letter)
     // - example_method_name (specify the method on the User model that returns the URL)
     'avatar_type' => 'gravatar',
+
+    // Gravatar fallback options are 'identicon', 'monsterid', 'wavatar', 'retro', 'robohash', 'blank'
+    // 'blank' will keep the generic image with the user first letter
+    'gravatar_fallback' => 'blank',
 
     /*
     |--------------------------------------------------------------------------

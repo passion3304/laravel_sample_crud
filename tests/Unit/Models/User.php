@@ -63,7 +63,7 @@ class User extends Model
 
     public function superArticles()
     {
-        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Article', 'articles_user')->withPivot('notes');
+        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Article', 'articles_user')->withPivot(['notes', 'start_date', 'end_date']);
     }
 
     public function universes()
@@ -76,6 +76,11 @@ class User extends Model
         return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Planet');
     }
 
+    public function planetsNonNullable()
+    {
+        return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable');
+    }
+
     public function comets()
     {
         return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Comet');
@@ -84,5 +89,15 @@ class User extends Model
     public function bang()
     {
         return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\Bang', 'bang_relation_field');
+    }
+
+    public function incomes()
+    {
+        return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Transaction')->ofType('income');
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Transaction')->ofType('expense');
     }
 }

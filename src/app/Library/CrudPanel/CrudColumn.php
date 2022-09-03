@@ -25,6 +25,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  * @method self visibleInExport(bool $value)
  * @method self visibleInShow(bool $value)
  * @method self priority(int $value)
+ * @method self key(string $value)
  */
 class CrudColumn
 {
@@ -64,6 +65,33 @@ class CrudColumn
     public static function name($name)
     {
         return new static($name);
+    }
+
+    /**
+     * Change the CrudColumn key.
+     *
+     * @param  string  $key  New key for the column
+     * @return CrudColumn
+     */
+    public function key(string $key)
+    {
+        if (! isset($this->attributes['name'])) {
+            abort(500, 'Column name must be defined before changing the key.');
+        }
+
+        $columns = $this->crud()->columns();
+        $searchKey = $this->attributes['key'];
+        $column = $this->attributes;
+
+        if (isset($columns[$searchKey])) {
+            unset($columns[$searchKey]);
+            $column['key'] = $key;
+        }
+
+        $this->attributes = $column;
+        $this->setOperationSetting('columns', array_merge($columns, [$key => $column]));
+
+        return $this;
     }
 
     /**

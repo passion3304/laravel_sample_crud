@@ -298,7 +298,11 @@ trait Relationships
         $pivotSelectorField['minimum_input_length'] = 2;
         $pivotSelectorField['delay'] = 500;
         $pivotSelectorField['placeholder'] = trans('backpack::crud.select_entry');
-        $pivotSelectorField['label'] = \Str::of($field['name'])->singular()->ucfirst();
+        $pivotSelectorField['label'] = Str::of($field['name'])->singular()->ucfirst();
+        $pivotSelectorField['validationRules'] = 'required';
+        $pivotSelectorField['validationMessages'] = [
+            'required' => trans('backpack::crud.pivot_selector_required_validation_message'),
+        ];
 
         if (isset($field['baseModel'])) {
             $pivotSelectorField['baseModel'] = $field['baseModel'];
@@ -342,11 +346,12 @@ trait Relationships
 
         if ($returnType) {
             $returnType = $returnType->getName();
-            if (is_a((new $returnType), 'Illuminate\Database\Eloquent\Casts\Attribute')) {
+
+            if (is_a($returnType, 'Illuminate\Database\Eloquent\Casts\Attribute', true)) {
                 return false;
             }
 
-            if (is_a((new $returnType), 'Illuminate\Database\Eloquent\Relations\Relation')) {
+            if (is_a($returnType, 'Illuminate\Database\Eloquent\Relations\Relation', true)) {
                 return $method;
             }
         }

@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\ViewNamespaces;
 use Carbon\Carbon;
 use Validator;
 
@@ -61,11 +62,13 @@ trait Search
 
         // sensible fallback search logic, if none was explicitly given
         if ($column['tableColumn']) {
+            $searchOperator = config('backpack.operations.list.searchOperator', 'like');
+
             switch ($columnType) {
                 case 'email':
                 case 'text':
                 case 'textarea':
-                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), 'like', '%'.$searchTerm.'%');
+                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), $searchOperator, '%'.$searchTerm.'%');
                     break;
 
                 case 'date':
@@ -81,8 +84,8 @@ trait Search
 
                 case 'select':
                 case 'select_multiple':
-                    $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), 'like', '%'.$searchTerm.'%');
+                    $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm, $searchOperator) {
+                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), $searchOperator, '%'.$searchTerm.'%');
                     });
                     break;
 
@@ -90,6 +93,48 @@ trait Search
                     return;
                     break;
             }
+        }
+    }
+
+    /**
+     * Apply the datatables order to the crud query.
+     */
+    public function applyDatatableOrder()
+    {
+        if (request()->input('order')) {
+            // clear any past orderBy rules
+            $this->query->getQuery()->orders = null;
+            foreach ((array) request()->input('order') as $order) {
+                $column_number = (int) $order['column'];
+                $column_direction = (strtolower((string) $order['dir']) == 'asc' ? 'ASC' : 'DESC');
+                $column = $this->findColumnById($column_number);
+                if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
+                    // apply the current orderBy rules
+                    $this->orderByWithPrefix($column['name'], $column_direction);
+                }
+
+                // check for custom order logic in the column definition
+                if (isset($column['orderLogic'])) {
+                    $this->customOrderBy($column, $column_direction);
+                }
+            }
+        }
+
+        // show newest items first, by default (if no order has been set for the primary column)
+        // if there was no order set, this will be the only one
+        // if there was an order set, this will be the last one (after all others were applied)
+        // Note to self: `toBase()` returns also the orders contained in global scopes, while `getQuery()` don't.
+        $orderBy = $this->query->toBase()->orders;
+        $table = $this->model->getTable();
+        $key = $this->model->getKeyName();
+
+        $hasOrderByPrimaryKey = collect($orderBy)->some(function ($item) use ($key, $table) {
+            return (isset($item['column']) && $item['column'] === $key)
+                || (isset($item['sql']) && str_contains($item['sql'], "$table.$key"));
+        });
+
+        if (! $hasOrderByPrimaryKey) {
+            $this->orderByWithPrefix($key, 'DESC');
         }
     }
 
@@ -269,7 +314,7 @@ trait Search
             // including the configured view_namespaces
             $columnPaths = array_map(function ($item) use ($column) {
                 return $item.'.'.$column['type'];
-            }, config('backpack.crud.view_namespaces.columns'));
+            }, ViewNamespaces::getFor('columns'));
 
             // but always fall back to the stock 'text' column
             // if a view doesn't exist
@@ -287,6 +332,18 @@ trait Search
 
         // fallback to text column
         return 'crud::columns.text';
+    }
+
+    /**
+     * Return the column view HTML.
+     *
+     * @param  array  $column
+     * @param  object  $entry
+     * @return string
+     */
+    public function getTableCellHtml($column, $entry)
+    {
+        return $this->renderCellView($this->getCellViewName($column), $column, $entry);
     }
 
     /**

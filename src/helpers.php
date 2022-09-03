@@ -40,32 +40,44 @@ if (! function_exists('backpack_form_input')) {
     function backpack_form_input()
     {
         $input = request('form') ?? [];
-
         $result = [];
+
         foreach ($input as $row) {
-            // parse the input name to extract the "arg" when using HasOne/MorphOne (address[street]) returns street as arg, address as key
-            $start = strpos($row['name'], '[');
-            $input_arg = null;
-            if ($start !== false) {
-                $end = strpos($row['name'], ']', $start + 1);
-                $length = $end - $start;
+            $repeatableRowKey = null;
 
-                $input_arg = substr($row['name'], $start + 1, $length - 1);
-                $input_arg = strlen($input_arg) >= 1 ? $input_arg : null;
-                $input_key = substr($row['name'], 0, $start);
-            } else {
-                $input_key = $row['name'];
+            // regular fields don't need any aditional parsing
+            if (strpos($row['name'], '[') === false) {
+                $result[$row['name']] = $row['value'];
+                continue;
             }
 
-            if (is_null($input_arg)) {
-                if (! isset($result[$input_key])) {
-                    $result[$input_key] = $start ? [$row['value']] : $row['value'];
-                } else {
-                    array_push($result[$input_key], $row['value']);
-                }
+            // dot notation fields
+            if (substr_count($row['name'], '[') === 1) {
+                // start in the first occurence since it's HasOne/MorphOne with dot notation (address[street] in request) to get the input name (address)
+                $inputNameStart = strpos($row['name'], '[') + 1;
             } else {
-                $result[$input_key][$input_arg] = $row['value'];
+                // repeatable fields, we need to get the input name and the row number
+                // start on the second occurence since it's a repeatable and we want to bypass the row number (repeatableName[rowNumber][inputName])
+                $inputNameStart = strpos($row['name'], '[', strpos($row['name'], '[') + 1) + 1;
+
+                // get the array key (aka repeatable row) from field name
+                $startKey = strpos($row['name'], '[') + 1;
+                $endKey = strpos($row['name'], ']', $startKey);
+                $lengthKey = $endKey - $startKey;
+                $repeatableRowKey = substr($row['name'], $startKey, $lengthKey);
             }
+
+            $inputNameEnd = strpos($row['name'], ']', $inputNameStart);
+            $inputNameLength = $inputNameEnd - $inputNameStart;
+            $inputName = substr($row['name'], $inputNameStart, $inputNameLength);
+            $parentInputName = substr($row['name'], 0, strpos($row['name'], '['));
+
+            if (isset($repeatableRowKey)) {
+                $result[$parentInputName][$repeatableRowKey][$inputName] = $row['value'];
+                continue;
+            }
+
+            $result[$parentInputName][$inputName] = $row['value'];
         }
 
         return $result;
@@ -96,22 +108,12 @@ if (! function_exists('backpack_avatar_url')) {
      */
     function backpack_avatar_url($user)
     {
-        $firstLetter = $user->getAttribute('name') ? mb_substr($user->name, 0, 1, 'UTF-8') : 'A';
-        $placeholder = 'https://via.placeholder.com/160x160/00a65a/ffffff/&text='.$firstLetter;
-
         switch (config('backpack.base.avatar_type')) {
             case 'gravatar':
-                if (backpack_users_have_email()) {
-                    return Gravatar::fallback('https://via.placeholder.com/160x160/00a65a/ffffff/&text='.$firstLetter)->get($user->email);
-                } else {
-                    return $placeholder;
+                if (backpack_users_have_email() && ! empty($user->email)) {
+                    return Gravatar::fallback(config('backpack.base.gravatar_fallback'))->get($user->email);
                 }
                 break;
-
-            case 'placehold':
-                return $placeholder;
-                break;
-
             default:
                 return method_exists($user, config('backpack.base.avatar_type')) ? $user->{config('backpack.base.avatar_type')}() : $user->{config('backpack.base.avatar_type')};
                 break;
@@ -229,21 +231,6 @@ if (! function_exists('square_brackets_to_dots')) {
         $string = str_replace(['[', ']'], ['.', ''], $string);
 
         return $string;
-    }
-}
-
-if (! function_exists('is_countable')) {
-    /**
-     * We need this because is_countable was only introduced in PHP 7.3,
-     * and in PHP 7.2 you should check if count() argument is really countable.
-     * This function may be removed in future if PHP >= 7.3 becomes a requirement.
-     *
-     * @param $obj
-     * @return bool
-     */
-    function is_countable($obj)
-    {
-        return is_array($obj) || $obj instanceof Countable;
     }
 }
 

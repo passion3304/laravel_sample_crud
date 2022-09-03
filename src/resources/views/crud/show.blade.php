@@ -28,12 +28,12 @@
 <div class="row">
 	<div class="{{ $crud->getShowContentClass() }}">
 
-	<!-- Default box -->
+	{{-- Default box --}}
 	  <div class="">
 	  	@if ($crud->model->translationEnabled())
 			<div class="row">
 				<div class="col-md-12 mb-2">
-					<!-- Change translation button group -->
+					{{-- Change translation button group --}}
 					<div class="btn-group float-right">
 					<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						{{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
@@ -61,7 +61,7 @@
                         		// including the configured view_namespaces
                         		$columnPaths = array_map(function($item) use ($column) {
                         			return $item.'.'.$column['type'];
-                        		}, config('backpack.crud.view_namespaces.columns'));
+                        		}, \Backpack\CRUD\ViewNamespaces::getFor('columns'));
 
                         		// but always fall back to the stock 'text' column
                         		// if a view doesn't exist
@@ -83,8 +83,8 @@
 				@endif
 		        </tbody>
 			</table>
-	    </div><!-- /.box-body -->
-	  </div><!-- /.box -->
+	    </div>{{-- /.box-body --}}
+	  </div>{{-- /.box --}}
 
 	</div>
 </div>

@@ -6,6 +6,7 @@ use Backpack\CRUD\Tests\Unit\Models\Article;
 use Backpack\CRUD\Tests\Unit\Models\Bang;
 use Backpack\CRUD\Tests\Unit\Models\Comet;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
+use Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable;
 use Backpack\CRUD\Tests\Unit\Models\Universe;
 use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
@@ -912,6 +913,13 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($inputData['universes'][0]['title'], $entry->fresh()->universes->first()->title);
         $this->assertEquals(3, $entry->fresh()->universes->first()->id);
         $this->assertEquals(1, Universe::all()->count());
+
+        $inputData['universes'] = null;
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertEquals(0, count($entry->fresh()->universes));
+        $this->assertEquals(0, Universe::all()->count());
     }
 
     public function testHasManySelectableRelationshipWithoutForceDelete()
@@ -980,6 +988,126 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $planets = Planet::all();
 
         $this->assertCount(2, $planets);
+    }
+
+    public function testHasManyWithRelationScoped()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'          => 'incomes',
+            'subfields'   => [
+                [
+                    'name' => 'label',
+                    'type' => 'text',
+                ],
+                [
+                    'name' => 'type',
+                    'type' => 'hidden',
+                    'value' => 'income',
+                ],
+                [
+                    'name' => 'amount',
+                    'type' => 'number',
+                ],
+            ],
+        ], 'both');
+        $this->crudPanel->addField([
+            'name'          => 'expenses',
+            'subfields'   => [
+                [
+                    'name' => 'label',
+                    'type' => 'text',
+                ],
+                [
+                    'name' => 'type',
+                    'type' => 'hidden',
+                    'value' => 'expense',
+                ],
+                [
+                    'name' => 'amount',
+                    'type' => 'number',
+                ],
+            ],
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'incomes' => [
+                [
+                    'label' => $faker->name,
+                    'amount' => 33,
+                    'type' => 'income',
+                ],
+                [
+                    'label' => $faker->name,
+                    'amount' => 22,
+                    'type' => 'income',
+                ],
+            ],
+            'expenses' => [
+                [
+                    'label' => $faker->name,
+                    'amount' => 44,
+                    'type' => 'expense',
+                ],
+                [
+                    'label' => $faker->name,
+                    'amount' => 10,
+                    'type' => 'expense',
+                ],
+            ],
+        ];
+        $entry = $this->crudPanel->create($inputData);
+
+        $firstExpense = $entry->expenses->first();
+        $firstIncome = $entry->incomes->first();
+        $this->assertCount(2, $entry->expenses);
+        $this->assertCount(2, $entry->incomes);
+        $this->assertEquals(44, $entry->expenses->first()->amount);
+        $this->assertEquals(33, $entry->incomes->first()->amount);
+
+        $inputData['incomes'] = [
+            [
+                'id' => 2,
+                'label' => $faker->name,
+                'amount' => 222,
+                'type' => 'income',
+            ],
+        ];
+        $inputData['expenses'] = [
+            [
+                'id' => 3,
+                'label' => $faker->name,
+                'amount' => 44,
+                'type' => 'expense',
+            ],
+            [
+                'id' => 4,
+                'label' => $faker->name,
+                'amount' => 10,
+                'type' => 'expense',
+            ],
+        ];
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $freshIncomes = $entry->fresh()->incomes;
+        $freshExpenses = $entry->fresh()->expenses;
+        $this->assertCount(2, $freshExpenses);
+        $this->assertCount(1, $freshIncomes);
+        $this->assertEquals(2, $freshIncomes->first()->id);
+
+        $inputData['expenses'] = [];
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $freshIncomes = $entry->fresh()->incomes;
+        $freshExpenses = $entry->fresh()->expenses;
+        $this->assertCount(0, $freshExpenses);
+        $this->assertCount(1, $freshIncomes);
     }
 
     public function testHasManySelectableRelationshipWithFallbackId()
@@ -1081,5 +1209,180 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $comets = Comet::all();
         $this->assertCount(2, $comets);
         $this->assertEquals(0, $comets->first()->user_id);
+    }
+
+    public function testHasManySelectableRelationshipNonNullable()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'    => 'planetsNonNullable',
+            'force_delete' => false,
+            'fallback_id' => false,
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'planetsNonNullable'          => [1, 2],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(2, $entry->planetsNonNullable);
+
+        $inputData['planetsNonNullable'] = null;
+
+        $this->crudPanel->update($entry->id, $inputData);
+
+        $this->assertCount(0, $entry->fresh()->planetsNonNullable);
+
+        $planets = PlanetNonNullable::all();
+        $this->assertCount(0, $planets);
+    }
+
+    public function testCreateHasManyRelationWithArrayedNameSubfields()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
+        $this->crudPanel->addField([
+            'name'    => 'universes',
+            'subfields' => [
+                [
+                    'name' => 'title',
+                ],
+                [
+                    'name' => ['start_date', 'end_date'],
+                    'type' => 'date_range',
+                ],
+            ],
+        ], 'both');
+
+        $faker = Factory::create();
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'universes'          => [
+                [
+                    'id' => null,
+                    'title' => 'this is the star 1 title',
+                    'start_date' => '2021-02-26',
+                    'end_date' => '2091-01-26',
+                ],
+                [
+                    'title' => 'this is the star 2 title',
+                    'end_date' => '2021-02-26',
+                    'start_date' => '2091-01-26',
+                ],
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(2, $entry->universes);
+
+        $this->assertEquals($inputData['universes'][0]['start_date'], $entry->universes()->first()->start_date);
+        $this->assertEquals($inputData['universes'][0]['end_date'], $entry->universes()->first()->end_date);
+        $this->assertEquals($inputData['universes'][1]['end_date'], $entry->universes()->find(2)->end_date);
+        $this->assertEquals($inputData['universes'][1]['start_date'], $entry->universes()->find(2)->start_date);
+    }
+
+    public function testCreateHasOneRelationWithArrayedNameSubfields()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField(
+            [
+                'name' => 'accountDetails',
+                'subfields' => [
+                    [
+                        'name' => 'nickname',
+                    ],
+                    [
+                        'name' => ['start_date', 'end_date'],
+                    ],
+                    [
+                        'name' => 'profile_picture',
+                    ],
+                ],
+            ]);
+
+        $faker = Factory::create();
+
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'roles'          => [1, 2],
+            'accountDetails' => [
+                [
+                    'nickname' => 'i_have_has_one',
+                    'profile_picture' => 'ohh my picture 1.jpg',
+                    'start_date' => '2021-02-26',
+                    'end_date' => '2091-01-26',
+                ],
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+        $account_details = $entry->accountDetails()->first();
+
+        $this->assertEquals($account_details->start_date, '2021-02-26');
+        $this->assertEquals($account_details->end_date, '2091-01-26');
+    }
+
+    public function testBelongsToManyWithArrayedNameSubfields()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField([
+            'name' => 'superArticles',
+            'subfields' => [
+                [
+                    'name' => 'notes',
+                ],
+                [
+                    'name' => ['start_date', 'end_date'],
+                ],
+            ],
+        ]);
+
+        $faker = Factory::create();
+        $articleData = [
+            'content'     => $faker->text(),
+            'tags'        => $faker->words(3, true),
+            'user_id'     => 1,
+        ];
+
+        $article = Article::create($articleData);
+
+        $inputData = [
+            'name'           => $faker->name,
+            'email'          => $faker->safeEmail,
+            'password'       => bcrypt($faker->password()),
+            'remember_token' => null,
+            'superArticles'          => [
+                [
+                    'superArticles' => $article->id,
+                    'notes' => 'my first article note',
+                    'start_date' => '2021-02-26',
+                    'end_date' => '2091-01-26',
+                ],
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(1, $entry->fresh()->superArticles);
+        $superArticle = $entry->fresh()->superArticles->first();
+        $this->assertEquals($superArticle->pivot->start_date, '2021-02-26');
+        $this->assertEquals($superArticle->pivot->end_date, '2091-01-26');
     }
 }

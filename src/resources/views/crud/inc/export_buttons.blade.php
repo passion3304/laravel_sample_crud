@@ -9,6 +9,7 @@
   <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js" type="text/javascript"></script>
   <script>
     window.crud.dataTableConfiguration.buttons = [
+        @if($crud->get('list.showExportButton'))
         {
             extend: 'collection',
             text: '<i class="la la-download"></i> {{ trans('backpack::crud.export.export') }}',
@@ -91,8 +92,10 @@
                     }
                 }
             ]
-        },
-        {
+        }
+        @endif
+        @if($crud->get('list.showTableColumnPicker'))
+        ,{
             extend: 'colvis',
             text: '<i class="la la-eye-slash"></i> {{ trans('backpack::crud.export.column_visibility') }}',
             columns: function ( idx, data, node ) {
@@ -100,6 +103,7 @@
             },
             dropup: true
         }
+        @endif
     ];
 
     // move the datatable buttons in the top-right corner and make them smaller

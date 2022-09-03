@@ -1,4 +1,4 @@
-<!-- summernote editor -->
+{{-- summernote editor --}}
 @php
     // make sure that the options array is defined
     // and at the very least, dialogsInBody is true;
@@ -13,6 +13,7 @@
         name="{{ $field['name'] }}"
         data-init-function="bpFieldInitSummernoteElement"
         data-options="{{ json_encode($field['options']) }}"
+        bp-field-main-input
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control summernote'])
         >{{ old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '' }}</textarea>
 
@@ -29,7 +30,7 @@
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
-    <!-- include summernote css-->
+    {{-- include summernote css --}}
     @loadOnce('packages/summernote/dist/summernote-bs4.css')
     @loadOnce('summernoteCss')
     <style type="text/css">
@@ -41,12 +42,30 @@
 @endpush
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-    <!-- include summernote js-->
+    {{-- include summernote js --}}
     @loadOnce('packages/summernote/dist/summernote-bs4.min.js')
     @loadOnce('bpFieldInitSummernoteElement')
     <script>
         function bpFieldInitSummernoteElement(element) {
-            element.summernote(element.data('options'));
+             var summernoteOptions = element.data('options');
+
+            let summernotCallbacks = { 
+                onChange: function(contents, $editable) {
+                    element.val(contents).trigger('change');
+                }
+            }
+
+            element.on('CrudField:disable', function(e) {
+                element.summernote('disable');
+            });
+
+            element.on('CrudField:enable', function(e) {
+                element.summernote('enable');
+            });
+            
+            summernoteOptions['callbacks'] = summernotCallbacks;
+            
+            element.summernote(summernoteOptions); 
         }
     </script>
     @endLoadOnce
