@@ -232,6 +232,20 @@ trait PrettyCommandOutput
     }
 
     /**
+     * @return void
+     */
+    public function askHint(string $question, array $hints, string $default)
+    {
+        $hints = collect($hints)
+            ->map(function ($hint) {
+                return " <fg=gray>│ $hint</>";
+            })
+            ->join(PHP_EOL);
+
+        return $this->ask($question.PHP_EOL.$hints, $default);
+    }
+
+    /**
      * Deletes one or multiple chars.
      *
      * @return void
