@@ -231,8 +231,6 @@ trait PrettyCommandOutput
     }
 
     /**
-     * 
-     *
      * @return void
      */
     public function askHint(string $question, array $hints, string $default)
