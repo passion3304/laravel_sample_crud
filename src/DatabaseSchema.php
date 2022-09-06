@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD;
 
-use Barryvdh\Debugbar\Facades\Debugbar;
-use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 
@@ -47,12 +45,8 @@ class DatabaseSchema
     private static function generateDatabaseSchema(string $connection)
     {
         if (! isset(self::$schema[$connection])) {
-            Debugbar::startMeasure('create schema');
             $rawColumns = DB::connection($connection)->getDoctrineSchemaManager()->createSchema();
-            Debugbar::stopMeasure('create schema');
-            Debugbar::startMeasure('map columns');
             self::$schema[$connection] = self::mapColumns($rawColumns);
-            Debugbar::stopMeasure('map columns');
         }
     }
 

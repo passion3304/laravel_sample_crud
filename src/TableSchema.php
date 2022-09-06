@@ -12,7 +12,7 @@ class TableSchema
     }
 
     /**
-     * Check if the column exists in the schema.
+     * Check if the column exists in the database.
      *
      * @param  string  $columnName
      * @return bool
@@ -72,7 +72,7 @@ class TableSchema
         }
 
         $column = $this->schema->getColumn($columnName);
-        
+
         return $column->getDefault();
     }
 
