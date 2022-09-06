@@ -65,6 +65,14 @@ class BackpackServiceProvider extends ServiceProvider
             return new CrudPanel();
         });
 
+        $this->app->scoped('DatabaseSchema', function ($app) {
+            return new DatabaseSchemaManager();
+        });
+
+        $this->app->bind('DatabaseSchema', function($app) {
+            return new DatabaseSchemaManager();
+        });
+
         $this->app->singleton('BackpackViewNamespaces', function ($app) {
             return new ViewNamespaces();
         });
@@ -283,6 +291,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets', 'BackpackViewNamespaces'];
+        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema'];
     }
 }

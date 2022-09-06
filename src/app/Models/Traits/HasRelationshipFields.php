@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Models\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\CRUD\DatabaseSchemaFacade as DatabaseSchema;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -62,7 +63,7 @@ trait HasRelationshipFields
      * @param  string  $column_name  The name of the db column.
      * @return bool
      */
-    public static function isColumnNullable($column_name)
+    public static function isColumnNullable($columnName)
     {
         [$conn, $table] = self::getConnectionAndTable();
 
@@ -71,25 +72,16 @@ trait HasRelationshipFields
             return true;
         }
 
-        try {
-            // check if the column exists in the database
-            $column = $conn->getDoctrineColumn($table, $column_name);
-            // check for NOT NULL
-            $notNull = $column->getNotnull();
-            // return the value of nullable (aka the inverse of NOT NULL)
-            return ! $notNull;
-        } catch (\Exception $e) {
-            return true;
-        }
+        return DatabaseSchema::isColumnNullable($conn->getName(), $table, $columnName);
     }
 
     /**
      * Checks if the given column name has default value set.
      *
-     * @param  string  $column_name  The name of the db column.
+     * @param  string  $columnName  The name of the db column.
      * @return bool
      */
-    public static function dbColumnHasDefault($column_name)
+    public static function dbColumnHasDefault($columnName)
     {
         [$conn, $table] = self::getConnectionAndTable();
 
@@ -98,14 +90,7 @@ trait HasRelationshipFields
             return false;
         }
 
-        try {
-            // check if the column exists in the database
-            $column = $conn->getDoctrineColumn($table, $column_name);
-            // if the return value is a string there is some default set.
-            return is_string($column->getDefault()) ? true : false;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return DatabaseSchema::columnHasDefault($conn->getName(), $columnName, $table);
     }
 
     /**
@@ -114,11 +99,11 @@ trait HasRelationshipFields
      * @param  string  $column_name  The name of the db column.
      * @return bool
      */
-    public static function getDbColumnDefault($column_name)
+    public static function getDbColumnDefault($columnName)
     {
         [$conn, $table] = self::getConnectionAndTable();
 
-        return $conn->getDoctrineColumn($table, $column_name)->getDefault();
+        return DatabaseSchema::getColumnDefault($conn->getName(), $table, $columnName);
     }
 
     /**
