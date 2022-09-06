@@ -1208,7 +1208,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $comets = Comet::all();
         $this->assertCount(2, $comets);
-        $this->assertEquals(0, (int)$comets->first()->user_id);
+        $this->assertEquals(0, (int) $comets->first()->user_id);
     }
 
     public function testHasManySelectableRelationshipNonNullable()
