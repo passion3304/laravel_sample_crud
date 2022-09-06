@@ -64,6 +64,7 @@ trait HasRelationshipFields
     public static function isColumnNullable($columnName)
     {
         $schema = new ModelSchema(new self);
+
         return $schema->columnIsNullable($columnName);
     }
 
@@ -76,6 +77,7 @@ trait HasRelationshipFields
     public static function dbColumnHasDefault($columnName)
     {
         $schema = new ModelSchema(new self);
+
         return $schema->columnHasDefault($columnName);
     }
 
@@ -88,6 +90,7 @@ trait HasRelationshipFields
     public static function getDbColumnDefault($columnName)
     {
         $schema = new ModelSchema(new self);
+
         return $schema->getColumnDefault($columnName);
     }
 

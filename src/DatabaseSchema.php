@@ -10,29 +10,29 @@ class DatabaseSchema
     private static $schema;
 
     /**
-     * Return the schema for the table
-     * 
-     * @param string $connection
-     * @param string $table
-     * 
+     * Return the schema for the table.
+     *
+     * @param  string  $connection
+     * @param  string  $table
      * @return array
      */
     public static function getForTable(string $connection, string $table)
     {
         self::generateDatabaseSchema($connection);
+
         return self::$schema[$connection][$table] ?? [];
     }
 
     /**
-     * Return the schema for the connection
-     * 
-     * @param string $connection
-     * 
+     * Return the schema for the connection.
+     *
+     * @param  string  $connection
      * @return array
      */
     public static function getForConnection(string $connection)
     {
         self::generateDatabaseSchema($connection);
+
         return self::$schema[$connection];
     }
 

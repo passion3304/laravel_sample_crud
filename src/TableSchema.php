@@ -7,7 +7,8 @@ class TableSchema
     /** @var Doctrine\DBAL\Schema\Table */
     public $schema;
 
-    public function __construct(string $connection, string $table) {
+    public function __construct(string $connection, string $table)
+    {
         $this->schema = DatabaseSchema::getForTable($connection, $table);
     }
 
@@ -22,6 +23,7 @@ class TableSchema
         if (! $this->schemaExists()) {
             return false;
         }
+
         return $this->schema->hasColumn($columnName);
     }
 
@@ -84,9 +86,10 @@ class TableSchema
      */
     private function columnExists($columnName)
     {
-        if(! $this->schemaExists()) {
+        if (! $this->schemaExists()) {
             return false;
         }
+
         return $this->schema->hasColumn($columnName);
     }
 
@@ -100,6 +103,7 @@ class TableSchema
         if (! empty($this->schema)) {
             return true;
         }
+
         return false;
     }
 }
