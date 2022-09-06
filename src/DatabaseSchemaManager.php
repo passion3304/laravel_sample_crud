@@ -132,10 +132,9 @@ class DatabaseSchemaManager
      */
     private function validateInputs($connectionName, $tableName, $columnName)
     {
-        if($this->ensureSchemaExistence($connectionName) && 
-            $this->ensureTableExistence($connectionName, $tableName) && 
-            $this->ensureColumnExistence($connectionName, $tableName, $columnName))
-        {
+        if ($this->ensureSchemaExistence($connectionName) &&
+            $this->ensureTableExistence($connectionName, $tableName) &&
+            $this->ensureColumnExistence($connectionName, $tableName, $columnName)) {
             return true;
         }
 
