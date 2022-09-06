@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class DatabaseSchemaManager
 {
-    private array $schema;
+    private $schema;
 
     public function __construct()
     {
