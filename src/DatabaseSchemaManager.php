@@ -94,7 +94,7 @@ class DatabaseSchemaManager
      */
     public function hasColumn($connectionName, $tableName, $columnName)
     {
-        if (! $this->ensureSchemaExistence($connectionName) || ! $this->ensureTableExistence($connectionName, $tableName)) {
+        if (! $this->ensureSchemaExistence($connectionName) || ! $this->tableExists($connectionName, $tableName)) {
             return false;
         }
 
@@ -109,7 +109,7 @@ class DatabaseSchemaManager
      * @param  string  $columnName
      * @return bool
      */
-    public function isColumnNullable($connectionName, $tableName, $columnName)
+    public function columnIsNullable($connectionName, $tableName, $columnName)
     {
         if (! $this->validateInputs($connectionName, $tableName, $columnName)) {
             return true;
@@ -133,8 +133,8 @@ class DatabaseSchemaManager
     private function validateInputs($connectionName, $tableName, $columnName)
     {
         if ($this->ensureSchemaExistence($connectionName) &&
-            $this->ensureTableExistence($connectionName, $tableName) &&
-            $this->ensureColumnExistence($connectionName, $tableName, $columnName)) {
+            $this->tableExists($connectionName, $tableName) &&
+            $this->columnExists($connectionName, $tableName, $columnName)) {
             return true;
         }
 
@@ -206,7 +206,7 @@ class DatabaseSchemaManager
      * @param  string  $tableName
      * @return bool
      */
-    private function ensureTableExistence($connectionName, $tableName)
+    private function tableExists($connectionName, $tableName)
     {
         if ($this->hasTable($connectionName, $tableName)) {
             return true;
@@ -223,7 +223,7 @@ class DatabaseSchemaManager
      * @param  string  $columnName
      * @return bool
      */
-    private function ensureColumnExistence($connectionName, $tableName, $columnName)
+    private function columnExists($connectionName, $tableName, $columnName)
     {
         if ($this->hasColumn($connectionName, $tableName, $columnName)) {
             return true;

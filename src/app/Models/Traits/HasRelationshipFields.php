@@ -72,7 +72,7 @@ trait HasRelationshipFields
             return true;
         }
 
-        return DatabaseSchema::isColumnNullable($conn->getName(), $table, $columnName);
+        return DatabaseSchema::columnIsNullable($conn->getName(), $table, $columnName);
     }
 
     /**

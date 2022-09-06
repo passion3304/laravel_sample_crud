@@ -69,10 +69,6 @@ class BackpackServiceProvider extends ServiceProvider
             return new DatabaseSchemaManager();
         });
 
-        $this->app->bind('DatabaseSchema', function ($app) {
-            return new DatabaseSchemaManager();
-        });
-
         $this->app->singleton('BackpackViewNamespaces', function ($app) {
             return new ViewNamespaces();
         });
