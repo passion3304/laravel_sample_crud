@@ -92,13 +92,14 @@ class DatabaseSchemaManager
      * @param string $tableName
      * @param string $columnName
      * 
-     * @throws Exception
      * @return bool
      */
     public function hasColumn($connectionName, $tableName, $columnName)
     {
-        $this->ensureSchemaExistence($connectionName);
-        $this->ensureTableExistence($connectionName, $tableName);
+        if(! $this->ensureSchemaExistence($connectionName) || ! $this->ensureTableExistence($connectionName, $tableName))
+        {
+            return false;
+        }
 
         return in_array($columnName, array_column($this->schema[$connectionName][$tableName], 'name'));
     }
@@ -114,7 +115,10 @@ class DatabaseSchemaManager
      */
     public function isColumnNullable($connectionName, $tableName, $columnName)
     {
-        $this->validateInputs($connectionName, $tableName, $columnName);
+        if(! $this->validateInputs($connectionName, $tableName, $columnName))
+        {
+            return true;
+        }
 
         $column = current(array_filter($this->schema[$connectionName][$tableName], function($column) use ($columnName) {
             return $column['name'] === $columnName;
@@ -129,17 +133,18 @@ class DatabaseSchemaManager
      * @param string $tableName
      * @param string $columnName
      * 
-     * @throws Exception
-     * @return void
+     * @return bool
      */
-    private function validateInputs($connectionName, $tableName, $columnName = null)
+    private function validateInputs($connectionName, $tableName, $columnName)
     {
-        $this->ensureSchemaExistence($connectionName);
-        $this->ensureTableExistence($connectionName, $tableName);
-
-        if($columnName) {
-            $this->ensureColumnExistence($connectionName, $tableName, $columnName);
+        dump('validating inputs');
+        if($this->ensureSchemaExistence($connectionName) && 
+            $this->ensureTableExistence($connectionName, $tableName) && 
+            $this->ensureColumnExistence($connectionName, $tableName, $columnName))
+        {
+            return true;
         }
+        return false;
     }
 
     /**
@@ -153,7 +158,10 @@ class DatabaseSchemaManager
      */
     public function columnHasDefault($connectionName, $tableName, $columnName)
     {
-        $this->validateInputs($connectionName, $tableName, $columnName);
+        if(! $this->validateInputs($connectionName, $tableName, $columnName))
+        {
+            return false;
+        }
 
         $column = current(array_filter($this->schema[$connectionName][$tableName], function($column) use ($columnName) {
             return$column['name'] === $columnName;
@@ -195,7 +203,9 @@ class DatabaseSchemaManager
      */
     public function hasTable($connectionName, $tableName)
     {
-        $this->ensureSchemaExistence($connectionName);
+        if(! $this->ensureSchemaExistence($connectionName)) {
+            return false;
+        }
 
         return isset($this->schema[$connectionName][$tableName]);
     }
@@ -206,14 +216,14 @@ class DatabaseSchemaManager
      * @param string $connetionName
      * @param string $tableName
      * 
-     * @throws Exception
-     * @return void
+     * @return bool
      */
     private function ensureTableExistence($connectionName, $tableName)
     {
-        if (! $this->hasTable($connectionName, $tableName)) {
-            throw new Exception('Table «'.$tableName.'» not found for connection:' . $connectionName);
+        if ($this->hasTable($connectionName, $tableName)) {
+            return true;
         }
+        return false;
     }
 
     /**
@@ -223,24 +233,29 @@ class DatabaseSchemaManager
      * @param string $tableName
      * @param string $columnName
      * 
-     * @throws Exception
-     * @return void
+     * @return bool
      */
     private function ensureColumnExistence($connectionName, $tableName, $columnName)
     {
-        if (! $this->hasColumn($connectionName, $tableName, $columnName)) {
-            throw new Exception('Column «'.$columnName.'» not found in «'.$tableName.'» table for connection:' . $connectionName);
+        if ($this->hasColumn($connectionName, $tableName, $columnName)) {
+            return true;
         }
+        return false;
     } 
     
     /**
      * Make sure the schema for the connection is initialized
      * 
      * @param string $connetionName
-     * @return void
+     * @return bool
      */
     private function ensureSchemaExistence($connectionName)
     {
         $this->generateDatabaseSchema($connectionName);
+
+        if(isset($this->schema[$connectionName])) {
+            return true;
+        }
+        return false;
     }
 }
