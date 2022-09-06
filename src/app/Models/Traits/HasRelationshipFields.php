@@ -2,10 +2,8 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Backpack\CRUD\DatabaseSchemaFacade as DatabaseSchema;
+use Backpack\CRUD\ModelSchema;
 use DB;
-use Illuminate\Database\Eloquent\Model;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,14 +63,8 @@ trait HasRelationshipFields
      */
     public static function isColumnNullable($columnName)
     {
-        [$conn, $table] = self::getConnectionAndTable();
-
-        // MongoDB columns are alway nullable
-        if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
-            return true;
-        }
-
-        return DatabaseSchema::columnIsNullable($conn->getName(), $table, $columnName);
+        $schema = new ModelSchema(new self);
+        return $schema->columnIsNullable($columnName);
     }
 
     /**
@@ -83,14 +75,8 @@ trait HasRelationshipFields
      */
     public static function dbColumnHasDefault($columnName)
     {
-        [$conn, $table] = self::getConnectionAndTable();
-
-        // MongoDB columns don't have default values
-        if (! in_array($conn->getConfig()['driver'], CRUD::getSqlDriverList())) {
-            return false;
-        }
-
-        return DatabaseSchema::columnHasDefault($conn->getName(), $columnName, $table);
+        $schema = new ModelSchema(new self);
+        return $schema->columnHasDefault($columnName);
     }
 
     /**
@@ -101,15 +87,14 @@ trait HasRelationshipFields
      */
     public static function getDbColumnDefault($columnName)
     {
-        [$conn, $table] = self::getConnectionAndTable();
-
-        return DatabaseSchema::getColumnDefault($conn->getName(), $table, $columnName);
+        $schema = new ModelSchema(new self);
+        return $schema->getColumnDefault($columnName);
     }
 
     /**
      * Return the current model connection and table name.
      */
-    private static function getConnectionAndTable()
+    public static function getConnectionAndTable()
     {
         $conn = $instance = new static();
         $conn = $instance->getConnectionWithExtraTypeMappings();
