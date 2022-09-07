@@ -56,7 +56,7 @@ class DatabaseSchema
      * @param  Doctrine\DBAL\Schema\Schema  $rawColumns
      * @return array
      */
-    protected static function mapColumns($rawColumns)
+    private static function mapColumns($rawColumns)
     {
         return LazyCollection::make($rawColumns->getTables())->mapWithKeys(function ($table, $key) {
             return [$table->getName() => $table];
