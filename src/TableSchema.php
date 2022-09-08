@@ -13,28 +13,29 @@ class TableSchema
     }
 
     /**
-     * Return an array of column names in database
+     * Return an array of column names in database.
+     *
      * @return array
      */
     public function getColumnsNames()
     {
-       return array_keys($this->schema->getColumns());
+        return array_keys($this->schema->getColumns());
     }
 
     /**
-     * Return the column type in database
-     * 
-     * @param string $columnName
+     * Return the column type in database.
+     *
+     * @param  string  $columnName
      * @return string
      */
     public function getColumnType(string $columnName)
     {
         if (! $this->schemaExists() || ! $this->schema->hasColumn($columnName)) {
             return 'varchar';
-        } 
+        }
 
         $column = $this->schema->getColumn($columnName);
-        
+
         return $column->getType();
     }
 
