@@ -49,10 +49,9 @@ trait HasRelationshipFields
      */
     public function getColumnType($columnName)
     {
-        $conn = $this->getConnectionWithExtraTypeMappings();
-        $table = $this->getTable();
+        $schema = new ModelSchema(new self);
 
-        return $conn->getSchemaBuilder()->getColumnType($table, $columnName);
+        return $schema->getColumnType($columnName);
     }
 
     /**
