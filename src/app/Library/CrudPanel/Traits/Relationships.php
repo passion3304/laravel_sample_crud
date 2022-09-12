@@ -426,7 +426,7 @@ trait Relationships
      * @param  array  $options
      * @return void|array
      */
-    public function addMorphOption($fieldName, string $key, $label = null, array $options)
+    public function addMorphOption($fieldName, string $key, $label = null, array $options = [])
     {
         $morphField = is_array($fieldName) ? $fieldName : $this->fields()[$fieldName];
 
