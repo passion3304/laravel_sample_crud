@@ -80,8 +80,7 @@
      * @param {jQuery} firstField
      */
     function handleFocusOnSelect2Field(firstField){
-        $('.select2-search__field').remove();
-        firstField.select2('open');
+        firstField.select2('focus');
     }
 
     /*
@@ -91,7 +90,7 @@
     *
     */
     $(document).on('select2:open', () => {
-        document.querySelector('.select2-search__field').focus();
+        setTimeout(() => document.querySelector('.select2-container--open .select2-search__field').focus(), 100);
     });
 
     jQuery('document').ready(function($){

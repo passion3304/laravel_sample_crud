@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 trait Query
 {
