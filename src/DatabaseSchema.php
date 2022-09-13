@@ -44,14 +44,14 @@ class DatabaseSchema
     }
 
     /**
-     * Maps the columns from raw db values into an usable array.
+     * Map the tables from raw db values into an usable array.
      *
-     * @param  Doctrine\DBAL\Schema\Schema  $rawColumns
+     * @param  Doctrine\DBAL\Schema\Schema  $rawTables
      * @return array
      */
-    private static function mapTables($rawColumns)
+    private static function mapTables($rawTables)
     {
-        return LazyCollection::make($rawColumns->getTables())->mapWithKeys(function ($table, $key) {
+        return LazyCollection::make($rawTables->getTables())->mapWithKeys(function ($table, $key) {
             return [$table->getName() => $table];
         })->toArray();
     }
