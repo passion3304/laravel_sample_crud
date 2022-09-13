@@ -35,9 +35,9 @@ class DatabaseSchema
         if (! isset(self::$schema[$connection])) {
             $rawTables = DB::connection($connection)->getDoctrineSchemaManager()->createSchema();
             self::$schema[$connection] = self::mapTables($rawTables);
-        }else{
+        } else {
             // check for a specific table in case it was created after schema had been generated.
-            if(!isset(self::$schema[$connection][$table])) {
+            if (! isset(self::$schema[$connection][$table])) {
                 self::$schema[$connection][$table] = DB::connection($connection)->getDoctrineSchemaManager()->listTableDetails($table);
             }
         }
