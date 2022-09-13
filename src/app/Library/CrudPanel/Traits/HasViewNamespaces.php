@@ -29,7 +29,7 @@ trait HasViewNamespaces
         ViewNamespaces::getFor($domain);
     }
 
-    public function  getViewNamespacesWithFallbackFor(string $domain, string $viewNamespacesFromConfigKey)
+    public function getViewNamespacesWithFallbackFor(string $domain, string $viewNamespacesFromConfigKey)
     {
         ViewNamespaces::getWithFallbackFor($domain, $viewNamespacesFromConfigKey);
     }
