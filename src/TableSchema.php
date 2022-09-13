@@ -39,8 +39,8 @@ class TableSchema
         }
 
         $column = $this->schema->getColumn($columnName);
-
-        return $column->getType();
+        
+        return $column->getType()->getName();
     }
 
     /**
