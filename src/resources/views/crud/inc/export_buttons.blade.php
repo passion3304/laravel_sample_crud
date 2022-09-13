@@ -18,7 +18,7 @@
             .replace(/<!\-\-.*?\-\->/g, '')
             .replace(/<[^>]*>/g, '')
             .replace(/^\s+|\s+$/g, '')
-            .replace(/\n/g, ' ');
+            .replace(/[\n|\r]/g, ' ');
     };
 
     let dataTablesExportFormat = {
