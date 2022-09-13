@@ -18,6 +18,8 @@
             .replace(/<!\-\-.*?\-\->/g, '')
             .replace(/<[^>]*>/g, '')
             .replace(/^\s+|\s+$/g, '')
+            .replace(/\s+([,.;:!\?])/g, '$1')
+            .replace(/\s+/g, ' ')
             .replace(/[\n|\r]/g, ' ');
     };
 
