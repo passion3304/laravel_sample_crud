@@ -275,6 +275,10 @@ return [
     'authentication_column'      => 'email',
     'authentication_column_name' => 'Email',
 
+    // As default backpack will use email column as username
+    // If we change email column as "authentication_column", then we can set email column here to not break recovery password and keep working route:list
+    'email_column' => 'email',
+
     // The guard that protects the Backpack admin panel.
     // If null, the config.auth.defaults.guard value will be used.
     'guard' => 'backpack',
