@@ -50,8 +50,8 @@ class Widget extends Fluent
 
     /**
      * Return the widget attribute value or null when attribute does not exist.
-     * 
-     * @param string $attribute
+     *
+     * @param  string  $attribute
      * @return mixed
      */
     public function getAttribute(string $attribute)
