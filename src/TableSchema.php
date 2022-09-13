@@ -20,8 +20,8 @@ class TableSchema
     public function getColumnsNames()
     {
         return array_values(
-                array_map(function($item) { 
-                    return $item->getName(); 
+                array_map(function ($item) {
+                    return $item->getName();
                 }, $this->schema->getColumns())
             );
     }
