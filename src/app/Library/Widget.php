@@ -49,7 +49,7 @@ class Widget extends Fluent
     }
 
     /**
-     * Return the widget attribute value or null when attribute does not exist.
+     * Return the widget attribute value or null when it doesn't exist.
      *
      * @param  string  $attribute
      * @return mixed
@@ -57,6 +57,17 @@ class Widget extends Fluent
     public function getAttribute(string $attribute)
     {
         return $this->attributes[$attribute] ?? null;
+    }
+
+    /**
+     * Check if widget has the attribute.
+     *
+     * @param  string  $attribute
+     * @return bool
+     */
+    public function hasAttribute(string $attribute)
+    {
+        return array_key_exists($attribute, $this->attributes);
     }
 
     /**
