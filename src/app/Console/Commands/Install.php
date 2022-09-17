@@ -105,6 +105,7 @@ class Install extends Command
             $userModel->getConnection()->getPdo();
         } catch (\Throwable $e) {
             $this->note('Error accessing the database, make sure the User Model has a valid DB connection.', 'red');
+
             return;
         }
 
