@@ -76,7 +76,7 @@
                                     $field = backpack_authentication_column();
                                 @endphp
                                 <label class="required">{{ $label }}</label>
-                                <input required class="form-control" type="{{ backpack_authentication_column()=='email'?'email':'text' }}" name="{{ $field }}" value="{{ old($field) ? old($field) : $user->$field }}">
+                                <input required class="form-control" type="{{ backpack_authentication_column()==backpack_email_column()?'email':'text' }}" name="{{ $field }}" value="{{ old($field) ? old($field) : $user->$field }}">
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
 
             </form>
         </div>
-        
+
         {{-- CHANGE PASSWORD FORM --}}
         <div class="col-lg-8">
             <form class="form" action="{{ route('backpack.account.password') }}" method="post">
