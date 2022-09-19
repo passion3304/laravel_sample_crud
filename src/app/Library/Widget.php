@@ -49,6 +49,28 @@ class Widget extends Fluent
     }
 
     /**
+     * Return the widget attribute value or null when it doesn't exist.
+     *
+     * @param  string  $attribute
+     * @return mixed
+     */
+    public function getAttribute(string $attribute)
+    {
+        return $this->attributes[$attribute] ?? null;
+    }
+
+    /**
+     * Check if widget has the attribute.
+     *
+     * @param  string  $attribute
+     * @return bool
+     */
+    public function hasAttribute(string $attribute)
+    {
+        return array_key_exists($attribute, $this->attributes);
+    }
+
+    /**
      * This method allows one to creat a widget without attaching it to any 'real'
      * widget section, by moving it to a 'hidden' section.
      *
