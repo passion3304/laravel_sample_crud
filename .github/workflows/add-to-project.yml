@@ -12,8 +12,6 @@ on:
 permissions: {}
 jobs:
   add-to-project:
-    permissions:
-      repository-projects: write # to add to projects (actions/add-to-project)
     name: Add new bugs and PRs to This Week project
     runs-on: ubuntu-latest
     steps:
