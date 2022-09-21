@@ -95,10 +95,10 @@ trait Update
     /**
      * Return the final value for the attribute.
      *
-     * @param  string  $attribute
-     * @return string
+     * @param  mixed  $attribute
+     * @return mixed
      */
-    private function getAttributeFinalValue(string $attribute)
+    private function getAttributeFinalValue($attribute)
     {
         if (function_exists('enum_exists') && $attribute instanceof UnitEnum) {
             return $attribute instanceof BackedEnum ? $attribute->value : $attribute->name;
