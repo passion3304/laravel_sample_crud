@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\Tests81\Unit\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\Tests81\Unit\Models\Enums\StatusEnum;
+use Illuminate\Database\Eloquent\Model;
 
 class ArticleWithEnum extends Model
 {
@@ -16,7 +16,7 @@ class ArticleWithEnum extends Model
         'cast_metas'  => 'object',
         'cast_tags'   => 'object',
         'cast_extras' => 'object',
-        'status' => StatusEnum::class
+        'status' => StatusEnum::class,
     ];
 
     /**
