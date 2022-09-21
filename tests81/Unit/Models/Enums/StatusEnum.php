@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests81\Unit\Models\Enums;
 
-if (version_compare(PHP_VERSION, '8.1', '>=')) {
+
     enum StatusEnum: string
     {
         case DRAFT = 'DRAFT';
@@ -13,4 +13,4 @@ if (version_compare(PHP_VERSION, '8.1', '>=')) {
             return array_combine(array_column(self::cases(), 'name'), array_column(self::cases(), 'value'));
         }
     }
-}
+

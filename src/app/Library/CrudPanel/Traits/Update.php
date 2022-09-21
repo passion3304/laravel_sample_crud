@@ -205,8 +205,6 @@ trait Update
 
                 // if `entity` contains a dot here it means developer added a main HasOne/MorphOne relation with dot notation
                 if (Str::contains($field['entity'], '.')) {
-                    dump($this->getAttributeFinalValue($model->{Str::afterLast($field['entity'], '.')}));
-
                     return $this->getAttributeFinalValue($model->{Str::afterLast($field['entity'], '.')});
                 }
 
