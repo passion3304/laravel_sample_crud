@@ -9,6 +9,10 @@
         $column['value'] = $column['value']($entry);
     }
 
+    if (function_exists('enum_exists') && $column['value'] instanceof \UnitEnum) {
+        $column['value'] = $column['value'] instanceof \BackedEnum ? $column['value']->value : $column['value']->name;
+    }
+
     $list = [];
     if ($column['value'] !== null) {
         if (is_array($column['value'])) {
