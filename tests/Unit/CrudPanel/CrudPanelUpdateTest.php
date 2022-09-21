@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\Unit\Models\ArticleWithEnum;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -104,6 +105,44 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
         $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertEquals($this->expectedUpdatedFields, $updateFields);
+    }
+
+    public function testGetUpdateFieldsWithEnum()
+    {
+        $this->crudPanel->setModel(ArticleWithEnum::class);
+        $this->crudPanel->addFields([[
+            'name' => 'id',
+            'type' => 'hidden',
+        ], [
+            'name' => 'content',
+        ], [
+            'name' => 'tags',
+        ], [
+            'label'     => 'Author',
+            'type'      => 'select',
+            'name'      => 'user_id',
+            'entity'    => 'user',
+            'attribute' => 'name',
+        ], [
+            'name' => 'status',
+        ]]);
+        $faker = Factory::create();
+        $inputData = [
+            'content'     => $faker->text(),
+            'tags'        => $faker->words(3, true),
+            'user_id'     => 1,
+            'metas'       => null,
+            'extras'      => null,
+            'status'      => 'PUBLISHED',
+            'cast_metas'  => null,
+            'cast_tags'   => null,
+            'cast_extras' => null,
+        ];
+        $article = $this->crudPanel->create($inputData);
+
+        $updateFields = $this->crudPanel->getUpdateFields(2);
+
+        $this->assertTrue($updateFields['status']['value'] === 'PUBLISHED');
     }
 
     public function testGetUpdateFieldsUnknownId()
