@@ -93,9 +93,9 @@ trait Update
     }
 
     /**
-     * Return the final value for the attribute
-     * 
-     * @param string $attribute
+     * Return the final value for the attribute.
+     *
+     * @param  string  $attribute
      * @return string
      */
     private function getAttributeFinalValue(string $attribute)
@@ -108,26 +108,24 @@ trait Update
     }
 
     /**
-     * Return the final values for an array of attributes
-     * 
-     * @param array $attributes
+     * Return the final values for an array of attributes.
+     *
+     * @param  array  $attributes
      * @return array
      */
     private function getAttributesFinalValues(array $attributes)
     {
-        return array_map(function($attribute) {
+        return array_map(function ($attribute) {
             return $this->getAttributeFinalValue($attribute);
         }, $attributes);
-        
     }
 
     /**
-     * Returns the model attributes final values
+     * Returns the model attributes final values.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return array
      */
-
     private function getModelAttributesFinalValues($model)
     {
         return $this->getAttributesFinalValues($this->getModelWithFakes($model)->getAttributes());
@@ -208,6 +206,7 @@ trait Update
                 // if `entity` contains a dot here it means developer added a main HasOne/MorphOne relation with dot notation
                 if (Str::contains($field['entity'], '.')) {
                     dump($this->getAttributeFinalValue($model->{Str::afterLast($field['entity'], '.')}));
+
                     return $this->getAttributeFinalValue($model->{Str::afterLast($field['entity'], '.')});
                 }
 
