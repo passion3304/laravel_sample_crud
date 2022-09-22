@@ -162,7 +162,7 @@
 		        });
 
 		        fileInput.change(function() {
-	                inputLabel.html("Files selected. After save, they will show up above.");
+	                inputLabel.html("{{trans('backpack::crud.upload_multiple_files_selected')}}");
 					let selectedFiles = [];
 
 					Array.from($(this)[0].files).forEach(file => {
