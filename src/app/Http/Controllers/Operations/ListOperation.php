@@ -78,10 +78,12 @@ trait ListOperation
 
         $startIndex = (int) request()->input('start');
         $length = (int) request()->input('length');
+        $search = request()->input('search');
+
         // if a search term was present
-        if (request()->input('search') && request()->input('search')['value']) {
+        if ($search && $search['value'] ?? false) {
             // filter the results accordingly
-            $this->crud->applySearchTerm(request()->input('search')['value']);
+            $this->crud->applySearchTerm($search['value']);
         }
         // start the results according to the datatables pagination
         if ($startIndex) {
@@ -105,7 +107,9 @@ trait ListOperation
             $filteredRows = $entries->count() < $length ? 0 : $length + $startIndex + 1;
         }
 
-        return $this->crud->getEntriesAsJsonForDatatables($entries, $this->crud->getOperationSetting('unfilteredQueryCount'), $filteredRows, $startIndex);
+        $totalRows = $this->crud->getOperationSetting('unfilteredQueryCount');
+
+        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
     }
 
     /**
