@@ -168,6 +168,10 @@ return [
     'table_cant_add'    => 'Cannot add new :entity',
     'table_max_reached' => 'Maximum number of :max reached',
 
+    // google_map
+    'google_map_locate' => 'Get my location',
+    
+
     // File manager
     'file_manager' => 'File Manager',
 
