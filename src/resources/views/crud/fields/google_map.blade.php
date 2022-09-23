@@ -6,7 +6,6 @@
     $field['map_options']['language'] = $field['map_options']['language'] ?? app()->getLocale();
     $field['save_as'] = $field['save_as'] ?? false;
     $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
-    dump($field['value']);
 @endphp
 @include('crud::fields.inc.wrapper_start')
 <label>{!! $field['label'] !!}</label>
@@ -40,19 +39,13 @@
 
     <div style="width: 100%;height: {{$field['map_options']['height']}}px" map-unique-name="map_{{$field['name']}}"></div>
 </div>
-{{-- HINT --}}
+
 @if (isset($field['hint']))
     <p class="help-block">{!! $field['hint'] !!}</p>
 @endif
+
 @include('crud::fields.inc.wrapper_end')
-{{-- Note: you can use  to only load some CSS/JS once, even though there are multiple instances of it --}}
 
-{{-- ########################################## --}}
-{{-- Extra CSS and JS for this particular field --}}
-{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-
-
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
 @loadOnce('googleMapCss')
     <style>
@@ -71,7 +64,6 @@
 @endLoadOnce
 @endpush
 
-{{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
 @loadOnce('bpFieldInitGoogleMapElement')
     <script>
@@ -234,5 +226,3 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{ $field['api_key'] ?? config('services.google_places.key') }}&libraries=places&callback=initGoogleAddressAutocomplete&language={{$field['map_options']['language']}}" async defer></script>
 @endLoadOnce
 @endpush
-{{-- End of Extra CSS and JS --}}
-{{-- ########################################## --}}
