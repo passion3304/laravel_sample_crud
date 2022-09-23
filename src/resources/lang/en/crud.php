@@ -170,7 +170,6 @@ return [
 
     // google_map
     'google_map_locate' => 'Get my location',
-    
 
     // File manager
     'file_manager' => 'File Manager',
