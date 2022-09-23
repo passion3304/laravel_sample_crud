@@ -1,90 +1,90 @@
 @extends(backpack_view('blank'))
 
 @php
-  $defaultBreadcrumbs = [
-    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
-    $crud->entity_name_plural => url($crud->route),
-    trans('backpack::crud.reorder') => false,
-  ];
+    $defaultBreadcrumbs = [
+      trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
+      $crud->entity_name_plural => url($crud->route),
+      trans('backpack::crud.reorder') => false,
+    ];
 
-  // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
-  $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
+    // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
+    $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 @endphp
 
 @section('header')
-<div class="container-fluid">
-    <h2>
-        <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-        <small>{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}.</small>
+    <div class="container-fluid">
+        <h2>
+            <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+            <small>{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}.</small>
 
-        @if ($crud->hasAccess('list'))
-          <small><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
-        @endif
-    </h2>
-</div>
+            @if ($crud->hasAccess('list'))
+                <small><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+            @endif
+        </h2>
+    </div>
 @endsection
 
 @section('content')
-<?php
-function tree_element($entry, $key, $all_entries, $crud)
-{
-    if (! isset($entry->tree_element_shown)) {
-        // mark the element as shown
-        $all_entries[$key]->tree_element_shown = true;
-        $entry->tree_element_shown = true;
+    <?php
+    function tree_element($entry, $key, $all_entries, $crud)
+    {
+        if (! isset($entry->tree_element_shown)) {
+            // mark the element as shown
+            $all_entries[$key]->tree_element_shown = true;
+            $entry->tree_element_shown = true;
 
-        // show the tree element
-        echo '<li id="list_'.$entry->getKey().'">';
-        echo '<div><span class="disclose"><span></span></span>'.object_get($entry, $crud->get('reorder.label')).'</div>';
+            // show the tree element
+            echo '<li id="list_'.$entry->getKey().'">';
+            echo '<div><span class="disclose"><span></span></span>'.object_get($entry, $crud->get('reorder.label')).'</div>';
 
-        // see if this element has any children
-        $children = [];
-        foreach ($all_entries as $key => $subentry) {
-            if ($subentry->parent_id == $entry->getKey()) {
-                $children[] = $subentry;
+            // see if this element has any children
+            $children = [];
+            foreach ($all_entries as $key => $subentry) {
+                if ($subentry->parent_id == $entry->getKey()) {
+                    $children[] = $subentry;
+                }
             }
+
+            $children = collect($children)->sortBy('lft');
+
+            // if it does have children, show them
+            if (count($children)) {
+                echo '<ol>';
+                foreach ($children as $key => $child) {
+                    $children[$key] = tree_element($child, $child->getKey(), $all_entries, $crud);
+                }
+                echo '</ol>';
+            }
+            echo '</li>';
         }
 
-        $children = collect($children)->sortBy('lft');
-
-        // if it does have children, show them
-        if (count($children)) {
-            echo '<ol>';
-            foreach ($children as $key => $child) {
-                $children[$key] = tree_element($child, $child->getKey(), $all_entries, $crud);
-            }
-            echo '</ol>';
-        }
-        echo '</li>';
+        return $entry;
     }
 
-    return $entry;
-}
+    ?>
 
-?>
+    <div class="row mt-4">
+        <div class="{{ $crud->getReorderContentClass() }}">
+            <div class="card p-4">
+                <p>{{ trans('backpack::crud.reorder_text') }}</p>
 
-<div class="row mt-4">
-    <div class="{{ $crud->getReorderContentClass() }}">
-        <div class="card p-4">
-            <p>{{ trans('backpack::crud.reorder_text') }}</p>
+                <ol class="sortable mt-0">
+                    <?php
+                    $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
+                    $root_entries = $all_entries->filter(function ($item) {
+                        return $item->parent_id == 0;
+                    });
+                    foreach ($root_entries as $key => $entry) {
+                        $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+                    }
+                    ?>
+                </ol>
 
-            <ol class="sortable mt-0">
-            <?php
-                $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
-                $root_entries = $all_entries->filter(function ($item) {
-                    return $item->parent_id == 0;
-                });
-                foreach ($root_entries as $key => $entry) {
-                    $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
-                }
-            ?>
-            </ol>
+            </div>{{-- /.card --}}
 
-        </div>{{-- /.card --}}
-
-        <button id="toArray" class="btn btn-success" data-style="zoom-in"><i class="la la-save"></i> {{ trans('backpack::crud.save') }}</button>
+            <button id="toArray" class="btn btn-success" data-style="zoom-in"><i class="la la-save"></i> {{ trans('backpack::crud.save') }}</button>
+        </div>
     </div>
-</div>
 @endsection
 
 
@@ -221,77 +221,77 @@ function tree_element($entry, $key, $all_entries, $crud)
 @endsection
 
 @section('after_scripts')
-<script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}" type="text/javascript" ></script>
-<script src="{{ asset('packages/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('packages/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript" ></script>
 
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-    var isRtl = ($('html').attr('dir') == 'rtl') ? true : false;
-    if(isRtl) {
-        $( " <style> .ui-sortable ol {margin: 0;padding: 0;padding-right: 30px;}ol.sortable, ol.sortable ol {margin: 0 25px 0 0;padding: 0;list-style-type: none;}.ui-sortable dd {margin: 0;padding: 0 1.5em 0 0;}</style>" ).appendTo( "head" )
-    }
-    // initialize the nested sortable plugin
-    $('.sortable').nestedSortable({
-        forcePlaceholderSize: true,
-        handle: 'div',
-        helper: 'clone',
-        items: 'li',
-        opacity: .6,
-        placeholder: 'placeholder',
-        revert: 250,
-        tabSize: 25,
-        rtl: isRtl,
-        tolerance: 'pointer',
-        toleranceElement: '> div',
-        maxLevels: {{ $crud->get('reorder.max_level') ?? 3 }},
-        isTree: true,
-        expandOnHover: 700,
-        startCollapsed: false
-    });
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            var isRtl = Boolean("{{ (config('backpack.base.html_direction') === 'rtl') ? true : false }}");
+            if(isRtl) {
+                $( " <style> .ui-sortable ol {margin: 0;padding: 0;padding-right: 30px;}ol.sortable, ol.sortable ol {margin: 0 25px 0 0;padding: 0;list-style-type: none;}.ui-sortable dd {margin: 0;padding: 0 1.5em 0 0;}</style>" ).appendTo( "head" )
+            }
+            // initialize the nested sortable plugin
+            $('.sortable').nestedSortable({
+                forcePlaceholderSize: true,
+                handle: 'div',
+                helper: 'clone',
+                items: 'li',
+                opacity: .6,
+                placeholder: 'placeholder',
+                revert: 250,
+                tabSize: 25,
+                rtl: isRtl,
+                tolerance: 'pointer',
+                toleranceElement: '> div',
+                maxLevels: {{ $crud->get('reorder.max_level') ?? 3 }},
+                isTree: true,
+                expandOnHover: 700,
+                startCollapsed: false
+            });
 
-    $('.disclose').on('click', function() {
-        $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
-    });
+            $('.disclose').on('click', function() {
+                $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+            });
 
-    $('#toArray').click(function(e){
-        // get the current tree order
-        arraied = $('ol.sortable').nestedSortable('toArray', {startDepthCount: 0});
+            $('#toArray').click(function(e){
+                // get the current tree order
+                arraied = $('ol.sortable').nestedSortable('toArray', {startDepthCount: 0});
 
-        // log it
-        //console.log(arraied);
+                // log it
+                //console.log(arraied);
 
-        // send it with POST
-        $.ajax({
-            url: '{{ url(Request::path()) }}',
-            type: 'POST',
-            data: { tree: JSON.stringify(arraied) },
-        })
-        .done(function() {
-            new Noty({
-                type: "success",
-                text: "<strong>{{ trans('backpack::crud.reorder_success_title') }}</strong><br>{{ trans('backpack::crud.reorder_success_message') }}"
-            }).show();
-          })
-        .fail(function() {
-            new Noty({
-                type: "error",
-                text: "<strong>{{ trans('backpack::crud.reorder_error_title') }}</strong><br>{{ trans('backpack::crud.reorder_error_message') }}"
-            }).show();
-          })
-        .always(function() {
-            console.log("complete");
+                // send it with POST
+                $.ajax({
+                    url: '{{ url(Request::path()) }}',
+                    type: 'POST',
+                    data: { tree: JSON.stringify(arraied) },
+                })
+                    .done(function() {
+                        new Noty({
+                            type: "success",
+                            text: "<strong>{{ trans('backpack::crud.reorder_success_title') }}</strong><br>{{ trans('backpack::crud.reorder_success_message') }}"
+                        }).show();
+                    })
+                    .fail(function() {
+                        new Noty({
+                            type: "error",
+                            text: "<strong>{{ trans('backpack::crud.reorder_error_title') }}</strong><br>{{ trans('backpack::crud.reorder_error_message') }}"
+                        }).show();
+                    })
+                    .always(function() {
+                        console.log("complete");
+                    });
+
+            });
+
+            $.ajaxPrefilter(function(options, originalOptions, xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-XSRF-TOKEN', token);
+                }
+            });
+
         });
-
-    });
-
-    $.ajaxPrefilter(function(options, originalOptions, xhr) {
-        var token = $('meta[name="csrf_token"]').attr('content');
-
-        if (token) {
-            return xhr.setRequestHeader('X-XSRF-TOKEN', token);
-        }
-    });
-
-});
-</script>
+    </script>
 @endsection
