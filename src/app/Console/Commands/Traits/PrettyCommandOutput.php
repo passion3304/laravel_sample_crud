@@ -187,9 +187,15 @@ trait PrettyCommandOutput
         $width = min($this->terminal->getWidth(), $this->maxWidth);
         $dotLength = $width - 5 - strlen(strip_tags($text.$progress));
 
+        // In case it doesn't fit the screen, add enough lines with dots
+        $textLength = strlen(strip_tags($text)) + 20;
+        $dotLength += floor($textLength / $width) * $width;
+
+        $this->consoleProgress = $progress;
+
         $this->output->write(sprintf(
             "  $text <fg=gray>%s</> <fg=$color>%s</>",
-            str_repeat('.', ($dotLength < 1) ? 1 : $dotLength),
+            str_repeat('.', max(1, $dotLength)),
             strtoupper($progress)
         ));
     }
@@ -199,14 +205,17 @@ trait PrettyCommandOutput
      *
      * @return void
      */
-    public function closeProgressBlock(string $text = 'done', string $color = 'green')
+    public function closeProgressBlock(string $progress = 'done', string $color = 'green')
     {
-        $this->deleteChars(20);
+        $deleteSize = max(strlen($this->consoleProgress ?? ''), strlen($progress)) + 1;
+        $newDotSize = $deleteSize - strlen($progress) - 1;
+
+        $this->deleteChars($deleteSize);
 
         $this->output->write(sprintf(
             "<fg=gray>%s</> <fg=$color>%s</>",
-            str_repeat('.', 19 - strlen($text)),
-            strtoupper($text),
+            $newDotSize > 0 ? str_repeat('.', $newDotSize) : '',
+            strtoupper($progress),
         ));
         $this->newLine();
     }

@@ -181,7 +181,7 @@ class CrudPanel
      */
     public function setRoute($route)
     {
-        $this->route = $route;
+        $this->route = ltrim($route, '/');
     }
 
     /**
@@ -195,6 +195,8 @@ class CrudPanel
      */
     public function setRouteName($route, $parameters = [])
     {
+        $route = ltrim($route, '.');
+
         $complete_route = $route.'.index';
 
         if (! \Route::has($complete_route)) {
