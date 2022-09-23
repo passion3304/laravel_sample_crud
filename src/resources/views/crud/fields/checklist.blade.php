@@ -1,22 +1,24 @@
-<!-- checklist -->
+{{-- checklist --}}
 @php
-  $model = new $field['model'];
-  $key_attribute = $model->getKeyName();
-  $identifiable_attribute = $field['attribute'];
+  $key_attribute = (new $field['model'])->getKeyName();
+  $field['attribute'] = $field['attribute'] ?? (new $field['model'])->identifiableAttribute();
+  $field['number_of_columns'] = $field['number_of_columns'] ?? 3;
 
   // calculate the checklist options
   if (!isset($field['options'])) {
-      $field['options'] = $field['model']::all()->pluck($identifiable_attribute, $key_attribute)->toArray();
+      $field['options'] = $field['model']::all()->pluck($field['attribute'], $key_attribute)->toArray();
   } else {
       $field['options'] = call_user_func($field['options'], $field['model']::query());
   }
 
   // calculate the value of the hidden input
-  $field['value'] = old(square_brackets_to_dots($field['name'])) ?? $field['value'] ?? $field['default'] ?? [];
-  if ($field['value'] instanceof Illuminate\Database\Eloquent\Collection) {
-    $field['value'] = $field['value']->pluck($key_attribute)->toArray();
-  } elseif (is_string($field['value'])){
-    $field['value'] = json_decode($field['value']);
+  $field['value'] = old_empty_or_null($field['name'], []) ??  $field['value'] ?? $field['default'] ?? [];
+  if(!empty($field['value'])) {
+      if (is_a($field['value'], \Illuminate\Support\Collection::class)) {
+          $field['value'] = ($field['value'])->pluck($key_attribute)->toArray();
+      } elseif (is_string($field['value'])){
+        $field['value'] = json_decode($field['value']);
+      }
   }
 
   // define the init-function on the wrapper
@@ -31,7 +33,7 @@
 
     <div class="row">
         @foreach ($field['options'] as $key => $option)
-            <div class="col-sm-{{ isset($field['number_of_columns']) ? intval(12/$field['number_of_columns']) : '4'}}">
+            <div class="col-sm-{{ intval(12/$field['number_of_columns']) }}">
                 <div class="checkbox">
                   <label class="font-weight-normal">
                     <input type="checkbox" value="{{ $key }}"> {{ $option }}
@@ -51,12 +53,9 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
-@if ($crud->fieldTypeNotLoaded($field))
-    @php
-        $crud->markFieldTypeAsLoaded($field);
-    @endphp
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
+        @loadOnce('bpFieldInitChecklist')
         <script>
             function bpFieldInitChecklist(element) {
                 var hidden_input = element.find('input[type=hidden]');
@@ -87,13 +86,21 @@
                     }
                   });
 
-                  hidden_input.val(JSON.stringify(newValue));
+                  hidden_input.val(JSON.stringify(newValue)).trigger('change');
 
                 });
+
+                hidden_input.on('CrudField:disable', function(e) {
+                      checkboxes.attr('disabled', 'disabled');
+                  });
+
+                hidden_input.on('CrudField:enable', function(e) {
+                    checkboxes.removeAttr('disabled');
+                });
+
             }
         </script>
+        @endLoadOnce
     @endpush
-
-@endif
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

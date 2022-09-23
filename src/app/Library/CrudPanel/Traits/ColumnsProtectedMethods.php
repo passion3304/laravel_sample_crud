@@ -80,14 +80,61 @@ trait ColumnsProtectedMethods
      */
     protected function makeSureColumnHasType($column)
     {
-        $could_be_relation = isset($column['entity']) && $column['entity'] !== false;
-
-        if (! isset($column['type']) && $could_be_relation) {
-            $column['type'] = 'relationship';
+        // Do not alter type if it has been set by developer
+        if (isset($column['type'])) {
+            return $column;
         }
 
-        if (! isset($column['type'])) {
-            $column['type'] = 'text';
+        // Set text as default column type
+        $column['type'] = 'text';
+
+        if (method_exists($this->model, 'translationEnabledForModel') && $this->model->translationEnabledForModel() && array_key_exists($column['name'], $this->model->getTranslations())) {
+            return $column;
+        }
+
+        $could_be_relation = Arr::get($column, 'entity', false) !== false;
+
+        if ($could_be_relation) {
+            $column['type'] = $this->inferFieldTypeFromRelationType($column['relation_type']);
+        }
+
+        if (in_array($column['name'], $this->model->getDates())) {
+            $column['type'] = 'datetime';
+        }
+
+        if ($this->model->hasCast($column['name'])) {
+            $attributeType = $this->model->getCasts()[$column['name']];
+
+            switch ($attributeType) {
+                case 'array':
+                case 'encrypted:array':
+                case 'collection':
+                case 'encrypted:collection':
+                    $column['type'] = 'array';
+                    break;
+                case 'json':
+                case 'object':
+                    $column['type'] = 'json';
+                    break;
+                case 'bool':
+                case 'boolean':
+                    $column['type'] = 'check';
+                    break;
+                case 'date':
+                    $column['type'] = 'date';
+                    break;
+                case 'datetime':
+                    $column['type'] = 'datetime';
+                    break;
+                case 'double':
+                case 'float':
+                case 'int':
+                case 'integer':
+                case 'real':
+                case 'timestamp':
+                    $column['type'] = 'number';
+                    break;
+            }
         }
 
         return $column;
@@ -143,32 +190,33 @@ trait ColumnsProtectedMethods
         if (strpos($column['name'], '.') !== false) {
             $possibleMethodName = Str::before($column['name'], '.');
 
-            // if the first part of the string exists as method,
-            // it is a relationship
+            // if the first part of the string exists as method in the model
             if (method_exists($this->model, $possibleMethodName)) {
 
-                // if it has parameters it's not a relation method.
-                $column['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $column['name'];
+                // check model method for possibility of being a relationship
+                $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName) ? $column['name'] : false;
 
-                $parts = explode('.', $column['entity']);
+                if ($column['entity']) {
+                    $parts = explode('.', $column['entity']);
 
-                $attribute_in_relation = false;
+                    $attribute_in_relation = false;
 
-                $model = $this->model;
+                    $model = $this->model;
 
-                // here we are going to iterate through all relation parts to check
-                // if the attribute is present in the relation string.
-                foreach ($parts as $i => $part) {
-                    try {
-                        $model = $model->$part()->getRelated();
-                    } catch (\Exception $e) {
-                        $attribute_in_relation = true;
+                    // here we are going to iterate through all relation parts to check
+                    // if the attribute is present in the relation string.
+                    foreach ($parts as $i => $part) {
+                        try {
+                            $model = $model->$part()->getRelated();
+                        } catch (\Exception $e) {
+                            $attribute_in_relation = true;
+                        }
                     }
-                }
-                // if the user setup the attribute in relation string, we are not going to infer that attribute from model
-                // instead we get the defined attribute by the user.
-                if ($attribute_in_relation) {
-                    $column['attribute'] = $column['attribute'] ?? end($parts);
+                    // if the user setup the attribute in relation string, we are not going to infer that attribute from model
+                    // instead we get the defined attribute by the user.
+                    if ($attribute_in_relation) {
+                        $column['attribute'] = $column['attribute'] ?? end($parts);
+                    }
                 }
 
                 return $column;
@@ -178,8 +226,8 @@ trait ColumnsProtectedMethods
         // if there's a method on the model with this name
         if (method_exists($this->model, $column['name'])) {
 
-            // if it has parameters it's not a relation method.
-            $column['entity'] = $this->modelMethodHasParameters($this->model, $column['name']) ? false : $column['name'];
+             // check model method for possibility of being a relationship
+            $column['entity'] = $this->modelMethodIsRelationship($this->model, $column['name']);
 
             return $column;
         }
@@ -190,9 +238,8 @@ trait ColumnsProtectedMethods
             $possibleMethodName = Str::replaceLast('_id', '', $column['name']);
 
             if (method_exists($this->model, $possibleMethodName)) {
-
-                // if it has parameters it's not a relation method.
-                $column['entity'] = $this->modelMethodHasParameters($this->model, $possibleMethodName) ? false : $possibleMethodName;
+                // check model method for possibility of being a relationship
+                $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName);
 
                 return $column;
             }
@@ -214,6 +261,22 @@ trait ColumnsProtectedMethods
         // get it from the relation method defined in the main model
         if (isset($column['entity']) && $column['entity'] !== false && ! isset($column['model'])) {
             $column['model'] = $this->getRelationModel($column['entity']);
+        }
+
+        return $column;
+    }
+
+    /**
+     * If an entity has been defined for the column, but no relation type,
+     * determine the relation type from that relationship.
+     *
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with model.
+     */
+    protected function makeSureColumnHasRelationType($column)
+    {
+        if (isset($column['entity']) && $column['entity'] !== false) {
+            $column['relation_type'] = $column['relation_type'] ?? $this->inferRelationTypeFromRelationship($column);
         }
 
         return $column;

@@ -103,8 +103,8 @@ trait HasTranslations
             return false;
         }
 
-        $locale = $attributes['locale'] ?? \App::getLocale();
-        $attributes = Arr::except($attributes, ['locale']);
+        $locale = $attributes['_locale'] ?? \App::getLocale();
+        $attributes = Arr::except($attributes, ['_locale']);
         $non_translatable = [];
 
         // do the actual saving
@@ -168,7 +168,7 @@ trait HasTranslations
             return $this->locale;
         }
 
-        return \Request::input('locale', \App::getLocale());
+        return \Request::input('_locale', \App::getLocale());
     }
 
     /**
@@ -188,7 +188,7 @@ trait HasTranslations
             case 'findBySlug':
             case 'findBySlugOrFail':
 
-                $translation_locale = \Request::input('locale', \App::getLocale());
+                $translation_locale = \Request::input('_locale', \App::getLocale());
 
                 if ($translation_locale) {
                     $item = parent::__call($method, $parameters);

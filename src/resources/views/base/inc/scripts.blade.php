@@ -10,9 +10,13 @@
     @endforeach
 @endif
 
+@if (config('backpack.base.vite_scripts') && count(config('backpack.base.vite_scripts')))
+    @vite(config('backpack.base.vite_scripts'))
+@endif
+
 @include('backpack::inc.alerts')
 
-<!-- page script -->
+{{-- page script --}}
 <script type="text/javascript">
     // To make Pace works on Ajax calls
     $(document).ajaxStart(function() { Pace.restart(); });
@@ -63,3 +67,7 @@
         location.hash = e.target.hash.replace("#tab_", "#");
     });
 </script>
+
+@if(config('app.debug'))
+    @include('crud::inc.ajax_error_frame')
+@endif

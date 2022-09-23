@@ -1,9 +1,9 @@
-<input type="hidden" name="http_referrer" value={{ session('referrer_url_override') ?? old('http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
+<input type="hidden" name="_http_referrer" value={{ session('referrer_url_override') ?? old('_http_referrer') ?? \URL::previous() ?? url($crud->route) }}>
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled() && count($crud->getTabs()))
     @include('crud::inc.show_tabbed_fields')
-    <input type="hidden" name="current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
+    <input type="hidden" name="_current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
 @else
   <div class="card">
     <div class="card-body row">
@@ -16,31 +16,15 @@
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}
 
 @section('after_styles')
-    <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css').'?v='.config('backpack.base.cachebusting_string') }}">
-    <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/form.css').'?v='.config('backpack.base.cachebusting_string') }}">
-    <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/'.$action.'.css').'?v='.config('backpack.base.cachebusting_string') }}">
 
-    <!-- CRUD FORM CONTENT - crud_fields_styles stack -->
+    {{-- CRUD FORM CONTENT - crud_fields_styles stack --}}
     @stack('crud_fields_styles')
 
-    {{-- Temporary fix on 4.1 --}}
-    <style>
-      .form-group.required label:not(:empty):not(.form-check-label)::after {
-        content: '';
-      }
-      .form-group.required > label:not(:empty):not(.form-check-label)::after {
-        content: ' *';
-        color: #ff0000;
-      }
-    </style>
 @endsection
 
 @section('after_scripts')
-    <script src="{{ asset('packages/backpack/crud/js/crud.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
-    <script src="{{ asset('packages/backpack/crud/js/form.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
-    <script src="{{ asset('packages/backpack/crud/js/'.$action.'.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
 
-    <!-- CRUD FORM CONTENT - crud_fields_scripts stack -->
+    {{-- CRUD FORM CONTENT - crud_fields_scripts stack --}}
     @stack('crud_fields_scripts')
 
     <script>
@@ -64,16 +48,80 @@
       });
     }
 
+    /**
+     * Auto-discover first focusable input
+     * @param {jQuery} form
+     * @return {jQuery}
+     */
+    function getFirstFocusableField(form) {
+        return form.find('input, select, textarea, button')
+            .not('.close')
+            .not('[disabled]')
+            .filter(':visible:first');
+    }
+
+    /**
+     *
+     * @param {jQuery} firstField
+     */
+    function triggerFocusOnFirstInputField(firstField) {
+        if (firstField.hasClass('select2-hidden-accessible')) {
+            return handleFocusOnSelect2Field(firstField);
+        }
+
+        firstField.trigger('focus');
+    }
+
+    /**
+     * 1- Make sure no other select2 input is open in other field to focus on the right one
+     * 2- Check until select2 is initialized
+     * 3- Open select2
+     *
+     * @param {jQuery} firstField
+     */
+    function handleFocusOnSelect2Field(firstField){
+        firstField.select2('focus');
+    }
+
+    /*
+    * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
+    * see: https://github.com/select2/select2/issues/5993
+    * see: https://github.com/jquery/jquery/issues/4382
+    *
+    */
+    $(document).on('select2:open', () => {
+        setTimeout(() => document.querySelector('.select2-container--open .select2-search__field').focus(), 100);
+    });
+
     jQuery('document').ready(function($){
 
       // trigger the javascript for all fields that have their js defined in a separate method
       initializeFieldsWithJavascript('form');
 
+      // Retrieves the current form data
+      function getFormData() {
+        return new URLSearchParams(new FormData(document.querySelector("main form"))).toString();
+      }
+
+      // Prevents unloading of page if form data was changed
+      function preventUnload(event) {
+        if (initData !== getFormData()) {
+          // Cancel the event as stated by the standard.
+          event.preventDefault();
+          // Older browsers supported custom message
+          event.returnValue = '';
+        }
+      }
+
+      @if($crud->getOperationSetting('warnBeforeLeaving'))
+      const initData = getFormData();
+      window.addEventListener('beforeunload', preventUnload);
+      @endif
 
       // Save button has multiple actions: save and exit, save and edit, save and new
       var saveActions = $('#saveActions'),
       crudForm        = saveActions.parents('form'),
-      saveActionField = $('[name="save_action"]');
+      saveActionField = $('[name="_save_action"]');
 
       saveActions.on('click', '.dropdown-menu a', function(){
           var saveAction = $(this).data('value');
@@ -94,6 +142,7 @@
 
       // prevent duplicate entries on double-clicking the submit form
       crudForm.submit(function (event) {
+        window.removeEventListener('beforeunload', preventUnload);
         $("button[type=submit]").prop('disabled', true);
       });
 
@@ -105,19 +154,21 @@
           });
         @endphp
 
+        let focusField;
+
         @if ($focusField)
           @php
             $focusFieldName = isset($focusField['value']) && is_iterable($focusField['value']) ? $focusField['name'] . '[]' : $focusField['name'];
           @endphp
-          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0),
+            focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
         @else
-          var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
+            focusField = getFirstFocusableField($('form'));
         @endif
 
-        fieldOffset = focusField.offset().top,
-        scrollTolerance = $(window).height() / 2;
+        const fieldOffset = focusField.offset().top;
+        const scrollTolerance = $(window).height() / 2;
 
-        focusField.trigger('focus');
+        triggerFocusOnFirstInputField(focusField);
 
         if( fieldOffset > scrollTolerance ){
             $('html, body').animate({scrollTop: (fieldOffset - 30)});
@@ -128,7 +179,6 @@
       @if ($crud->inlineErrorsEnabled() && $errors->any())
 
         window.errors = {!! json_encode($errors->messages()) !!};
-        // console.error(window.errors);
 
         $.each(errors, function(property, messages){
 
@@ -141,8 +191,20 @@
                         $('[name="' + normalizedProperty + '"]'),
                         container = field.parents('.form-group');
 
-            container.addClass('text-danger');
-            container.children('input, textarea, select').addClass('is-invalid');
+            // iterate the inputs to add invalid classes to fields and red text to the field container.
+            container.children('input, textarea, select').each(function() {
+                let containerField = $(this);
+                // add the invalida class to the field.
+                containerField.addClass('is-invalid');
+                // get field container
+                let container = containerField.parent('.form-group');
+
+                // if container is a repeatable group we don't want to add red text to the whole group,
+                // we only want to add it to the fields that have errors inside that repeatable.
+                if(!container.hasClass('repeatable-group')){
+                  container.addClass('text-danger');
+                }
+            });
 
             $.each(messages, function(key, msg){
                 // highlight the input that errored
@@ -161,13 +223,14 @@
 
       $("a[data-toggle='tab']").click(function(){
           currentTabName = $(this).attr('tab_name');
-          $("input[name='current_tab']").val(currentTabName);
+          $("input[name='_current_tab']").val(currentTabName);
       });
 
       if (window.location.hash) {
-          $("input[name='current_tab']").val(window.location.hash.substr(1));
+          $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
-
       });
     </script>
+
+    @include('crud::inc.form_fields_script')
 @endsection

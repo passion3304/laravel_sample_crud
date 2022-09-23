@@ -25,6 +25,9 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  * @method self wrapper(array $value)
  * @method self fake(bool $value)
  * @method self store_in(string $value)
+ * @method self validationRules(string $value)
+ * @method self validationMessages(array $value)
+ * @method self entity(string $value)
  */
 class CrudField
 {
@@ -32,6 +35,10 @@ class CrudField
 
     public function __construct($name)
     {
+        if (empty($name)) {
+            abort(500, 'Field name can\'t be empty.');
+        }
+
         $field = $this->crud()->firstFieldWhere('name', $name);
 
         // if field exists
@@ -61,6 +68,23 @@ class CrudField
     public static function name($name)
     {
         return new static($name);
+    }
+
+    /**
+     * When defining the entity, make sure Backpack guesses the relationship attributes if needed.
+     *
+     * @param  string|bool  $entity
+     * @return self
+     */
+    public function entity($entity)
+    {
+        $this->attributes['entity'] = $entity;
+
+        if ($entity !== false) {
+            $this->attributes = $this->crud()->makeSureFieldHasRelationshipAttributes($this->attributes);
+        }
+
+        return $this->save();
     }
 
     /**
@@ -160,6 +184,69 @@ class CrudField
         $this->attributes['wrapper']['class'] = 'form-group col-md-'.$numberOfColumns;
 
         return $this->save();
+    }
+
+    /**
+     * Set an event to a certain closure. Will overwrite if existing.
+     *
+     * @param  string  $event  Name of Eloquent Model event
+     * @param  \Closure  $closure  The function aka callback aka closure to run.
+     * @return CrudField
+     */
+    public function on(string $event, \Closure $closure)
+    {
+        $this->attributes['events'][$event] = $closure;
+
+        return $this->save();
+    }
+
+    /**
+     * When subfields are defined, pass them through the guessing function
+     * so that they have label, relationship attributes, etc.
+     *
+     * @param  array  $subfields  Subfield definition array
+     * @return self
+     */
+    public function subfields($subfields)
+    {
+        $this->attributes['subfields'] = $subfields;
+        $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
+
+        return $this->save();
+    }
+
+    /**
+     * Save the validation rules on the CrudPanel per field basis.
+     *
+     * @param  string  $rules  the field rules: required|min:1|max:5
+     * @return self
+     */
+    public function validationRules(string $rules)
+    {
+        $this->attributes['validationRules'] = $rules;
+        $this->crud()->setValidationFromArray([$this->attributes['name'] => $rules]);
+
+        return $this;
+    }
+
+    /**
+     * Save the validation messages on the CrudPanel per field basis.
+     *
+     * @param  array  $messages  the messages for field rules: [required => please input something, min => the minimum allowed is 1]
+     * @return self
+     */
+    public function validationMessages(array $messages)
+    {
+        $this->attributes['validationMessages'] = $messages;
+
+        // append the field name to the rule name of validationMessages array.
+        // eg: ['required => 'This field is required']
+        // will be transformed into: ['field_name.required' => 'This field is required]
+        $this->crud()->setValidationFromArray([], array_merge(...array_map(function ($rule, $message) {
+            return [$this->attributes['name'].'.'.$rule => $message];
+        }, array_keys($messages), $messages)));
+
+        return $this;
     }
 
     // ---------------

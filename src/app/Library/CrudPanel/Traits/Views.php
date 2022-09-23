@@ -2,6 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\CRUD\ViewNamespaces;
+
 trait Views
 {
     // -------
@@ -274,5 +277,42 @@ trait Views
     public function getUpdateContentClass()
     {
         return $this->getEditContentClass();
+    }
+
+    // -------
+    // FIELDS
+    // -------
+    /**
+     * Get the first view path that exists for a certain field. If a viewNamespace is given
+     * (second parameter) look there and stop. Otherwise, look in all directories
+     * configured in backpack.crud.view_namespaces.fields.
+     *
+     * @param  string  $viewPath  Path to field view (starting from /fields/..)
+     * @param  bool|string  $viewNamespace  Optional override, to use this namespace instead of the viewstack.
+     * @return string
+     */
+    public function getFirstFieldView($viewPath, $viewNamespace = false)
+    {
+        // if a definite namespace was given, use that one
+        if ($viewNamespace) {
+            return $viewNamespace.'.'.$viewPath;
+        }
+        // otherwise, loop through all the possible view namespaces
+        // until you find a view that exists
+        $paths = array_map(function ($item) use ($viewPath) {
+            return $item.'.'.$viewPath;
+        }, ViewNamespaces::getFor('fields'));
+
+        foreach ($paths as $path) {
+            if (view()->exists($path)) {
+                return $path;
+            }
+        }
+
+        // if no view exists, in any of the directories above... no bueno
+        if (! backpack_pro()) {
+            throw new BackpackProRequiredException('Cannot find the field view: '.$viewPath.'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO field, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
+        }
+        abort(500, "Cannot find '{$viewPath}' field view in any of the regular locations.");
     }
 }

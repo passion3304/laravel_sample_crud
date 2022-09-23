@@ -4,7 +4,7 @@
 
     // define the wrapper element
     $wrapperElement = $column['wrapper']['element'] ?? 'a';
-    if(!is_string($wrapperElement) && is_callable($wrapperElement)) {
+    if(!is_string($wrapperElement) && $wrapperElement instanceof \Closure) {
         $wrapperElement = $wrapperElement($crud, $column, $entry, $related_key);
     }
 @endphp

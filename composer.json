@@ -22,18 +22,19 @@
         "content management framework"
     ],
     "homepage": "https://github.com/laravel-backpack/CRUD",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Cristian Tabacitu",
-            "email": "tabacitu@backpackforlaravel.com",
+            "email": "cristian.tabacitu@backpackforlaravel.com",
             "homepage": "https://backpackforlaravel.com",
             "role": "Creator & Maintainer"
         }
     ],
     "require": {
-        "laravel/framework": "^8.0|^7.0|^6.0",
-        "prologue/alerts": "^0.4.1",
+        "laravel/framework": "^9.0|^8.26",
+        "prologue/alerts": "^1.0|^0.4",
+        "digitallyhappy/assets": "^2.0.1",
         "creativeorange/gravatar": "~1.0",
         "composer/package-versions-deprecated": "^1.8",
         "doctrine/dbal": "^2.5|^3.0",
@@ -42,8 +43,8 @@
     "require-dev": {
         "phpunit/phpunit": "~8.0|~7.0|~9.0",
         "scrutinizer/ocular": "~1.7|~1.1",
-        "orchestra/testbench": "^6.0|^5.0|^4.0|^3.0",
-        "spatie/laravel-translatable": "^4.0"
+        "orchestra/testbench": "^7.0|^6.0|^5.0|^4.0|^3.0",
+        "spatie/laravel-translatable": "^4.0|^5.0|^6.0"
     },
     "autoload": {
         "psr-4": {

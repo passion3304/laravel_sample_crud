@@ -363,12 +363,19 @@ trait Columns
         $column = $this->makeSureColumnHasKey($column);
         $column = $this->makeSureColumnHasLabel($column);
         $column = $this->makeSureColumnHasEntity($column);
+        $column = $this->makeSureColumnHasModel($column);
+        $column = $this->makeSureColumnHasRelationType($column);
         $column = $this->makeSureColumnHasType($column);
         $column = $this->makeSureColumnHasPriority($column);
-        $column = $this->makeSureColumnHasModel($column);
 
         if (isset($column['entity']) && $column['entity'] !== false) {
             $column['relation_type'] = $this->inferRelationTypeFromRelationship($column);
+        }
+
+        // if there's a model defined, but no attribute
+        // guess an attribute using the identifiableAttribute functionality in CrudTrait
+        if (isset($column['model']) && ! isset($column['attribute']) && method_exists($column['model'], 'identifiableAttribute')) {
+            $column['attribute'] = (new $column['model'])->identifiableAttribute();
         }
 
         // check if the column exists in the database (as a db column)

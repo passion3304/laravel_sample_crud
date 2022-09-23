@@ -10,7 +10,7 @@ class AccountDetails extends Model
     use CrudTrait;
 
     protected $table = 'account_details';
-    protected $fillable = ['user_id', 'nickname', 'profile_picture', 'article_id'];
+    protected $fillable = ['user_id', 'nickname', 'profile_picture', 'article_id', 'start_date', 'end_date'];
 
     /**
      * Get the user for the account details.
@@ -33,5 +33,15 @@ class AccountDetails extends Model
     public function article()
     {
         return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\Article');
+    }
+
+    public function bangs()
+    {
+        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Bang');
+    }
+
+    public function bangsPivot()
+    {
+        return $this->belongsToMany('Backpack\CRUD\Tests\Unit\Models\Bang', 'account_details_bangs_pivot')->withPivot('pivot_field');
     }
 }
