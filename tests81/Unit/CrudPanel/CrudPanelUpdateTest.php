@@ -29,12 +29,12 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
         ], [
             'name' => 'status',
         ],
-        [
-            'name' => 'state',
-        ],
-        [
-            'name' => 'style',
-        ]
+            [
+                'name' => 'state',
+            ],
+            [
+                'name' => 'style',
+            ],
         ]);
         $faker = Factory::create();
         $inputData = [

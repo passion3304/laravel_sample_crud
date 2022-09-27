@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\Tests81\Unit\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Backpack\CRUD\Tests81\Unit\Models\Enums\StatusEnum;
 use Backpack\CRUD\Tests81\Unit\Models\Enums\StateEnum;
+use Backpack\CRUD\Tests81\Unit\Models\Enums\StatusEnum;
 use Backpack\CRUD\Tests81\Unit\Models\Enums\StyleEnum;
 use Illuminate\Database\Eloquent\Model;
 

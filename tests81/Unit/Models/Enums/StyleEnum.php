@@ -9,10 +9,9 @@ enum StyleEnum
 
     public function color(): string
     {
-        return match($this) 
-        {
-            StyleEnum::DRAFT => 'red',   
-            StyleEnum::PUBLISHED => 'green',      
+        return match ($this) {
+            StyleEnum::DRAFT => 'red',
+            StyleEnum::PUBLISHED => 'green',
         };
     }
 }
