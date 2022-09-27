@@ -2,10 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use BackedEnum;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use UnitEnum;
 
 trait Update
 {
@@ -79,7 +77,7 @@ trait Update
         }
 
         if (is_string($field['name'])) {
-            return $this->getAttributeFinalValue($model->{$field['name']});
+            return $model->{$field['name']};
         }
 
         if (is_array($field['name'])) {
@@ -90,45 +88,6 @@ trait Update
 
             return $result;
         }
-    }
-
-    /**
-     * Return the final value for the attribute.
-     *
-     * @param  mixed  $attribute
-     * @return mixed
-     */
-    private function getAttributeFinalValue($attribute)
-    {
-        if (function_exists('enum_exists') && $attribute instanceof UnitEnum) {
-            return $attribute instanceof BackedEnum ? $attribute->value : $attribute->name;
-        }
-
-        return $attribute;
-    }
-
-    /**
-     * Return the final values for an array of attributes.
-     *
-     * @param  array  $attributes
-     * @return array
-     */
-    private function getAttributesFinalValues(array $attributes)
-    {
-        return array_map(function ($attribute) {
-            return $this->getAttributeFinalValue($attribute);
-        }, $attributes);
-    }
-
-    /**
-     * Returns the model attributes final values.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return array
-     */
-    private function getModelAttributesFinalValues($model)
-    {
-        return $this->getAttributesFinalValues($this->getModelWithFakes($model)->getAttributes());
     }
 
     /**
@@ -163,7 +122,7 @@ trait Update
                     // when subfields are NOT set we don't need to get any more values
                     // we just return the plain models as we only need the ids
                     if (! isset($field['subfields'])) {
-                        $result->push($this->getModelAttributesFinalValues($model));
+                        $result->push($model);
                         continue;
                     }
                     // when subfields are set we need to parse their values so they can be displayed
@@ -171,7 +130,7 @@ trait Update
                         case 'HasMany':
                         case 'MorphMany':
                             // we will get model direct attributes and merge with subfields values.
-                            $directAttributes = $this->getModelAttributesFinalValues($model);
+                            $directAttributes = $this->getModelWithFakes($model)->getAttributes();
                             $result->push(array_merge($directAttributes, $this->getSubfieldsValues($field['subfields'], $model)));
                             break;
 
@@ -179,7 +138,6 @@ trait Update
                         case 'MorphToMany':
                             // for any given model, we grab the attributes that belong to our pivot table.
                             $item = $model->{$relation->getPivotAccessor()}->getAttributes();
-                            $item = $this->getAttributesFinalValues($item);
                             $item[$relationMethod] = $model->getKey();
                             $result->push($item);
                             break;
@@ -205,7 +163,7 @@ trait Update
 
                 // if `entity` contains a dot here it means developer added a main HasOne/MorphOne relation with dot notation
                 if (Str::contains($field['entity'], '.')) {
-                    return $this->getAttributeFinalValue($model->{Str::afterLast($field['entity'], '.')});
+                    return $model->{Str::afterLast($field['entity'], '.')};
                 }
 
                 // when subfields exists developer used the repeatable interface to manage this relation
@@ -213,7 +171,7 @@ trait Update
                     return [$this->getSubfieldsValues($field['subfields'], $model)];
                 }
 
-                return $this->getAttributesFinalValues($this->getModelWithFakes($model)->getAttributes());
+                return $this->getModelWithFakes($model);
 
                 break;
             case 'BelongsTo':
@@ -309,9 +267,9 @@ trait Update
                     // otherwise returns the model attribute.
                     if ($relatedModel->{$name}) {
                         if (isset($subfield['subfields'])) {
-                            $result[$name] = $this->getAttributesFinalValues([$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))]);
+                            $result[$name] = [$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))];
                         } else {
-                            $result[$name] = $this->getAttributeFinalValue($relatedModel->{$name});
+                            $result[$name] = $relatedModel->{$name};
                         }
                     }
                 } else {
@@ -325,7 +283,7 @@ trait Update
                         $iterator = $iterator->$part;
                     }
 
-                    Arr::set($result, $name, (is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getAttributesFinalValues($this->getModelWithFakes($iterator)->getAttributes()) : $this->getAttributeFinalValue($iterator)));
+                    Arr::set($result, $name, (is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
                 }
             }
         }
