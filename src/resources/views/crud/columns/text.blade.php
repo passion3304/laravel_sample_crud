@@ -15,10 +15,6 @@
         $column['value'] = json_encode($column['value']);
     }
 
-    if (function_exists('enum_exists') && $column['value'] instanceof \UnitEnum) {
-        $column['value'] = $column['value'] instanceof \BackedEnum ? $column['value']->value : $column['value']->name;
-    }
-
     if(!empty($column['value'])) {
         $column['text'] = $column['prefix'].Str::limit($column['value'], $column['limit'], '…').$column['suffix'];
     }
