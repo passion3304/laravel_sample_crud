@@ -12,6 +12,10 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 {
     public function testGetUpdateFieldsWithEnum()
     {
+        if ((int) app()->version() < 9) {
+            return;
+        }
+
         $this->crudPanel->setModel(\Backpack\CRUD\Tests81\Unit\Models\ArticleWithEnum::class);
         $this->crudPanel->addFields([[
             'name' => 'id',
