@@ -1,24 +1,34 @@
 {{-- enum --}}
 @php
-    $entity_model = $crud->model;
+    $entity_model = $field['model'] ?? $crud->model;
     $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 
-    // check if enums are enabled in PHP version. 
-    if (function_exists('enum_exists')) {
-        if(!empty($field['value']) && $field['value'] instanceof \UnitEnum)  {
-            $possible_values = array_column($field['value']->cases(), 'value', 'name');
-            $field['value'] = isset($field['enum_function']) ? $field['value']->{$field['enum_function']}() : ($field['value'] instanceof \BackedEnum ? $field['value']->value : $field['value']->name);
-        }else{
-            // check if enum field is casted to a class otherwise it's a database enum
-            $possibleEnumCast = (new $entity_model)->getCasts()[$field['name']] ?? false;
-            if($possibleEnumCast && class_exists($possibleEnumCast)) {
-                $possible_values = array_column((new $entity_model)->getCasts()[$field['name']]::cases(), 'value', 'name');
-            }else{
-                $possible_values = $entity_model::getPossibleEnumValues($field['name']);
-            }
+    $possible_values = (function() use ($entity_model, $field) {
+        // if we are in a PHP version where PHP enums are not available, it can only be a database enum
+        if(! function_exists('enum_exists')) {
+            return $entity_model::getPossibleEnumValues($field['name']);
         }
-    }else{
-        $possible_values = $entity_model::getPossibleEnumValues($field['name']);
+
+        // developer can provide the enum class so that we extract the available options from it
+        if(isset($field['enum_class'])) {
+            if($field['enum_class'] instanceof \BackedEnum) {
+                return array_column($field['enum_class']::cases(), 'value', 'name');
+            }
+            return array_column($field['enum_class']::cases(), 'name');
+        }
+
+        // check for model casting, in this case it must be a BakedEnum to work with Laravel casting
+        $possibleEnumCast = (new $entity_model)->getCasts()[$field['name']] ?? false;
+        if($possibleEnumCast && class_exists($possibleEnumCast)) {
+            return array_column((new $entity_model)->getCasts()[$field['name']]::cases(), 'value', 'name');
+        }
+
+        return $entity_model::getPossibleEnumValues($field['name']);
+    })();
+    
+
+    if(function_exists('enum_exists') && !empty($field['value']) && $field['value'] instanceof \UnitEnum)  {
+        $field['value'] = $field['value'] instanceof \BackedEnum ? $field['value']->value : $field['value']->name;
     }
 @endphp
 
