@@ -13,7 +13,6 @@
         }
         return false;
     })();
-    dump($tabWithError); 
 @endphp
 
 @if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
