@@ -1,10 +1,19 @@
 @php
     $horizontalTabs = $crud->getTabsType()=='horizontal' ? true : false;
-
-    if ($errors->any() && array_key_exists(array_keys($errors->messages())[0], $crud->getCurrentFields()) &&
-        array_key_exists('tab', $crud->getCurrentFields()[array_keys($errors->messages())[0]])) {
-        $tabWithError = ($crud->getCurrentFields()[array_keys($errors->messages())[0]]['tab']);
-    }
+    $tabWithError = (function() use ($crud) {
+        if(! session()->get('errors')) {
+            return false;
+        }
+        foreach(session()->get('errors')->getBags() as $bag => $errorMessages) {
+            foreach($errorMessages->getMessages() as $fieldName => $messages) {
+                if(array_key_exists($fieldName, $crud->getCurrentFields()) && array_key_exists('tab', $crud->getCurrentFields()[$fieldName])) {
+                    return $crud->getCurrentFields()[$fieldName]['tab'];
+                }
+            }
+        }
+        return false;
+    })();
+    dump($tabWithError); 
 @endphp
 
 @if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
@@ -28,7 +37,7 @@
                         role="tab" 
                         tab_name="{{ Str::slug($tab) }}" 
                         data-toggle="tab" 
-                        class="nav-link {{ isset($tabWithError) ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
+                        class="nav-link {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
                         >{{ $tab }}</a>
                 </li>
             @endforeach
@@ -37,7 +46,7 @@
         <div class="tab-content p-0 {{$horizontalTabs ? '' : 'col-md-9'}}">
 
             @foreach ($crud->getTabs() as $k => $tab)
-            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tab) }}">
+            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tab) }}">
 
                 <div class="row">
                 @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
