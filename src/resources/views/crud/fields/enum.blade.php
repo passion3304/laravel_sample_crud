@@ -4,9 +4,15 @@
     $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 
     $possible_values = (function() use ($entity_model, $field) {
+        // if developer provided the options, use them, no ned to guess.
+        if(isset($field['options'])) {
+            return $field['options'];
+        }
+
         // if we are in a PHP version where PHP enums are not available, it can only be a database enum
         if(! function_exists('enum_exists')) {
-            return $entity_model::getPossibleEnumValues($field['name']);
+            $possibilities = $entity_model::getPossibleEnumValues($field['name']);
+            return array_combine($possibilities, $possibilities);
         }
 
         // developer can provide the enum class so that we extract the available options from it
@@ -23,7 +29,8 @@
             return array_column((new $entity_model)->getCasts()[$field['name']]::cases(), 'value', 'name');
         }
 
-        return $entity_model::getPossibleEnumValues($field['name']);
+        $possibilities = $entity_model::getPossibleEnumValues($field['name']);
+        return array_combine($possibilities, $possibilities);
     })();
     
 
@@ -45,9 +52,9 @@
         @endif
 
             @if (count($possible_values))
-                @foreach ($possible_values as $possible_value)
-                    <option value="{{ $possible_value }}"
-                        @if ($field['value']==$possible_value)
+                @foreach ($possible_values as $key => $possible_value)
+                    <option value="{{ $key }}"
+                        @if ($field['value']==$key)
                             selected
                         @endif
                     >{{ $possible_value }}</option>

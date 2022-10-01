@@ -5,4 +5,4 @@
     }
 @endphp
 
-@include('crud::columns.text')
+@include(isset($column['options']) ? 'crud::columns.select_from_array' : 'crud::columns.text')
