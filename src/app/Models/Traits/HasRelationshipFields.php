@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
-use Backpack\CRUD\ModelSchema;
+use Backpack\CRUD\app\Library\Database\TableSchema;
 use DB;
 
 /*
@@ -12,6 +12,8 @@ use DB;
 */
 trait HasRelationshipFields
 {
+
+    protected static $schema;
     /**
      * Register aditional types in doctrine schema manager for the current connection.
      *
@@ -49,9 +51,7 @@ trait HasRelationshipFields
      */
     public function getColumnType($columnName)
     {
-        $schema = new ModelSchema(new self);
-
-        return $schema->getColumnType($columnName);
+        return self::getDbTableSchema()->getColumnType($columnName);
     }
 
     /**
@@ -62,9 +62,7 @@ trait HasRelationshipFields
      */
     public static function isColumnNullable($columnName)
     {
-        $schema = new ModelSchema(new self);
-
-        return $schema->columnIsNullable($columnName);
+        return self::getDbTableSchema()->columnIsNullable($columnName);
     }
 
     /**
@@ -75,9 +73,7 @@ trait HasRelationshipFields
      */
     public static function dbColumnHasDefault($columnName)
     {
-        $schema = new ModelSchema(new self);
-
-        return $schema->columnHasDefault($columnName);
+        return self::getDbTableSchema()->columnHasDefault($columnName);
     }
 
     /**
@@ -88,20 +84,29 @@ trait HasRelationshipFields
      */
     public static function getDbColumnDefault($columnName)
     {
-        $schema = new ModelSchema(new self);
-
-        return $schema->getColumnDefault($columnName);
+        return self::getDbTableSchema()->getColumnDefault($columnName);
     }
 
     /**
      * Return the current model connection and table name.
      */
-    public static function getConnectionAndTable()
+    private static function getConnectionAndTable()
     {
-        $conn = $instance = new static();
+        $instance = new static();
         $conn = $instance->getConnectionWithExtraTypeMappings();
         $table = $instance->getTableWithPrefix();
 
         return [$conn, $table];
+    }
+
+    public static function getDbTableSchema()
+    { 
+        if(self::$schema) {
+            return self::$schema;
+        }
+
+        [$connection, $table] = self::getConnectionAndTable();
+        self::$schema = new TableSchema($connection->getName(), $table);
+        return self::$schema;
     }
 }

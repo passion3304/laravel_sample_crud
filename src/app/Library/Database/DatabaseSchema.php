@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD;
+namespace Backpack\CRUD\app\Library\Database;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;

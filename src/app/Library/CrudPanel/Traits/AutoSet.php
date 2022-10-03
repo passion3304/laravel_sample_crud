@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Backpack\CRUD\ModelSchema;
-
 trait AutoSet
 {
     /**
@@ -221,9 +219,8 @@ trait AutoSet
         if (! $this->driverIsSql()) {
             $columns = $fillable;
         } else {
-            $schema = new ModelSchema($this->model);
             // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
-            $columns = $schema->getColumnsNames();
+            $columns = $this->model::getDbTableSchema()->getColumnsNames();
             if (! empty($fillable)) {
                 $columns = array_intersect($columns, $fillable);
             }
