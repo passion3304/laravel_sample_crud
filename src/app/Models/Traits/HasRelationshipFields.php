@@ -12,8 +12,8 @@ use DB;
 */
 trait HasRelationshipFields
 {
-
     protected static $schema;
+
     /**
      * Register aditional types in doctrine schema manager for the current connection.
      *
@@ -100,13 +100,14 @@ trait HasRelationshipFields
     }
 
     public static function getDbTableSchema()
-    { 
-        if(self::$schema) {
+    {
+        if (self::$schema) {
             return self::$schema;
         }
 
         [$connection, $table] = self::getConnectionAndTable();
         self::$schema = new TableSchema($connection->getName(), $table);
+
         return self::$schema;
     }
 }
