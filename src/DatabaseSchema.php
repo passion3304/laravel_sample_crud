@@ -5,7 +5,7 @@ namespace Backpack\CRUD;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 
-class DatabaseSchema
+final class DatabaseSchema
 {
     private static $schema;
 
