@@ -229,7 +229,7 @@ trait Query
             return 0;
         }
 
-        return  (int) ($request->request->get('totalEntryCount') ??
+        return  (int) ($request->get('totalEntryCount') ??
                 $this->getOperationSetting('totalEntryCount') ??
                 $this->performQueryEntryCount());
     }
