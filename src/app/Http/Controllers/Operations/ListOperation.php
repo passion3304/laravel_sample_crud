@@ -96,13 +96,12 @@ trait ListOperation
         // overwrite any order set in the setup() method with the datatables order
         $this->crud->applyDatatableOrder();
 
-        // after applying filters and search, we re-do the calculations of the entries count
-        $filteredEntryCount = $this->crud->getOperationSetting('showEntryCount') ? $this->crud->getCurrentEntryCount() : 0;
-
         $entries = $this->crud->getEntries();
 
         // if show entry count is disabled we use the "simplePagination" technique to move between pages.
-        if (! $this->crud->getOperationSetting('showEntryCount')) {
+        if ($this->crud->getOperationSetting('showEntryCount')) {
+            $filteredEntryCount = $this->crud->getCurrentEntryCount();
+        } else {
             $this->crud->setOperationSetting('totalEntryCount', $length);
             $filteredEntryCount = $entries->count() < $length ? 0 : $length + $start + 1;
         }
