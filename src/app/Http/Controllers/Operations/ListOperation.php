@@ -97,19 +97,19 @@ trait ListOperation
         $this->crud->applyDatatableOrder();
 
         // after applying filters and search, we re-do the calculations of the entries count
-        $filteredRows = $this->crud->getOperationSetting('showEntryCount') ? $this->crud->getCurrentEntryCount() : 0;
+        $filteredEntryCount = $this->crud->getOperationSetting('showEntryCount') ? $this->crud->getCurrentEntryCount() : 0;
 
         $entries = $this->crud->getEntries();
 
         // if show entry count is disabled we use the "simplePagination" technique to move between pages.
         if (! $this->crud->getOperationSetting('showEntryCount')) {
             $this->crud->setOperationSetting('totalEntryCount', $length);
-            $filteredRows = $entries->count() < $length ? 0 : $length + $start + 1;
+            $filteredEntryCount = $entries->count() < $length ? 0 : $length + $start + 1;
         }
 
-        $totalRows = $this->crud->getOperationSetting('totalEntryCount');
+        $totalEntryCount = $this->crud->getOperationSetting('totalEntryCount');
 
-        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $start);
+        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalEntryCount, $filteredEntryCount, $start);
     }
 
     /**
