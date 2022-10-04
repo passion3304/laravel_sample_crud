@@ -265,7 +265,7 @@
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
               "type": "POST",
               "data": {
-                "unfilteredQueryCount": "{{$crud->getOperationSetting('unfilteredQueryCount') ?? false}}"
+                "totalEntryCount": "{{$crud->getOperationSetting('totalEntryCount') ?? false}}"
             },
           },
           dom:
