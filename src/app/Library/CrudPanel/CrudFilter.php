@@ -102,7 +102,7 @@ class CrudFilter
     public function apply($input = null)
     {
         // before applying filters, store the base query count (query before any filters are applied)
-        $this->crud()->setOperationSetting('totalEntryCount', $this->crud()->getTotalEntryCount());
+        $this->crud()->setOperationSetting('totalEntryCount', $this->crud()->getTotalEntryCount($this->crud()->getRequest()));
 
         // mark the field as already applied
         $this->applied(true);

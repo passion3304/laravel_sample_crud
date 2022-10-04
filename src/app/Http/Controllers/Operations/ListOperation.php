@@ -72,7 +72,7 @@ trait ListOperation
         $this->crud->hasAccessOrFail('list');
 
         // how many total entries there is applying the controller/model constrains, before any filtering or search
-        $this->crud->setOperationSetting('totalEntryCount', $this->crud->getTotalEntryCount());
+        $this->crud->setOperationSetting('totalEntryCount', $this->crud->getTotalEntryCount($this->crud->getRequest()));
 
         $this->crud->applyUnappliedFilters();
 
@@ -100,7 +100,8 @@ trait ListOperation
 
         // if show entry count is disabled we use the "simplePagination" technique to move between pages.
         if ($this->crud->getOperationSetting('showEntryCount')) {
-            $filteredEntryCount = $this->crud->getCurrentEntryCount();
+            // after filters, search etc are applied, do the query count again
+            $filteredEntryCount = $this->crud->performQueryEntryCount();
         } else {
             $this->crud->setOperationSetting('totalEntryCount', $length);
             $filteredEntryCount = $entries->count() < $length ? 0 : $length + $start + 1;
