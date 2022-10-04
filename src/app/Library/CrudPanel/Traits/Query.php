@@ -265,23 +265,23 @@ trait Query
         // for example `where('table.column', smt') and in other place where('column', 'smt').
         $crudQueryColumns = array_unique($crudQueryColumns);
 
-        // create an "outter" query, the one that is responsible to do the count of the "crud query".
-        $outterQuery = $crudQuery->newQuery();
+        // create an "outer" query, the one that is responsible to do the count of the "crud query".
+        $outerQuery = $crudQuery->newQuery();
 
-        // in this outter query we will select only one column to be counted.
-        $outterQuery = $outterQuery->select($this->model->getKeyName());
+        // in this outer query we will select only one column to be counted.
+        $outerQuery = $outerQuery->select($this->model->getKeyName());
 
-        // add the count query in the "outter" query.
-        $outterQuery = $outterQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
+        // add the count query in the "outer" query.
+        $outerQuery = $outerQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
 
-        // add the subquery from where the "outter query" will count the results.
+        // add the subquery from where the "outer query" will count the results.
         // this subquery is the "main crud query" without some properties:
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
-        $outterQuery = $outterQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
+        $outerQuery = $outerQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
 
-        return $outterQuery->cursor()->first()->total_rows;
+        return $outerQuery->cursor()->first()->total_rows;
     }
 
     /**
