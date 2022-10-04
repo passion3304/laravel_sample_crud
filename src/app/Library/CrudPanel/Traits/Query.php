@@ -220,7 +220,7 @@ trait Query
     /**
      * Get the query count without any filters or search applied.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return int
      */
     public function getTotalEntryCount(Request $request)
@@ -228,14 +228,14 @@ trait Query
         if (! $this->getOperationSetting('showEntryCount')) {
             return 0;
         }
-        
+
         return  (int) ($request->request->get('totalEntryCount') ??
                 $this->getOperationSetting('totalEntryCount') ??
                 $this->performQueryEntryCount());
     }
 
     /**
-     * Runs the query count against the current crud panel query
+     * Runs the query count against the current crud panel query.
      *
      * @return int
      */
