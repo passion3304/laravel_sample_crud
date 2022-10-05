@@ -3,13 +3,15 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 trait Query
 {
     /** @var Builder */
     public $query;
+
+    /** @var Builder */
+    public $totalQuery;
 
     // ----------------
     // ADVANCED QUERIES
@@ -220,18 +222,16 @@ trait Query
     /**
      * Get the query count without any filters or search applied.
      *
-     * @param  Request  $request
      * @return int
      */
-    public function getTotalEntryCount(Request $request)
+    public function getTotalEntryCount()
     {
         if (! $this->getOperationSetting('showEntryCount')) {
             return 0;
         }
 
-        return  (int) ($request->get('totalEntryCount') ??
-                $this->getOperationSetting('totalEntryCount') ??
-                $this->performQueryEntryCount());
+        return  $this->getOperationSetting('totalEntryCount') ??
+                $this->performQueryEntryCount();
     }
 
     /**
@@ -251,7 +251,7 @@ trait Query
      */
     protected function getEntryCount()
     {
-        $crudQuery = $this->query->toBase()->clone();
+        $crudQuery = $this->totalQuery->toBase()->clone();
         $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
 
         // merge the model key in the columns array if needed
