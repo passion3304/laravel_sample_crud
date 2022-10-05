@@ -29,18 +29,17 @@ trait Query
      *     $query->activePosts();
      * });
      *
-     * @param  \Closure|string  $function
-     * @return void
+     * @param  callable|string  $function
+     * @return mixed
      */
     public function addClause($function)
     {
         if ($function instanceof \Closure) {
             $function($this->query);
-
-            return;
+            return $this->query;
         }
 
-        call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
+        return call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
     }
 
     /**
@@ -299,7 +298,7 @@ trait Query
         $outerQuery = $outerQuery->select($this->model->getKeyName());
 
         // add the count query in the "outer" query.
-        $outerQuery = $outerQuery->selectRaw("count('".$this->model->getKeyName()."') as total_query_rows");
+        $outerQuery = $outerQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
 
         // add the subquery from where the "outer query" will count the results.
         // this subquery is the "main crud query" without some properties:
@@ -308,7 +307,7 @@ trait Query
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
         $outerQuery = $outerQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
 
-        return $outerQuery->cursor()->first()->total_query_rows;
+        return $outerQuery->cursor()->first()->total_rows;
     }
 
     /**
