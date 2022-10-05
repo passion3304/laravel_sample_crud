@@ -57,4 +57,8 @@ return [
     // If you are using PostgreSQL you might want to change
     // to `ilike` for case-insensitive search
     'searchOperator' => 'like',
+
+    // Display the `Showing X of XX entries (filtered  from X entries)`?
+    // Setting this to false will improve performance on big datasets.
+    'showEntryCount' => true,
 ];
