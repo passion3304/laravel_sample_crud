@@ -277,7 +277,7 @@ trait Query
      * @param  Builder  $query
      * @return int
      */
-    protected function getCountFromQuery(Builder $query)
+    private function getCountFromQuery(Builder $query)
     {
         $crudQuery = $query->toBase()->clone();
         $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
