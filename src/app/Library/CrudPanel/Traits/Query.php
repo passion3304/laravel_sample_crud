@@ -29,12 +29,35 @@ trait Query
      *     $query->activePosts();
      * });
      *
-     * @param  callable|string  $function
-     * @return mixed
+     * @param  \Closure|string  $function
+     * @return void
      */
     public function addClause($function)
     {
-        return call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
+        if($function instanceof \Closure) {
+            $function($this->query);
+            return;
+        }
+
+        call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
+    }
+
+    /**
+     * This function is an alias of `addClause` but also adds the query as a constrain 
+     * in the `totalQuery` property
+     * 
+     * @param  \Closure|string  $function
+     * @return void
+     */
+    public function addBaseClause($function)
+    {
+        if($function instanceof \Closure) {
+            $function($this->query);
+            $function($this->totalQuery);
+            return;
+        }
+        call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
+        call_user_func_array([$this->totalQuery, $function], array_slice(func_get_args(), 1));
     }
 
     /**
@@ -220,38 +243,39 @@ trait Query
     }
 
     /**
-     * Get the query count without any filters or search applied.
+     * Get the entries count from `totalQuery` 
      *
      * @return int
      */
-    public function getTotalEntryCount()
+    public function getTotalQueryCount()
     {
         if (! $this->getOperationSetting('showEntryCount')) {
             return 0;
         }
 
         return  $this->getOperationSetting('totalEntryCount') ??
-                $this->performQueryEntryCount();
+                $this->getCountFromQuery($this->totalQuery);
     }
 
     /**
-     * Runs the query count against the current crud panel query.
+     * Get the entries count from the `query`
      *
      * @return int
      */
-    public function performQueryEntryCount()
+    public function getQueryCount()
     {
-        return $this->getEntryCount();
+        return $this->getCountFromQuery($this->query);
     }
 
     /**
      * Do a separate query to get the total number of entries, in an optimized way.
      *
+     * @param Builder $query
      * @return int
      */
-    protected function getEntryCount()
+    protected function getCountFromQuery($query)
     {
-        $crudQuery = $this->totalQuery->toBase()->clone();
+        $crudQuery = $query->toBase()->clone();
         $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
 
         // merge the model key in the columns array if needed
@@ -273,7 +297,7 @@ trait Query
         $outerQuery = $outerQuery->select($this->model->getKeyName());
 
         // add the count query in the "outer" query.
-        $outerQuery = $outerQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
+        $outerQuery = $outerQuery->selectRaw("count('".$this->model->getKeyName()."') as total_query_rows");
 
         // add the subquery from where the "outer query" will count the results.
         // this subquery is the "main crud query" without some properties:
@@ -282,7 +306,7 @@ trait Query
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
         $outerQuery = $outerQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
 
-        return $outerQuery->cursor()->first()->total_rows;
+        return $outerQuery->cursor()->first()->total_query_rows;
     }
 
     /**
