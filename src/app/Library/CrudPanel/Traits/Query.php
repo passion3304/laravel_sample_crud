@@ -47,7 +47,7 @@ trait Query
      * in the `totalQuery` property.
      *
      * @param  \Closure|string  $function
-     * @return void
+     * @return self
      */
     public function addBaseClause($function)
     {
@@ -55,10 +55,11 @@ trait Query
             $function($this->query);
             $function($this->totalQuery);
 
-            return;
+            return $this;
         }
         call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
         call_user_func_array([$this->totalQuery, $function], array_slice(func_get_args(), 1));
+        return $this;
     }
 
     /**
