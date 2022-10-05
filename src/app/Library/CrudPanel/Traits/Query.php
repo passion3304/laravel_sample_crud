@@ -36,6 +36,7 @@ trait Query
     {
         if ($function instanceof \Closure) {
             $function($this->query);
+
             return $this->query;
         }
 
