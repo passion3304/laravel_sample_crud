@@ -34,8 +34,9 @@ trait Query
      */
     public function addClause($function)
     {
-        if($function instanceof \Closure) {
+        if ($function instanceof \Closure) {
             $function($this->query);
+
             return;
         }
 
@@ -43,17 +44,18 @@ trait Query
     }
 
     /**
-     * This function is an alias of `addClause` but also adds the query as a constrain 
-     * in the `totalQuery` property
-     * 
+     * This function is an alias of `addClause` but also adds the query as a constrain
+     * in the `totalQuery` property.
+     *
      * @param  \Closure|string  $function
      * @return void
      */
     public function addBaseClause($function)
     {
-        if($function instanceof \Closure) {
+        if ($function instanceof \Closure) {
             $function($this->query);
             $function($this->totalQuery);
+
             return;
         }
         call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
@@ -243,7 +245,7 @@ trait Query
     }
 
     /**
-     * Get the entries count from `totalQuery` 
+     * Get the entries count from `totalQuery`.
      *
      * @return int
      */
@@ -258,7 +260,7 @@ trait Query
     }
 
     /**
-     * Get the entries count from the `query`
+     * Get the entries count from the `query`.
      *
      * @return int
      */
@@ -270,7 +272,7 @@ trait Query
     /**
      * Do a separate query to get the total number of entries, in an optimized way.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return int
      */
     protected function getCountFromQuery($query)

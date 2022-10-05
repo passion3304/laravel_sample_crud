@@ -113,7 +113,7 @@ class CrudPanel
         }
 
         $this->model = new $model_namespace();
-        $this->query = clone ($this->totalQuery = $this->model->select('*'));
+        $this->query = clone $this->totalQuery = $this->model->select('*');
         $this->entry = null;
     }
 
