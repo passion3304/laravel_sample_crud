@@ -280,6 +280,7 @@ trait Query
     {
         // check if the filtered query is different from total query, in case they are the same, skip the count
         $filteredQuery = $this->query->toBase()->cloneWithout(['orders', 'limit', 'offset']);
+
         return $filteredQuery->toSql() !== $this->totalQuery->toSql() ? $this->getQueryCount() : null;
     }
 
