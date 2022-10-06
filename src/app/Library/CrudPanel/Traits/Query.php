@@ -297,9 +297,6 @@ trait Query
         // create an "outer" query, the one that is responsible to do the count of the "crud query".
         $outerQuery = $crudQuery->newQuery();
 
-        // in this outer query we will select only one column to be counted.
-        $outerQuery = $outerQuery->select($this->model->getKeyName());
-
         // add the count query in the "outer" query.
         $outerQuery = $outerQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
 
@@ -310,7 +307,7 @@ trait Query
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
         $outerQuery = $outerQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
 
-        return $outerQuery->cursor()->first()->total_rows;
+        return $outerQuery->first()->total_rows;
     }
 
     /**
