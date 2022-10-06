@@ -314,14 +314,14 @@ trait Query
         $outerQuery = $outerQuery->select($this->model->getKeyName());
 
         // add the count query in the "outer" query.
-        $outerQuery = $outerQuery->selectRaw("count(*) as total_rows");
+        $outerQuery = $outerQuery->selectRaw('count(*) as total_rows');
 
         // add the subquery from where the "outer query" will count the results.
         // this subquery is the "main crud query" without some properties:
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
-        
+
         $outerQuery = $outerQuery->fromSub($subQuery->select($this->model->getKeyName()), $this->model->getTableWithPrefix());
 
         return $outerQuery->cursor()->first()->total_rows;
