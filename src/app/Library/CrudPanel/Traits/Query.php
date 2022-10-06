@@ -272,6 +272,18 @@ trait Query
     }
 
     /**
+     * Return the filtered query count or skip the counting when the `totalQuery` is the same as the filtered one.
+     *
+     * @return int|null
+     */
+    public function getFilteredQueryCount()
+    {
+        // check if the filtered query is different from total query, in case they are the same, skip the count
+        $filteredQuery = $this->query->toBase()->cloneWithout(['orders', 'limit', 'offset']);
+        return $filteredQuery->toSql() !== $this->totalQuery->toSql() ? $this->getQueryCount() : null;
+    }
+
+    /**
      * Do a separate query to get the total number of entries, in an optimized way.
      *
      * @param  Builder  $query
@@ -307,7 +319,7 @@ trait Query
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
         $outerQuery = $outerQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
 
-        return $outerQuery->first()->total_rows;
+        return $outerQuery->cursor()->first()->total_rows;
     }
 
     /**
