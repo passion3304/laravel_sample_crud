@@ -307,20 +307,12 @@ trait Query
         // for example `where('table.column', smt') and in other place where('column', 'smt').
         $crudQueryColumns = array_unique($crudQueryColumns);
 
-        // create an "outer" query, the one that is responsible to do the count of the "crud query".
-        $outerQuery = $crudQuery->newQuery();
-
-        // add the count query in the "outer" query.
-        $outerQuery = $outerQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
-
         // add the subquery from where the "outer query" will count the results.
         // this subquery is the "main crud query" without some properties:
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
-        $outerQuery = $outerQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
-
-        return $outerQuery->cursor()->first()->total_rows;
+        return $subQuery->select($crudQueryColumns)->count();
     }
 
     /**
