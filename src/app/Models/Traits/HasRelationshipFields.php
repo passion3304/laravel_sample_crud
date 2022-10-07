@@ -142,6 +142,7 @@ trait HasRelationshipFields
     private static function isSqlConnection()
     {
         $instance = new static();
+
         return in_array($instance->getConnection()->getConfig()['driver'], CRUD::getSqlDriverList());
     }
 }
