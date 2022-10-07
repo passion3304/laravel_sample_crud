@@ -26,8 +26,7 @@ trait HasRelationshipFields
 
         $types = [
             'enum' => 'string',
-            'json' => 'json_array',
-            'jsonb' => 'json_array'
+            'jsonb' => 'json'
         ];
 
         // only register the extra types in sql databases
