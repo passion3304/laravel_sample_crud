@@ -66,9 +66,8 @@ trait HasRelationshipFields
     {
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->getColumnType($columnName);
-        } else {
-            return 'text';
         }
+        return 'text';
     }
 
     /**
