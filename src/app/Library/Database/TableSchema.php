@@ -22,7 +22,7 @@ class TableSchema
         return array_values(
                 array_map(function ($item) {
                     return $item->getName();
-                }, $this->schema->getColumns())
+                }, $this->getColumns())
             );
     }
 
@@ -107,6 +107,16 @@ class TableSchema
         $column = $this->schema->getColumn($columnName);
 
         return $column->getDefault();
+    }
+
+    /**
+     * Get the table schema columns
+     *
+     * @return array
+     */
+    public function getColumns()
+    {
+        return $this->schema->getColumns();
     }
 
     /**

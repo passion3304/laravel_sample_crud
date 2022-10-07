@@ -279,6 +279,10 @@ trait Query
      */
     private function getCountFromQuery(Builder $query)
     {
+        if(!$this->driverIsSql()) {
+            return $query->count();
+        }
+
         $crudQuery = $query->toBase()->clone();
         $crudQueryColumns = $this->getQueryColumnsFromWheres($crudQuery);
 

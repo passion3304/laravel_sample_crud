@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Models\Traits;
 
 use Backpack\CRUD\app\Library\Database\TableSchema;
 use DB;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +24,21 @@ trait HasRelationshipFields
     {
         $conn = DB::connection($this->getConnectionName());
 
-        // register the enum, and jsonb types
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-        $conn->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('jsonb', 'json');
+        $types = [
+            'enum' => 'string',
+            'json' => 'json_array',
+            'jsonb' => 'json_array'
+        ];
+
+        // only register the extra types in sql databases
+        if ($this->isSqlConnection()) {
+            $platform = $this->getSchema()->getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
+            foreach ($types as $type_key => $type_value) {
+                if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
+                    $platform->registerDoctrineTypeMapping($type_key, $type_value);
+                }
+            }
+        }
 
         return $conn;
     }
@@ -51,7 +64,11 @@ trait HasRelationshipFields
      */
     public function getColumnType($columnName)
     {
-        return self::getDbTableSchema()->getColumnType($columnName);
+        if ($this->isSqlConnection()) {
+            return self::getDbTableSchema()->getColumnType($columnName);
+        } else {
+            return 'text';
+        }
     }
 
     /**
@@ -62,7 +79,10 @@ trait HasRelationshipFields
      */
     public static function isColumnNullable($columnName)
     {
-        return self::getDbTableSchema()->columnIsNullable($columnName);
+        if ($this->isSqlConnection()) {
+            return self::getDbTableSchema()->columnIsNullable($columnName);
+        }
+        return true; 
     }
 
     /**
@@ -73,7 +93,10 @@ trait HasRelationshipFields
      */
     public static function dbColumnHasDefault($columnName)
     {
-        return self::getDbTableSchema()->columnHasDefault($columnName);
+        if ($this->isSqlConnection()) {
+            return self::getDbTableSchema()->columnHasDefault($columnName);
+        }
+        return false;
     }
 
     /**
@@ -84,7 +107,11 @@ trait HasRelationshipFields
      */
     public static function getDbColumnDefault($columnName)
     {
-        return self::getDbTableSchema()->getColumnDefault($columnName);
+        if ($this->isSqlConnection()) {
+            return self::getDbTableSchema()->getColumnDefault($columnName);
+        }
+        return false;
+        
     }
 
     /**
@@ -109,5 +136,10 @@ trait HasRelationshipFields
         self::$schema = new TableSchema($connection->getName(), $table);
 
         return self::$schema;
+    }
+
+    private function isSqlConnection()
+    {
+        return in_array($this->getConnection()->getConfig()['driver'], CRUD::getSqlDriverList());
     }
 }

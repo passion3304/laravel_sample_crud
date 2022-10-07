@@ -50,9 +50,11 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $this->setDoctrineTypesMapping();
-
         $dbColumnTypes = [];
+
+        if( !$this->driverIsSql()) {
+            return $dbColumnTypes;
+        }
 
         foreach ($this->getDbTableColumns() as $key => $column) {
             $column_type = $column->getType()->getName();
@@ -76,11 +78,7 @@ trait AutoSet
             return $this->autoset['table_columns'];
         }
 
-        $conn = $this->model->getConnection();
-        $table = $conn->getTablePrefix().$this->model->getTable();
-        $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
-
-        $this->autoset['table_columns'] = $columns;
+        $this->autoset['table_columns'] = $this->model::getDbTableSchema()->getColumns();
 
         return $this->autoset['table_columns'];
     }
@@ -157,18 +155,6 @@ trait AutoSet
         }
 
         return 'text';
-    }
-
-    // Fix for DBAL not supporting enum
-    public function setDoctrineTypesMapping()
-    {
-        $types = ['enum' => 'string'];
-        $platform = $this->getSchema()->getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
-        foreach ($types as $type_key => $type_value) {
-            if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
-                $platform->registerDoctrineTypeMapping($type_key, $type_value);
-            }
-        }
     }
 
     /**
