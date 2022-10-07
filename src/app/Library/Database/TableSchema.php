@@ -110,7 +110,7 @@ class TableSchema
     }
 
     /**
-     * Get the table schema columns
+     * Get the table schema columns.
      *
      * @return array
      */

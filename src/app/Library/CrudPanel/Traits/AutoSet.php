@@ -52,7 +52,7 @@ trait AutoSet
     {
         $dbColumnTypes = [];
 
-        if( !$this->driverIsSql()) {
+        if (! $this->driverIsSql()) {
             return $dbColumnTypes;
         }
 

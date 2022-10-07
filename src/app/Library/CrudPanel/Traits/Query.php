@@ -279,7 +279,7 @@ trait Query
      */
     private function getCountFromQuery(Builder $query)
     {
-        if(!$this->driverIsSql()) {
+        if (! $this->driverIsSql()) {
             return $query->count();
         }
 
