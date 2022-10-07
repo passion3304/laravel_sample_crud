@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Database\TableSchema;
 use Illuminate\Support\Facades\DB;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +27,7 @@ trait HasRelationshipFields
         $types = [
             'enum' => 'string',
             'json' => 'json_array',
-            'jsonb' => 'json_array'
+            'jsonb' => 'json_array',
         ];
 
         // only register the extra types in sql databases
@@ -67,6 +67,7 @@ trait HasRelationshipFields
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->getColumnType($columnName);
         }
+
         return 'text';
     }
 
@@ -81,7 +82,8 @@ trait HasRelationshipFields
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->columnIsNullable($columnName);
         }
-        return true; 
+
+        return true;
     }
 
     /**
@@ -95,6 +97,7 @@ trait HasRelationshipFields
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->columnHasDefault($columnName);
         }
+
         return false;
     }
 
@@ -109,8 +112,8 @@ trait HasRelationshipFields
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->getColumnDefault($columnName);
         }
+
         return false;
-        
     }
 
     /**
