@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Database\TableSchema;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,17 +22,17 @@ trait HasRelationshipFields
      */
     public function getConnectionWithExtraTypeMappings()
     {
-        $conn = DB::connection($this->getConnectionName());
+        $connection = DB::connection($this->getConnectionName());
 
         $types = [
             'enum' => 'string',
             'json' => 'json_array',
-            'jsonb' => 'json_array',
+            'jsonb' => 'json_array'
         ];
 
         // only register the extra types in sql databases
         if ($this->isSqlConnection()) {
-            $platform = $this->getSchema()->getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
+            $platform = $connection->getDoctrineSchemaManager()->getDatabasePlatform();
             foreach ($types as $type_key => $type_value) {
                 if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
                     $platform->registerDoctrineTypeMapping($type_key, $type_value);
@@ -40,7 +40,7 @@ trait HasRelationshipFields
             }
         }
 
-        return $conn;
+        return $connection;
     }
 
     /**
@@ -67,7 +67,6 @@ trait HasRelationshipFields
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->getColumnType($columnName);
         }
-
         return 'text';
     }
 
@@ -82,8 +81,7 @@ trait HasRelationshipFields
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->columnIsNullable($columnName);
         }
-
-        return true;
+        return true; 
     }
 
     /**
@@ -97,7 +95,6 @@ trait HasRelationshipFields
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->columnHasDefault($columnName);
         }
-
         return false;
     }
 
@@ -112,8 +109,8 @@ trait HasRelationshipFields
         if ($this->isSqlConnection()) {
             return self::getDbTableSchema()->getColumnDefault($columnName);
         }
-
         return false;
+        
     }
 
     /**

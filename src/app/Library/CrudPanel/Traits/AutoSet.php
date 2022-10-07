@@ -12,9 +12,7 @@ trait AutoSet
      */
     public function setFromDb($setFields = true, $setColumns = true)
     {
-        if ($this->driverIsSql()) {
-            $this->getDbColumnTypes();
-        }
+        $this->getDbColumnTypes();
 
         array_map(function ($field) use ($setFields, $setColumns) {
             if ($setFields && ! isset($this->getCleanStateFields()[$field])) {
