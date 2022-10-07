@@ -30,7 +30,7 @@ trait HasRelationshipFields
         ];
 
         // only register the extra types in sql databases
-        if ($this->isSqlConnection()) {
+        if (self::isSqlConnection()) {
             $platform = $connection->getDoctrineSchemaManager()->getDatabasePlatform();
             foreach ($types as $type_key => $type_value) {
                 if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
@@ -63,7 +63,7 @@ trait HasRelationshipFields
      */
     public function getColumnType($columnName)
     {
-        if ($this->isSqlConnection()) {
+        if (self::isSqlConnection()) {
             return self::getDbTableSchema()->getColumnType($columnName);
         }
 
@@ -78,7 +78,7 @@ trait HasRelationshipFields
      */
     public static function isColumnNullable($columnName)
     {
-        if ($this->isSqlConnection()) {
+        if (self::isSqlConnection()) {
             return self::getDbTableSchema()->columnIsNullable($columnName);
         }
 
@@ -93,7 +93,7 @@ trait HasRelationshipFields
      */
     public static function dbColumnHasDefault($columnName)
     {
-        if ($this->isSqlConnection()) {
+        if (self::isSqlConnection()) {
             return self::getDbTableSchema()->columnHasDefault($columnName);
         }
 
@@ -108,7 +108,7 @@ trait HasRelationshipFields
      */
     public static function getDbColumnDefault($columnName)
     {
-        if ($this->isSqlConnection()) {
+        if (self::isSqlConnection()) {
             return self::getDbTableSchema()->getColumnDefault($columnName);
         }
 
@@ -139,8 +139,9 @@ trait HasRelationshipFields
         return self::$schema;
     }
 
-    private function isSqlConnection()
+    private static function isSqlConnection()
     {
-        return in_array($this->getConnection()->getConfig()['driver'], CRUD::getSqlDriverList());
+        $instance = new static();
+        return in_array($instance->getConnection()->getConfig()['driver'], CRUD::getSqlDriverList());
     }
 }
