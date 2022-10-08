@@ -11,26 +11,44 @@
 
         // if we are in a PHP version where PHP enums are not available, it can only be a database enum
         if(! function_exists('enum_exists')) {
-            $possibilities = $entity_model::getPossibleEnumValues($field['name']);
-            return array_combine($possibilities, $possibilities);
+            $options = $entity_model::getPossibleEnumValues($field['name']);
+            return array_combine($options, $options);
         }
 
         // developer can provide the enum class so that we extract the available options from it
         if(isset($field['enum_class'])) {
             if($field['enum_class'] instanceof \BackedEnum) {
-                return array_column($field['enum_class']::cases(), 'value', 'name');
+                $options = array_column($field['enum_class']::cases(), 'value', 'name');
             }
-            return array_column($field['enum_class']::cases(), 'name');
+            $options = array_column($field['enum_class']::cases(), 'name');
+            $options = array_combine($options, $options);
         }
 
         // check for model casting, in this case it must be a BakedEnum to work with Laravel casting
         $possibleEnumCast = (new $entity_model)->getCasts()[$field['name']] ?? false;
-        if($possibleEnumCast && class_exists($possibleEnumCast)) {
-            return array_column((new $entity_model)->getCasts()[$field['name']]::cases(), 'value', 'name');
+        if(!isset($options) && $possibleEnumCast && class_exists($possibleEnumCast)) {
+            $field['enum_class'] = $possibleEnumCast;
+            $options = array_column($possibleEnumCast::cases(), 'name', 'value');
         }
 
-        $possibilities = $entity_model::getPossibleEnumValues($field['name']);
-        return array_combine($possibilities, $possibilities);
+        if(function_exists('enum_exists') && isset($field['enum_function']) && $field['enum_class']) {
+           
+            $options = array_map(function($item) use ($field) {
+                    $enumClassReflection = new \ReflectionEnum($field['enum_class']);
+                    if ($enumClassReflection->hasConstant($item)) {
+                        $enumClass = $enumClassReflection->getConstant($item);
+                    }
+                    return $enumClass->{$field['enum_function']}();
+                }, $options);
+        }
+        // if we have the enum options return them
+        if(isset($options)) {
+            return $options;
+        }
+
+        // no enum options, can only be database enum
+        $options = $entity_model::getPossibleEnumValues($field['name']);
+        return array_combine($options, $options);
     })();
     
 
