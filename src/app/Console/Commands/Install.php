@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 class Install extends Command
 {
@@ -77,11 +76,14 @@ class Install extends Command
         $process->run();
         $this->closeProgressBlock();
 
-        // Create users
-        $this->createUsers();
+        // Optional commands
+        if (! $this->option('no-interaction')) {
+            // Create users
+            $this->createUsers();
 
-        // Addons
-        $this->installAddons();
+            // Addons
+            $this->installAddons();
+        }
 
         // Done
         $url = Str::of(config('app.url'))->finish('/')->append('admin/');
