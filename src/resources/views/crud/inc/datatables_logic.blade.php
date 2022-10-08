@@ -139,7 +139,7 @@
         localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', newUrl);
       },
       dataTableConfiguration: {
-
+        bInfo: {{ var_export($crud->getOperationSetting('showEntryCount') ?? true) }},
         @if ($crud->getResponsiveTable())
         responsive: {
             details: {
@@ -257,10 +257,16 @@
           },
           processing: true,
           serverSide: true,
+          @if($crud->getOperationSetting('showEntryCount') === false)
+            pagingType: "simple",
+          @endif
           searching: @json($crud->getOperationSetting('searchableTable') ?? true),
           ajax: {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
-              "type": "POST"
+              "type": "POST",
+              "data": {
+                "totalEntryCount": "{{$crud->getOperationSetting('totalEntryCount') ?? false}}"
+            },
           },
           dom:
             "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
@@ -269,7 +275,6 @@
       }
   }
   </script>
-
   @include('crud::inc.export_buttons')
 
   <script type="text/javascript">
