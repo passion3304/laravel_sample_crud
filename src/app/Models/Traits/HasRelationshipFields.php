@@ -63,7 +63,7 @@ trait HasRelationshipFields
      */
     public function getColumnType($columnName)
     {
-        if (!self::isSqlConnection()) {
+        if (! self::isSqlConnection()) {
             return 'text';
         }
 
@@ -78,7 +78,7 @@ trait HasRelationshipFields
      */
     public static function isColumnNullable($columnName)
     {
-        if (!self::isSqlConnection()) {
+        if (! self::isSqlConnection()) {
             return true;
         }
 
@@ -93,7 +93,7 @@ trait HasRelationshipFields
      */
     public static function dbColumnHasDefault($columnName)
     {
-        if (!self::isSqlConnection()) {
+        if (! self::isSqlConnection()) {
             return false;
         }
 
@@ -108,7 +108,7 @@ trait HasRelationshipFields
      */
     public static function getDbColumnDefault($columnName)
     {
-        if (!self::isSqlConnection()) {
+        if (! self::isSqlConnection()) {
             return false;
         }
 
