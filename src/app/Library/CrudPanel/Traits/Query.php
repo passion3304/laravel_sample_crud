@@ -272,6 +272,19 @@ trait Query
     }
 
     /**
+     * Return the filtered query count or skip the counting when the `totalQuery` is the same as the filtered one.
+     *
+     * @return int|null
+     */
+    public function getFilteredQueryCount()
+    {
+        // check if the filtered query is different from total query, in case they are the same, skip the count
+        $filteredQuery = $this->query->toBase()->cloneWithout(['orders', 'limit', 'offset']);
+
+        return $filteredQuery->toSql() !== $this->totalQuery->toSql() ? $this->getQueryCount() : null;
+    }
+
+    /**
      * Do a separate query to get the total number of entries, in an optimized way.
      *
      * @param  Builder  $query
@@ -301,14 +314,15 @@ trait Query
         $outerQuery = $outerQuery->select($this->model->getKeyName());
 
         // add the count query in the "outer" query.
-        $outerQuery = $outerQuery->selectRaw("count('".$this->model->getKeyName()."') as total_rows");
+        $outerQuery = $outerQuery->selectRaw('count(*) as total_rows');
 
         // add the subquery from where the "outer query" will count the results.
         // this subquery is the "main crud query" without some properties:
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
-        $outerQuery = $outerQuery->fromSub($subQuery->select($crudQueryColumns), $this->model->getTableWithPrefix());
+
+        $outerQuery = $outerQuery->fromSub($subQuery->select($this->model->getKeyName()), $this->model->getTableWithPrefix());
 
         return $outerQuery->cursor()->first()->total_rows;
     }
