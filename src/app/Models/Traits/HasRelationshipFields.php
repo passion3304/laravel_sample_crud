@@ -63,11 +63,11 @@ trait HasRelationshipFields
      */
     public function getColumnType($columnName)
     {
-        if (self::isSqlConnection()) {
-            return self::getDbTableSchema()->getColumnType($columnName);
+        if (!self::isSqlConnection()) {
+            return 'text';
         }
 
-        return 'text';
+        return self::getDbTableSchema()->getColumnType($columnName);
     }
 
     /**
@@ -78,11 +78,11 @@ trait HasRelationshipFields
      */
     public static function isColumnNullable($columnName)
     {
-        if (self::isSqlConnection()) {
-            return self::getDbTableSchema()->columnIsNullable($columnName);
+        if (!self::isSqlConnection()) {
+            return true;
         }
 
-        return true;
+        return self::getDbTableSchema()->columnIsNullable($columnName);
     }
 
     /**
@@ -93,11 +93,11 @@ trait HasRelationshipFields
      */
     public static function dbColumnHasDefault($columnName)
     {
-        if (self::isSqlConnection()) {
-            return self::getDbTableSchema()->columnHasDefault($columnName);
+        if (!self::isSqlConnection()) {
+            return false;
         }
 
-        return false;
+        return self::getDbTableSchema()->columnHasDefault($columnName);
     }
 
     /**
@@ -108,11 +108,11 @@ trait HasRelationshipFields
      */
     public static function getDbColumnDefault($columnName)
     {
-        if (self::isSqlConnection()) {
-            return self::getDbTableSchema()->getColumnDefault($columnName);
+        if (!self::isSqlConnection()) {
+            return false;
         }
 
-        return false;
+        return self::getDbTableSchema()->getColumnDefault($columnName);
     }
 
     /**
