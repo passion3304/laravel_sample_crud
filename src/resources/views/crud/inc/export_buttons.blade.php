@@ -26,7 +26,7 @@
     let dataTablesExportFormat = {
         body: (data, row, column, node) => 
             node.querySelector('input[type*="text"]')?.value ??
-            node.querySelector('input[type*="checkbox"]')?.checked ??
+            node.querySelector('input[type*="checkbox"]:not(.crud_bulk_actions_line_checkbox)')?.checked ??
             node.querySelector('select')?.selectedOptions[0]?.value ??
             dataTablesExportStrip(data),
     };
