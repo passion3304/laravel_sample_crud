@@ -54,7 +54,7 @@ return [
     'delete_confirmation_title'                   => 'รายการถูกลบแล้ว',
     'delete_confirmation_message'                 => 'การลบรายการสำเร็จ',
     'delete_confirmation_not_title'               => 'การลบไม่สำเร็จ',
-    'delete_confirmation_not_message'             => "เกิดข้อผิดพลาดระหว่างการลบรายการ ข้อมูลบางส่วนอาจคงอยู่",
+    'delete_confirmation_not_message'             => 'เกิดข้อผิดพลาดระหว่างการลบรายการ ข้อมูลบางส่วนอาจคงอยู่',
     'delete_confirmation_not_deleted_title'       => 'รายการไม่ถูกลบ',
     'delete_confirmation_not_deleted_message'     => 'ยกเลิกการลบแล้ว รายการนี้ไม่มีการเปลี่ยนแปลง',
 
