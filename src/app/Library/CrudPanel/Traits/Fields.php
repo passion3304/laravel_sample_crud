@@ -62,29 +62,6 @@ trait Fields
     }
 
     /**
-     * Make sure morph fields have the correct structure
-     *
-     * @param array $field
-     * @return array
-     */
-    private function makeSureMorphSubfieldsAreDefined(array $field)
-    {
-        if (isset($field['relation_type']) && $field['relation_type'] === 'MorphTo') {
-            [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($field['name']);
-            if (! $this->hasFieldWhere('name', $morphTypeFieldName) || ! $this->hasFieldWhere('name', $morphIdFieldName)) {
-                // create the morph fields in the crud panel
-                $field = $this->createMorphToRelationFields($field, $morphTypeFieldName, $morphIdFieldName);
-                foreach ($field['morphOptions'] ?? [] as $morphOption) {
-                    [$key, $label, $options] = $this->getMorphOptionStructured($morphOption);
-                    $field = $this->addMorphOption($field, $key, $label, $options);
-                }
-            }
-        }
-
-        return $field;
-    }
-
-    /**
      * When field is a relationship, Backpack will try to guess some basic attributes from the relation.
      *
      * @param  array  $field

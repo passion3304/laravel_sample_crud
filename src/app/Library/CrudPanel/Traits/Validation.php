@@ -211,6 +211,7 @@ trait Validation
             $extendedRequest = new class($rules, $messages) extends \DeveloperProvidedFormRequest
             {
                 private $_rules;
+
                 private $_messages;
 
                 public function __construct($rules, $messages)
