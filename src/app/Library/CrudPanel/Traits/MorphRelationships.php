@@ -58,9 +58,9 @@ trait MorphRelationships
     }
 
     /**
-     * Make sure morph fields have the correct structure
+     * Make sure morph fields have the correct structure.
      *
-     * @param array $field
+     * @param  array  $field
      * @return array
      */
     private function makeSureMorphSubfieldsAreDefined(array $field)
