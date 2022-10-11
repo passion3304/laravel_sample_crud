@@ -56,6 +56,19 @@ trait Fields
 
         $this->setupFieldValidation($field, $field['parentFieldName'] ?? false);
 
+        $field = $this->makeSureMorphSubfieldsAreDefined($field);
+
+        return $field;
+    }
+
+    /**
+     * Make sure morph fields have the correct structure
+     *
+     * @param array $field
+     * @return array
+     */
+    private function makeSureMorphSubfieldsAreDefined(array $field)
+    {
         if (isset($field['relation_type']) && $field['relation_type'] === 'MorphTo') {
             [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($field['name']);
             if (! $this->hasFieldWhere('name', $morphTypeFieldName) || ! $this->hasFieldWhere('name', $morphIdFieldName)) {
@@ -300,10 +313,8 @@ trait Fields
         $casted_attributes = $model->getCastedAttributes();
 
         foreach ($fields as $field) {
-
             // Test the field is castable
             if (isset($field['name']) && is_string($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
-
                 // Handle JSON field types
                 $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $casted_attributes[$field['name']];
