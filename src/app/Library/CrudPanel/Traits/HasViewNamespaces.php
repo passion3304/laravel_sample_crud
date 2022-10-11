@@ -23,4 +23,14 @@ trait HasViewNamespaces
     {
         ViewNamespaces::addFor($domain, $viewNamespace);
     }
+
+    public function getViewNamespacesFor(string $domain)
+    {
+        ViewNamespaces::getFor($domain);
+    }
+
+    public function getViewNamespacesWithFallbackFor(string $domain, string $viewNamespacesFromConfigKey)
+    {
+        ViewNamespaces::getWithFallbackFor($domain, $viewNamespacesFromConfigKey);
+    }
 }

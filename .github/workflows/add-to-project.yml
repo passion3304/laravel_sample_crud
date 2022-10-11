@@ -9,6 +9,7 @@ on:
     types:
       - opened
 
+permissions: {}
 jobs:
   add-to-project:
     name: Add new bugs and PRs to This Week project

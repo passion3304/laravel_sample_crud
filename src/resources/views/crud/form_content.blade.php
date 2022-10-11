@@ -176,13 +176,13 @@
       @endif
 
       // Add inline errors to the DOM
-      @if ($crud->inlineErrorsEnabled() && $errors->any())
+      @if ($crud->inlineErrorsEnabled() && session()->get('errors'))
 
-        window.errors = {!! json_encode($errors->messages()) !!};
+        window.errors = {!! json_encode(session()->get('errors')->getBags()) !!};
 
-        $.each(errors, function(property, messages){
-
-            var normalizedProperty = property.split('.').map(function(item, index){
+        $.each(errors, function(bag, errorMessages){
+          $.each(errorMessages,  function (inputName, messages) {
+            var normalizedProperty = inputName.split('.').map(function(item, index){
                     return index === 0 ? item : '['+item+']';
                 }).join('');
 
@@ -222,7 +222,7 @@
                 @endif
             });
         });
-
+      });
       @endif
 
       $("a[data-toggle='tab']").click(function(){

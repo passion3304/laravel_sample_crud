@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\ViewNamespaces;
 use Carbon\Carbon;
+use Doctrine\DBAL\Types\JsonType;
 use Validator;
 
 trait Search
@@ -109,8 +110,15 @@ trait Search
                 $column_direction = (strtolower((string) $order['dir']) == 'asc' ? 'ASC' : 'DESC');
                 $column = $this->findColumnById($column_number);
                 if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
-                    // apply the current orderBy rules
-                    $this->orderByWithPrefix($column['name'], $column_direction);
+                    if (method_exists($this->model, 'translationEnabled') &&
+                        $this->model->translationEnabled() &&
+                        $this->model->isTranslatableAttribute($column['name']) &&
+                        is_a($this->model->getConnection()->getDoctrineColumn($this->model->getTableWithPrefix(), $column['name'])->getType(), JsonType::class)
+                    ) {
+                        $this->orderByWithPrefix($column['name'].'->'.app()->getLocale(), $column_direction);
+                    } else {
+                        $this->orderByWithPrefix($column['name'], $column_direction);
+                    }
                 }
 
                 // check for custom order logic in the column definition
