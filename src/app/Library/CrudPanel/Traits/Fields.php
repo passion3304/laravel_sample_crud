@@ -53,10 +53,9 @@ trait Fields
 
         $field = $this->makeSureFieldHasType($field);
         $field = $this->makeSureSubfieldsHaveNecessaryAttributes($field);
+        $field = $this->makeSureMorphSubfieldsAreDefined($field);
 
         $this->setupFieldValidation($field, $field['parentFieldName'] ?? false);
-
-        $field = $this->makeSureMorphSubfieldsAreDefined($field);
 
         return $field;
     }
