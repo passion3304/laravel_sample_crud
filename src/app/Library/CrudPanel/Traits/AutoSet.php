@@ -158,7 +158,7 @@ trait AutoSet
                 return 'time';
 
             case 'json':
-                return 'table';
+                return backpack_pro() ? 'table' : 'text';
 
             default:
                 return 'text';
