@@ -20,10 +20,10 @@ class TableSchema
     public function getColumnsNames()
     {
         return array_values(
-                array_map(function ($item) {
-                    return $item->getName();
-                }, $this->getColumns())
-            );
+            array_map(function ($item) {
+                return $item->getName();
+            }, $this->getColumns())
+        );
     }
 
     /**
@@ -116,6 +116,10 @@ class TableSchema
      */
     public function getColumns()
     {
+        if (! $this->schemaExists()) {
+            return [];
+        }
+
         return $this->schema->getColumns();
     }
 
