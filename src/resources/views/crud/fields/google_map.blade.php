@@ -1,10 +1,9 @@
 @php
     $field['map_options']['height'] = $field['map_options']['height'] ?? 400;
     $field['map_options']['locate'] = $field['map_options']['locate'] ?? true;
-    $field['map_options']['default_lat'] = $field['map_options']['default_lat'] ?? config('services.google_places.default_lat', 29.97917);
-    $field['map_options']['default_lng'] = $field['map_options']['default_lng'] ?? config('services.google_places.default_lng', 31.13426);
+    $field['map_options']['default_lat'] = $field['map_options']['default_lat'] ?? config('services.google_places.default_lat', 29.9772962);
+    $field['map_options']['default_lng'] = $field['map_options']['default_lng'] ?? config('services.google_places.default_lng', 31.1324955);
     $field['map_options']['language'] = $field['map_options']['language'] ?? app()->getLocale();
-    $field['save_as'] = $field['save_as'] ?? false;
     $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 @endphp
 @include('crud::fields.inc.wrapper_start')
@@ -29,7 +28,6 @@
         data-google-address-field-name="{{$field['name']}}"
         data-google-default-lat="{{$field['map_options']['default_lat']}}"
         data-google-default-lng="{{$field['map_options']['default_lng']}}"
-        data-google-address-inputs="{{ json_encode($field['save_as'] ? ['lat' => $field['save_as']['lat'], 'lng' => $field['save_as']['lng']] : [$field['name']]) }}"
         @include('crud::fields.inc.attributes')
     >
     @if(isset($field['suffix']))
@@ -73,19 +71,72 @@
             //this makes sure that when this script is run, it has google available either on our field initialization or when the callback function is called.
             if(typeof google === "undefined") { return; }
 
+            const savePosition = (pos, address, mapField) => {
+                new Promise(resolve => {
+                    var data = {};
+                    data['lat'] = pos.lat();
+                    data['lng'] = pos.lng();
+                    data['formatted_address'] = address;
+                    mapField.value = JSON.stringify(data);
+                    resolve(data);
+                });
+            };
+
+            async function getAddressAndSavePosition(pos, mapField, searchInput) {
+                let address = await getAddressFromLatLng(pos);
+                let positionData = await savePosition(pos, address, mapField);
+                setAddressInputValueFromLatLng(searchInput, pos, address);
+            }
+
+            const getAddressFromLatLng = (latlng) =>
+                new Promise(resolve => {
+                    let geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK && results[1]) {
+                        results.every(function(result, index) {
+                            if(result['types'].includes('administrative_area_level_3')) {
+                                resolve(result['formatted_address']);
+                                return false;
+                            }
+                            if(result['types'].includes('administrative_area_level_2')) {
+                                resolve(result['formatted_address']);
+                                return false;
+                            }
+                            if(result['types'].includes('administrative_area_level_1')) {
+                                resolve(result['formatted_address']);
+                                return false;
+                            }
+                            return true;
+                        });                           
+                    }
+                    resolve('');
+                });
+            });
+
+            async function setAddressInputValueFromLatLng(searchInput, latlng, address = false) {
+                if(! address) {
+                   let address = await getAddressFromLatLng(latlng);
+                }
+                searchInput.value = address;
+            }
+
+            const mainFieldName = element.data('google-address-field-name');
+            const searchInput = document.querySelector('[location-search-unique-name="locationSearch_'+mainFieldName+'"]');
+            const mapField = document.querySelector('[data-input-name="' + mainFieldName + '"]') ?? document.querySelector('[name="' + mainFieldName + '"]');
+
             try {
-                var addressConfig = element.data('google-address-inputs');
-                var mainFieldName = element.data('google-address-field-name');
-                var mapField = document.querySelector('[data-input-name="' + mainFieldName + '"]') ?? document.querySelector('[name="' + mainFieldName + '"]');
                 if (mapField.value) {
                     var existingData = JSON.parse(mapField.value);
-                    var latlng = new google.maps.LatLng(existingData.lat, existingData.lng)
-                    var isDefault = false;
+                    var latlng = new google.maps.LatLng(existingData.lat, existingData.lng);
+                    // populate the search box with the formatted address
+                    if(typeof existingData.formatted_address !== 'undefined') {
+                        setAddressInputValueFromLatLng(searchInput, latlng, existingData.formatted_address);
+                    }
                 } else {
                     var lat = JSON.stringify(element.data('google-default-lat'));
                     var lng = JSON.stringify(element.data('google-default-lng'));
                     var latlng = new google.maps.LatLng(lat, lng);
-                    var isDefault = true;
+                    setAddressInputValueFromLatLng(searchInput, latlng);
                 }
                 
                 const map = new google.maps.Map(document.querySelector('[map-unique-name="map_'+mainFieldName+'"]'), {
@@ -93,6 +144,7 @@
                     zoom: 18,
                     mapTypeId: "roadmap",
                 });
+
                 infoWindow = new google.maps.InfoWindow();
 
                 const locationButton = document.querySelector('[location-button-unique-name="locationButton_'+mainFieldName+'"]');
@@ -104,8 +156,9 @@
                         navigator.geolocation.getCurrentPosition(
                             (position) => {
                                 var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-                                savePosition(latlng);
+                                getAddressAndSavePosition(latlng, mapField, searchInput);
                                 map.setCenter(latlng);
+                                marker.setPosition(latlng);
                             },
                             () => {
                                 handleLocationError(true, infoWindow, map.getCenter());
@@ -134,15 +187,13 @@
                 });
                 // drag response
                 marker.addListener('dragend', function (e) {
-                    savePosition(this.getPosition());
+                    getAddressAndSavePosition(this.getPosition(), mapField, searchInput);
                 });
-                if (!isDefault) {
-                    savePosition(latlng);
-                }
+
+                getAddressAndSavePosition(latlng, mapField, searchInput);
 
                 // Create the search box and link it to the UI element.
-                const input = document.querySelector('[location-search-unique-name="locationSearch_'+mainFieldName+'"]');
-                const searchBox = new google.maps.places.SearchBox(input);
+                const searchBox = new google.maps.places.SearchBox(searchInput);
 
                 // Bias the SearchBox results towards current map's viewport.
                 map.addListener("bounds_changed", () => {
@@ -159,17 +210,15 @@
                     }
 
 
-                    // For each place, get the icon, name and location.
+                    // Get place geo location and address
                     const bounds = new google.maps.LatLngBounds();
-
                     places.forEach((place) => {
-                        if (!place.geometry || !place.geometry.location) {
-                            console.log("Returned place contains no geometry");
+                        if (! place.geometry || ! place.geometry.location || ! place.formatted_address) {
+                            console.log("Returned place contains no geometry or address");
                             return;
                         }
 
-                        savePosition(place.geometry.location);
-
+                        savePosition(place.geometry.location, place.formatted_address, mapField);
 
                         if (place.geometry.viewport) {
                             // Only geocodes have viewport.
@@ -180,21 +229,6 @@
                     });
                     map.fitBounds(bounds);
                 });
-
-                // saves the position on the input elements
-                function savePosition(pos) {
-                    var data = {};
-                    data['lat'] = pos.lat();
-                    data['lng'] = pos.lng();
-                    marker.setPosition(pos);
-                    mapField.value = JSON.stringify(data);
-                    //user is saving on two inputs, update their values
-                    if(Object.keys(addressConfig).length === 2) {
-                        document.querySelector('[name="'+addressConfig.lat+'"]').value = data.lat;
-                        document.querySelector('[name="'+addressConfig.lng+'"]').value = data.lng;
-                    }
-
-                }
 
                 element.keydown(function(e) {
                     if ($('.pac-container').is(':visible') && e.keyCode == 13) {
@@ -209,7 +243,6 @@
             } catch (e) {
                 console.log(e);
             }
-
         }
 
         function initGoogleAddressAutocomplete() {
