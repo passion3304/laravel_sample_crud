@@ -8,14 +8,13 @@ use Illuminate\Support\Str;
 trait MorphRelationships
 {
     /**
-     * MorphTo inputs (_type and _id) are used as subfields to represent the relation.
-     * Here we add them to the direct input as we don't need to process any further.
+     * MorphTo inputs (morphable_type and morphable_id) are used as subfields to represent the relation.
+     * Here we add them to the direct input as we don't need to process any further this relationship.
      *
      * @param  array  $input
-     * @param  array  $fields
      * @return array
      */
-    private function addMorphToInputsFromRelationship($input)
+    private function includeMorphToInputsFromRelationship($input)
     {
         $fields = $this->getFieldsWithRelationType('MorphTo');
 
@@ -82,75 +81,91 @@ trait MorphRelationships
 
     /**
      * This function is responsible for setting up the morph fields structure.
-     * Developer can define the morph structure as follows:
-     *  'morphOptions => [
-     *       ['nameOnAMorphMap', 'label', [options]],
-     *       ['App\Models\Model'], // display the name of the model
-     *       ['App\Models\Model', 'label', ['data_source' => backpack_url('smt')]
-     *  ]
-     * OR
-     * ->addMorphOption('App\Models\Model', 'label', ['data_source' => backpack_url('smt')]).
      *
-     * @param  string|array  $fieldName
-     * @param  string  $key
-     * @param  string|null  $label
-     * @param  array  $options
+     * @param  string|array  $fieldOrName - The field array or the field name
+     * @param  string  $key - the morph option key, usually a \Model\Class or a string for the morphMap
+     * @param  string|null  $label - the displayed text for this option
+     * @param  array  $options - options for the corresponding morphable_id field (usually ajax options)
      * @return void|array
      */
-    public function addMorphOption($fieldName, string $key, $label = null, array $options = [])
+    public function addMorphOption($fieldOrName, string $key, $label = null, array $options = [])
     {
-        $morphField = is_array($fieldName) ? $fieldName : $this->fields()[$fieldName];
+        $morphField = is_array($fieldOrName) ? $fieldOrName : $this->fields()[$fieldOrName];
 
         $fieldName = $morphField['name'];
 
         [$morphTypeFieldName, $morphIdFieldName] = $this->getMorphToFieldNames($fieldName);
 
+        // check if the morph field where we are about to add the options have the proper fields setup
         if (! in_array($morphTypeFieldName, array_column($morphField['subfields'], 'name')) ||
             ! in_array($morphIdFieldName, array_column($morphField['subfields'], 'name'))) {
             throw new \Exception('Trying to add morphOptions to a non morph field. Check if field and relation name matches.');
         }
-
+        // split the subfields into morphable_type and morphable_id fields.
         [$morphTypeField, $morphIdField] = $morphField['subfields'];
 
-        $morphMap = $morphTypeField['morphMap'];
+        // get the morphable_type field with the options set.
+        [$morphTypeField, $key] = $this->getMorphTypeFieldWithOptions($morphTypeField, $key, $label);
 
-        if (array_key_exists($key, $morphTypeField['options'] ?? [])) {
-            throw new \Exception('Duplicate entry for «'.$key.'» in addMorphOption().');
-        }
-
-        if (is_a($key, 'Illuminate\Database\Eloquent\Model', true)) {
-            if (in_array($key, $morphMap)) {
-                $key = $morphMap[array_search($key, $morphMap)];
-
-                if (array_key_exists($key, $morphTypeField['options'])) {
-                    throw new \Exception('Duplicate entry for «'.$key.'» in morphOptions');
-                }
-            }
-            $morphTypeField['options'][$key] = $label ?? Str::afterLast($key, '\\');
-        } else {
-            if (! array_key_exists($key, $morphMap)) {
-                throw new \Exception('Unknown morph type «'.$key.'», either the class doesnt exists, or the name was not found in the morphMap');
-            }
-
-            if (array_key_exists($key, $morphTypeField['options'])) {
-                throw new \Exception('Duplicate entry for «'.$key.'» in morphOptions');
-            }
-
-            $morphTypeField['options'][$key] = $label ?? ucfirst($key);
-        }
-
+        // set the morphable_id field options with the same key as morphable_type field above.
         $morphIdField['morphOptions'][$key] = $options;
 
+        // merge aditional options with the fields with setup above.
         $morphTypeField = isset($morphField['morphTypeField']) ? array_merge($morphTypeField, $morphField['morphTypeField']) : $morphTypeField;
         $morphIdField = isset($morphField['morphIdField']) ? array_merge($morphIdField, $morphField['morphIdField']) : $morphIdField;
 
+        // set the complete setup fields as the subfields
         $morphField['subfields'] = [$morphTypeField, $morphIdField];
 
+        // modify the field in case it exists or return it when creating it.
         if ($this->fields()[$fieldName] ?? false) {
             $this->modifyField($fieldName, $morphField);
         } else {
             return $morphField;
         }
+    }
+
+    /**
+     * Return the provided morphable_type field with the options infered from key
+     *
+     * @param array $morphTypeField
+     * @param string $key
+     * @param string|null $label
+     * @return array
+     */
+    private function getMorphTypeFieldWithOptions(array $morphTypeField, string $key, $label)
+    {
+        $morphMap = $morphTypeField['morphMap'];
+
+        // in case developer provided a \Model\Class as the key
+        if (is_a($key, 'Illuminate\Database\Eloquent\Model', true)) {
+            // check if that key exists in the Laravel MorphMap and get it.
+            if (in_array($key, $morphMap)) {
+                $key = $morphMap[array_search($key, $morphMap)];
+            }
+
+            if (array_key_exists($key, $morphTypeField['options'] ?? [])) {
+                throw new \Exception('Duplicate entry for «'.$key.'» key. That model is already part of another morphOption. Current options: '.json_encode($morphTypeField['options']));
+            }
+
+            // use the provided label or the Model name to display this option.
+            $morphTypeField['options'][$key] = $label ?? Str::afterLast($key, '\\');
+        } else {
+            // in case it's not a model and is a string representing the model in the morphMap
+            // check if that string exists in the morphMap, otherwise abort.
+            if (! array_key_exists($key, $morphMap)) {
+                throw new \Exception('Unknown morph type «'.$key.'», that name was not found in the morphMap.');
+            }
+
+            // check if the key already exists
+            if (array_key_exists($key, $morphTypeField['options'])) {
+                throw new \Exception('Duplicate entry for «'.$key.'» key, That string is already part of another morphOption. Current options: '.json_encode($morphTypeField['options']));
+            }
+            // use the provided label or capitalize the provided key.
+            $morphTypeField['options'][$key] = $label ?? ucfirst($key);
+        }
+
+        return [$morphTypeField, $key];
     }
 
     /**

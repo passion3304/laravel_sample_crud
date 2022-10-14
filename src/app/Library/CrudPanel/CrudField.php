@@ -253,12 +253,19 @@ class CrudField
     }
 
     /**
-     * Allow developer to add morphOptions into a morphTo field eg:
-     * ->addMorphOption(App\User::class, 'User', ['placelholder' => 'select a dummy user']).
+     * This function is responsible for setting up the morph fields structure.
+     * Developer can define the morph structure as follows:
+     *  'morphOptions => [
+     *       ['nameOnAMorphMap', 'label', [options]],
+     *       ['App\Models\Model'], // display the name of the model
+     *       ['App\Models\Model', 'label', ['data_source' => backpack_url('smt')]
+     *  ]
+     * OR
+     * ->addMorphOption('App\Models\Model', 'label', ['data_source' => backpack_url('smt')]).
      *
-     * @param  string  $key
-     * @param  string|null  $label
-     * @param  array  $options
+     * @param  string  $key - the morph option key, usually a \Model\Class or a string for the morphMap
+     * @param  string|null  $label - the displayed text for this option
+     * @param  array  $options - options for the corresponding morphable_id field (usually ajax options)
      * @return self
      *
      * @throws \Exception
