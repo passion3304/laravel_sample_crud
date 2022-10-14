@@ -82,10 +82,10 @@ trait MorphRelationships
     /**
      * This function is responsible for setting up the morph fields structure.
      *
-     * @param  string|array  $fieldOrName - The field array or the field name
-     * @param  string  $key - the morph option key, usually a \Model\Class or a string for the morphMap
-     * @param  string|null  $label - the displayed text for this option
-     * @param  array  $options - options for the corresponding morphable_id field (usually ajax options)
+     * @param  string|array  $fieldOrName  - The field array or the field name
+     * @param  string  $key  - the morph option key, usually a \Model\Class or a string for the morphMap
+     * @param  string|null  $label  - the displayed text for this option
+     * @param  array  $options  - options for the corresponding morphable_id field (usually ajax options)
      * @return void|array
      */
     public function addMorphOption($fieldOrName, string $key, $label = null, array $options = [])
@@ -126,11 +126,11 @@ trait MorphRelationships
     }
 
     /**
-     * Return the provided morphable_type field with the options infered from key
+     * Return the provided morphable_type field with the options infered from key.
      *
-     * @param array $morphTypeField
-     * @param string $key
-     * @param string|null $label
+     * @param  array  $morphTypeField
+     * @param  string  $key
+     * @param  string|null  $label
      * @return array
      */
     private function getMorphTypeFieldWithOptions(array $morphTypeField, string $key, $label)
