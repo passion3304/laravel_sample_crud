@@ -228,7 +228,7 @@ trait Relationships
             case 'HasManyThrough':
             case 'MorphToMany':
                 return true;
-            break;
+                break;
             default:
                 return false;
         }

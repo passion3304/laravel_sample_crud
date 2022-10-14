@@ -49,6 +49,7 @@ trait Input
 
         $input = $this->decodeJsonCastedAttributes($input, $model);
         $input = $this->compactFakeFields($input, $model, $fields);
+        $input = $this->includeMorphToInputsFromRelationship($input);
         $input = $this->excludeRelationFieldsExceptBelongsTo($input, $fields, $relationMethod);
         $input = $this->changeBelongsToNamesFromRelationshipToForeignKey($input, $fields);
 
@@ -126,7 +127,7 @@ trait Input
                     // the key used to store the values is the main relation key
                     $key = Str::beforeLast($this->getOnlyRelationEntity($field), '.');
 
-                break;
+                    break;
             }
 
             // we don't need to re-setup this relation method values, we just want the relations
@@ -179,11 +180,13 @@ trait Input
                 if (! $relationMethod) {
                     $excludedFields[] = $nameToExclude;
                 }
+
                 continue;
             }
 
             if (isset($field['relation_type']) && $field['relation_type'] !== 'BelongsTo') {
                 $excludedFields[] = $nameToExclude;
+
                 continue;
             }
         }
