@@ -181,10 +181,19 @@ trait FieldsProtectedMethods
 
     protected function makeSureFieldHasAttribute($field)
     {
+        if ($field['entity']) {
+            // if the user setup the attribute in relation string, we are not going to infer that attribute from model
+            // instead we get the defined attribute by the user.
+            if ($this->isAttributeInRelationString($field['entity'])) {
+                $field['attribute'] = $field['attribute'] ?? Str::afterLast($field['entity'], '.');
+
+                return $field;
+            }
+        }
         // if there's a model defined, but no attribute
         // guess an attribute using the identifiableAttribute functionality in CrudTrait
         if (isset($field['model']) && ! isset($field['attribute']) && method_exists($field['model'], 'identifiableAttribute')) {
-            $field['attribute'] = call_user_func([(new $field['model']()), 'identifiableAttribute']);
+            $field['attribute'] = (new $field['model']())->identifiableAttribute();
         }
 
         return $field;
