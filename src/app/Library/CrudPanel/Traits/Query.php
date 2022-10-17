@@ -314,9 +314,6 @@ trait Query
         // create an "outer" query, the one that is responsible to do the count of the "crud query".
         $outerQuery = $crudQuery->newQuery();
 
-        // in this outer query we will select only one column to be counted.
-        $outerQuery = $outerQuery->select($this->model->getKeyName());
-
         // add the count query in the "outer" query.
         $outerQuery = $outerQuery->selectRaw('count(*) as total_rows');
 
