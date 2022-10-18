@@ -221,17 +221,17 @@ trait Query
                 // case it's a basic where, we just want to select that column.
                 case 'Basic':
                     $wheresColumns[] = $where['column'];
-                break;
-                // when it's a nested query we will get the columns that link
-                // to the main table from the nested query wheres.
+                    break;
+                    // when it's a nested query we will get the columns that link
+                    // to the main table from the nested query wheres.
                 case 'Nested':
                     $wheresColumns = $nested ?: array_merge($wheresColumns, $this->getNestedQueryColumns($where['query']));
-                break;
-                // when Column get the "first" key that represent the base table column to link with
+                    break;
+                    // when Column get the "first" key that represent the base table column to link with
                 case 'Column':
                     $wheresColumns[] = $where['first'];
-                break;
-                // in case of Exists, we will find in the subquery the query type Column where it links to the main table
+                    break;
+                    // in case of Exists, we will find in the subquery the query type Column where it links to the main table
                 case 'Exists':
                     $wheres = $where['query']->wheres;
                     foreach ($wheres as $subWhere) {
@@ -239,7 +239,7 @@ trait Query
                             $wheresColumns[] = $subWhere['first'];
                         }
                     }
-                break;
+                    break;
             }
         }
 
@@ -323,7 +323,7 @@ trait Query
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
 
-        $outerQuery = $outerQuery->fromSub($subQuery->select($this->model->getKeyName()), $this->model->getTableWithPrefix());
+        $outerQuery = $outerQuery->fromSub($subQuery->select($this->model->getTableWithPrefix().'.'.$this->model->getKeyName()), $this->model->getTableWithPrefix().'_aggregator');
 
         return $outerQuery->cursor()->first()->total_rows;
     }
