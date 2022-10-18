@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 trait Query
 {
@@ -247,9 +246,9 @@ trait Query
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
-       
+
         $outerQuery = $outerQuery->fromSub($subQuery->select($modelTable.'.'.$this->model->getKeyName()), $modelTable.'_aggregator');
-        
+
         return $outerQuery->cursor()->first()->total_rows;
     }
 }
