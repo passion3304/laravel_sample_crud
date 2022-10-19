@@ -368,10 +368,10 @@ trait Relationships
      */
     private function isAttributeInRelationString($relationString)
     {
-        if(! str_contains($relationString, '.')) {
+        if (! str_contains($relationString, '.')) {
             return false;
         }
-        
+
         $parts = explode('.', $relationString);
 
         $model = $this->model;
