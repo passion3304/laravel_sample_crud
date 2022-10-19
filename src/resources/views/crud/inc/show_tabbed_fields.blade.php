@@ -31,11 +31,11 @@
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'flex-column nav-pills'}} {{ $horizontalTabs ? '' : 'col-md-3' }}" role="tablist">
             @foreach ($crud->getTabs() as $k => $tab)
                 <li role="presentation" class="nav-item">
-                    <a href="#tab_{{ Str::slug($tab) }}" 
-                        aria-controls="tab_{{ Str::slug($tab) }}" 
-                        role="tab" 
-                        tab_name="{{ Str::slug($tab) }}" 
-                        data-toggle="tab" 
+                    <a href="#tab_{{ Str::slug($tab) }}"
+                        aria-controls="tab_{{ Str::slug($tab) }}"
+                        role="tab"
+                        tab_name="{{ Str::slug($tab) }}"
+                        data-toggle="tab"
                         class="nav-link {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
                         >{{ $tab }}</a>
                 </li>
@@ -72,15 +72,13 @@
             margin-top: 0;
         }
 
-        /*  
+        /*
             when select2 is multiple and it's not on the first displayed tab the placeholder would
             not display correctly because the element was not "visible" on the page (hidden by tab)
             thus getting `0px` width. This makes sure that the placeholder element is always 100% width
             by preventing the select2 inline style (0px) from applying using !important
         */
-        .select2-container, 
-        .select2-container li:only-child,
-        .select2-container input:placeholder-shown {
+        .select2-search__field {
             width: 100% !important;
         }
     </style>
