@@ -97,7 +97,7 @@ trait ListOperation
 
         // if show entry count is disabled we use the "simplePagination" technique to move between pages.
         if ($this->crud->getOperationSetting('showEntryCount')) {
-            $totalEntryCount = (int) (empty(request()->get('totalEntryCount')) ? $this->crud->getTotalQueryCount() : request()->get('totalEntryCount'));
+            $totalEntryCount = (int) (request()->get('totalEntryCount') ?: $this->crud->getTotalQueryCount());
             $filteredEntryCount = $this->crud->getFilteredQueryCount() ?? $totalEntryCount;
         } else {
             $totalEntryCount = $length;
