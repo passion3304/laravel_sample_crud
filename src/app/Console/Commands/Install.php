@@ -2,13 +2,13 @@
 
 namespace Backpack\CRUD\app\Console\Commands;
 
+use Backpack\CRUD\BackpackServiceProvider;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
-use Symfony\Component\Process\Process;
-use Backpack\CRUD\BackpackServiceProvider;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class Install extends Command
 {
