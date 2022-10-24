@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * service container as 'crud'.
  */
 /**
- * Class CrudPanelFacade
+ * Class CrudPanelFacade.
  *
  * @method static setModel($model)
  * @method static setRoute(string $route)
