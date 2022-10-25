@@ -5,8 +5,9 @@ namespace Backpack\CRUD\app\Http\Middleware;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use Illuminate\Contracts\Session\Middleware\AuthenticatesSessions;
 
-class AuthenticateSession
+class AuthenticateSession implements AuthenticatesSessions
 {
     /**
      * The authentication factory implementation.
@@ -41,7 +42,7 @@ class AuthenticateSession
         }
 
         if ($this->guard()->viaRemember()) {
-            $passwordHash = explode('|', $request->cookies->get($this->auth->getRecallerName()))[2] ?? null;
+            $passwordHash = explode('|', $request->cookies->get($this->guard()->getRecallerName()))[2] ?? null;
 
             if (! $passwordHash || $passwordHash != $this->user->getAuthPassword()) {
                 $this->logout($request);
