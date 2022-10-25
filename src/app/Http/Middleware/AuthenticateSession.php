@@ -15,7 +15,7 @@ class AuthenticateSession implements AuthenticatesSessions
      * @var \Illuminate\Contracts\Auth\Factory
      */
     protected $auth;
-
+    protected $user;
     /**
      * Create a new middleware instance.
      *
