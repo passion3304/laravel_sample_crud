@@ -16,6 +16,7 @@ class AuthenticateSession implements AuthenticatesSessions
      */
     protected $auth;
     protected $user;
+
     /**
      * Create a new middleware instance.
      *
