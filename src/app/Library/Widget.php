@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library;
 
+use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\CRUD\ViewNamespaces;
 use Illuminate\Support\Fluent;
 
 /**
@@ -23,8 +25,7 @@ class Widget extends Fluent
      * If a widget with the same name exists, it will update the attributes of that one
      * instead of creating a new one.
      *
-     * @param string|array $attributes Either the name of the widget, or an array with the attributes the new widget should hold, including the name attribute.
-     *
+     * @param  string|array  $attributes  Either the name of the widget, or an array with the attributes the new widget should hold, including the name attribute.
      * @return Widget
      */
     public static function add($attributes = null)
@@ -45,6 +46,28 @@ class Widget extends Fluent
         $attributes['type'] = $attributes['type'] ?? 'card';
 
         return new static($attributes);
+    }
+
+    /**
+     * Return the widget attribute value or null when it doesn't exist.
+     *
+     * @param  string  $attribute
+     * @return mixed
+     */
+    public function getAttribute(string $attribute)
+    {
+        return $this->attributes[$attribute] ?? null;
+    }
+
+    /**
+     * Check if widget has the attribute.
+     *
+     * @param  string  $attribute
+     * @return bool
+     */
+    public function hasAttribute(string $attribute)
+    {
+        return array_key_exists($attribute, $this->attributes);
     }
 
     /**
@@ -71,7 +94,7 @@ class Widget extends Fluent
     /**
      * Remove an attribute from the current definition array.
      *
-     * @param  string $attribute Name of the attribute to forget (ex: class)
+     * @param  string  $attribute  Name of the attribute to forget (ex: class)
      * @return Widget
      */
     public function forget($attribute)
@@ -115,6 +138,39 @@ class Widget extends Fluent
         $this->collection()->push($this);
 
         return $this;
+    }
+
+    /**
+     * Get an array of full paths to the widget view, consisting of:
+     * - the path given in the widget definition
+     * - fallback view paths as configured in backpack/config/base.php.
+     *
+     * @return array
+     */
+    public function getFinalViewPath()
+    {
+        if (isset($this->viewNamespace)) {
+            $path = $this->viewNamespace.'.'.$this->type;
+
+            if (view()->exists($path)) {
+                return $path;
+            }
+        }
+        $type = $this->type;
+        $paths = array_map(function ($item) use ($type) {
+            return $item.'.'.$type;
+        }, ViewNamespaces::getWithFallbackFor('widgets', 'backpack.base.component_view_namespaces.widgets'));
+
+        foreach ($paths as $path) {
+            if (view()->exists($path)) {
+                return $path;
+            }
+        }
+        // if no view exists, in any of the directories above... no bueno
+        if (! backpack_pro()) {
+            throw new BackpackProRequiredException('Cannot find the widget view: '.$this->type.'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
+        }
+        abort(500, 'Cannot find the view for «'.$this->type.'» widget type. Please check for typos.');
     }
 
     // -------
@@ -247,9 +303,8 @@ class Widget extends Fluent
      *
      * Eg: class('something') will set the "class" attribute to "something"
      *
-     * @param  string $method     The method being called that doesn't exist.
-     * @param  array $parameters  The arguments when that method was called.
-     *
+     * @param  string  $method  The method being called that doesn't exist.
+     * @param  array  $parameters  The arguments when that method was called.
      * @return Widget
      */
     public function __call($method, $parameters)

@@ -18,7 +18,8 @@
     // datatables caches the ajax responses with pageLength in LocalStorage so when changing this
     // settings in controller users get unexpected results. To avoid that we will reset
     // the table cache when both lengths don't match.
-    let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) ?? [];
+    let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}'))
+        ? JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) : [];
     var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
     let $dtStoredPageLength = localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength');
 
@@ -28,14 +29,18 @@
 
     // in this page we allways pass the alerts to localStorage because we can be redirected with
     // persistent table, and this way we guarantee non-duplicate alerts.
-    $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts')) ?? {};
+    $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts'))
+        ? JSON.parse(localStorage.getItem('backpack_alerts')) : {};
+
     $newAlerts = @json($backpack_alerts);
 
-    Object.entries($newAlerts).forEach(([type, messages]) => {
-        if(typeof $oldAlerts[type] !== 'undefined') {
-            $oldAlerts[type].push(...messages);
+    Object.entries($newAlerts).forEach(function(type) {
+        if(typeof $oldAlerts[type[0]] !== 'undefined') {
+            type[1].forEach(function(msg) {
+                $oldAlerts[type[0]].push(msg);
+            });
         } else {
-            $oldAlerts[type] = messages;
+            $oldAlerts[type[0]] = type[1];
         }
     });
 
@@ -89,7 +94,7 @@
         }
     @endif
 
-    var crud = {
+    window.crud = {
       exportButtons: JSON.parse('{!! json_encode($crud->get('list.export_buttons')) !!}'),
       functionsToRunOnDataTablesDrawEvent: [],
       addFunctionToDataTablesDrawEventQueue: function (functionName) {
@@ -110,17 +115,31 @@
         { fn = fn[ arr[i] ]; }
         fn.apply(window, args);
       },
-      updateUrl : function (new_url) {
-        url_start = "{{ url($crud->route) }}";
-        url_end = new_url.replace(url_start, '');
-        url_end = url_end.replace('/search', '');
-        new_url = url_start + url_end;
+      updateUrl : function (url) {
+        let urlStart = "{{ url($crud->route) }}";
+        let urlEnd = url.replace(urlStart, '');
+        urlEnd = urlEnd.replace('/search', '');
+        let newUrl = urlStart + urlEnd;
+        let tmpUrl = newUrl.split("?")[0],
+        params_arr = [],
+        queryString = (newUrl.indexOf("?") !== -1) ? newUrl.split("?")[1] : false;
 
-        window.history.pushState({}, '', new_url);
-        localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
+        // exclude the persistent-table parameter from url
+        if (queryString !== false) {
+            params_arr = queryString.split("&");
+            for (let i = params_arr.length - 1; i >= 0; i--) {
+                let param = params_arr[i].split("=")[0];
+                if (param === 'persistent-table') {
+                    params_arr.splice(i, 1);
+                }
+            }
+            newUrl = params_arr.length ? tmpUrl + "?" + params_arr.join("&") : tmpUrl;
+        }
+        window.history.pushState({}, '', newUrl);
+        localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', newUrl);
       },
       dataTableConfiguration: {
-
+        bInfo: {{ var_export($crud->getOperationSetting('showEntryCount') ?? true) }},
         @if ($crud->getResponsiveTable())
         responsive: {
             details: {
@@ -213,7 +232,7 @@
               "thousands":      "{{ trans('backpack::crud.thousands') }}",
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
-              "processing":     "<img src='{{ asset('packages/backpack/crud/img/ajax-loader.gif') }}' alt='{{ trans('backpack::crud.processing') }}'>",
+              "processing":     "<img src='{{ asset('packages/backpack/base/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
               "search": "_INPUT_",
               "searchPlaceholder": "{{ trans('backpack::crud.search') }}...",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
@@ -238,10 +257,16 @@
           },
           processing: true,
           serverSide: true,
+          @if($crud->getOperationSetting('showEntryCount') === false)
+            pagingType: "simple",
+          @endif
           searching: @json($crud->getOperationSetting('searchableTable') ?? true),
           ajax: {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
-              "type": "POST"
+              "type": "POST",
+              "data": {
+                "totalEntryCount": "{{$crud->getOperationSetting('totalEntryCount') ?? false}}"
+            },
           },
           dom:
             "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
@@ -250,20 +275,25 @@
       }
   }
   </script>
-
   @include('crud::inc.export_buttons')
 
   <script type="text/javascript">
     jQuery(document).ready(function($) {
 
-      crud.table = $("#crudTable").DataTable(crud.dataTableConfiguration);
+      window.crud.table = $("#crudTable").DataTable(window.crud.dataTableConfiguration);
+
+      window.crud.updateUrl(location.href);
 
       // move search bar
       $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
       $("#crudTable_filter input").removeClass('form-control-sm');
 
       // move "showing x out of y" info to header
+      @if($crud->getSubheading())
+      $('#crudTable_info').hide();
+      @else
       $("#datatable_info_stack").html($('#crudTable_info')).css('display','inline-flex').addClass('animated fadeIn');
+      @endif
 
       @if($crud->getOperationSetting('resetButton') ?? true)
         // create the reset button
@@ -308,14 +338,19 @@
             localStorage.setItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength', len);
         });
 
-      // make sure AJAX requests include XSRF token
-      $.ajaxPrefilter(function(options, originalOptions, xhr) {
-          var token = $('meta[name="csrf_token"]').attr('content');
+        // make sure AJAX requests include XSRF token
+        $.ajaxPrefilter(function(options, originalOptions, xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
 
-          if (token) {
+            if (token) {
                 return xhr.setRequestHeader('X-XSRF-TOKEN', token);
-          }
-      });
+            }
+        });
+
+
+        $('#crudTable').on( 'page.dt', function () {
+            localStorage.setItem('page_changed', true);
+        });
 
       // on DataTable draw event run all functions in the queue
       // (eg. delete and details_row buttons add functions to this queue)

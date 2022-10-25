@@ -23,8 +23,7 @@ trait HasTranslations
     /**
      * Use the forced locale if present.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return mixed
      */
     public function getAttributeValue($key)
@@ -67,8 +66,7 @@ trait HasTranslations
     /**
      * Create translated items as json.
      *
-     * @param array $attributes
-     *
+     * @param  array  $attributes
      * @return static
      */
     public static function create(array $attributes = [])
@@ -95,9 +93,8 @@ trait HasTranslations
     /**
      * Update translated items as json.
      *
-     * @param array $attributes
-     * @param array $options
-     *
+     * @param  array  $attributes
+     * @param  array  $options
      * @return bool
      */
     public function update(array $attributes = [], array $options = [])
@@ -106,8 +103,8 @@ trait HasTranslations
             return false;
         }
 
-        $locale = $attributes['locale'] ?? \App::getLocale();
-        $attributes = Arr::except($attributes, ['locale']);
+        $locale = $attributes['_locale'] ?? \App::getLocale();
+        $attributes = Arr::except($attributes, ['_locale']);
         $non_translatable = [];
 
         // do the actual saving
@@ -171,15 +168,14 @@ trait HasTranslations
             return $this->locale;
         }
 
-        return \Request::input('locale', \App::getLocale());
+        return \Request::input('_locale', \App::getLocale());
     }
 
     /**
      * Magic method to get the db entries already translated in the wanted locale.
      *
-     * @param string $method
-     * @param array  $parameters
-     *
+     * @param  string  $method
+     * @param  array  $parameters
      * @return
      */
     public function __call($method, $parameters)
@@ -191,8 +187,7 @@ trait HasTranslations
             case 'findMany':
             case 'findBySlug':
             case 'findBySlugOrFail':
-
-                $translation_locale = \Request::input('locale', \App::getLocale());
+                $translation_locale = \Request::input('_locale', \App::getLocale());
 
                 if ($translation_locale) {
                     $item = parent::__call($method, $parameters);

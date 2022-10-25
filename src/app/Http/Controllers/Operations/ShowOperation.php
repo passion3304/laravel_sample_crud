@@ -9,9 +9,9 @@ trait ShowOperation
     /**
      * Define which routes are needed for this operation.
      *
-     * @param string $segment    Name of the current entity (singular). Used as first URL segment.
-     * @param string $routeName  Prefix of the route name.
-     * @param string $controller Name of the current CrudController.
+     * @param  string  $segment  Name of the current entity (singular). Used as first URL segment.
+     * @param  string  $routeName  Prefix of the route name.
+     * @param  string  $controller  Name of the current CrudController.
      */
     protected function setupShowRoutes($segment, $routeName, $controller)
     {
@@ -32,6 +32,10 @@ trait ShowOperation
 
         $this->crud->operation('show', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
+
+            if (! method_exists($this, 'setupShowOperation')) {
+                $this->autoSetupShowOperation();
+            }
         });
 
         $this->crud->operation('list', function () {
@@ -47,8 +51,8 @@ trait ShowOperation
                 'redirect' => function ($crud, $request, $itemId = null) {
                     $itemId = $itemId ?: $request->input('id');
                     $redirectUrl = $crud->route.'/'.$itemId.'/show';
-                    if ($request->has('locale')) {
-                        $redirectUrl .= '?locale='.$request->input('locale');
+                    if ($request->has('_locale')) {
+                        $redirectUrl .= '?_locale='.$request->input('_locale');
                     }
 
                     return $redirectUrl;
@@ -61,8 +65,7 @@ trait ShowOperation
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -71,18 +74,49 @@ trait ShowOperation
 
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
-        $setFromDb = $this->crud->get('show.setFromDb');
 
-        // get the info for that entry
-        $this->data['entry'] = $this->crud->getEntry($id);
+        // get the info for that entry (include softDeleted items if the trait is used)
+        if ($this->crud->get('show.softDeletes') && in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($this->crud->model))) {
+            $this->data['entry'] = $this->crud->getModel()->withTrashed()->findOrFail($id);
+        } else {
+            $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        }
+
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
-        // set columns from db
-        if ($setFromDb) {
-            $this->crud->setFromDb();
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getShowView(), $this->data);
+    }
+
+    /**
+     * Default behaviour for the Show Operation, in case none has been
+     * provided by including a setupShowOperation() method in the CrudController.
+     */
+    protected function autoSetupShowOperation()
+    {
+        // guess which columns to show, from the database table
+        if ($this->crud->get('show.setFromDb')) {
+            $this->crud->setFromDb(false, true);
         }
 
+        // if the model has timestamps, add columns for created_at and updated_at
+        if ($this->crud->get('show.timestamps') && $this->crud->model->usesTimestamps()) {
+            $this->crud->column($this->crud->model->getCreatedAtColumn())->type('datetime');
+            $this->crud->column($this->crud->model->getUpdatedAtColumn())->type('datetime');
+        }
+
+        // if the model has SoftDeletes, add column for deleted_at
+        if ($this->crud->get('show.softDeletes') && in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($this->crud->model))) {
+            $this->crud->column($this->crud->model->getDeletedAtColumn())->type('datetime');
+        }
+
+        // remove the columns that usually don't make sense inside the Show operation
+        $this->removeColumnsThatDontBelongInsideShowOperation();
+    }
+
+    protected function removeColumnsThatDontBelongInsideShowOperation()
+    {
         // cycle through columns
         foreach ($this->crud->columns() as $key => $column) {
 
@@ -102,8 +136,10 @@ trait ShowOperation
             }
 
             // remove columns that have visibleInShow set as false
-            if (isset($column['visibleInShow']) && $column['visibleInShow'] == false) {
-                $this->crud->removeColumn($column['key']);
+            if (isset($column['visibleInShow'])) {
+                if ((is_callable($column['visibleInShow']) && $column['visibleInShow']($this->data['entry']) === false) || $column['visibleInShow'] === false) {
+                    $this->crud->removeColumn($column['key']);
+                }
             }
 
             // remove the character limit on columns that take it into account
@@ -112,13 +148,7 @@ trait ShowOperation
             }
         }
 
-        // remove preview button from stack:line
-        $this->crud->removeButton('show');
-
         // remove bulk actions colums
         $this->crud->removeColumns(['blank_first_column', 'bulk_actions']);
-
-        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view($this->crud->getShowView(), $this->data);
     }
 }

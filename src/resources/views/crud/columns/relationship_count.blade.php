@@ -1,14 +1,17 @@
 {{-- relationship_count (works for n-n relationships) --}}
 @php
-    $value = data_get($entry, $column['name'])->count();
-
-    $column['escaped'] = $column['escaped'] ?? false;
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
+    $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? ' items';
-    $column['text'] = '';
+    $column['text'] = $column['default'] ?? '-';
 
-    if($value) {
-        $column['text'] = $column['prefix'].$value.$column['suffix'];
+    if($column['value'] instanceof \Closure) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if(!empty($column['value'])) {
+        $column['text'] = $column['prefix'].count($column['value']).$column['suffix'];
     }
 @endphp
 

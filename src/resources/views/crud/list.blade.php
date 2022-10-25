@@ -21,10 +21,10 @@
 @endsection
 
 @section('content')
-  <!-- Default box -->
+  {{-- Default box --}}
   <div class="row">
 
-    <!-- THE ACTUAL CONTENT -->
+    {{-- THE ACTUAL CONTENT --}}
     <div class="{{ $crud->getListContentClass() }}">
 
         <div class="row mb-0">
@@ -47,7 +47,13 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2" cellspacing="0">
+        <table
+          id="crudTable"
+          class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
+          data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
+          data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
+          data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"
+          cellspacing="0">
             <thead>
               <tr>
                 {{-- Table columns --}}
@@ -55,15 +61,14 @@
                   <th
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
-                     {{--
-
-                        data-visible-in-table => if developer forced field in table with 'visibleInTable => true'
-                        data-visible => regular visibility of the field
-                        data-can-be-visible-in-table => prevents the column to be loaded into the table (export-only)
-                        data-visible-in-modal => if column apears on responsive modal
-                        data-visible-in-export => if this field is exportable
-                        data-force-export => force export even if field are hidden
-
+                    data-column-name="{{ $column['name'] }}"
+                    {{--
+                    data-visible-in-table => if developer forced field in table with 'visibleInTable => true'
+                    data-visible => regular visibility of the field
+                    data-can-be-visible-in-table => prevents the column to be loaded into the table (export-only)
+                    data-visible-in-modal => if column apears on responsive modal
+                    data-visible-in-export => if this field is exportable
+                    data-force-export => force export even if field are hidden
                     --}}
 
                     {{-- If it is an export field only, we are done. --}}
@@ -79,27 +84,31 @@
                       data-visible="{{var_export($column['visibleInTable'] ?? true)}}"
                       data-can-be-visible-in-table="true"
                       data-visible-in-modal="{{var_export($column['visibleInModal'] ?? true)}}"
-                      @if(isset($column['visibleInExport']))                     
+                      @if(isset($column['visibleInExport']))
                          @if($column['visibleInExport'] === false)
-                           data-visible-in-export="false"   
-                           data-force-export="false"    
-                         @else    
-                           data-visible-in-export="true"    
-                           data-force-export="true"   
-                         @endif   
-                       @else    
-                         data-visible-in-export="true"    
-                         data-force-export="false"    
+                           data-visible-in-export="false"
+                           data-force-export="false"
+                         @else
+                           data-visible-in-export="true"
+                           data-force-export="true"
+                         @endif
+                       @else
+                         data-visible-in-export="true"
+                         data-force-export="false"
                        @endif
                     @endif
                   >
+                    {{-- Bulk checkbox --}}
+                    @if($loop->first && $crud->getOperationSetting('bulkActions'))
+                      {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
+                    @endif
                     {!! $column['label'] !!}
                   </th>
                 @endforeach
 
                 @if ( $crud->buttons()->where('stack', 'line')->count() )
-                  <th data-orderable="false" 
-                      data-priority="{{ $crud->getActionsColumnPriority() }}" 
+                  <th data-orderable="false"
+                      data-priority="{{ $crud->getActionsColumnPriority() }}"
                       data-visible-in-export="false"
                       >{{ trans('backpack::crud.actions') }}</th>
                 @endif
@@ -111,7 +120,13 @@
               <tr>
                 {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
-                  <th>{!! $column['label'] !!}</th>
+                  <th>
+                    {{-- Bulk checkbox --}}
+                    @if($loop->first && $crud->getOperationSetting('bulkActions'))
+                      {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
+                    @endif
+                    {!! $column['label'] !!}
+                  </th>
                 @endforeach
 
                 @if ( $crud->buttons()->where('stack', 'line')->count() )
@@ -136,25 +151,18 @@
 @endsection
 
 @section('after_styles')
-  <!-- DATA TABLES -->
+  {{-- DATA TABLES --}}
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
 
-  <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/crud.css').'?v='.config('backpack.base.cachebusting_string') }}">
-  <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/form.css').'?v='.config('backpack.base.cachebusting_string') }}">
-  <link rel="stylesheet" href="{{ asset('packages/backpack/crud/css/list.css').'?v='.config('backpack.base.cachebusting_string') }}">
-
-  <!-- CRUD LIST CONTENT - crud_list_styles stack -->
+  {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')
 @endsection
 
 @section('after_scripts')
   @include('crud::inc.datatables_logic')
-  <script src="{{ asset('packages/backpack/crud/js/crud.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
-  <script src="{{ asset('packages/backpack/crud/js/form.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
-  <script src="{{ asset('packages/backpack/crud/js/list.js').'?v='.config('backpack.base.cachebusting_string') }}"></script>
 
-  <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
+  {{-- CRUD LIST CONTENT - crud_list_scripts stack --}}
   @stack('crud_list_scripts')
 @endsection

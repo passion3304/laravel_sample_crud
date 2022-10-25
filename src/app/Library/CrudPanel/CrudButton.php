@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\ViewNamespaces;
+
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.
  *
@@ -50,7 +52,7 @@ class CrudButton
     /**
      * Add a new button to the default stack.
      *
-     * @param  string|array $attributes Button name or array that contains name, stack, type and content.
+     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
      */
     public static function name($attributes = null)
     {
@@ -60,7 +62,7 @@ class CrudButton
     /**
      * Add a new button to the default stack.
      *
-     * @param  string|array $attributes Button name or array that contains name, stack, type and content.
+     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
      */
     public static function add($attributes = null)
     {
@@ -78,7 +80,7 @@ class CrudButton
      * div button. But they don't want them added to the before_content of after_content
      * stacks. So what they do is basically add them to a 'hidden' stack, that nobody will ever see.
      *
-     * @param  string|array $attributes Button name or array that contains name, stack, type and content.
+     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
      * @return CrudButton
      */
     public static function make($attributes = null)
@@ -96,7 +98,7 @@ class CrudButton
     /**
      * Set the button stack (where the button will be shown).
      *
-     * @param  string $stack The name of the stack where the button should be moved.
+     * @param  string  $stack  The name of the stack where the button should be moved.
      * @return CrudButton
      */
     public function stack($stack)
@@ -109,7 +111,7 @@ class CrudButton
     /**
      * Sets the button type (view or model_function).
      *
-     * @param  string $type The type of button - view or model_function.
+     * @param  string  $type  The type of button - view or model_function.
      * @return CrudButton
      */
     public function type($type)
@@ -124,7 +126,7 @@ class CrudButton
      * For the view button type, set it to the view path, including namespace.
      * For the model_function button type, set it to the name of the method on the model.
      *
-     * @param  string $content Path to view or name of method on Model.
+     * @param  string  $content  Path to view or name of method on Model.
      * @return CrudButton
      */
     public function content($content)
@@ -138,7 +140,7 @@ class CrudButton
      * Sets the namespace and path of the view for this button.
      * Sets the button type as 'view'.
      *
-     * @param  string $value Path to view file.
+     * @param  string  $value  Path to view file.
      * @return CrudButton
      */
     public function view($value)
@@ -153,7 +155,7 @@ class CrudButton
      * Sets the name of the method on the model that contains the HTML for this button.
      * Sets the button type as 'model_function'.
      *
-     * @param  string $value Name of the method on the model.
+     * @param  string  $value  Name of the method on the model.
      * @return CrudButton
      */
     public function modelFunction($value)
@@ -170,7 +172,7 @@ class CrudButton
      * Sets the button type as 'model_function'.
      * Alias of the modelFunction() method.
      *
-     * @param  string $value Name of the method on the model.
+     * @param  string  $value  Name of the method on the model.
      * @return CrudButton
      */
     public function model_function($value)
@@ -182,7 +184,7 @@ class CrudButton
      * Unserts an property that is set on the current button.
      * Possible properties: name, stack, type, content.
      *
-     * @param  string $property Name of the property that should be cleared.
+     * @param  string  $property  Name of the property that should be cleared.
      * @return CrudButton
      */
     public function forget($property)
@@ -200,8 +202,7 @@ class CrudButton
      * Moves the button to a certain button stack.
      * Alias of stack().
      *
-     * @param  string $stack The name of the stack where the button should be moved.
-     *
+     * @param  string  $stack  The name of the stack where the button should be moved.
      * @return self
      */
     public function to($stack)
@@ -213,8 +214,7 @@ class CrudButton
      * Moves the button to a certain button stack.
      * Alias of stack().
      *
-     * @param  string $stack The name of the stack where the button should be moved.
-     *
+     * @param  string  $stack  The name of the stack where the button should be moved.
      * @return self
      */
     public function group($stack)
@@ -226,8 +226,7 @@ class CrudButton
      * Moves the button to a certain button stack.
      * Alias of stack().
      *
-     * @param  string $stack The name of the stack where the button should be moved.
-     *
+     * @param  string  $stack  The name of the stack where the button should be moved.
      * @return self
      */
     public function section($stack)
@@ -243,8 +242,7 @@ class CrudButton
      * Get the end result that should be displayed to the user.
      * The HTML itself of the button.
      *
-     * @param  object|null $entry The eloquent Model for the current entry or null if no current entry.
-     *
+     * @param  object|null  $entry  The eloquent Model for the current entry or null if no current entry.
      * @return HTML
      */
     public function getHtml($entry = null)
@@ -261,14 +259,38 @@ class CrudButton
         }
 
         if ($this->type == 'view') {
-            if (view()->exists($button->content)) {
-                return view($button->content, compact('button', 'crud', 'entry'));
-            } else {
-                abort(500, 'Button view "'.$button->content.'" does not exist');
-            }
+            return view($button->getFinalViewPath(), compact('button', 'crud', 'entry'));
         }
 
         abort(500, 'Unknown button type');
+    }
+
+    /**
+     * Get an array of full paths to the filter view, consisting of:
+     * - the path given in the button definition
+     * - fallback view paths as configured in backpack/config/crud.php.
+     *
+     * @return array
+     */
+    private function getViewPathsWithFallbacks()
+    {
+        $type = $this->name;
+        $paths = array_map(function ($item) use ($type) {
+            return $item.'.'.$type;
+        }, ViewNamespaces::getFor('buttons'));
+
+        return array_merge([$this->content], $paths);
+    }
+
+    private function getFinalViewPath()
+    {
+        foreach ($this->getViewPathsWithFallbacks() as $path) {
+            if (view()->exists($path)) {
+                return $path;
+            }
+        }
+
+        abort(500, 'Button view and fallbacks do not exist for '.$this->name.' button.');
     }
 
     /**
@@ -315,7 +337,7 @@ class CrudButton
     /**
      * Move the current filter after another filter.
      *
-     * @param  string $destination Name of the destination filter.
+     * @param  string  $destination  Name of the destination filter.
      * @return CrudFilter
      */
     public function after($destination)
@@ -328,7 +350,7 @@ class CrudButton
     /**
      * Move the current field before another field.
      *
-     * @param  string $destination Name of the destination field.
+     * @param  string  $destination  Name of the destination field.
      * @return CrudFilter
      */
     public function before($destination)

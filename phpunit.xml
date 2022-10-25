@@ -12,20 +12,18 @@
     <testsuites>
         <testsuite name="Package Test Suite">
             <directory suffix=".php">./tests/</directory>
+            <file phpVersion="8.1.0" phpVersionOperator=">=">./tests81/Unit/CrudPanel/CrudPanelUpdateTest.php</file>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src/PanelTraits/</directory>
-            <file>./src/CrudPanel.php</file>
+            <directory suffix=".php">./src/app/Library/CrudPanel/Traits/</directory>
+            <directory suffix=".php">./src/app/Library/CrudPanel/</directory>
+            <directory suffix=".php">./src/app/Models/Traits/</directory>
+            <file>./src/app/Library/Widget.php</file>
+            <file>./src/app/Http/Controllers/CrudController.php</file>
             <exclude>
-                <file>./src/PanelTraits/AutoFocus.php</file>
-                <file>./src/PanelTraits/Errors.php</file>
-                <file>./src/PanelTraits/Filters.php</file>
-                <file>./src/PanelTraits/Query.php</file>
-                <file>./src/PanelTraits/Reorder.php</file>
-                <file>./src/PanelTraits/Views.php</file>
-                <file>./src/PanelTraits/ViewsAndRestoresRevisions.php</file>
+                <directory suffix=".php">./src/app/Models/Traits/SpatieTranslatable/</directory>
             </exclude>
         </whitelist>
     </filter>

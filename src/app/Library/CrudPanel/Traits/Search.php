@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\ViewNamespaces;
 use Carbon\Carbon;
+use Doctrine\DBAL\Types\JsonType;
 use Validator;
 
 trait Search
@@ -16,8 +18,7 @@ trait Search
     /**
      * Add conditions to the CRUD query for a particular search term.
      *
-     * @param string $searchTerm Whatever string the user types in the search bar.
-     *
+     * @param  string  $searchTerm  Whatever string the user types in the search bar.
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function applySearchTerm($searchTerm)
@@ -62,11 +63,13 @@ trait Search
 
         // sensible fallback search logic, if none was explicitly given
         if ($column['tableColumn']) {
+            $searchOperator = config('backpack.operations.list.searchOperator', 'like');
+
             switch ($columnType) {
                 case 'email':
                 case 'text':
                 case 'textarea':
-                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), 'like', '%'.$searchTerm.'%');
+                    $query->orWhere($this->getColumnWithTableNamePrefixed($query, $column['name']), $searchOperator, '%'.$searchTerm.'%');
                     break;
 
                 case 'date':
@@ -82,8 +85,8 @@ trait Search
 
                 case 'select':
                 case 'select_multiple':
-                    $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm) {
-                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), 'like', '%'.$searchTerm.'%');
+                    $query->orWhereHas($column['entity'], function ($q) use ($column, $searchTerm, $searchOperator) {
+                        $q->where($this->getColumnWithTableNamePrefixed($q, $column['attribute']), $searchOperator, '%'.$searchTerm.'%');
                     });
                     break;
 
@@ -94,6 +97,55 @@ trait Search
         }
     }
 
+    /**
+     * Apply the datatables order to the crud query.
+     */
+    public function applyDatatableOrder()
+    {
+        if (request()->input('order')) {
+            // clear any past orderBy rules
+            $this->query->getQuery()->orders = null;
+            foreach ((array) request()->input('order') as $order) {
+                $column_number = (int) $order['column'];
+                $column_direction = (strtolower((string) $order['dir']) == 'asc' ? 'ASC' : 'DESC');
+                $column = $this->findColumnById($column_number);
+                if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
+                    if (method_exists($this->model, 'translationEnabled') &&
+                        $this->model->translationEnabled() &&
+                        $this->model->isTranslatableAttribute($column['name']) &&
+                        is_a($this->model->getConnection()->getDoctrineColumn($this->model->getTableWithPrefix(), $column['name'])->getType(), JsonType::class)
+                    ) {
+                        $this->orderByWithPrefix($column['name'].'->'.app()->getLocale(), $column_direction);
+                    } else {
+                        $this->orderByWithPrefix($column['name'], $column_direction);
+                    }
+                }
+
+                // check for custom order logic in the column definition
+                if (isset($column['orderLogic'])) {
+                    $this->customOrderBy($column, $column_direction);
+                }
+            }
+        }
+
+        // show newest items first, by default (if no order has been set for the primary column)
+        // if there was no order set, this will be the only one
+        // if there was an order set, this will be the last one (after all others were applied)
+        // Note to self: `toBase()` returns also the orders contained in global scopes, while `getQuery()` don't.
+        $orderBy = $this->query->toBase()->orders;
+        $table = $this->model->getTable();
+        $key = $this->model->getKeyName();
+
+        $hasOrderByPrimaryKey = collect($orderBy)->some(function ($item) use ($key, $table) {
+            return (isset($item['column']) && $item['column'] === $key)
+                || (isset($item['sql']) && str_contains($item['sql'], "$table.$key"));
+        });
+
+        if (! $hasOrderByPrimaryKey) {
+            $this->orderByWithPrefix($key, 'DESC');
+        }
+    }
+
     // -------------------------
     // Responsive Table
     // -------------------------
@@ -101,7 +153,7 @@ trait Search
     /**
      * Tell the list view to NOT show a reponsive DataTable.
      *
-     * @param bool $value
+     * @param  bool  $value
      */
     public function setResponsiveTable($value = true)
     {
@@ -145,7 +197,7 @@ trait Search
     /**
      * Tell the list view to NOT store datatable information in local storage.
      *
-     * @param bool $value
+     * @param  bool  $value
      */
     public function setPersistentTable($value = true)
     {
@@ -199,9 +251,8 @@ trait Search
     /**
      * Get the HTML of the cells in a table row, for a certain DB entry.
      *
-     * @param \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
-     * @param bool|int                            $rowNumber The number shown to the user as row number (index);
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $entry  A db entry of the current entity;
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index);
      * @return array Array of HTML cell contents.
      */
     public function getRowViews($entry, $rowNumber = false)
@@ -221,6 +272,12 @@ trait Search
                                 ->render();
         }
 
+        // add the bulk actions checkbox to the first column
+        if ($this->getOperationSetting('bulkActions')) {
+            $bulk_actions_checkbox = \View::make('crud::columns.inc.bulk_actions_checkbox', ['entry' => $entry])->render();
+            $row_items[0] = $bulk_actions_checkbox.$row_items[0];
+        }
+
         // add the details_row button to the first column
         if ($this->getOperationSetting('detailsRow')) {
             $details_row_button = \View::make('crud::columns.inc.details_row_button')
@@ -237,10 +294,9 @@ trait Search
     /**
      * Get the HTML of a cell, using the column types.
      *
-     * @param array                               $column
-     * @param \Illuminate\Database\Eloquent\Model $entry     A db entry of the current entity;
-     * @param bool|int                            $rowNumber The number shown to the user as row number (index);
-     *
+     * @param  array  $column
+     * @param  \Illuminate\Database\Eloquent\Model  $entry  A db entry of the current entity;
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index);
      * @return string
      */
     public function getCellView($column, $entry, $rowNumber = false)
@@ -251,8 +307,7 @@ trait Search
     /**
      * Get the name of the view to load for the cell.
      *
-     * @param array $column
-     *
+     * @param  array  $column
      * @return string
      */
     private function getCellViewName($column)
@@ -263,13 +318,24 @@ trait Search
         }
 
         if (isset($column['type'])) {
-            // if the column has been overwritten return that one
-            if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
-                return 'vendor.backpack.crud.columns.'.$column['type'];
+            // create a list of paths to column blade views
+            // including the configured view_namespaces
+            $columnPaths = array_map(function ($item) use ($column) {
+                return $item.'.'.$column['type'];
+            }, ViewNamespaces::getFor('columns'));
+
+            // but always fall back to the stock 'text' column
+            // if a view doesn't exist
+            if (! in_array('crud::columns.text', $columnPaths)) {
+                $columnPaths[] = 'crud::columns.text';
             }
 
-            // return the column from the package
-            return 'crud::columns.'.$column['type'];
+            // return the first column blade file that exists
+            foreach ($columnPaths as $path) {
+                if (view()->exists($path)) {
+                    return $path;
+                }
+            }
         }
 
         // fallback to text column
@@ -277,13 +343,24 @@ trait Search
     }
 
     /**
+     * Return the column view HTML.
+     *
+     * @param  array  $column
+     * @param  object  $entry
+     * @return string
+     */
+    public function getTableCellHtml($column, $entry)
+    {
+        return $this->renderCellView($this->getCellViewName($column), $column, $entry);
+    }
+
+    /**
      * Render the given view.
      *
-     * @param string   $view
-     * @param array    $column
-     * @param object   $entry
-     * @param bool|int $rowNumber The number shown to the user as row number (index)
-     *
+     * @param  string  $view
+     * @param  array  $column
+     * @param  object  $entry
+     * @param  bool|int  $rowNumber  The number shown to the user as row number (index)
      * @return string
      */
     private function renderCellView($view, $column, $entry, $rowNumber = false)
@@ -303,11 +380,10 @@ trait Search
     /**
      * Created the array to be fed to the data table.
      *
-     * @param array    $entries      Eloquent results.
-     * @param int      $totalRows
-     * @param int      $filteredRows
-     * @param bool|int $startIndex
-     *
+     * @param  array  $entries  Eloquent results.
+     * @param  int  $totalRows
+     * @param  int  $filteredRows
+     * @param  bool|int  $startIndex
      * @return array
      */
     public function getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex = false)
@@ -329,12 +405,12 @@ trait Search
     /**
      * Return the column attribute (column in database) prefixed with table to use in search.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $column
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $column
      * @return string
      */
     public function getColumnWithTableNamePrefixed($query, $column)
     {
-        return $query->getModel()->getTableWithPrefix().'.'.$column;
+        return $query->getModel()->getTable().'.'.$column;
     }
 }

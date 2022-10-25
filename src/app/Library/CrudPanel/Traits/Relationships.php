@@ -3,51 +3,40 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait Relationships
 {
     /**
      * From the field entity we get the relation instance.
      *
-     * @param array $entity
+     * @param  array  $entity
      * @return object
      */
     public function getRelationInstance($field)
     {
         $entity = $this->getOnlyRelationEntity($field);
-        $entity_array = explode('.', $entity);
-        $relation_model = $this->getRelationModel($entity);
+        $possible_method = Str::before($entity, '.');
+        $model = isset($field['baseModel']) ? app($field['baseModel']) : $this->model;
 
-        $related_method = Arr::last($entity_array);
-        if (count(explode('.', $entity)) == count(explode('.', $field['entity']))) {
-            $relation_model = $this->getRelationModel($entity, -1);
-        }
-        $relation_model = new $relation_model();
-
-        //if counts are diferent means that last element of entity is the field in relation.
-        if (count(explode('.', $entity)) != count(explode('.', $field['entity']))) {
-            if (in_array($related_method, $relation_model->getFillable())) {
-                if (count($entity_array) > 1) {
-                    $related_method = $entity_array[(count($entity_array) - 2)];
-                    $relation_model = $this->getRelationModel($entity, -2);
-                } else {
-                    $relation_model = $this->model;
-                }
+        if (method_exists($model, $possible_method)) {
+            $parts = explode('.', $entity);
+            // here we are going to iterate through all relation parts to check
+            foreach ($parts as $i => $part) {
+                $relation = $model->$part();
+                $model = $relation->getRelated();
             }
-        }
-        if (count($entity_array) == 1) {
-            if (method_exists($this->model, $related_method)) {
-                return $this->model->{$related_method}();
-            }
+
+            return $relation;
         }
 
-        return $relation_model->{$related_method}();
+        abort(500, 'Looks like field <code>'.$field['name'].'</code> is not properly defined. The <code>'.$field['entity'].'()</code> relationship doesn\'t seem to exist on the <code>'.get_class($model).'</code> model.');
     }
 
     /**
      * Grabs an relation instance and returns the class name of the related model.
      *
-     * @param array $field
+     * @param  array  $field
      * @return string
      */
     public function inferFieldModelFromRelationship($field)
@@ -60,7 +49,7 @@ trait Relationships
     /**
      * Return the relation type from a given field: BelongsTo, HasOne ... etc.
      *
-     * @param array $field
+     * @param  array  $field
      * @return string
      */
     public function inferRelationTypeFromRelationship($field)
@@ -70,11 +59,48 @@ trait Relationships
         return Arr::last(explode('\\', get_class($relation)));
     }
 
+    public function getOnlyRelationEntity($field)
+    {
+        $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
+        $model = $this->getRelationModel($entity, -1);
+        $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.');
+
+        if (! method_exists($model, $lastSegmentAfterDot)) {
+            return (string) Str::of($field['entity'])->beforeLast('.');
+        }
+
+        return $field['entity'];
+    }
+
+    /**
+     * Get the fields for relationships, according to the relation type. It looks only for direct
+     * relations - it will NOT look through relationships of relationships.
+     *
+     * @param  string|array  $relation_types  Eloquent relation class or array of Eloquent relation classes. Eg: BelongsTo
+     * @param  bool  $nested  Should nested fields be included
+     * @return array The fields with corresponding relation types.
+     */
+    public function getFieldsWithRelationType($relation_types, $nested = false): array
+    {
+        $relation_types = (array) $relation_types;
+
+        return collect($this->getCleanStateFields())
+            ->whereIn('relation_type', $relation_types)
+            ->filter(function ($item) use ($nested) {
+                if ($nested) {
+                    return true;
+                }
+
+                return Str::contains($item['entity'], '.') ? false : true;
+            })
+            ->toArray();
+    }
+
     /**
      * Parse the field name back to the related entity after the form is submited.
      * Its called in getAllFieldNames().
      *
-     * @param array $fields
+     * @param  array  $fields
      * @return array
      */
     public function parseRelationFieldNamesFromHtml($fields)
@@ -97,31 +123,79 @@ trait Relationships
     }
 
     /**
-     * Based on relation type returns the default field type.
+     * Gets the relation fields that DON'T contain the provided relations.
      *
-     * @param string $relation_type
-     * @return bool
+     * @param  string|array  $relations  - the relations to exclude
+     * @param  array  $fields
      */
-    public function inferFieldTypeFromFieldRelation($field)
+    private function getRelationFieldsWithoutRelationType($relations, $fields = [])
     {
-        switch ($field['relation_type']) {
-            case 'BelongsToMany':
-            case 'HasMany':
-            case 'HasManyThrough':
-            case 'MorphMany':
-            case 'MorphToMany':
-            case 'BelongsTo':
-                return 'relationship';
-
-            default:
-                return 'text';
+        if (! is_array($relations)) {
+            $relations = [$relations];
         }
+
+        if (empty($fields)) {
+            $fields = $this->getRelationFields();
+        }
+
+        foreach ($relations as $relation) {
+            $fields = array_filter($fields, function ($field) use ($relation) {
+                if (! isset($field['relation_type'])) {
+                    return false;
+                }
+
+                return $field['relation_type'] !== $relation;
+            });
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Changes the input names to use the foreign_key, instead of the relation name,
+     * for BelongsTo relations (eg. "user_id" instead of "user").
+     *
+     * When $fields are provided, we will use those fields to determine the correct
+     * foreign key. Otherwise, we will use the main CRUD fields.
+     *
+     * eg: user -> user_id
+     *
+     * @param  array  $input
+     * @param  array  $belongsToFields
+     * @return array
+     */
+    private function changeBelongsToNamesFromRelationshipToForeignKey($input, $fields = [])
+    {
+        if (empty($fields)) {
+            $fields = $this->getFieldsWithRelationType('BelongsTo');
+        } else {
+            foreach ($fields as $field) {
+                if (isset($field['subfields'])) {
+                    $fields = array_merge($field['subfields'], $fields);
+                }
+            }
+            $fields = array_filter($fields, function ($field) {
+                return isset($field['relation_type']) && $field['relation_type'] === 'BelongsTo';
+            });
+        }
+
+        foreach ($fields as $field) {
+            $foreignKey = $this->getOverwrittenNameForBelongsTo($field);
+            $lastFieldNameSegment = Str::afterLast($field['name'], '.');
+
+            if (Arr::has($input, $lastFieldNameSegment) && $lastFieldNameSegment !== $foreignKey) {
+                Arr::set($input, $foreignKey, Arr::get($input, $lastFieldNameSegment));
+                Arr::forget($input, $lastFieldNameSegment);
+            }
+        }
+
+        return $input;
     }
 
     /**
      * Based on relation type returns if relation allows multiple entities.
      *
-     * @param string $relation_type
+     * @param  string  $relation_type
      * @return bool
      */
     public function guessIfFieldHasMultipleFromRelationType($relation_type)
@@ -144,7 +218,7 @@ trait Relationships
     /**
      * Based on relation type returns if relation has a pivot table.
      *
-     * @param string $relation_type
+     * @param  string  $relation_type
      * @return bool
      */
     public function guessIfFieldHasPivotFromRelationType($relation_type)
@@ -152,12 +226,168 @@ trait Relationships
         switch ($relation_type) {
             case 'BelongsToMany':
             case 'HasManyThrough':
-            case 'MorphMany':
-            case 'MorphOneOrMany':
             case 'MorphToMany':
                 return true;
+                break;
             default:
                 return false;
         }
+    }
+
+    /**
+     * Get all relation fields that don't have pivot set.
+     *
+     * @return array The fields with model key set.
+     */
+    public function getRelationFieldsWithoutPivot()
+    {
+        $all_relation_fields = $this->getRelationFields();
+
+        return Arr::where($all_relation_fields, function ($value, $key) {
+            return isset($value['pivot']) && ! $value['pivot'];
+        });
+    }
+
+    /**
+     * Get all fields with n-n relation set (pivot table is true).
+     *
+     * @return array The fields with n-n relationships.
+     */
+    public function getRelationFieldsWithPivot()
+    {
+        $all_relation_fields = $this->getRelationFields();
+
+        return Arr::where($all_relation_fields, function ($value, $key) {
+            return isset($value['pivot']) && $value['pivot'];
+        });
+    }
+
+    /**
+     * Return the name for the BelongTo relation making sure it always has the
+     * foreign_key instead of relationName (eg. "user_id", not "user").
+     *
+     * @param  array  $field  The field we want to get the name from
+     * @return string
+     */
+    private function getOverwrittenNameForBelongsTo($field)
+    {
+        $relation = $this->getRelationInstance($field);
+
+        if (Str::afterLast($field['name'], '.') === $relation->getRelationName()) {
+            return $relation->getForeignKeyName();
+        }
+
+        return $field['name'];
+    }
+
+    /**
+     * Returns the pivot definition for BelongsToMany/MorphToMany relation provided in $field.
+     *
+     * @param  array  $field
+     * @return array
+     */
+    private static function getPivotFieldStructure($field)
+    {
+        $pivotSelectorField['name'] = $field['name'];
+        $pivotSelectorField['type'] = 'relationship';
+        $pivotSelectorField['is_pivot_select'] = true;
+        $pivotSelectorField['multiple'] = false;
+        $pivotSelectorField['entity'] = $field['name'];
+        $pivotSelectorField['relation_type'] = $field['relation_type'];
+        $pivotSelectorField['model'] = $field['model'];
+        $pivotSelectorField['minimum_input_length'] = 2;
+        $pivotSelectorField['delay'] = 500;
+        $pivotSelectorField['placeholder'] = trans('backpack::crud.select_entry');
+        $pivotSelectorField['label'] = Str::of($field['name'])->singular()->ucfirst();
+        $pivotSelectorField['validationRules'] = 'required';
+        $pivotSelectorField['validationMessages'] = [
+            'required' => trans('backpack::crud.pivot_selector_required_validation_message'),
+        ];
+
+        if (isset($field['baseModel'])) {
+            $pivotSelectorField['baseModel'] = $field['baseModel'];
+        }
+        if (isset($field['baseEntity'])) {
+            $pivotSelectorField['baseEntity'] = $field['baseEntity'];
+        }
+
+        return $pivotSelectorField;
+    }
+
+    /**
+     * Checks the properties of the provided method to better verify if it could be a relation.
+     * Case the method is not public, is not a relation.
+     * Case the return type is Attribute, or extends Attribute is not a relation method.
+     * If the return type extends the Relation class is for sure a relation
+     * Otherwise we just assume it's a relation.
+     *
+     * DEV NOTE: In future versions we will return `false` when no return type is set and make the return type mandatory for relationships.
+     *           This function should be refactored to only check if $returnType is a subclass of Illuminate\Database\Eloquent\Relations\Relation.
+     *
+     * @param $model
+     * @param $method
+     * @return bool|string
+     */
+    private function modelMethodIsRelationship($model, $method)
+    {
+        $methodReflection = new \ReflectionMethod($model, $method);
+
+        // relationship methods function does not have parameters
+        if ($methodReflection->getNumberOfParameters() > 0) {
+            return false;
+        }
+
+        // relationships are always public methods.
+        if (! $methodReflection->isPublic()) {
+            return false;
+        }
+
+        $returnType = $methodReflection->getReturnType();
+
+        if ($returnType) {
+            $returnType = $returnType->getName();
+
+            if (is_a($returnType, 'Illuminate\Database\Eloquent\Casts\Attribute', true)) {
+                return false;
+            }
+
+            if (is_a($returnType, 'Illuminate\Database\Eloquent\Relations\Relation', true)) {
+                return $method;
+            }
+        }
+
+        return $method;
+    }
+
+    /**
+     * Check if it's possible that attribute is in the relation string when
+     * the last part of the string is not a method on the chained relations.
+     *
+     * @param  string  $relationString
+     * @return bool
+     */
+    private function isAttributeInRelationString($relationString)
+    {
+        if (! str_contains($relationString, '.')) {
+            return false;
+        }
+
+        $parts = explode('.', $relationString);
+
+        $model = $this->model;
+
+        // here we are going to iterate through all relation parts to check
+        // if the attribute is present in the relation string.
+        foreach ($parts as $i => $part) {
+            try {
+                $model = $model->$part()->getRelated();
+            } catch (\Exception $e) {
+                // return true if the last part of a relation string is not a method on the model
+                // so it's probably the attribute that we should show
+                return true;
+            }
+        }
+
+        return false;
     }
 }

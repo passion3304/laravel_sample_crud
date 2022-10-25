@@ -10,7 +10,7 @@ trait ColumnsProtectedMethods
     /**
      * Add a column to the current operation, using the Setting API.
      *
-     * @param array $column Column definition array.
+     * @param  array  $column  Column definition array.
      */
     protected function addColumnToOperationSettings($column)
     {
@@ -23,8 +23,8 @@ trait ColumnsProtectedMethods
     /**
      * If a column priority has not been defined, provide a default one.
      *
-     * @param array $column Column definition array.
-     * @return array         Proper array defining the column.
+     * @param  array  $column  Column definition array.
+     * @return array Proper array defining the column.
      */
     protected function makeSureColumnHasPriority($column)
     {
@@ -40,8 +40,8 @@ trait ColumnsProtectedMethods
      * If the field definition array is actually a string, it means the programmer was lazy
      * and has only passed the name of the column. Turn that into a proper array.
      *
-     * @param array $column Column definition array.
-     * @return array         Proper array defining the column.
+     * @param  array  $column  Column definition array.
+     * @return array Proper array defining the column.
      */
     protected function makeSureColumnHasName($column)
     {
@@ -60,8 +60,8 @@ trait ColumnsProtectedMethods
      * If a column array is missing the "label" attribute, an ugly error would be show.
      * So we add the field Name as a label - it's better than nothing.
      *
-     * @param array     $column  Column definition array.
-     * @return array            Proper array defining the column.
+     * @param  array  $column  Column definition array.
+     * @return array Proper array defining the column.
      */
     protected function makeSureColumnHasLabel($column)
     {
@@ -75,19 +75,66 @@ trait ColumnsProtectedMethods
     /**
      * If a column definition is missing the type, set a default.
      *
-     * @param array $column Column definition array.
-     * @return array        Column definition array with type.
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with type.
      */
     protected function makeSureColumnHasType($column)
     {
-        $could_be_relation = isset($column['entity']) && $column['entity'] !== false;
-
-        if (! isset($column['type']) && $could_be_relation) {
-            $column['type'] = 'relationship';
+        // Do not alter type if it has been set by developer
+        if (isset($column['type'])) {
+            return $column;
         }
 
-        if (! isset($column['type'])) {
-            $column['type'] = 'text';
+        // Set text as default column type
+        $column['type'] = 'text';
+
+        if (method_exists($this->model, 'translationEnabledForModel') && $this->model->translationEnabledForModel() && array_key_exists($column['name'], $this->model->getTranslations())) {
+            return $column;
+        }
+
+        $could_be_relation = Arr::get($column, 'entity', false) !== false;
+
+        if ($could_be_relation) {
+            $column['type'] = $this->inferFieldTypeFromRelationType($column['relation_type']);
+        }
+
+        if (in_array($column['name'], $this->model->getDates())) {
+            $column['type'] = 'datetime';
+        }
+
+        if ($this->model->hasCast($column['name'])) {
+            $attributeType = $this->model->getCasts()[$column['name']];
+
+            switch ($attributeType) {
+                case 'array':
+                case 'encrypted:array':
+                case 'collection':
+                case 'encrypted:collection':
+                    $column['type'] = 'array';
+                    break;
+                case 'json':
+                case 'object':
+                    $column['type'] = 'json';
+                    break;
+                case 'bool':
+                case 'boolean':
+                    $column['type'] = 'check';
+                    break;
+                case 'date':
+                    $column['type'] = 'date';
+                    break;
+                case 'datetime':
+                    $column['type'] = 'datetime';
+                    break;
+                case 'double':
+                case 'float':
+                case 'int':
+                case 'integer':
+                case 'real':
+                case 'timestamp':
+                    $column['type'] = 'number';
+                    break;
+            }
         }
 
         return $column;
@@ -98,8 +145,8 @@ trait ColumnsProtectedMethods
      * The key is used when storing all columns using the Settings API,
      * it is used as the "key" of the associative array that holds all columns.
      *
-     * @param array $column Column definition array.
-     * @return array        Column definition array with key.
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with key.
      */
     protected function makeSureColumnHasKey($column)
     {
@@ -116,8 +163,8 @@ trait ColumnsProtectedMethods
      * By defining this array a developer can wrap the text into an anchor (link),
      * span, div or whatever they want.
      *
-     * @param array $column Column definition array.
-     * @return array        Column definition array with wrapper.
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with wrapper.
      */
     protected function makeSureColumnHasWrapper($column)
     {
@@ -143,10 +190,19 @@ trait ColumnsProtectedMethods
         if (strpos($column['name'], '.') !== false) {
             $possibleMethodName = Str::before($column['name'], '.');
 
-            // if the first part of the string exists as method,
-            // it is a relationship
+            // if the first part of the string exists as method in the model
             if (method_exists($this->model, $possibleMethodName)) {
-                $column['entity'] = $column['name'];
+
+                // check model method for possibility of being a relationship
+                $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName) ? $column['name'] : false;
+
+                if ($column['entity']) {
+                    // if the user setup the attribute in relation string, we are not going to infer that attribute from model
+                    // instead we get the defined attribute by the user.
+                    if ($this->isAttributeInRelationString($column['entity'])) {
+                        $column['attribute'] = $column['attribute'] ?? Str::afterLast($column['entity'], '.');
+                    }
+                }
 
                 return $column;
             }
@@ -154,7 +210,9 @@ trait ColumnsProtectedMethods
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $column['name'])) {
-            $column['entity'] = $column['name'];
+
+             // check model method for possibility of being a relationship
+            $column['entity'] = $this->modelMethodIsRelationship($this->model, $column['name']);
 
             return $column;
         }
@@ -165,7 +223,8 @@ trait ColumnsProtectedMethods
             $possibleMethodName = Str::replaceLast('_id', '', $column['name']);
 
             if (method_exists($this->model, $possibleMethodName)) {
-                $column['entity'] = $possibleMethodName;
+                // check model method for possibility of being a relationship
+                $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName);
 
                 return $column;
             }
@@ -178,8 +237,8 @@ trait ColumnsProtectedMethods
      * If an entity has been defined for the column, but no model,
      * determine the model from that relationship.
      *
-     * @param array $column Column definition array.
-     * @return array        Column definition array with model.
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with model.
      */
     protected function makeSureColumnHasModel($column)
     {
@@ -193,10 +252,26 @@ trait ColumnsProtectedMethods
     }
 
     /**
+     * If an entity has been defined for the column, but no relation type,
+     * determine the relation type from that relationship.
+     *
+     * @param  array  $column  Column definition array.
+     * @return array Column definition array with model.
+     */
+    protected function makeSureColumnHasRelationType($column)
+    {
+        if (isset($column['entity']) && $column['entity'] !== false) {
+            $column['relation_type'] = $column['relation_type'] ?? $this->inferRelationTypeFromRelationship($column);
+        }
+
+        return $column;
+    }
+
+    /**
      * Move the most recently added column before or after the given target column. Default is before.
      *
-     * @param string|array $targetColumn The target column name or array.
-     * @param bool         $before       If true, the column will be moved before the target column, otherwise it will be moved after it.
+     * @param  string|array  $targetColumn  The target column name or array.
+     * @param  bool  $before  If true, the column will be moved before the target column, otherwise it will be moved after it.
      */
     protected function moveColumn($targetColumn, $before = true)
     {
@@ -221,9 +296,8 @@ trait ColumnsProtectedMethods
     /**
      * Check if the column exists in the database, as a DB column.
      *
-     * @param string $table
-     * @param string $name
-     *
+     * @param  string  $table
+     * @param  string  $name
      * @return bool
      */
     protected function hasDatabaseColumn($table, $name)

@@ -2,9 +2,15 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait Query
 {
+    /** @var Builder */
     public $query;
+
+    /** @var Builder */
+    public $totalQuery;
 
     // ----------------
     // ADVANCED QUERIES
@@ -16,26 +22,51 @@ trait Query
      * Examples:
      * $this->crud->addClause('active');
      * $this->crud->addClause('type', 'car');
-     * $this->crud->addClause('where', 'name', '==', 'car');
+     * $this->crud->addClause('where', 'name', '=', 'car');
      * $this->crud->addClause('whereName', 'car');
      * $this->crud->addClause('whereHas', 'posts', function($query) {
      *     $query->activePosts();
      * });
      *
-     * @param callable $function
-     *
+     * @param  callable|string  $function
      * @return mixed
      */
     public function addClause($function)
     {
+        if ($function instanceof \Closure) {
+            $function($this->query);
+
+            return $this->query;
+        }
+
         return call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
+    }
+
+    /**
+     * This function is an alias of `addClause` but also adds the query as a constrain
+     * in the `totalQuery` property.
+     *
+     * @param  \Closure|string  $function
+     * @return self
+     */
+    public function addBaseClause($function)
+    {
+        if ($function instanceof \Closure) {
+            $function($this->query);
+            $function($this->totalQuery);
+
+            return $this;
+        }
+        call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
+        call_user_func_array([$this->totalQuery, $function], array_slice(func_get_args(), 1));
+
+        return $this;
     }
 
     /**
      * Use eager loading to reduce the number of queries on the table view.
      *
-     * @param array|string $entities
-     *
+     * @param  array|string  $entities
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function with($entities)
@@ -46,9 +77,8 @@ trait Query
     /**
      * Order the results of the query in a certain way.
      *
-     * @param string $field
-     * @param string $order
-     *
+     * @param  string  $field
+     * @param  string  $order
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function orderBy($field, $order = 'asc')
@@ -63,9 +93,8 @@ trait Query
     /**
      * Order results of the query in a custom way.
      *
-     * @param array  $column           Column array with all attributes
-     * @param string $column_direction ASC or DESC
-     *
+     * @param  array  $column  Column array with all attributes
+     * @param  string  $column_direction  ASC or DESC
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function customOrderBy($column, $columnDirection = 'asc')
@@ -73,8 +102,6 @@ trait Query
         if (! isset($column['orderLogic'])) {
             return $this->query;
         }
-
-        $this->query->getQuery()->orders = null;
 
         $orderLogic = $column['orderLogic'];
 
@@ -88,8 +115,7 @@ trait Query
     /**
      * Group the results of the query in a certain way.
      *
-     * @param string $field
-     *
+     * @param  string  $field
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function groupBy($field)
@@ -100,8 +126,7 @@ trait Query
     /**
      * Limit the number of results in the query.
      *
-     * @param int $number
-     *
+     * @param  int  $number
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function limit($number)
@@ -112,8 +137,7 @@ trait Query
     /**
      * Take a certain number of results from the query.
      *
-     * @param int $number
-     *
+     * @param  int  $number
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function take($number)
@@ -124,8 +148,7 @@ trait Query
     /**
      * Start the result set from a certain number.
      *
-     * @param int $number
-     *
+     * @param  int  $number
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function skip($number)
@@ -146,8 +169,8 @@ trait Query
     /**
      * Apply table prefix in the order clause if the query contains JOINS clauses.
      *
-     * @param string $column_name
-     * @param string $column_direction
+     * @param  string  $column_name
+     * @param  string  $column_direction
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function orderByWithPrefix($column_name, $column_direction = 'ASC')
@@ -157,5 +180,75 @@ trait Query
         }
 
         return $this->query->orderBy($column_name, $column_direction);
+    }
+
+    /**
+     * Get the entries count from `totalQuery`.
+     *
+     * @return int
+     */
+    public function getTotalQueryCount()
+    {
+        if (! $this->getOperationSetting('showEntryCount')) {
+            return 0;
+        }
+
+        return  $this->getOperationSetting('totalEntryCount') ??
+                $this->getCountFromQuery($this->totalQuery);
+    }
+
+    /**
+     * Get the entries count from the `query`.
+     *
+     * @return int
+     */
+    public function getQueryCount()
+    {
+        return $this->getCountFromQuery($this->query);
+    }
+
+    /**
+     * Return the filtered query count or skip the counting when the `totalQuery` is the same as the filtered one.
+     *
+     * @return int|null
+     */
+    public function getFilteredQueryCount()
+    {
+        // check if the filtered query is different from total query, in case they are the same, skip the count
+        $filteredQuery = $this->query->toBase()->cloneWithout(['orders', 'limit', 'offset']);
+
+        return $filteredQuery->toSql() !== $this->totalQuery->toSql() ? $this->getQueryCount() : null;
+    }
+
+    /**
+     * Do a separate query to get the total number of entries, in an optimized way.
+     *
+     * @param  Builder  $query
+     * @return int
+     */
+    private function getCountFromQuery(Builder $query)
+    {
+        if (! $this->driverIsSql()) {
+            return $query->count();
+        }
+
+        $crudQuery = $query->toBase()->clone();
+        $modelTable = $this->model->getTableWithPrefix();
+
+        // create an "outer" query, the one that is responsible to do the count of the "crud query".
+        $outerQuery = $crudQuery->newQuery();
+
+        // add the count query in the "outer" query.
+        $outerQuery = $outerQuery->selectRaw('count(*) as total_rows');
+
+        // add the subquery from where the "outer query" will count the results.
+        // this subquery is the "main crud query" without some properties:
+        // - columns : we manually select the "minimum" columns possible from database.
+        // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
+        $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
+
+        $outerQuery = $outerQuery->fromSub($subQuery->select($modelTable.'.'.$this->model->getKeyName()), $modelTable.'_aggregator');
+
+        return $outerQuery->cursor()->first()->total_rows;
     }
 }

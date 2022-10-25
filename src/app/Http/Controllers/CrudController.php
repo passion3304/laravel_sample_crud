@@ -34,6 +34,7 @@ class CrudController extends Controller
         // the complete request inside the CrudPanel object.
         $this->middleware(function ($request, $next) {
             $this->crud = app()->make('crud');
+
             $this->crud->setRequest($request);
 
             $this->setupDefaults();
@@ -55,9 +56,9 @@ class CrudController extends Controller
      * Load routes for all operations.
      * Allow developers to load extra routes by creating a method that looks like setupOperationNameRoutes.
      *
-     * @param string $segment    Name of the current entity (singular).
-     * @param string $routeName  Route name prefix (ends with .).
-     * @param string $controller Name of the current controller.
+     * @param  string  $segment  Name of the current entity (singular).
+     * @param  string  $routeName  Route name prefix (ends with .).
+     * @param  string  $controller  Name of the current controller.
      */
     public function setupRoutes($segment, $routeName, $controller)
     {

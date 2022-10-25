@@ -1,12 +1,15 @@
 {{-- converts 1/true or 0/false to yes/no/lang --}}
 @php
-    $value = data_get($entry, $column['name']);
-
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
 
-    if ($value === true || $value === 1 || $value === '1') {
+    if($column['value'] instanceof \Closure) {
+        $column['value'] = $column['value']($entry);
+    }
+
+    if (in_array($column['value'], [true, 1, '1'])) {
         $related_key = 1;
         if ( isset( $column['options'][1] ) ) {
             $column['text'] = $column['options'][1];
@@ -27,7 +30,7 @@
     $column['text'] = $column['prefix'].$column['text'].$column['suffix'];
 @endphp
 
-<span data-order="{{ $value }}">
+<span data-order="{{ $column['value'] }}">
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         @if($column['escaped'])
             {{ $column['text'] }}

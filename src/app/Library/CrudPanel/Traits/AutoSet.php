@@ -10,29 +10,25 @@ trait AutoSet
      *
      * @return void
      */
-    public function setFromDb()
+    public function setFromDb($setFields = true, $setColumns = true)
     {
-        if ($this->driverIsSql()) {
-            $this->getDbColumnTypes();
-        }
+        $this->getDbColumnTypes();
 
-        array_map(function ($field) {
-            $new_field = [
-                'name'       => $field,
-                'label'      => $this->makeLabel($field),
-                'value'      => null,
-                'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
-                'type'       => $this->inferFieldTypeFromDbColumnType($field),
-                'values'     => [],
-                'attributes' => [],
-                'autoset'    => true,
-            ];
-
-            if (! isset($this->fields()[$field])) {
-                $this->addField($new_field);
+        array_map(function ($field) use ($setFields, $setColumns) {
+            if ($setFields && ! isset($this->getCleanStateFields()[$field])) {
+                $this->addField([
+                    'name'       => $field,
+                    'label'      => $this->makeLabel($field),
+                    'value'      => null,
+                    'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
+                    'type'       => $this->inferFieldTypeFromDbColumnType($field),
+                    'values'     => [],
+                    'attributes' => [],
+                    'autoset'    => true,
+                ]);
             }
 
-            if (! in_array($field, $this->model->getHidden()) && ! in_array($field, $this->columns())) {
+            if ($setColumns && ! in_array($field, $this->model->getHidden()) && ! isset($this->columns()[$field])) {
                 $this->addColumn([
                     'name'    => $field,
                     'label'   => $this->makeLabel($field),
@@ -52,9 +48,11 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $this->setDoctrineTypesMapping();
-
         $dbColumnTypes = [];
+
+        if (! $this->driverIsSql()) {
+            return $dbColumnTypes;
+        }
 
         foreach ($this->getDbTableColumns() as $key => $column) {
             $column_type = $column->getType()->getName();
@@ -68,6 +66,18 @@ trait AutoSet
     }
 
     /**
+     * Set extra types mapping on model.
+     *
+     * DEPRECATION NOTICE: This method is no longer used and will be removed in future versions of Backpack
+     *
+     * @deprecated
+     */
+    public function setDoctrineTypesMapping()
+    {
+        $this->getModel()->getConnectionWithExtraTypeMappings();
+    }
+
+    /**
      * Get all columns in the database table.
      *
      * @return array
@@ -78,11 +88,7 @@ trait AutoSet
             return $this->autoset['table_columns'];
         }
 
-        $conn = $this->model->getConnection();
-        $table = $conn->getTablePrefix().$this->model->getTable();
-        $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
-
-        $this->autoset['table_columns'] = $columns;
+        $this->autoset['table_columns'] = $this->model::getDbTableSchema()->getColumns();
 
         return $this->autoset['table_columns'];
     }
@@ -90,8 +96,7 @@ trait AutoSet
     /**
      * Infer a field type, judging from the database column type.
      *
-     * @param string $field Field name.
-     *
+     * @param  string  $field  Field name.
      * @return string Field type.
      */
     protected function inferFieldTypeFromDbColumnType($fieldName)
@@ -153,7 +158,7 @@ trait AutoSet
                 return 'time';
 
             case 'json':
-                return 'table';
+                return backpack_pro() ? 'table' : 'textarea';
 
             default:
                 return 'text';
@@ -162,23 +167,10 @@ trait AutoSet
         return 'text';
     }
 
-    // Fix for DBAL not supporting enum
-    public function setDoctrineTypesMapping()
-    {
-        $types = ['enum' => 'string'];
-        $platform = $this->getSchema()->getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
-        foreach ($types as $type_key => $type_value) {
-            if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
-                $platform->registerDoctrineTypeMapping($type_key, $type_value);
-            }
-        }
-    }
-
     /**
      * Turn a database column name or PHP variable into a pretty label to be shown to the user.
      *
-     * @param string $value The value.
-     *
+     * @param  string  $value  The value.
      * @return string The transformed value.
      */
     public function makeLabel($value)
@@ -201,8 +193,7 @@ trait AutoSet
     /**
      * Change the way labels are made.
      *
-     * @param callable $labeller A function that receives a string and returns the formatted string, after stripping down useless characters.
-     *
+     * @param  callable  $labeller  A function that receives a string and returns the formatted string, after stripping down useless characters.
      * @return self
      */
     public function setLabeller(callable $labeller)
@@ -225,8 +216,7 @@ trait AutoSet
             $columns = $fillable;
         } else {
             // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
-            $columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
-
+            $columns = $this->model::getDbTableSchema()->getColumnsNames();
             if (! empty($fillable)) {
                 $columns = array_intersect($columns, $fillable);
             }

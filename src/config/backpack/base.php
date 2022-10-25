@@ -36,13 +36,21 @@ return [
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
 
+    // ---------
+    // DASHBOARD
+    // ---------
+
+    // Show "Getting Started with Backpack" info block?
+    'show_getting_started' => env('APP_ENV') == 'local',
+
     // ------
     // STYLES
     // ------
 
     // CSS files that are loaded in all pages, using Laravel's asset() helper
     'styles' => [
-        'packages/backpack/base/css/bundle.css',
+        'packages/backpack/base/css/bundle.css', // has primary color electric purple (backpack default)
+        // 'packages/backpack/base/css/blue-bundle.css', // has primary color blue
 
         // Here's what's inside the bundle:
         // 'packages/@digitallyhappy/backstrap/css/style.min.css',
@@ -64,6 +72,12 @@ return [
     // CSS files that are loaded in all pages, using Laravel's mix() helper
     'mix_styles' => [ // file_path => manifest_directory_path
         // 'css/app.css' => '',
+    ],
+
+    // CSS files that are loaded in all pages, using Laravel's @vite() helper
+    // Please note that support for Vite was added in Laravel 9.19. Earlier versions are not able to use this feature.
+    'vite_styles' => [ // resource file_path
+        // 'resources/css/app.css' => '',
     ],
 
     // ------
@@ -126,7 +140,7 @@ return [
         // 'https://code.jquery.com/jquery-3.4.1.min.js',
         // 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
         // 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js',
-        // 'https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js',
+        // 'https://unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js',
         // 'https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
         // 'https://unpkg.com/sweetalert/dist/sweetalert.min.js',
         // 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js'
@@ -138,8 +152,13 @@ return [
     ],
 
     // JS files that are loaded in all pages, using Laravel's mix() helper
-    'mix_scripts' => [// file_path => manifest_directory_path
+    'mix_scripts' => [ // file_path => manifest_directory_path
         // 'js/app.js' => '',
+    ],
+
+    // JS files that are loaded in all pages, using Laravel's @vite() helper
+    'vite_scripts' => [ // resource file_path
+        // 'resources/js/app.js',
     ],
 
     // -------------
@@ -193,10 +212,6 @@ return [
     // Warning: if you disable this, the password recovery routes (below) will be disabled too!
     'setup_auth_routes' => true,
 
-    // Set this to false if you would like to skip adding the password recovery routes
-    // (you then need to manually define the routes in your web.php)
-    'setup_password_recovery_routes' => true,
-
     // Set this to false if you would like to skip adding the dashboard routes
     // (you then need to overwrite the login route on your AuthController)
     'setup_dashboard_routes' => true,
@@ -204,6 +219,32 @@ return [
     // Set this to false if you would like to skip adding "my account" routes
     // (you then need to manually define the routes in your web.php)
     'setup_my_account_routes' => true,
+
+    // Set this to false if you would like to skip adding the password recovery routes
+    // (you then need to manually define the routes in your web.php)
+    'setup_password_recovery_routes' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Security
+    |--------------------------------------------------------------------------
+    */
+
+    // Backpack will prevent visitors from requesting password recovery too many times
+    // for a certain email, to make sure they cannot be spammed that way.
+    // How many seconds should a visitor wait, after they've requested a
+    // password reset, before they can try again for the same email?
+    'password_recovery_throttle_notifications' => 600, // time in seconds
+
+    // Backpack will prevent an IP from trying to reset the password too many times,
+    // so that a malicious actor cannot try too many emails, too see if they have
+    // accounts or to increase the AWS/SendGrid/etc bill.
+    //
+    // How many times in any given time period should the user be allowed to
+    // attempt a password reset? Take into account that user might wrongly
+    // type an email at first, so at least allow one more try.
+    // Defaults to 3,10 - 3 times in 10 minutes.
+    'password_recovery_throttle_access' => '3,10',
 
     /*
     |--------------------------------------------------------------------------
@@ -235,6 +276,10 @@ return [
     'authentication_column'      => 'email',
     'authentication_column_name' => 'Email',
 
+    // Backpack assumes that your "database email column" for operations like Login and Register is called "email".
+    // If your database email column have a different name, you can configure it here. Eg: `user_mail`
+    'email_column' => 'email',
+
     // The guard that protects the Backpack admin panel.
     // If null, the config.auth.defaults.guard value will be used.
     'guard' => 'backpack',
@@ -246,9 +291,13 @@ return [
     // What kind of avatar will you like to show to the user?
     // Default: gravatar (automatically use the gravatar for their email)
     // Other options:
-    // - placehold (generic image with their first letter)
+    // - null (generic image with their first letter)
     // - example_method_name (specify the method on the User model that returns the URL)
     'avatar_type' => 'gravatar',
+
+    // Gravatar fallback options are 'identicon', 'monsterid', 'wavatar', 'retro', 'robohash', 'blank'
+    // 'blank' will keep the generic image with the user first letter
+    'gravatar_fallback' => 'blank',
 
     /*
     |--------------------------------------------------------------------------
@@ -266,6 +315,13 @@ return [
     // your namespace would be the one below. IMPORTANT: in this case the namespace ends with a dot.
     // 'view_namespace' => 'vendor.myname.mypackage.',
 
+    // Tell Backpack to look in more places for component views (like widgets)
+    'component_view_namespaces' => [
+        'widgets' => [
+            'backpack::widgets', // falls back to 'resources/views/vendor/backpack/base/widgets'
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | File System
@@ -281,17 +337,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | License Code
+    | Backpack Token Username
     |--------------------------------------------------------------------------
     |
-    | If you, your employer or your client make money by using Backpack, you need
-    | to purchase a license. A license code will be provided after purchase,
-    | which you can put here or in your ENV file in staging & production.
+    | If you have access to closed-source Backpack add-ons, please provide
+    | your token username here, if you're getting yellow alerts on your
+    | admin panel's pages. Normally this is not needed, it is
+    | preferred to add this as an environment variable
+    | (most likely in your .env file).
     |
     | More info and payment form on:
     | https://www.backpackforlaravel.com
     |
     */
 
-    'license_code' => env('BACKPACK_LICENSE', false),
+    'token_username' => env('BACKPACK_TOKEN_USERNAME', false),
 ];
