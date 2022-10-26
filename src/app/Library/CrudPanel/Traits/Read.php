@@ -65,6 +65,29 @@ trait Read
     }
 
     /**
+     * Find and retrieve an entry in the database or fail.
+     * When found, make sure we set the Locale on it.
+     *
+     * @param int The id of the row in the db to fetch.
+     * @return \Illuminate\Database\Eloquent\Model The row in the db.
+     */
+    public function getEntryWithLocale($id)
+    {
+        if (! $this->entry) {
+            $this->entry = $this->getEntry($id);
+        }
+
+        if ($this->entry->translationEnabled()) {
+            $locale = request('_locale', \App::getLocale());
+            if (in_array($locale, array_keys($this->entry->getAvailableLocales()))) {
+                $this->entry->setLocale($locale);
+            }
+        }
+
+        return $this->entry;
+    }
+
+    /**
      * Return a Model builder instance with the current crud query applied.
      *
      * @return \Illuminate\Database\Eloquent\Builder
@@ -331,6 +354,8 @@ trait Read
         }
 
         $this->setOperationSetting('exportButtons', true);
+        $this->setOperationSetting('showTableColumnPicker', true);
+        $this->setOperationSetting('showExportButton', true);
     }
 
     /**

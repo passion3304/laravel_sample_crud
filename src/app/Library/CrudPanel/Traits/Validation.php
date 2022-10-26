@@ -211,6 +211,7 @@ trait Validation
             $extendedRequest = new class($rules, $messages) extends \DeveloperProvidedFormRequest
             {
                 private $_rules;
+
                 private $_messages;
 
                 public function __construct($rules, $messages)
@@ -235,7 +236,21 @@ trait Validation
             return app(get_class($extendedRequest), ['rules' => $rules, 'messages' => $messages]);
         }
 
-        return ! empty($rules) ? $this->getRequest()->validate($rules, $messages) : $this->getRequest();
+        return ! empty($rules) ? $this->checkRequestValidity($rules, $messages) : $this->getRequest();
+    }
+
+    /**
+     * Checks if the current crud request is valid against the provided rules.
+     *
+     * @param  array  $rules
+     * @param  array  $messages
+     * @return \Illuminate\Http\Request
+     */
+    private function checkRequestValidity($rules, $messages)
+    {
+        $this->getRequest()->validate($rules, $messages);
+
+        return $this->getRequest();
     }
 
     /**

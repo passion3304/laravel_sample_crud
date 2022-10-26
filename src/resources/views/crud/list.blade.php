@@ -21,10 +21,10 @@
 @endsection
 
 @section('content')
-  <!-- Default box -->
+  {{-- Default box --}}
   <div class="row">
 
-    <!-- THE ACTUAL CONTENT -->
+    {{-- THE ACTUAL CONTENT --}}
     <div class="{{ $crud->getListContentClass() }}">
 
         <div class="row mb-0">
@@ -50,7 +50,7 @@
         <table
           id="crudTable"
           class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
-          data-responsive="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
+          data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
           data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
           data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"
           cellspacing="0">
@@ -61,6 +61,7 @@
                   <th
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
+                    data-column-name="{{ $column['name'] }}"
                     {{--
                     data-visible-in-table => if developer forced field in table with 'visibleInTable => true'
                     data-visible => regular visibility of the field
@@ -150,18 +151,18 @@
 @endsection
 
 @section('after_styles')
-  <!-- DATA TABLES -->
+  {{-- DATA TABLES --}}
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
 
-  <!-- CRUD LIST CONTENT - crud_list_styles stack -->
+  {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')
 @endsection
 
 @section('after_scripts')
   @include('crud::inc.datatables_logic')
 
-  <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
+  {{-- CRUD LIST CONTENT - crud_list_scripts stack --}}
   @stack('crud_list_scripts')
 @endsection

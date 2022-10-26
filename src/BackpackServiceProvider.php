@@ -4,6 +4,7 @@ namespace Backpack\CRUD;
 
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
+use Backpack\CRUD\app\Library\Database\DatabaseSchema;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -20,7 +21,9 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
         \Backpack\CRUD\app\Console\Commands\PublishView::class,
-        \Backpack\CRUD\app\Console\Commands\RequireDevTools::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequireDevTools::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequireEditableColumns::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequirePro::class,
         \Backpack\CRUD\app\Console\Commands\Fix::class,
     ];
 
@@ -59,8 +62,16 @@ class BackpackServiceProvider extends ServiceProvider
         include_once __DIR__.'/macros.php';
 
         // Bind the CrudPanel object to Laravel's service container
-        $this->app->singleton('crud', function ($app) {
-            return new CrudPanel($app);
+        $this->app->scoped('crud', function ($app) {
+            return new CrudPanel();
+        });
+
+        $this->app->scoped('DatabaseSchema', function ($app) {
+            return new DatabaseSchema();
+        });
+
+        $this->app->singleton('BackpackViewNamespaces', function ($app) {
+            return new ViewNamespaces();
         });
 
         // Bind the widgets collection object to Laravel's service container
@@ -277,6 +288,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets'];
+        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema'];
     }
 }

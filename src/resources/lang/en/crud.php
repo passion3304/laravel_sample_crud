@@ -163,10 +163,14 @@ return [
     'new_item'                  => 'New Item',
     'select_entry'              => 'Select an entry',
     'select_entries'            => 'Select entries',
+    'upload_multiple_files_selected' => 'Files selected. After save, they will show up above.',
 
     //Table field
     'table_cant_add'    => 'Cannot add new :entity',
     'table_max_reached' => 'Maximum number of :max reached',
+
+    // google_map
+    'google_map_locate' => 'Get my location',
 
     // File manager
     'file_manager' => 'File Manager',
@@ -174,6 +178,7 @@ return [
     // InlineCreateOperation
     'related_entry_created_success' => 'Related entry has been created and selected.',
     'related_entry_created_error' => 'Could not create related entry.',
+    'inline_saving' => 'Saving...',
 
     // returned when no translations found in select inputs
     'empty_translations' => '(empty)',

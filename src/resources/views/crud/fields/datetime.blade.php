@@ -1,4 +1,4 @@
-<!-- html5 datetime input -->
+{{-- html5 datetime input --}}
 
 @php
 // if the column has been cast to Carbon or Date (using attribute casting)
@@ -9,7 +9,7 @@ if (isset($field['value']) && ($field['value'] instanceof \Carbon\CarbonInterfac
 
 $timestamp = strtotime(old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '');
 
-$value = $timestamp ? strftime('%Y-%m-%dT%H:%M:%S', $timestamp) : '';
+$value = $timestamp ? date('Y-m-d\TH:i:s', $timestamp) : '';
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

@@ -121,6 +121,11 @@ trait Create
                 case 'MorphToMany':
                     $values = $relationDetails['values'][$relationMethod] ?? [];
                     $values = is_string($values) ? json_decode($values, true) : $values;
+
+                    // disabling ConvertEmptyStringsToNull middleware may return null from json_decode() if an empty string is used.
+                    // we need to make sure no null value can go foward so we reassure that values is not null after json_decode()
+                    $values = $values ?? [];
+
                     $relationValues = [];
 
                     if (is_array($values) && is_multidimensional_array($values)) {
@@ -217,12 +222,10 @@ trait Create
         $relationForeignKey = $relation->getForeignKeyName();
         $relationLocalKey = $relation->getLocalKeyName();
 
-        if ($relationValues === null) {
+        if (empty($relationValues)) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
-            $removedEntries = $modelInstance->where($relationForeignKey, $item->{$relationLocalKey});
-
-            return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
+            return $this->handleManyRelationItemRemoval($modelInstance, $relation, $relationDetails, $relationForeignKey);
         }
         // we add the new values into the relation, if it is HasMany we only update the foreign_key,
         // otherwise (it's a MorphMany) we need to update the morphs keys too
@@ -264,7 +267,7 @@ trait Create
         // developer set force_delete => true, so we don't care if it's nullable or not,
         // we just follow developer's will
         if ($forceDelete) {
-            return $removedEntries->delete();
+            return $removedEntries->lazy()->each->delete();
         }
 
         // get the default that could be set at database level.
@@ -273,7 +276,7 @@ trait Create
         // if column is not nullable in database, and there is no column default (null),
         // we will delete the entry from the database, otherwise it will throw and ugly DB error.
         if (! $relationColumnIsNullable && $dbColumnDefault === null) {
-            return $removedEntries->delete();
+            return $removedEntries->lazy()->each->delete();
         }
 
         // if column is nullable we just set it to the column default (null when it does exist, or the default value when it does).
@@ -295,31 +298,31 @@ trait Create
     {
         $items = $relationDetails['values'][$relationMethod];
 
-        $relation_local_key = $relation->getLocalKeyName();
+        $relatedModelLocalKey = $relation->getRelated()->getKeyName();
 
         $relatedItemsSent = [];
 
         foreach ($items as $item) {
             [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($item, $relationDetails, $relationMethod);
             // for each item we get the inputs to create and the relations of it.
-            $relation_local_key_value = $item[$relation_local_key] ?? null;
+            $relatedModelLocalKeyValue = $item[$relatedModelLocalKey] ?? null;
 
             // we either find the matched entry by local_key (usually `id`)
             // and update the values from the input
             // or create a new item from input
-            $item = $entry->{$relationMethod}()->updateOrCreate([$relation_local_key => $relation_local_key_value], $directInputs);
+            $item = $entry->{$relationMethod}()->updateOrCreate([$relatedModelLocalKey => $relatedModelLocalKeyValue], $directInputs);
 
             // we store the item local key so we can match them with database and check if any item was deleted
-            $relatedItemsSent[] = $item->{$relation_local_key};
+            $relatedItemsSent[] = $item->{$relatedModelLocalKey};
 
             // create the item relations if any.
             $this->createRelationsForItem($item, $relationInputs);
         }
 
-        // use the collection of sent ids to match agains database ids, delete the ones not found in the submitted ids.
+        // use the collection of sent ids to match against database ids, delete the ones not found in the submitted ids.
         if (! empty($relatedItemsSent)) {
             // we perform the cleanup of removed database items
-            $entry->{$relationMethod}()->whereNotIn($relation_local_key, $relatedItemsSent)->delete();
+            $entry->{$relationMethod}()->whereNotIn($relatedModelLocalKey, $relatedItemsSent)->lazy()->each->delete();
         }
     }
 }

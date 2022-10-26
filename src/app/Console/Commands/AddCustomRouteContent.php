@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 
 class AddCustomRouteContent extends Command
 {
+    use \Backpack\CRUD\app\Console\Commands\Traits\PrettyCommandOutput;
+
     /**
      * The name and signature of the console command.
      *
@@ -45,32 +47,40 @@ class AddCustomRouteContent extends Command
         $disk = Storage::disk($disk_name);
         $code = $this->argument('code');
 
-        if ($disk->exists($path)) {
-            $old_file_path = $disk->path($path);
+        $this->progressBlock("Adding route to <fg=blue>$path</>");
 
-            // insert the given code before the file's last line
-            $file_lines = file($old_file_path, FILE_IGNORE_NEW_LINES);
-
-            // if the code already exists in the file, abort
-            if ($this->getLastLineNumberThatContains($code, $file_lines)) {
-                return $this->comment('Route already existed.');
-            }
-
-            $end_line_number = $this->customRoutesFileEndLine($file_lines);
-            $file_lines[$end_line_number + 1] = $file_lines[$end_line_number];
-            $file_lines[$end_line_number] = '    '.$code;
-            $new_file_content = implode(PHP_EOL, $file_lines);
-
-            if ($disk->put($path, $new_file_content)) {
-                $this->info('Successfully added code to '.$path);
-            } else {
-                $this->error('Could not write to file: '.$path);
-            }
-        } else {
-            Artisan::call('vendor:publish', ['--provider' => 'Backpack\CRUD\BackpackServiceProvider', '--tag' => 'custom_routes']);
-
+        // Validate file exists
+        if (! $disk->exists($path)) {
+            Artisan::call('vendor:publish', ['--provider' => \Backpack\CRUD\BackpackServiceProvider::class, '--tag' => 'custom_routes']);
             $this->handle();
+
+            return;
         }
+
+        // insert the given code before the file's last line
+        $old_file_path = $disk->path($path);
+        $file_lines = file($old_file_path, FILE_IGNORE_NEW_LINES);
+
+        // if the code already exists in the file, abort
+        if ($this->getLastLineNumberThatContains($code, $file_lines)) {
+            $this->closeProgressBlock('Already existed', 'yellow');
+
+            return;
+        }
+
+        $end_line_number = $this->customRoutesFileEndLine($file_lines);
+        $file_lines[$end_line_number + 1] = $file_lines[$end_line_number];
+        $file_lines[$end_line_number] = '    '.$code;
+        $new_file_content = implode(PHP_EOL, $file_lines);
+
+        if (! $disk->put($path, $new_file_content)) {
+            $this->errorProgressBlock();
+            $this->note('Could not write to file.', 'red');
+
+            return;
+        }
+
+        $this->closeProgressBlock();
     }
 
     private function customRoutesFileEndLine($file_lines)

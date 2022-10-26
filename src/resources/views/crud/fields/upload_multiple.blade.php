@@ -4,7 +4,7 @@
     $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
 @endphp
 
-<!-- upload multiple input -->
+{{-- upload multiple input --}}
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
@@ -162,10 +162,41 @@
 		        });
 
 		        fileInput.change(function() {
-	                inputLabel.html("Files selected. After save, they will show up above.");
+	                inputLabel.html("{{trans('backpack::crud.upload_multiple_files_selected')}}");
+					let selectedFiles = [];
+
+					Array.from($(this)[0].files).forEach(file => {
+						selectedFiles.push({name: file.name, type: file.type})
+					});
+
+					element.find('input').first().val(JSON.stringify(selectedFiles)).trigger('change');
 		        	// remove the hidden input, so that the setXAttribute method is no longer triggered
 					$(this).next("input[type=hidden]:not([name='clear_"+fieldName+"[]'])").remove();
 		        });
+
+				element.find('input').on('CrudField:disable', function(e) {
+					element.children('.backstrap-file').find('input').prop('disabled', 'disabled');
+					element.children('.existing-file').find('.file-preview').each(function(i, el) {
+
+						let $deleteButton = $(el).find('a.file-clear-button');
+
+						if(deleteButton.length > 0) {
+							$deleteButton.on('click.prevent', function(e) {
+								e.stopImmediatePropagation();
+								return false;
+							});
+							// make the event we just registered, the first to be triggered
+							$._data($deleteButton.get(0), "events").click.reverse();
+						}
+					});
+				});
+
+				element.on('CrudField:enable', function(e) {
+					element.children('.backstrap-file').find('input').removeAttr('disabled');
+					element.children('.existing-file').find('.file-preview').each(function(i, el) {
+						$(el).find('a.file-clear-button').unbind('click.prevent');
+					});
+				});
         	}
         </script>
         @endLoadOnce

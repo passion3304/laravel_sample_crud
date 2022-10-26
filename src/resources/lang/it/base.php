@@ -66,4 +66,6 @@ return [
     'confirm_email'        => 'Conferma E-mail',
     'choose_new_password'  => 'Scegli una nuova password',
     'confirm_new_password' => 'Conferma la nuova password',
+    'throttled'            => 'Hai richiesto un reset della password di recente. Per favore, controlla la tua email. Se non hai ricevuto la mail, allora riprova più tardi.',
+    'throttled_request'    => 'Hai eseguito troppi tentativi. Per favore, aspetta qualche minuto quindi riprova.',
 ];

@@ -9,7 +9,7 @@
 	// if the field is required in any of the crud validators (FormRequest, controller validation or field validation) 
 	// we add an astherisc for it. Case it's a subfield, that check is done upstream in repeatable_row. 
 	// the reason for that is that here the field name is already the repeatable name: parent[row][fieldName]
-	if(!isset($field['parentFieldName'])) {
+	if(!isset($field['parentFieldName']) || !$field['parentFieldName']) {
 		$fieldName = is_array($field['name']) ? current($field['name']) : $field['name'];
 		$required = (isset($action) && $crud->isRequired($fieldName)) ? ' required' : '';
 	}
@@ -22,6 +22,9 @@
 	$field['wrapper']['class'] = $field['wrapper']['class'] ?? "form-group col-sm-12";
 	$field['wrapper']['class'] = $field['wrapper']['class'].$required;
 	$field['wrapper']['element'] = $field['wrapper']['element'] ?? 'div';
+	$field['wrapper']['bp-field-wrapper'] = 'true';
+	$field['wrapper']['bp-field-name'] = square_brackets_to_dots(implode(',', (array)$field['name']));
+	$field['wrapper']['bp-field-type'] = $field['type'];
 @endphp
 
 <{{ $field['wrapper']['element'] }}

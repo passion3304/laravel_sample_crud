@@ -48,17 +48,32 @@ trait Fields
         $field = $this->makeSureFieldHasLabel($field);
 
         if (isset($field['entity']) && $field['entity'] !== false) {
-            $field = $this->makeSureFieldHasRelationType($field);
-            $field = $this->makeSureFieldHasModel($field);
-            $field = $this->makeSureFieldHasAttribute($field);
-            $field = $this->makeSureFieldHasMultiple($field);
-            $field = $this->makeSureFieldHasPivot($field);
+            $field = $this->makeSureFieldHasRelationshipAttributes($field);
         }
 
         $field = $this->makeSureFieldHasType($field);
         $field = $this->makeSureSubfieldsHaveNecessaryAttributes($field);
+        $field = $this->makeSureMorphSubfieldsAreDefined($field);
 
         $this->setupFieldValidation($field, $field['parentFieldName'] ?? false);
+
+        return $field;
+    }
+
+    /**
+     * When field is a relationship, Backpack will try to guess some basic attributes from the relation.
+     *
+     * @param  array  $field
+     * @return array
+     */
+    public function makeSureFieldHasRelationshipAttributes($field)
+    {
+        $field = $this->makeSureFieldHasRelationType($field);
+        $field = $this->makeSureFieldHasModel($field);
+        $field = $this->makeSureFieldHasAttribute($field);
+        $field = $this->makeSureFieldHasMultiple($field);
+        $field = $this->makeSureFieldHasPivot($field);
+        $field = $this->makeSureFieldHasType($field);
 
         return $field;
     }
@@ -274,10 +289,8 @@ trait Fields
         $casted_attributes = $model->getCastedAttributes();
 
         foreach ($fields as $field) {
-
             // Test the field is castable
             if (isset($field['name']) && is_string($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
-
                 // Handle JSON field types
                 $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $casted_attributes[$field['name']];
@@ -465,8 +478,17 @@ trait Fields
     {
         $setting = $this->getOperationSetting('strippedRequest');
 
+        // if a closure was passed
         if (is_callable($setting)) {
             return $setting($request);
+        }
+
+        // if an invokable class was passed
+        // eg. \App\Http\Requests\BackpackStrippedRequest
+        if (is_string($setting) && class_exists($setting)) {
+            $setting = new $setting();
+
+            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting).' is not invokable.');
         }
 
         return $request->only($this->getAllFieldNames());

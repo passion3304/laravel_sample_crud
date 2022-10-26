@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\CRUD\ViewNamespaces;
 use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -28,7 +29,6 @@ class CrudFilter
         if (! backpack_pro()) {
             throw new BackpackProRequiredException('Filter');
         }
-
         // if filter exists
         if ($this->crud()->hasFilterWhere('name', $options['name'])) {
             $properties = get_object_vars($this->crud()->firstFilterWhere('name', $options['name']));
@@ -146,7 +146,7 @@ class CrudFilter
     public function getNamespacedViewWithFallbacks()
     {
         $type = $this->type;
-        $namespaces = config('backpack.crud.view_namespaces.filters');
+        $namespaces = ViewNamespaces::getFor('filters');
 
         if ($this->viewNamespace != 'crud::filters') {
             $namespaces = array_merge([$this->viewNamespace], $namespaces);

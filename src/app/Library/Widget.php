@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\CRUD\ViewNamespaces;
 use Illuminate\Support\Fluent;
 
 /**
@@ -45,6 +46,28 @@ class Widget extends Fluent
         $attributes['type'] = $attributes['type'] ?? 'card';
 
         return new static($attributes);
+    }
+
+    /**
+     * Return the widget attribute value or null when it doesn't exist.
+     *
+     * @param  string  $attribute
+     * @return mixed
+     */
+    public function getAttribute(string $attribute)
+    {
+        return $this->attributes[$attribute] ?? null;
+    }
+
+    /**
+     * Check if widget has the attribute.
+     *
+     * @param  string  $attribute
+     * @return bool
+     */
+    public function hasAttribute(string $attribute)
+    {
+        return array_key_exists($attribute, $this->attributes);
     }
 
     /**
@@ -133,11 +156,10 @@ class Widget extends Fluent
                 return $path;
             }
         }
-
         $type = $this->type;
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, config('backpack.base.component_view_namespaces.widgets'));
+        }, ViewNamespaces::getWithFallbackFor('widgets', 'backpack.base.component_view_namespaces.widgets'));
 
         foreach ($paths as $path) {
             if (view()->exists($path)) {
@@ -146,7 +168,7 @@ class Widget extends Fluent
         }
         // if no view exists, in any of the directories above... no bueno
         if (! backpack_pro()) {
-            throw new BackpackProRequiredException('Cannot find the widget view: '.$viewPath.'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
+            throw new BackpackProRequiredException('Cannot find the widget view: '.$this->type.'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
         }
         abort(500, 'Cannot find the view for «'.$this->type.'» widget type. Please check for typos.');
     }
