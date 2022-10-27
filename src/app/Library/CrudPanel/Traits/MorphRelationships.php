@@ -156,9 +156,8 @@ trait MorphRelationships
             if (! array_key_exists($key, $morphMap)) {
                 throw new \Exception('Unknown morph type «'.$key.'», that name was not found in the morphMap.');
             }
-
             // check if the key already exists
-            if (array_key_exists($key, $morphTypeField['options'])) {
+            if (array_key_exists($key, $morphTypeField['options'] ?? [])) {
                 throw new \Exception('Duplicate entry for «'.$key.'» key, That string is already part of another morphOption. Current options: '.json_encode($morphTypeField['options']));
             }
             // use the provided label or capitalize the provided key.
