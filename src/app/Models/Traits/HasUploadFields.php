@@ -27,10 +27,11 @@ trait HasUploadFields
      * @param  string  $attribute_name  Model attribute name (and column in the db).
      * @param  string  $disk  Filesystem disk used to store files.
      * @param  string  $destination_path  Path in disk where to store the files.
+     * @param  string  $fileName  Optional filename for the stored file (without the extension)
      */
-    public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path)
+    public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path, $fileName = null)
     {
-        // if a new file is uploaded, delete the file from the disk
+        // if a new file is uploaded, delete the previous file from the disk
         if (request()->hasFile($attribute_name) &&
             $this->{$attribute_name} &&
             $this->{$attribute_name} != null) {
@@ -48,7 +49,9 @@ trait HasUploadFields
         if (request()->hasFile($attribute_name) && request()->file($attribute_name)->isValid()) {
             // 1. Generate a new file name
             $file = request()->file($attribute_name);
-            $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
+
+            // use the provided file name or generate a random one
+            $new_file_name = $fileName ?? md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
 
             // 2. Move the new file to the correct path
             $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
