@@ -374,7 +374,9 @@ trait Relationships
 
         $parts = explode('.', $field['entity']);
 
-        $model = new ($field['baseModel'] ?? $this->model);
+        $model = $field['baseModel'] ?? $this->model;
+
+        $model = new $model;
 
         // here we are going to iterate through all relation parts to check
         // if the attribute is present in the relation string.
