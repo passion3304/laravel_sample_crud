@@ -1,9 +1,11 @@
 {{-- enum --}}
 @php
-    $entity_model = $field['model'] ?? $crud->model;
+    $entity_model = $field['model'] ?? $field['baseModel'] ?? $crud->model;
+
     $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 
     $possible_values = (function() use ($entity_model, $field) {
+        $fieldName = $field['baseFieldName'] ?? $field['name'];
         // if developer provided the options, use them, no ned to guess.
         if(isset($field['options'])) {
             return $field['options'];
@@ -11,7 +13,7 @@
 
         // if we are in a PHP version where PHP enums are not available, it can only be a database enum
         if(! function_exists('enum_exists')) {
-            $options = $entity_model::getPossibleEnumValues($field['name']);
+            $options = $entity_model::getPossibleEnumValues($fieldName);
             return array_combine($options, $options);
         }
 
@@ -20,7 +22,7 @@
 
         if(! $enumClassReflection) {
             // check for model casting
-            $possibleEnumCast = (new $entity_model)->getCasts()[$field['name']] ?? false;
+            $possibleEnumCast = (new $entity_model)->getCasts()[$fieldName] ?? false;
             if($possibleEnumCast && class_exists($possibleEnumCast)) {
                 $enumClassReflection = new \ReflectionEnum($possibleEnumCast);
             }
