@@ -233,7 +233,8 @@ trait Query
         }
 
         $crudQuery = $query->toBase()->clone();
-        $modelTable = $this->model->getTableWithPrefix();
+
+        $modelTable = $this->model->getTable();
 
         // create an "outer" query, the one that is responsible to do the count of the "crud query".
         $outerQuery = $crudQuery->newQuery();
