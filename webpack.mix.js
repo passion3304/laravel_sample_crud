@@ -74,7 +74,8 @@ mix.copy('node_modules/bootstrap-datepicker/dist', 'src/public/packages/bootstra
 	.copy('node_modules/datatables.net-responsive-bs4', 'src/public/packages/datatables.net-responsive-bs4')
 	.copy('node_modules/places.js/dist', 'src/public/packages/places.js/dist')
 	.copy('node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js', 'src/public/packages/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js')
-	.copy('node_modules/urijs/src/URI.min.js', 'src/public/packages/URI.js/URI.min.js');
+    .copy('node_modules/urijs/src/URI.min.js', 'src/public/packages/URI.js/URI.min.js')
+    .copy('node_modules/intl-tel-input/build', 'src/public/packages/intl-tel-input/build');
 
 // FOR MAINTAINERS
 // copy asset files from Base's public folder the main app's public folder
