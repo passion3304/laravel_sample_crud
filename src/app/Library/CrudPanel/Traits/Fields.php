@@ -162,7 +162,7 @@ trait Fields
             return false;
         }
 
-        $firstField = array_keys(array_slice($this->getCleanFields(), 0, 1))[0];
+        $firstField = array_keys(array_slice($this->getCleanStateFields(), 0, 1))[0];
         $this->beforeField($firstField);
     }
 
