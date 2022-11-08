@@ -21,7 +21,7 @@ build:
                     - php-scrutinizer-run
     dependencies:
         override:
-            - true
+            - composer install --dev
 tools:
     php_analyzer: true
     php_mess_detector: true
