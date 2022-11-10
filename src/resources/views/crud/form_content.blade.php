@@ -190,14 +190,26 @@
                         $('[name="' + normalizedProperty + '[]"]') :
                         $('[name="' + normalizedProperty + '"]'),
                         container = field.parent('.form-group');
-          
+
+            // Check if phone field
+            if(field.length > 0 && container.length == 0) {
+                if(field.parent().hasClass('iti')) {
+                    container = field.parent().parent('.form-group');
+                }
+            }
+
             // iterate the inputs to add invalid classes to fields and red text to the field container.
-            container.children('input, textarea, select').each(function() {
+            container.find('input, textarea, select').each(function() {
                 let containerField = $(this);
                 // add the invalida class to the field.
                 containerField.addClass('is-invalid');
                 // get field container
                 let container = containerField.parent('.form-group');
+
+                // Check if phone field
+                if(field.parent().hasClass('iti')) {
+                    let container = containerField.parent().parent('.form-group');
+                }
 
                 // TODO: `repeatable-group` should be deprecated in future version as a BC in favor of a more generic class `no-error-display`
                 if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
@@ -213,7 +225,7 @@
                 if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
                   row.appendTo(container);
                 }
-                
+
 
                 // highlight its parent tab
                 @if ($crud->tabsEnabled())
