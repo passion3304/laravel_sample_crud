@@ -75,10 +75,10 @@ class ViewNamespaces
 
     /**
      * This is an helper function that returns the view namespace with the view name appended.
-     * It's usefull to use in blade templates with `@includeFirst(ViewNamespaces::getViewPathsFor('columns', 'some_column'))`
+     * It's usefull to use in blade templates with `@includeFirst(ViewNamespaces::getViewPathsFor('columns', 'some_column'))`.
      *
-     * @param string $domain
-     * @param string $viewName
+     * @param  string  $domain
+     * @param  string  $viewName
      * @return array
      */
     public static function getViewPathsFor(string $domain, string $viewName)
