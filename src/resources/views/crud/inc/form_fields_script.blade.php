@@ -9,10 +9,8 @@
     class CrudField {
         constructor(name) {
             this.name = name;
-
-            // get the input/textarea/select that has that field name
-            this.$input = $(`input[name="${this.name}"], textarea[name="${this.name}"], select[name="${this.name}"], select[name="${this.name}[]"]`).first();
-
+            // get the current input
+            this.$input = this.activeInput;
             // get the field wraper
             this.wrapper = this.inputWrapper;
 
@@ -34,6 +32,13 @@
 
             return this;
 
+        }
+
+        get activeInput() {
+            // get the input/textarea/select that has that field name
+            this.$input = $(`input[name="${this.name}"], textarea[name="${this.name}"], select[name="${this.name}"], select[name="${this.name}[]"]`);
+            let possibleInput = this.$input.length === 1 ? this.$input : this.$input.filter(function() { return $(this).closest('[id=inline-create-dialog]').length });
+            return possibleInput.length === 1 ? possibleInput : this.$input.first();
         }
 
         get mainInput() {
