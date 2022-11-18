@@ -6,6 +6,7 @@ use Backpack\CRUD\Tests\Unit\Models\User;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Columns
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\ColumnsProtectedMethods
  */
 class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 {

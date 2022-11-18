@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Update
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods
  */
 class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 {

@@ -9,12 +9,15 @@ use Backpack\CRUD\Tests\Unit\Models\Planet;
 use Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable;
 use Backpack\CRUD\Tests\Unit\Models\Universe;
 use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\Unit\Models\Bill;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Create
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Update
  */
 class CrudPanelCreateTest extends BaseDBCrudPanelTest
 {
@@ -315,7 +318,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         //get all fields with a relation
         $relationFields = $this->crudPanel->getRelationFields();
-        //var_dump($this->crudPanel->get('create.fields')['street']);
 
         $this->assertEquals($this->crudPanel->get('create.fields')['street'], Arr::last($relationFields));
     }
@@ -340,6 +342,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             ],
         ];
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->nickname, 'i_have_has_one');
@@ -381,7 +384,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertEmpty($relationFields);
     }
-
+   
     public function testMorphToManySelectableRelationship()
     {
         $this->crudPanel->setModel(User::class);
@@ -398,6 +401,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(1, $entry->bills);
 
@@ -437,6 +442,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(1, $entry->recommends);
 
@@ -494,7 +500,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
-
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
+        
         $this->assertCount(1, $entry->fresh()->superArticles);
         $this->assertEquals('my first article note', $entry->fresh()->superArticles->first()->pivot->notes);
     }
@@ -580,6 +587,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->article, Article::find(1));
@@ -625,6 +633,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
         $this->crudPanel->entry = $entry->withFakes();
         $this->assertEquals($entry->bang_relation_field, 1);
     }
@@ -705,6 +714,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->article, Article::find(1));
@@ -773,6 +783,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertEquals($inputData['comment']['text'], $entry->comment->text);
 
@@ -815,6 +826,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(2, $entry->stars);
 
@@ -866,6 +878,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(2, $entry->universes);
 
@@ -942,6 +955,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(2, $entry->planets);
 
@@ -1384,5 +1398,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $superArticle = $entry->fresh()->superArticles->first();
         $this->assertEquals($superArticle->pivot->start_date, '2021-02-26');
         $this->assertEquals($superArticle->pivot->end_date, '2091-01-26');
+
+        $this->crudPanel->getUpdateFields($superArticle->id);
     }
 }
