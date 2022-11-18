@@ -1,4 +1,5 @@
 <?php
+
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 /**
@@ -12,15 +13,15 @@ class CrudPanelErrorsTest extends BaseCrudPanelTest
         $this->crudPanel->enableInlineErrors();
         $this->assertTrue($this->crudPanel->inlineErrorsEnabled());
         $this->crudPanel->disableInlineErrors();
-        $this->assertFalse($this->crudPanel->inlineErrorsEnabled());      
+        $this->assertFalse($this->crudPanel->inlineErrorsEnabled());
     }
 
     public function testItCanEnableAndDisableGroupedErrors()
     {
-         $this->crudPanel->setOperation('create');
-         $this->crudPanel->enableGroupedErrors();
-         $this->assertTrue($this->crudPanel->groupedErrorsEnabled());
-         $this->crudPanel->disableGroupedErrors();
-         $this->assertFalse($this->crudPanel->groupedErrorsEnabled());  
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->enableGroupedErrors();
+        $this->assertTrue($this->crudPanel->groupedErrorsEnabled());
+        $this->crudPanel->disableGroupedErrors();
+        $this->assertFalse($this->crudPanel->groupedErrorsEnabled());
     }
 }

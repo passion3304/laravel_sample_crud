@@ -15,7 +15,7 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(\Backpack\CRUD\Tests81\Unit\Models\UserWithReturnTypes::class);
         $this->crudPanel->addField('isAnAttribute');
         $this->crudPanel->addField('isARelation');
-     
+
         $this->assertEquals(false, $this->crudPanel->fields()['isAnAttribute']['entity']);
         $this->assertEquals(true, $this->crudPanel->fields()['isARelation']['entity']);
     }

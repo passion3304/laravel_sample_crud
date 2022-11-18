@@ -10,7 +10,6 @@ use Illuminate\Routing\Route;
  */
 class CrudPanelTitlesAndHeadingsTest extends BaseDBCrudPanelTest
 {
-
     public function testItCanSetAndGetTheTitleFromTheAction()
     {
         $this->crudPanel->setTitle('test', 'create');
@@ -73,7 +72,7 @@ class CrudPanelTitlesAndHeadingsTest extends BaseDBCrudPanelTest
 
         $this->crudPanel->setOperation('create');
         $this->crudPanel->setTitle('test');
-        
+
         $this->assertEquals('test', $this->crudPanel->getTitle());
         $this->assertEquals($this->crudPanel->get('create.title'), $this->crudPanel->getTitle());
     }

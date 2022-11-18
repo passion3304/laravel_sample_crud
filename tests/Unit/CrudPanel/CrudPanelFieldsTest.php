@@ -654,22 +654,22 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
             new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Looks like field <code>doesNotExist</code> is not properly defined. The <code>doesNotExist()</code> relationship doesn\'t seem to exist on the <code>Backpack\CRUD\Tests\Unit\Models\TestModel</code> model.'),
             $e
         );
-    } 
+    }
 
-    public function testItCanRemoveAllFields() {
+    public function testItCanRemoveAllFields()
+    {
         $this->crudPanel->addFields([
             ['name' => 'test1'],
-            ['name' => 'test2']
+            ['name' => 'test2'],
         ]);
 
         $this->assertCount(2, $this->crudPanel->fieldS());
         $this->crudPanel->removeAllFields();
         $this->assertCount(0, $this->crudPanel->fieldS());
-
-        
     }
 
-    public function testItCanRemoveAnAttributeFromAField() {
+    public function testItCanRemoveAnAttributeFromAField()
+    {
         $this->crudPanel->addField(['name' => 'test', 'tab' => 'test']);
 
         $this->assertEquals('test', $this->crudPanel->fieldS()['test']['tab']);
@@ -677,7 +677,8 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $this->assertNull($this->crudPanel->fieldS()['test']['tab'] ?? null);
     }
 
-    public function testItCanSetALabelForAField() {
+    public function testItCanSetALabelForAField()
+    {
         $this->crudPanel->addField(['name' => 'test', 'tab' => 'test']);
         $this->crudPanel->setFieldLabel('test', 'my-test-label');
         $this->assertEquals('my-test-label', $this->crudPanel->fieldS()['test']['label']);
@@ -690,7 +691,6 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $this->assertEquals(['test1', 'test2'], array_keys($this->crudPanel->fields()));
         $secondField->makeFirstField();
         $this->assertEquals(['test2', 'test1'], array_keys($this->crudPanel->fields()));
-
     }
 
     public function testItCanGetTheCurrentFields()
@@ -714,7 +714,7 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
     public function testItCanGetTheFieldTypeWithViewNamespace()
     {
         $this->crudPanel->addField(['name' => 'test', 'view_namespace' => 'test_namespace']);
-        $this->assertEquals('test_namespace.text', $this->crudPanel->getFieldTypeWithNamespace($this->crudPanel->fields()['test']));   
+        $this->assertEquals('test_namespace.text', $this->crudPanel->getFieldTypeWithNamespace($this->crudPanel->fields()['test']));
     }
 
     public function testItCanGetAllFieldNames()

@@ -1,4 +1,5 @@
 <?php
+
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 /**
@@ -6,12 +7,12 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
  */
 class CrudPanelAutofocusTest extends BaseCrudPanelTest
 {
-     public function testItCanEnableAndDisableAutofocus()
-     {
-          $this->crudPanel->setOperation('create');
-          $this->crudPanel->enableAutoFocus();
-          $this->assertTrue($this->crudPanel->getAutoFocusOnFirstField());
-          $this->crudPanel->disableAutofocus();
-          $this->assertFalse($this->crudPanel->getAutoFocusOnFirstField());
-     }
+    public function testItCanEnableAndDisableAutofocus()
+    {
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->enableAutoFocus();
+        $this->assertTrue($this->crudPanel->getAutoFocusOnFirstField());
+        $this->crudPanel->disableAutofocus();
+        $this->assertFalse($this->crudPanel->getAutoFocusOnFirstField());
+    }
 }

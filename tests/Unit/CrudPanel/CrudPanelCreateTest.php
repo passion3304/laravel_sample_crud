@@ -9,7 +9,6 @@ use Backpack\CRUD\Tests\Unit\Models\Planet;
 use Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable;
 use Backpack\CRUD\Tests\Unit\Models\Universe;
 use Backpack\CRUD\Tests\Unit\Models\User;
-use Backpack\CRUD\Tests\Unit\Models\Bill;
 use Faker\Factory;
 use Illuminate\Support\Arr;
 
@@ -384,7 +383,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertEmpty($relationFields);
     }
-   
+
     public function testMorphToManySelectableRelationship()
     {
         $this->crudPanel->setModel(User::class);
@@ -401,7 +400,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
-        
+
         $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(1, $entry->bills);
@@ -501,7 +500,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $entry = $this->crudPanel->create($inputData);
         $updateFields = $this->crudPanel->getUpdateFields($entry->id);
-        
+
         $this->assertCount(1, $entry->fresh()->superArticles);
         $this->assertEquals('my first article note', $entry->fresh()->superArticles->first()->pivot->notes);
     }
