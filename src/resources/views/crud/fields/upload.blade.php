@@ -4,7 +4,7 @@
     $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
 @endphp
 
-<!-- text input -->
+{{-- text input --}}
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
@@ -166,6 +166,26 @@
                 // remove the hidden input, so that the setXAttribute method is no longer triggered
                 $(this).next("input[type=hidden]").remove();
             });
+
+            element.on('CrudField:disable', function(e) {
+              element.children('.backstrap-file').find('input').prop('disabled', 'disabled');
+              
+              let $deleteButton = element.children('.existing-file').children('a.file_clear_button');
+              
+              if($deleteButton.length > 0) {
+                $deleteButton.on('click.prevent', function(e) {
+                    e.stopImmediatePropagation();
+                    return false;
+                  });
+                  // make the event we just registered, the first to be triggered
+                  $._data($deleteButton.get(0), "events").click.reverse();
+              }
+          });
+
+          element.on('CrudField:enable', function(e) {
+            element.children('.backstrap-file').find('input').removeAttr('disabled');
+            element.children('.existing-file').children('a.file_clear_button').unbind('click.prevent');
+          });
 
         }
     </script>

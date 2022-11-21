@@ -41,6 +41,8 @@ class CreatePivotableRelationsTables extends Migration
             $table->integer('article_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->string('notes');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->nullableTimestamps();
         });
 
@@ -67,11 +69,27 @@ class CreatePivotableRelationsTables extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id');
             $table->string('title')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
         });
 
         Schema::create('planets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->nullable();
+            $table->string('title')->nullable();
+        });
+
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->bigIncrements('id')->unique();
+            $table->bigInteger('user_id');
+            $table->string('label')->nullable();
+            $table->bigInteger('amount');
+            $table->string('type');
+        });
+
+        Schema::create('planets_non_nullable', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('user_id');
             $table->string('title')->nullable();
         });
 

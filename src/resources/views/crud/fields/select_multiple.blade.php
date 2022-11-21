@@ -1,4 +1,4 @@
-<!-- select multiple -->
+{{-- select multiple --}}
 @php
     if (!isset($field['options'])) {
         $options = $field['model']::all();
@@ -25,6 +25,7 @@
     	class="form-control"
         name="{{ $field['name'] }}[]"
         @include('crud::fields.inc.attributes')
+        bp-field-main-input
     	multiple>
 
     	@if (count($options))

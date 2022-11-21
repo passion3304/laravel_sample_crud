@@ -1,20 +1,20 @@
 <nav class="navbar navbar-expand-lg navbar-filters mb-0 pb-0 pt-0">
-      <!-- Brand and toggle get grouped for better mobile display -->
+      {{-- Brand and toggle get grouped for better mobile display --}}
       <a class="nav-item d-none d-lg-block"><span class="la la-filter"></span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bp-filters-navbar" aria-controls="bp-filters-navbar" aria-expanded="false" aria-label="{{ trans('backpack::crud.toggle_filters') }}">
         <span class="la la-filter"></span> {{ trans('backpack::crud.filters') }}
       </button>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
+      {{-- Collect the nav links, forms, and other content for toggling --}}
       <div class="collapse navbar-collapse" id="bp-filters-navbar">
         <ul class="nav navbar-nav">
-          <!-- THE ACTUAL FILTERS -->
+          {{-- THE ACTUAL FILTERS --}}
     			@foreach ($crud->filters() as $filter)
     				@includeFirst($filter->getNamespacedViewWithFallbacks())
     			@endforeach
           <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'invisible' }}"><i class="la la-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
-      </div><!-- /.navbar-collapse -->
+      </div>{{-- /.navbar-collapse --}}
   </nav>
 
 @push('crud_list_scripts')

@@ -8,7 +8,7 @@
 
     @yield('before_styles')
     @stack('before_styles')
-    
+
     @if (config('backpack.base.styles') && count(config('backpack.base.styles')))
         @foreach (config('backpack.base.styles') as $path)
         <link rel="stylesheet" type="text/css" href="{{ asset($path).'?v='.config('backpack.base.cachebusting_string') }}">
@@ -21,11 +21,15 @@
         @endforeach
     @endif
 
+    @if (config('backpack.base.vite_styles') && count(config('backpack.base.vite_styles')))
+        @vite(config('backpack.base.vite_styles'))
+    @endif
+
     @yield('after_styles')
     @stack('after_styles')
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    {{-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --}}
+    {{-- WARNING: Respond.js doesn't work if you view the page via file:// --}}
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>

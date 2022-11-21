@@ -65,13 +65,14 @@ trait UpdateOperation
         $this->crud->hasAccessOrFail('update');
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
-        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
         // get the info for that entry
-        $this->data['entry'] = $this->crud->getEntry($id);
+
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
         $this->data['crud'] = $this->crud;
         $this->data['saveAction'] = $this->crud->getSaveAction();
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
-
         $this->data['id'] = $id;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
@@ -81,7 +82,7 @@ trait UpdateOperation
     /**
      * Update the specified resource in the database.
      *
-     * @return \Illuminate\Http\Response
+     * @return array|\Illuminate\Http\RedirectResponse
      */
     public function update()
     {

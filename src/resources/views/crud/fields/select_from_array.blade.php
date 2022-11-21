@@ -3,7 +3,7 @@
     $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
     $field['multiple'] = $field['allows_multiple'] ?? $field['multiple'] ?? false;
 @endphp
-<!-- select from array -->
+{{-- select from array --}}
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
@@ -11,7 +11,7 @@
     <select
         name="{{ $field['name'] }}@if ($field['multiple'])[]@endif"
         @include('crud::fields.inc.attributes')
-        @if ($field['multiple'])multiple @endif
+        @if ($field['multiple'])multiple bp-field-main-input @endif
         >
 
         @if ($field['allows_null'] && !$field['multiple'])

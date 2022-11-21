@@ -107,6 +107,10 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasName($field)
     {
+        if (empty($field)) {
+            abort(500, 'Field name can\'t be empty');
+        }
+
         if (is_string($field)) {
             return ['name' => $field];
         }
@@ -128,11 +132,14 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasEntity($field)
     {
-        $model = isset($field['baseModel']) ? app($field['baseModel']) : $this->model;
+        $model = isset($field['baseModel']) ? (new $field['baseModel']) : $this->model;
 
         if (isset($field['entity'])) {
             return $field;
         }
+
+        // by default, entity is false if we cannot link it with guessing functions to a relation
+        $field['entity'] = false;
 
         // if the name is an array it's definitely not a relationship
         if (is_array($field['name'])) {
@@ -174,10 +181,19 @@ trait FieldsProtectedMethods
 
     protected function makeSureFieldHasAttribute($field)
     {
+        if ($field['entity']) {
+            // if the user setup the attribute in relation string, we are not going to infer that attribute from model
+            // instead we get the defined attribute by the user.
+            if ($this->isAttributeInRelationString($field)) {
+                $field['attribute'] = $field['attribute'] ?? Str::afterLast($field['entity'], '.');
+
+                return $field;
+            }
+        }
         // if there's a model defined, but no attribute
         // guess an attribute using the identifiableAttribute functionality in CrudTrait
         if (isset($field['model']) && ! isset($field['attribute']) && method_exists($field['model'], 'identifiableAttribute')) {
-            $field['attribute'] = call_user_func([(new $field['model']()), 'identifiableAttribute']);
+            $field['attribute'] = (new $field['model']())->identifiableAttribute();
         }
 
         return $field;
@@ -252,10 +268,16 @@ trait FieldsProtectedMethods
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
+            if (empty($field)) {
+                abort(500, 'Field name can\'t be empty');
+            }
+
             // make sure the field definition is an array
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
             }
+
+            $subfield['parentFieldName'] = is_array($field['name']) ? false : $field['name'];
 
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
@@ -269,6 +291,8 @@ trait FieldsProtectedMethods
                 $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
                 $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
                 $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity;
+                $subfield['baseFieldName'] = is_array($subfield['name']) ? implode(',', $subfield['name']) : $subfield['name'];
+                $subfield['baseFieldName'] = Str::afterLast($subfield['baseFieldName'], '.');
             }
 
             $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
@@ -281,6 +305,7 @@ trait FieldsProtectedMethods
                 case 'MorphToMany':
                 case 'BelongsToMany':
                     $pivotSelectorField = static::getPivotFieldStructure($field);
+                    $this->setupFieldValidation($pivotSelectorField, $field['name']);
                     $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
                     break;
                 case 'MorphMany':
@@ -288,10 +313,10 @@ trait FieldsProtectedMethods
                     $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
                     $relationInstance = $this->getRelationInstance(['entity' => $entity]);
                     $field['subfields'] = Arr::prepend($field['subfields'], [
-                        'name' => $relationInstance->getLocalKeyName(),
+                        'name' => $relationInstance->getRelated()->getKeyName(),
                         'type' => 'hidden',
                     ]);
-                break;
+                    break;
             }
         }
 

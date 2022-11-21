@@ -192,30 +192,14 @@ trait ColumnsProtectedMethods
 
             // if the first part of the string exists as method in the model
             if (method_exists($this->model, $possibleMethodName)) {
-
                 // check model method for possibility of being a relationship
                 $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName) ? $column['name'] : false;
 
                 if ($column['entity']) {
-                    $parts = explode('.', $column['entity']);
-
-                    $attribute_in_relation = false;
-
-                    $model = $this->model;
-
-                    // here we are going to iterate through all relation parts to check
-                    // if the attribute is present in the relation string.
-                    foreach ($parts as $i => $part) {
-                        try {
-                            $model = $model->$part()->getRelated();
-                        } catch (\Exception $e) {
-                            $attribute_in_relation = true;
-                        }
-                    }
                     // if the user setup the attribute in relation string, we are not going to infer that attribute from model
                     // instead we get the defined attribute by the user.
-                    if ($attribute_in_relation) {
-                        $column['attribute'] = $column['attribute'] ?? end($parts);
+                    if ($this->isAttributeInRelationString($column)) {
+                        $column['attribute'] = $column['attribute'] ?? Str::afterLast($column['entity'], '.');
                     }
                 }
 
@@ -225,8 +209,7 @@ trait ColumnsProtectedMethods
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $column['name'])) {
-
-             // check model method for possibility of being a relationship
+            // check model method for possibility of being a relationship
             $column['entity'] = $this->modelMethodIsRelationship($this->model, $column['name']);
 
             return $column;

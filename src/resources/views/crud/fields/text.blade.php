@@ -1,4 +1,4 @@
-<!-- text input -->
+{{-- text input --}}
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>

@@ -20,7 +20,7 @@
                 let primaryKeyValue = checkbox.dataset.primaryKeyValue;
 
                 crud.checkedItems ??= [];
-
+                
                 if (checked) {
                     // add item to crud.checkedItems variable
                     crud.checkedItems.push(primaryKeyValue);
@@ -28,11 +28,14 @@
                     // if shift has been pressed, also select all elements
                     // between the last checked item and this one
                     if (crud.lastCheckedItem && e.shiftKey) {
+                        let getNodeindex = elm => [...elm.parentNode.children].indexOf(elm);
                         let first = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${crud.lastCheckedItem}"]`).closest('tr');
-                        let end = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${primaryKeyValue}"]`).closest('tr');
-
-                        while(first !== end) {
-                            first = first.nextElementSibling;
+                        let last = document.querySelector(`input.crud_bulk_actions_line_checkbox[data-primary-key-value="${primaryKeyValue}"]`).closest('tr');
+                        let firstIndex = getNodeindex(first);
+                        let lastIndex = getNodeindex(last)
+                        
+                        while(first !== last) {
+                            first = firstIndex < lastIndex ? first.nextElementSibling : first.previousElementSibling;
                             first.querySelector('input.crud_bulk_actions_line_checkbox:not(:checked)')?.click();
                         }
                     }
@@ -49,22 +52,39 @@
                 enableOrDisableBulkButtons();
             });
         }
-
-        // activate checkbox if the page reloaded and the item is remembered as selected
-        // make it so that the function above is run after each DataTable draw event
-        crud.addFunctionToDataTablesDrawEventQueue('addOrRemoveCrudCheckedItem');
     }
 
     if (typeof markCheckboxAsCheckedIfPreviouslySelected !== 'function') {
         function markCheckboxAsCheckedIfPreviouslySelected() {
+            let checkedItems = crud.checkedItems ?? [];
+            let pageChanged = localStorage.getItem('page_changed') ?? false;
+            let tableUrl = crud.table.ajax.url();
+            let hasFilterApplied = false;
+
+            if (tableUrl.indexOf('?') > -1) {
+                if (tableUrl.substring(tableUrl.indexOf('?') + 1).length > 0) {
+                    hasFilterApplied = true;
+                }
+            }
+
+            // if it was not a page change, we check if datatables have any search, or the url have any parameters.
+            // if you have filtered entries, and then remove the filters we are sure the entries are in the table.
+            // we don't remove them in that case.
+            if (! pageChanged && (crud.table.search().length !== 0 || hasFilterApplied)) {
+                crud.checkedItems = [];
+            }
             document
                 .querySelectorAll('input.crud_bulk_actions_line_checkbox[data-primary-key-value]')
-                .forEach(elem => elem.checked = crud.checkedItems?.length && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) > -1);
+                .forEach(function(elem) {
+                    let checked = checkedItems.length && checkedItems.indexOf(elem.dataset.primaryKeyValue) > -1;
+                    elem.checked = checked;
+                    if (checked && crud.checkedItems.indexOf(elem.dataset.primaryKeyValue) === -1) {
+                        crud.checkedItems.push(elem.dataset.primaryKeyValue);
+                    }
+                });
+            
+            localStorage.removeItem('page_changed');
         }
-
-        // activate checkbox if the page reloaded and the item is remembered as selected
-        // make it so that the function above is run after each DataTable draw event
-        crud.addFunctionToDataTablesDrawEventQueue('markCheckboxAsCheckedIfPreviouslySelected');
     }
 
     if (typeof addBulkActionMainCheckboxesFunctionality !== 'function') {
@@ -90,19 +110,18 @@
             // Stop propagation of href on the first column
             document.querySelectorAll('table td.dtr-control a').forEach(link => link.onclick = e => e.stopPropagation());
         }
-
-        // run this function on DataTable draw event
-        crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
     }
 
     if (typeof enableOrDisableBulkButtons !== 'function') {
         function enableOrDisableBulkButtons() {
             document.querySelectorAll('.bulk-button').forEach(btn => btn.classList.toggle('disabled', !crud.checkedItems?.length));
         }
-
-        // run this function on DataTable draw event
-        crud.addFunctionToDataTablesDrawEventQueue('enableOrDisableBulkButtons');
     }
+
+    crud.addFunctionToDataTablesDrawEventQueue('addOrRemoveCrudCheckedItem');
+    crud.addFunctionToDataTablesDrawEventQueue('markCheckboxAsCheckedIfPreviouslySelected');
+    crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
+    crud.addFunctionToDataTablesDrawEventQueue('enableOrDisableBulkButtons');
     </script>
     @endLoadOnce
 @endif

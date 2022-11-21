@@ -45,7 +45,7 @@ trait Filters
      * Add a filter to the CRUD table view.
      *
      * @param  array  $options  Name, type, label, etc.
-     * @param  bool|array|\Closure  $values  The HTML for the filter.
+     * @param  bool|string|array|\Closure  $values  The HTML for the filter.
      * @param  bool|\Closure  $filterLogic  Query modification (filtering) logic when filter is active.
      * @param  bool|\Closure  $fallbackLogic  Query modification (filtering) logic when filter is not active.
      */
@@ -62,7 +62,7 @@ trait Filters
      * The filter will NOT get applied.
      *
      * @param  array  $options  Name, type, label, etc.
-     * @param  bool|array|\Closure  $values  The HTML for the filter.
+     * @param  bool|string|array|\Closure  $values  The HTML for the filter.
      * @param  bool|\Closure  $filterLogic  Query modification (filtering) logic when filter is active.
      * @param  bool|\Closure  $fallbackLogic  Query modification (filtering) logic when filter is not active.
      */

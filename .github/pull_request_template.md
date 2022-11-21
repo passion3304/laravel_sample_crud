@@ -17,7 +17,7 @@
 
 
 
-### Is it a breaking change or non-breaking change?
+### Is it a breaking change?
 
 ??
 
