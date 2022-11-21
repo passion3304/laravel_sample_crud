@@ -17,6 +17,7 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\Install::class,
         \Backpack\CRUD\app\Console\Commands\AddSidebarContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
+        \Backpack\CRUD\app\Console\Commands\Update::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
