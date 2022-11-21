@@ -2,9 +2,15 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait Query
 {
+    /** @var Builder */
     public $query;
+
+    /** @var Builder */
+    public $totalQuery;
 
     // ----------------
     // ADVANCED QUERIES
@@ -16,7 +22,7 @@ trait Query
      * Examples:
      * $this->crud->addClause('active');
      * $this->crud->addClause('type', 'car');
-     * $this->crud->addClause('where', 'name', '==', 'car');
+     * $this->crud->addClause('where', 'name', '=', 'car');
      * $this->crud->addClause('whereName', 'car');
      * $this->crud->addClause('whereHas', 'posts', function($query) {
      *     $query->activePosts();
@@ -27,7 +33,34 @@ trait Query
      */
     public function addClause($function)
     {
+        if ($function instanceof \Closure) {
+            $function($this->query);
+
+            return $this->query;
+        }
+
         return call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
+    }
+
+    /**
+     * This function is an alias of `addClause` but also adds the query as a constrain
+     * in the `totalQuery` property.
+     *
+     * @param  \Closure|string  $function
+     * @return self
+     */
+    public function addBaseClause($function)
+    {
+        if ($function instanceof \Closure) {
+            $function($this->query);
+            $function($this->totalQuery);
+
+            return $this;
+        }
+        call_user_func_array([$this->query, $function], array_slice(func_get_args(), 1));
+        call_user_func_array([$this->totalQuery, $function], array_slice(func_get_args(), 1));
+
+        return $this;
     }
 
     /**
@@ -147,5 +180,76 @@ trait Query
         }
 
         return $this->query->orderBy($column_name, $column_direction);
+    }
+
+    /**
+     * Get the entries count from `totalQuery`.
+     *
+     * @return int
+     */
+    public function getTotalQueryCount()
+    {
+        if (! $this->getOperationSetting('showEntryCount')) {
+            return 0;
+        }
+
+        return  $this->getOperationSetting('totalEntryCount') ??
+                $this->getCountFromQuery($this->totalQuery);
+    }
+
+    /**
+     * Get the entries count from the `query`.
+     *
+     * @return int
+     */
+    public function getQueryCount()
+    {
+        return $this->getCountFromQuery($this->query);
+    }
+
+    /**
+     * Return the filtered query count or skip the counting when the `totalQuery` is the same as the filtered one.
+     *
+     * @return int|null
+     */
+    public function getFilteredQueryCount()
+    {
+        // check if the filtered query is different from total query, in case they are the same, skip the count
+        $filteredQuery = $this->query->toBase()->cloneWithout(['orders', 'limit', 'offset']);
+
+        return $filteredQuery->toSql() !== $this->totalQuery->toSql() ? $this->getQueryCount() : null;
+    }
+
+    /**
+     * Do a separate query to get the total number of entries, in an optimized way.
+     *
+     * @param  Builder  $query
+     * @return int
+     */
+    private function getCountFromQuery(Builder $query)
+    {
+        if (! $this->driverIsSql()) {
+            return $query->count();
+        }
+
+        $crudQuery = $query->toBase()->clone();
+
+        $modelTable = $this->model->getTable();
+
+        // create an "outer" query, the one that is responsible to do the count of the "crud query".
+        $outerQuery = $crudQuery->newQuery();
+
+        // add the count query in the "outer" query.
+        $outerQuery = $outerQuery->selectRaw('count(*) as total_rows');
+
+        // add the subquery from where the "outer query" will count the results.
+        // this subquery is the "main crud query" without some properties:
+        // - columns : we manually select the "minimum" columns possible from database.
+        // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
+        $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
+
+        $outerQuery = $outerQuery->fromSub($subQuery->select($modelTable.'.'.$this->model->getKeyName()), $modelTable.'_aggregator');
+
+        return $outerQuery->cursor()->first()->total_rows;
     }
 }

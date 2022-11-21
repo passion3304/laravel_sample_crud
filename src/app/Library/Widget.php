@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\CRUD\ViewNamespaces;
 use Illuminate\Support\Fluent;
 
 /**
@@ -45,6 +46,28 @@ class Widget extends Fluent
         $attributes['type'] = $attributes['type'] ?? 'card';
 
         return new static($attributes);
+    }
+
+    /**
+     * Return the widget attribute value or null when it doesn't exist.
+     *
+     * @param  string  $attribute
+     * @return mixed
+     */
+    public function getAttribute(string $attribute)
+    {
+        return $this->attributes[$attribute] ?? null;
+    }
+
+    /**
+     * Check if widget has the attribute.
+     *
+     * @param  string  $attribute
+     * @return bool
+     */
+    public function hasAttribute(string $attribute)
+    {
+        return array_key_exists($attribute, $this->attributes);
     }
 
     /**
@@ -136,7 +159,7 @@ class Widget extends Fluent
         $type = $this->type;
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, app('crud')->getViewNamespacesWithFallbackFor('widgets', 'backpack.base.component_view_namespaces.widgets'));
+        }, ViewNamespaces::getWithFallbackFor('widgets', 'backpack.base.component_view_namespaces.widgets'));
 
         foreach ($paths as $path) {
             if (view()->exists($path)) {

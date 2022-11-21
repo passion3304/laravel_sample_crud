@@ -132,7 +132,7 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasEntity($field)
     {
-        $model = isset($field['baseModel']) ? app($field['baseModel']) : $this->model;
+        $model = isset($field['baseModel']) ? (new $field['baseModel']) : $this->model;
 
         if (isset($field['entity'])) {
             return $field;
@@ -181,10 +181,19 @@ trait FieldsProtectedMethods
 
     protected function makeSureFieldHasAttribute($field)
     {
+        if ($field['entity']) {
+            // if the user setup the attribute in relation string, we are not going to infer that attribute from model
+            // instead we get the defined attribute by the user.
+            if ($this->isAttributeInRelationString($field)) {
+                $field['attribute'] = $field['attribute'] ?? Str::afterLast($field['entity'], '.');
+
+                return $field;
+            }
+        }
         // if there's a model defined, but no attribute
         // guess an attribute using the identifiableAttribute functionality in CrudTrait
         if (isset($field['model']) && ! isset($field['attribute']) && method_exists($field['model'], 'identifiableAttribute')) {
-            $field['attribute'] = call_user_func([(new $field['model']()), 'identifiableAttribute']);
+            $field['attribute'] = (new $field['model']())->identifiableAttribute();
         }
 
         return $field;
@@ -282,6 +291,8 @@ trait FieldsProtectedMethods
                 $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
                 $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
                 $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity;
+                $subfield['baseFieldName'] = is_array($subfield['name']) ? implode(',', $subfield['name']) : $subfield['name'];
+                $subfield['baseFieldName'] = Str::afterLast($subfield['baseFieldName'], '.');
             }
 
             $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
@@ -305,7 +316,7 @@ trait FieldsProtectedMethods
                         'name' => $relationInstance->getRelated()->getKeyName(),
                         'type' => 'hidden',
                     ]);
-                break;
+                    break;
             }
         }
 

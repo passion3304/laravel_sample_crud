@@ -32,7 +32,7 @@
         }
     ],
     "require": {
-        "laravel/framework": "^9.0|^8.26",
+        "laravel/framework": "^9.0|^8.69",
         "prologue/alerts": "^1.0|^0.4",
         "digitallyhappy/assets": "^2.0.1",
         "creativeorange/gravatar": "~1.0",
@@ -53,7 +53,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Backpack\\CRUD\\Tests\\": "tests"
+            "Backpack\\CRUD\\Tests\\": "tests",
+            "Backpack\\CRUD\\Tests81\\": "tests81"
         },
         "files": ["src/helpers.php"],
         "exclude-from-classmap": [

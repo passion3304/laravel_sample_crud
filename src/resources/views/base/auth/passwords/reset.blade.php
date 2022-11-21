@@ -74,9 +74,9 @@
                     </form>
                     <div class="clearfix"></div>
                   </div>
-                  <!-- /.tab-pane -->
+                  {{-- /.tab-pane --}}
                 </div>
-                <!-- /.tab-content -->
+                {{-- /.tab-content --}}
               </div>
         </div>
     </div>

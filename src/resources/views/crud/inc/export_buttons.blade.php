@@ -8,6 +8,29 @@
   <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js" type="text/javascript"></script>
   <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js" type="text/javascript"></script>
   <script>
+    let dataTablesExportStrip = text => {
+        if ( typeof text !== 'string' ) {
+            return text;
+        }
+
+        return text
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+            .replace(/<!\-\-.*?\-\->/g, '')
+            .replace(/<[^>]*>/g, '')
+            .replace(/^\s+|\s+$/g, '')
+            .replace(/\s+([,.;:!\?])/g, '$1')
+            .replace(/\s+/g, ' ')
+            .replace(/[\n|\r]/g, ' ');
+    };
+
+    let dataTablesExportFormat = {
+        body: (data, row, column, node) => 
+            node.querySelector('input[type*="text"]')?.value ??
+            node.querySelector('input[type*="checkbox"]:not(.crud_bulk_actions_line_checkbox)')?.checked ??
+            node.querySelector('select')?.selectedOptions[0]?.value ??
+            dataTablesExportStrip(data),
+    };
+
     window.crud.dataTableConfiguration.buttons = [
         @if($crud->get('list.showExportButton'))
         {
@@ -22,7 +45,8 @@
                         columns: function ( idx, data, node ) {
                             var $column = crud.table.column( idx );
                                 return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
-                        }
+                        },
+                        format: dataTablesExportFormat,
                     },
                     action: function(e, dt, button, config) {
                         crud.responsiveToggle(dt);
@@ -37,7 +61,8 @@
                         columns: function ( idx, data, node ) {
                             var $column = crud.table.column( idx );
                                 return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
-                        }
+                        },
+                        format: dataTablesExportFormat,
                     },
                     action: function(e, dt, button, config) {
                         crud.responsiveToggle(dt);
@@ -52,7 +77,8 @@
                         columns: function ( idx, data, node ) {
                             var $column = crud.table.column( idx );
                                 return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
-                        }
+                        },
+                        format: dataTablesExportFormat,
                     },
                     action: function(e, dt, button, config) {
                         crud.responsiveToggle(dt);
@@ -67,7 +93,8 @@
                         columns: function ( idx, data, node ) {
                             var $column = crud.table.column( idx );
                                 return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
-                        }
+                        },
+                        format: dataTablesExportFormat,
                     },
                     orientation: 'landscape',
                     action: function(e, dt, button, config) {
@@ -83,7 +110,8 @@
                         columns: function ( idx, data, node ) {
                             var $column = crud.table.column( idx );
                                 return  ($column.visible() && $(node).attr('data-visible-in-export') != 'false') || $(node).attr('data-force-export') == 'true';
-                        }
+                        },
+                        format: dataTablesExportFormat,
                     },
                     action: function(e, dt, button, config) {
                         crud.responsiveToggle(dt);

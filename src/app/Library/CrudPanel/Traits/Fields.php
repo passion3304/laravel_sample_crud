@@ -53,6 +53,7 @@ trait Fields
 
         $field = $this->makeSureFieldHasType($field);
         $field = $this->makeSureSubfieldsHaveNecessaryAttributes($field);
+        $field = $this->makeSureMorphSubfieldsAreDefined($field);
 
         $this->setupFieldValidation($field, $field['parentFieldName'] ?? false);
 
@@ -161,7 +162,7 @@ trait Fields
             return false;
         }
 
-        $firstField = array_keys(array_slice($this->getCleanFields(), 0, 1))[0];
+        $firstField = array_keys(array_slice($this->getCleanStateFields(), 0, 1))[0];
         $this->beforeField($firstField);
     }
 
@@ -288,10 +289,8 @@ trait Fields
         $casted_attributes = $model->getCastedAttributes();
 
         foreach ($fields as $field) {
-
             // Test the field is castable
             if (isset($field['name']) && is_string($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
-
                 // Handle JSON field types
                 $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $casted_attributes[$field['name']];

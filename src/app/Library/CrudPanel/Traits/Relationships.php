@@ -228,7 +228,7 @@ trait Relationships
             case 'HasManyThrough':
             case 'MorphToMany':
                 return true;
-            break;
+                break;
             default:
                 return false;
         }
@@ -298,7 +298,7 @@ trait Relationships
         $pivotSelectorField['minimum_input_length'] = 2;
         $pivotSelectorField['delay'] = 500;
         $pivotSelectorField['placeholder'] = trans('backpack::crud.select_entry');
-        $pivotSelectorField['label'] = \Str::of($field['name'])->singular()->ucfirst();
+        $pivotSelectorField['label'] = Str::of($field['name'])->singular()->ucfirst();
         $pivotSelectorField['validationRules'] = 'required';
         $pivotSelectorField['validationMessages'] = [
             'required' => trans('backpack::crud.pivot_selector_required_validation_message'),
@@ -357,5 +357,39 @@ trait Relationships
         }
 
         return $method;
+    }
+
+    /**
+     * Check if it's possible that attribute is in the relation string when
+     * the last part of the string is not a method on the chained relations.
+     *
+     * @param  array  $field
+     * @return bool
+     */
+    private function isAttributeInRelationString($field)
+    {
+        if (! str_contains($field['entity'], '.')) {
+            return false;
+        }
+
+        $parts = explode('.', $field['entity']);
+
+        $model = $field['baseModel'] ?? $this->model;
+
+        $model = new $model;
+
+        // here we are going to iterate through all relation parts to check
+        // if the attribute is present in the relation string.
+        foreach ($parts as $i => $part) {
+            try {
+                $model = $model->$part()->getRelated();
+            } catch (\Exception $e) {
+                // return true if the last part of a relation string is not a method on the model
+                // so it's probably the attribute that we should show
+                return true;
+            }
+        }
+
+        return false;
     }
 }

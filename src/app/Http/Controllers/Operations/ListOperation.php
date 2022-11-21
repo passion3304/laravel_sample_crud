@@ -73,30 +73,41 @@ trait ListOperation
 
         $this->crud->applyUnappliedFilters();
 
-        $totalRows = $this->crud->model->count();
-        $filteredRows = $this->crud->query->toBase()->getCountForPagination();
-        $startIndex = request()->input('start') ?: 0;
+        $start = (int) request()->input('start');
+        $length = (int) request()->input('length');
+        $search = request()->input('search');
+
         // if a search term was present
-        if (request()->input('search') && request()->input('search')['value']) {
+        if ($search && $search['value'] ?? false) {
             // filter the results accordingly
-            $this->crud->applySearchTerm(request()->input('search')['value']);
-            // recalculate the number of filtered rows
-            $filteredRows = $this->crud->count();
+            $this->crud->applySearchTerm($search['value']);
         }
         // start the results according to the datatables pagination
-        if (request()->input('start')) {
-            $this->crud->skip((int) request()->input('start'));
+        if ($start) {
+            $this->crud->skip($start);
         }
         // limit the number of results according to the datatables pagination
-        if (request()->input('length')) {
-            $this->crud->take((int) request()->input('length'));
+        if ($length) {
+            $this->crud->take($length);
         }
         // overwrite any order set in the setup() method with the datatables order
         $this->crud->applyDatatableOrder();
 
         $entries = $this->crud->getEntries();
 
-        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
+        // if show entry count is disabled we use the "simplePagination" technique to move between pages.
+        if ($this->crud->getOperationSetting('showEntryCount')) {
+            $totalEntryCount = (int) (request()->get('totalEntryCount') ?: $this->crud->getTotalQueryCount());
+            $filteredEntryCount = $this->crud->getFilteredQueryCount() ?? $totalEntryCount;
+        } else {
+            $totalEntryCount = $length;
+            $filteredEntryCount = $entries->count() < $length ? 0 : $length + $start + 1;
+        }
+
+        // store the totalEntryCount in CrudPanel so that multiple blade files can access it
+        $this->crud->setOperationSetting('totalEntryCount', $totalEntryCount);
+
+        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalEntryCount, $filteredEntryCount, $start);
     }
 
     /**

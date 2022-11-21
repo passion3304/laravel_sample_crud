@@ -17,14 +17,14 @@
 
 @section('after_styles')
 
-    <!-- CRUD FORM CONTENT - crud_fields_styles stack -->
+    {{-- CRUD FORM CONTENT - crud_fields_styles stack --}}
     @stack('crud_fields_styles')
 
 @endsection
 
 @section('after_scripts')
 
-    <!-- CRUD FORM CONTENT - crud_fields_scripts stack -->
+    {{-- CRUD FORM CONTENT - crud_fields_scripts stack --}}
     @stack('crud_fields_scripts')
 
     <script>
@@ -47,6 +47,51 @@
         }
       });
     }
+
+    /**
+     * Auto-discover first focusable input
+     * @param {jQuery} form
+     * @return {jQuery}
+     */
+    function getFirstFocusableField(form) {
+        return form.find('input, select, textarea, button')
+            .not('.close')
+            .not('[disabled]')
+            .filter(':visible:first');
+    }
+
+    /**
+     *
+     * @param {jQuery} firstField
+     */
+    function triggerFocusOnFirstInputField(firstField) {
+        if (firstField.hasClass('select2-hidden-accessible')) {
+            return handleFocusOnSelect2Field(firstField);
+        }
+
+        firstField.trigger('focus');
+    }
+
+    /**
+     * 1- Make sure no other select2 input is open in other field to focus on the right one
+     * 2- Check until select2 is initialized
+     * 3- Open select2
+     *
+     * @param {jQuery} firstField
+     */
+    function handleFocusOnSelect2Field(firstField){
+        firstField.select2('focus');
+    }
+
+    /*
+    * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
+    * see: https://github.com/select2/select2/issues/5993
+    * see: https://github.com/jquery/jquery/issues/4382
+    *
+    */
+    $(document).on('select2:open', () => {
+        setTimeout(() => document.querySelector('.select2-container--open .select2-search__field').focus(), 100);
+    });
 
     jQuery('document').ready(function($){
 
@@ -109,19 +154,21 @@
           });
         @endphp
 
+        let focusField;
+
         @if ($focusField)
           @php
             $focusFieldName = isset($focusField['value']) && is_iterable($focusField['value']) ? $focusField['name'] . '[]' : $focusField['name'];
           @endphp
-          window.focusField = $('[name="{{ $focusFieldName }}"]').eq(0),
+            focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
         @else
-          var focusField = $('form').find('input, textarea, select').not('[type="hidden"]').eq(0),
+            focusField = getFirstFocusableField($('form'));
         @endif
 
-        fieldOffset = focusField.offset().top,
-        scrollTolerance = $(window).height() / 2;
+        const fieldOffset = focusField.offset().top;
+        const scrollTolerance = $(window).height() / 2;
 
-        focusField.trigger('focus');
+        triggerFocusOnFirstInputField(focusField);
 
         if( fieldOffset > scrollTolerance ){
             $('html, body').animate({scrollTop: (fieldOffset - 30)});
@@ -129,21 +176,21 @@
       @endif
 
       // Add inline errors to the DOM
-      @if ($crud->inlineErrorsEnabled() && $errors->any())
+      @if ($crud->inlineErrorsEnabled() && session()->get('errors'))
 
-        window.errors = {!! json_encode($errors->messages()) !!};
+        window.errors = {!! json_encode(session()->get('errors')->getBags()) !!};
 
-        $.each(errors, function(property, messages){
-
-            var normalizedProperty = property.split('.').map(function(item, index){
+        $.each(errors, function(bag, errorMessages){
+          $.each(errorMessages,  function (inputName, messages) {
+            var normalizedProperty = inputName.split('.').map(function(item, index){
                     return index === 0 ? item : '['+item+']';
                 }).join('');
 
             var field = $('[name="' + normalizedProperty + '[]"]').length ?
                         $('[name="' + normalizedProperty + '[]"]') :
                         $('[name="' + normalizedProperty + '"]'),
-                        container = field.parents('.form-group');
-            
+                        container = field.parent('.form-group');
+          
             // iterate the inputs to add invalid classes to fields and red text to the field container.
             container.children('input, textarea, select').each(function() {
                 let containerField = $(this);
@@ -151,18 +198,22 @@
                 containerField.addClass('is-invalid');
                 // get field container
                 let container = containerField.parent('.form-group');
-                
-                // if container is a repeatable group we don't want to add red text to the whole group,
-                // we only want to add it to the fields that have errors inside that repeatable.
-                if(!container.hasClass('repeatable-group')){
+
+                // TODO: `repeatable-group` should be deprecated in future version as a BC in favor of a more generic class `no-error-display`
+                if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
                   container.addClass('text-danger');
                 }
             });
-            
+
             $.each(messages, function(key, msg){
                 // highlight the input that errored
                 var row = $('<div class="invalid-feedback d-block">' + msg + '</div>');
-                row.appendTo(container);
+
+                // TODO: `repeatable-group` should be deprecated in future version as a BC in favor of a more generic class `no-error-display`
+                if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
+                  row.appendTo(container);
+                }
+                
 
                 // highlight its parent tab
                 @if ($crud->tabsEnabled())
@@ -171,7 +222,7 @@
                 @endif
             });
         });
-
+      });
       @endif
 
       $("a[data-toggle='tab']").click(function(){
@@ -182,7 +233,6 @@
       if (window.location.hash) {
           $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
-
       });
     </script>
 

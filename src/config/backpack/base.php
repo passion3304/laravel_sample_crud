@@ -36,6 +36,13 @@ return [
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
 
+    // ---------
+    // DASHBOARD
+    // ---------
+
+    // Show "Getting Started with Backpack" info block?
+    'show_getting_started' => env('APP_ENV') == 'local',
+
     // ------
     // STYLES
     // ------
@@ -65,6 +72,12 @@ return [
     // CSS files that are loaded in all pages, using Laravel's mix() helper
     'mix_styles' => [ // file_path => manifest_directory_path
         // 'css/app.css' => '',
+    ],
+
+    // CSS files that are loaded in all pages, using Laravel's @vite() helper
+    // Please note that support for Vite was added in Laravel 9.19. Earlier versions are not able to use this feature.
+    'vite_styles' => [ // resource file_path
+        // 'resources/css/app.css' => '',
     ],
 
     // ------
@@ -139,8 +152,13 @@ return [
     ],
 
     // JS files that are loaded in all pages, using Laravel's mix() helper
-    'mix_scripts' => [// file_path => manifest_directory_path
+    'mix_scripts' => [ // file_path => manifest_directory_path
         // 'js/app.js' => '',
+    ],
+
+    // JS files that are loaded in all pages, using Laravel's @vite() helper
+    'vite_scripts' => [ // resource file_path
+        // 'resources/js/app.js',
     ],
 
     // -------------
@@ -244,6 +262,7 @@ return [
     'middleware_class' => [
         App\Http\Middleware\CheckIfAdmin::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \Backpack\CRUD\app\Http\Middleware\AuthenticateSession::class,
         // \Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
     ],
 
@@ -256,6 +275,10 @@ return [
     // If you need to switch to username, you also need to create that column in your db
     'authentication_column'      => 'email',
     'authentication_column_name' => 'Email',
+
+    // Backpack assumes that your "database email column" for operations like Login and Register is called "email".
+    // If your database email column have a different name, you can configure it here. Eg: `user_mail`
+    'email_column' => 'email',
 
     // The guard that protects the Backpack admin panel.
     // If null, the config.auth.defaults.guard value will be used.

@@ -18,7 +18,7 @@
             <input
                 type="hidden"
                 name="{{ $field['name'] }}"
-                value="{{ $field['value'] }}" />
+                value="{{ (int) $field['value'] }}" />
             <input
                 type="checkbox"
                 data-init-function="bpFieldInitSwitch"
