@@ -7,11 +7,11 @@ use Backpack\CRUD\Tests\Unit\Models\Bang;
 use Backpack\CRUD\Tests\Unit\Models\Comet;
 use Backpack\CRUD\Tests\Unit\Models\Planet;
 use Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Backpack\CRUD\Tests\Unit\Models\Star;
 use Backpack\CRUD\Tests\Unit\Models\Universe;
 use Backpack\CRUD\Tests\Unit\Models\User;
 use Faker\Factory;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 
 /**
@@ -1452,7 +1452,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
     public function testItCanAddTheOptionsFromTheMorphMap()
     {
-        $this->crudPanel->setModel(Star::class);        
+        $this->crudPanel->setModel(Star::class);
 
         Relation::morphMap([
             'user'    => 'Backpack\CRUD\Tests\Unit\Models\User',
@@ -1482,7 +1482,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'name'         => 'starable',
             'morphOptions' => [
                 ['user'],
-                ['user']
+                ['user'],
             ],
         ]);
     }

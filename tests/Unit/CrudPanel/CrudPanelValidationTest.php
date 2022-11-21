@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\User;
 use Backpack\CRUD\Tests\Unit\Http\Requests\UserRequest;
+use Backpack\CRUD\Tests\Unit\Models\User;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Validation
@@ -11,7 +11,7 @@ use Backpack\CRUD\Tests\Unit\Http\Requests\UserRequest;
 class CrudPanelValidationTest extends BaseDBCrudPanelTest
 {
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @group fail
      */
@@ -22,16 +22,16 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
 
         $request = request()->create('users/', 'POST', [
             'email' => 'test@test.com',
-            'password' => 'test'
+            'password' => 'test',
         ]);
-       
+
         $this->crudPanel->setRequest($request);
         $this->expectException(\Illuminate\Validation\ValidationException::class);
         $validatedRequest = $this->crudPanel->validateRequest();
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @group fail
      */
@@ -43,12 +43,12 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $request = app()->handle(request()->create('users/', 'POST', [
             'name' => 'test name',
             'email' => 'test@test.com',
-            'password' => 'test'
+            'password' => 'test',
         ]));
 
         $this->crudPanel->addField([
             'name' => 'email',
-            'validationRules' => 'required'
+            'validationRules' => 'required',
         ]);
 
         $this->crudPanel->addField([
@@ -58,7 +58,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField([
             'name' => 'password',
         ]);
-       
+
         $this->crudPanel->setRequest($request);
 
         $validatedRequest = $this->crudPanel->validateRequest();
@@ -67,23 +67,23 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @group fail
      */
     public function testItMergesAllKindsOfValidation()
     {
         $this->crudPanel->setModel(User::class);
-        
+
         $this->crudPanel->setOperation('create');
         $this->crudPanel->setValidation([
-            'password' => 'required'
+            'password' => 'required',
         ]);
         $this->crudPanel->setValidation(UserRequest::class);
         $request = request()->create('users/', 'POST', [
             'name' => 'test name',
             'email' => 'test@test.com',
-            'password' => 'test'
+            'password' => 'test',
         ]);
 
         $request->setRouteResolver(function () use ($request) {
@@ -92,7 +92,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
 
         $this->crudPanel->addField([
             'name' => 'email',
-            'validationRules' => 'required'
+            'validationRules' => 'required',
         ]);
 
         $this->crudPanel->addField([
@@ -102,7 +102,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField([
             'name' => 'password',
         ]);
-       //dd($request);
+        //dd($request);
         $this->crudPanel->setRequest($request);
 
         $validatedRequest = $this->crudPanel->validateRequest();
