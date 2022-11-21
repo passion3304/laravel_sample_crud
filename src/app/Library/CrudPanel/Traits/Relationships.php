@@ -363,18 +363,20 @@ trait Relationships
      * Check if it's possible that attribute is in the relation string when
      * the last part of the string is not a method on the chained relations.
      *
-     * @param  string  $relationString
+     * @param  array  $field
      * @return bool
      */
-    private function isAttributeInRelationString($relationString)
+    private function isAttributeInRelationString($field)
     {
-        if (! str_contains($relationString, '.')) {
+        if (! str_contains($field['entity'], '.')) {
             return false;
         }
 
-        $parts = explode('.', $relationString);
+        $parts = explode('.', $field['entity']);
 
-        $model = $this->model;
+        $model = $field['baseModel'] ?? $this->model;
+
+        $model = new $model;
 
         // here we are going to iterate through all relation parts to check
         // if the attribute is present in the relation string.

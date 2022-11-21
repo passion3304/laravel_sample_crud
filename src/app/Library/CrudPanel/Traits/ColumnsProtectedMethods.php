@@ -192,14 +192,13 @@ trait ColumnsProtectedMethods
 
             // if the first part of the string exists as method in the model
             if (method_exists($this->model, $possibleMethodName)) {
-
                 // check model method for possibility of being a relationship
                 $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName) ? $column['name'] : false;
 
                 if ($column['entity']) {
                     // if the user setup the attribute in relation string, we are not going to infer that attribute from model
                     // instead we get the defined attribute by the user.
-                    if ($this->isAttributeInRelationString($column['entity'])) {
+                    if ($this->isAttributeInRelationString($column)) {
                         $column['attribute'] = $column['attribute'] ?? Str::afterLast($column['entity'], '.');
                     }
                 }
@@ -210,8 +209,7 @@ trait ColumnsProtectedMethods
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $column['name'])) {
-
-             // check model method for possibility of being a relationship
+            // check model method for possibility of being a relationship
             $column['entity'] = $this->modelMethodIsRelationship($this->model, $column['name']);
 
             return $column;
