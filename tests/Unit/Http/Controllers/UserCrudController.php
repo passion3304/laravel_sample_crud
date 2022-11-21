@@ -26,4 +26,9 @@ class UserCrudController extends CrudController
     {
         return response('index');
     }
+
+    protected function create()
+    {
+        return response('create');
+    }
 }
