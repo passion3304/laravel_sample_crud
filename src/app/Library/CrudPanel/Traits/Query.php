@@ -248,7 +248,7 @@ trait Query
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
 
-        $outerQuery = $outerQuery->fromSub($subQuery->select($modelTable.'.'.$this->model->getKeyName()), str_replace('.','_',$modelTable).'_aggregator');
+        $outerQuery = $outerQuery->fromSub($subQuery->select($modelTable.'.'.$this->model->getKeyName()), str_replace('.', '_', $modelTable).'_aggregator');
 
         return $outerQuery->cursor()->first()->total_rows;
     }
