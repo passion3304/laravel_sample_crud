@@ -246,8 +246,8 @@ trait Query
         // so we just store them and re-use them in the sub-query too.
         $expressionColumns = [];
 
-        foreach($crudQuery->columns as $column) {
-            if(!is_string($column) && is_a($column, 'Illuminate\Database\Query\Expression')) {
+        foreach ($crudQuery->columns as $column) {
+            if (! is_string($column) && is_a($column, 'Illuminate\Database\Query\Expression')) {
                 $expressionColumns[] = $column;
             }
         }
@@ -261,11 +261,11 @@ trait Query
         $subQuery->select($modelTable.'.'.$this->model->getKeyName());
 
         // in case there are raw expressions we need to add them too.
-        foreach($expressionColumns as $expression) {
+        foreach ($expressionColumns as $expression) {
             $subQuery->selectRaw($expression);
         }
-        
-        $outerQuery = $outerQuery->fromSub($subQuery, str_replace('.','_',$modelTable).'_aggregator');
+
+        $outerQuery = $outerQuery->fromSub($subQuery, str_replace('.', '_', $modelTable).'_aggregator');
 
         return $outerQuery->cursor()->first()->total_rows;
     }
