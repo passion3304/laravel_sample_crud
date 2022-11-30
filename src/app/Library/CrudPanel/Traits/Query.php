@@ -257,6 +257,9 @@ trait Query
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
 
+        // re-set the previous query bindings 
+        $subQuery->setBindings($crudQuery->getRawBindings());
+        
         // select only one column for the count
         $subQuery->select($modelTable.'.'.$this->model->getKeyName());
 
