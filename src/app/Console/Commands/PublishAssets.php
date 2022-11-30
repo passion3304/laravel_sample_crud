@@ -42,7 +42,7 @@ class PublishAssets extends Command
     {
         $process = new Process($command, null, null, null, 60, null);
         $process->run(function ($type, $buffer) {
-            $this->line($buffer);     
+            $this->line($buffer);
         });
 
         // executes after the command finishes
