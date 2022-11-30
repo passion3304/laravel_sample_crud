@@ -119,15 +119,8 @@
       @endif
 
       // Save button has multiple actions: save and exit, save and edit, save and new
-      var saveActions = $('#saveActions'),
-      crudForm        = saveActions.parents('form'),
-      saveActionField = $('[name="_save_action"]');
-
-      saveActions.on('click', '.dropdown-menu a', function(){
-          var saveAction = $(this).data('value');
-          saveActionField.val( saveAction );
-          crudForm.submit();
-      });
+      var saveActions = $('#saveActions')
+      crudForm        = saveActions.parents('form')
 
       // Ctrl+S and Cmd+S trigger Save button click
       $(document).keydown(function(e) {
