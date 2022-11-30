@@ -16,7 +16,7 @@
                 <button id="bpSaveButtonsGroup" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
                 <div class="dropdown-menu" aria-labelledby="bpSaveButtonsGroup">
                 @foreach( $saveAction['options'] as $value => $label)
-                    <button type="submit" class="dropdown-item" data-value="{{ $value }}">{{ $label }}</button>
+                    <button type="button" class="dropdown-item" data-value="{{ $value }}">{{$label}}</button>
                 @endforeach
                 </div>
             @endif
@@ -76,7 +76,7 @@
 
         var selector = $('#bpSaveButtonsGroup').next();
         var form = $(selector).closest('form');
-        var saveActionField = $('[name="save_action"]');
+        var saveActionField = $('[name="_save_action"]');
         var $defaultSubmitButton = $(form).find(':submit');
         // this is the main submit button, the default save action.
         $($defaultSubmitButton).on('click', function(e) {
@@ -85,7 +85,7 @@
             // if form is valid just submit it
             if(checkFormValidity(form)) {
                 saveActionField.val( $saveAction.attr('data-value') );
-                form.submit();
+                form[0].requestSubmit();
             }else{
                 // navigate to the tab where the first error happens 
                 changeTabIfNeededAndDisplayErrors(form);
@@ -93,14 +93,14 @@
         });
 
         //this is for the anchors AKA other non-default save actions.
-        $(selector).find('a').each(function() {
+        $(selector).find('button').each(function() {
             $(this).click(function(e) {
                 //we check if form is valid
                 if (checkFormValidity(form)) {
                     //if everything is validated we proceed with the submission
                     var saveAction = $(this).data('value');
                     saveActionField.val( saveAction );
-                    form.submit();
+                    form[0].requestSubmit();
                 }else{
                     // navigate to the tab where the first error happens 
                     changeTabIfNeededAndDisplayErrors(form);
