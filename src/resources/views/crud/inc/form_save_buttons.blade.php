@@ -16,7 +16,7 @@
                 <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     @foreach( $saveAction['options'] as $value => $label)
-                    <a class="dropdown-item" href="javascript:void(0);" data-value="{{ $value }}">{{ $label }}</a>
+                    <button type="submit" class="dropdown-item" data-value="{{ $value }}">{{ $label }}</a>
                     @endforeach
                 </div>
             @endif
