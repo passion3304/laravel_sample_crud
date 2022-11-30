@@ -16,7 +16,7 @@
                 <button id="bpSaveButtonsGroup" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
                 <div class="dropdown-menu" aria-labelledby="bpSaveButtonsGroup">
                 @foreach( $saveAction['options'] as $value => $label)
-                    <a class="dropdown-item" href="#" data-value="{{ $value }}">{{ $label }}</a>
+                    <button type="submit" class="dropdown-item" data-value="{{ $value }}">{{ $label }}</button>
                 @endforeach
                 </div>
             @endif
