@@ -78,5 +78,5 @@ jobs:
         if: ${{ success() }}
         with:
           force: true
-          github_token: ${{ secrets.MY_TOKEN }}
+          github_token: ${{ secrets.COVERAGE_TOKEN }}
           branch: coverage-badge-dont-delete
