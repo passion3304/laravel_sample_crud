@@ -293,6 +293,6 @@ trait Update
 
     public function hideDeleteButton(): void
     {
-        $this->set($this->getOperation() . '.hideDeleteButton', true);
+        $this->set($this->getOperation().'.hideDeleteButton', true);
     }
 }
