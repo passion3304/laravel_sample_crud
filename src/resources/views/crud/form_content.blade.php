@@ -119,15 +119,8 @@
       @endif
 
       // Save button has multiple actions: save and exit, save and edit, save and new
-      var saveActions = $('#saveActions'),
-      crudForm        = saveActions.parents('form'),
-      saveActionField = $('[name="_save_action"]');
-
-      saveActions.on('click', '.dropdown-menu a', function(){
-          var saveAction = $(this).data('value');
-          saveActionField.val( saveAction );
-          crudForm.submit();
-      });
+      var saveActions = $('#saveActions')
+      crudForm        = saveActions.parents('form')
 
       // Ctrl+S and Cmd+S trigger Save button click
       $(document).keydown(function(e) {
@@ -190,7 +183,7 @@
                         $('[name="' + normalizedProperty + '[]"]') :
                         $('[name="' + normalizedProperty + '"]'),
                         container = field.parent('.form-group');
-          
+
             // iterate the inputs to add invalid classes to fields and red text to the field container.
             container.children('input, textarea, select').each(function() {
                 let containerField = $(this);
@@ -213,7 +206,7 @@
                 if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
                   row.appendTo(container);
                 }
-                
+
 
                 // highlight its parent tab
                 @if ($crud->tabsEnabled())
