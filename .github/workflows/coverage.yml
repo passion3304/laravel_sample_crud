@@ -1,0 +1,82 @@
+name: Generate Code Coverage Report
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  test:
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    name: PHP setup
+    steps:
+      
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+            ref: main
+            fetch-depth: 0
+      - name: Install SQLite 3
+        run: |
+          sudo apt-get update
+          sudo apt-get install sqlite3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv, xdebug
+          coverage: xdebug
+          tools: composer:v2
+      - name: Install dependencies
+        run: |
+            composer require "laravel/framework:^9.0" "phpunit/phpunit:^9.0" "doctrine/dbal:^3.0" --no-interaction --no-update --no-suggest
+            composer update --prefer-dist --no-interaction
+      - name: Execute tests
+        run: vendor/bin/phpunit --coverage-clover coverage.xml
+      - name: Check test coverage
+        id: test-coverage
+        uses: johanvanhelden/gha-clover-test-coverage-check@v1
+        with:
+          percentage: "1"
+          filename: coverage.xml
+          metric: elements
+          rounded-precision: 2
+      - name: Generate the badge SVG image
+        uses: emibcn/badge-action@v1
+        id: badge
+        with:
+          label: coverage
+          status: ${{ steps.test-coverage.outputs.coverage-rounded-display }}
+          path: ./test-coverage.svg
+          color: ${{ steps.test-coverage.outputs.coverage > 90 && 'green'              ||
+            steps.test-coverage.outputs.coverage > 80 && 'yellow,green'       ||
+            steps.test-coverage.outputs.coverage > 70 && 'yellow'             ||
+            steps.test-coverage.outputs.coverage > 60 && 'orange,yellow'      ||
+            steps.test-coverage.outputs.coverage > 50 && 'orange'             ||
+            steps.test-coverage.outputs.coverage > 40 && 'red,orange'         ||
+            steps.test-coverage.outputs.coverage > 30 && 'red,red,orange'     ||
+            steps.test-coverage.outputs.coverage > 20 && 'red,red,red,orange' ||
+            'red' }}
+      - name: Upload badge as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: badge
+          path: test-coverage.svg
+          if-no-files-found: error
+      - name: Commit badge
+        continue-on-error: true
+        env:
+          BADGE: test-coverage.svg
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add "${BADGE}"
+          git commit -m "Update Coverage Badge"
+      - name: Push badge commit
+        uses: ad-m/github-push-action@master
+        if: ${{ success() }}
+        with:
+          force: true
+          github_token: ${{ secrets.COVERAGE_TOKEN }}
+          branch: coverage-badge-dont-delete

@@ -19,7 +19,7 @@
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud" title="Quality Score"><img src="https://img.shields.io/scrutinizer/g/laravel-backpack/crud.svg?style=flat-square"></a>
     <a href="https://travis-ci.org/Laravel-Backpack/CRUD" title="Build Status"><img src="https://img.shields.io/travis/Laravel-Backpack/CRUD/master.svg?style=flat-square"></a>
     <a href="https://styleci.io/repos/53581270" title="Style CI"><img src="https://styleci.io/repos/53581270/shield"></a>
-    <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://img.shields.io/scrutinizer/coverage/g/laravel-backpack/crud.svg?style=flat-square"></a>
+    <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://raw.githubusercontent.com/laravel-backpack/CRUD/coverage-badge-dont-delete/test-coverage.svg"></a>
     <a href="LICENSE.md" title="Software License"><img src="https://img.shields.io/github/license/laravel-backpack/crud?style=flat-square"></a>
     <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen?style=flat-square" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
 </p>
