@@ -23,4 +23,14 @@ abstract class BaseTest extends TestCase
             BackpackServiceProvider::class,
         ];
     }
+
+    // allow us to run crud panel private/protected methods like `inferFieldTypeFromDbColumnType`
+    public function invokeMethod(&$object, $methodName, array $parameters = [])
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
+    }
 }

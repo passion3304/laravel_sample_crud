@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Update
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  */
 class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 {
@@ -29,27 +32,27 @@ class CrudPanelUpdateTest extends BaseDBCrudPanelTest
 
     private $expectedUpdatedFields = [
         'id' => [
-            'name'  => 'id',
-            'type'  => 'hidden',
-            'label' => 'Id',
+            'name'   => 'id',
+            'type'   => 'hidden',
+            'label'  => 'Id',
             'entity' => false,
         ],
         'name' => [
-            'name'  => 'name',
-            'label' => 'Name',
-            'type'  => 'text',
+            'name'   => 'name',
+            'label'  => 'Name',
+            'type'   => 'text',
             'entity' => false,
         ],
         'email' => [
-            'name'  => 'email',
-            'type'  => 'email',
-            'label' => 'Email',
+            'name'   => 'email',
+            'type'   => 'email',
+            'label'  => 'Email',
             'entity' => false,
         ],
         'password' => [
-            'name'  => 'password',
-            'type'  => 'password',
-            'label' => 'Password',
+            'name'   => 'password',
+            'type'   => 'password',
+            'label'  => 'Password',
             'entity' => false,
         ],
     ];
