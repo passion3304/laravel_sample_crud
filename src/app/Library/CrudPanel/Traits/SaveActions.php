@@ -47,7 +47,7 @@ trait SaveActions
      */
     public function getSaveActionByOrder($order)
     {
-        return array_filter($this->getOperationSetting('save_actions'), function ($arr) use ($order) {
+        return array_filter($this->getOperationSetting('save_actions') ?? [], function ($arr) use ($order) {
             return $arr['order'] == $order;
         });
     }
