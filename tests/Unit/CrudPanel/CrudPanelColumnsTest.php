@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\User;
 use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
+use Backpack\CRUD\Tests\Unit\Models\User;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Columns
@@ -540,7 +540,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
 
         $this->crudPanel->column('my_column')->label('my_column');
-                        
+
         $this->assertCount(1, $this->crudPanel->columns());
 
         $this->assertEquals([
@@ -555,31 +555,31 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         ], $this->crudPanel->columns()['my_column']);
     }
 
-    public function testItCanMakeAColumnFirstFluently() 
+    public function testItCanMakeAColumnFirstFluently()
     {
         $this->crudPanel->column('test1');
         $this->crudPanel->column('test2')->makeFirst();
         $crudColumns = $this->crudPanel->columns();
         $firstColumn = reset($crudColumns);
-        $this->assertEquals($firstColumn['name'],'test2');
+        $this->assertEquals($firstColumn['name'], 'test2');
     }
 
-    public function testItCanMakeAColumnLastFluently() 
+    public function testItCanMakeAColumnLastFluently()
     {
         $this->crudPanel->column('test1');
         $this->crudPanel->column('test2');
         $this->crudPanel->column('test1')->makeLast();
         $crudColumns = $this->crudPanel->columns();
         $firstColumn = reset($crudColumns);
-        $this->assertEquals($firstColumn['name'],'test2');
+        $this->assertEquals($firstColumn['name'], 'test2');
     }
 
-    public function testItCanPlaceColumnsFluently() 
+    public function testItCanPlaceColumnsFluently()
     {
         $this->crudPanel->column('test1');
         $this->crudPanel->column('test2');
         $this->crudPanel->column('test3')->after('test1');
-       
+
         $crudColumnsNames = array_column($this->crudPanel->columns(), 'name');
         $this->assertEquals($crudColumnsNames, ['test1', 'test3', 'test2']);
 
@@ -588,7 +588,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertEquals($crudColumnsNames, ['test4', 'test1', 'test3', 'test2']);
     }
 
-    public function testItCanRemoveColumnAttributesFluently() 
+    public function testItCanRemoveColumnAttributesFluently()
     {
         $this->crudPanel->column('test1')->type('test');
         $this->assertEquals($this->crudPanel->columns()['test1']['type'], 'test');
@@ -596,7 +596,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertNull($this->crudPanel->columns()['test1']['type'] ?? null);
     }
 
-    public function testItCanRemoveColumnFluently() 
+    public function testItCanRemoveColumnFluently()
     {
         $this->crudPanel->column('test1')->type('test');
         $this->assertCount(1, $this->crudPanel->columns());
@@ -604,7 +604,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertCount(0, $this->crudPanel->columns());
     }
 
-    public function testItCanAddAColumnToCrudFromClass() 
+    public function testItCanAddAColumnToCrudFromClass()
     {
         CrudColumn::name('test');
         $this->assertCount(1, $this->crudPanel->columns());

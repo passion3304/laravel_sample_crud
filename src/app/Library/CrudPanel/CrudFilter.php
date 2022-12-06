@@ -552,6 +552,7 @@ class CrudFilter
      * so that the developer can see its contents.
      *
      * @codeCoverageIgnore
+     *
      * @return CrudFilter
      */
     public function dump()
@@ -567,6 +568,7 @@ class CrudFilter
      * the execution.
      *
      * @codeCoverageIgnore
+     *
      * @return CrudFilter
      */
     public function dd()

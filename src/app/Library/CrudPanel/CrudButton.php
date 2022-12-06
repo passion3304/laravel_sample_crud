@@ -406,6 +406,7 @@ class CrudButton
      * so that the developer can see its contents.
      *
      * @codeCoverageIgnore
+     *
      * @return CrudButton
      */
     public function dump()
@@ -421,6 +422,7 @@ class CrudButton
      * the execution.
      *
      * @codeCoverageIgnore
+     *
      * @return CrudButton
      */
     public function dd()
