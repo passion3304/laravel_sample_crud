@@ -533,9 +533,8 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertEquals(['column2', 'column1', 'column3'], array_keys($this->crudPanel->columns()));
     }
 
-    public function testItCanChangeTheColumnKey() 
+    public function testItCanChangeTheColumnKey()
     {
-       
         $this->crudPanel->column('test');
 
         $this->assertEquals('test', $this->crudPanel->columns()['test']['key']);
@@ -543,6 +542,5 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->crudPanel->column('test')->key('new_key');
 
         $this->assertEquals('new_key', $this->crudPanel->columns()['new_key']['key']);
-
     }
 }
