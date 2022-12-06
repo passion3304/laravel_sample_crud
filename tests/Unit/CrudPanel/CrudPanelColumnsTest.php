@@ -7,6 +7,7 @@ use Backpack\CRUD\Tests\Unit\Models\User;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Columns
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\ColumnsProtectedMethods
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudColumn
  */
 class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 {
@@ -531,5 +532,114 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->crudPanel->orderColumns(['column2', 'column5', 'column6']);
 
         $this->assertEquals(['column2', 'column1', 'column3'], array_keys($this->crudPanel->columns()));
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @group fail
+     */
+    public function testItCanAddAFluentColumn()
+    {
+        $this->crudPanel->setModel(User::class);
+
+        $this->crudPanel->column('my_column')->label('my_column');
+                        
+        $this->assertCount(1, $this->crudPanel->columns());
+
+        $this->assertEquals([
+            'name'               => 'my_column',
+            'type' => 'text',
+            'label' => 'my_column',
+            'key' => 'my_column',
+            'priority' => 0,
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+        ], $this->crudPanel->columns()['my_column']);
+    }
+/**
+     * Undocumented function
+     *
+     * @group fail
+     */
+    public function testItCanMakeAColumnFirstFluently() 
+    {
+        $this->crudPanel->column('test1');
+        $this->crudPanel->column('test2')->makeFirst();
+        $crudColumns = $this->crudPanel->columns();
+        $firstColumn = reset($crudColumns);
+        $this->assertEquals($firstColumn['name'],'test2');
+    }
+    /**
+     * Undocumented function
+     *
+     * @group fail
+     */
+    public function testItCanMakeAColumnLastFluently() 
+    {
+        $this->crudPanel->column('test1');
+        $this->crudPanel->column('test2');
+        $this->crudPanel->column('test1')->makeLast();
+        $crudColumns = $this->crudPanel->columns();
+        $firstColumn = reset($crudColumns);
+        $this->assertEquals($firstColumn['name'],'test2');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @group fail
+     */
+    public function testItCanPlaceColumnsFluently() 
+    {
+        $this->crudPanel->column('test1');
+        $this->crudPanel->column('test2');
+        $this->crudPanel->column('test3')->after('test1');
+       
+        $crudColumnsNames = array_column($this->crudPanel->columns(), 'name');
+        $this->assertEquals($crudColumnsNames, ['test1', 'test3', 'test2']);
+
+        $this->crudPanel->column('test4')->before('test1');
+        $crudColumnsNames = array_column($this->crudPanel->columns(), 'name');
+        $this->assertEquals($crudColumnsNames, ['test4', 'test1', 'test3', 'test2']);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @group fail
+     */
+    public function testItCanRemoveColumnAttributesFluently() 
+    {
+        $this->crudPanel->column('test1')->type('test');
+        $this->assertEquals($this->crudPanel->columns()['test1']['type'], 'test');
+        $this->crudPanel->column('test1')->forget('type');
+        $this->assertNull($this->crudPanel->columns()['test1']['type'] ?? null);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @group fail
+     */
+    public function testItCanRemoveColumnFluently() 
+    {
+        $this->crudPanel->column('test1')->type('test');
+        $this->assertCount(1, $this->crudPanel->columns());
+        $this->crudPanel->column('test1')->remove();
+        $this->assertCount(0, $this->crudPanel->columns());
+    }
+
+    public function testItAbortsWithEmptyNamesFluently() 
+    {
+        try {
+            CrudField::name('');
+        } catch (\Throwable $e) {
+        }
+        $this->assertEquals(
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Field name can\'t be empty.'),
+            $e
+        );
     }
 }

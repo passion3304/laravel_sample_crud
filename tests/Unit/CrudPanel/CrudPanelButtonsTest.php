@@ -6,14 +6,18 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudButton;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Buttons
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudButton
  */
 class CrudPanelButtonsTest extends BaseCrudPanelTest
 {
     private $defaultButtonNames = [];
 
     private $topViewButton;
+
     private $lineViewButton;
+
     private $bottomViewButton;
+
     private $topModelFunctionButton;
 
     protected function setUp(): void

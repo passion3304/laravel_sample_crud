@@ -4,12 +4,15 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Arr;
 use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\Unit\Models\Star;
 use Illuminate\Http\Request;
+use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Fields
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsPrivateMethods
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudField
  */
 class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 {
@@ -722,6 +725,168 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField(['name' => 'test1']);
         $this->crudPanel->addField(['name' => 'test2']);
         $this->assertEquals(['test1', 'test2'], $this->crudPanel->getAllFieldNames());
+    }
+
+    public function testItCanAddAFluentField()
+    {
+        $this->crudPanel->setModel(User::class);
+
+        $this->crudPanel->field('my_field')
+                        ->type('my_custom_type')
+                        ->label('my_label')
+                        ->tab('custom_tab')
+                        ->prefix('prefix')
+                        ->suffix('suffix')
+                        ->hint('hinter')
+                        ->fake(false)
+                        ->validationRules('required|min:2')
+                        ->validationMessages(['required' => 'is_required', 'min' => 'min_2'])
+                        ->store_in('some')
+                        ->size(6)
+                        ->on('created', function() { return; })
+                        ->subfields([['name' => 'sub_1']])
+                        ->entity('bang');
+
+        $this->assertCount(1, $this->crudPanel->fields());
+
+        $this->assertEquals([
+            'name'               => 'my_field',
+            'type'               => 'my_custom_type',
+            'entity'             => 'bang',
+            'relation_type'      => 'BelongsTo',
+            'attribute'          => 'name',
+            'model'              => 'Backpack\CRUD\Tests\Unit\Models\Bang',
+            'multiple'           => false,
+            'pivot'              => false,
+            'label'              => 'my_label',
+            'tab'                => 'custom_tab',
+            'suffix'             => 'suffix',
+            'prefix'             => 'prefix',
+            'hint'               => 'hinter',
+            'fake'               => false,
+            'validationRules'    => 'required|min:2',
+            'validationMessages' => [
+                'required' => 'is_required',
+                'min'      => 'min_2',
+            ],
+            'store_in' => 'some',
+            'wrapper'  => [
+                'class' => 'form-group col-md-6',
+            ],
+            'events' => [
+                'created' => function() { return; }
+            ],
+            'subfields' => [
+                [
+                    'name' => 'sub_1',
+                    'parentFieldName' => 'my_field',
+                    'type' => 'text',
+                    'entity' => false,
+                    'label' => 'Sub 1'
+                ]
+            ]
+
+
+        ], $this->crudPanel->fields()['my_field']);
+    }
+
+    public function testItCanMakeAFieldFirstFluently() 
+    {
+        $this->crudPanel->field('test1');
+        $this->crudPanel->field('test2')->makeFirst();
+        $crudFields = $this->crudPanel->fields();
+        $firstField = reset($crudFields);
+        $this->assertEquals($firstField['name'],'test2');
+    }
+
+    public function testItCanMakeAFieldLastFluently() 
+    {
+        $this->crudPanel->field('test1');
+        $this->crudPanel->field('test2');
+        $this->crudPanel->field('test1')->makeLast();
+        $crudFields = $this->crudPanel->fields();
+        $firstField = reset($crudFields);
+        $this->assertEquals($firstField['name'],'test2');
+    }
+
+    public function testItCanPlaceFieldsFluently() 
+    {
+        $this->crudPanel->field('test1');
+        $this->crudPanel->field('test2');
+        $this->crudPanel->field('test3')->after('test1');
+       
+        $crudFieldsNames = array_column($this->crudPanel->fields(), 'name');
+        $this->assertEquals($crudFieldsNames, ['test1', 'test3', 'test2']);
+
+        $this->crudPanel->field('test4')->before('test1');
+        $crudFieldsNames = array_column($this->crudPanel->fields(), 'name');
+        $this->assertEquals($crudFieldsNames, ['test4', 'test1', 'test3', 'test2']);
+    }
+
+    public function testItCanRemoveFieldAttributesFluently() 
+    {
+        $this->crudPanel->field('test1')->type('test');
+        $this->assertEquals($this->crudPanel->fields()['test1']['type'], 'test');
+        $this->crudPanel->field('test1')->forget('type');
+        $this->assertNull($this->crudPanel->fields()['test1']['type'] ?? null);
+    }
+
+    public function testItCanRemoveFieldFluently() 
+    {
+        $this->crudPanel->field('test1')->type('test');
+        $this->assertCount(1, $this->crudPanel->fields());
+        $this->crudPanel->field('test1')->remove();
+        $this->assertCount(0, $this->crudPanel->fields());
+    }
+
+    public function testItCanAddMorphFieldsFluently() 
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->crudPanel->field('starable')
+                        ->addMorphOption('Backpack\CRUD\Tests\Unit\Models\User', 'User')
+                        ->morphTypeField(['attributes' => ['custom-attribute' => true]])
+                        ->morphIdField(['attributes' => ['custom-attribute' => true]]);
+        
+        [$morphTypeField, $morphIdField] = $this->crudPanel->fields()['starable']['subfields'];
+
+        $this->assertTrue($morphTypeField['attributes']['custom-attribute']);
+        $this->assertTrue($morphIdField['attributes']['custom-attribute']);
+    }
+
+    public function testAbortsConfiguringNonMorphTypeField() 
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->expectException(\Exception::class);
+        $this->crudPanel->field('some_field')
+                        ->morphTypeField(['attributes' => ['custom-attribute' => true]]);
+    }
+
+    public function testAbortsConfiguringNonMorphIdField() 
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->expectException(\Exception::class);
+        $this->crudPanel->field('some_field')
+                        ->morphIdField(['attributes' => ['custom-attribute' => true]]);
+    }
+
+    public function testItCanGetTheFieldAttributes() 
+    {
+       
+        $this->crudPanel->field('some_field');
+
+        $this->assertEquals($this->crudPanel->fields()['some_field'], $this->crudPanel->field('some_field')->getAttributes());
+    }
+
+    public function testItAbortsWithEmptyNamesFluently() 
+    {
+        try {
+            CrudField::name('');
+        } catch (\Throwable $e) {
+        }
+        $this->assertEquals(
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Field name can\'t be empty.'),
+            $e
+        );
     }
 }
 
