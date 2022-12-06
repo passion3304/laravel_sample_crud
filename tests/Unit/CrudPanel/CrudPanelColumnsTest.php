@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Columns
@@ -534,11 +535,6 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertEquals(['column2', 'column1', 'column3'], array_keys($this->crudPanel->columns()));
     }
 
-    /**
-     * Undocumented function
-     *
-     * @group fail
-     */
     public function testItCanAddAFluentColumn()
     {
         $this->crudPanel->setModel(User::class);
@@ -558,11 +554,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic' => false,
         ], $this->crudPanel->columns()['my_column']);
     }
-/**
-     * Undocumented function
-     *
-     * @group fail
-     */
+
     public function testItCanMakeAColumnFirstFluently() 
     {
         $this->crudPanel->column('test1');
@@ -571,11 +563,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $firstColumn = reset($crudColumns);
         $this->assertEquals($firstColumn['name'],'test2');
     }
-    /**
-     * Undocumented function
-     *
-     * @group fail
-     */
+
     public function testItCanMakeAColumnLastFluently() 
     {
         $this->crudPanel->column('test1');
@@ -586,11 +574,6 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertEquals($firstColumn['name'],'test2');
     }
 
-    /**
-     * Undocumented function
-     *
-     * @group fail
-     */
     public function testItCanPlaceColumnsFluently() 
     {
         $this->crudPanel->column('test1');
@@ -605,11 +588,6 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertEquals($crudColumnsNames, ['test4', 'test1', 'test3', 'test2']);
     }
 
-    /**
-     * Undocumented function
-     *
-     * @group fail
-     */
     public function testItCanRemoveColumnAttributesFluently() 
     {
         $this->crudPanel->column('test1')->type('test');
@@ -618,11 +596,6 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertNull($this->crudPanel->columns()['test1']['type'] ?? null);
     }
 
-    /**
-     * Undocumented function
-     *
-     * @group fail
-     */
     public function testItCanRemoveColumnFluently() 
     {
         $this->crudPanel->column('test1')->type('test');
@@ -631,15 +604,9 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
         $this->assertCount(0, $this->crudPanel->columns());
     }
 
-    public function testItAbortsWithEmptyNamesFluently() 
+    public function testItCanAddAColumnToCrudFromClass() 
     {
-        try {
-            CrudField::name('');
-        } catch (\Throwable $e) {
-        }
-        $this->assertEquals(
-            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Field name can\'t be empty.'),
-            $e
-        );
+        CrudColumn::name('test');
+        $this->assertCount(1, $this->crudPanel->columns());
     }
 }

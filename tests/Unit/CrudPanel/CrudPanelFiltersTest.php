@@ -4,6 +4,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Filters
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudFilter
  */
 class CrudPanelFiltersTest extends BaseCrudPanelTest
 {
