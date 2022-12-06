@@ -89,7 +89,7 @@ class CrudColumn
         }
 
         $this->attributes = $column;
-        $this->setOperationSetting('columns', array_merge($columns, [$key => $column]));
+        $this->crud()->setOperationSetting('columns', array_merge($columns, [$key => $column]));
 
         return $this;
     }
