@@ -196,17 +196,4 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         $this->assertTrue($filter->wasApplied());
         $this->assertFalse($filter->wasNotApplied());
     }
-
-    public function testItCanCheckIfFilterIsActiveFromRequest()
-    {
-        $this->crudPanel->setModel(User::class);
-        $request = request()->create('/admin/users', 'GET', ['my_custom_filter' => 'foo']);
-        $request->setRouteResolver(function () use ($request) {
-            return (new Route('GET', 'admin/users', ['UserCrudController', 'index']))->bind($request);
-        });
-        $this->crudPanel->setRequest($request);
-
-        $isActive = CrudFilter::name('my_custom_filter')->isActive();
-        $this->assertTrue($isActive);
-    }
 }
