@@ -50,9 +50,9 @@ jobs:
           status: ${{ steps.test-coverage.outputs.coverage-rounded-display }}
           path: ./test-coverage.svg
           color: ${{ steps.test-coverage.outputs.coverage > 90 && 'green'              ||
-            steps.test-coverage.outputs.coverage > 80 && 'yellow,green'       ||
-            steps.test-coverage.outputs.coverage > 70 && 'yellow'             ||
-            steps.test-coverage.outputs.coverage > 60 && 'orange,yellow'      ||
+            steps.test-coverage.outputs.coverage > 80 && 'yellow,green, green'       ||
+            steps.test-coverage.outputs.coverage > 70 && 'yellow, green'             ||
+            steps.test-coverage.outputs.coverage > 60 && 'yellow,yellow, green'      ||
             steps.test-coverage.outputs.coverage > 50 && 'orange'             ||
             steps.test-coverage.outputs.coverage > 40 && 'red,orange'         ||
             steps.test-coverage.outputs.coverage > 30 && 'red,red,orange'     ||

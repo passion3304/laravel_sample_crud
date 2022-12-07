@@ -80,6 +80,7 @@ class CrudColumn
         }
 
         $columns = $this->crud()->columns();
+
         $searchKey = $this->attributes['key'];
         $column = $this->attributes;
 
@@ -87,7 +88,6 @@ class CrudColumn
             unset($columns[$searchKey]);
             $column['key'] = $key;
         }
-
         $this->attributes = $column;
         $this->setOperationSetting('columns', array_merge($columns, [$key => $column]));
 
@@ -179,6 +179,8 @@ class CrudColumn
      * Dump the current object to the screen,
      * so that the developer can see its contents.
      *
+     * @codeCoverageIgnore
+     *
      * @return CrudColumn
      */
     public function dump()
@@ -192,6 +194,8 @@ class CrudColumn
      * Dump and die. Duumps the current object to the screen,
      * so that the developer can see its contents, then stops
      * the execution.
+     *
+     * @codeCoverageIgnore
      *
      * @return CrudColumn
      */
