@@ -223,6 +223,7 @@ class CrudFilter
      * @param  string  $attribute  The name of the attribute being removed.
      *
      * @codeCoverageIgnore
+     *
      * @deprecated
      */
     public function removeFilterAttribute($filter, $attribute)

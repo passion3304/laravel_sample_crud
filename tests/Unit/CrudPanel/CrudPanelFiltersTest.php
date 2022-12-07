@@ -53,11 +53,11 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
                     ->view('simple')
                     ->viewNamespace('crud::filters')
                     ->ifActive(function () {
-                    return true;
-                })
+                        return true;
+                    })
                     ->ifInactive(function () {
-                    return true;
-                });
+                        return true;
+                    });
 
         $this->assertCount(1, $this->crudPanel->filters());
         $filter = $this->crudPanel->filters()[0];
@@ -86,21 +86,27 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
 
     public function testWhenNotActiveAlias()
     {
-        $filter = CrudFilter::name('my_filter')->whenNotActive(function () {return true;});
+        $filter = CrudFilter::name('my_filter')->whenNotActive(function () {
+            return true;
+        });
         $this->assertCount(1, $this->crudPanel->filters());
         $this->assertTrue(is_callable($filter->fallbackLogic));
     }
 
     public function testIfNotActiveAlias()
     {
-        $filter = CrudFilter::name('my_filter')->ifNotActive(function () {return true;});
+        $filter = CrudFilter::name('my_filter')->ifNotActive(function () {
+            return true;
+        });
         $this->assertCount(1, $this->crudPanel->filters());
         $this->assertTrue(is_callable($filter->fallbackLogic));
     }
 
     public function testElseAlias()
     {
-        $filter = CrudFilter::name('my_filter')->else(function () {return true;});   
+        $filter = CrudFilter::name('my_filter')->else(function () {
+            return true;
+        });
         $this->assertCount(1, $this->crudPanel->filters());
         $this->assertTrue(is_callable($filter->fallbackLogic));
     }
@@ -112,7 +118,7 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         $filterCollection = $this->crudPanel->filters();
         $this->assertCount(2, $filterCollection);
         $firstFilter = $filterCollection[0];
-        $this->assertEquals('test_filter_2', $firstFilter->name); 
+        $this->assertEquals('test_filter_2', $firstFilter->name);
     }
 
     public function testItCanAddAFilterAfterOtherFilter()
@@ -123,7 +129,7 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         $filterCollection = $this->crudPanel->filters();
         $this->assertCount(3, $filterCollection);
         $secondFilter = $filterCollection[1];
-        $this->assertEquals('test_filter_2', $secondFilter->name); 
+        $this->assertEquals('test_filter_2', $secondFilter->name);
     }
 
     public function testItCanMakeAFilterFirst()
@@ -133,7 +139,7 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         $filterCollection = $this->crudPanel->filters();
         $this->assertCount(2, $filterCollection);
         $firstFilter = $filterCollection[0];
-        $this->assertEquals('test_filter_2', $firstFilter->name); 
+        $this->assertEquals('test_filter_2', $firstFilter->name);
     }
 
     public function testItCanMakeAFilterLast()
@@ -143,7 +149,7 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         CrudFilter::name('my_filter')->makeLast();
         $filterCollection = $this->crudPanel->filters();
         $this->assertCount(2, $filterCollection);
-        $this->assertEquals(['my_filter_2', 'my_filter'], $filterCollection->pluck('name')->toArray()); 
+        $this->assertEquals(['my_filter_2', 'my_filter'], $filterCollection->pluck('name')->toArray());
     }
 
     public function testItCanRemoveAFilter()
@@ -153,7 +159,7 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         CrudFilter::name('my_filter')->remove();
         $filterCollection = $this->crudPanel->filters();
         $this->assertCount(1, $filterCollection);
-        $this->assertEquals(['my_filter_2'], $filterCollection->pluck('name')->toArray()); 
+        $this->assertEquals(['my_filter_2'], $filterCollection->pluck('name')->toArray());
     }
 
     public function testItCanRemoveAFilterAttribute()
@@ -163,16 +169,16 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         CrudFilter::name('my_filter')->forget('type');
         $filterCollection = $this->crudPanel->filters();
         $this->assertCount(2, $filterCollection);
-        $this->assertFalse($filterCollection[0]->type); 
+        $this->assertFalse($filterCollection[0]->type);
     }
 
     public function testItCanGetTheViewWithNamespace()
     {
-        $this->crudPanel->addFilter(...$this->testFilter); 
+        $this->crudPanel->addFilter(...$this->testFilter);
         $namespacedFilterView = CrudFilter::name('my_filter')->getViewWithNamespace();
         $filterCollection = $this->crudPanel->filters();
         $this->assertCount(1, $filterCollection);
-        $this->assertEquals($filterCollection[0]->viewNamespace.'.'.$filterCollection[0]->view, $namespacedFilterView); 
+        $this->assertEquals($filterCollection[0]->viewNamespace.'.'.$filterCollection[0]->view, $namespacedFilterView);
     }
 
     public function testItCanGetAllFilterViewNamespacesWithFallbacks()
