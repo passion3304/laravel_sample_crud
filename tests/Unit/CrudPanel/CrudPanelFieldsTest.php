@@ -744,7 +744,6 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
                         ->store_in('some')
                         ->size(6)
                         ->on('created', function () {
-
                         })
                         ->subfields([['name' => 'sub_1']])
                         ->entity('bang');
@@ -777,7 +776,6 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
             ],
             'events' => [
                 'created' => function () {
-
                 },
             ],
             'subfields' => [
