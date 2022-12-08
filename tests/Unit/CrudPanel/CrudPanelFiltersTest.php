@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudFilter;
+use Backpack\CRUD\Tests\Unit\Models\User;
 use Config;
 
 /**
@@ -42,6 +43,18 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         $this->crudPanel->clearFilters();
         $this->assertCount(0, $this->crudPanel->filters());
     }
+    
+    public function testItCanCheckIfFilterIsActiveFromRequest()
+    {
+        $this->crudPanel->setModel(User::class);
+        $request = request()->create('/admin/users', 'GET', ['my_custom_filter' => 'foo']);
+        $request->setRouteResolver(function () use ($request) {
+            return (new Route('GET', 'admin/users', ['UserCrudController', 'index']))->bind($request);
+        });
+        $this->crudPanel->setRequest($request);
+
+        $isActive = CrudFilter::name('my_custom_filter')->isActive();
+        $this->assertTrue($isActive);
 
     public function testItCanCreateAFilterFluently()
     {

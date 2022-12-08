@@ -236,6 +236,10 @@ return [
     // password reset, before they can try again for the same email?
     'password_recovery_throttle_notifications' => 600, // time in seconds
 
+    // How much time should the token sent to the user email be considered valid?
+    // After this time expires, user needs to request a new reset token.
+    'password_recovery_token_expiration' => 60, // time in minutes
+
     // Backpack will prevent an IP from trying to reset the password too many times,
     // so that a malicious actor cannot try too many emails, too see if they have
     // accounts or to increase the AWS/SendGrid/etc bill.

@@ -63,8 +63,8 @@ class CrudFilter
             $this->fallbackLogic = $fallbackLogic;
         }
 
-        if (\Request::has($this->name)) {
-            $this->currentValue = \Request::input($this->name);
+        if ($this->crud()->getRequest()->has($this->name)) {
+            $this->currentValue = $this->crud()->getRequest()->input($this->name);
         }
     }
 
@@ -76,7 +76,7 @@ class CrudFilter
      */
     public function isActive()
     {
-        if (\Request::has($this->name)) {
+        if ($this->crud()->getRequest()->has($this->name)) {
             return true;
         }
 
