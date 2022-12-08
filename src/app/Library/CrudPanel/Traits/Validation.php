@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
 trait Validation
@@ -98,7 +99,7 @@ trait Validation
                     });
 
                     foreach ($subfieldsWithValidationMessages as $subfield) {
-                        foreach ($subfield['validationMessages'] as $rule => $message) {
+                        foreach ($subfield['validationMessages'] ?? [] as $rule => $message) {
                             $messages[$item['name'].'.*.'.$subfield['name'].'.'.$rule] = $message;
                         }
                     }
@@ -133,7 +134,7 @@ trait Validation
             $this->setValidationFromFields();
         } elseif (is_array($classOrRulesArray)) {
             $this->setValidationFromArray($classOrRulesArray, $messages);
-        } elseif (is_string($classOrRulesArray) || class_exists($classOrRulesArray)) {
+        } elseif (is_string($classOrRulesArray) && class_exists($classOrRulesArray) && is_a($classOrRulesArray, FormRequest::class, true)) {
             $this->setValidationFromRequest($classOrRulesArray);
         } else {
             abort(500, 'Please pass setValidation() nothing, a rules array or a FormRequest class.');
