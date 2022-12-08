@@ -191,12 +191,11 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
             'email'     => 'required',
             'password.*.test' => 'required',
         ]);
-       
+
         $this->crudPanel->setValidation(UserRequest::class);
         $this->assertEquals(['email', 'password[test]', 'name'], array_values($this->crudPanel->getOperationSetting('requiredFields')));
         $this->assertTrue($this->crudPanel->isRequired('email'));
         $this->assertTrue($this->crudPanel->isRequired('password.test'));
         $this->assertTrue($this->crudPanel->isRequired('name'));
-       
     }
 }
