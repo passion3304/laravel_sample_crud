@@ -236,9 +236,8 @@ return [
     // password reset, before they can try again for the same email?
     'password_recovery_throttle_notifications' => 600, // time in seconds
 
-    // How much time should the token sent to user email be considered valid?
-    // After this time expires, user need to request a new reset token
-    // for the given email account.
+    // How much time should the token sent to the user email be considered valid?
+    // After this time expires, user needs to request a new reset token.
     'password_recovery_token_expiration' => 60, // time in minutes
 
     // Backpack will prevent an IP from trying to reset the password too many times,
