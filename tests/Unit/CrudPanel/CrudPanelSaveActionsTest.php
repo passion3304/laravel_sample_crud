@@ -24,6 +24,7 @@ class CrudPanelSaveActionsTest extends BaseDBCrudPanelTest
 
         $this->singleSaveAction = [
             'name' => 'save_action_one',
+            'button_text' => 'custom',
             'redirect' => function ($crud, $request, $itemId) {
                 return $crud->route;
             },
@@ -97,7 +98,7 @@ class CrudPanelSaveActionsTest extends BaseDBCrudPanelTest
     public function testReplaceSaveActionsWithOneSaveAction()
     {
         $this->crudPanel->setupDefaultSaveActions();
-        $this->crudPanel->replaceSaveActions($this->singleSaveAction);
+        $this->crudPanel->setSaveActions($this->singleSaveAction);
         $this->assertEquals(1, count($this->crudPanel->getOperationSetting('save_actions')));
         $this->assertEquals(['save_action_one'], array_keys($this->crudPanel->getOperationSetting('save_actions')));
     }
@@ -115,6 +116,7 @@ class CrudPanelSaveActionsTest extends BaseDBCrudPanelTest
         $this->crudPanel->setupDefaultSaveActions();
         $this->crudPanel->orderSaveAction('save_and_new', 1);
         $this->assertEquals(1, $this->crudPanel->getOperationSetting('save_actions')['save_and_new']['order']);
+        $this->assertEquals('save_and_new', $this->crudPanel->getFallBackSaveAction());
     }
 
     public function testOrderMultipleSaveActions()
@@ -124,5 +126,63 @@ class CrudPanelSaveActionsTest extends BaseDBCrudPanelTest
         $this->assertEquals(1, $this->crudPanel->getOperationSetting('save_actions')['save_and_new']['order']);
         $this->assertEquals(2, $this->crudPanel->getOperationSetting('save_actions')['save_and_back']['order']);
         $this->assertEquals(3, $this->crudPanel->getOperationSetting('save_actions')['save_and_edit']['order']);
+        $this->crudPanel->orderSaveActions(['save_and_edit' => 1]);
+        $this->assertEquals('save_and_edit', $this->crudPanel->getFallBackSaveAction());
+        $this->assertEquals(['save_and_edit', 'save_and_back', 'save_and_new'], array_keys($this->crudPanel->getOrderedSaveActions()));
+    }
+
+    public function testItCanGetTheDefaultSaveActionForCurrentOperation()
+    {
+        $this->crudPanel->setupDefaultSaveActions();
+        $saveAction = $this->crudPanel->getSaveActionDefaultForCurrentOperation();
+        $this->assertEquals('save_and_back', $saveAction);
+    }
+
+    public function testItCanGetTheDefaultSaveActionFromOperationSettings()
+    {
+        $this->crudPanel->setupDefaultSaveActions();
+        $this->assertEquals('save_and_back', $this->crudPanel->getFallBackSaveAction());
+        $this->crudPanel->setOperationSetting('defaultSaveAction', 'save_and_new');
+        $this->assertEquals('save_and_new', $this->crudPanel->getFallBackSaveAction());
+    }
+
+    public function testItCanRemoveAllTheSaveActions()
+    {
+        $this->crudPanel->setupDefaultSaveActions();
+        $this->assertCount(3, $this->crudPanel->getOperationSetting('save_actions'));
+        $this->crudPanel->removeAllSaveActions();
+        $this->assertCount(0, $this->crudPanel->getOperationSetting('save_actions'));
+    }
+
+    public function testItCanHideSaveActions()
+    {
+        $this->crudPanel->allowAccess(['create', 'update', 'list']);
+        $saveAction = $this->singleSaveAction;
+        $saveAction['visible'] = false;
+        $this->crudPanel->setupDefaultSaveActions();
+        $this->crudPanel->addSaveAction($saveAction);
+        $this->assertCount(4, $this->crudPanel->getOperationSetting('save_actions'));
+        $this->assertCount(3, $this->crudPanel->getVisibleSaveActions());
+    }
+
+    public function testItCanGetSaveActionFromSession()
+    {
+        $this->crudPanel->allowAccess(['create','update','list']);
+        $this->crudPanel->addSaveAction($this->singleSaveAction);
+        $this->crudPanel->setupDefaultSaveActions();
+        $saveActions = $this->crudPanel->getSaveAction();
+       
+        $expected = [
+            'active' => [
+                'value' => 'save_action_one',
+                'label' => 'custom'
+            ],
+            'options' => [
+                'save_and_back' => 'Save and back',
+                'save_and_edit' => 'Save and edit this item',
+                'save_and_new' => 'Save and new item'
+            ]
+        ];
+        $this->assertEquals($expected, $saveActions);
     }
 }

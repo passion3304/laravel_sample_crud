@@ -14,7 +14,7 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
 {
     protected $testFilter = [[
         'name'  => 'my_filter',
-        'type' => 'simple',
+        'type'  => 'simple',
         'label' => 'filter label',
     ], false, false, false];
 
@@ -43,7 +43,7 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
         $this->crudPanel->clearFilters();
         $this->assertCount(0, $this->crudPanel->filters());
     }
-    
+
     public function testItCanCheckIfFilterIsActiveFromRequest()
     {
         $this->crudPanel->setModel(User::class);
@@ -55,6 +55,7 @@ class CrudPanelFiltersTest extends BaseCrudPanelTest
 
         $isActive = CrudFilter::name('my_custom_filter')->isActive();
         $this->assertTrue($isActive);
+    }
 
     public function testItCanCreateAFilterFluently()
     {

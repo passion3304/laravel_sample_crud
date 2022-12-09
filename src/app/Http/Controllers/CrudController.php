@@ -33,14 +33,13 @@ class CrudController extends Controller
         // It's done inside a middleware closure in order to have
         // the complete request inside the CrudPanel object.
         $this->middleware(function ($request, $next) {
-            $this->crud = app()->make('crud');
+            $this->crud = app('crud');
 
             $this->crud->setRequest($request);
 
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
-
             return $next($request);
         });
     }
@@ -96,6 +95,7 @@ class CrudController extends Controller
     protected function setupConfigurationForCurrentOperation()
     {
         $operationName = $this->crud->getCurrentOperation();
+        
         $setupClassName = 'setup'.Str::studly($operationName).'Operation';
 
         /*
@@ -109,7 +109,7 @@ class CrudController extends Controller
          * write is done after the default, so you can remove default settings, etc;
          */
         $this->crud->applyConfigurationFromSettings($operationName);
-
+        
         /*
          * THEN, run the corresponding setupXxxOperation if it exists.
          */

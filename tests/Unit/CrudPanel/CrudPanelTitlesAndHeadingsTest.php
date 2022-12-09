@@ -7,6 +7,7 @@ use Illuminate\Routing\Route;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
 class CrudPanelTitlesAndHeadingsTest extends BaseDBCrudPanelTest
 {
