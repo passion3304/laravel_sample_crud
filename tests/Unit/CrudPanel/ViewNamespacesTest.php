@@ -32,7 +32,7 @@ class ViewNamespacesTest extends BaseCrudPanelTest
     }
 
     public function testItCanGetTheViewPathsForGivenElement()
-    { 
+    {
         ViewNamespaces::addFor('fields', ['crud::fields', 'pro::fields']);
         $viewPaths = ViewNamespaces::getViewPathsFor('fields', 'test');
         $this->assertCount(2, $viewPaths);

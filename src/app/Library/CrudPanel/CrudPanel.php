@@ -309,7 +309,7 @@ class CrudPanel
     }
 
     /**
-     * TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED IN THIS FILE
+     * TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED IN THIS FILE.
      *
      * TODO:
      * - figure out if they are really needed

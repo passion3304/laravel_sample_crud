@@ -12,12 +12,12 @@ class UserCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 
     public function setup()
-    { 
+    {
         $this->crud->setModel(User::class);
         $this->crud->setRoute('users');
     }
 
-    public function setupUpdateOperation() {
-
+    public function setupUpdateOperation()
+    {
     }
 }

@@ -167,21 +167,21 @@ class CrudPanelSaveActionsTest extends BaseDBCrudPanelTest
 
     public function testItCanGetSaveActionFromSession()
     {
-        $this->crudPanel->allowAccess(['create','update','list']);
+        $this->crudPanel->allowAccess(['create', 'update', 'list']);
         $this->crudPanel->addSaveAction($this->singleSaveAction);
         $this->crudPanel->setupDefaultSaveActions();
         $saveActions = $this->crudPanel->getSaveAction();
-       
+
         $expected = [
             'active' => [
                 'value' => 'save_action_one',
-                'label' => 'custom'
+                'label' => 'custom',
             ],
             'options' => [
                 'save_and_back' => 'Save and back',
                 'save_and_edit' => 'Save and edit this item',
-                'save_and_new' => 'Save and new item'
-            ]
+                'save_and_new' => 'Save and new item',
+            ],
         ];
         $this->assertEquals($expected, $saveActions);
     }

@@ -40,6 +40,7 @@ class CrudController extends Controller
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
+
             return $next($request);
         });
     }
@@ -95,7 +96,7 @@ class CrudController extends Controller
     protected function setupConfigurationForCurrentOperation()
     {
         $operationName = $this->crud->getCurrentOperation();
-        
+
         $setupClassName = 'setup'.Str::studly($operationName).'Operation';
 
         /*
@@ -109,7 +110,7 @@ class CrudController extends Controller
          * write is done after the default, so you can remove default settings, etc;
          */
         $this->crud->applyConfigurationFromSettings($operationName);
-        
+
         /*
          * THEN, run the corresponding setupXxxOperation if it exists.
          */
