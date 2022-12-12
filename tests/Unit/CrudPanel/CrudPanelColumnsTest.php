@@ -9,6 +9,7 @@ use Backpack\CRUD\Tests\Unit\Models\User;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Columns
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\ColumnsProtectedMethods
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudColumn
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
 class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 {
@@ -545,13 +546,13 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 
         $this->assertEquals([
             'name'               => 'my_column',
-            'type' => 'text',
-            'label' => 'my_column',
-            'key' => 'my_column',
-            'priority' => 0,
-            'tableColumn' => false,
-            'orderable' => false,
-            'searchLogic' => false,
+            'type'               => 'text',
+            'label'              => 'my_column',
+            'key'                => 'my_column',
+            'priority'           => 0,
+            'tableColumn'        => false,
+            'orderable'          => false,
+            'searchLogic'        => false,
         ], $this->crudPanel->columns()['my_column']);
     }
 

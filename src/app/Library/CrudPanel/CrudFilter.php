@@ -11,17 +11,29 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class CrudFilter
 {
     public $name; // the name of the filtered variable (db column name)
+
     public $type = 'select2'; // the name of the filter view that will be loaded
+
     public $key; //camelCased version of filter name to use in internal ids, js functions and css classes.
+
     public $label;
+
     public $placeholder;
+
     public $values;
+
     public $options;
+
     public $logic;
+
     public $fallbackLogic;
+
     public $currentValue;
+
     public $view;
+
     public $viewNamespace = 'crud::filters';
+
     public $applied = false;
 
     public function __construct($options, $values, $logic, $fallbackLogic)
@@ -209,6 +221,8 @@ class CrudFilter
      *
      * @param  string  $field  The name of the field.
      * @param  string  $attribute  The name of the attribute being removed.
+     *
+     * @codeCoverageIgnore
      *
      * @deprecated
      */
@@ -511,21 +525,21 @@ class CrudFilter
                 $this->crud()->addClause($operator);
                 break;
 
-            // TODO:
-            // whereBetween
-            // whereNotBetween
-            // whereIn
-            // whereNotIn
-            // whereNull
-            // whereNotNull
-            // whereDate
-            // whereMonth
-            // whereDay
-            // whereYear
-            // whereColumn
-            // like
+                // TODO:
+                // whereBetween
+                // whereNotBetween
+                // whereIn
+                // whereNotIn
+                // whereNull
+                // whereNotNull
+                // whereDate
+                // whereMonth
+                // whereDay
+                // whereYear
+                // whereColumn
+                // like
 
-            // sql comparison operators
+                // sql comparison operators
             case '=':
             case '<=>':
             case '<>':

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Read
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
 class CrudPanelReadTest extends BaseDBCrudPanelTest
 {
@@ -26,7 +27,7 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
         'type'      => 'select',
         'entity'    => 'roles',
         'attribute' => 'name',
-        'model' => Role::class,
+        'model'     => Role::class,
     ];
 
     private $nonRelationshipColumn = [
@@ -54,58 +55,58 @@ class CrudPanelReadTest extends BaseDBCrudPanelTest
 
     private $expectedCreateFormArticleFieldsArray = [
         'content' => [
-            'name'  => 'content',
-            'label' => 'The Content',
-            'type'  => 'text',
+            'name'   => 'content',
+            'label'  => 'The Content',
+            'type'   => 'text',
             'entity' => false,
         ],
         'metas' => [
-            'name'  => 'metas',
-            'label' => 'Metas',
-            'type'  => 'text',
+            'name'   => 'metas',
+            'label'  => 'Metas',
+            'type'   => 'text',
             'entity' => false,
         ],
         'tags' => [
-            'name'  => 'tags',
-            'label' => 'Tags',
-            'type'  => 'text',
+            'name'   => 'tags',
+            'label'  => 'Tags',
+            'type'   => 'text',
             'entity' => false,
         ],
         'extras' => [
-            'name'  => 'extras',
-            'label' => 'Extras',
-            'type'  => 'text',
+            'name'   => 'extras',
+            'label'  => 'Extras',
+            'type'   => 'text',
             'entity' => false,
         ],
     ];
 
     private $expectedUpdateFormArticleFieldsArray = [
         'content' => [
-            'name'  => 'content',
-            'label' => 'The Content',
-            'type'  => 'text',
-            'value' => 'Some Content',
+            'name'   => 'content',
+            'label'  => 'The Content',
+            'type'   => 'text',
+            'value'  => 'Some Content',
             'entity' => false,
         ],
         'metas' => [
-            'name'  => 'metas',
-            'label' => 'Metas',
-            'type'  => 'text',
-            'value' => '{"meta_title":"Meta Title Value","meta_description":"Meta Description Value"}',
+            'name'   => 'metas',
+            'label'  => 'Metas',
+            'type'   => 'text',
+            'value'  => '{"meta_title":"Meta Title Value","meta_description":"Meta Description Value"}',
             'entity' => false,
         ],
         'tags' => [
-            'name'  => 'tags',
-            'label' => 'Tags',
-            'type'  => 'text',
-            'value' => '{"tags":["tag1","tag2","tag3"]}',
+            'name'   => 'tags',
+            'label'  => 'Tags',
+            'type'   => 'text',
+            'value'  => '{"tags":["tag1","tag2","tag3"]}',
             'entity' => false,
         ],
         'extras' => [
-            'name'  => 'extras',
-            'label' => 'Extras',
-            'type'  => 'text',
-            'value' => '{"extra_details":["detail1","detail2","detail3"]}',
+            'name'   => 'extras',
+            'label'  => 'Extras',
+            'type'   => 'text',
+            'value'  => '{"extra_details":["detail1","detail2","detail3"]}',
             'entity' => false,
         ],
         'id' => [
