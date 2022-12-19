@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 
-class AuthenticateSessionL8
+class AuthenticateSessionL9 implements \Illuminate\Contracts\Session\Middleware\AuthenticatesSessions
 {
     /**
      * The authentication factory implementation.
