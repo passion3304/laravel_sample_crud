@@ -50,11 +50,11 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
             ],
             [
                 'name' => 'password',
-            ]
+            ],
         ]);
 
         $this->crudPanel->setRequest($request);
-        
+
         $this->crudPanel->validateRequest();
 
         $this->assertEquals(['email'], array_keys($this->crudPanel->getOperationSetting('validationRules')));
@@ -90,16 +90,16 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
             ],
             [
                 'name' => 'password',
-            ]
+            ],
         ]);
 
         $this->crudPanel->setRequest($request);
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
-        try  {
+        try {
             $this->crudPanel->validateRequest();
-        }catch(\Illuminate\Validation\ValidationException $e){
+        } catch (\Illuminate\Validation\ValidationException $e) {
             $this->assertEquals(['password', 'email', 'name'], array_keys($e->errors()));
             throw $e;
         }
