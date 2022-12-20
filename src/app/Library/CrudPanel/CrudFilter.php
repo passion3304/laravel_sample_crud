@@ -181,7 +181,9 @@ class CrudFilter
      */
     public static function name($name)
     {
-        return new static(compact('name'), null, null, null);
+        $filter = new static(compact('name'), null, null, null);
+
+        return $filter->save();
     }
 
     /**
