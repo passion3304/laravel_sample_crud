@@ -17,6 +17,6 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $this->crudPanel->addField('isARelation');
 
         $this->assertEquals(false, $this->crudPanel->fields()['isAnAttribute']['entity']);
-        $this->assertEquals(true, $this->crudPanel->fields()['isARelation']['entity']);
+        $this->assertEquals('isARelation', $this->crudPanel->fields()['isARelation']['entity']);
     }
 }
