@@ -3,11 +3,16 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Arr;
+use Backpack\CRUD\app\Library\CrudPanel\CrudField;
+use Backpack\CRUD\Tests\Unit\Models\Star;
 use Backpack\CRUD\Tests\Unit\Models\User;
 use Illuminate\Http\Request;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Fields
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsPrivateMethods
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudField
  */
 class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 {
@@ -19,9 +24,9 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 
     private $expectedOneTextFieldArray = [
         'field1' => [
-            'name'  => 'field1',
-            'label' => 'Field1',
-            'type'  => 'text',
+            'name'   => 'field1',
+            'label'  => 'Field1',
+            'type'   => 'text',
             'entity' => false,
         ],
     ];
@@ -55,15 +60,15 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 
     private $expectedTwoTextFieldsArray = [
         'field1' => [
-            'name'  => 'field1',
-            'label' => 'Field1',
-            'type'  => 'text',
+            'name'   => 'field1',
+            'label'  => 'Field1',
+            'type'   => 'text',
             'entity' => false,
         ],
         'field2' => [
-            'name'  => 'field2',
-            'label' => 'Field2',
-            'type'  => 'text',
+            'name'   => 'field2',
+            'label'  => 'Field2',
+            'type'   => 'text',
             'entity' => false,
         ],
     ];
@@ -85,21 +90,21 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 
     private $expectedThreeTextFieldsArray = [
         'field1' => [
-            'name'  => 'field1',
-            'label' => 'Field1',
-            'type'  => 'text',
+            'name'   => 'field1',
+            'label'  => 'Field1',
+            'type'   => 'text',
             'entity' => false,
         ],
         'field2' => [
-            'name'  => 'field2',
-            'label' => 'Field2',
-            'type'  => 'text',
+            'name'   => 'field2',
+            'label'  => 'Field2',
+            'type'   => 'text',
             'entity' => false,
         ],
         'field3' => [
-            'name'  => 'field3',
-            'label' => 'Field3',
-            'type'  => 'text',
+            'name'   => 'field3',
+            'label'  => 'Field3',
+            'type'   => 'text',
             'entity' => false,
         ],
     ];
@@ -157,75 +162,75 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
 
     private $expectedMultipleFieldTypesArray = [
         'field1' => [
-            'name'  => 'field1',
-            'label' => 'Field1',
-            'type'  => 'text',
+            'name'   => 'field1',
+            'label'  => 'Field1',
+            'type'   => 'text',
             'entity' => false,
         ],
         'field2' => [
-            'name'  => 'field2',
-            'type'  => 'address',
-            'label' => 'Field2',
+            'name'   => 'field2',
+            'type'   => 'address',
+            'label'  => 'Field2',
             'entity' => false,
         ],
         'field3' => [
-            'name'  => 'field3',
-            'type'  => 'address',
-            'label' => 'Field3',
+            'name'   => 'field3',
+            'type'   => 'address',
+            'label'  => 'Field3',
             'entity' => false,
         ],
         'field4' => [
-            'name'  => 'field4',
-            'type'  => 'checkbox',
-            'label' => 'Field4',
+            'name'   => 'field4',
+            'type'   => 'checkbox',
+            'label'  => 'Field4',
             'entity' => false,
         ],
         'field5' => [
-            'name'  => 'field5',
-            'type'  => 'date',
-            'label' => 'Field5',
+            'name'   => 'field5',
+            'type'   => 'date',
+            'label'  => 'Field5',
             'entity' => false,
         ],
         'field6' => [
-            'name'  => 'field6',
-            'type'  => 'email',
-            'label' => 'Field6',
+            'name'   => 'field6',
+            'type'   => 'email',
+            'label'  => 'Field6',
             'entity' => false,
         ],
         'field7' => [
-            'name'  => 'field7',
-            'type'  => 'hidden',
-            'label' => 'Field7',
+            'name'   => 'field7',
+            'type'   => 'hidden',
+            'label'  => 'Field7',
             'entity' => false,
         ],
         'field8' => [
-            'name'  => 'field8',
-            'type'  => 'password',
-            'label' => 'Field8',
+            'name'   => 'field8',
+            'type'   => 'password',
+            'label'  => 'Field8',
             'entity' => false,
         ],
         'field9' => [
-            'name'  => 'field9',
-            'type'  => 'select2',
-            'label' => 'Field9',
+            'name'   => 'field9',
+            'type'   => 'select2',
+            'label'  => 'Field9',
             'entity' => false,
         ],
         'field10' => [
-            'name'  => 'field10',
-            'type'  => 'select2_multiple',
-            'label' => 'Field10',
+            'name'   => 'field10',
+            'type'   => 'select2_multiple',
+            'label'  => 'Field10',
             'entity' => false,
         ],
         'field11' => [
-            'name'  => 'field11',
-            'type'  => 'table',
-            'label' => 'Field11',
+            'name'   => 'field11',
+            'type'   => 'table',
+            'label'  => 'Field11',
             'entity' => false,
         ],
         'field12' => [
-            'name'  => 'field12',
-            'type'  => 'url',
-            'label' => 'Field12',
+            'name'   => 'field12',
+            'type'   => 'url',
+            'label'  => 'Field12',
             'entity' => false,
         ],
     ];
@@ -630,6 +635,258 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         $result = $this->crudPanel->getStrippedSaveRequest($request);
         $this->assertIsArray($result);
         $this->assertSame(['invokable' => 'invokable'], $result);
+    }
+
+    public function testItDoesNotUseProtectedMethodsAsRelationshipMethods()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addField('isNotRelation');
+        $this->crudPanel->addField('isNotRelationPublic');
+
+        $this->assertEquals(false, $this->crudPanel->fields()['isNotRelation']['entity']);
+        $this->assertEquals(false, $this->crudPanel->fields()['isNotRelationPublic']['entity']);
+    }
+
+    public function testItAbortsOnUnexpectedEntity()
+    {
+        try {
+            $this->crudPanel->getRelationInstance(['name' => 'doesNotExist', 'entity' => 'doesNotExist']);
+        } catch (\Throwable $e) {
+        }
+        $this->assertEquals(
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Looks like field <code>doesNotExist</code> is not properly defined. The <code>doesNotExist()</code> relationship doesn\'t seem to exist on the <code>Backpack\CRUD\Tests\Unit\Models\TestModel</code> model.'),
+            $e
+        );
+    }
+
+    public function testItCanRemoveAllFields()
+    {
+        $this->crudPanel->addFields([
+            ['name' => 'test1'],
+            ['name' => 'test2'],
+        ]);
+
+        $this->assertCount(2, $this->crudPanel->fieldS());
+        $this->crudPanel->removeAllFields();
+        $this->assertCount(0, $this->crudPanel->fieldS());
+    }
+
+    public function testItCanRemoveAnAttributeFromAField()
+    {
+        $this->crudPanel->addField(['name' => 'test', 'tab' => 'test']);
+
+        $this->assertEquals('test', $this->crudPanel->fieldS()['test']['tab']);
+        $this->crudPanel->removeFieldAttribute('test', 'tab');
+        $this->assertNull($this->crudPanel->fieldS()['test']['tab'] ?? null);
+    }
+
+    public function testItCanSetALabelForAField()
+    {
+        $this->crudPanel->addField(['name' => 'test', 'tab' => 'test']);
+        $this->crudPanel->setFieldLabel('test', 'my-test-label');
+        $this->assertEquals('my-test-label', $this->crudPanel->fieldS()['test']['label']);
+    }
+
+    public function testItCanMakeAFieldFirst()
+    {
+        $firstField = $this->crudPanel->addField(['name' => 'test1']);
+        $secondField = $this->crudPanel->addField(['name' => 'test2']);
+        $this->assertEquals(['test1', 'test2'], array_keys($this->crudPanel->fields()));
+        $secondField->makeFirstField();
+        $this->assertEquals(['test2', 'test1'], array_keys($this->crudPanel->fields()));
+    }
+
+    public function testItCanGetTheCurrentFields()
+    {
+        $this->crudPanel->addField(['name' => 'test1']);
+        $this->crudPanel->addField(['name' => 'test2']);
+
+        $this->assertCount(2, $this->crudPanel->getCurrentFields());
+        $this->assertCount(2, $this->crudPanel->getFields());
+    }
+
+    public function testItCanGetUploadFields()
+    {
+        $this->crudPanel->addField(['name' => 'test1', 'upload' => true]);
+        $this->crudPanel->addField(['name' => 'test2']);
+
+        $this->assertCount(2, $this->crudPanel->getFields());
+        $this->assertTrue($this->crudPanel->hasUploadFields());
+    }
+
+    public function testItCanGetTheFieldTypeWithViewNamespace()
+    {
+        $this->crudPanel->addField(['name' => 'test', 'view_namespace' => 'test_namespace']);
+        $this->assertEquals('test_namespace.text', $this->crudPanel->getFieldTypeWithNamespace($this->crudPanel->fields()['test']));
+    }
+
+    public function testItCanGetAllFieldNames()
+    {
+        $this->crudPanel->addField(['name' => 'test1']);
+        $this->crudPanel->addField(['name' => 'test2']);
+        $this->assertEquals(['test1', 'test2'], $this->crudPanel->getAllFieldNames());
+    }
+
+    public function testItCanAddAFluentField()
+    {
+        $this->crudPanel->setModel(User::class);
+
+        $this->crudPanel->field('my_field')
+                        ->type('my_custom_type')
+                        ->label('my_label')
+                        ->tab('custom_tab')
+                        ->prefix('prefix')
+                        ->suffix('suffix')
+                        ->hint('hinter')
+                        ->fake(false)
+                        ->validationRules('required|min:2')
+                        ->validationMessages(['required' => 'is_required', 'min' => 'min_2'])
+                        ->store_in('some')
+                        ->size(6)
+                        ->on('created', function () {
+                        })
+                        ->subfields([['name' => 'sub_1']])
+                        ->entity('bang');
+
+        $this->assertCount(1, $this->crudPanel->fields());
+
+        $this->assertEquals([
+            'name'               => 'my_field',
+            'type'               => 'my_custom_type',
+            'entity'             => 'bang',
+            'relation_type'      => 'BelongsTo',
+            'attribute'          => 'name',
+            'model'              => 'Backpack\CRUD\Tests\Unit\Models\Bang',
+            'multiple'           => false,
+            'pivot'              => false,
+            'label'              => 'my_label',
+            'tab'                => 'custom_tab',
+            'suffix'             => 'suffix',
+            'prefix'             => 'prefix',
+            'hint'               => 'hinter',
+            'fake'               => false,
+            'validationRules'    => 'required|min:2',
+            'validationMessages' => [
+                'required' => 'is_required',
+                'min'      => 'min_2',
+            ],
+            'store_in' => 'some',
+            'wrapper'  => [
+                'class' => 'form-group col-md-6',
+            ],
+            'events' => [
+                'created' => function () {
+                },
+            ],
+            'subfields' => [
+                [
+                    'name' => 'sub_1',
+                    'parentFieldName' => 'my_field',
+                    'type' => 'text',
+                    'entity' => false,
+                    'label' => 'Sub 1',
+                ],
+            ],
+
+        ], $this->crudPanel->fields()['my_field']);
+    }
+
+    public function testItCanMakeAFieldFirstFluently()
+    {
+        $this->crudPanel->field('test1');
+        $this->crudPanel->field('test2')->makeFirst();
+        $crudFields = $this->crudPanel->fields();
+        $firstField = reset($crudFields);
+        $this->assertEquals($firstField['name'], 'test2');
+    }
+
+    public function testItCanMakeAFieldLastFluently()
+    {
+        $this->crudPanel->field('test1');
+        $this->crudPanel->field('test2');
+        $this->crudPanel->field('test1')->makeLast();
+        $crudFields = $this->crudPanel->fields();
+        $firstField = reset($crudFields);
+        $this->assertEquals($firstField['name'], 'test2');
+    }
+
+    public function testItCanPlaceFieldsFluently()
+    {
+        $this->crudPanel->field('test1');
+        $this->crudPanel->field('test2');
+        $this->crudPanel->field('test3')->after('test1');
+
+        $crudFieldsNames = array_column($this->crudPanel->fields(), 'name');
+        $this->assertEquals($crudFieldsNames, ['test1', 'test3', 'test2']);
+
+        $this->crudPanel->field('test4')->before('test1');
+        $crudFieldsNames = array_column($this->crudPanel->fields(), 'name');
+        $this->assertEquals($crudFieldsNames, ['test4', 'test1', 'test3', 'test2']);
+    }
+
+    public function testItCanRemoveFieldAttributesFluently()
+    {
+        $this->crudPanel->field('test1')->type('test');
+        $this->assertEquals($this->crudPanel->fields()['test1']['type'], 'test');
+        $this->crudPanel->field('test1')->forget('type');
+        $this->assertNull($this->crudPanel->fields()['test1']['type'] ?? null);
+    }
+
+    public function testItCanRemoveFieldFluently()
+    {
+        $this->crudPanel->field('test1')->type('test');
+        $this->assertCount(1, $this->crudPanel->fields());
+        $this->crudPanel->field('test1')->remove();
+        $this->assertCount(0, $this->crudPanel->fields());
+    }
+
+    public function testItCanAddMorphFieldsFluently()
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->crudPanel->field('starable')
+                        ->addMorphOption('Backpack\CRUD\Tests\Unit\Models\User', 'User')
+                        ->morphTypeField(['attributes' => ['custom-attribute' => true]])
+                        ->morphIdField(['attributes' => ['custom-attribute' => true]]);
+
+        [$morphTypeField, $morphIdField] = $this->crudPanel->fields()['starable']['subfields'];
+
+        $this->assertTrue($morphTypeField['attributes']['custom-attribute']);
+        $this->assertTrue($morphIdField['attributes']['custom-attribute']);
+    }
+
+    public function testAbortsConfiguringNonMorphTypeField()
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->expectException(\Exception::class);
+        $this->crudPanel->field('some_field')
+                        ->morphTypeField(['attributes' => ['custom-attribute' => true]]);
+    }
+
+    public function testAbortsConfiguringNonMorphIdField()
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->expectException(\Exception::class);
+        $this->crudPanel->field('some_field')
+                        ->morphIdField(['attributes' => ['custom-attribute' => true]]);
+    }
+
+    public function testItCanGetTheFieldAttributes()
+    {
+        $this->crudPanel->field('some_field');
+
+        $this->assertEquals($this->crudPanel->fields()['some_field'], $this->crudPanel->field('some_field')->getAttributes());
+    }
+
+    public function testItAbortsWithEmptyNamesFluently()
+    {
+        try {
+            CrudField::name('');
+        } catch (\Throwable $e) {
+        }
+        $this->assertEquals(
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Field name can\'t be empty.'),
+            $e
+        );
     }
 }
 

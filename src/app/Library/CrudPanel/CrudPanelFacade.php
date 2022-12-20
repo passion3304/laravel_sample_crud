@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * service container as 'crud'.
  */
 /**
+ * @codeCoverageIgnore
  * Class CrudPanelFacade.
  *
  * @method static setModel($model)

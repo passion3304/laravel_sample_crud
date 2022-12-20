@@ -30,7 +30,7 @@ If you have a solution for it and want to help, you can submit a Pull Request. T
 - you'll become one of the Backpack contributors; [welcome to the party! :-)](https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif);
 - you'll not just be helping yourself and the maintainers of Backpack, you'd be helping thousants of Backpack developers;
 
-If you've never submitted a PR before, don't worry, it's not that difficult. Read [this tutoral](https://mattstauffer.co/blog/how-to-contribute-to-an-open-source-github-project-using-your-own-fork) and the rules above. I promise, you'll enjoy sending PRs after a while :-)
+If you've never submitted a PR before, don't worry, it's not that difficult. Read [this tutoral](https://mattstauffer.com/blog/how-to-contribute-to-an-open-source-github-project-using-your-own-fork) and the rules above. I promise, you'll enjoy sending PRs after a while :-)
 
 
 # Want to help out?

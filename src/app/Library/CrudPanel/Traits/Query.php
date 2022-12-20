@@ -242,13 +242,33 @@ trait Query
         // add the count query in the "outer" query.
         $outerQuery = $outerQuery->selectRaw('count(*) as total_rows');
 
+        // Expression columns are hand-written by developers in ->selectRaw() and we can't exclude those statements reliably
+        // so we just store them and re-use them in the sub-query too.
+        $expressionColumns = [];
+
+        foreach ($crudQuery->columns as $column) {
+            if (! is_string($column) && is_a($column, 'Illuminate\Database\Query\Expression')) {
+                $expressionColumns[] = $column;
+            }
+        }
         // add the subquery from where the "outer query" will count the results.
         // this subquery is the "main crud query" without some properties:
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
 
-        $outerQuery = $outerQuery->fromSub($subQuery->select($modelTable.'.'.$this->model->getKeyName()), $modelTable.'_aggregator');
+        // re-set the previous query bindings
+        $subQuery->setBindings($crudQuery->getRawBindings());
+
+        // select only one column for the count
+        $subQuery->select($modelTable.'.'.$this->model->getKeyName());
+
+        // in case there are raw expressions we need to add them too.
+        foreach ($expressionColumns as $expression) {
+            $subQuery->selectRaw($expression);
+        }
+
+        $outerQuery = $outerQuery->fromSub($subQuery, str_replace('.', '_', $modelTable).'_aggregator');
 
         return $outerQuery->cursor()->first()->total_rows;
     }

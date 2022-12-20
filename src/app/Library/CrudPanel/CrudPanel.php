@@ -148,6 +148,7 @@ class CrudPanel
      * DEPRECATION NOTICE: This method is no longer used and will be removed in future versions of Backpack
      *
      * @deprecated
+     * @codeCoverageIgnore
      *
      * @return bool
      */
@@ -307,16 +308,18 @@ class CrudPanel
         });
     }
 
-    // ------------
-    // TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED IN THIS FILE
-    // ------------
-    //
-    // TODO:
-    // - figure out if they are really needed
-    // - comments inside the function to explain how they work
-    // - write docblock for them
-    // - place in the correct section above (CREATE, READ, UPDATE, DELETE, ACCESS, MANIPULATION)
-
+    /**
+     * TONE FUNCTIONS - UNDOCUMENTED, UNTESTED, SOME MAY BE USED IN THIS FILE.
+     *
+     * TODO:
+     * - figure out if they are really needed
+     * - comments inside the function to explain how they work
+     * - write docblock for them
+     * - place in the correct section above (CREATE, READ, UPDATE, DELETE, ACCESS, MANIPULATION)
+     *
+     * @deprecated
+     * @codeCoverageIgnore
+     */
     public function sync($type, $fields, $attributes)
     {
         if (! empty($this->{$type})) {
