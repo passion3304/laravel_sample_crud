@@ -546,6 +546,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
 
         $this->assertEquals('new_key', $this->crudPanel->columns()['new_key']['key']);
     }
+
     public function testItCanAddAFluentColumn()
     {
         $this->crudPanel->setModel(User::class);
