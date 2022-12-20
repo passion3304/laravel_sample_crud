@@ -40,7 +40,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
             return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
-        $this->crudPanel->addFields(
+        $this->crudPanel->addFields([
             [
                 'name'            => 'email',
                 'validationRules' => 'required',
@@ -51,10 +51,10 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
             [
                 'name' => 'password',
             ]
-        );
+        ]);
 
         $this->crudPanel->setRequest($request);
-
+        
         $this->crudPanel->validateRequest();
 
         $this->assertEquals(['email'], array_keys($this->crudPanel->getOperationSetting('validationRules')));
@@ -69,17 +69,18 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
             'password' => 'required',
         ]);
         $this->crudPanel->setValidation(UserRequest::class);
+
         $request = request()->create('users/', 'POST', [
-            'name'     => 'test name',
-            'email'    => 'test@test.com',
-            'password' => 'test',
+            'name'     => '',
+            'password' => '',
+            'email'    => '',
         ]);
 
         $request->setRouteResolver(function () use ($request) {
             return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
-        $this->crudPanel->addFields(
+        $this->crudPanel->addFields([
             [
                 'name'            => 'email',
                 'validationRules' => 'required',
@@ -90,13 +91,18 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
             [
                 'name' => 'password',
             ]
-        );
+        ]);
 
         $this->crudPanel->setRequest($request);
 
-        $validatedRequest = $this->crudPanel->validateRequest();
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
 
-        $this->assertEquals(['password', 'email'], array_keys($this->crudPanel->getOperationSetting('validationRules')));
+        try  {
+            $this->crudPanel->validateRequest();
+        }catch(\Illuminate\Validation\ValidationException $e){
+            $this->assertEquals(['password', 'email', 'name'], array_keys($e->errors()));
+            throw $e;
+        }
     }
 
     public function testItCanGetTheValidationFromFields()
@@ -149,7 +155,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $this->assertEquals(['email', 'name', 'password.*.test'], array_keys($this->crudPanel->getOperationSetting('validationRules')));
     }
 
-    public function testItThrowsExceptionWithInvalidaValidationClass()
+    public function testItThrowsExceptionWithInvalidValidationClass()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('create');
