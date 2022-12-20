@@ -4,6 +4,9 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\ViewNamespaces;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait HasViewNamespaces
 {
     /**

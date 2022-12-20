@@ -30,8 +30,10 @@ class BackpackServiceProvider extends ServiceProvider
 
     // Indicates if loading of the provider is deferred.
     protected $defer = false;
+
     // Where the route file lives, both inside the package and in the app (if overwritten).
     public $routeFilePath = '/routes/backpack/base.php';
+
     // Where custom routes can be written, and will be registered by Backpack.
     public $customRoutesFilePath = '/routes/backpack/custom.php';
 
@@ -40,7 +42,7 @@ class BackpackServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(\Illuminate\Routing\Router $router)
+    public function boot(Router $router)
     {
         $this->loadViewsWithFallbacks();
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
@@ -161,6 +163,11 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function setupRoutes(Router $router)
     {
+        if (app()->runningUnitTests()) {
+            $this->loadRoutesFrom(__DIR__.'/routes/backpack/testing.php');
+
+            return;
+        }
         // by default, use the routes file provided in vendor
         $routeFilePathInUse = __DIR__.$this->routeFilePath;
 
@@ -259,8 +266,8 @@ class BackpackServiceProvider extends ServiceProvider
             'backpack' => [
                 'provider'  => 'backpack',
                 'table'     => 'password_resets',
-                'expire'   => 60,
-                'throttle' => config('backpack.base.password_recovery_throttle_notifications'),
+                'expire'    => config('backpack.base.password_recovery_token_expiration', 60),
+                'throttle'  => config('backpack.base.password_recovery_throttle_notifications'),
             ],
         ];
 

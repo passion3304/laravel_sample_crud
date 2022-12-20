@@ -23,6 +23,7 @@
             <directory suffix=".php">./src/app/Models/Traits/</directory>
             <file>./src/app/Library/Widget.php</file>
             <file>./src/app/Http/Controllers/CrudController.php</file>
+            <file>./src/ViewNamespaces.php</file>
             <exclude>
                 <directory suffix=".php">./src/app/Models/Traits/SpatieTranslatable/</directory>
             </exclude>
