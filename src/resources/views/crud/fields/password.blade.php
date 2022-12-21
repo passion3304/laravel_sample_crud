@@ -13,7 +13,6 @@
     <input
     	type="password"
     	name="{{ $field['name'] }}"
-        value="{{ $field['value'] ?? $field['default'] ?? '' }}"
         @include('crud::fields.inc.attributes')
     	>
 
