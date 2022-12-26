@@ -20,4 +20,9 @@ class UserCrudController extends CrudController
     public function setupUpdateOperation()
     {
     }
+
+    protected function create()
+    {
+        return response('create');
+    }
 }
