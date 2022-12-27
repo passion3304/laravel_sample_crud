@@ -30,7 +30,7 @@
             <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-default"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
         @endif
 
-        @if (!$crud->get($crud->getOperation() . '.hideDeleteButton'))
+        @if ($crud->get('update.showDeleteButton') && $crud->get('delete.configuration'))
             <button onclick="confirmAndDeleteEntry()" type="button" class="btn btn-danger float-right"><i class="la la-trash-alt"></i> {{ trans('backpack::crud.delete') }}</button>
         @endif
     </div>
@@ -115,7 +115,7 @@
 
 </script>
 
-@if (!$crud->get($crud->getOperation() . '.hideDeleteButton'))
+@if ($crud->get('update.showDeleteButton') && $crud->get('delete.configuration'))
 <script>
     function confirmAndDeleteEntry() {
         // Ask for confirmation before deleting an item

@@ -290,9 +290,4 @@ trait Update
 
         return $result;
     }
-
-    public function hideDeleteButton(): void
-    {
-        $this->set($this->getOperation().'.hideDeleteButton', true);
-    }
 }
