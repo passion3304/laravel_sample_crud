@@ -11,9 +11,11 @@
             return $prefix.$file_path;
         }
         
-        return isset($column['temporary']) ?
-            asset(\Storage::disk($disk)->temporaryUrl($file_path, Carbon\Carbon::now()->addMinutes($column['temporary']))) :
-            asset(\Storage::disk($disk)->url($file_path));
+        if (isset($column['temporary'])) {
+            return asset(\Storage::disk($disk)->temporaryUrl($file_path, Carbon\Carbon::now()->addMinutes($column['temporary'])));
+        }
+        
+        return asset(\Storage::disk($disk)->url($file_path));
     };
 
     if($column['value'] instanceof \Closure) {
