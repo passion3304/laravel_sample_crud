@@ -167,7 +167,7 @@
 
                         // Redirect in 1 sec so that admins get to see the success message
                         setTimeout(function () {
-                            window.location.href = '{{ url($crud->route) }}';
+                            window.location.href = '{{ is_bool($crud->get('update.showDeleteButton')) ? url($crud->route) : $crud->get('update.showDeleteButton') }}';
                         }, 1000);
                     },
                     error: function() {
