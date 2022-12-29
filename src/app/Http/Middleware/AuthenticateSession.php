@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Middleware;
 
-if (interface_exists('Illuminate\Contracts\Session\Middleware\AuthenticatesSessions')) {
+if (interface_exists('Illuminate\Contracts\Session\Middleware\AuthenticatesSessions', false)) {
     class AuthenticateSession extends AuthenticateSessionL9
     {
     }
