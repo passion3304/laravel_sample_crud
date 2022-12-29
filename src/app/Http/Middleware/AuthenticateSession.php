@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Middleware;
 
-if (app()->version() >= 9.4) {
+if (app()->version() >= 9) {
     class AuthenticateSession extends AuthenticateSessionL9
     {
     }
