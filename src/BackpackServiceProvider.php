@@ -163,11 +163,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function setupRoutes(Router $router)
     {
-        if (app()->runningUnitTests()) {
-            $this->loadRoutesFrom(__DIR__.'/routes/backpack/testing.php');
-
-            return;
-        }
         // by default, use the routes file provided in vendor
         $routeFilePathInUse = __DIR__.$this->routeFilePath;
 
