@@ -8,7 +8,7 @@
     $column['radius'] = $column['radius'] ?? "3px";
     $column['prefix'] = $column['prefix'] ?? '';
     $column['temporary'] = $column['temporary'] ?? false;
-    $column['expire'] = $column['expire'] ?? 1;
+    $column['expiration'] = $column['expiration'] ?? 1;
 
     if($column['value'] instanceof \Closure) {
       $column['value'] = $column['value']($entry);
@@ -23,7 +23,7 @@
     } elseif (isset($column['disk'])) { // image from a different disk (like s3 bucket)
 
       if (!empty($column['temporary'])) {
-          $href = $src = Storage::disk($column['disk'])->temporaryUrl($column['prefix'].$column['value'], now()->addMinutes((int) $column['expire']));
+          $href = $src = Storage::disk($column['disk'])->temporaryUrl($column['prefix'].$column['value'], now()->addMinutes((int) $column['expiration']));
       } else {
           $href = $src = Storage::disk($column['disk'])->url($column['prefix'].$column['value']);
       }
