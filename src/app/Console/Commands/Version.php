@@ -36,9 +36,15 @@ class Version extends Command
         $this->line(\PackageVersions\Versions::getVersion('laravel/framework'));
         $this->line('');
 
-        $this->comment('### BACKPACK VERSION:');
+        $this->comment('### BACKPACK CRUD:');
         $this->line(\PackageVersions\Versions::getVersion('backpack/crud'));
         $this->line('');
+
+        if (backpack_pro()) {
+            $this->comment('### BACKPACK PRO:');
+            $this->line(\PackageVersions\Versions::getVersion('backpack/pro'));
+            $this->line('');
+        }
     }
 
     /**
