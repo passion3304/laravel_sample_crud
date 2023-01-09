@@ -37,9 +37,9 @@ class Version extends Command
         $this->line('');
 
         $this->comment('### BACKPACK PACKAGE VERSIONS:');
-        foreach(\PackageVersions\Versions::VERSIONS as $package => $version) {
+        foreach (\PackageVersions\Versions::VERSIONS as $package => $version) {
             if (substr($package, 0, 9) == 'backpack/') {
-                $this->line($package.': '.strtok($version,'@'));
+                $this->line($package.': '.strtok($version, '@'));
             }
         }
     }
