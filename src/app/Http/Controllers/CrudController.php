@@ -96,7 +96,11 @@ class CrudController extends Controller
     protected function setupConfigurationForCurrentOperation()
     {
         $operationName = $this->crud->getCurrentOperation();
-        $setupClassName = 'setup'.Str::studly($operationName ?? '').'Operation';
+        if (!$operationName) {
+            return;
+        }
+        
+        $setupClassName = 'setup'.Str::studly($operationName).'Operation';
 
         /*
          * FIRST, run all Operation Closures for this operation.
