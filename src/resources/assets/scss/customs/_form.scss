@@ -61,5 +61,10 @@ form {
     }
 
     div.checkbox label { cursor: pointer }
+    div[bp-field-type="switch"] label:not([for=""]) { cursor: pointer }
+    input[type="checkbox"] + label { cursor: pointer }
+    input[type="radio"] + label { cursor: pointer }
+    input[type="range"] { cursor: pointer }
+    
 
 }
