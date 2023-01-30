@@ -246,7 +246,7 @@ trait Query
         // so we just store them and re-use them in the sub-query too.
         $expressionColumns = [];
 
-        foreach ($crudQuery->columns as $column) {
+        foreach ($crudQuery->columns ?? [] as $column) {
             if (! is_string($column) && is_a($column, 'Illuminate\Database\Query\Expression')) {
                 $expressionColumns[] = $column;
             }
