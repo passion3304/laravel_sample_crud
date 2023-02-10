@@ -36,9 +36,12 @@ class Version extends Command
         $this->line(\PackageVersions\Versions::getVersion('laravel/framework'));
         $this->line('');
 
-        $this->comment('### BACKPACK VERSION:');
-        $this->line(\PackageVersions\Versions::getVersion('backpack/crud'));
-        $this->line('');
+        $this->comment('### BACKPACK PACKAGE VERSIONS:');
+        foreach (\PackageVersions\Versions::VERSIONS as $package => $version) {
+            if (substr($package, 0, 9) == 'backpack/') {
+                $this->line($package.': '.strtok($version, '@'));
+            }
+        }
     }
 
     /**

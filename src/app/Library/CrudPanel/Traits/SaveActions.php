@@ -47,7 +47,7 @@ trait SaveActions
      */
     public function getSaveActionByOrder($order)
     {
-        return array_filter($this->getOperationSetting('save_actions'), function ($arr) use ($order) {
+        return array_filter($this->getOperationSetting('save_actions') ?? [], function ($arr) use ($order) {
             return $arr['order'] == $order;
         });
     }
@@ -212,7 +212,7 @@ trait SaveActions
     /**
      * Return the ordered save actions to use in the crud panel.
      *
-     * @return void
+     * @return array
      */
     public function getOrderedSaveActions()
     {
@@ -228,7 +228,7 @@ trait SaveActions
     /**
      * Returns the save actions that passed the visible callback.
      *
-     * @return void
+     * @return array
      */
     public function getVisibleSaveActions()
     {
@@ -322,7 +322,7 @@ trait SaveActions
      * Redirect to the correct URL, depending on which save action has been selected.
      *
      * @param  string  $itemId
-     * @return \Illuminate\Http\Response
+     * @return array|\Illuminate\Http\RedirectResponse
      */
     public function performSaveAction($itemId = null)
     {
@@ -375,7 +375,7 @@ trait SaveActions
                     return $crud->hasAccess('list');
                 },
                 'redirect' => function ($crud, $request, $itemId = null) {
-                    return $request->has('_http_referrer') ? $request->get('_http_referrer') : $crud->route;
+                    return $request->request->has('_http_referrer') ? $request->request->get('_http_referrer') : $crud->route;
                 },
                 'button_text' => trans('backpack::crud.save_action_save_and_back'),
             ],
@@ -385,13 +385,13 @@ trait SaveActions
                     return $crud->hasAccess('update');
                 },
                 'redirect' => function ($crud, $request, $itemId = null) {
-                    $itemId = $itemId ?: $request->input('id');
+                    $itemId = $itemId ?: $request->request->get('id');
                     $redirectUrl = $crud->route.'/'.$itemId.'/edit';
-                    if ($request->has('_locale')) {
-                        $redirectUrl .= '?_locale='.$request->input('_locale');
+                    if ($request->request->has('_locale')) {
+                        $redirectUrl .= '?_locale='.$request->request->get('_locale');
                     }
-                    if ($request->has('_current_tab')) {
-                        $redirectUrl = $redirectUrl.'#'.$request->get('_current_tab');
+                    if ($request->request->has('_current_tab')) {
+                        $redirectUrl = $redirectUrl.'#'.$request->request->get('_current_tab');
                     }
 
                     return $redirectUrl;

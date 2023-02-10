@@ -4,7 +4,7 @@
     $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
 @endphp
 
-<!-- upload multiple input -->
+{{-- upload multiple input --}}
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
@@ -162,7 +162,7 @@
 		        });
 
 		        fileInput.change(function() {
-	                inputLabel.html("Files selected. After save, they will show up above.");
+	                inputLabel.html("{{trans('backpack::crud.upload_multiple_files_selected')}}");
 					let selectedFiles = [];
 
 					Array.from($(this)[0].files).forEach(file => {

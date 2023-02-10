@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\ViewNamespaces;
+
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.
  *
@@ -273,10 +275,9 @@ class CrudButton
     private function getViewPathsWithFallbacks()
     {
         $type = $this->name;
-
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
-        }, config('backpack.crud.view_namespaces.buttons'));
+        }, ViewNamespaces::getFor('buttons'));
 
         return array_merge([$this->content], $paths);
     }
@@ -404,6 +405,8 @@ class CrudButton
      * Dump the current object to the screen,
      * so that the developer can see its contents.
      *
+     * @codeCoverageIgnore
+     *
      * @return CrudButton
      */
     public function dump()
@@ -417,6 +420,8 @@ class CrudButton
      * Dump and die. Duumps the current object to the screen,
      * so that the developer can see its contents, then stops
      * the execution.
+     *
+     * @codeCoverageIgnore
      *
      * @return CrudButton
      */

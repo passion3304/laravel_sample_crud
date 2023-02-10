@@ -9,6 +9,23 @@ use Illuminate\Support\Facades\Facade;
  * by providing a Facade that leads to the CrudPanel object. That object is stored in Laravel's
  * service container as 'crud'.
  */
+/**
+ * @codeCoverageIgnore
+ * Class CrudPanelFacade.
+ *
+ * @method static setModel($model)
+ * @method static setRoute(string $route)
+ * @method static setEntityNameStrings(string $singular, string $plural)
+ * @method static field(string $name)
+ * @method static addField(array $field)
+ * @method static addFields(array $fields)
+ * @method static column(string $name)
+ * @method static addColumn(array $column)
+ * @method static addColumns(array $columns)
+ * @method static afterColumn(string $targetColumn)
+ * @method static setValidation($class)
+ * @mixin CrudPanel
+ */
 class CrudPanelFacade extends Facade
 {
     /**

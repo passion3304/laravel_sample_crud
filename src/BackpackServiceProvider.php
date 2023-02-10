@@ -4,6 +4,7 @@ namespace Backpack\CRUD;
 
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
+use Backpack\CRUD\app\Library\Database\DatabaseSchema;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -16,18 +17,23 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\Install::class,
         \Backpack\CRUD\app\Console\Commands\AddSidebarContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
+        \Backpack\CRUD\app\Console\Commands\PublishAssets::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
         \Backpack\CRUD\app\Console\Commands\PublishView::class,
-        \Backpack\CRUD\app\Console\Commands\RequireDevTools::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequireDevTools::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequireEditableColumns::class,
+        \Backpack\CRUD\app\Console\Commands\Addons\RequirePro::class,
         \Backpack\CRUD\app\Console\Commands\Fix::class,
     ];
 
     // Indicates if loading of the provider is deferred.
     protected $defer = false;
+
     // Where the route file lives, both inside the package and in the app (if overwritten).
     public $routeFilePath = '/routes/backpack/base.php';
+
     // Where custom routes can be written, and will be registered by Backpack.
     public $customRoutesFilePath = '/routes/backpack/custom.php';
 
@@ -36,7 +42,7 @@ class BackpackServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(\Illuminate\Routing\Router $router)
+    public function boot(Router $router)
     {
         $this->loadViewsWithFallbacks();
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
@@ -59,8 +65,16 @@ class BackpackServiceProvider extends ServiceProvider
         include_once __DIR__.'/macros.php';
 
         // Bind the CrudPanel object to Laravel's service container
-        $this->app->singleton('crud', function ($app) {
-            return new CrudPanel($app);
+        $this->app->scoped('crud', function ($app) {
+            return new CrudPanel();
+        });
+
+        $this->app->scoped('DatabaseSchema', function ($app) {
+            return new DatabaseSchema();
+        });
+
+        $this->app->singleton('BackpackViewNamespaces', function ($app) {
+            return new ViewNamespaces();
         });
 
         // Bind the widgets collection object to Laravel's service container
@@ -247,8 +261,8 @@ class BackpackServiceProvider extends ServiceProvider
             'backpack' => [
                 'provider'  => 'backpack',
                 'table'     => 'password_resets',
-                'expire'   => 60,
-                'throttle' => config('backpack.base.password_recovery_throttle_notifications'),
+                'expire'    => config('backpack.base.password_recovery_token_expiration', 60),
+                'throttle'  => config('backpack.base.password_recovery_throttle_notifications'),
             ],
         ];
 
@@ -277,6 +291,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets'];
+        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema'];
     }
 }

@@ -1,4 +1,4 @@
-<!-- select multiple -->
+{{-- select multiple --}}
 @php
     if (!isset($field['options'])) {
         $options = $field['model']::all();

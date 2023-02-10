@@ -1,6 +1,6 @@
 @extends(backpack_view('layouts.plain'))
 
-<!-- Main Content -->
+{{-- Main Content --}}
 @section('content')
     <div class="row justify-content-center">
         <div class="col-12 col-md-9 col-lg-6">
@@ -47,9 +47,9 @@
                     @endif
                     <div class="clearfix"></div>
                   </div>
-                  <!-- /.tab-pane -->
+                  {{-- /.tab-pane --}}
                 </div>
-                <!-- /.tab-content -->
+                {{-- /.tab-content --}}
               </div>
 
               <div class="text-center mt-4">

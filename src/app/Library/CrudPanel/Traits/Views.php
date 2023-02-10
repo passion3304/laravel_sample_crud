@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
+use Backpack\CRUD\ViewNamespaces;
 
 trait Views
 {
@@ -290,18 +291,17 @@ trait Views
      * @param  bool|string  $viewNamespace  Optional override, to use this namespace instead of the viewstack.
      * @return string
      */
-    public static function getFirstFieldView($viewPath, $viewNamespace = false)
+    public function getFirstFieldView($viewPath, $viewNamespace = false)
     {
         // if a definite namespace was given, use that one
         if ($viewNamespace) {
             return $viewNamespace.'.'.$viewPath;
         }
-
         // otherwise, loop through all the possible view namespaces
         // until you find a view that exists
         $paths = array_map(function ($item) use ($viewPath) {
             return $item.'.'.$viewPath;
-        }, config('backpack.crud.view_namespaces.fields'));
+        }, ViewNamespaces::getFor('fields'));
 
         foreach ($paths as $path) {
             if (view()->exists($path)) {

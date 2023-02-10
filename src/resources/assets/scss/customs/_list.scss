@@ -17,6 +17,10 @@
       left: calc(50% - 16px);
       position: absolute;
     }
+
+    & > div {
+      display: none !important;
+    }
   }
 
   .dataTables_length select {
@@ -24,7 +28,8 @@
     margin-right: 0.4rem;
   }
 
-  #crudTable {
+  #crudTable,
+  table.dataTable {
     margin-top: 0 !important;
 
     &.dtr-inline.collapsed > tbody > tr > .dtr-control:before {
@@ -39,13 +44,9 @@
       border: none;
       display: inline;
       position: relative;
-      top: 0;
+      top: 0.2rem;
       left: 0;
-      margin: 0 0 0 -0.25rem;
-    }
-
-    &.dtr-inline.collapsed > tbody > tr > .dtr-control:before {
-      top: 0;
+      margin: 0 -0.4rem 0 -0.25rem;
     }
 
     td,
@@ -53,13 +54,7 @@
       outline: none;
       vertical-align: middle;
       line-height: 1em;
-    }
-
-    thead > tr {
-      & > th:not(.sorting_disabled),
-      & > td {
-        padding-right: 30px;
-      }
+      // box-shadow: none;
     }
 
     .sorting:before,
@@ -86,27 +81,27 @@
     }
 
     &.has-hidden-columns .details-control {
-      margin-left: 0.25rem;
+      margin-left: 0.2rem;
     }
 
     &[data-has-bulk-actions="1"] {
       &.has-hidden-columns {
         thead tr th:first-child,
         tfoot tr th:first-child {
-          padding-left: 1.35rem !important;
+          padding-left: 1.45rem !important;
         }
       }
 
       &[data-has-details-row="1"] {
         thead tr th:first-child,
         tfoot tr th:first-child {
-          padding-left: 1.6rem !important;
+          padding-left: 1.8rem !important;
         }
 
         &.has-hidden-columns {
           thead tr th:first-child,
           tfoot tr th:first-child {
-            padding-left: 2.6rem !important;
+            padding-left: 2.9rem !important;
           }
         }
       }
@@ -117,61 +112,59 @@
       &.has-hidden-columns {
         thead tr th:first-child,
         tfoot tr th:first-child {
-          padding-left: 1.8rem !important;
+          padding-left: 2rem !important;
         }
       }
 
       &[data-has-details-row="1"].has-hidden-columns {
         thead tr th:first-child,
         tfoot tr th:first-child {
-          padding-left: 3rem !important;
+          padding-left: 3.1rem !important;
         }
       }
     }
 
-    .details-control {
-      display: flex;
-    }
-
     .crud_bulk_actions_checkbox {
-      display: flex;
       margin: 0 0.6rem 0 0.45rem;
     }
 
     .crud_bulk_actions_checkbox input {
       width: 1rem;
       height: 1rem;
+      margin-top: 2px;
     }
 
     &:not(.has-hidden-columns) {
       tr td:first-child {
         padding-top: 1.25rem !important;
+        padding-bottom: 1.25rem !important;
       }
     }
     tr th:first-child,
     tr td:first-child {
-      display: flex;
-      align-items: center;
       padding-top: 1rem !important;
       padding-bottom: 1rem !important;
       padding-left: 0.6rem !important;
     }
-    
-    &[data-responsive-table="0"] {
+
+    &[data-has-bulk-actions="0"] .details-control,
+    &[data-has-bulk-actions="0"][data-has-details-row="0"] .dtr-control:before {
+        margin-right: 0.2rem !important;
+    }
+
+    &[data-responsive-table="0"] thead tr th,
+    tr td.dataTables_empty,
+    tr.dt-hasChild + tr td {
+      display: table-cell;
+    }
+  }
+
+  .dataTables_scrollBody {
+    #crudTable[data-responsive-table="0"] {
       tr th:first-child {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
       }
-    }
-
-    &[data-has-bulk-actions="0"] .details-control,
-    &[data-has-bulk-actions="0"][data-has-details-row="0"] .dtr-control:before {
-        margin-right: 0.4rem !important;
-    }
-
-    tr td.dataTables_empty,
-    tr.dt-hasChild + tr td {
-      display: table-cell;
     }
   }
 
@@ -241,6 +234,10 @@
     color: #868686;
     font-weight: 600;
     text-transform: uppercase;
+  }
+
+  .nav-link.invisible {
+    display: none;
   }
 }
 
@@ -320,6 +317,15 @@
   & > li:first-child > span {
     border-radius: 5px;
   }
+}
+
+table.dataTable.table-striped>tbody>tr:nth-of-type(2n+1):hover {
+  background-color: rgba(124,105,239,.1);
+}
+
+table.dataTable.table-striped>tbody>tr.odd>*,
+table.dataTable.table-hover>tbody>tr:hover>* {
+  box-shadow: none!important;
 }
 
 // Removes the horizontal scroll (if the width allows it)

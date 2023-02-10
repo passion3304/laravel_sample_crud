@@ -10,6 +10,7 @@ class User extends Model
     use CrudTrait;
 
     protected $table = 'users';
+
     protected $fillable = ['name', 'email', 'password', 'extras'];
 
     /**
@@ -89,5 +90,25 @@ class User extends Model
     public function bang()
     {
         return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\Bang', 'bang_relation_field');
+    }
+
+    public function incomes()
+    {
+        return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Transaction')->ofType('income');
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany('Backpack\CRUD\Tests\Unit\Models\Transaction')->ofType('expense');
+    }
+
+    protected function isNotRelation()
+    {
+        return false;
+    }
+
+    public function isNotRelationPublic($arg)
+    {
+        return false;
     }
 }

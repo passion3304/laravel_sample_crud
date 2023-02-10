@@ -1,4 +1,4 @@
-<!-- dependencyJson -->
+{{-- dependencyJson --}}
 @php
   $field['wrapper'] = $field['wrapper'] ?? $field['wrapperAttributes'] ?? [];
   $field['wrapper']['class'] = $field['wrapper']['class'] ?? 'form-group col-sm-12';
@@ -111,7 +111,7 @@
                           @endforeach
                           value="{{ $connected_entity_entry->id }}"
 
-                          @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || $old_primary_dependency && in_array($connected_entity_entry->id, $old_primary_dependency)))
+                          @if( ( isset($field['value']) && is_array($field['value']) && in_array($connected_entity_entry->id, $field['value'][0]->pluck('id', 'id')->toArray())) || $old_primary_dependency && in_array($connected_entity_entry->id, $old_primary_dependency))
                           checked = "checked"
                           @endif >
                           {{ $connected_entity_entry->{$primary_dependency['attribute']} }}
@@ -162,7 +162,7 @@
                           @endforeach
                            value="{{ $connected_entity_entry->id }}"
 
-                          @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->pluck('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || $old_secondary_dependency && in_array($connected_entity_entry->id, $old_secondary_dependency))))
+                          @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->pluck('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || $old_secondary_dependency && in_array($connected_entity_entry->id, $old_secondary_dependency)))
                                checked = "checked"
                                @if(isset( $secondary_ids[$connected_entity_entry->id]))
                                 disabled = disabled
@@ -173,7 +173,7 @@
               </div>
           @endforeach
       </div>
-    </div><!-- /.container -->
+    </div>{{-- /.container --}}
 
 
     {{-- HINT --}}
@@ -195,7 +195,7 @@
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-  <!-- include checklist_dependency js-->
+  {{-- include checklist_dependency js --}}
   @loadOnce('bpFieldInitChecklistDependencyElement')
     <script>
       function bpFieldInitChecklistDependencyElement(element) {
@@ -207,12 +207,12 @@
             let idCurrent = el.data('id');
             //add hidden field with this value
             let nameInput = field.find('.hidden_fields_primary').data('name');
-            let inputToAdd = $('<input type="hidden" class="primary_hidden" name="'+nameInput+'[]" value="'+idCurrent+'">');
+            if(field.find('input.primary_hidden[value="'+idCurrent+'"]').length === 0) {
+              let inputToAdd = $('<input type="hidden" class="primary_hidden" name="'+nameInput+'[]" value="'+idCurrent+'">');
 
-            field.find('.hidden_fields_primary').append(inputToAdd);
-            field.find('.hidden_fields_primary').find('input').first().val(idCurrent).trigger('change');
-            field.find('.hidden_fields_primary').find('input').first().val()
-
+              field.find('.hidden_fields_primary').append(inputToAdd);
+              field.find('.hidden_fields_primary').find('input.primary_hidden[value="'+idCurrent+'"]').trigger('change');
+            }
             $.each(dependencyJson[idCurrent], function(key, value){
               //check and disable secondies checkbox
               field.find('input.secondary_list[value="'+value+'"]').prop( "checked", true );
