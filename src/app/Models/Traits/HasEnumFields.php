@@ -15,12 +15,12 @@ trait HasEnumFields
 {
     public static function getPossibleEnumValues($field_name)
     {
-        $default_connection = Config::get('database.default');
-        $table_prefix = Config::get('database.connections.'.$default_connection.'.prefix');
-
         $instance = new static(); // create an instance of the model to be able to get the table name
-        $connectionName = $instance->getConnectionName();
-        $connection = DB::connection($connectionName);
+
+        $connection = $instance->getConnection();
+
+        $table_prefix = Config::get('database.connections.'.$connection->getName().'.prefix');
+
         try {
             $select = app()->version() < 10 ?
                         DB::raw('SHOW COLUMNS FROM `'.$table_prefix.$instance->getTable().'` WHERE Field = "'.$field_name.'"') :
