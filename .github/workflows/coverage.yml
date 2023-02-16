@@ -24,13 +24,13 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.2
           extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv, xdebug
           coverage: xdebug
           tools: composer:v2
       - name: Install dependencies
         run: |
-            composer require "laravel/framework:^9.0" "phpunit/phpunit:^9.0" "doctrine/dbal:^3.0" --no-interaction --no-update --no-suggest
+            composer require "laravel/framework:^10.0" "phpunit/phpunit:^9.0" "doctrine/dbal:^3.0" --no-interaction --no-update --no-suggest
             composer update --prefer-dist --no-interaction
       - name: Execute tests
         run: vendor/bin/phpunit --coverage-clover coverage.xml
