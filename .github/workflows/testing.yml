@@ -39,6 +39,8 @@ jobs:
                       php: 8.0
                     - laravel: 10.*
                       phpunit: 8.*
+                    - laravel: 10.*
+                      dbal: ^2.5
         
 
         name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }}, DBAL ${{ matrix.dbal }} --prefer-${{ matrix.dependency-version }}
