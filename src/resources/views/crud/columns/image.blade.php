@@ -7,6 +7,8 @@
     $column['width'] = $column['width'] ?? "auto";
     $column['radius'] = $column['radius'] ?? "3px";
     $column['prefix'] = $column['prefix'] ?? '';
+    $column['temporary'] = $column['temporary'] ?? false;
+    $column['expiration'] = $column['expiration'] ?? 1;
 
     if($column['value'] instanceof \Closure) {
       $column['value'] = $column['value']($entry);
@@ -19,7 +21,13 @@
     if (preg_match('/^data\:image\//', $column['value'])) { // base64_image
       $href = $src = $column['value'];
     } elseif (isset($column['disk'])) { // image from a different disk (like s3 bucket)
-      $href = $src = Storage::disk($column['disk'])->url($column['prefix'].$column['value']);
+
+      if (!empty($column['temporary'])) {
+          $href = $src = Storage::disk($column['disk'])->temporaryUrl($column['prefix'].$column['value'], now()->addMinutes((int) $column['expiration']));
+      } else {
+          $href = $src = Storage::disk($column['disk'])->url($column['prefix'].$column['value']);
+      }
+
     } else { // plain-old image, from a local disk
       $href = $src = asset($column['prefix'] . $column['value']);
     }
