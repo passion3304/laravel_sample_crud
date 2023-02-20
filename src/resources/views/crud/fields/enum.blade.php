@@ -18,7 +18,7 @@
         }
 
         // developer can provide the enum class so that we extract the available options from it
-        $enumClassReflection = isset($field['enum_class']) ? new \ReflectionEnum($field['enum_class']) : false;              
+        $enumClassReflection = isset($field['enum_class']) ? new \ReflectionEnum($field['enum_class']) : false;
 
         if(! $enumClassReflection) {
             // check for model casting
@@ -27,12 +27,12 @@
                 $enumClassReflection = new \ReflectionEnum($possibleEnumCast);
             }
         }
-        
+
         if($enumClassReflection) {
             $options = array_map(function($item) use ($enumClassReflection) {
                 return $enumClassReflection->isBacked() ? [$item->getBackingValue() => $item->name] : $item->name;
             },$enumClassReflection->getCases());
-            $options = is_multidimensional_array($options) ? array_merge(...$options) : array_combine($options, $options);
+            $options = is_multidimensional_array($options) ? array_replace(...$options) : array_combine($options, $options);
         }
 
         if(isset($field['enum_function']) && isset($options)) {
@@ -54,7 +54,7 @@
         $options = $entity_model::getPossibleEnumValues($field['name']);
         return array_combine($options, $options);
     })();
-    
+
 
     if(function_exists('enum_exists') && !empty($field['value']) && $field['value'] instanceof \UnitEnum)  {
         $field['value'] = $field['value'] instanceof \BackedEnum ? $field['value']->value : $field['value']->name;
