@@ -47,7 +47,7 @@ trait SaveActions
      */
     public function getSaveActionByOrder($order)
     {
-        return array_filter($this->getOperationSetting('save_actions'), function ($arr) use ($order) {
+        return array_filter($this->getOperationSetting('save_actions') ?? [], function ($arr) use ($order) {
             return $arr['order'] == $order;
         });
     }
@@ -212,7 +212,7 @@ trait SaveActions
     /**
      * Return the ordered save actions to use in the crud panel.
      *
-     * @return void
+     * @return array
      */
     public function getOrderedSaveActions()
     {
@@ -228,7 +228,7 @@ trait SaveActions
     /**
      * Returns the save actions that passed the visible callback.
      *
-     * @return void
+     * @return array
      */
     public function getVisibleSaveActions()
     {

@@ -30,11 +30,11 @@ class RequireDevTools extends Command
      * @var array
      */
     public static $addon = [
-        'name' => 'DevTools',
+        'name'        => 'DevTools',
         'description' => [
             'Helps generate models, migrations, operations and CRUDs',
         ],
-        'path' => 'vendor/backpack/devtools',
+        'path'    => 'vendor/backpack/devtools',
         'command' => 'backpack:require:devtools',
     ];
 
@@ -45,6 +45,15 @@ class RequireDevTools extends Command
      */
     public function handle()
     {
+        // Prevent installations in laravel 10 as it wouldn't properly work. Waiting for Blueprint L10 support.
+        if (app()->version() >= 10) {
+            $this->newLine();
+            $this->line(sprintf('Support for Laravel 10 is comming soon. Sorry for the trouble.'), 'fg=red');
+            $this->newLine();
+
+            return;
+        }
+
         // Check if it is installed
         if ($this->isInstalled()) {
             $this->newLine();

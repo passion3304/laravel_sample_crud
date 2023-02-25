@@ -242,15 +242,11 @@ trait FieldsProtectedMethods
         switch ($relationType) {
             case 'BelongsTo':
                 return 'select';
-                break;
-
             case 'BelongsToMany':
             case 'MorphToMany':
                 return 'select_multiple';
-
             default:
                 return 'text';
-                break;
         }
     }
 

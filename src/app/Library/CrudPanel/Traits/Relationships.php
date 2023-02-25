@@ -209,7 +209,6 @@ trait Relationships
             case 'MorphOneOrMany':
             case 'MorphToMany':
                 return true;
-
             default:
                 return false;
         }
@@ -228,7 +227,6 @@ trait Relationships
             case 'HasManyThrough':
             case 'MorphToMany':
                 return true;
-                break;
             default:
                 return false;
         }

@@ -19,7 +19,7 @@
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud" title="Quality Score"><img src="https://img.shields.io/scrutinizer/g/laravel-backpack/crud.svg?style=flat-square"></a>
     <a href="https://travis-ci.org/Laravel-Backpack/CRUD" title="Build Status"><img src="https://img.shields.io/travis/Laravel-Backpack/CRUD/master.svg?style=flat-square"></a>
     <a href="https://styleci.io/repos/53581270" title="Style CI"><img src="https://styleci.io/repos/53581270/shield"></a>
-    <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://img.shields.io/scrutinizer/coverage/g/laravel-backpack/crud.svg?style=flat-square"></a>
+    <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://raw.githubusercontent.com/laravel-backpack/CRUD/coverage-badge-dont-delete/test-coverage.svg"></a>
     <a href="LICENSE.md" title="Software License"><img src="https://img.shields.io/github/license/laravel-backpack/crud?style=flat-square"></a>
     <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen?style=flat-square" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
 </p>
@@ -80,7 +80,7 @@ Start with the ["Introduction" page in our docs](https://backpackforlaravel.com/
 ## Install
 
 For the current version (recommended):
-- [Install Backpack v5 on Laravel 9 or 8](https://backpackforlaravel.com/docs/5.x/installation);
+- [Install Backpack v5 on Laravel 10, 9 or 8](https://backpackforlaravel.com/docs/5.x/installation);
 
 For the previous versions (not recommended):
 - [Install Backpack 4.1 on Laravel 6, 7 or 8](https://backpackforlaravel.com/docs/4.1/installation) - last feature update was 1st Jan 2021;
@@ -113,7 +113,7 @@ Starting with v5, Backpack has become open-core. Its features have been separate
 ## Versioning
 
 Starting with Backpack v5, all our packages follow [semantic versioning](https://semver.org/). Here's what `major.minor.patch` (eg. `5.0.1`) means for us:
-- `major` - breaking changes, major new features, complete rewrites; released **once a year**, in February; it adds features that were previously impossible and upgrades our dependencies; upgrading is done by following our clear and detailed upgrade guides;
+- `major` - breaking changes, major new features, complete rewrites; released **once a year**, in the first quarter; it adds features that were previously impossible and upgrades our dependencies; upgrading is done by following our clear and detailed upgrade guides;
 - `minor` - new features, released in backwards-compatible ways; **every few months**; update takes seconds;
 - `patch` - bug fixes & small non-breaking changes; historically **every week**; update takes seconds;
 

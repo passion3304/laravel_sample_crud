@@ -246,7 +246,7 @@ trait Query
         // so we just store them and re-use them in the sub-query too.
         $expressionColumns = [];
 
-        foreach ($crudQuery->columns as $column) {
+        foreach ($crudQuery->columns ?? [] as $column) {
             if (! is_string($column) && is_a($column, 'Illuminate\Database\Query\Expression')) {
                 $expressionColumns[] = $column;
             }
@@ -256,6 +256,9 @@ trait Query
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
+
+        // re-set the previous query bindings
+        $subQuery->setBindings($crudQuery->getRawBindings());
 
         // select only one column for the count
         $subQuery->select($modelTable.'.'.$this->model->getKeyName());
