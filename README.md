@@ -24,10 +24,10 @@
     <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen?style=flat-square" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
 </p>
 
-<p align="center">
-    <a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif"></a>
-</p>
 
+https://user-images.githubusercontent.com/1032474/222247513-876d61d0-2982-432e-98c3-7fcd18ef258b.mp4
+
+-----
 
 Among the FREE features of each admin interface:
 - [List](https://backpackforlaravel.com/docs/5.x/crud-operation-list-entries) operation
@@ -68,7 +68,9 @@ But professionals don't love Backpack just because it's feature-packed. They als
 
 ## Demo
 
-Please see [demo.backpackforlaravel.com](https://demo.backpackforlaravel.com/admin).
+Please see [demo.backpackforlaravel.com](https://demo.backpackforlaravel.com/admin). Here's a sneak peek:
+
+<a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif"></a>
 
 ## Getting Started
 
