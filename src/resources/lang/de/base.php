@@ -48,4 +48,22 @@ return [
     'account_updated'           => 'Account aktualisiert.',
     'unknown_error'             => 'Ein unbekannter Fehler ist aufgetreten. Bitte erneut versuchen',
     'error_saving'              => 'Fehler beim Speichern. Bitte erneut probieren.',
+    'welcome'                   => 'Willkommen!',
+    'use_sidebar'               => 'Nutze die Seitenleiste links, um Inhalte zu erstellen oder zu editieren.',
+
+    'password_reset' => [
+        'greeting' => 'Hallo!',
+        'subject'  => 'Passwort zurücksetzen Information',
+        'line_1'   => 'Du erhälst diese E-Mail, da wir eine Anfrage zum Zurücksetzen des Passworts für deinen Account erhalten haben.',
+        'line_2'   => 'Klicke auf den folgenden Button, um dein Passwort zurückzusetzen:',
+        'button'   => 'Passwort zurücksetzen',
+        'notice'   => 'Wenn du kein Zurücksetzen des Passworts beauftragt hast, ist keine weitere Aktion notwendig.',
+    ],
+
+    'step'                 => 'Schritt',
+    'confirm_email'        => 'E-Mail bestätigen',
+    'choose_new_password'  => 'Wähle ein neues Passwort',
+    'confirm_new_password' => 'Bestätige das neue Passwort',
+    'throttled'            => 'Du hast kürzlich bereits ein Zurücksetzen des Passworts beantragt. Bitte prüfe deine E-Mails. Solltest du keine E-Mail erhalten haben, versuche es später bitte erneut.',
+    'throttled_request'    => 'Du hast das Limit an Versuchen erreicht. Bitte warte ein paar Minuten und versuche es erneut.',
 ];
