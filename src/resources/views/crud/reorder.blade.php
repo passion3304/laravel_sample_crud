@@ -34,7 +34,7 @@
             $entry->tree_element_shown = true;
 
             // show the tree element
-            echo '<li id="list_'.$entry->getKey().'">';
+            echo '<li id="list_'.Str::replace('-', '..', $entry->getKey()).'">';
             echo '<div><span class="disclose"><span></span></span>'.object_get($entry, $crud->get('reorder.label')).'</div>';
 
             // see if this element has any children
@@ -257,8 +257,10 @@
                 // get the current tree order
                 arraied = $('ol.sortable').nestedSortable('toArray', {startDepthCount: 0});
 
-                // log it
-                //console.log(arraied);
+                arraied.map(item => {
+                    item.item_id = item.item_id?item.item_id.replaceAll('..', '-') : null;
+                    item.parent_id = item.parent_id?item.parent_id.replaceAll('..', '-') : null;
+                });
 
                 // send it with POST
                 $.ajax({
