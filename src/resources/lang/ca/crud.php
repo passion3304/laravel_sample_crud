@@ -171,7 +171,7 @@ return [
 
     // google_map
     'google_map_locate' => 'Obtenir la meva ubicació',
-    
+
     // File manager
     'file_manager' => 'Administrador d\'arxius',
 

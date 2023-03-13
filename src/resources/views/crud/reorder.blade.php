@@ -71,13 +71,13 @@
                 <ol class="sortable mt-0">
                     <?php
                     $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
-                    $root_entries = $all_entries->filter(function ($item) {
-                        return $item->parent_id == 0;
-                    });
-                    foreach ($root_entries as $key => $entry) {
-                        $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
-                    }
-                    ?>
+    $root_entries = $all_entries->filter(function ($item) {
+        return $item->parent_id == 0;
+    });
+    foreach ($root_entries as $key => $entry) {
+        $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+    }
+    ?>
                 </ol>
 
             </div>{{-- /.card --}}
