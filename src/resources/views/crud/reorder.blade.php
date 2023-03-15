@@ -34,7 +34,7 @@
             $entry->tree_element_shown = true;
 
             // show the tree element
-            echo '<li id="list_'.Str::replace('-', '..', $entry->getKey()).'">';
+            echo '<li id="list_'.$entry->getKey().'">';
             echo '<div><span class="disclose"><span></span></span>'.object_get($entry, $crud->get('reorder.label')).'</div>';
 
             // see if this element has any children
@@ -71,13 +71,13 @@
                 <ol class="sortable mt-0">
                     <?php
                     $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
-                    $root_entries = $all_entries->filter(function ($item) {
-                        return $item->parent_id == 0;
-                    });
-                    foreach ($root_entries as $key => $entry) {
-                        $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
-                    }
-                    ?>
+    $root_entries = $all_entries->filter(function ($item) {
+        return $item->parent_id == 0;
+    });
+    foreach ($root_entries as $key => $entry) {
+        $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+    }
+    ?>
                 </ol>
 
             </div>{{-- /.card --}}
@@ -255,12 +255,10 @@
 
             $('#toArray').click(function(e){
                 // get the current tree order
-                arraied = $('ol.sortable').nestedSortable('toArray', {startDepthCount: 0});
+                arraied = $('ol.sortable').nestedSortable('toArray', {startDepthCount: 0, expression: /(.+)_(.+)/ });
 
-                arraied.map(item => {
-                    item.item_id = item.item_id?item.item_id.replaceAll('..', '-') : null;
-                    item.parent_id = item.parent_id?item.parent_id.replaceAll('..', '-') : null;
-                });
+                // log it
+                //console.log(arraied);
 
                 // send it with POST
                 $.ajax({
