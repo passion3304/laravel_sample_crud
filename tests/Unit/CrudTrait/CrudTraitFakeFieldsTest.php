@@ -8,7 +8,6 @@ use Unit\CrudPanel\Models\FakeColumnsModel;
  * Class CrudTraitFakeFieldsTest.
  *
  * @group CrudTraitFakeFields
- *
  * @covers Backpack\CRUD\app\Models\Traits\HasFakeFields
  */
 class CrudTraitFakeFieldsTest extends BaseCrudTraitTest

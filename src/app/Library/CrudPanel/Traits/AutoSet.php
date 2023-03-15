@@ -132,9 +132,9 @@ trait AutoSet
             case 'set':
                 return 'text';
 
-                // case 'enum':
+            // case 'enum':
             //     return 'enum';
-                // break;
+            // break;
 
             case 'boolean':
                 return 'boolean';
