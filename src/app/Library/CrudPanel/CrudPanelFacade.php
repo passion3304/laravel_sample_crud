@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static CrudPanel addColumns(array $columns)
  * @method static CrudPanel afterColumn(string $targetColumn)
  * @method static CrudPanel setValidation($class)
- *
  * @mixin CrudPanel
  */
 class CrudPanelFacade extends Facade

@@ -283,7 +283,7 @@ trait Update
                         $iterator = $iterator->$part;
                     }
 
-                    Arr::set($result, $name, is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator);
+                    Arr::set($result, $name, (is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
                 }
             }
         }

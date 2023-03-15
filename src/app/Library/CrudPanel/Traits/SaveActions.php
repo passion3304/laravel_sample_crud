@@ -253,6 +253,7 @@ trait SaveActions
      */
     public function getCurrentSaveAction($saveOptions)
     {
+
         //get save action from session if exists, or get the developer defined order
         $saveAction = session($this->getCurrentOperation().'.saveAction', $this->getFallBackSaveAction());
         if (isset($saveOptions[$saveAction])) {
