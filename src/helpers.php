@@ -66,8 +66,8 @@ if (! function_exists('backpack_form_input')) {
             }
 
             $isMultiple = substr($row['name'], -2, 2) === '[]';
-           
-            if($isMultiple && substr_count($row['name'], '[') === 1) {
+
+            if ($isMultiple && substr_count($row['name'], '[') === 1) {
                 $result[substr($row['name'], 0, -2)][] = $row['value'];
                 continue;
             }
@@ -94,7 +94,7 @@ if (! function_exists('backpack_form_input')) {
             $parentInputName = substr($row['name'], 0, strpos($row['name'], '['));
 
             if (isset($repeatableRowKey)) {
-                if($isMultiple) {
+                if ($isMultiple) {
                     $result[$parentInputName][$repeatableRowKey][$inputName][] = $row['value'];
                     continue;
                 }
@@ -104,7 +104,7 @@ if (! function_exists('backpack_form_input')) {
                 continue;
             }
 
-            if($isMultiple) {
+            if ($isMultiple) {
                 $result[$parentInputName][$inputName][] = $row['value'];
                 continue;
             }
