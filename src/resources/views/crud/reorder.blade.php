@@ -255,7 +255,7 @@
 
             $('#toArray').click(function(e){
                 // get the current tree order
-                arraied = $('ol.sortable').nestedSortable('toArray', {startDepthCount: 0});
+                arraied = $('ol.sortable').nestedSortable('toArray', {startDepthCount: 0, expression: /(.+)_(.+)/ });
 
                 // log it
                 //console.log(arraied);
