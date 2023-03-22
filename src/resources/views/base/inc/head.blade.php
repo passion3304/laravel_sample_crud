@@ -9,21 +9,17 @@
     @yield('before_styles')
     @stack('before_styles')
 
-    @if (config('backpack.base.styles') && count(config('backpack.base.styles')))
-        @foreach (config('backpack.base.styles') as $path)
+    @foreach(config('backpack.base.styles', []) as $path)
         <link rel="stylesheet" type="text/css" href="{{ asset($path).'?v='.config('backpack.base.cachebusting_string') }}">
-        @endforeach
-    @endif
+    @endforeach
 
-    @if (config('backpack.base.mix_styles') && count(config('backpack.base.mix_styles')))
-        @foreach (config('backpack.base.mix_styles') as $path => $manifest)
+    @foreach(config('backpack.base.mix_styles', []) as $path => $manifest)
         <link rel="stylesheet" type="text/css" href="{{ mix($path, $manifest) }}">
-        @endforeach
-    @endif
+    @endforeach
 
-    @if (config('backpack.base.vite_styles') && count(config('backpack.base.vite_styles')))
-        @vite(config('backpack.base.vite_styles'))
-    @endif
+    @foreach(config('backpack.base.vite_styles', []) as $path)
+        @vite($path)
+    @endforeach
 
     @yield('after_styles')
     @stack('after_styles')
