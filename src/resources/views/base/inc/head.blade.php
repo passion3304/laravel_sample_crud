@@ -17,9 +17,7 @@
         <link rel="stylesheet" type="text/css" href="{{ mix($path, $manifest) }}">
     @endforeach
 
-    @foreach(config('backpack.base.vite_styles', []) as $path)
-        @vite($path)
-    @endforeach
+    @vite(config('backpack.base.vite_styles', []))
 
     @yield('after_styles')
     @stack('after_styles')

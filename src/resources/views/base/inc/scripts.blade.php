@@ -6,9 +6,7 @@
     <script type="text/javascript" src="{{ mix($path, $manifest) }}"></script>
 @endforeach
 
-@foreach(config('backpack.base.vite_scripts', []) as $path)
-    @vite($path)
-@endforeach
+@vite(config('backpack.base.vite_scripts', []))
 
 @include('backpack::inc.alerts')
 
