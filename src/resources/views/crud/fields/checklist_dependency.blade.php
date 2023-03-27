@@ -13,58 +13,57 @@
     <?php
         $entity_model = $crud->getModel();
 
-        //short name for dependency fields
-        $primary_dependency = $field['subfields']['primary'];
-        $secondary_dependency = $field['subfields']['secondary'];
+    //short name for dependency fields
+    $primary_dependency = $field['subfields']['primary'];
+    $secondary_dependency = $field['subfields']['secondary'];
 
-        //all items with relation
-        $dependencies = $primary_dependency['model']::with($primary_dependency['entity_secondary'])->get();
+    //all items with relation
+    $dependencies = $primary_dependency['model']::with($primary_dependency['entity_secondary'])->get();
 
-        $dependencyArray = [];
+    $dependencyArray = [];
 
-        //convert dependency array to simple matrix ( primary id as key and array with secondaries id )
-        foreach ($dependencies as $primary) {
-            $dependencyArray[$primary->id] = [];
-            foreach ($primary->{$primary_dependency['entity_secondary']} as $secondary) {
-                $dependencyArray[$primary->id][] = $secondary->id;
+    //convert dependency array to simple matrix ( primary id as key and array with secondaries id )
+    foreach ($dependencies as $primary) {
+        $dependencyArray[$primary->id] = [];
+        foreach ($primary->{$primary_dependency['entity_secondary']} as $secondary) {
+            $dependencyArray[$primary->id][] = $secondary->id;
+        }
+    }
+
+    $old_primary_dependency = old_empty_or_null($primary_dependency['name'], false) ?? false;
+    $old_secondary_dependency = old_empty_or_null($secondary_dependency['name'], false) ?? false;
+
+    //for update form, get initial state of the entity
+    if (isset($id) && $id) {
+        //get entity with relations for primary dependency
+        $entity_dependencies = $entity_model->with($primary_dependency['entity'])
+        ->with($primary_dependency['entity'].'.'.$primary_dependency['entity_secondary'])
+        ->find($id);
+
+        $secondaries_from_primary = [];
+
+        //convert relation in array
+        $primary_array = $entity_dependencies->{$primary_dependency['entity']}->toArray();
+
+        $secondary_ids = [];
+        //create secondary dependency from primary relation, used to check what checkbox must be checked from second checklist
+        if ($old_primary_dependency) {
+            foreach ($old_primary_dependency as $primary_item) {
+                foreach ($dependencyArray[$primary_item] as $second_item) {
+                    $secondary_ids[$second_item] = $second_item;
+                }
+            }
+        } else { //create dependencies from relation if not from validate error
+            foreach ($primary_array as $primary_item) {
+                foreach ($primary_item[$secondary_dependency['entity']] as $second_item) {
+                    $secondary_ids[$second_item['id']] = $second_item['id'];
+                }
             }
         }
+    }
 
-        $old_primary_dependency = old_empty_or_null($primary_dependency['name'], false) ?? false;
-        $old_secondary_dependency = old_empty_or_null($secondary_dependency['name'], false) ?? false;
-
-      //for update form, get initial state of the entity
-      if (isset($id) && $id) {
-
-        //get entity with relations for primary dependency
-          $entity_dependencies = $entity_model->with($primary_dependency['entity'])
-          ->with($primary_dependency['entity'].'.'.$primary_dependency['entity_secondary'])
-          ->find($id);
-
-          $secondaries_from_primary = [];
-
-          //convert relation in array
-          $primary_array = $entity_dependencies->{$primary_dependency['entity']}->toArray();
-
-          $secondary_ids = [];
-          //create secondary dependency from primary relation, used to check what checkbox must be checked from second checklist
-          if ($old_primary_dependency) {
-              foreach ($old_primary_dependency as $primary_item) {
-                  foreach ($dependencyArray[$primary_item] as $second_item) {
-                      $secondary_ids[$second_item] = $second_item;
-                  }
-              }
-          } else { //create dependencies from relation if not from validate error
-              foreach ($primary_array as $primary_item) {
-                  foreach ($primary_item[$secondary_dependency['entity']] as $second_item) {
-                      $secondary_ids[$second_item['id']] = $second_item['id'];
-                  }
-              }
-          }
-      }
-
-        //json encode of dependency matrix
-        $dependencyJson = json_encode($dependencyArray);
+    //json encode of dependency matrix
+    $dependencyJson = json_encode($dependencyArray);
     ?>
 
     <div class="container">

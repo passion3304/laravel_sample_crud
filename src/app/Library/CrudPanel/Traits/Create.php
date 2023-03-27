@@ -102,7 +102,7 @@ trait Create
             switch ($relationType) {
                 case 'HasOne':
                 case 'MorphOne':
-                        $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
+                    $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
                     break;
                 case 'HasMany':
                 case 'MorphMany':

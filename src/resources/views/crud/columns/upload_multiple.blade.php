@@ -7,7 +7,7 @@
     $column['wrapper']['element'] = $column['wrapper']['element'] ?? 'a';
     $column['wrapper']['target'] = $column['wrapper']['target'] ?? '_blank';
     $column_wrapper_href = $column['wrapper']['href'] ?? 
-    function($file_path, $disk, $prefix) { 
+    function($file_path, $disk, $prefix) use ($column) { 
         if (is_null($disk)) {
             return $prefix.$file_path;
         }

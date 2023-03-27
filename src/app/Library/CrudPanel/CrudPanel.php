@@ -148,6 +148,7 @@ class CrudPanel
      * DEPRECATION NOTICE: This method is no longer used and will be removed in future versions of Backpack
      *
      * @deprecated
+     *
      * @codeCoverageIgnore
      *
      * @return bool
@@ -318,6 +319,7 @@ class CrudPanel
      * - place in the correct section above (CREATE, READ, UPDATE, DELETE, ACCESS, MANIPULATION)
      *
      * @deprecated
+     *
      * @codeCoverageIgnore
      */
     public function sync($type, $fields, $attributes)
