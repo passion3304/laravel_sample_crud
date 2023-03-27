@@ -30,13 +30,16 @@
             <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-default"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
         @endif
 
+        @if ($crud->get('update.showDeleteButton') && $crud->get('delete.configuration') && $crud->hasAccess('delete'))
+            <button onclick="confirmAndDeleteEntry()" type="button" class="btn btn-danger float-right"><i class="la la-trash-alt"></i> {{ trans('backpack::crud.delete') }}</button>
+        @endif
     </div>
 @endif
 
 @push('after_scripts')
 <script>
 
-    // this function checks if form is valid. 
+    // this function checks if form is valid.
     function checkFormValidity(form) {
         // the condition checks if `checkValidity` is defined in the form (browser compatibility)
         if (form[0].checkValidity) {
@@ -110,5 +113,77 @@
         });
     });
 
-    </script>
+</script>
+
+@if ($crud->get('update.showDeleteButton') && $crud->get('delete.configuration') && $crud->hasAccess('delete'))
+<script>
+    function confirmAndDeleteEntry() {
+        // Ask for confirmation before deleting an item
+        swal({
+            title: "{!! trans('backpack::base.warning') !!}",
+            text: "{!! trans('backpack::crud.delete_confirm') !!}",
+            icon: "warning",
+            buttons: ["{!! trans('backpack::crud.cancel') !!}", "{!! trans('backpack::crud.delete') !!}"],
+            dangerMode: true,
+        }).then((value) => {
+            if (value) {
+                $.ajax({
+                    url: '{{ url($crud->route.'/'.$entry->getKey()) }}',
+                    type: 'DELETE',
+                    success: function(result) {
+                        if (result !== '1') {
+                            // if the result is an array, it means
+                            // we have notification bubbles to show
+                            if (result instanceof Object) {
+                                // trigger one or more bubble notifications
+                                Object.entries(result).forEach(function(entry) {
+                                    var type = entry[0];
+                                    entry[1].forEach(function(message, i) {
+                                        new Noty({
+                                            type: type,
+                                            text: message
+                                        }).show();
+                                    });
+                                });
+                            } else { // Show an error alert
+                                swal({
+                                    title: "{!! trans('backpack::crud.delete_confirmation_not_title') !!}",
+                                    text: "{!! trans('backpack::crud.delete_confirmation_not_message') !!}",
+                                    icon: "error",
+                                    timer: 4000,
+                                    buttons: false,
+                                });
+                            }
+                        }
+                        // All is good, show a success message!
+                        swal({
+                            title: "{!! trans('backpack::crud.delete_confirmation_title') !!}",
+                            text: "{!! trans('backpack::crud.delete_confirmation_message') !!}",
+                            icon: "success",
+                            buttons: false,
+                            closeOnClickOutside: false,
+                            closeOnEsc: false,
+                        });
+
+                        // Redirect in 1 sec so that admins get to see the success message
+                        setTimeout(function () {
+                            window.location.href = '{{ is_bool($crud->get('update.showDeleteButton')) ? url($crud->route) : (string) $crud->get('update.showDeleteButton') }}';
+                        }, 1000);
+                    },
+                    error: function() {
+                        // Show an alert with the result
+                        swal({
+                            title: "{!! trans('backpack::crud.delete_confirmation_not_title') !!}",
+                            text: "{!! trans('backpack::crud.delete_confirmation_not_message') !!}",
+                            icon: "error",
+                            timer: 4000,
+                            buttons: false,
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
+@endif
 @endpush
