@@ -10,7 +10,6 @@
 <h3 align="center">Quickly build an admin panel for your Eloquent models, then customize every little detail.</h3>
 
 
-
 <p align="center">
     <br>
     <a href="https://packagist.org/packages/backpack/crud" title="Latest Version on Packagist"><img src="https://img.shields.io/packagist/v/backpack/crud.svg?style=flat-square"></a>
@@ -25,7 +24,8 @@
 </p>
 
 
-https://user-images.githubusercontent.com/33960976/227207746-7cb4de4c-6339-4fa8-a8df-ba0b4e618042.mp4
+https://user-images.githubusercontent.com/33960976/228451772-e59dba01-8190-4ece-9404-984d9fbb3f0f.mp4
+
 
 -----
 
