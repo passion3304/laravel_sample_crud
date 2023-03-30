@@ -358,7 +358,7 @@
          crud.functionsToRunOnDataTablesDrawEvent.forEach(function(functionName) {
             crud.executeFunctionByName(functionName);
          });
-          @if($crud->getOperationSetting('actionsColumnAsDropdown'))
+          @if($crud->getOperationSetting('lineButtonsAsDropdown'))
           // Get action column
           const actionColumnIndex = $('#crudTable').find('th[data-action-column=true]').index();
           if (actionColumnIndex !== -1) {
