@@ -318,6 +318,17 @@ trait Columns
     }
 
     /**
+     * Set actions column as dropdown
+     * in the CRUD table view.
+     */
+    public function displayActionsColumnAsDropdown(): self
+    {
+        $this->setOperationSetting('actionsColumnAsDropdown', true);
+
+        return $this;
+    }
+
+    /**
      * Check if a column exists, by any given attribute.
      *
      * @param  string  $attribute  Attribute name on that column definition array.

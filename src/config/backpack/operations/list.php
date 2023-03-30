@@ -46,6 +46,9 @@ return [
     // - 4 - less important than most columns
     'actionsColumnPriority' => 1,
 
+    // Nest action buttons within a dropdown in actions column
+    'actionsColumnAsDropdown' => false,
+
     // Show a "Reset" button next to the List operation subheading
     // (Showing 1 to 25 of 9999 entries. Reset)
     // that allows the user to erase local storage for that datatable,

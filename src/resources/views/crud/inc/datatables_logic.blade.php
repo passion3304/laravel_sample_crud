@@ -358,7 +358,27 @@
          crud.functionsToRunOnDataTablesDrawEvent.forEach(function(functionName) {
             crud.executeFunctionByName(functionName);
          });
-      } ).dataTable();
+          @if($crud->getOperationSetting('actionsColumnAsDropdown'))
+          // Get last column
+          $('#crudTable').find('td:last-child').map((index, el) => {
+              const actionButtons = $(el).find('a.btn.btn-link');
+              if (actionButtons.length === 0) {
+                  // This might not be the action column
+                  return;
+              }
+              // Wrap the cell with the component needed for the dropdown
+              const cell = $(el);
+              cell.wrapInner('<div class="nav-item dropdown"></div>');
+              cell.wrapInner('<div class="dropdown-menu dropdown-menu-left"></div>');
+              // Prepare buttons as dropdown items
+              actionButtons.map((index, action) => {
+                  $(action).addClass('dropdown-item').removeClass('btn btn-sm btn-link');
+                  $(action).find('i').addClass('me-2 text-primary');
+              });
+              cell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
+          });
+          @endif
+      }).dataTable();
 
       // when datatables-colvis (column visibility) is toggled
       // rebuild the datatable using the datatable-responsive plugin
