@@ -359,24 +359,23 @@
             crud.executeFunctionByName(functionName);
          });
           @if($crud->getOperationSetting('actionsColumnAsDropdown'))
-          // Get last column
-          $('#crudTable').find('td:last-child').map((index, el) => {
-              const actionButtons = $(el).find('a.btn.btn-link');
-              if (actionButtons.length === 0) {
-                  // This might not be the action column
-                  return;
-              }
-              // Wrap the cell with the component needed for the dropdown
-              const cell = $(el);
-              cell.wrapInner('<div class="nav-item dropdown"></div>');
-              cell.wrapInner('<div class="dropdown-menu dropdown-menu-left"></div>');
-              // Prepare buttons as dropdown items
-              actionButtons.map((index, action) => {
-                  $(action).addClass('dropdown-item').removeClass('btn btn-sm btn-link');
-                  $(action).find('i').addClass('me-2 text-primary');
+          // Get action column
+          const actionColumnIndex = $('#crudTable').find('th[data-action-column=true]').index();
+          if (actionColumnIndex !== -1) {
+              $('#crudTable tr').each(function (i, tr) {
+                  const actionCell = $(tr).find('td').eq(actionColumnIndex);
+                  const actionButtons = $(actionCell).find('a.btn.btn-link');
+                  // Wrap the cell with the component needed for the dropdown
+                  actionCell.wrapInner('<div class="nav-item dropdown"></div>');
+                  actionCell.wrapInner('<div class="dropdown-menu dropdown-menu-left"></div>');
+                  // Prepare buttons as dropdown items
+                  actionButtons.map((index, action) => {
+                      $(action).addClass('dropdown-item').removeClass('btn btn-sm btn-link');
+                      $(action).find('i').addClass('me-2 text-primary');
+                  });
+                  actionCell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
               });
-              cell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
-          });
+          }
           @endif
       }).dataTable();
 
