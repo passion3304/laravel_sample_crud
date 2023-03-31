@@ -258,7 +258,9 @@ trait Query
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
 
         // re-set the previous query bindings
-        $subQuery->setBindings($crudQuery->getRawBindings());
+        foreach ($crudQuery->getRawBindings() as $type => $binding) {
+            $subQuery->setBindings($binding, $type);
+        }
 
         // select only one column for the count
         $subQuery->select($modelTable.'.'.$this->model->getKeyName());
