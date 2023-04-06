@@ -83,7 +83,6 @@
     "suggest": {
         "backpack/generators": "Required on localhost to easily generate CRUDs, models, controllers etc.",
         "backpack/filemanager": "Required to use the browse and browse_multiple fields.",
-        "backpack/revise-operation": "Optional operation to remember all entry changes, undo and redo them (aka audit trait).",
-        "digitallyhappy/toggle-field-for-backpack": "Optional field to toggle a boolean. Prettier alternative to the checkbox field."
+        "backpack/revise-operation": "Optional operation to remember all entry changes, undo and redo them (aka audit trait)."
     }
 }
