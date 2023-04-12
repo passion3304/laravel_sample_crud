@@ -65,6 +65,13 @@ if (! function_exists('backpack_form_input')) {
                 continue;
             }
 
+            $isMultiple = substr($row['name'], -2, 2) === '[]';
+
+            if ($isMultiple && substr_count($row['name'], '[') === 1) {
+                $result[substr($row['name'], 0, -2)][] = $row['value'];
+                continue;
+            }
+
             // dot notation fields
             if (substr_count($row['name'], '[') === 1) {
                 // start in the first occurence since it's HasOne/MorphOne with dot notation (address[street] in request) to get the input name (address)
@@ -87,11 +94,20 @@ if (! function_exists('backpack_form_input')) {
             $parentInputName = substr($row['name'], 0, strpos($row['name'], '['));
 
             if (isset($repeatableRowKey)) {
+                if ($isMultiple) {
+                    $result[$parentInputName][$repeatableRowKey][$inputName][] = $row['value'];
+                    continue;
+                }
+
                 $result[$parentInputName][$repeatableRowKey][$inputName] = $row['value'];
 
                 continue;
             }
 
+            if ($isMultiple) {
+                $result[$parentInputName][$inputName][] = $row['value'];
+                continue;
+            }
             $result[$parentInputName][$inputName] = $row['value'];
         }
 
