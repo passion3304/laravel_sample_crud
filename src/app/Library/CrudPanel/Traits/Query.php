@@ -255,10 +255,12 @@ trait Query
         // this subquery is the "main crud query" without some properties:
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
-        $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
+        $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset'])
+                                ->cloneWithoutBindings(['order']);
 
-        // select only one column for the count
-        $subQuery->select($modelTable.'.'.$this->model->getKeyName());
+        // select minimum possible columns for the count
+        $minimumColumns = ($crudQuery->groups || $crudQuery->havings) ? '*' : $modelTable.'.'.$this->model->getKeyName();
+        $subQuery->select($minimumColumns);
 
         // in case there are raw expressions we need to add them too.
         foreach ($expressionColumns as $expression) {
@@ -266,12 +268,17 @@ trait Query
         }
 
         // re-set the previous query bindings
+        //dump($crudQuery->getColumns(), get_class($crudQuery), get_class($subQuery));
         foreach ($crudQuery->getRawBindings() as $type => $binding) {
             $subQuery->setBindings($binding, $type);
         }
 
         $outerQuery = $outerQuery->fromSub($subQuery, str_replace('.', '_', $modelTable).'_aggregator');
 
-        return $outerQuery->cursor()->first()->total_rows;
+        try {
+            $count = $outerQuery->cursor()->first()->total_rows;
+        }catch(\Exception $e){
+            dd($e->getMessage());
+        }
     }
 }
