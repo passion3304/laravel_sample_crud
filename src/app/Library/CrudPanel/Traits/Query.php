@@ -277,7 +277,7 @@ trait Query
 
         try {
             $count = $outerQuery->cursor()->first()->total_rows;
-        }catch(\Exception $e){
+        } catch(\Exception $e) {
             dd($e->getMessage());
         }
     }
