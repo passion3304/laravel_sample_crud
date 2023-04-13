@@ -256,12 +256,7 @@ trait Query
         // - columns : we manually select the "minimum" columns possible from database.
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
-
-        // re-set the previous query bindings
-        foreach ($crudQuery->getRawBindings() as $type => $binding) {
-            $subQuery->setBindings($binding, $type);
-        }
-
+        
         // select only one column for the count
         $subQuery->select($modelTable.'.'.$this->model->getKeyName());
 
@@ -269,6 +264,11 @@ trait Query
         foreach ($expressionColumns as $expression) {
             $subQuery->selectRaw($expression);
         }
+
+        // re-set the previous query bindings
+        foreach ($crudQuery->getRawBindings() as $type => $binding) {  
+            $subQuery->setBindings($binding, $type);
+        } 
 
         $outerQuery = $outerQuery->fromSub($subQuery, str_replace('.', '_', $modelTable).'_aggregator');
 
