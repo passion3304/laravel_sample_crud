@@ -203,15 +203,33 @@ trait Validation
                 return app($formRequest);
             }
 
-            $formRequest = (new $formRequest)->createFrom($this->getRequest());
-            $extendedRules = $this->mergeRules($formRequest, $rules);
-            $extendedMessages = array_merge($messages, $formRequest->messages());
+            [$formRequest, $extendedRules, $extendedMessages] = $this->mergeRequestAndFieldRules($formRequest, $rules, $messages);
 
             // validate the complete request with FormRequest + controller validation + field validation (our anonymous class)
             return $this->checkRequestValidity($extendedRules, $extendedMessages, $formRequest);
         }
 
         return ! empty($rules) ? $this->checkRequestValidity($rules, $messages) : $this->getRequest();
+    }
+
+    /**
+     * Merge the form request validation with the fields validation. 
+     *
+     * @param FormRequest $request
+     * @param array|null $rules
+     * @param array|null $messages
+     * @return array
+     */
+    public function mergeRequestAndFieldRules($request, $rules = null, $messages = null)
+    {
+        $rules = $rules ?? $this->getOperationSetting('validationRules') ?? [];
+        $messages = $messages ?? $this->getOperationSetting('validationMessages') ?? [];
+
+        $request = (new $request)->createFrom($this->getRequest());
+        $extendedRules = $this->mergeRules($request, $rules);
+        $extendedMessages = array_merge($messages, $request->messages());
+
+        return [$request, $extendedRules, $extendedMessages];
     }
 
     /**
