@@ -213,11 +213,11 @@ trait Validation
     }
 
     /**
-     * Merge the form request validation with the fields validation. 
+     * Merge the form request validation with the fields validation.
      *
-     * @param FormRequest $request
-     * @param array|null $rules
-     * @param array|null $messages
+     * @param  FormRequest  $request
+     * @param  array|null  $rules
+     * @param  array|null  $messages
      * @return array
      */
     public function mergeRequestAndFieldRules($request, $rules = null, $messages = null)
