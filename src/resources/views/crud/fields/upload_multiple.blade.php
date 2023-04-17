@@ -35,7 +35,7 @@
     @endif
     @endif
 	{{-- Show the file picker on CREATE form. --}}
-	
+	<input name="{{ $field['name'] }}[]" type="hidden" value="">
 	<div class="backstrap-file mt-2">
 		<input
 	        type="file"
