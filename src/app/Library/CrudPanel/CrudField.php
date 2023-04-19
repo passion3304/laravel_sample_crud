@@ -37,7 +37,7 @@ use Illuminate\Support\Traits\Conditionable;
 class CrudField
 {
     use Conditionable;
-    
+
     protected $attributes;
 
     public function __construct($name)
