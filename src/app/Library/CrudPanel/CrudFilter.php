@@ -6,8 +6,8 @@ use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Backpack\CRUD\ViewNamespaces;
 use Closure;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Illuminate\Support\Traits\Conditionable;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CrudFilter
 {
