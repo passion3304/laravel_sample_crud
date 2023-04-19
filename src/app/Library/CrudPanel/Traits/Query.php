@@ -257,17 +257,19 @@ trait Query
         // - orders/limit/offset because we want the "full query count" where orders don't matter and limit/offset would break the total count
         $subQuery = $crudQuery->cloneWithout(['columns', 'orders', 'limit', 'offset']);
 
-        // re-set the previous query bindings
-        foreach ($crudQuery->getRawBindings() as $type => $binding) {
-            $subQuery->setBindings($binding, $type);
-        }
-
-        // select only one column for the count
-        $subQuery->select($modelTable.'.'.$this->model->getKeyName());
+        // select minimum possible columns for the count
+        $minimumColumns = ($crudQuery->groups || $crudQuery->havings) ? '*' : $modelTable.'.'.$this->model->getKeyName();
+        $subQuery->select($minimumColumns);
 
         // in case there are raw expressions we need to add them too.
         foreach ($expressionColumns as $expression) {
             $subQuery->selectRaw($expression);
+        }
+
+        // re-set the previous query bindings
+        //dump($crudQuery->getColumns(), get_class($crudQuery), get_class($subQuery));
+        foreach ($crudQuery->getRawBindings() as $type => $binding) {
+            $subQuery->setBindings($binding, $type);
         }
 
         $outerQuery = $outerQuery->fromSub($subQuery, str_replace('.', '_', $modelTable).'_aggregator');
