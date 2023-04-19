@@ -18,6 +18,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\HasViewNamespaces;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Input;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
+use Illuminate\Support\Traits\Conditionable;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\MorphRelationships;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Operations;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Query;
@@ -43,7 +44,7 @@ class CrudPanel
     use Create, Read, Search, Update, Delete, Input, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships, HasViewNamespaces, MorphRelationships;
 
     // allow developers to add their own closures to this object
-    use Macroable;
+    use Macroable, Conditionable;
 
     // --------------
     // CRUD variables

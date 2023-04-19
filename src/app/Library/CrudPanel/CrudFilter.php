@@ -7,9 +7,12 @@ use Backpack\CRUD\ViewNamespaces;
 use Closure;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Illuminate\Support\Traits\Conditionable;
 
 class CrudFilter
 {
+    use Conditionable;
+
     public $name; // the name of the filtered variable (db column name)
 
     public $type = 'select2'; // the name of the filter view that will be loaded
