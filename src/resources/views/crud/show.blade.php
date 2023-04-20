@@ -49,9 +49,9 @@
                 @endif
 
                 @if ($crud->tabsEnabled() && count($crud->getTabs()))
-                    @include('crud::inc.show_tabbed_columns')
+                    @include('crud::inc.show_tabbed_table')
                 @else
-                    @include('crud::inc.show_tabbed_table', ['columns' => $crud->columns()])
+                    @include('crud::inc.show_table', ['columns' => $crud->columns()])
                 </div>
             @endif
 
