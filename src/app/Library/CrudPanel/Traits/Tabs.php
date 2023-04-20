@@ -113,7 +113,7 @@ trait Tabs
         $all_fields = $this->getCurrentFieldsOrColumns();
 
         $fields_without_a_tab = collect($all_fields)->filter(function ($value) {
-            return !isset($value['tab']);
+            return ! isset($value['tab']);
         });
 
         return $fields_without_a_tab;
@@ -150,7 +150,7 @@ trait Tabs
                 return isset($value['tab']);
             })
             ->each(function ($value) use (&$tabs) {
-                if (!in_array($value['tab'], $tabs)) {
+                if (! in_array($value['tab'], $tabs)) {
                     $tabs[] = $value['tab'];
                 }
             });
