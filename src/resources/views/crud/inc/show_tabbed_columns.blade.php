@@ -2,14 +2,14 @@
     $horizontalTabs = $crud->getTabsType()=='horizontal' ? true : false;
 @endphp
 
-@if ($crud->getFieldsOrColumnsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
+@if ($crud->getColumnsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
     <div class="card">
         <div class="card-body">
-            @include('crud::inc.show_tabbed_table', ['columns' => $crud->getFieldsOrColumnsWithoutATab()])
+            @include('crud::inc.show_tabbed_table', ['columns' => $crud->getColumnsWithoutATab()])
         </div>
     </div>
 @else
-    @include('crud::inc.show_tabbed_table', ['columns' => $crud->getFieldsOrColumnsWithoutATab()])
+    @include('crud::inc.show_tabbed_table', ['columns' => $crud->getColumnsWithoutATab()])
 @endif
 
 <div class="tab-container {{ $horizontalTabs ? '' : 'container'}} mb-2">
@@ -32,7 +32,7 @@
         <div class="tab-content p-0 {{ $horizontalTabs ? '' : 'col-md-9' }}">
             @foreach ($crud->getTabs() as $k => $tab)
                 <div role="tabpanel" class="tab-pane {{ $k === 0 ? 'active' : '' }}" id="tab_{{ Str::slug($tab) }}">
-                    @include('crud::inc.show_tabbed_table', ['columns' => $crud->getTabFieldsOrColumns($tab)])
+                    @include('crud::inc.show_tabbed_table', ['columns' => $crud->getTabColumns($tab)])
                 </div>
             @endforeach
 

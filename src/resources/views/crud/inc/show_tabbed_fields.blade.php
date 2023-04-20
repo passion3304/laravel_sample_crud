@@ -15,14 +15,14 @@
     })();
 @endphp
 
-@if ($crud->getFieldsOrColumnsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
+@if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
 <div class="card">
     <div class="card-body row">
-    @include('crud::inc.show_fields', ['fields' => $crud->getFieldsOrColumnsWithoutATab()])
+    @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
     </div>
 </div>
 @else
-    @include('crud::inc.show_fields', ['fields' => $crud->getFieldsOrColumnsWithoutATab()])
+    @include('crud::inc.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
 @endif
 
 <div class="tab-container {{ $horizontalTabs ? '' : 'container'}} mb-2">
@@ -48,7 +48,7 @@
             <div role="tabpanel" class="tab-pane {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tab) }}">
 
                 <div class="row">
-                @include('crud::inc.show_fields', ['fields' => $crud->getTabFieldsOrColumns($tab)])
+                @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
                 </div>
             </div>
             @endforeach

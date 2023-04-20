@@ -22,7 +22,7 @@ return [
     'softDeletes' => false,
 
     // Enable to group columns in tabs
-    'tabsEnabled' => true,
+    'tabsEnabled' => false,
 
     // When using tabbed forms (create & update), what kind of tabs would you like?
     'tabsType' => 'horizontal', //options: horizontal, vertical

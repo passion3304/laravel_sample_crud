@@ -215,9 +215,9 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
 
         // TODO: the method returns an eloquent collection in case fields for a given label are found, array if
         //       otherwise. the return type should be either one or the other.
-        $firstTabFields = $this->crudPanel->getTabFieldsOrColumns($this->expectedTabNames[0]);
-        $secondTabFields = $this->crudPanel->getTabFieldsOrColumns($this->expectedTabNames[1]);
-        $thirdTabFields = $this->crudPanel->getTabFieldsOrColumns($this->expectedTabNames[2]);
+        $firstTabFields = $this->crudPanel->getTabFields($this->expectedTabNames[0]);
+        $secondTabFields = $this->crudPanel->getTabFields($this->expectedTabNames[1]);
+        $thirdTabFields = $this->crudPanel->getTabFields($this->expectedTabNames[2]);
 
         $this->assertEquals($this->expectedFieldsInFirstTab, $firstTabFields);
         $this->assertEquals($this->expectedFieldsInSecondTab, $secondTabFields);
@@ -226,7 +226,7 @@ class CrudPanelTabsTest extends BaseDBCrudPanelTest
 
     public function testGetTabFieldsUnknownLabel()
     {
-        $tabFields = $this->crudPanel->getTabFieldsOrColumns('someLabel');
+        $tabFields = $this->crudPanel->getTabFields('someLabel');
 
         $this->assertEmpty($tabFields);
     }

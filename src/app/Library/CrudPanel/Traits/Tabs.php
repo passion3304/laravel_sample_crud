@@ -105,43 +105,45 @@ trait Tabs
         return $this->getLastTab() == $label;
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function getFieldsOrColumnsWithoutATab()
+    public function getFieldsWithoutATab(): \Illuminate\Support\Collection
     {
-        $all_fields = $this->getCurrentFieldsOrColumns();
+        return $this->getElementsWithoutATab($this->getCurrentFields());
+    }
 
-        $fields_without_a_tab = collect($all_fields)->filter(function ($value) {
+    public function getColumnsWithoutATab(): \Illuminate\Support\Collection
+    {
+        return $this->getElementsWithoutATab($this->getCurrentColumns());
+    }
+
+    public function getElementsWithoutATab(array $elements): \Illuminate\Support\Collection
+    {
+        return collect($elements)->filter(function ($value) {
             return ! isset($value['tab']);
         });
-
-        return $fields_without_a_tab;
     }
 
-    /**
-     * @param $label
-     * @return array|\Illuminate\Support\Collection
-     */
-    public function getTabFieldsOrColumns($label)
+    public function getTabFields($label): \Illuminate\Support\Collection
+    {
+        return $this->getTabElements($label, $this->getCurrentFields());
+    }
+
+    public function getTabColumns(string $label): \Illuminate\Support\Collection
+    {
+        return $this->getTabElements($label, $this->getCurrentColumns());
+    }
+
+    public function getTabElements(string $label, array $elements): \Illuminate\Support\Collection
     {
         if ($this->tabExists($label)) {
-            $all_fields = $this->getCurrentFieldsOrColumns();
-
-            $fields_for_current_tab = collect($all_fields)->filter(function ($value) use ($label) {
+            return collect($elements)->filter(function ($value) use ($label) {
                 return isset($value['tab']) && $value['tab'] == $label;
             });
-
-            return $fields_for_current_tab;
         }
 
-        return [];
+        return collect([]);
     }
 
-    /**
-     * @return array
-     */
-    public function getTabs()
+    public function getTabs(): array
     {
         $tabs = [];
 
