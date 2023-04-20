@@ -108,12 +108,12 @@ trait Tabs
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getFieldsWithoutATab()
+    public function getFieldsOrColumnsWithoutATab()
     {
-        $all_fields = $this->getCurrentFields();
+        $all_fields = $this->getCurrentFieldsOrColumns();
 
-        $fields_without_a_tab = collect($all_fields)->filter(function ($value, $key) {
-            return ! isset($value['tab']);
+        $fields_without_a_tab = collect($all_fields)->filter(function ($value) {
+            return !isset($value['tab']);
         });
 
         return $fields_without_a_tab;
@@ -123,12 +123,12 @@ trait Tabs
      * @param $label
      * @return array|\Illuminate\Support\Collection
      */
-    public function getTabFields($label)
+    public function getTabFieldsOrColumns($label)
     {
         if ($this->tabExists($label)) {
-            $all_fields = $this->getCurrentFields();
+            $all_fields = $this->getCurrentFieldsOrColumns();
 
-            $fields_for_current_tab = collect($all_fields)->filter(function ($value, $key) use ($label) {
+            $fields_for_current_tab = collect($all_fields)->filter(function ($value) use ($label) {
                 return isset($value['tab']) && $value['tab'] == $label;
             });
 
@@ -144,18 +144,24 @@ trait Tabs
     public function getTabs()
     {
         $tabs = [];
-        $fields = $this->getCurrentFields();
 
-        $fields_with_tabs = collect($fields)
-            ->filter(function ($value, $key) {
+        collect($this->getCurrentFieldsOrColumns())
+            ->filter(function ($value) {
                 return isset($value['tab']);
             })
-            ->each(function ($value, $key) use (&$tabs) {
-                if (! in_array($value['tab'], $tabs)) {
+            ->each(function ($value) use (&$tabs) {
+                if (!in_array($value['tab'], $tabs)) {
                     $tabs[] = $value['tab'];
                 }
             });
 
         return $tabs;
+    }
+
+    public function getCurrentFieldsOrColumns(): array
+    {
+        return $this->getCurrentOperation() === 'show'
+            ? $this->getCurrentColumns()
+            : $this->getCurrentFields();
     }
 }

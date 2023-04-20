@@ -422,4 +422,9 @@ trait Columns
     {
         return new CrudColumn($name);
     }
+
+    public function getCurrentColumns(): array
+    {
+        return $this->columns();
+    }
 }
