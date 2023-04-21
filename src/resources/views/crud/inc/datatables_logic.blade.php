@@ -358,9 +358,9 @@
          crud.functionsToRunOnDataTablesDrawEvent.forEach(function(functionName) {
             crud.executeFunctionByName(functionName);
          });
-          @if($crud->getOperationSetting('lineButtonsAsDropdown'))
-              formatActionColumnAsDropdown();
-          @endif
+         if ($('#crudTable').data('has-line-buttons-as-dropdown')) {
+          formatActionColumnAsDropdown();
+         }
       }).dataTable();
 
       // when datatables-colvis (column visibility) is toggled
