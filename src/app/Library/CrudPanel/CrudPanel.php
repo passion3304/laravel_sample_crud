@@ -36,7 +36,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Traits\Conditionable;
 
 class CrudPanel
 {
@@ -44,7 +43,7 @@ class CrudPanel
     use Create, Read, Search, Update, Delete, Input, Errors, Reorder, Access, Columns, Fields, Query, Buttons, AutoSet, FakeFields, FakeColumns, AutoFocus, Filters, Tabs, Views, Validation, HeadingsAndTitles, Operations, SaveActions, Settings, Relationships, HasViewNamespaces, MorphRelationships;
 
     // allow developers to add their own closures to this object
-    use Macroable, Conditionable;
+    use Macroable;
 
     // --------------
     // CRUD variables
