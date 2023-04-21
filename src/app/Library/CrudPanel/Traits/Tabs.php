@@ -105,34 +105,47 @@ trait Tabs
         return $this->getLastTab() == $label;
     }
 
-    public function getFieldsWithoutATab(): \Illuminate\Support\Collection
+    /**
+     * @deprecated Do not use this method as it will be removed in future versions!
+     * Instead, use $this->getElementsWithoutATab($this->getCurrentFields())
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getFieldsWithoutATab()
     {
         return $this->getElementsWithoutATab($this->getCurrentFields());
     }
 
-    public function getColumnsWithoutATab(): \Illuminate\Support\Collection
-    {
-        return $this->getElementsWithoutATab($this->getCurrentColumns());
-    }
-
-    public function getElementsWithoutATab(array $elements): \Illuminate\Support\Collection
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getElementsWithoutATab(array $elements)
     {
         return collect($elements)->filter(function ($value) {
             return ! isset($value['tab']);
         });
     }
 
-    public function getTabFields($label): \Illuminate\Support\Collection
+    /**
+     * @return array|\Illuminate\Support\Collection
+     */
+    public function getTabFields(string $label)
     {
         return $this->getTabElements($label, $this->getCurrentFields());
     }
 
-    public function getTabColumns(string $label): \Illuminate\Support\Collection
+    /**
+     * @return array|\Illuminate\Support\Collection
+     */
+    public function getTabColumns(string $label)
     {
-        return $this->getTabElements($label, $this->getCurrentColumns());
+        return $this->getTabElements($label, $this->columns());
     }
 
-    public function getTabElements(string $label, array $elements): \Illuminate\Support\Collection
+    /**
+     * @return array|\Illuminate\Support\Collection
+     */
+    public function getTabElements(string $label, array $elements)
     {
         if ($this->tabExists($label)) {
             return collect($elements)->filter(function ($value) use ($label) {
@@ -140,7 +153,7 @@ trait Tabs
             });
         }
 
-        return collect([]);
+        return [];
     }
 
     public function getTabs(): array
@@ -163,7 +176,7 @@ trait Tabs
     public function getCurrentFieldsOrColumns(): array
     {
         return $this->getCurrentOperation() === 'show'
-            ? $this->getCurrentColumns()
+            ? $this->columns()
             : $this->getCurrentFields();
     }
 }
