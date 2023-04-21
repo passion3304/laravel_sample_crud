@@ -29,7 +29,7 @@
         <div class="{{ $crud->getShowContentClass() }}">
 
             {{-- Default box --}}
-            <div class="">
+            <div>
                 @if ($crud->model->translationEnabled())
                     <div class="row">
                         <div class="col-md-12 mb-2">
@@ -51,9 +51,11 @@
                 @if ($crud->tabsEnabled() && count($crud->getTabs()))
                     @include('crud::inc.show_tabbed_table')
                 @else
-                    @include('crud::inc.show_table', ['columns' => $crud->columns()])
-                </div>
-            @endif
+                    <div class="card no-padding no-border mb-0">
+                        @include('crud::inc.show_table', ['columns' => $crud->columns()])
+                    </div>
+                @endif
+            </div>
 
         </div>
     </div>

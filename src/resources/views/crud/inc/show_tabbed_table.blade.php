@@ -5,9 +5,7 @@
 
 @if($columnsWithoutTab->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
     <div class="card">
-        <div class="card-body">
-            @include('crud::inc.show_table', ['columns' => $columnsWithoutTab])
-        </div>
+        @include('crud::inc.show_table', ['columns' => $columnsWithoutTab])
     </div>
 @else
     @include('crud::inc.show_table', ['columns' => $columnsWithoutTab])
@@ -32,7 +30,7 @@
 
         <div class="tab-content p-0 {{ $horizontalTabs ? '' : 'col-md-9' }}">
             @foreach ($crud->getTabs() as $k => $tab)
-                <div role="tabpanel" class="tab-pane {{ $k === 0 ? 'active' : '' }}" id="tab_{{ Str::slug($tab) }}">
+                <div role="tabpanel" class="tab-pane p-0 border-none {{ $k === 0 ? 'active' : '' }}" id="tab_{{ Str::slug($tab) }}">
                     @include('crud::inc.show_table', ['columns' => $crud->getTabColumns($tab)])
                 </div>
             @endforeach
