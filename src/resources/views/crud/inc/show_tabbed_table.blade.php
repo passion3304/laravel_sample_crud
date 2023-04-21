@@ -1,16 +1,16 @@
 @php
     $horizontalTabs = $crud->getTabsType()=='horizontal' ? true : false;
-    $columnsWithoutTab = $crud->columns();
+    $columnsWithoutTab = $crud->getElementsWithoutATab($crud->columns());
 @endphp
 
-@if($crud->getElementsWithoutATab($columnsWithoutTab)->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
+@if($columnsWithoutTab->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
     <div class="card">
         <div class="card-body">
-            @include('crud::inc.show_table', ['columns' => $crud->getElementsWithoutATab($columnsWithoutTab)])
+            @include('crud::inc.show_table', ['columns' => $columnsWithoutTab])
         </div>
     </div>
 @else
-    @include('crud::inc.show_table', ['columns' => $crud->getElementsWithoutATab($columnsWithoutTab)])
+    @include('crud::inc.show_table', ['columns' => $columnsWithoutTab])
 @endif
 
 <div class="tab-container {{ $horizontalTabs ? '' : 'container'}} mb-2">
