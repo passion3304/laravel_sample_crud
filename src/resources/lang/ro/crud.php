@@ -36,6 +36,7 @@ return [
 
     // CRUD table view
     'all'                                     => 'Toate ',
+    'reset'                                   => 'Resetează ',
     'in_the_database'                         => 'din baza de date',
     'list'                                    => 'Listă',
     'actions'                                 => 'Operațiuni',
@@ -114,6 +115,7 @@ return [
 
     // Fields
     'browse_uploads'                          => 'Alege din fișierele urcate',
+    'select_all'                              => 'Selectează tot',
     'clear'                                   => 'Curăță',
     'page_link'                               => 'Link către pagină',
     'page_link_placeholder'                   => 'http://example.com/pagina-dorita-de-tine',
