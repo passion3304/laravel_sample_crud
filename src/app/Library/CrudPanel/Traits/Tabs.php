@@ -158,9 +158,29 @@ trait Tabs
 
     public function getTabs(): array
     {
-        $tabs = [];
+        return $this->getUniqueTabNames('fields');
+    }
 
-        collect($this->getCurrentFieldsOrColumns())
+    /**
+     * $source could be `fields` or `columns` for now
+     */
+    public function getUniqueTabNames(string $source): array
+    {
+        $tabs = [];
+        $items = [];
+
+        switch ($source) {
+            case 'fields':
+                $items = $this->getCurrentFields();
+                break;
+            case 'columns':
+                $items = $this->columns();
+                break;
+            default:
+                break;
+        }
+
+        collect($items)
             ->filter(function ($value) {
                 return isset($value['tab']);
             })
@@ -171,12 +191,5 @@ trait Tabs
             });
 
         return $tabs;
-    }
-
-    public function getCurrentFieldsOrColumns(): array
-    {
-        return $this->getCurrentOperation() === 'show'
-            ? $this->columns()
-            : $this->getCurrentFields();
     }
 }
