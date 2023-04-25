@@ -162,7 +162,7 @@ trait Tabs
     }
 
     /**
-     * $source could be `fields` or `columns` for now
+     * $source could be `fields` or `columns` for now.
      */
     public function getUniqueTabNames(string $source): array
     {
