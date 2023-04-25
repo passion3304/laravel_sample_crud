@@ -48,7 +48,7 @@
                     </div>
                 @endif
 
-                @if ($crud->tabsEnabled() && count($crud->getTabs()))
+                @if($crud->tabsEnabled() && count($crud->getUniqueTabNames('columns')))
                     @include('crud::inc.show_tabbed_table')
                 @else
                     <div class="card no-padding no-border mb-0">

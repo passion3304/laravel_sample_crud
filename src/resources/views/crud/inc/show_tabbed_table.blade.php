@@ -1,5 +1,5 @@
 @php
-    $horizontalTabs = $crud->getTabsType()=='horizontal' ? true : false;
+    $horizontalTabs = $crud->getTabsType() == 'horizontal';
     $columnsWithoutTab = $crud->getElementsWithoutATab($crud->columns());
 @endphp
 
@@ -15,7 +15,7 @@
 
     <div class="nav-tabs-custom {{ $horizontalTabs ? '' : 'row'}}" id="form_tabs">
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'flex-column nav-pills'}} {{ $horizontalTabs ? '' : 'col-md-3' }}" role="tablist">
-            @foreach ($crud->getTabs() as $k => $tab)
+            @foreach ($crud->getUniqueTabNames('columns') as $k => $tab)
                 <li role="presentation" class="nav-item">
                     <a href="#tab_{{ Str::slug($tab) }}"
                        aria-controls="tab_{{ Str::slug($tab) }}"
@@ -29,7 +29,7 @@
         </ul>
 
         <div class="tab-content p-0 {{ $horizontalTabs ? '' : 'col-md-9' }}">
-            @foreach ($crud->getTabs() as $k => $tab)
+            @foreach ($crud->getUniqueTabNames('columns') as $k => $tab)
                 <div role="tabpanel" class="tab-pane p-0 border-none {{ $k === 0 ? 'active' : '' }}" id="tab_{{ Str::slug($tab) }}">
                     @include('crud::inc.show_table', ['columns' => $crud->getTabColumns($tab)])
                 </div>

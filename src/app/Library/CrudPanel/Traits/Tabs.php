@@ -131,7 +131,7 @@ trait Tabs
      */
     public function getTabFields(string $label)
     {
-        return $this->getTabElements($label, $this->getCurrentFields());
+        return $this->getTabItems($label, 'fields');
     }
 
     /**
@@ -139,16 +139,17 @@ trait Tabs
      */
     public function getTabColumns(string $label)
     {
-        return $this->getTabElements($label, $this->columns());
+        return $this->getTabItems($label, 'columns');
     }
 
     /**
      * @return array|\Illuminate\Support\Collection
      */
-    public function getTabElements(string $label, array $elements)
+    public function getTabItems(string $label, string $source)
     {
-        if ($this->tabExists($label)) {
-            return collect($elements)->filter(function ($value) use ($label) {
+        if (in_array($label, $this->getUniqueTabNames($source))) {
+            $items = $this->getCurrentItems($source);
+            return collect($items)->filter(function ($value) use ($label) {
                 return isset($value['tab']) && $value['tab'] == $label;
             });
         }
@@ -167,6 +168,23 @@ trait Tabs
     public function getUniqueTabNames(string $source): array
     {
         $tabs = [];
+        $items = $this->getCurrentItems($source);
+
+        collect($items)
+            ->filter(function ($value) {
+                return isset($value['tab']);
+            })
+            ->each(function ($value) use (&$tabs) {
+                if (! in_array($value['tab'], $tabs)) {
+                    $tabs[] = $value['tab'];
+                }
+            });
+
+        return $tabs;
+    }
+
+    public function getCurrentItems(string $source): array
+    {
         $items = [];
 
         switch ($source) {
@@ -180,16 +198,6 @@ trait Tabs
                 break;
         }
 
-        collect($items)
-            ->filter(function ($value) {
-                return isset($value['tab']);
-            })
-            ->each(function ($value) use (&$tabs) {
-                if (! in_array($value['tab'], $tabs)) {
-                    $tabs[] = $value['tab'];
-                }
-            });
-
-        return $tabs;
+        return $items;
     }
 }
