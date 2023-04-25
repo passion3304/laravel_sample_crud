@@ -149,6 +149,7 @@ trait Tabs
     {
         if (in_array($label, $this->getUniqueTabNames($source))) {
             $items = $this->getCurrentItems($source);
+
             return collect($items)->filter(function ($value) use ($label) {
                 return isset($value['tab']) && $value['tab'] == $label;
             });
