@@ -24,7 +24,7 @@
                 </td>
             </tr>
         @endforeach
-        @if($crud->buttons()->where('stack', 'line')->count())
+        @if($crud->buttons()->where('stack', 'line')->count() && ($displayActionsColumn ?? true))
             <tr>
                 <td>
                     <strong>{{ trans('backpack::crud.actions') }}</strong>

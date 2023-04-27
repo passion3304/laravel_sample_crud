@@ -179,7 +179,7 @@ trait Tabs
         return $tabs;
     }
 
-    public function getCurrentItems(string $source): array
+    private function getCurrentItems(string $source): array
     {
         $items = [];
 
