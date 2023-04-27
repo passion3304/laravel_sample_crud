@@ -127,31 +127,26 @@ trait Tabs
     }
 
     /**
+     * @deprecated Do not use this method as it will be removed in future versions!
+     * Instead, use $this->getTabItems($tabLabel, 'fields')
+     *
      * @return array|\Illuminate\Support\Collection
      */
-    public function getTabFields(string $label)
+    public function getTabFields(string $tabLabel)
     {
-        return $this->getTabItems($label, 'fields');
+        return $this->getTabItems($tabLabel, 'fields');
     }
 
     /**
      * @return array|\Illuminate\Support\Collection
      */
-    public function getTabColumns(string $label)
+    public function getTabItems(string $tabLabel, string $source)
     {
-        return $this->getTabItems($label, 'columns');
-    }
-
-    /**
-     * @return array|\Illuminate\Support\Collection
-     */
-    public function getTabItems(string $label, string $source)
-    {
-        if (in_array($label, $this->getUniqueTabNames($source))) {
+        if (in_array($tabLabel, $this->getUniqueTabNames($source))) {
             $items = $this->getCurrentItems($source);
 
-            return collect($items)->filter(function ($value) use ($label) {
-                return isset($value['tab']) && $value['tab'] == $label;
+            return collect($items)->filter(function ($value) use ($tabLabel) {
+                return isset($value['tab']) && $value['tab'] == $tabLabel;
             });
         }
 
