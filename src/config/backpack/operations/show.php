@@ -21,4 +21,9 @@ return [
     // soft deleted items & add a deleted_at column to ShowOperation?
     'softDeletes' => false,
 
+    // Enable to group columns in tabs
+    'tabsEnabled' => false,
+
+    // When using tabbed forms (create & update), what kind of tabs would you like?
+    'tabsType' => 'horizontal', //options: horizontal, vertical
 ];

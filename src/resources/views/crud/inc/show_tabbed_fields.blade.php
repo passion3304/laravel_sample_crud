@@ -44,11 +44,11 @@
 
         <div class="tab-content p-0 {{$horizontalTabs ? '' : 'col-md-9'}}">
 
-            @foreach ($crud->getTabs() as $k => $tab)
-            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tab) }}">
+            @foreach ($crud->getTabs() as $k => $tabLabel)
+            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) && $tabWithError ? ($tabLabel == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tabLabel) }}">
 
                 <div class="row">
-                @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
+                    @include('crud::inc.show_fields', ['fields' => $crud->getTabItems($tabLabel, 'fields')])
                 </div>
             </div>
             @endforeach
