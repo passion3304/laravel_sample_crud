@@ -24,7 +24,16 @@
                 </td>
             </tr>
         @endforeach
-        @includeWhen($displayActionsColumn ?? true, 'crud::inc.action_column')
+        @if($crud->buttons()->where('stack', 'line')->count() && ($displayActionsColumn ?? true))
+            <tr>
+                <td>
+                    <strong>{{ trans('backpack::crud.actions') }}</strong>
+                </td>
+                <td>
+                    @include('crud::inc.button_stack', ['stack' => 'line'])
+                </td>
+            </tr>
+        @endif
         </tbody>
     </table>
 @endif

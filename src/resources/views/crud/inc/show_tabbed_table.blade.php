@@ -6,8 +6,7 @@
 
 @if($columnsWithoutTab->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
     <div class="card">
-        {{-- Here is the only case where we might not want to display action columns. That is, when tabs are enabled and there are actually tabs to display — We show them with the tabs! --}}
-        @include('crud::inc.show_table', ['columns' => $columnsWithoutTab, 'displayActionsColumn' => !$crud->tabsEnabled() || count($crud->getUniqueTabNames('columns')) === 0])
+        @include('crud::inc.show_table', ['columns' => $columnsWithoutTab, 'displayActionsColumn' => false])
     </div>
 @else
     @include('crud::inc.show_table', ['columns' => $columnsWithoutTab])
@@ -37,9 +36,11 @@
                 </div>
             @endforeach
         </div>
+        {{-- Display action column--}}
         @if($crud->buttons()->where('stack', 'line')->count())
-            <div class="tab-content mt-4 px-3 pb-1 pt-2">
-                @include('crud::inc.action_column')
+            <div class="text-center mt-4">
+                <p class="mb-0"><strong>{{ trans('backpack::crud.actions') }}:</strong></p>
+                <p>@include('crud::inc.button_stack', ['stack' => 'line'])</p>
             </div>
         @endif
     </div>
