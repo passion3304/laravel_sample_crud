@@ -31,7 +31,7 @@
         <div class="tab-content p-0 {{ $horizontalTabs ? '' : 'col-md-9' }}">
             @foreach ($crud->getUniqueTabNames('columns') as $k => $tabLabel)
                 <div role="tabpanel" class="tab-pane p-0 border-none {{ $k === 0 ? 'active' : '' }}" id="tab_{{ Str::slug($tabLabel) }}">
-                    @include('crud::inc.show_table', ['columns' => $this->getTabItems($tabLabel, 'columns')])
+                    @include('crud::inc.show_table', ['columns' => $crud->getTabItems($tabLabel, 'columns')])
                 </div>
             @endforeach
 
