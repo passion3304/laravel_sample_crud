@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
 use Backpack\CRUD\ViewNamespaces;
+use Illuminate\Support\Traits\Conditionable;
 
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.
@@ -18,6 +19,8 @@ use Backpack\CRUD\ViewNamespaces;
  */
 class CrudButton
 {
+    use Conditionable;
+
     public $stack;
     public $name;
     public $type;

@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Illuminate\Support\Traits\Conditionable;
+
 /**
  * Adds fluent syntax to Backpack CRUD Fields.
  *
@@ -34,6 +36,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  */
 class CrudField
 {
+    use Conditionable;
+
     protected $attributes;
 
     public function __construct($name)

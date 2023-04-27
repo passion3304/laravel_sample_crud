@@ -6,10 +6,13 @@ use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Backpack\CRUD\ViewNamespaces;
 use Closure;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CrudFilter
 {
+    use Conditionable;
+
     public $name; // the name of the filtered variable (db column name)
 
     public $type = 'select2'; // the name of the filter view that will be loaded
